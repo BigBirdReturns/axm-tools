@@ -31,9 +31,15 @@ add and none of them can break each other:
 - **Workflows live at the repo root** (GitHub requires it) but are named
   and scoped per tool: `.github/workflows/<tool>-<job>.yml`, touching only
   that tool's `data/`.
-- **GitHub Pages serves the whole repo from the branch root**, so each tool
-  is reachable at `/<tool>/` and this repo's root page is just a directory
-  of them.
+- **GitHub Pages deploys from Actions** (Settings → Pages → Source
+  "GitHub Actions"). A tool's workflow uploads the *repo root* as the
+  Pages artifact after refreshing its data, so each tool is reachable at
+  `/<tool>/` and this repo's root page is just a directory of them. The
+  deploy step must live in the same workflow as any data commit: pushes
+  made with the built-in `GITHUB_TOKEN` never trigger other workflows, so
+  a standalone on-push Pages workflow would silently skip every scheduled
+  refresh. All deploys share the `pages` concurrency group, so tools
+  queue rather than clobber each other.
 - **Fail loud or show it.** A scheduled job that breaks entirely must exit
   nonzero so GitHub emails the owner; a source that breaks partially must
   be visible on the tool's page. Silent staleness is the only real failure
@@ -63,6 +69,7 @@ for the local-device path that fills `observed.json`.
 1. Create `<tool>/` with the layout above; write the README first,
    including an honest "what can rot" section.
 2. Add `.github/workflows/<tool>-<job>.yml` for any scheduled work; make
-   total failure exit nonzero.
+   total failure exit nonzero, and if the workflow commits data, end it
+   with the upload-artifact + deploy-pages steps (see `pta-fetch.yml`).
 3. Pre-seed `<tool>/data/` so the page renders before the first run.
 4. Add the tool to the table above and to the root `index.html`.

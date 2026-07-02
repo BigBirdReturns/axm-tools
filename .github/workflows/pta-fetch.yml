@@ -1,17 +1,38 @@
-name: PTA tracker nightly fetch
+name: PTA tracker fetch + deploy
+
+# One workflow does both jobs on purpose. The nightly data commit is pushed
+# with the built-in GITHUB_TOKEN, and such pushes never trigger other
+# workflows (GitHub's anti-recursion rule) — so a standalone on:push Pages
+# workflow would deploy on human merges but silently skip every nightly
+# refresh. Deploying right here, in the same run that fetched the data,
+# keeps the site and the repo atomic and needs no push event at all.
 
 on:
   schedule:
     # 12:30 UTC = 4:30/5:30 AM Pacific, before anyone checks the page
     - cron: "30 12 * * *"
+  push:
+    # current default branch and its future name — covers the rename
+    branches: [main, claude/pta-job-tool-w7unh5]
   workflow_dispatch: {}
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+# one Pages deployment at a time; queue rather than cancel so a merge and
+# the nightly run can't clobber each other
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  fetch:
+  fetch-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -33,3 +54,17 @@ jobs:
             git commit -m "pta-tracker: nightly data refresh"
             git push
           fi
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      # the whole repo root is the site: / is the tool directory,
+      # /pta-tracker/ is the tracker — same layout for every future tool
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

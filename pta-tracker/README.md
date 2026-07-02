@@ -56,22 +56,22 @@ git push
 
 Then in the GitHub repo settings:
 
-0. **Branches** -> if the default branch isn't `main` yet (repos bootstrapped
-   from a working branch often aren't), rename it to `main` here first.
-   GitHub retargets open PRs and redirects clones automatically; the nightly
-   workflow follows the default branch whatever its name, but Pages, the
-   badge URLs, and everyone's muscle memory expect `main`.
-1. **Pages** -> Source **"Deploy from a branch"**, branch `main`, folder `/`
-   (the site will live at
-   `https://<user>.github.io/axm-tools/pta-tracker/`). This choice matters:
-   the nightly job publishes by *committing* `data/items.json`, and
-   branch-served Pages redeploys on every commit. If Pages is ever switched
-   to the "GitHub Actions" source, the site freezes at its last deploy and
-   the data stops updating even though the nightly run stays green. The
-   `.nojekyll` file at the repo root keeps those redeploys fast and
-   Jekyll-free.
-2. **Actions** -> confirm the workflow is enabled. Run it once manually via
-   *Run workflow* to verify.
+1. **Pages** -> Source **"GitHub Actions"**. The fetch workflow deploys the
+   site itself — fetch, commit data, upload the repo root, deploy, all in
+   one run — and the site lives at
+   `https://<user>.github.io/axm-tools/pta-tracker/`. The deploy step is
+   inside the fetch workflow deliberately: the nightly data commit is
+   pushed with the built-in `GITHUB_TOKEN`, and such pushes never trigger
+   other workflows, so a separate on-push Pages workflow would deploy on
+   human merges but silently skip every nightly refresh.
+2. **Actions** -> confirm workflows are enabled, then run **"PTA tracker
+   fetch + deploy"** once via *Run workflow*. That first run publishes the
+   site; after that it redeploys nightly and on every push to the default
+   branch.
+
+Renaming the default branch to `main` is optional tidiness — the workflow's
+triggers cover both the bootstrap branch name and `main`, and GitHub
+retargets open PRs automatically on rename.
 
 `data/items.json` ships pre-seeded with the four education laws that took
 effect July 1, 2026, so the page renders meaningfully before the first
