@@ -1,5 +1,49 @@
 {
-  "generated": "2026-07-02T15:55:54.202216Z",
+  "generated": "2026-07-02T16:37:28.553291Z",
+  "sources": [
+    {
+      "source": "AUSD News",
+      "scope": "district",
+      "ok": true,
+      "kept": 1
+    },
+    {
+      "source": "Google News",
+      "scope": "district",
+      "ok": true,
+      "kept": 0
+    },
+    {
+      "source": "EdSource",
+      "scope": "state",
+      "ok": false,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "source": "LAist Education",
+      "scope": "state",
+      "ok": true,
+      "kept": 2
+    },
+    {
+      "source": "CA Dept of Education",
+      "scope": "state",
+      "ok": true,
+      "kept": 1
+    },
+    {
+      "source": "Google News",
+      "scope": "state",
+      "ok": true,
+      "kept": 6
+    },
+    {
+      "source": "AUSD board schedule",
+      "scope": "district",
+      "ok": true,
+      "kept": 0
+    }
+  ],
   "items": [
     {
       "id": "cdc959d13e6a",
@@ -15,7 +59,7 @@
     {
       "id": "010fb181d5fa",
       "source": "CA Dept of Education",
-      "title": "Principal Apportionment, Fiscal Year 2025\u009626",
+      "title": "Principal Apportionment, Fiscal Year 2025\u201326",
       "summary": "Distribution of funds for local educational agencies (LEAs) in support of the public school system. Includes elementary school, high school and unified school districts; charter schools; and county offices of education.",
       "link": "http://www.cde.ca.gov/fg/aa/pa/pa2526.asp",
       "published": "Fri, 19 Jun 2026 12:00:00 PST",
