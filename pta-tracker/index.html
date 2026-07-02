@@ -73,6 +73,12 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
   .summary{font-size:.92rem}
   .laws{font-size:.82rem;margin-top:.3rem}
   .laws a{color:var(--accent)}
+  #q{font:inherit;font-size:.85rem;padding:.5rem .7rem;border:1px solid var(--soft);
+     border-radius:3px;background:var(--card);color:var(--ink);flex:1;min-width:12rem}
+  .month{margin-top:1.8rem}
+  .mkcard{font-size:.72rem;margin-left:.6em;text-decoration:none;color:var(--accent);
+          border:1px dashed var(--accent);border-radius:3px;padding:.05rem .4rem;white-space:nowrap}
+  .wdo{font-size:.75rem;margin-left:.6em;white-space:nowrap}
   #report{display:none;white-space:pre-wrap;background:var(--card);border:1px solid var(--soft);
           padding:1.2rem;margin-top:1.2rem;font-size:.92rem}
   footer{margin-top:2.5rem;font-size:.75rem;color:var(--muted);border-top:1px solid var(--soft);padding-top:.8rem}
@@ -105,6 +111,8 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
     <h2>Parents can act</h2>
     <div id="actions" class="actlist"></div>
   </section>
+  <p class="src" style="margin-top:1.6rem">Looking for something older, or the raw
+    feed behind these cards? <a href="#desk">Search everything we've tracked →</a></p>
 </main>
 
 <!-- ================= VP DESK ================= -->
@@ -119,6 +127,10 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
     <button data-f="hot" aria-pressed="false">Priority only</button>
     <button id="gen">Generate PTA report</button>
     <button id="copy" style="display:none">Copy report</button>
+  </div>
+  <div class="controls">
+    <input id="q" type="search" placeholder="Search the whole timeline — every item ever tracked"
+           aria-label="Search the timeline">
   </div>
   <div id="list"><div class="empty">Loading…</div></div>
   <div id="report"></div>
@@ -202,13 +214,16 @@ fetch("data/parent.json").then(r=>r.json()).then(p=>{
     document.getElementById("watch").innerHTML=wl.map(w=>{
       const[y,m,d]=(w.expected_by||"").split("-").map(Number);
       const due=y?new Date(y,m-1,d):null;
+      // done items linger 45 days as receipts, then retire on their own
+      if(w.status==="done"&&due&&(today-due)/864e5>45)return"";
       const overdue=w.status!=="done"&&due&&due<today;
       const when=w.status==="done"?"✓ done":
         (overdue?"expected by "+fmtDate(w.expected_by)+" — not seen yet":"by "+fmtDate(w.expected_by));
       return `<div class="witem${overdue?" overdue":""}">
         <strong>${esc(w.what)}</strong><span class="wdue">${when}</span>
         <div class="wwhy">${esc(w.why)}
-          ${w.check_url?`<a href="${w.check_url}" target="_blank" rel="noopener">${esc(w.check_label||"Check")}</a>`:""}</div>
+          ${w.check_url?`<a href="${w.check_url}" target="_blank" rel="noopener">${esc(w.check_label||"Check")}</a>`:""}
+          ${w.status!=="done"?`<a class="wdo" href="${EDIT_URL}" target="_blank" rel="noopener" title='Verified it? Set this item’s "status" to "done" in parent.json'>✎ mark done</a>`:""}</div>
       </div>`;}).join("");
   }
 }).catch(()=>{
@@ -230,10 +245,18 @@ function card(c){
   </div>`;
 }
 
-/* ---------- VP Desk: the original officer workflow, unchanged ---------- */
-let ITEMS=[],FILTER="all";
+/* ---------- VP Desk: the officer workflow ---------- */
+let ITEMS=[],ARCHIVE=[],FILTER="all";
 const list=document.getElementById("list"),report=document.getElementById("report"),
-      copyBtn=document.getElementById("copy");
+      copyBtn=document.getElementById("copy"),qBox=document.getElementById("q");
+// Acting = editing parent.json; GitHub's web editor is the pencil. One URL,
+// works from a phone, no local tooling. (Officer-only: needs repo access.)
+const EDIT_URL="https://github.com/BigBirdReturns/axm-tools/edit/main/pta-tracker/data/parent.json";
+
+// the archive holds everything that ever aged off the live feed
+fetch("data/archive.json").then(r=>r.json())
+  .then(a=>{ARCHIVE=a.items||[]})
+  .catch(()=>{});
 
 fetch("data/items.json").then(r=>r.json()).then(d=>{
   ITEMS=d.items||[];
@@ -261,18 +284,71 @@ fetch("data/items.json").then(r=>r.json()).then(d=>{
   render();
 }).catch(()=>list.innerHTML='<div class="empty">No data yet — the nightly job hasn\'t run. Run scripts/fetch.py once and commit data/items.json.</div>');
 
-function render(){
-  const rows=ITEMS.filter(i=>
-    FILTER==="all"||(FILTER==="hot"&&i.priority==="hot")||(FILTER==="district"&&i.scope==="district"));
-  if(!rows.length){list.innerHTML='<div class="empty">Nothing matching right now.</div>';return}
-  list.innerHTML=rows.map(i=>`
+function fmtMonth(ym){
+  const[y,m]=ym.split("-").map(Number);
+  return new Date(y,m-1,1).toLocaleDateString("en-US",{month:"long",year:"numeric"});
+}
+function itemHTML(i){
+  return `
     <div class="item ${i.priority}">
       <div class="title">${i.scope==="district"?'<span class="tag">AUSD</span>':''}<a href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.title)}</a></div>
-      <div class="meta">${esc(i.source)} · first seen ${fmtDate(i.first_seen)}</div>
+      <div class="meta">${esc(i.source)} · first seen ${fmtDate(i.first_seen)}
+        <a class="mkcard" href="#" data-id="${esc(i.id)}" title="Draft a parent card from this item">→ parent card</a></div>
       <div class="summary">${esc(i.summary)}</div>
       ${(i.bills||[]).length?'<div class="laws">Law text: '+i.bills.map(b=>`<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title)}</a>`).join(" · ")+"</div>":""}
-    </div>`).join("");
+    </div>`;
 }
+function render(){
+  const q=(qBox.value||"").trim().toLowerCase();
+  // searching reaches the archive; browsing shows the live feed
+  const pool=q?ITEMS.concat(ARCHIVE):ITEMS;
+  const rows=pool.filter(i=>
+    (FILTER==="all"||(FILTER==="hot"&&i.priority==="hot")||(FILTER==="district"&&i.scope==="district"))
+    &&(!q||((i.title||"")+" "+(i.summary||"")+" "+(i.source||"")).toLowerCase().includes(q)))
+    .sort((a,b)=>(b.first_seen||"").localeCompare(a.first_seen||""));
+  if(!rows.length){
+    const oldest=pool.length?pool[pool.length-1].first_seen:"";
+    list.innerHTML='<div class="empty">'+(q
+      ?"Nothing in the timeline matches “"+esc(q)+"”."+(oldest?" Records go back to "+fmtDate(oldest)+".":"")
+      :"Nothing matching right now.")+'</div>';
+    return;
+  }
+  // group by month so scrolling back reads as a timeline
+  let out="",month="";
+  for(const i of rows){
+    const m=(i.first_seen||"").slice(0,7);
+    if(m&&m!==month){month=m;out+='<h2 class="month">'+fmtMonth(m)+'</h2>'}
+    out+=itemHTML(i);
+  }
+  list.innerHTML=out;
+}
+qBox.addEventListener("input",render);
+
+/* "→ parent card": turn a feed item into a pre-filled parent-card draft.
+   Copies the JSON (WRITE ME markers where a human sentence is required)
+   and opens parent.json in GitHub's web editor to paste it. */
+list.addEventListener("click",e=>{
+  const a=e.target.closest(".mkcard");if(!a)return;
+  e.preventDefault();
+  const i=ITEMS.concat(ARCHIVE).find(x=>x.id===a.dataset.id);if(!i)return;
+  const draft=JSON.stringify({
+    id:"parent-"+i.id, kind:"law", until:null,
+    title:i.title,
+    kid_impact:"WRITE ME: one sentence — what changes for a student or family.",
+    impact_area:"WRITE ME: e.g. School day / devices",
+    owner:"WRITE ME: who actually decides",
+    time_sensitivity:"",
+    source_url:i.link,
+    action:null
+  },null,2);
+  navigator.clipboard.writeText(draft).then(()=>{
+    a.textContent="copied ✓ — paste into parent.json";
+  }).catch(()=>{
+    report.textContent="Copy this card draft into parent.json:\n\n"+draft;
+    report.style.display="block";
+  });
+  window.open(EDIT_URL,"_blank","noopener");
+});
 
 document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{
   FILTER=b.dataset.f;

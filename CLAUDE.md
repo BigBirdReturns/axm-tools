@@ -15,10 +15,14 @@ don't add dependencies, build steps, or shared libraries to "improve" things.
 - **`main` is production.** Pages serves the repo root; every merge and
   every nightly data commit redeploys the live site. Don't leave scratch
   files anywhere in the tree — they get published.
-- **Machine-owned files:** `*/data/items.json` is written by the nightly
+- **Machine-owned files:** `*/data/items.json` and
+  `pta-tracker/data/archive.json` (append-only overflow of the live feed;
+  the page's timeline search depends on it) are written by the nightly
   workflow; hand edits will be overwritten or merged away. The human-owned
   data files are `*/data/observed.json` (out-of-band drop-box) and
-  `pta-tracker/data/parent.json` (curated parent-view cards).
+  `pta-tracker/data/parent.json` (curated parent-view cards + watchlist —
+  the page's ✎/→ links deep-link into GitHub's web editor for it; keep
+  that workflow intact, it is how a non-developer operates the tool).
 
 ## Testing changes locally
 

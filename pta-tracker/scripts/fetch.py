@@ -46,6 +46,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data" / "items.json"
 OBSERVED = ROOT / "data" / "observed.json"
+ARCHIVE = ROOT / "data" / "archive.json"
 
 AGENDA_PAGE = "https://www.ausd.net/apps/pages/agenda"
 SIMBLI_MEETINGS = (
@@ -509,10 +510,35 @@ def main() -> None:
             )
         previous[item["id"]] = item
 
-    # keep 120 most recent by first_seen
-    merged = sorted(
+    # 120 most recent by first_seen stay live; the rest move to the archive,
+    # which the page searches — the timeline forgets nothing
+    ranked = sorted(
         previous.values(), key=lambda x: x.get("first_seen", ""), reverse=True
-    )[:120]
+    )
+    merged, aged_out = ranked[:120], ranked[120:]
+    if aged_out:
+        try:
+            archived = json.loads(ARCHIVE.read_text()).get("items", [])
+        except (OSError, json.JSONDecodeError):
+            archived = []
+        by_id = {a["id"]: a for a in archived}
+        for item in aged_out:
+            by_id.setdefault(item["id"], item)
+        ARCHIVE.write_text(
+            json.dumps(
+                {
+                    "note": "Items aged off the live feed, kept forever so "
+                    "the timeline stays searchable. Machine-written; append "
+                    "only.",
+                    "items": sorted(
+                        by_id.values(),
+                        key=lambda x: x.get("first_seen", ""),
+                        reverse=True,
+                    ),
+                },
+                indent=2,
+            )
+        )
 
     # link bill references to the statute text; resolved once per item,
     # then carried in the data file so leginfo isn't re-probed nightly

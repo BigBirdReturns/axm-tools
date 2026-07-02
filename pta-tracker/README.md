@@ -77,6 +77,44 @@ deploys Pages in one run. To stand up a fresh copy elsewhere:
 effect July 1, 2026, so the page renders meaningfully before the first
 nightly run.
 
+## Operating manual (the human 10%)
+
+Everything here is done by editing **`data/parent.json`** in GitHub's web
+editor — the page's ✎ links open it directly. No local tools, works from a
+phone. Every edit is a commit, so the whole curation history is inspectable
+and the next officer inherits it.
+
+**Acting on a watchlist flag.** A red "expected by … — not seen yet" line
+means a scheduled obligation hasn't been verified. Click its check link
+(usually Simbli minutes or a district page), confirm reality, then hit
+**✎ mark done** and set that item's `"status"` to `"done"`. Done items show
+a ✓ receipt for 45 days, then retire themselves.
+
+**Writing a parent card.** A card is a *consequence with an owner*, not a
+headline. It answers three questions in order: what changes for my kid
+(`kid_impact`, one sentence), who decided it (`owner`), and what — if
+anything — a parent can do (`action`, at most one). If you can't name the
+owner, it isn't ready to be a card. The **→ parent card** link on any VP
+Desk item copies a pre-filled draft (`WRITE ME` markers where a human
+sentence is required) and opens the editor; paste it into `coming_up` or
+`in_effect` and replace the markers.
+
+**What falls off, and when.** Nothing is deleted; things retire on
+schedule:
+
+| Surface | Rule |
+|---|---|
+| VP Desk live feed | 120 most recent items; older move to `data/archive.json` |
+| Timeline search | never forgets — searches live feed + archive together |
+| `coming_up` cards | hidden the day after their `until` date |
+| `in_effect` cards | stay until the officer retires them (laws don't expire on a timer; review at semester turnover) |
+| Watchlist, open | red flag forever until marked done — a blank where a report should be is a finding |
+| Watchlist, done | ✓ receipt for 45 days past its date, then hidden |
+
+**Searching back.** The VP Desk search box covers every item ever tracked,
+grouped by month — "what did we know about phones in March" is one query,
+with the original links and statute citations intact.
+
 ## Tuning relevance
 
 Edit the `HOT`, `WARM`, `COLD`, `DISTRICT_HOT`, and `DISTRICT_SKIP` regex
