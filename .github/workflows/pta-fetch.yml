@@ -12,8 +12,7 @@ on:
     # 12:30 UTC = 4:30/5:30 AM Pacific, before anyone checks the page
     - cron: "30 12 * * *"
   push:
-    # current default branch and its future name — covers the rename
-    branches: [main, claude/pta-job-tool-w7unh5]
+    branches: [main]
   workflow_dispatch: {}
 
 permissions:
