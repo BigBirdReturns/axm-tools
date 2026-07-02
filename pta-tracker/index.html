@@ -65,8 +65,9 @@ const list=document.getElementById("list"),report=document.getElementById("repor
 
 fetch("data/items.json").then(r=>r.json()).then(d=>{
   ITEMS=d.items||[];
-  document.getElementById("stamp").textContent=
-    "Last run: "+new Date(d.generated).toLocaleDateString();
+  const stamp=document.getElementById("stamp"),age=(Date.now()-new Date(d.generated))/864e5;
+  stamp.textContent="Last run: "+new Date(d.generated).toLocaleDateString();
+  if(age>4){stamp.textContent+=" — STALE: the nightly job hasn't run in "+Math.floor(age)+" days. Check the repo's Actions tab.";stamp.style.color="#b3401e";stamp.style.fontWeight="bold"}
   render();
 }).catch(()=>list.innerHTML='<div class="empty">No data yet — the nightly job hasn\'t run. Run scripts/fetch.py once and commit data/items.json.</div>');
 

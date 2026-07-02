@@ -293,10 +293,12 @@ def fetch_board_meetings() -> list[dict]:
 
 def fetch_all() -> list[dict]:
     items = []
+    feeds_ok = 0
     for source, url, scope in FEEDS:
         try:
             entries = parse_feed(_get(url))
-        except Exception as e:  # network hiccups shouldn't kill the run
+            feeds_ok += 1
+        except Exception as e:  # one broken feed shouldn't kill the run
             print(f"[warn] {source}: {e}", file=sys.stderr)
             continue
         for e in entries[:40]:
@@ -326,6 +328,11 @@ def fetch_all() -> list[dict]:
                     "scope": scope,
                 }
             )
+    if feeds_ok == 0:
+        # Every source down means our URLs rotted or the network is gone.
+        # Fail the run so GitHub emails the owner instead of silently
+        # serving stale data for months.
+        sys.exit("all feeds failed - check FEEDS urls")
     items.extend(fetch_board_meetings())
     return items
 
