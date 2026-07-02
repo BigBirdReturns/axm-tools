@@ -56,6 +56,11 @@ git push
 
 Then in the GitHub repo settings:
 
+0. **Branches** -> if the default branch isn't `main` yet (repos bootstrapped
+   from a working branch often aren't), rename it to `main` here first.
+   GitHub retargets open PRs and redirects clones automatically; the nightly
+   workflow follows the default branch whatever its name, but Pages, the
+   badge URLs, and everyone's muscle memory expect `main`.
 1. **Pages** -> Source **"Deploy from a branch"**, branch `main`, folder `/`
    (the site will live at
    `https://<user>.github.io/axm-tools/pta-tracker/`). This choice matters:
