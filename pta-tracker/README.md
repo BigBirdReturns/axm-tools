@@ -1,25 +1,35 @@
 # PTA Legislation Tracker
 
-A zero-maintenance tracker for California education policy affecting a K-6
-campus. Built for the Holly Avenue Elementary PTA (Arcadia, CA), generic by
-design. It does the VP-Legislation job: watch the feeds, filter for relevance,
-summarize in parent English, and generate the monthly board report on demand.
+A zero-maintenance, district-first tracker for what parents at an Arcadia USD
+K-6 campus need to know. Built for the Holly Avenue Elementary PTA. It does
+the VP-Legislation job: watch the district and the state, filter for
+relevance, and generate the monthly board report on demand.
 
 ## How it works
 
-1. A GitHub Action (`.github/workflows/pta-fetch.yml`) runs nightly, fetching
-   LAist Education, the California Department of Education "What's New" feed,
-   EdSource (currently 403s from datacenter IPs, tolerated), and a Google News
-   query for California K-12 legislation that catches everything else —
-   including syndicated EdSource stories. It can also be run on demand from
-   the Actions tab.
-2. `scripts/fetch.py` filters items with keyword rules in two tiers:
-   **hot** (elementary-school direct: cellphone policy, school safety,
-   background checks, TK, special ed, Arcadia) and **normal** (general K-12
-   policy). Higher-ed-only noise is dropped.
+1. A GitHub Action (`.github/workflows/pta-fetch.yml`) runs nightly. It can
+   also be run on demand from the Actions tab. Sources, district first:
+   - **AUSD News RSS** — the district's own announcements
+   - **AUSD board-meeting schedule** — scraped from the district agenda page;
+     meetings in the next 3 weeks become priority items linking to the Simbli
+     agenda system (Simbli itself is behind bot protection, so agendas are
+     linked for humans, not scraped)
+   - **Google News query for "Arcadia Unified"** — local press coverage
+   - **State feeds** — LAist Education, the CDE "What's New" feed, EdSource
+     (currently 403s from datacenter IPs, tolerated), and a Google News query
+     for California K-12 legislation that catches everything else, including
+     syndicated EdSource stories
+2. `scripts/fetch.py` filters with keyword rules. District items keep
+   anything actionable (policy, budget, boundaries, safety, calendar, board
+   meetings — hot) and drop the awards-and-celebrations firehose. State items
+   are tiered **hot** (elementary-school direct: cellphone policy, school
+   safety, background checks, TK, special ed, Arcadia) and **normal** (general
+   K-12 policy); higher-ed noise is dropped. Anything published more than 120
+   days ago is skipped.
 3. Results are committed to `data/items.json`.
-4. `index.html` is a static page (GitHub Pages) that renders the items and has
-   a **Generate PTA report** button producing a paste-ready monthly update.
+4. `index.html` is a static page (GitHub Pages) with **All / Our district /
+   Priority** filters and a **Generate PTA report** button producing a
+   paste-ready monthly update — district section first.
 
 No server, no database, no API keys, no dependencies (Python stdlib only).
 Cost: zero.
@@ -46,13 +56,15 @@ nightly run.
 
 ## Tuning relevance
 
-Edit the `HOT`, `WARM`, and `COLD` regex lists at the top of
-`scripts/fetch.py`. Everything is a plain regex against title+summary.
+Edit the `HOT`, `WARM`, `COLD`, `DISTRICT_HOT`, and `DISTRICT_SKIP` regex
+lists at the top of `scripts/fetch.py`. Everything is a plain regex against
+title+summary.
 
 ## Roadmap (v2, optional)
 
 - LegiScan API for direct bill-status tracking (free key) with status badges
-- Arcadia USD BoardDocs agenda scrape for district-level items
+- Simbli agenda-item scrape if their bot protection ever allows it (until
+  then, meeting items deep-link to Simbli for a human skim)
 - LLM summarization pass for plain-language rewrites (the rule-based v1
   intentionally avoids any API dependency)
 - Email digest via Actions + a mailing step
