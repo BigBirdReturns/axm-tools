@@ -171,10 +171,15 @@ function fmtDate(s){
 /* ---------- Parent View: curated consequences from data/parent.json ---------- */
 fetch("data/parent.json").then(r=>r.json()).then(p=>{
   const coming=document.getElementById("coming");
-  // Board meetings scraped nightly also surface here (kind=meeting in items.json)
-  // once the desk data loads; curated entries render first.
-  if(p.coming_up&&p.coming_up.length){
-    coming.innerHTML=p.coming_up.map(card).join("");
+  // Cards with an "until" date retire themselves the day after — a meeting
+  // announced as "coming up" must never still say so once it has happened.
+  const live=(p.coming_up||[]).filter(c=>{
+    if(!c.until)return true;
+    const[y,m,d]=c.until.split("-").map(Number);
+    return new Date(y,m-1,d,23,59)>=new Date();
+  });
+  if(live.length){
+    coming.innerHTML=live.map(card).join("");
   }else{
     coming.innerHTML='<div class="empty">No board meeting or decision window on the radar right now. '+
       'The district posts agendas a few days ahead — '+
