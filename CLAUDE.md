@@ -36,8 +36,10 @@ and `first_seen` stamps are permanent once committed.
 ## Known quirks (verified, not guesses)
 
 - **EdSource 403s** every request from datacenter IPs (GitHub runners
-  included). Expected warn-line noise, not a bug; its stories arrive via
-  the Google News query instead.
+  included), which is why it is NOT in `FEEDS` — its stories arrive via
+  the Google News query instead. Don't re-add it without verifying the
+  block is gone: a permanently-quiet source in the health line trains the
+  owner to ignore real outages.
 - **Simbli** (AUSD board agendas) is behind Incapsula and cannot be
   fetched by the Action, ever. The escape hatch is `observed.json` — see
   the root README's "hostile-source seam" section. Don't burn time trying

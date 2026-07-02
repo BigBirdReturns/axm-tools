@@ -127,7 +127,8 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
 <footer>
   Curated by the Holly Avenue PTA VP of Legislation. Parent cards are written
   by a person; the VP Desk is fed nightly from Arcadia USD news &amp; board
-  schedule, LAist, California Dept. of Education, EdSource, and Google News.
+  schedule, LAist, California Dept. of Education, and Google News (which
+  carries EdSource and other outlets).
   Verify anything consequential against the primary source.
   Built on AXM tooling — <a href="https://axm.tools">axm.tools</a>.
 </footer>
@@ -237,7 +238,7 @@ fetch("data/items.json").then(r=>r.json()).then(d=>{
   document.querySelectorAll("[data-f]").forEach(b=>b.textContent+=" ("+counts[b.dataset.f]+")");
   const stamp=document.getElementById("stamp"),age=(Date.now()-new Date(d.generated))/864e5;
   stamp.textContent="Updated "+new Date(d.generated).toLocaleDateString()+".";
-  if(age>4){stamp.textContent+=" STALE: the nightly job hasn't run in "+Math.floor(age)+" days.";stamp.classList.add("alert")}
+  if(age>2){stamp.textContent+=" STALE: the nightly job hasn't run in "+Math.floor(age)+" days.";stamp.classList.add("alert")}
   const src=d.sources||[];
   if(src.length){
     // One dead feed keeps the run green and just goes quiet — say so on the

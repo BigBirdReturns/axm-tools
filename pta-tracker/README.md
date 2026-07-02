@@ -15,10 +15,12 @@ relevance, and generate the monthly board report on demand.
      agenda system (Simbli itself is behind bot protection, so agendas are
      linked for humans, not scraped)
    - **Google News query for "Arcadia Unified"** — local press coverage
-   - **State feeds** — LAist Education, the CDE "What's New" feed, EdSource
-     (currently 403s from datacenter IPs, tolerated), and a Google News query
-     for California K-12 legislation that catches everything else, including
-     syndicated EdSource stories
+   - **State feeds** — LAist Education, the CDE "What's New" feed, and a
+     Google News query for California K-12 legislation that catches
+     everything else. EdSource journalism arrives through that query;
+     edsource.org itself 403s all datacenter IPs, and keeping a
+     permanently-dead feed in the list would only teach the owner to
+     ignore the source-health warning
 2. `scripts/fetch.py` filters with keyword rules. District items keep
    anything actionable (policy, budget, boundaries, safety, calendar, board
    meetings — hot) and drop the awards-and-celebrations firehose. State items

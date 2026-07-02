@@ -15,15 +15,16 @@ District sources (the actual job):
      are for humans to click, not for us to scrape)
 
 State sources (context):
-  4. EdSource RSS            - statewide K-12 policy journalism (403s from
-                               datacenter IPs as of mid-2026; tolerated)
-  5. LAist education RSS     - LA-county angle
-  6. CDE "What's New" RSS    - Dept. of Education official announcements
-  7. Google News RSS query   - CA K-12 law/legislation catch-all (also picks
-                               up EdSource stories when their site blocks us)
+  4. LAist education RSS     - LA-county angle
+  5. CDE "What's New" RSS    - Dept. of Education official announcements
+  6. Google News RSS query   - CA K-12 law/legislation catch-all; this is
+                               also how EdSource journalism arrives, since
+                               edsource.org 403s all datacenter IPs and a
+                               permanently-dead feed would just train the
+                               owner to ignore the source-health warning
 
 Out-of-band source:
-  8. data/observed.json      - items collected where this Action cannot go
+  7. data/observed.json      - items collected where this Action cannot go
                                (bot-protected pages like Simbli), by a human
                                or a local ScreenGhost observer, and committed
                                to the repo; merged without keyword filtering
@@ -62,7 +63,6 @@ FEEDS = [
         "&hl=en-US&gl=US&ceid=US:en",
         "district",
     ),
-    ("EdSource", "https://edsource.org/feed", "state"),
     ("LAist Education", "https://laist.com/education.rss", "state"),
     ("CA Dept of Education", "https://www.cde.ca.gov/rssfeed.asp", "state"),
     (
