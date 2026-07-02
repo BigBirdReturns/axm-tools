@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Holly Avenue PTA — Legislation Watch</title>
+<meta name="description" content="District-first legislation watch for Arcadia USD parents: AUSD news, board meetings, and the California K-12 policy that reaches our K-6 campus. Updated nightly.">
+<meta property="og:title" content="Holly Avenue PTA — Legislation Watch">
+<meta property="og:description" content="Arcadia USD first, then the California policy that reaches our K-6 campus. Updated nightly.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
 <style>
   :root{--ink:#1a1a1a;--paper:#faf8f4;--accent:#8a4b2d;--hot:#b3401e;--soft:#e8e2d8;}
   *{box-sizing:border-box;margin:0}
@@ -20,17 +24,20 @@
   .item{padding:1rem 0;border-bottom:1px solid var(--soft)}
   .item.hot .title::before{content:"● ";color:var(--hot)}
   .title{font-weight:bold}
-  .title a{color:inherit;text-decoration:none}
-  .title a:hover{text-decoration:underline}
-  .meta{font-size:.78rem;color:#777;margin:.15rem 0 .35rem}
+  /* phones have no hover — headlines must look tappable on their own */
+  .title a{color:inherit;text-decoration:underline;
+           text-decoration-color:#c8b6a6;text-underline-offset:3px}
+  .title a:hover{text-decoration-color:var(--accent)}
+  .meta{font-size:.78rem;color:#6b6b6b;margin:.15rem 0 .35rem}
   .tag{display:inline-block;font-size:.68rem;letter-spacing:.5px;padding:.05rem .4rem;
        border:1px solid var(--accent);color:var(--accent);border-radius:3px;
        vertical-align:1px;margin-right:.35rem}
   .summary{font-size:.92rem}
   #report{display:none;white-space:pre-wrap;background:#fff;border:1px solid var(--soft);
           padding:1.2rem;margin-top:1.2rem;font-size:.92rem}
-  .empty{color:#888;font-style:italic;padding:2rem 0}
-  footer{margin-top:2.5rem;font-size:.75rem;color:#999;border-top:1px solid var(--soft);padding-top:.8rem}
+  .empty{color:#757575;font-style:italic;padding:2rem 0}
+  footer{margin-top:2.5rem;font-size:.75rem;color:#767676;border-top:1px solid var(--soft);padding-top:.8rem}
+  @media print{.controls,footer{display:none}}
 </style>
 </head>
 <body>
@@ -41,9 +48,9 @@
 </header>
 
 <div class="controls">
-  <button data-f="all" class="primary">All</button>
-  <button data-f="district">Our district</button>
-  <button data-f="hot">Priority only</button>
+  <button data-f="all" class="primary" aria-pressed="true">All</button>
+  <button data-f="district" aria-pressed="false">Our district</button>
+  <button data-f="hot" aria-pressed="false">Priority only</button>
   <button id="gen">Generate PTA report</button>
   <button id="copy" style="display:none">Copy report</button>
 </div>
@@ -65,6 +72,12 @@ const list=document.getElementById("list"),report=document.getElementById("repor
 
 fetch("data/items.json").then(r=>r.json()).then(d=>{
   ITEMS=d.items||[];
+  // counts on the filter buttons: a parent should see at a glance that a
+  // district/priority view has anything in it before tapping
+  const counts={all:ITEMS.length,
+    district:ITEMS.filter(i=>i.scope==="district").length,
+    hot:ITEMS.filter(i=>i.priority==="hot").length};
+  document.querySelectorAll("[data-f]").forEach(b=>b.textContent+=" ("+counts[b.dataset.f]+")");
   const stamp=document.getElementById("stamp"),age=(Date.now()-new Date(d.generated))/864e5;
   stamp.textContent="Last run: "+new Date(d.generated).toLocaleDateString();
   if(age>4){stamp.textContent+=" — STALE: the nightly job hasn't run in "+Math.floor(age)+" days. Check the repo's Actions tab.";stamp.style.color="#b3401e";stamp.style.fontWeight="bold"}
@@ -92,16 +105,25 @@ function render(){
   list.innerHTML=rows.map(i=>`
     <div class="item ${i.priority}">
       <div class="title">${i.scope==="district"?'<span class="tag">AUSD</span>':''}<a href="${i.link}" target="_blank" rel="noopener">${esc(i.title)}</a></div>
-      <div class="meta">${i.source} · first seen ${i.first_seen||""}</div>
+      <div class="meta">${i.source} · first seen ${fmtDate(i.first_seen)}</div>
       <div class="summary">${esc(i.summary)}</div>
     </div>`).join("");
 }
 function esc(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+// parse YYYY-MM-DD by hand: new Date("2026-07-02") is UTC midnight, which
+// displays as the previous day anywhere west of Greenwich
+function fmtDate(s){
+  if(!s)return"";
+  const[y,m,d]=s.split("-").map(Number);
+  if(!y||!m||!d)return s;
+  return new Date(y,m-1,d).toLocaleDateString("en-US",{month:"short",day:"numeric"})
+    +(y!==new Date().getFullYear()?", "+y:"");
+}
 
 document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{
   FILTER=b.dataset.f;
-  document.querySelectorAll("[data-f]").forEach(x=>x.classList.remove("primary"));
-  b.classList.add("primary");render();
+  document.querySelectorAll("[data-f]").forEach(x=>{x.classList.remove("primary");x.setAttribute("aria-pressed","false")});
+  b.classList.add("primary");b.setAttribute("aria-pressed","true");render();
 });
 
 document.getElementById("gen").onclick=()=>{
@@ -125,7 +147,8 @@ document.getElementById("gen").onclick=()=>{
   report.scrollIntoView({behavior:"smooth"});
 };
 copyBtn.onclick=()=>navigator.clipboard.writeText(report.textContent)
-  .then(()=>copyBtn.textContent="Copied ✓");
+  .then(()=>copyBtn.textContent="Copied ✓")
+  .catch(()=>copyBtn.textContent="Copy blocked — press-and-hold the report to select it");
 </script>
 </body>
 </html>

@@ -145,10 +145,22 @@ def score(text: str, scope: str) -> str | None:
     return None
 
 
+# Some feeds (CDE among them) serve cp1252 bytes under a latin-1 label, so
+# the XML parser yields C1 control characters — 0x96 where an en-dash was
+# meant — that render as tofu boxes on the page. Map the range back.
+_CP1252_FIX = {
+    c: bytes([c]).decode("cp1252", "ignore") or None for c in range(0x80, 0xA0)
+}
+
+
+def fix_mojibake(text: str) -> str:
+    return text.translate(_CP1252_FIX)
+
+
 def clean(html: str) -> str:
     text = re.sub(r"<[^>]+>", " ", html or "")
     text = re.sub(r"\s+", " ", text).strip()
-    return text[:400]
+    return fix_mojibake(text)[:400]
 
 
 def _strip_ns(tag: str) -> str:
@@ -328,7 +340,7 @@ def load_observed() -> list[dict]:
                 "id": e.get("id")
                 or hashlib.sha1((e.get("link") or title).encode()).hexdigest()[:12],
                 "source": e.get("source", "Observed"),
-                "title": title,
+                "title": fix_mojibake(title),
                 "summary": clean(e.get("summary", "")),
                 "link": e.get("link", ""),
                 "published": e.get("published", ""),
@@ -361,7 +373,7 @@ def fetch_all() -> tuple[list[dict], list[dict]]:
         for e in entries[:40]:
             if too_old(e["published"]):
                 continue
-            title = e["title"]
+            title = fix_mojibake(e["title"])
             if e["via"] and title.endswith(" - " + e["via"]):
                 title = title[: -len(" - " + e["via"])]
             summary = clean(e["summary"])

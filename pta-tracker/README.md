@@ -56,8 +56,15 @@ git push
 
 Then in the GitHub repo settings:
 
-1. **Pages** -> deploy from branch `main`, folder `/` (the site will live at
-   `https://<user>.github.io/axm-tools/pta-tracker/`).
+1. **Pages** -> Source **"Deploy from a branch"**, branch `main`, folder `/`
+   (the site will live at
+   `https://<user>.github.io/axm-tools/pta-tracker/`). This choice matters:
+   the nightly job publishes by *committing* `data/items.json`, and
+   branch-served Pages redeploys on every commit. If Pages is ever switched
+   to the "GitHub Actions" source, the site freezes at its last deploy and
+   the data stops updating even though the nightly run stays green. The
+   `.nojekyll` file at the repo root keeps those redeploys fast and
+   Jekyll-free.
 2. **Actions** -> confirm the workflow is enabled. Run it once manually via
    *Run workflow* to verify.
 
