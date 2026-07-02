@@ -1,0 +1,4 @@
+{
+  "note": "Drop-box for items collected where the nightly Action cannot go — e.g. the Simbli board-agenda system behind Incapsula bot protection. A human (or a local ScreenGhost observer reading the agenda off a real device) adds entries here in the same schema as items.json; only 'title' is required. scripts/fetch.py merges them into items.json on the next run, unfiltered but subject to the 120-day age window. See the README.",
+  "items": []
+}

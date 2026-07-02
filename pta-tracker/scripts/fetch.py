@@ -22,6 +22,12 @@ State sources (context):
   7. Google News RSS query   - CA K-12 law/legislation catch-all (also picks
                                up EdSource stories when their site blocks us)
 
+Out-of-band source:
+  8. data/observed.json      - items collected where this Action cannot go
+                               (bot-protected pages like Simbli), by a human
+                               or a local ScreenGhost observer, and committed
+                               to the repo; merged without keyword filtering
+
 Deliberately boring technology: Python stdlib only. Handles both RSS 2.0 and
 Atom, which covers every feed on the list.
 """
@@ -38,6 +44,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data" / "items.json"
+OBSERVED = ROOT / "data" / "observed.json"
 
 AGENDA_PAGE = "https://www.ausd.net/apps/pages/agenda"
 SIMBLI_MEETINGS = (
@@ -237,19 +244,21 @@ MONTHS = {
 }
 
 
-def fetch_board_meetings() -> list[dict]:
+def fetch_board_meetings() -> list[dict] | None:
     """Scrape the meeting schedule off the district agenda page.
 
     The page lists the school-year schedule as plain text under year
     headings ("2026 ... January 13 January 27 ..."). Emit an item for each
     meeting today through 21 days out, linking to the Simbli agenda listing.
+    Returns None when the page itself is unreachable — an empty list just
+    means no meetings in the window, which is normal over the summer.
     """
     try:
         text = re.sub(r"<[^>]+>", " ", _get(AGENDA_PAGE).decode("utf-8", "replace"))
         text = re.sub(r"\s+", " ", text)
     except Exception as e:
         print(f"[warn] AUSD agenda page: {e}", file=sys.stderr)
-        return []
+        return None
 
     today = datetime.date.today()
     year = None
@@ -291,16 +300,64 @@ def fetch_board_meetings() -> list[dict]:
     return items
 
 
-def fetch_all() -> list[dict]:
+def load_observed() -> list[dict]:
+    """Merge items collected out-of-band from data/observed.json.
+
+    Some sources block datacenter IPs outright (Simbli board agendas sit
+    behind Incapsula), so this Action can never read them — but a human,
+    or a local observer like ScreenGhost driving a physically attached
+    device, always can. Whatever they collect goes in observed.json using
+    the same schema as items.json entries (only "title" is required) and
+    merges into the pipeline here. These were placed deliberately, so no
+    keyword filtering; the age window still applies.
+    """
+    if not OBSERVED.exists():
+        return []
+    try:
+        raw = json.loads(OBSERVED.read_text()).get("items", [])
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"[warn] observed.json unreadable: {e}", file=sys.stderr)
+        return []
     items = []
-    feeds_ok = 0
+    for e in raw:
+        title = (e.get("title") or "").strip()
+        if not title or too_old(e.get("published", "")):
+            continue
+        items.append(
+            {
+                "id": e.get("id")
+                or hashlib.sha1((e.get("link") or title).encode()).hexdigest()[:12],
+                "source": e.get("source", "Observed"),
+                "title": title,
+                "summary": clean(e.get("summary", "")),
+                "link": e.get("link", ""),
+                "published": e.get("published", ""),
+                "priority": e.get("priority", "normal"),
+                "scope": e.get("scope", "district"),
+            }
+        )
+    return items
+
+
+def fetch_all() -> tuple[list[dict], list[dict]]:
+    """Fetch every feed; return (items, per-source health records).
+
+    Health goes into items.json so the page can show which sources are
+    quiet — one dead feed keeps the run green, and without this it just
+    silently stops contributing.
+    """
+    items = []
+    health = []
     for source, url, scope in FEEDS:
         try:
             entries = parse_feed(_get(url))
-            feeds_ok += 1
         except Exception as e:  # one broken feed shouldn't kill the run
             print(f"[warn] {source}: {e}", file=sys.stderr)
+            health.append(
+                {"source": source, "scope": scope, "ok": False, "error": str(e)[:120]}
+            )
             continue
+        kept = 0
         for e in entries[:40]:
             if too_old(e["published"]):
                 continue
@@ -328,13 +385,24 @@ def fetch_all() -> list[dict]:
                     "scope": scope,
                 }
             )
-    if feeds_ok == 0:
+            kept += 1
+        health.append({"source": source, "scope": scope, "ok": True, "kept": kept})
+    if not any(h["ok"] for h in health):
         # Every source down means our URLs rotted or the network is gone.
         # Fail the run so GitHub emails the owner instead of silently
         # serving stale data for months.
         sys.exit("all feeds failed - check FEEDS urls")
-    items.extend(fetch_board_meetings())
-    return items
+    meetings = fetch_board_meetings()
+    health.append(
+        {
+            "source": "AUSD board schedule",
+            "scope": "district",
+            "ok": meetings is not None,
+            "kept": len(meetings or []),
+        }
+    )
+    items.extend(meetings or [])
+    return items, health
 
 
 def main() -> None:
@@ -343,7 +411,8 @@ def main() -> None:
         for item in json.loads(DATA.read_text()).get("items", []):
             previous[item["id"]] = item
 
-    fresh = fetch_all()
+    fresh, health = fetch_all()
+    fresh.extend(load_observed())
     for item in fresh:
         if item["id"] not in previous:
             item["first_seen"] = datetime.date.today().isoformat()
@@ -365,6 +434,7 @@ def main() -> None:
                 "generated": datetime.datetime.now(datetime.timezone.utc)
                 .isoformat()
                 .replace("+00:00", "Z"),
+                "sources": health,
                 "items": merged,
             },
             indent=2,

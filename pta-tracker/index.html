@@ -68,6 +68,20 @@ fetch("data/items.json").then(r=>r.json()).then(d=>{
   const stamp=document.getElementById("stamp"),age=(Date.now()-new Date(d.generated))/864e5;
   stamp.textContent="Last run: "+new Date(d.generated).toLocaleDateString();
   if(age>4){stamp.textContent+=" — STALE: the nightly job hasn't run in "+Math.floor(age)+" days. Check the repo's Actions tab.";stamp.style.color="#b3401e";stamp.style.fontWeight="bold"}
+  const src=d.sources||[];
+  if(src.length){
+    // One dead feed keeps the run green and just goes quiet — say so here
+    // instead of making an empty district section the only tell.
+    const down=src.filter(s=>!s.ok),names=[...new Set(down.map(s=>s.source))];
+    const el=document.createElement("div");el.className="sub";
+    el.textContent="Sources reporting: "+(src.length-down.length)+" of "+src.length+
+      (names.length?" — quiet: "+names.join(", "):"");
+    if(down.some(s=>s.scope==="district")){
+      el.style.color="#b3401e";el.style.fontWeight="bold";
+      el.textContent+=". A district source is down — the AUSD section may be missing items.";
+    }
+    document.querySelector("header").appendChild(el);
+  }
   render();
 }).catch(()=>list.innerHTML='<div class="empty">No data yet — the nightly job hasn\'t run. Run scripts/fetch.py once and commit data/items.json.</div>');
 
