@@ -79,17 +79,19 @@ nightly run.
 
 ## Operating manual (the human 10%)
 
-Everything here is done by editing **`data/parent.json`** in GitHub's web
-editor — the page's ✎ links open it directly. No local tools, works from a
-phone. Every edit is a commit, so the whole curation history is inspectable
-and the next officer inherits it.
+Everything here is done by editing **`data/parent.json`** — in GitHub's web
+editor, or by telling a Claude session what changed and letting it make the
+edit. No local tools required. Every edit is a commit, so the whole curation
+history is inspectable and the next officer inherits it. The page itself is
+deliberately read-only: no edit buttons that dead-end a volunteer at a
+GitHub login screen.
 
 **Who can edit what.** Reading is public: one URL, no accounts, no app.
 Writing is GitHub repo permission — no shared password anywhere. Repo
 collaborators edit directly (commit → the site redeploys itself, everyone
-sees one truth); anyone else who clicks ✎ can only *propose* a change from
-their own GitHub account, which sits in the pull-request queue until a
-collaborator approves it — moderation for free. Succession is a grant, not
+sees one truth); anyone else can only *propose* a change from their own
+GitHub account, which sits in the pull-request queue until a collaborator
+approves it — moderation for free. Succession is a grant, not
 a secret: add the incoming officer as a collaborator, remove the outgoing
 one. If more officers ever need durable shared ownership, create a free
 GitHub organization and transfer the repo into it (all URLs redirect); the
@@ -98,18 +100,19 @@ single account.
 
 **Acting on a watchlist flag.** A red "expected by … — not seen yet" line
 means a scheduled obligation hasn't been verified. Click its check link
-(usually Simbli minutes or a district page), confirm reality, then hit
-**✎ mark done** and set that item's `"status"` to `"done"`. Done items show
-a ✓ receipt for 45 days, then retire themselves.
+(usually Simbli minutes or a district page), confirm reality, then set that
+item's `"status"` to `"done"` in `parent.json`. Done items show a ✓ receipt
+for 45 days, then retire themselves.
 
 **Writing a parent card.** A card is a *consequence with an owner*, not a
 headline. It answers three questions in order: what changes for my kid
 (`kid_impact`, one sentence), who decided it (`owner`), and what — if
 anything — a parent can do (`action`, at most one). If you can't name the
-owner, it isn't ready to be a card. The **→ parent card** link on any VP
-Desk item copies a pre-filled draft (`WRITE ME` markers where a human
-sentence is required) and opens the editor; paste it into `coming_up` or
-`in_effect` and replace the markers.
+owner, it isn't ready to be a card. To draft one, copy an existing card in
+`coming_up` or `in_effect` as the template — or hand the source item to a
+Claude session and review what it writes. Cards can carry a `law_url` /
+`law_label` pointing at the statute text on leginfo, so parents see the
+black-letter law, not just coverage.
 
 **Calendars.** Give a `coming_up` card a `"when"` (`YYYY-MM-DDTHH:MM`, local
 time; optional `"duration_min"` and `"location"`) and the card grows

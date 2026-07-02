@@ -76,11 +76,14 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
   #q{font:inherit;font-size:.85rem;padding:.5rem .7rem;border:1px solid var(--soft);
      border-radius:3px;background:var(--card);color:var(--ink);flex:1;min-width:12rem}
   .month{margin-top:1.8rem}
-  .mkcard{font-size:.72rem;margin-left:.6em;text-decoration:none;color:var(--accent);
-          border:1px dashed var(--accent);border-radius:3px;padding:.05rem .4rem;white-space:nowrap}
-  .wdo{font-size:.75rem;margin-left:.6em;white-space:nowrap}
   .cal{font-size:.78rem;white-space:nowrap}
   .cal a{color:var(--accent)}
+  details.help{margin:1rem 0;font-size:.88rem;border:1px solid var(--soft);
+    border-radius:4px;background:var(--card);padding:.6rem .9rem}
+  details.help summary{cursor:pointer;color:var(--accent);font-size:.85rem}
+  details.help[open] summary{margin-bottom:.5rem}
+  details.help p{margin:.45rem 0}
+  details.help b{font-weight:bold}
   #report{display:none;white-space:pre-wrap;background:var(--card);border:1px solid var(--soft);
           padding:1.2rem;margin-top:1.2rem;font-size:.92rem}
   footer{margin-top:2.5rem;font-size:.75rem;color:var(--muted);border-top:1px solid var(--soft);padding-top:.8rem}
@@ -101,6 +104,25 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
 
 <!-- ================= PARENT VIEW ================= -->
 <main id="parent">
+  <details class="help">
+    <summary>First time here? What this page is (30 seconds)</summary>
+    <p>This is a free, volunteer-run page from the Holly Avenue PTA that watches
+      Arcadia USD and Sacramento so you don't have to. A robot checks the district's
+      news, board meetings, and California education law every night; a PTA officer
+      turns anything that matters into the plain-English cards below. No app, no
+      account, no notifications — just bookmark it.</p>
+    <p><b>How to read it:</b> <i>Coming up</i> = decisions with dates on them.
+      <i>In effect now</i> = rules already live at school. <i>Parents can act</i> =
+      the few things worth your time. Every card says what changes for your kid,
+      who actually decides, and links its source — if a claim has no receipt, it
+      doesn't go up here. Meetings have 📅 buttons that drop straight into your
+      phone's calendar.</p>
+    <p><b>Heard a rumor?</b> Search it — the link at the bottom of this page digs
+      through everything ever tracked, back to the beginning. Still nothing? Ask
+      at a PTA meeting; if it's real, it becomes a card.</p>
+    <p><b>The "VP Desk" tab</b> is the officer's workbench — the raw feed behind
+      these cards. It's open to read; only PTA officers can change what's published.</p>
+  </details>
   <section>
     <h2>Coming up</h2>
     <div id="coming"><div class="empty">Loading…</div></div>
@@ -119,6 +141,26 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
 
 <!-- ================= VP DESK ================= -->
 <main id="desk">
+  <details class="help">
+    <summary>How this desk works (read this once — it's also the handoff manual)</summary>
+    <p><b>Expected next</b> is the job's known obligations with due dates. A red
+      line means something should exist by now and nobody has verified it — click
+      its check link, confirm reality, and the officer marks it done in the data
+      file. A blank where a report should be is a finding, not a nothing.</p>
+    <p><b>The feed below</b> is everything the nightly robot caught: district first
+      (AUSD tag), then state. ● = priority. Bill numbers link to the actual statute
+      on the Legislature's site — news is somebody's interpretation; the law is the
+      law. Board meetings carry 📅 add-to-calendar links.</p>
+    <p><b>Search</b> digs through every item ever tracked, not just what's on
+      screen, grouped by month. <b>Generate PTA report</b> builds the paste-ready
+      monthly update: district section first, receipts included.</p>
+    <p><b>Health:</b> the "Sources reporting" line names any feed that's gone
+      quiet; a red STALE warning means the nightly job itself stopped. Both are
+      loud on purpose — this tool's only real failure mode is silent staleness.</p>
+    <p><b>Publishing</b> happens in the repo, not on this page: the officer edits
+      the data files (the repo README's operating manual walks through every
+      task). The page itself is read-only for everyone.</p>
+  </details>
   <section id="watchsec" style="display:none">
     <h2>Expected next</h2>
     <div id="watch"></div>
@@ -251,8 +293,7 @@ fetch("data/parent.json").then(r=>r.json()).then(p=>{
       return `<div class="witem${overdue?" overdue":""}">
         <strong>${esc(w.what)}</strong><span class="wdue">${when}</span>
         <div class="wwhy">${esc(w.why)}
-          ${w.check_url?`<a href="${w.check_url}" target="_blank" rel="noopener">${esc(w.check_label||"Check")}</a>`:""}
-          ${w.status!=="done"?`<a class="wdo" href="${EDIT_URL}" target="_blank" rel="noopener" title='Verified it? Set this item’s "status" to "done" in parent.json'>✎ mark done</a>`:""}</div>
+          ${w.check_url?`<a href="${w.check_url}" target="_blank" rel="noopener">${esc(w.check_label||"Check")}</a>`:""}</div>
       </div>`;}).join("");
   }
 }).catch(()=>{
@@ -268,6 +309,7 @@ function card(c){
       <div><span class="k">Affects</span><strong>${esc(c.impact_area)}</strong></div>
       <div><span class="k">Who decides</span><strong>${esc(c.owner)}</strong></div>
       ${c.time_sensitivity?`<div><span class="k">Timing</span><strong>${esc(c.time_sensitivity)}</strong></div>`:""}
+      ${c.law_url?`<div><span class="k">The law itself</span><strong><a href="${esc(c.law_url)}" target="_blank" rel="noopener">${esc(c.law_label||"Statute text")}</a></strong></div>`:""}
       ${c.source_url?`<div class="src"><a href="${c.source_url}" target="_blank" rel="noopener">Source</a></div>`:""}
     </div>
     ${c.action?`<a class="act" href="${c.action.url}" target="_blank" rel="noopener">${esc(c.action.label)}</a>`:""}
@@ -279,9 +321,9 @@ function card(c){
 let ITEMS=[],ARCHIVE=[],FILTER="all";
 const list=document.getElementById("list"),report=document.getElementById("report"),
       copyBtn=document.getElementById("copy"),qBox=document.getElementById("q");
-// Acting = editing parent.json; GitHub's web editor is the pencil. One URL,
-// works from a phone, no local tooling. (Officer-only: needs repo access.)
-const EDIT_URL="https://github.com/BigBirdReturns/axm-tools/edit/main/pta-tracker/data/parent.json";
+// The page is deliberately read-only: no edit buttons that dead-end a
+// volunteer at a GitHub login. Curation = the officer edits data/parent.json
+// in the repo (see the README's operating manual).
 
 // the archive holds everything that ever aged off the live feed
 fetch("data/archive.json").then(r=>r.json())
@@ -326,8 +368,7 @@ function itemHTML(i){
   return `
     <div class="item ${i.priority}">
       <div class="title">${i.scope==="district"?'<span class="tag">AUSD</span>':''}<a href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.title)}</a></div>
-      <div class="meta">${esc(i.source)} · first seen ${fmtDate(i.first_seen)}
-        <a class="mkcard" href="#" data-id="${esc(i.id)}" title="Draft a parent card from this item">→ parent card</a>${cal}</div>
+      <div class="meta">${esc(i.source)} · first seen ${fmtDate(i.first_seen)}${cal}</div>
       <div class="summary">${esc(i.summary)}</div>
       ${(i.bills||[]).length?'<div class="laws">Law text: '+i.bills.map(b=>`<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title)}</a>`).join(" · ")+"</div>":""}
     </div>`;
@@ -357,32 +398,6 @@ function render(){
   list.innerHTML=out;
 }
 qBox.addEventListener("input",render);
-
-/* "→ parent card": turn a feed item into a pre-filled parent-card draft.
-   Copies the JSON (WRITE ME markers where a human sentence is required)
-   and opens parent.json in GitHub's web editor to paste it. */
-list.addEventListener("click",e=>{
-  const a=e.target.closest(".mkcard");if(!a)return;
-  e.preventDefault();
-  const i=ITEMS.concat(ARCHIVE).find(x=>x.id===a.dataset.id);if(!i)return;
-  const draft=JSON.stringify({
-    id:"parent-"+i.id, kind:"law", until:null,
-    title:i.title,
-    kid_impact:"WRITE ME: one sentence — what changes for a student or family.",
-    impact_area:"WRITE ME: e.g. School day / devices",
-    owner:"WRITE ME: who actually decides",
-    time_sensitivity:"",
-    source_url:i.link,
-    action:null
-  },null,2);
-  navigator.clipboard.writeText(draft).then(()=>{
-    a.textContent="copied ✓ — paste into parent.json";
-  }).catch(()=>{
-    report.textContent="Copy this card draft into parent.json:\n\n"+draft;
-    report.style.display="block";
-  });
-  window.open(EDIT_URL,"_blank","noopener");
-});
 
 document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{
   FILTER=b.dataset.f;

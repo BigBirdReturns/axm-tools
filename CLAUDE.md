@@ -20,9 +20,11 @@ don't add dependencies, build steps, or shared libraries to "improve" things.
   the page's timeline search depends on it) are written by the nightly
   workflow; hand edits will be overwritten or merged away. The human-owned
   data files are `*/data/observed.json` (out-of-band drop-box) and
-  `pta-tracker/data/parent.json` (curated parent-view cards + watchlist —
-  the page's ✎/→ links deep-link into GitHub's web editor for it; keep
-  that workflow intact, it is how a non-developer operates the tool).
+  `pta-tracker/data/parent.json` (curated parent-view cards + watchlist).
+  The page is deliberately read-only — the owner rejected on-page edit
+  buttons that bounce volunteers to a GitHub login; don't add them back.
+  Curation = editing parent.json in the repo (web editor or a Claude
+  session).
 
 ## Testing changes locally
 
