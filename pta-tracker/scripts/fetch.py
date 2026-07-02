@@ -372,7 +372,7 @@ def fetch_board_meetings() -> list[dict] | None:
                 "id": f"ausd-mtg-{date.isoformat()}",
                 "source": "AUSD Board of Education",
                 "title": "AUSD board meeting — "
-                + date.strftime("%A, %B %-d")
+                + f"{date:%A, %B} {date.day}"
                 + " at 7:00 p.m.",
                 "summary": "Regular Board of Education meeting, Arcadia "
                 "Education Center Board Room (unless the schedule notes "
@@ -518,7 +518,9 @@ def main() -> None:
     # then carried in the data file so leginfo isn't re-probed nightly
     for item in merged:
         if "bills" not in item:
-            bills, definitive = find_bills(f"{item['title']} {item['summary']}")
+            bills, definitive = find_bills(
+                f"{item.get('title', '')} {item.get('summary', '')}"
+            )
             if definitive:
                 item["bills"] = bills
 

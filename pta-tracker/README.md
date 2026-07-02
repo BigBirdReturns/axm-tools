@@ -54,31 +54,22 @@ Cost: zero.
 
 ## Deploy
 
-```bash
-# from the repo root
-git add pta-tracker
-git commit -m "add PTA legislation tracker"
-git push
-```
+Already live for this repo — the nightly workflow fetches, commits data, and
+deploys Pages in one run. To stand up a fresh copy elsewhere:
 
-Then in the GitHub repo settings:
-
-1. **Pages** -> Source **"GitHub Actions"**. The fetch workflow deploys the
-   site itself — fetch, commit data, upload the repo root, deploy, all in
-   one run — and the site lives at
-   `https://<user>.github.io/axm-tools/pta-tracker/`. The deploy step is
+1. Copy `pta-tracker/` and `.github/workflows/pta-fetch.yml` into a public
+   repo.
+2. **Settings -> Pages** -> Source **"GitHub Actions"**. The fetch workflow
+   deploys the site itself — fetch, commit data, upload the repo root,
+   deploy, all in one run — and the site lives at
+   `https://<user>.github.io/<repo>/pta-tracker/`. The deploy step is
    inside the fetch workflow deliberately: the nightly data commit is
    pushed with the built-in `GITHUB_TOKEN`, and such pushes never trigger
    other workflows, so a separate on-push Pages workflow would deploy on
    human merges but silently skip every nightly refresh.
-2. **Actions** -> confirm workflows are enabled, then run **"PTA tracker
-   fetch + deploy"** once via *Run workflow*. That first run publishes the
-   site; after that it redeploys nightly and on every push to the default
-   branch.
-
-Renaming the default branch to `main` is optional tidiness — the workflow's
-triggers cover both the bootstrap branch name and `main`, and GitHub
-retargets open PRs automatically on rename.
+3. **Actions** -> run **"PTA tracker fetch + deploy"** once via
+   *Run workflow*. That first run publishes the site; after that it
+   redeploys nightly and on every push to the default branch.
 
 `data/items.json` ships pre-seeded with the four education laws that took
 effect July 1, 2026, so the page renders meaningfully before the first

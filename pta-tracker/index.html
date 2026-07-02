@@ -261,10 +261,10 @@ function render(){
   if(!rows.length){list.innerHTML='<div class="empty">Nothing matching right now.</div>';return}
   list.innerHTML=rows.map(i=>`
     <div class="item ${i.priority}">
-      <div class="title">${i.scope==="district"?'<span class="tag">AUSD</span>':''}<a href="${i.link}" target="_blank" rel="noopener">${esc(i.title)}</a></div>
-      <div class="meta">${i.source} · first seen ${fmtDate(i.first_seen)}</div>
+      <div class="title">${i.scope==="district"?'<span class="tag">AUSD</span>':''}<a href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.title)}</a></div>
+      <div class="meta">${esc(i.source)} · first seen ${fmtDate(i.first_seen)}</div>
       <div class="summary">${esc(i.summary)}</div>
-      ${(i.bills||[]).length?'<div class="laws">Law text: '+i.bills.map(b=>`<a href="${b.url}" target="_blank" rel="noopener">${esc(b.title)}</a>`).join(" · ")+"</div>":""}
+      ${(i.bills||[]).length?'<div class="laws">Law text: '+i.bills.map(b=>`<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title)}</a>`).join(" · ")+"</div>":""}
     </div>`).join("");
 }
 
@@ -286,7 +286,7 @@ document.getElementById("gen").onclick=()=>{
   let out="PTA LEGISLATIVE UPDATE — "+new Date().toLocaleDateString("en-US",{month:"long",year:"numeric"})+"\n";
   out+="Prepared by: Jonathan Sandhu, VP Legislation\n\n";
   out+=district.length?"OUR DISTRICT — ARCADIA USD:\n\n":"";
-  district.sort((a,b)=>a.priority==="hot"?-1:1).forEach(i=>out+=bullet(i));
+  district.sort((a,b)=>(a.priority==="hot"?0:1)-(b.priority==="hot"?0:1)).forEach(i=>out+=bullet(i));
   out+=hot.length?"STATE ITEMS AFFECTING OUR SCHOOL DIRECTLY:\n\n":"";
   hot.forEach(i=>out+=bullet(i));
   out+=rest.length?"OTHER K-12 POLICY DEVELOPMENTS:\n\n":"";
