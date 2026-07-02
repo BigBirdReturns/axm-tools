@@ -79,6 +79,8 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
   .mkcard{font-size:.72rem;margin-left:.6em;text-decoration:none;color:var(--accent);
           border:1px dashed var(--accent);border-radius:3px;padding:.05rem .4rem;white-space:nowrap}
   .wdo{font-size:.75rem;margin-left:.6em;white-space:nowrap}
+  .cal{font-size:.78rem;white-space:nowrap}
+  .cal a{color:var(--accent)}
   #report{display:none;white-space:pre-wrap;background:var(--card);border:1px solid var(--soft);
           padding:1.2rem;margin-top:1.2rem;font-size:.92rem}
   footer{margin-top:2.5rem;font-size:.75rem;color:var(--muted);border-top:1px solid var(--soft);padding-top:.8rem}
@@ -180,6 +182,33 @@ function fmtDate(s){
     +(y!==new Date().getFullYear()?", "+y:"");
 }
 
+/* ---------- add-to-calendar ----------
+   .ics data-URI download covers iPhone/Apple Calendar/Outlook; a template
+   URL covers Google. Times are floating local on purpose: "7:00 pm" means
+   Arcadia time, and skipping timezone math means no way to get it wrong. */
+function calParts(when,mins){
+  const start=when.replace(/[-:]/g,"")+"00";               // 2026-07-14T19:00 -> 20260714T190000
+  const[y,mo,d]=when.slice(0,10).split("-").map(Number);
+  const[h,mi]=when.slice(11).split(":").map(Number);
+  const e=new Date(y,mo-1,d,h,mi+(mins||120));
+  const p=n=>String(n).padStart(2,"0");
+  return[start,`${e.getFullYear()}${p(e.getMonth()+1)}${p(e.getDate())}T${p(e.getHours())}${p(e.getMinutes())}00`];
+}
+function calLinks(ev){
+  const[a,b]=calParts(ev.when,ev.mins),tidy=s=>(s||"").replace(/[\r\n,;]/g," ");
+  const ics="data:text/calendar;charset=utf-8,"+encodeURIComponent(
+    "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//pta-tracker//EN\r\nBEGIN:VEVENT\r\nUID:"+ev.uid+
+    "\r\nDTSTART:"+a+"\r\nDTEND:"+b+"\r\nSUMMARY:"+tidy(ev.title)+
+    (ev.loc?"\r\nLOCATION:"+tidy(ev.loc):"")+
+    (ev.url?"\r\nDESCRIPTION:"+tidy(ev.url):"")+"\r\nEND:VEVENT\r\nEND:VCALENDAR");
+  const g="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+
+    encodeURIComponent(ev.title)+"&dates="+a+"/"+b+
+    (ev.loc?"&location="+encodeURIComponent(ev.loc):"")+
+    (ev.url?"&details="+encodeURIComponent(ev.url):"");
+  return `<span class="cal">📅 <a href="${g}" target="_blank" rel="noopener">Google</a> · <a href="${ics}" download="${esc(ev.uid)}.ics">Apple / Outlook</a></span>`;
+}
+const BOARDROOM="Arcadia Education Center Board Room, 150 S 3rd Ave, Arcadia, CA 91006";
+
 /* ---------- Parent View: curated consequences from data/parent.json ---------- */
 fetch("data/parent.json").then(r=>r.json()).then(p=>{
   const coming=document.getElementById("coming");
@@ -242,6 +271,7 @@ function card(c){
       ${c.source_url?`<div class="src"><a href="${c.source_url}" target="_blank" rel="noopener">Source</a></div>`:""}
     </div>
     ${c.action?`<a class="act" href="${c.action.url}" target="_blank" rel="noopener">${esc(c.action.label)}</a>`:""}
+    ${c.when?`<div style="margin-top:.6rem">${calLinks({when:c.when,mins:c.duration_min,uid:c.id,title:c.title,loc:c.location,url:c.source_url})}</div>`:""}
   </div>`;
 }
 
@@ -289,11 +319,15 @@ function fmtMonth(ym){
   return new Date(y,m-1,1).toLocaleDateString("en-US",{month:"long",year:"numeric"});
 }
 function itemHTML(i){
+  // scraped board meetings (ausd-mtg-<date>) are calendar-able: 7pm boardroom
+  const cal=/^ausd-mtg-\d{4}-\d{2}-\d{2}$/.test(i.id||"")
+    ?" "+calLinks({when:i.id.slice(9)+"T19:00",uid:i.id,title:"AUSD Board of Education meeting",loc:BOARDROOM,url:i.link})
+    :"";
   return `
     <div class="item ${i.priority}">
       <div class="title">${i.scope==="district"?'<span class="tag">AUSD</span>':''}<a href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.title)}</a></div>
       <div class="meta">${esc(i.source)} · first seen ${fmtDate(i.first_seen)}
-        <a class="mkcard" href="#" data-id="${esc(i.id)}" title="Draft a parent card from this item">→ parent card</a></div>
+        <a class="mkcard" href="#" data-id="${esc(i.id)}" title="Draft a parent card from this item">→ parent card</a>${cal}</div>
       <div class="summary">${esc(i.summary)}</div>
       ${(i.bills||[]).length?'<div class="laws">Law text: '+i.bills.map(b=>`<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title)}</a>`).join(" · ")+"</div>":""}
     </div>`;

@@ -84,6 +84,18 @@ editor — the page's ✎ links open it directly. No local tools, works from a
 phone. Every edit is a commit, so the whole curation history is inspectable
 and the next officer inherits it.
 
+**Who can edit what.** Reading is public: one URL, no accounts, no app.
+Writing is GitHub repo permission — no shared password anywhere. Repo
+collaborators edit directly (commit → the site redeploys itself, everyone
+sees one truth); anyone else who clicks ✎ can only *propose* a change from
+their own GitHub account, which sits in the pull-request queue until a
+collaborator approves it — moderation for free. Succession is a grant, not
+a secret: add the incoming officer as a collaborator, remove the outgoing
+one. If more officers ever need durable shared ownership, create a free
+GitHub organization and transfer the repo into it (all URLs redirect); the
+repo being public means the full record is cloneable and survives any
+single account.
+
 **Acting on a watchlist flag.** A red "expected by … — not seen yet" line
 means a scheduled obligation hasn't been verified. Click its check link
 (usually Simbli minutes or a district page), confirm reality, then hit
@@ -98,6 +110,13 @@ owner, it isn't ready to be a card. The **→ parent card** link on any VP
 Desk item copies a pre-filled draft (`WRITE ME` markers where a human
 sentence is required) and opens the editor; paste it into `coming_up` or
 `in_effect` and replace the markers.
+
+**Calendars.** Give a `coming_up` card a `"when"` (`YYYY-MM-DDTHH:MM`, local
+time; optional `"duration_min"` and `"location"`) and the card grows
+add-to-calendar links — a Google Calendar template URL and a downloadable
+`.ics` for iPhone/Apple Calendar/Outlook, generated entirely in the page.
+Scraped board meetings on the VP Desk get the links automatically (7:00 p.m.,
+boardroom).
 
 **What falls off, and when.** Nothing is deleted; things retire on
 schedule:
