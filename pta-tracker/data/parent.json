@@ -1,0 +1,131 @@
+{
+  "note": "Curated by the VP Legislation, by hand. The nightly fetch never touches this file — parent cards are written consequences, not scraped headlines. Every card needs: kid_impact (one sentence, what changes for a student/family), owner (who actually decides), and at most one action. If an item can't be phrased as a consequence with an owner, it stays in the VP Desk. The watchlist is VP-Desk-only: known scheduled obligations with a date they're expected by — the page flags anything past due that isn't marked done, so a blank where a report should be never goes unnoticed.",
+  "updated": "2026-07-02",
+  "coming_up": [
+    {
+      "id": "coming-board-2026-07-14",
+      "kind": "meeting",
+      "title": "AUSD Board of Education meets Tuesday, July 14",
+      "kid_impact": "Summer meetings are where next school year gets decided — expect the district's required smartphone policy, budget items, and facilities plans to move here before anything reaches classrooms in August.",
+      "impact_area": "District decisions",
+      "owner": "AUSD Board of Education",
+      "time_sensitivity": "Agenda posts on Simbli a few days before the meeting",
+      "source_url": "https://www.ausd.net/apps/pages/Board",
+      "action": { "type": "read", "label": "Check the agenda on Simbli", "url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" }
+    }
+  ],
+  "in_effect": [
+    {
+      "id": "parent-phones",
+      "kind": "law",
+      "title": "New phone rules are coming when school starts",
+      "kid_impact": "A state law now requires Arcadia USD to have a policy limiting student smartphone use during school hours. Expect specific phone rules from the district before the first day in August. Emergencies, medical needs, and IEP/504 plans are exempt by law.",
+      "impact_area": "School day / devices",
+      "owner": "Arcadia USD board sets the policy; Holly Avenue implements it",
+      "time_sensitivity": "In effect July 1 — details arrive before school starts",
+      "source_url": "https://edsource.org/2026/california-schools-new-laws/761168",
+      "action": { "type": "read", "label": "Read the law summary", "url": "https://edsource.org/2026/california-schools-new-laws/761168" }
+    },
+    {
+      "id": "parent-sb848",
+      "kind": "law",
+      "title": "Stronger abuse-prevention rules at every school",
+      "kid_impact": "Schools must now run expanded background checks on job applicants, train staff and students to recognize signs of grooming or abuse, and post their safe-environment policy where parents can see it.",
+      "impact_area": "Student safety",
+      "owner": "Arcadia USD; Holly Avenue must post its policy",
+      "time_sensitivity": "In effect July 1",
+      "source_url": "https://edsource.org/2026/california-schools-new-laws/761168",
+      "action": { "type": "check", "label": "Ask the office where the policy is posted", "url": "https://ha.ausd.net" }
+    },
+    {
+      "id": "parent-sb760",
+      "kind": "law",
+      "title": "Every school must offer an all-gender restroom",
+      "kid_impact": "Campuses must provide at least one unlocked, signed all-gender restroom during school hours — often by re-signing an existing single-stall restroom. A facilities change; nothing for families to do.",
+      "impact_area": "Campus facilities",
+      "owner": "Arcadia USD facilities",
+      "time_sensitivity": "In effect July 1",
+      "source_url": "https://edsource.org/2026/california-schools-new-laws/761168",
+      "action": null
+    }
+  ],
+  "actions": [
+    {
+      "id": "act-agendas",
+      "type": "read",
+      "label": "Skim the next board agenda",
+      "detail": "Board decisions land on Simbli before each meeting. Ten minutes of skimming beats a month of rumors.",
+      "url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512"
+    },
+    {
+      "id": "act-email",
+      "type": "email",
+      "label": "Email the AUSD board",
+      "detail": "Public comment doesn't require attending. Board members read email about agenda items, especially before a vote.",
+      "url": "https://www.ausd.net/apps/pages/Board"
+    },
+    {
+      "id": "act-pta",
+      "type": "volunteer",
+      "label": "Bring an issue to the PTA",
+      "detail": "Pickup chaos, confusing phone rules, 'nobody told us' — if it has an owner and a next decision point, the PTA can route it. Talk to any board member.",
+      "url": null
+    }
+  ],
+  "watchlist": [
+    {
+      "id": "watch-lcap-budget",
+      "what": "LCAP + 2026-27 budget adopted",
+      "why": "State law required board adoption by June 30. Verify it happened in the June minutes, then mark done — this is where next year's staffing and program money got set.",
+      "expected_by": "2026-06-30",
+      "check_url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
+      "check_label": "June minutes on Simbli",
+      "status": "open"
+    },
+    {
+      "id": "watch-board-schedule",
+      "what": "2026-27 board meeting schedule posted",
+      "why": "The district agenda page still shows last year. When the new schedule posts, the nightly fetch auto-resumes meeting cards; until then, Coming Up is hand-fed.",
+      "expected_by": "2026-08-01",
+      "check_url": "https://www.ausd.net/apps/pages/agenda",
+      "check_label": "AUSD agenda page",
+      "status": "open"
+    },
+    {
+      "id": "watch-phone-policy",
+      "what": "AUSD smartphone policy adopted (AB 3216)",
+      "why": "Required by state law; parents will ask about it the first week of school. Watch board agendas for the policy item, then turn it into a parent card.",
+      "expected_by": "2026-08-15",
+      "check_url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
+      "check_label": "Board agendas",
+      "status": "open"
+    },
+    {
+      "id": "watch-caaspp",
+      "what": "CAASPP test results released",
+      "why": "State test scores land in the fall; district usually comments. Expect parent questions comparing Holly Avenue to district and state.",
+      "expected_by": "2026-10-31",
+      "check_url": "https://www.ausd.net/apps/news/",
+      "check_label": "District news",
+      "status": "open"
+    },
+    {
+      "id": "watch-board-reorg",
+      "what": "Board organizational meeting (new officers)",
+      "why": "Every December the board elects its president and sets the year. Committee assignments here decide who to email about what.",
+      "expected_by": "2026-12-31",
+      "check_url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
+      "check_label": "Simbli listing",
+      "status": "open"
+    },
+    {
+      "id": "watch-sarc",
+      "what": "Holly Avenue SARC published",
+      "why": "The School Accountability Report Card is due by February 1 each year — the one document that answers most 'how is our school doing' questions with receipts.",
+      "expected_by": "2027-02-01",
+      "check_url": "https://ha.ausd.net",
+      "check_label": "Holly Avenue site",
+      "status": "open"
+    }
+  ]
+}
