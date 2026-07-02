@@ -71,6 +71,8 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
        border:1px solid var(--accent);color:var(--accent);border-radius:3px;
        vertical-align:1px;margin-right:.35rem}
   .summary{font-size:.92rem}
+  .laws{font-size:.82rem;margin-top:.3rem}
+  .laws a{color:var(--accent)}
   #report{display:none;white-space:pre-wrap;background:var(--card);border:1px solid var(--soft);
           padding:1.2rem;margin-top:1.2rem;font-size:.92rem}
   footer{margin-top:2.5rem;font-size:.75rem;color:var(--muted);border-top:1px solid var(--soft);padding-top:.8rem}
@@ -262,6 +264,7 @@ function render(){
       <div class="title">${i.scope==="district"?'<span class="tag">AUSD</span>':''}<a href="${i.link}" target="_blank" rel="noopener">${esc(i.title)}</a></div>
       <div class="meta">${i.source} · first seen ${fmtDate(i.first_seen)}</div>
       <div class="summary">${esc(i.summary)}</div>
+      ${(i.bills||[]).length?'<div class="laws">Law text: '+i.bills.map(b=>`<a href="${b.url}" target="_blank" rel="noopener">${esc(b.title)}</a>`).join(" · ")+"</div>":""}
     </div>`).join("");
 }
 
@@ -277,7 +280,9 @@ document.getElementById("gen").onclick=()=>{
   const district=recent.filter(i=>i.scope==="district");
   const state=recent.filter(i=>i.scope!=="district");
   const hot=state.filter(i=>i.priority==="hot"),rest=state.filter(i=>i.priority!=="hot");
-  const bullet=i=>"• "+i.title+"\n"+(i.summary?"  "+i.summary+"\n":"")+"  ("+i.source+": "+i.link+")\n\n";
+  const bullet=i=>"• "+i.title+"\n"+(i.summary?"  "+i.summary+"\n":"")
+    +"  ("+i.source+": "+i.link+")\n"
+    +(i.bills||[]).map(b=>"  Law text — "+b.title+": "+b.url+"\n").join("")+"\n";
   let out="PTA LEGISLATIVE UPDATE — "+new Date().toLocaleDateString("en-US",{month:"long",year:"numeric"})+"\n";
   out+="Prepared by: Jonathan Sandhu, VP Legislation\n\n";
   out+=district.length?"OUR DISTRICT — ARCADIA USD:\n\n":"";

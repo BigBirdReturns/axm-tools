@@ -34,13 +34,20 @@ relevance, and generate the monthly board report on demand.
    read it off a real device's screen, which bot protection cannot
    distinguish from the paying customer it must let through. Only `title`
    is required; everything else defaults sensibly (see the file's `note`).
-4. Results are committed to `data/items.json`, along with a per-source
+4. Any bill reference (AB 3216, SB 848, ...) is resolved to the actual
+   statute text on leginfo.legislature.ca.gov — news is someone's
+   interpretation; the link goes to the black-letter law. Bill numbers are
+   recycled every two-year session, so the fetcher probes recent sessions
+   and matches the official subject against the story before linking.
+   Resolved links are cached in the data file, one lookup per item ever.
+5. Results are committed to `data/items.json`, along with a per-source
    health record — one dead feed keeps the run green, so the page says
    which sources went quiet instead of leaving an empty district section
    as the only tell (red warning if it's a district source).
-5. `index.html` is a static page (GitHub Pages) with **All / Our district /
+6. `index.html` is a static page (GitHub Pages) with **All / Our district /
    Priority** filters and a **Generate PTA report** button producing a
-   paste-ready monthly update — district section first.
+   paste-ready monthly update — district section first, law-text links
+   included.
 
 No server, no database, no API keys, no dependencies (Python stdlib only).
 Cost: zero.

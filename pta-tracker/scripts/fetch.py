@@ -217,6 +217,81 @@ def parse_feed(xml_bytes: bytes) -> list[dict]:
 
 MAX_AGE_DAYS = 120
 
+# --- black-letter law links ------------------------------------------------
+# News coverage is someone's interpretation; link every bill reference to the
+# actual statute text on leginfo.legislature.ca.gov. Bill numbers recycle
+# every two-year session (the 2023-24 SB 848 is reproductive-loss leave; the
+# 2025-26 SB 848 is pupil safety), so we probe sessions newest-first and
+# verify against the page title, which also gives us the official subject.
+BILL_RE = re.compile(r"\b(AB|SB|ACA|SCA|ACR|SCR|AJR|SJR)[-\s]?(\d{1,4})\b")
+BILL_TITLE_RE = re.compile(r"<title>\s*Bill Text\s*-\s*([A-Z]+-\d+[^<]+?)\s*</title>")
+MAX_BILL_LOOKUPS_PER_RUN = 20
+_bill_cache: dict[str, dict | None] = {}
+_bill_lookups = 0
+
+
+def _sessions() -> list[str]:
+    """Current and two prior two-year session ids, newest first."""
+    year = datetime.date.today().year
+    start = year if year % 2 else year - 1
+    return [f"{s}{s + 1}0" for s in (start, start - 2, start - 4)]
+
+
+def bill_candidates(house: str, num: str) -> tuple[list[dict], bool]:
+    """All sessions where this bill number exists, newest first.
+
+    Returns (candidates, definitive). definitive=False means budget
+    exhausted or network trouble - the caller should retry on a later run
+    rather than record "no such bill".
+    """
+    global _bill_lookups
+    key = f"{house}{num}"
+    if key in _bill_cache:
+        return _bill_cache[key], True
+    candidates, definitive = [], True
+    for session in _sessions():
+        if _bill_lookups >= MAX_BILL_LOOKUPS_PER_RUN:
+            return candidates, False
+        url = (
+            "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml"
+            f"?bill_id={session}{house}{num}"
+        )
+        _bill_lookups += 1
+        try:
+            m = BILL_TITLE_RE.search(_get(url).decode("utf-8", "replace"))
+        except Exception as e:
+            print(f"[warn] leginfo {house} {num}: {e}", file=sys.stderr)
+            definitive = False
+            continue
+        if m:  # empty title means no such bill in this session
+            candidates.append(
+                {"ref": f"{house} {num}", "title": m.group(1), "url": url}
+            )
+    if definitive:
+        _bill_cache[key] = candidates
+    return candidates, definitive
+
+
+def _tokens(text: str) -> set[str]:
+    return {w.rstrip("s") for w in re.findall(r"[a-z]{4,}", text.lower())}
+
+
+def find_bills(text: str) -> tuple[list[dict], bool]:
+    """Resolve bill refs in text to statute links, disambiguating recycled
+    numbers by overlap between the official subject and the story text
+    (SB 760 is restrooms, behested payments, or highways depending on the
+    session - the story decides which). Ties go to the newest session."""
+    bills, definitive = [], True
+    story = _tokens(text)
+    for house, num in dict.fromkeys(BILL_RE.findall(text)):
+        candidates, ok = bill_candidates(house, num)
+        definitive = definitive and ok
+        if candidates:
+            bills.append(
+                max(candidates, key=lambda c: len(_tokens(c["title"]) & story))
+            )
+    return bills, definitive
+
 
 def too_old(published: str) -> bool:
     """True if the item's publish date is parseable and past the window.
@@ -438,6 +513,14 @@ def main() -> None:
     merged = sorted(
         previous.values(), key=lambda x: x.get("first_seen", ""), reverse=True
     )[:120]
+
+    # link bill references to the statute text; resolved once per item,
+    # then carried in the data file so leginfo isn't re-probed nightly
+    for item in merged:
+        if "bills" not in item:
+            bills, definitive = find_bills(f"{item['title']} {item['summary']}")
+            if definitive:
+                item["bills"] = bills
 
     DATA.parent.mkdir(exist_ok=True)
     DATA.write_text(
