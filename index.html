@@ -33,6 +33,9 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
   .open{display:inline-block;margin-top:.6rem;font-size:.85rem;text-decoration:none;
         border:1px solid var(--accent);color:var(--accent);border-radius:3px;padding:.35rem .8rem}
   .open:hover{background:var(--accent);color:var(--paper)}
+  /* reference areas are not tools — quieter, no card, no "open" button */
+  .refs{margin-top:1.6rem;font-size:.85rem;color:var(--muted)}
+  .refs a{color:var(--accent)}
   footer{margin-top:2.5rem;font-size:.75rem;color:var(--muted);border-top:1px solid var(--soft);padding-top:.8rem}
 </style>
 </head>
@@ -49,6 +52,12 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
     campus — nightly fetch, relevance filter, and a one-click monthly board
     report. Built for the Holly Avenue Elementary PTA.</div>
   <a class="open" href="pta-tracker/">Open the tracker →</a>
+</div>
+
+<div class="refs">
+  Reference · not a tool —
+  <a href="identity/">AXM identity &amp; house style</a>: the pixel-dandelion
+  mark, its palette and type, and the provenance law that governs them.
 </div>
 
 <footer>
