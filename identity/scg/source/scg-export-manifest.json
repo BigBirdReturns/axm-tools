@@ -1,0 +1,40 @@
+{
+  "$comment": "Declares SCG application exports. Governed by ../SCG_MARK_CONSTITUTION.md. Regenerate outputs from the map + these targets; never hand-edit the PNGs as source.",
+  "governed_by": "../SCG_MARK_CONSTITUTION.md",
+  "mark": {
+    "role": "practice-derivative",
+    "source": "scg-pixel-mark.js",
+    "grid": [16, 18],
+    "legend": { "W": "#ECE7D8", "o": "#7C7F57", ".": "#0D0C09" }
+  },
+  "root_glyph": {
+    "role": "root",
+    "note": "AXM-WORLD runtime dandelion — referenced, not owned here.",
+    "source": "../../../../axm-world/js/sprites.jsx#SPRITES.dandelion",
+    "grid": [16, 16],
+    "legend": { "W": "#fffdf5", "M": "#6B784D", ".": "transparent-on-#1B1818" }
+  },
+  "transforms_allowed": [
+    "integer-scale",
+    "context-palette-swap",
+    "declared-crop-padding",
+    "favicon-threshold-simplify(<=16px)"
+  ],
+  "exports": [
+    { "name": "SCG-avatar-800.png", "kind": "avatar", "size": 800, "cell": 30, "bg": "#0D0C09", "note": "default LinkedIn/social" },
+    { "name": "SCG-mark-on-bone-800.png", "kind": "avatar-invert", "size": 800, "cell": 30, "bg": "#ECE7D8", "colors": { "W": "#0D0C09", "o": "#7C7F57" }, "note": "light/print header; bloom stays void-dark" },
+    { "name": "SCG-favicon-256.png", "kind": "favicon", "size": 256, "cell": 12, "bg": "#0D0C09" },
+    { "name": "SCG-favicon-128.png", "kind": "favicon", "size": 128, "cell": 6, "bg": "#0D0C09" },
+    { "name": "SCG-favicon-64.png", "kind": "favicon", "size": 64, "cell": 3, "bg": "#0D0C09" },
+    { "name": "SCG-favicon-48.png", "kind": "favicon", "size": 48, "cell": 2, "bg": "#0D0C09" },
+    { "name": "SCG-favicon-32.png", "kind": "favicon", "size": 32, "cell": 1, "bg": "#0D0C09" },
+    { "name": "SCG-linkedin-cover-desktop-2256x382.png", "kind": "cover", "size": [2256, 382], "cell": 18, "bg": "#0D0C09", "layout": "name-left, tagline olive mono, mark hard-right" },
+    { "name": "SCG-linkedin-cover-mobile-safe-2256x382.png", "kind": "cover", "size": [2256, 382], "cell": 18, "bg": "#0D0C09", "layout": "centered lockup, inside ~62% mobile crop" }
+  ],
+  "cover_copy": {
+    "name": "SANDHU CONSULTING GROUP",
+    "name_font": "IBM Plex Sans 600, uppercase, tracking .3em, #ECE7D8",
+    "tagline": "FINDING WHERE SYSTEMS BREAK UNDER PRESSURE, REGULATION, OR ADVERSARIAL ATTACK — BEFORE THEY DO.",
+    "tagline_font": "IBM Plex Mono 400, uppercase, tracking .2em, #7C7F57"
+  }
+}

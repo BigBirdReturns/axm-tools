@@ -12,6 +12,25 @@ a year and still be working when you come back.
 |------|--------------|-----------|
 | [`pta-tracker/`](pta-tracker/) | District-first legislation watch for an Arcadia USD K-6 PTA: nightly fetch, relevance filter, one-click monthly board report | [static page](https://bigbirdreturns.github.io/axm-tools/pta-tracker/) + nightly Action |
 
+## Reference areas (not tools)
+
+Some top-level directories are not tools — they have no compute, no state,
+and no nightly Action. They're versioned reference material that other
+things build against. They still deploy with the site (the whole repo root
+is the Pages artifact), but they follow their own internal law instead of
+the tool layout, so don't try to fit them into it.
+
+| Area | What it is | Surface |
+|------|------------|---------|
+| [`identity/`](identity/) | The AXM / SCG identity system: the pixel-dandelion mark, its four-token palette and type, frozen release bundles, and the provenance law (`SCG_MARK_CONSTITUTION.md`) that governs every rendering | [live showcase](https://bigbirdreturns.github.io/axm-tools/identity/) — self-contained page, no Action |
+
+`identity/` is deliberately **not** a tool: no `scripts/`, no `data/`, no
+workflow. Its `index.html` is a read-only showcase that renders the mark
+live from the canonical source (`identity/scg/source/scg-pixel-mark.js`) —
+it never redraws it. The rules live in the constitution; treat frozen
+`releases/` bundles as immutable (a change is a new `vX`, never an edit in
+place).
+
 ## The shape of a tool
 
 Every tool follows the same conventions so the next one costs nothing to

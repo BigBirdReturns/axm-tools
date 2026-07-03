@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AXM · Identity</title>
+<meta name="description" content="The AXM / SCG identity system: the pixel-dandelion mark, its palette and type, and the provenance law that governs them.">
+<link rel="icon" type="image/png" href="scg/releases/SCG-Identity-v3.0/exports/SCG-favicon-64.png">
+<!-- IBM Plex per the system; system fallbacks keep it readable if the CDN is blocked/offline -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@600&display=swap" rel="stylesheet">
+<!-- frozen SCG tokens — the source of truth for palette + type (constitution §1, §4) -->
+<link rel="stylesheet" href="scg/source/scg.tokens.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--scg-void);color:var(--scg-bone);
+       font-family:var(--scg-mono);line-height:1.6;
+       -webkit-font-smoothing:antialiased;
+       padding:clamp(1.5rem,5vw,4rem);max-width:1040px;margin:0 auto}
+  a{color:var(--scg-bone);text-decoration-color:var(--scg-olive);text-underline-offset:3px}
+  a:hover{text-decoration-color:var(--scg-bone)}
+  svg{display:block}
+
+  .lab{font-size:10px;letter-spacing:.24em;color:var(--scg-olive);
+       text-transform:uppercase;margin-bottom:14px}
+  .name{font-family:var(--scg-sans);font-weight:600;letter-spacing:.3em;
+        text-transform:uppercase;color:var(--scg-bone)}
+  .mono-sub{font-size:11px;letter-spacing:.16em;color:var(--scg-olive);
+            text-transform:uppercase;line-height:2}
+
+  /* hero */
+  header{display:flex;align-items:center;gap:clamp(1.5rem,5vw,3rem);
+         flex-wrap:wrap;padding-bottom:2.5rem;
+         border-bottom:1px solid #232219;margin-bottom:3rem}
+  header .mark{flex:0 0 auto}
+  header .name{font-size:clamp(18px,3.4vw,26px);line-height:1.5}
+  header p{max-width:46ch;margin-top:1rem;color:var(--scg-bone);font-size:14px}
+  header .gov{margin-top:1rem}
+
+  section{margin-bottom:3.25rem}
+  h2{font-family:var(--scg-sans);font-weight:600;font-size:13px;
+     letter-spacing:.26em;text-transform:uppercase;color:var(--scg-bone);
+     padding-bottom:.7rem;border-bottom:1px solid #232219;margin-bottom:1.5rem}
+
+  .grid{display:grid;gap:1rem}
+  .cards2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .cards3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+
+  .card{border:1px solid #232219;background:#0F0E0B;padding:1.5rem}
+  .card .role{font-size:10px;letter-spacing:.2em;color:var(--scg-olive);
+              text-transform:uppercase}
+  .card h3{font-family:var(--scg-sans);font-weight:600;font-size:14px;
+           letter-spacing:.1em;text-transform:uppercase;margin:.5rem 0 .9rem}
+  .card dl{display:grid;grid-template-columns:auto 1fr;gap:.3rem 1rem;font-size:12px}
+  .card dt{color:var(--scg-olive);text-transform:uppercase;letter-spacing:.1em;font-size:10px}
+  .card dd{color:var(--scg-bone)}
+  .markbox{display:flex;justify-content:center;align-items:center;
+           padding:1.25rem 0 .5rem}
+
+  /* three sanctioned views of the mark */
+  .views{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .view{border:1px solid #232219;padding:1.75rem 1rem 1.1rem;text-align:center}
+  .view .tile{display:flex;justify-content:center;align-items:center;min-height:150px}
+  .view.on-bone{background:var(--scg-bone)}
+  .view.on-bone .cap{color:#6b6a5e}
+  .cap{font-size:10px;letter-spacing:.16em;color:var(--scg-olive);
+       text-transform:uppercase;margin-top:1rem}
+
+  /* palette */
+  .swatches{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .sw{border:1px solid #232219;overflow:hidden}
+  .sw .chip{height:78px}
+  .sw .meta{padding:.8rem .9rem}
+  .sw .hex{font-size:13px;letter-spacing:.06em}
+  .sw .use{font-size:10px;letter-spacing:.12em;color:var(--scg-olive);
+           text-transform:uppercase;margin-top:.35rem;line-height:1.7}
+  .ember-note{margin-top:1rem;font-size:11px;letter-spacing:.06em;
+              color:var(--scg-ember)}
+
+  /* reference links */
+  .refs{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .ref{display:block;border:1px solid #232219;background:#0F0E0B;
+       padding:1.15rem 1.25rem;text-decoration:none;transition:border-color .15s}
+  .ref:hover{border-color:var(--scg-olive)}
+  .ref .rt{font-family:var(--scg-sans);font-weight:600;font-size:13px;
+           letter-spacing:.08em;text-transform:uppercase;color:var(--scg-bone)}
+  .ref .rd{font-size:11px;color:var(--scg-olive);margin-top:.45rem;letter-spacing:.04em}
+  .ref .arw{color:var(--scg-olive)}
+
+  footer{border-top:1px solid #232219;padding-top:1.5rem;margin-top:1rem;
+         font-size:11px;letter-spacing:.08em;color:var(--scg-olive);
+         display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="mark" id="heroMark" aria-label="SCG pixel-dandelion mark"></span>
+  <div>
+    <div class="name">Sandhu&nbsp;Consulting&nbsp;Group</div>
+    <div class="mono-sub" style="margin-top:.6rem">AXM&nbsp;·&nbsp;Identity&nbsp;System</div>
+    <p>A provenance-governed identity: one hand-set pixel dandelion, a four-token
+       palette, and the law that keeps every rendering traceable to a map. The
+       mark on this page is drawn live from its canonical source — never redrawn,
+       never centered, never tidied.</p>
+    <div class="gov mono-sub">Governed by
+      <a href="scg/SCG_MARK_CONSTITUTION.md">the Mark Constitution</a></div>
+  </div>
+</header>
+
+<section>
+  <h2>Lineage</h2>
+  <div class="grid cards2">
+    <div class="card">
+      <div class="role">Root glyph</div>
+      <h3>AXM-WORLD runtime</h3>
+      <dl>
+        <dt>Grid</dt><dd>16 × 16</dd>
+        <dt>Palette</dt><dd>cream #fffdf5 · moss #6B784D · charcoal #1B1818</dd>
+        <dt>Source</dt><dd>axm-world/js/sprites.jsx → SPRITES.dandelion</dd>
+      </dl>
+      <div class="mono-sub" style="margin-top:1rem">Referenced, not owned here —
+        the parent map lives in the runtime.</div>
+    </div>
+    <div class="card">
+      <div class="role">Practice derivative</div>
+      <h3>SCG public mark</h3>
+      <div class="markbox"><span id="lineMark"></span></div>
+      <dl>
+        <dt>Grid</dt><dd>16 × 18</dd>
+        <dt>Palette</dt><dd>bone #ECE7D8 · olive #7C7F57 · void #0D0C09</dd>
+        <dt>Source</dt><dd>scg/source/scg-pixel-mark.js → SCGPX.MAP</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The mark — sanctioned views</h2>
+  <div class="grid views">
+    <div class="view">
+      <div class="tile"><span id="viewDefault"></span></div>
+      <div class="cap">Default · bone on void</div>
+    </div>
+    <div class="view on-bone">
+      <div class="tile"><span id="viewBone"></span></div>
+      <div class="cap">Invert · light / print (§5.2)</div>
+    </div>
+    <div class="view">
+      <div class="tile"><span id="viewGrid"></span></div>
+      <div class="cap">Construction · 16 × 18 bitmap</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Palette — four tokens, frozen</h2>
+  <div class="grid swatches">
+    <div class="sw">
+      <div class="chip" style="background:var(--scg-bone)"></div>
+      <div class="meta"><div class="hex">#ECE7D8</div>
+        <div class="use">Bone · the bloom · text on void</div></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:var(--scg-olive)"></div>
+      <div class="meta"><div class="hex">#7C7F57</div>
+        <div class="use">Olive · stem · secondary labels</div></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:var(--scg-void);border-bottom:1px solid #232219"></div>
+      <div class="meta"><div class="hex">#0D0C09</div>
+        <div class="use">Void · the field · all backgrounds</div></div>
+    </div>
+    <div class="sw">
+      <div class="chip" style="background:var(--scg-ember)"></div>
+      <div class="meta"><div class="hex">#C24B2C</div>
+        <div class="use">Ember · findings / flags</div></div>
+    </div>
+  </div>
+  <div class="ember-note">Ember is for findings and flags only — it is never
+    placed in the mark, at any size, in either layer.</div>
+</section>
+
+<section>
+  <h2>References &amp; artifacts</h2>
+  <div class="grid refs">
+    <a class="ref" href="scg/SCG_MARK_CONSTITUTION.md">
+      <div class="rt">Mark Constitution <span class="arw">→</span></div>
+      <div class="rd">Custody law — provenance, allowed transforms, banned redraws.</div></a>
+    <a class="ref" href="scg/FREEZE_MANIFEST.md">
+      <div class="rt">Freeze Manifest <span class="arw">→</span></div>
+      <div class="rd">SCG Identity v3.0 — the settled, auditable stack.</div></a>
+    <a class="ref" href="axm/house-style/AXM-House-Style-v1.2.standalone.html">
+      <div class="rt">AXM House Style v1.2 <span class="arw">→</span></div>
+      <div class="rd">Editorial law for analytical publishing (standalone).</div></a>
+    <a class="ref" href="scg/releases/SCG-Identity-v3.0/SCG-Identity-System-v3.standalone.html">
+      <div class="rt">SCG Identity System v3 <span class="arw">→</span></div>
+      <div class="rd">The buyer-facing practice identity (standalone).</div></a>
+    <a class="ref" href="scg/releases/SCG-Identity-v3.0/AXM-WORLD-COMPLETE.standalone.html">
+      <div class="rt">AXM-WORLD Complete <span class="arw">→</span></div>
+      <div class="rd">The runtime world, root glyph live in the splash (standalone).</div></a>
+    <a class="ref" href="scg/releases/SCG-Identity-v3.0/exports/README.txt">
+      <div class="rt">Export set <span class="arw">→</span></div>
+      <div class="rd">Avatar · favicon ramp 32–256 · covers. Applications, not source.</div></a>
+  </div>
+</section>
+
+<footer>
+  <span><a href="../">← axm-tools</a></span>
+  <span>Applications are outputs — the ledger governs. If an application disagrees, it is wrong.</span>
+</footer>
+
+<script src="scg/source/scg-pixel-mark.js"></script>
+<script>
+  // Live from the canonical map — integer scale + sanctioned palette swaps only.
+  SCGPX.mount('heroMark', 9);
+  SCGPX.mount('lineMark', 6);
+  SCGPX.mount('viewDefault', 8);
+  SCGPX.mount('viewBone', 8, { colors: { W: '#0D0C09', o: '#7C7F57' } }); // §5.2 invert
+  SCGPX.mount('viewGrid', 8, { grid: true });
+</script>
+</body>
+</html>
