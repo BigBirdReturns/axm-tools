@@ -129,6 +129,8 @@ It is **not an alternate direction.** It is deprecated. It breaks provenance bec
 - **Source of truth:** the two `.map`/sprite files in §1, plus this constitution.
 - **Applications (NOT source):** LinkedIn avatar, favicon ramp, covers, the v3 identity sheet, the AXM-WORLD splash, the live axm.tools footer. These are outputs. If an application disagrees with the ledger, the application is wrong.
 
+> **Deployment-scope note (string-only, does not change this ruling):** the application list above and the deploy pointers named in this document — a root-level `scg-pixel-mark.js`, `/public/assets/scg/`, "the live axm.tools footer", and the `scg-identity/` / `axm-world/` sibling paths — describe AXM surfaces on the full **axm.tools** site. In the standalone **axm-tools** repo that carries this `identity/` tree, those deployed copies do not exist; surfaces there reference the canonical `source/` file directly (see `identity/scg/README.md` → "Deployment scope"). The ledger still governs every rendering; only the deploy paths are environment-specific.
+
 ---
 
 ## 9. Change control
