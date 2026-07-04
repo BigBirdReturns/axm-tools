@@ -20,6 +20,7 @@
     "declared-crop-padding",
     "favicon-threshold-simplify(<=16px)"
   ],
+  "cover_policy": "Avatar carries the mark; the LinkedIn cover is wordmark-only — never two dandelions reading at once (v3.1). Primary LinkedIn cover = the wordmark cover (mark:false). The -desktop- and -mobile-safe- mark covers are secondary banners for surfaces NOT shown beside the avatar.",
   "exports": [
     { "name": "SCG-avatar-800.png", "kind": "avatar", "size": 800, "cell": 30, "bg": "#0D0C09", "note": "default LinkedIn/social" },
     { "name": "SCG-mark-on-bone-800.png", "kind": "avatar-invert", "size": 800, "cell": 30, "bg": "#ECE7D8", "colors": { "W": "#0D0C09", "o": "#7C7F57" }, "note": "light/print header; bloom stays void-dark" },
@@ -28,8 +29,9 @@
     { "name": "SCG-favicon-64.png", "kind": "favicon", "size": 64, "cell": 3, "bg": "#0D0C09" },
     { "name": "SCG-favicon-48.png", "kind": "favicon", "size": 48, "cell": 2, "bg": "#0D0C09" },
     { "name": "SCG-favicon-32.png", "kind": "favicon", "size": 32, "cell": 1, "bg": "#0D0C09" },
-    { "name": "SCG-linkedin-cover-desktop-2256x382.png", "kind": "cover", "size": [2256, 382], "cell": 18, "bg": "#0D0C09", "layout": "name-left, tagline olive mono, mark hard-right" },
-    { "name": "SCG-linkedin-cover-mobile-safe-2256x382.png", "kind": "cover", "size": [2256, 382], "cell": 18, "bg": "#0D0C09", "layout": "centered lockup, inside ~62% mobile crop" }
+    { "name": "SCG-linkedin-cover-wordmark-2256x382.png", "kind": "cover", "role": "primary-linkedin", "mark": false, "size": [2256, 382], "bg": "#0D0C09", "layout": "name (Plex Sans 600) + tagline (Plex Mono, olive) on void; NO mark — the avatar carries the dandelion" },
+    { "name": "SCG-linkedin-cover-desktop-2256x382.png", "kind": "cover", "role": "secondary-banner", "mark": true, "size": [2256, 382], "cell": 18, "bg": "#0D0C09", "layout": "name-left, tagline olive mono, mark hard-right; banner surfaces NOT beside the avatar" },
+    { "name": "SCG-linkedin-cover-mobile-safe-2256x382.png", "kind": "cover", "role": "secondary-banner", "mark": true, "size": [2256, 382], "cell": 18, "bg": "#0D0C09", "layout": "centered lockup, inside ~62% mobile crop; secondary banner" }
   ],
   "cover_copy": {
     "name": "SANDHU CONSULTING GROUP",

@@ -4,7 +4,7 @@ Governed by **`SCG_MARK_CONSTITUTION.md`** (custody law — read it first).
 
 ## Layout
 - **`source/`** — THE source of truth: the derivative mark (`scg-pixel-mark.js`), tokens (`scg.tokens.css`), lockups (`scg-lockups.html`), and the export manifest (`scg-export-manifest.json`).
-- **`releases/`** — frozen, auditable identity bundles (e.g. `SCG-Identity-v3.0/`). **Never edit after freeze.** A change = a new `vX` folder.
+- **`releases/`** — frozen, auditable identity bundles. **Never edit after freeze.** A change = a new `vX` folder. Current deployment reference: `SCG-Identity-v3.1/` (wordmark cover primary); `SCG-Identity-v3.0/` remains the prior ratified record.
 - **`deprecated/`** — rejected variants, kept only as a warning. No reusable assets stored here.
 
 ## Lineage (constitution §1)
