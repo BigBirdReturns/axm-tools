@@ -105,6 +105,10 @@ document.documentElement.lang=(function(){
   details.help b{font-weight:bold}
   #report{display:none;white-space:pre-wrap;background:var(--card);border:1px solid var(--soft);
           padding:1.2rem;margin-top:1.2rem;font-size:.92rem}
+  /* boundary hint: chrome is curated per-locale, card/source content isn't */
+  .xlnote{font-size:.78rem;color:var(--muted);line-height:1.5;
+    background:var(--card);border:1px solid var(--soft);border-left:3px solid var(--underline);
+    border-radius:4px;padding:.5rem .75rem;margin:0 0 1.5rem}
   footer{margin-top:2.5rem;font-size:.75rem;color:var(--muted);border-top:1px solid var(--soft);padding-top:.8rem}
   @media print{.controls,.viewswitch,footer{display:none}}
 </style>
@@ -126,6 +130,8 @@ document.documentElement.lang=(function(){
     <button id="theme" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
   </nav>
 </header>
+
+<p class="xlnote" id="xlnote" data-i18n="note.translate">🌐 Menus and labels are hand-translated into your selected language. News cards and their sources stay in their original language — to read those translated too, use your browser's built-in “Translate page”.</p>
 
 <!-- ================= PARENT VIEW ================= -->
 <main id="parent">
@@ -230,6 +236,7 @@ const MSG={
     "tagline.parent":"What district and state decisions mean for your kid's school week. ",
     "tagline.desk":"Working desk: sources, receipts, and the monthly board report. ",
     "theme.toggle":"Toggle dark mode",
+    "note.translate":"🌐 Menus and labels are hand-translated into your selected language. News cards and their sources stay in their original language — to read those translated too, use your browser's built-in “Translate page”.",
     "parentHelp.summary":"First time here? What this page is (30 seconds)",
     "parentHelp.p1":"This is a free, volunteer-run page from the Holly Avenue PTA that watches Arcadia USD and Sacramento so you don't have to. A robot checks the district's news, board meetings, and California education law every night; a PTA officer turns anything that matters into the plain-English cards below. No app, no account, no notifications — just bookmark it.",
     "parentHelp.p2":"<b>How to read it:</b> <i>Coming up</i> = decisions with dates on them. <i>In effect now</i> = rules already live at school. <i>Parents can act</i> = the few things worth your time. Every card says what changes for your kid, who actually decides, and links its source — if a claim has no receipt, it doesn't go up here. Meetings have 📅 buttons that drop straight into your phone's calendar.",
@@ -268,6 +275,7 @@ const MSG={
     "tagline.parent":"學區與州政府的決定，對您孩子這一週的校園生活有何影響。",
     "tagline.desk":"工作台：來源、佐證，以及每月董事會報告。",
     "theme.toggle":"切換深色模式",
+    "note.translate":"🌐 選單與標籤已人工翻譯為您所選的語言。新聞卡片與其來源則維持原始語言——若也想翻譯卡片內容，請使用瀏覽器內建的「翻譯這個網頁」功能。",
     "parentHelp.summary":"第一次來？30 秒了解這個頁面",
     "parentHelp.p1":"這是 Holly Avenue 家長會（PTA）義工經營的免費頁面，替您盯著 Arcadia 學區（AUSD）與沙加緬度州府的動態。每晚由程式檢查學區新聞、董事會會議與加州教育法規；再由家長會幹部把重要內容整理成下方的白話卡片。不用 App、不用帳號、不用通知——把它加入書籤即可。",
     "parentHelp.p2":"<b>怎麼看：</b><i>即將發生</i>＝已排定日期的決策。<i>目前生效</i>＝校內已在執行的規定。<i>家長可行動</i>＝少數值得您花時間的事。每張卡片都會說明對您孩子有什麼改變、由誰拍板，並附上來源連結——沒有佐證的說法不會出現在這裡。會議附有 📅 按鈕，可直接加入手機行事曆。",
@@ -306,6 +314,7 @@ const MSG={
     "tagline.parent":"학군과 주정부의 결정이 자녀의 학교생활 한 주에 어떤 영향을 주는지 알려드립니다. ",
     "tagline.desk":"작업 데스크: 출처, 근거 자료, 월간 이사회 보고서. ",
     "theme.toggle":"다크 모드 전환",
+    "note.translate":"🌐 메뉴와 라벨은 선택하신 언어로 직접 번역되어 있습니다. 뉴스 카드와 그 출처는 원래 언어 그대로 유지됩니다 — 카드 내용도 번역해 읽으시려면 브라우저의 ‘페이지 번역’ 기능을 사용하세요.",
     "parentHelp.summary":"처음 오셨나요? 이 페이지 소개 (30초)",
     "parentHelp.p1":"이 페이지는 Holly Avenue 학부모회(PTA) 자원봉사자가 운영하는 무료 페이지로, Arcadia 학군(AUSD)과 새크라멘토 주정부의 동향을 대신 지켜봅니다. 매일 밤 프로그램이 학군 소식, 이사회 회의, 캘리포니아 교육 법규를 확인하고, PTA 임원이 중요한 내용을 아래의 쉬운 설명 카드로 정리합니다. 앱도, 계정도, 알림도 필요 없습니다 — 즐겨찾기만 해두세요.",
     "parentHelp.p2":"<b>읽는 방법:</b> <i>예정됨</i> = 날짜가 정해진 결정. <i>현재 시행 중</i> = 학교에서 이미 적용 중인 규정. <i>학부모가 할 수 있는 일</i> = 시간을 들일 가치가 있는 몇 가지. 각 카드는 자녀에게 무엇이 바뀌는지, 누가 실제로 결정하는지 설명하고 출처를 링크합니다 — 근거가 없는 주장은 여기에 올라오지 않습니다. 회의에는 휴대폰 캘린더에 바로 추가되는 📅 버튼이 있습니다.",
@@ -344,6 +353,7 @@ const MSG={
     "tagline.parent":"Lo que las decisiones del distrito y del estado significan para la semana escolar de su hijo/a. ",
     "tagline.desk":"Escritorio de trabajo: fuentes, comprobantes y el informe mensual de la junta. ",
     "theme.toggle":"Alternar modo oscuro",
+    "note.translate":"🌐 Los menús y las etiquetas están traducidos a mano al idioma que eligió. Las tarjetas de noticias y sus fuentes permanecen en su idioma original — para leerlas también traducidas, use la función «Traducir página» de su navegador.",
     "parentHelp.summary":"¿Primera vez aquí? Qué es esta página (30 segundos)",
     "parentHelp.p1":"Esta es una página gratuita, gestionada por voluntarios de la PTA de Holly Avenue, que vigila el Distrito de Arcadia (AUSD) y Sacramento para que usted no tenga que hacerlo. Cada noche un programa revisa las noticias del distrito, las reuniones de la junta y la ley educativa de California; luego un directivo de la PTA convierte lo importante en las tarjetas en lenguaje sencillo de abajo. Sin aplicación, sin cuenta, sin notificaciones — solo agréguela a favoritos.",
     "parentHelp.p2":"<b>Cómo leerla:</b> <i>Próximamente</i> = decisiones con fecha. <i>En vigor ahora</i> = reglas ya activas en la escuela. <i>Las familias pueden actuar</i> = las pocas cosas que valen su tiempo. Cada tarjeta dice qué cambia para su hijo/a, quién decide realmente y enlaza su fuente — si una afirmación no tiene comprobante, no aparece aquí. Las reuniones tienen botones 📅 que se agregan directamente al calendario de su teléfono.",
