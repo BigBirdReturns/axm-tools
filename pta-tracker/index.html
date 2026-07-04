@@ -12,6 +12,18 @@
 // theme before first paint: saved choice wins, otherwise follow the OS
 document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
   (matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+// locale before first paint: saved choice wins, otherwise sniff the browser.
+// Curated chrome languages match the AUSD community's top home languages
+// (Chinese dominant; Korean and Spanish next). Everything unlisted still reads
+// fine via the browser's own "translate page".
+document.documentElement.lang=(function(){
+  var s=localStorage.getItem("pta-locale");if(s)return s;
+  var l=(navigator.language||"").toLowerCase();
+  if(/^zh-(hant|tw|hk|mo)/.test(l))return"zh-Hant";
+  if(l.slice(0,2)==="ko")return"ko";
+  if(l.slice(0,2)==="es")return"es";
+  return"en";
+})();
 </script>
 <style>
   :root{--ink:#1a1a1a;--paper:#faf8f4;--accent:#8a4b2d;--hot:#b3401e;--soft:#e8e2d8;
@@ -29,7 +41,14 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
   .viewswitch a{font-size:.82rem;text-decoration:none;padding:.35rem .8rem;
     border:1px solid var(--accent);border-radius:3px;color:var(--accent)}
   .viewswitch a[aria-current="true"]{background:var(--accent);color:var(--paper)}
-  #theme{margin-left:auto;font-size:.9rem;padding:.3rem .6rem;line-height:1}
+  #lang{margin-left:auto;font:inherit;font-size:.8rem;padding:.3rem 1.5rem .3rem .55rem;
+    border:1px solid var(--accent);background:var(--card);color:var(--accent);
+    border-radius:3px;cursor:pointer;line-height:1.2;
+    -webkit-appearance:none;appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a4b2d'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right .5rem center}
+  :root[data-theme="dark"] #lang{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23d09a72'/%3E%3C/svg%3E")}
+  #theme{font-size:.9rem;padding:.3rem .6rem;line-height:1}
   h2{font-size:.85rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);
      margin:2rem 0 .8rem;border-bottom:1px solid var(--soft);padding-bottom:.35rem}
   .card{background:var(--card);border:1px solid var(--soft);border-radius:4px;
@@ -86,6 +105,10 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
   details.help b{font-weight:bold}
   #report{display:none;white-space:pre-wrap;background:var(--card);border:1px solid var(--soft);
           padding:1.2rem;margin-top:1.2rem;font-size:.92rem}
+  /* boundary hint: chrome is curated per-locale, card/source content isn't */
+  .xlnote{font-size:.78rem;color:var(--muted);line-height:1.5;
+    background:var(--card);border:1px solid var(--soft);border-left:3px solid var(--underline);
+    border-radius:4px;padding:.5rem .75rem;margin:0 0 1.5rem}
   footer{margin-top:2.5rem;font-size:.75rem;color:var(--muted);border-top:1px solid var(--soft);padding-top:.8rem}
   @media print{.controls,.viewswitch,footer{display:none}}
 </style>
@@ -96,91 +119,100 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
   <div class="sub" id="tagline">What district and state decisions mean for your kid's
     school week. <span id="stamp"></span></div>
   <nav class="viewswitch">
-    <a href="#" id="nav-parent" aria-current="true">For parents</a>
-    <a href="#desk" id="nav-desk" aria-current="false">VP Desk</a>
+    <a href="#" id="nav-parent" aria-current="true" data-i18n="nav.parent">For parents</a>
+    <a href="#desk" id="nav-desk" aria-current="false" data-i18n="nav.desk">VP Desk</a>
+    <select id="lang" aria-label="Language · 語言 · 언어 · Idioma" title="Language">
+      <option value="en">English</option>
+      <option value="zh-Hant">中文</option>
+      <option value="ko">한국어</option>
+      <option value="es">Español</option>
+    </select>
     <button id="theme" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
   </nav>
 </header>
 
+<p class="xlnote" id="xlnote" data-i18n="note.translate">🌐 Menus and labels are hand-translated into your selected language. News cards and their sources stay in their original language — to read those translated too, use your browser's built-in “Translate page”.</p>
+
 <!-- ================= PARENT VIEW ================= -->
 <main id="parent">
   <details class="help">
-    <summary>First time here? What this page is (30 seconds)</summary>
-    <p>This is a free, volunteer-run page from the Holly Avenue PTA that watches
+    <summary data-i18n="parentHelp.summary">First time here? What this page is (30 seconds)</summary>
+    <p data-i18n-html="parentHelp.p1">This is a free, volunteer-run page from the Holly Avenue PTA that watches
       Arcadia USD and Sacramento so you don't have to. A robot checks the district's
       news, board meetings, and California education law every night; a PTA officer
       turns anything that matters into the plain-English cards below. No app, no
       account, no notifications — just bookmark it.</p>
-    <p><b>How to read it:</b> <i>Coming up</i> = decisions with dates on them.
+    <p data-i18n-html="parentHelp.p2"><b>How to read it:</b> <i>Coming up</i> = decisions with dates on them.
       <i>In effect now</i> = rules already live at school. <i>Parents can act</i> =
       the few things worth your time. Every card says what changes for your kid,
       who actually decides, and links its source — if a claim has no receipt, it
       doesn't go up here. Meetings have 📅 buttons that drop straight into your
       phone's calendar.</p>
-    <p><b>Heard a rumor?</b> Search it — the link at the bottom of this page digs
+    <p data-i18n-html="parentHelp.p3"><b>Heard a rumor?</b> Search it — the link at the bottom of this page digs
       through everything ever tracked, back to the beginning. Still nothing? Ask
       at a PTA meeting; if it's real, it becomes a card.</p>
-    <p><b>The "VP Desk" tab</b> is the officer's workbench — the raw feed behind
+    <p data-i18n-html="parentHelp.p4"><b>The "VP Desk" tab</b> is the officer's workbench — the raw feed behind
       these cards. It's open to read; only PTA officers can change what's published.</p>
   </details>
   <section>
-    <h2>Coming up</h2>
-    <div id="coming"><div class="empty">Loading…</div></div>
+    <h2 data-i18n="sec.coming">Coming up</h2>
+    <div id="coming"><div class="empty" data-i18n="loading">Loading…</div></div>
   </section>
   <section>
-    <h2>In effect now</h2>
+    <h2 data-i18n="sec.effect">In effect now</h2>
     <div id="effect"></div>
   </section>
   <section>
-    <h2>Parents can act</h2>
+    <h2 data-i18n="sec.actions">Parents can act</h2>
     <div id="actions" class="actlist"></div>
   </section>
-  <p class="src" style="margin-top:1.6rem">Looking for something older, or the raw
+  <p class="src" style="margin-top:1.6rem" data-i18n-html="parent.older">Looking for something older, or the raw
     feed behind these cards? <a href="#desk">Search everything we've tracked →</a></p>
 </main>
 
 <!-- ================= VP DESK ================= -->
 <main id="desk">
+  <div id="srcline" class="sub" style="margin-bottom:1rem"></div>
   <details class="help">
-    <summary>How this desk works (read this once — it's also the handoff manual)</summary>
-    <p><b>Expected next</b> is the job's known obligations with due dates. A red
+    <summary data-i18n="deskHelp.summary">How this desk works (read this once — it's also the handoff manual)</summary>
+    <p data-i18n-html="deskHelp.p1"><b>Expected next</b> is the job's known obligations with due dates. A red
       line means something should exist by now and nobody has verified it — click
       its check link, confirm reality, and the officer marks it done in the data
       file. A blank where a report should be is a finding, not a nothing.</p>
-    <p><b>The feed below</b> is everything the nightly robot caught: district first
+    <p data-i18n-html="deskHelp.p2"><b>The feed below</b> is everything the nightly robot caught: district first
       (AUSD tag), then state. ● = priority. Bill numbers link to the actual statute
       on the Legislature's site — news is somebody's interpretation; the law is the
       law. Board meetings carry 📅 add-to-calendar links.</p>
-    <p><b>Search</b> digs through every item ever tracked, not just what's on
+    <p data-i18n-html="deskHelp.p3"><b>Search</b> digs through every item ever tracked, not just what's on
       screen, grouped by month. <b>Generate PTA report</b> builds the paste-ready
       monthly update: district section first, receipts included.</p>
-    <p><b>Health:</b> the "Sources reporting" line names any feed that's gone
+    <p data-i18n-html="deskHelp.p4"><b>Health:</b> the "Sources reporting" line names any feed that's gone
       quiet; a red STALE warning means the nightly job itself stopped. Both are
       loud on purpose — this tool's only real failure mode is silent staleness.</p>
-    <p><b>Publishing</b> happens in the repo, not on this page: the officer edits
+    <p data-i18n-html="deskHelp.p5"><b>Publishing</b> happens in the repo, not on this page: the officer edits
       the data files (the repo README's operating manual walks through every
       task). The page itself is read-only for everyone.</p>
   </details>
   <section id="watchsec" style="display:none">
-    <h2>Expected next</h2>
+    <h2 data-i18n="sec.expected">Expected next</h2>
     <div id="watch"></div>
   </section>
   <div class="controls">
     <button data-f="all" class="primary" aria-pressed="true">All</button>
     <button data-f="district" aria-pressed="false">Our district</button>
     <button data-f="hot" aria-pressed="false">Priority only</button>
-    <button id="gen">Generate PTA report</button>
-    <button id="copy" style="display:none">Copy report</button>
+    <button id="gen" data-i18n="btn.gen">Generate PTA report</button>
+    <button id="copy" style="display:none" data-i18n="btn.copy">Copy report</button>
   </div>
   <div class="controls">
     <input id="q" type="search" placeholder="Search the whole timeline — every item ever tracked"
-           aria-label="Search the timeline">
+           data-i18n-ph="search.ph" data-i18n-al="search.aria" aria-label="Search the timeline">
   </div>
-  <div id="list"><div class="empty">Loading…</div></div>
+  <div id="list"><div class="empty" data-i18n="loading">Loading…</div></div>
   <div id="report"></div>
 </main>
 
-<footer>
+<footer data-i18n-html="footer">
   Curated by the Holly Avenue PTA VP of Legislation. Parent cards are written
   by a person; the VP Desk is fed nightly from Arcadia USD news &amp; board
   schedule, LAist, California Dept. of Education, and Google News (which
@@ -190,6 +222,189 @@ document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
 </footer>
 
 <script>
+/* ---------- i18n: chrome-only, en + zh-Hant ----------
+   Ported in spirit from axm-world's i18n module, minus the build step this
+   repo forbids: a plain object catalog, a module-level locale persisted to
+   localStorage, browser-default detection, and en-fallback. Same grammar rule
+   as world — only page CHROME lives here. Curated card DATA (parent.json,
+   items.json: titles, kid_impact, summaries, source names) flows verbatim; it
+   is human-authored English and translating it is a curation job, not this
+   layer's. Values may be strings or functions taking params. */
+const MSG={
+  en:{
+    "nav.parent":"For parents","nav.desk":"VP Desk",
+    "tagline.parent":"What district and state decisions mean for your kid's school week. ",
+    "tagline.desk":"Working desk: sources, receipts, and the monthly board report. ",
+    "theme.toggle":"Toggle dark mode",
+    "note.translate":"🌐 Menus and labels are hand-translated into your selected language. News cards and their sources stay in their original language — to read those translated too, use your browser's built-in “Translate page”.",
+    "parentHelp.summary":"First time here? What this page is (30 seconds)",
+    "parentHelp.p1":"This is a free, volunteer-run page from the Holly Avenue PTA that watches Arcadia USD and Sacramento so you don't have to. A robot checks the district's news, board meetings, and California education law every night; a PTA officer turns anything that matters into the plain-English cards below. No app, no account, no notifications — just bookmark it.",
+    "parentHelp.p2":"<b>How to read it:</b> <i>Coming up</i> = decisions with dates on them. <i>In effect now</i> = rules already live at school. <i>Parents can act</i> = the few things worth your time. Every card says what changes for your kid, who actually decides, and links its source — if a claim has no receipt, it doesn't go up here. Meetings have 📅 buttons that drop straight into your phone's calendar.",
+    "parentHelp.p3":"<b>Heard a rumor?</b> Search it — the link at the bottom of this page digs through everything ever tracked, back to the beginning. Still nothing? Ask at a PTA meeting; if it's real, it becomes a card.",
+    "parentHelp.p4":"<b>The \"VP Desk\" tab</b> is the officer's workbench — the raw feed behind these cards. It's open to read; only PTA officers can change what's published.",
+    "sec.coming":"Coming up","sec.effect":"In effect now","sec.actions":"Parents can act",
+    "sec.expected":"Expected next","loading":"Loading…",
+    "parent.older":"Looking for something older, or the raw feed behind these cards? <a href=\"#desk\">Search everything we've tracked →</a>",
+    "deskHelp.summary":"How this desk works (read this once — it's also the handoff manual)",
+    "deskHelp.p1":"<b>Expected next</b> is the job's known obligations with due dates. A red line means something should exist by now and nobody has verified it — click its check link, confirm reality, and the officer marks it done in the data file. A blank where a report should be is a finding, not a nothing.",
+    "deskHelp.p2":"<b>The feed below</b> is everything the nightly robot caught: district first (AUSD tag), then state. ● = priority. Bill numbers link to the actual statute on the Legislature's site — news is somebody's interpretation; the law is the law. Board meetings carry 📅 add-to-calendar links.",
+    "deskHelp.p3":"<b>Search</b> digs through every item ever tracked, not just what's on screen, grouped by month. <b>Generate PTA report</b> builds the paste-ready monthly update: district section first, receipts included.",
+    "deskHelp.p4":"<b>Health:</b> the \"Sources reporting\" line names any feed that's gone quiet; a red STALE warning means the nightly job itself stopped. Both are loud on purpose — this tool's only real failure mode is silent staleness.",
+    "deskHelp.p5":"<b>Publishing</b> happens in the repo, not on this page: the officer edits the data files (the repo README's operating manual walks through every task). The page itself is read-only for everyone.",
+    "btn.gen":"Generate PTA report","btn.copy":"Copy report","btn.copied":"Copied ✓",
+    "btn.copyfail":"Copy blocked — press-and-hold the report to select it",
+    "filter.all":"All","filter.district":"Our district","filter.hot":"Priority only",
+    "search.ph":"Search the whole timeline — every item ever tracked","search.aria":"Search the timeline",
+    "footer":"Curated by the Holly Avenue PTA VP of Legislation. Parent cards are written by a person; the VP Desk is fed nightly from Arcadia USD news &amp; board schedule, LAist, California Dept. of Education, and Google News (which carries EdSource and other outlets). Verify anything consequential against the primary source. Built on AXM tooling — <a href=\"https://axm.tools\">axm.tools</a>.",
+    "fact.affects":"Affects","fact.who":"Who decides","fact.timing":"Timing","fact.law":"The law itself",
+    "law.statute":"Statute text","src.source":"Source","watch.check":"Check","watch.done":"✓ done",
+    "watch.overdue":d=>"expected by "+d+" — not seen yet","watch.by":d=>"by "+d,
+    "coming.empty":()=>'No board meeting or decision window on the radar right now. The district posts agendas a few days ahead — <a href="https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" target="_blank" rel="noopener">check Simbli</a> if you want to look yourself.',
+    "effect.empty":"Nothing new in effect.",
+    "parent.notset":'Parent view not set up yet — see the <a href="#desk">VP Desk</a> for the raw feed.',
+    "stamp.updated":d=>"Updated "+d+".","stamp.stale":n=>" STALE: the nightly job hasn't run in "+n+" days.",
+    "sources.reporting":(o,t)=>"Sources reporting: "+o+" of "+t,"sources.quiet":n=>" — quiet: "+n,
+    "sources.districtdown":". A district source is down — the AUSD section may be missing items.",
+    "item.firstseen":d=>"first seen "+d,"laws.text":"Law text: ",
+    "list.nodata":"No data yet — the nightly job hasn't run. Run scripts/fetch.py once and commit data/items.json.",
+    "list.miss":(q,old)=>"Nothing in the timeline matches “"+q+"”."+(old?" Records go back to "+old+".":""),
+    "list.nomatch":"Nothing matching right now.",
+  },
+  "zh-Hant":{
+    "nav.parent":"家長版","nav.desk":"副會長工作台",
+    "tagline.parent":"學區與州政府的決定，對您孩子這一週的校園生活有何影響。",
+    "tagline.desk":"工作台：來源、佐證，以及每月董事會報告。",
+    "theme.toggle":"切換深色模式",
+    "note.translate":"🌐 選單與標籤已人工翻譯為您所選的語言。新聞卡片與其來源則維持原始語言——若也想翻譯卡片內容，請使用瀏覽器內建的「翻譯這個網頁」功能。",
+    "parentHelp.summary":"第一次來？30 秒了解這個頁面",
+    "parentHelp.p1":"這是 Holly Avenue 家長會（PTA）義工經營的免費頁面，替您盯著 Arcadia 學區（AUSD）與沙加緬度州府的動態。每晚由程式檢查學區新聞、董事會會議與加州教育法規；再由家長會幹部把重要內容整理成下方的白話卡片。不用 App、不用帳號、不用通知——把它加入書籤即可。",
+    "parentHelp.p2":"<b>怎麼看：</b><i>即將發生</i>＝已排定日期的決策。<i>目前生效</i>＝校內已在執行的規定。<i>家長可行動</i>＝少數值得您花時間的事。每張卡片都會說明對您孩子有什麼改變、由誰拍板，並附上來源連結——沒有佐證的說法不會出現在這裡。會議附有 📅 按鈕，可直接加入手機行事曆。",
+    "parentHelp.p3":"<b>聽到傳言？</b>搜尋看看——本頁底部的連結會翻查我們追蹤過的所有紀錄，一路回溯到最初。還是找不到？在家長會會議上提出；若屬實，它就會變成一張卡片。",
+    "parentHelp.p4":"<b>「副會長工作台」分頁</b>是幹部的工作區——這些卡片背後的原始資料流。開放閱覽；只有家長會幹部能變更發佈的內容。",
+    "sec.coming":"即將發生","sec.effect":"目前生效","sec.actions":"家長可行動",
+    "sec.expected":"預期下一步","loading":"載入中…",
+    "parent.older":"想找更早的內容，或這些卡片背後的原始資料流？<a href=\"#desk\">搜尋我們追蹤過的所有紀錄 →</a>",
+    "deskHelp.summary":"工作台如何運作（讀一次即可——這也是交接手冊）",
+    "deskHelp.p1":"<b>預期下一步</b>列出此職務已知的義務與截止日期。紅色一行代表某項東西照理應已存在、卻無人查證——點它的查核連結，確認實況後，由幹部在資料檔中標記完成。該有報告卻空著，本身就是一項發現，而非沒事。",
+    "deskHelp.p2":"<b>下方的資料流</b>是每晚程式抓取到的全部內容：先是學區（AUSD 標籤），再來是州級。● ＝優先。法案編號連向立法機關網站上的實際法條——新聞是他人的詮釋；法律就是法律。董事會會議附有 📅 加入行事曆連結。",
+    "deskHelp.p3":"<b>搜尋</b>會翻查追蹤過的每一則項目，而不只是螢幕上這些，並按月份分組。<b>產生家長會報告</b>會建立可直接貼上的每月更新：學區段落在前，並附上佐證。",
+    "deskHelp.p4":"<b>健康狀態：</b>「來源回報」一行會點名任何沉寂的資料流；紅色 STALE（過期）警告代表每晚的排程本身停擺了。兩者都刻意做得醒目——這個工具唯一真正的失效模式，就是無聲無息地過期。",
+    "deskHelp.p5":"<b>發佈</b>是在程式碼庫裡進行，而非在本頁：由幹部編輯資料檔（程式碼庫 README 的操作手冊逐項說明）。頁面本身對所有人皆為唯讀。",
+    "btn.gen":"產生家長會報告","btn.copy":"複製報告","btn.copied":"已複製 ✓",
+    "btn.copyfail":"無法複製——請長按報告以選取文字",
+    "filter.all":"全部","filter.district":"本學區","filter.hot":"僅優先",
+    "search.ph":"搜尋整個時間軸——追蹤過的每一則項目","search.aria":"搜尋時間軸",
+    "footer":"由 Holly Avenue 家長會立法副會長策劃。家長卡片由真人撰寫；副會長工作台每晚彙整自 Arcadia 學區新聞與董事會行程、LAist、加州教育廳，以及 Google News（涵蓋 EdSource 等媒體）。任何重要事項請對照原始來源查證。建構於 AXM 工具——<a href=\"https://axm.tools\">axm.tools</a>。",
+    "fact.affects":"影響對象","fact.who":"由誰拍板","fact.timing":"時效","fact.law":"法律原文",
+    "law.statute":"法條原文","src.source":"來源","watch.check":"查核","watch.done":"✓ 完成",
+    "watch.overdue":d=>"應於 "+d+" 前完成——尚未見到","watch.by":d=>d+" 前",
+    "coming.empty":()=>'目前雷達上沒有董事會會議或決策時程。學區會在幾天前公布議程——想自己查看，可<a href="https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" target="_blank" rel="noopener">查看 Simbli</a>。',
+    "effect.empty":"目前沒有新生效的項目。",
+    "parent.notset":'家長版尚未設定——請至<a href="#desk">副會長工作台</a>查看原始資料流。',
+    "stamp.updated":d=>"更新於 "+d+"。","stamp.stale":n=>" 過期：每晚排程已 "+n+" 天未執行。",
+    "sources.reporting":(o,t)=>"來源回報："+o+"／"+t,"sources.quiet":n=>"——沉寂："+n,
+    "sources.districtdown":"。有一個學區來源中斷——AUSD 段落可能缺漏項目。",
+    "item.firstseen":d=>"首次發現 "+d,"laws.text":"法條原文：",
+    "list.nodata":"尚無資料——每晚排程尚未執行。請執行一次 scripts/fetch.py 並提交 data/items.json。",
+    "list.miss":(q,old)=>"時間軸中沒有符合「"+q+"」的項目。"+(old?" 紀錄可回溯至 "+old+"。":""),
+    "list.nomatch":"目前沒有符合的項目。",
+  },
+  ko:{
+    "nav.parent":"학부모용","nav.desk":"부회장 데스크",
+    "tagline.parent":"학군과 주정부의 결정이 자녀의 학교생활 한 주에 어떤 영향을 주는지 알려드립니다. ",
+    "tagline.desk":"작업 데스크: 출처, 근거 자료, 월간 이사회 보고서. ",
+    "theme.toggle":"다크 모드 전환",
+    "note.translate":"🌐 메뉴와 라벨은 선택하신 언어로 직접 번역되어 있습니다. 뉴스 카드와 그 출처는 원래 언어 그대로 유지됩니다 — 카드 내용도 번역해 읽으시려면 브라우저의 ‘페이지 번역’ 기능을 사용하세요.",
+    "parentHelp.summary":"처음 오셨나요? 이 페이지 소개 (30초)",
+    "parentHelp.p1":"이 페이지는 Holly Avenue 학부모회(PTA) 자원봉사자가 운영하는 무료 페이지로, Arcadia 학군(AUSD)과 새크라멘토 주정부의 동향을 대신 지켜봅니다. 매일 밤 프로그램이 학군 소식, 이사회 회의, 캘리포니아 교육 법규를 확인하고, PTA 임원이 중요한 내용을 아래의 쉬운 설명 카드로 정리합니다. 앱도, 계정도, 알림도 필요 없습니다 — 즐겨찾기만 해두세요.",
+    "parentHelp.p2":"<b>읽는 방법:</b> <i>예정됨</i> = 날짜가 정해진 결정. <i>현재 시행 중</i> = 학교에서 이미 적용 중인 규정. <i>학부모가 할 수 있는 일</i> = 시간을 들일 가치가 있는 몇 가지. 각 카드는 자녀에게 무엇이 바뀌는지, 누가 실제로 결정하는지 설명하고 출처를 링크합니다 — 근거가 없는 주장은 여기에 올라오지 않습니다. 회의에는 휴대폰 캘린더에 바로 추가되는 📅 버튼이 있습니다.",
+    "parentHelp.p3":"<b>소문을 들으셨나요?</b> 검색해 보세요 — 이 페이지 하단의 링크로 처음부터 추적한 모든 기록을 뒤져볼 수 있습니다. 그래도 없나요? PTA 회의에서 물어보세요; 사실이라면 카드가 됩니다.",
+    "parentHelp.p4":"<b>「부회장 데스크」 탭</b>은 임원의 작업 공간으로, 이 카드들 뒤에 있는 원본 자료입니다. 읽기는 누구나 가능하며, 게시 내용은 PTA 임원만 변경할 수 있습니다.",
+    "sec.coming":"예정됨","sec.effect":"현재 시행 중","sec.actions":"학부모가 할 수 있는 일",
+    "sec.expected":"다음 예정 사항","loading":"불러오는 중…",
+    "parent.older":"더 오래된 내용이나 이 카드들 뒤의 원본 자료를 찾으시나요? <a href=\"#desk\">추적한 모든 기록 검색 →</a>",
+    "deskHelp.summary":"이 데스크 사용법 (한 번만 읽으세요 — 인수인계 매뉴얼이기도 합니다)",
+    "deskHelp.p1":"<b>다음 예정 사항</b>은 이 직무의 알려진 의무와 기한입니다. 빨간 줄은 지금쯤 존재해야 하는데 아무도 확인하지 않았다는 뜻입니다 — 확인 링크를 눌러 실제 상황을 확인하면, 임원이 자료 파일에 완료 표시를 합니다. 보고서가 있어야 할 자리가 비어 있는 것은 아무 일도 아닌 것이 아니라 하나의 발견입니다.",
+    "deskHelp.p2":"<b>아래 피드</b>는 야간 프로그램이 수집한 모든 것입니다: 학군 먼저(AUSD 태그), 그다음 주정부. ● = 우선순위. 법안 번호는 입법부 사이트의 실제 법조문으로 연결됩니다 — 뉴스는 누군가의 해석이고, 법은 법입니다. 이사회 회의에는 📅 캘린더 추가 링크가 있습니다.",
+    "deskHelp.p3":"<b>검색</b>은 화면에 보이는 것뿐 아니라 추적한 모든 항목을 뒤져 월별로 묶어 보여줍니다. <b>PTA 보고서 생성</b>은 바로 붙여넣을 수 있는 월간 업데이트를 만듭니다: 학군 부분 먼저, 근거 포함.",
+    "deskHelp.p4":"<b>상태:</b> 「보고 중인 출처」 줄은 잠잠해진 피드를 알려줍니다; 빨간 STALE(오래됨) 경고는 야간 작업 자체가 멈췄다는 뜻입니다. 둘 다 일부러 눈에 띄게 했습니다 — 이 도구의 유일한 진짜 실패는 소리 없이 낡아가는 것이기 때문입니다.",
+    "deskHelp.p5":"<b>게시</b>는 이 페이지가 아니라 저장소에서 이루어집니다: 임원이 자료 파일을 편집합니다(저장소 README의 운영 매뉴얼이 각 작업을 안내합니다). 페이지 자체는 모두에게 읽기 전용입니다.",
+    "btn.gen":"PTA 보고서 생성","btn.copy":"보고서 복사","btn.copied":"복사됨 ✓",
+    "btn.copyfail":"복사 차단됨 — 보고서를 길게 눌러 선택하세요",
+    "filter.all":"전체","filter.district":"우리 학군","filter.hot":"우선순위만",
+    "search.ph":"전체 타임라인 검색 — 추적한 모든 항목","search.aria":"타임라인 검색",
+    "footer":"Holly Avenue PTA 입법 담당 부회장이 편집합니다. 학부모 카드는 사람이 작성하며, 부회장 데스크는 매일 밤 Arcadia 학군 소식 및 이사회 일정, LAist, 캘리포니아 교육부, Google News(EdSource 등 매체 포함)에서 취합됩니다. 중요한 사항은 원본 출처와 대조해 확인하세요. AXM 도구로 제작 — <a href=\"https://axm.tools\">axm.tools</a>.",
+    "fact.affects":"영향 대상","fact.who":"결정 주체","fact.timing":"시기","fact.law":"법률 원문",
+    "law.statute":"법조문","src.source":"출처","watch.check":"확인","watch.done":"✓ 완료",
+    "watch.overdue":d=>d+"까지 예정 — 아직 확인되지 않음","watch.by":d=>d+"까지",
+    "coming.empty":()=>'현재 레이더에 잡히는 이사회 회의나 결정 일정이 없습니다. 학군은 며칠 전에 안건을 게시합니다 — 직접 확인하려면 <a href="https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" target="_blank" rel="noopener">Simbli 확인</a>.',
+    "effect.empty":"새로 시행 중인 항목이 없습니다.",
+    "parent.notset":'학부모용 화면이 아직 설정되지 않았습니다 — 원본 자료는 <a href="#desk">부회장 데스크</a>를 참고하세요.',
+    "stamp.updated":d=>"업데이트: "+d+".","stamp.stale":n=>" 오래됨: 야간 작업이 "+n+"일째 실행되지 않았습니다.",
+    "sources.reporting":(o,t)=>"보고 중인 출처: "+t+"개 중 "+o+"개","sources.quiet":n=>" — 잠잠함: "+n,
+    "sources.districtdown":". 학군 출처 하나가 중단되었습니다 — AUSD 부분에 항목이 누락될 수 있습니다.",
+    "item.firstseen":d=>"최초 확인 "+d,"laws.text":"법조문: ",
+    "list.nodata":"아직 데이터가 없습니다 — 야간 작업이 실행되지 않았습니다. scripts/fetch.py를 한 번 실행하고 data/items.json을 커밋하세요.",
+    "list.miss":(q,old)=>"타임라인에 「"+q+"」와 일치하는 항목이 없습니다."+(old?" 기록은 "+old+"까지 거슬러 올라갑니다.":""),
+    "list.nomatch":"현재 일치하는 항목이 없습니다.",
+  },
+  es:{
+    "nav.parent":"Para familias","nav.desk":"Escritorio VP",
+    "tagline.parent":"Lo que las decisiones del distrito y del estado significan para la semana escolar de su hijo/a. ",
+    "tagline.desk":"Escritorio de trabajo: fuentes, comprobantes y el informe mensual de la junta. ",
+    "theme.toggle":"Alternar modo oscuro",
+    "note.translate":"🌐 Los menús y las etiquetas están traducidos a mano al idioma que eligió. Las tarjetas de noticias y sus fuentes permanecen en su idioma original — para leerlas también traducidas, use la función «Traducir página» de su navegador.",
+    "parentHelp.summary":"¿Primera vez aquí? Qué es esta página (30 segundos)",
+    "parentHelp.p1":"Esta es una página gratuita, gestionada por voluntarios de la PTA de Holly Avenue, que vigila el Distrito de Arcadia (AUSD) y Sacramento para que usted no tenga que hacerlo. Cada noche un programa revisa las noticias del distrito, las reuniones de la junta y la ley educativa de California; luego un directivo de la PTA convierte lo importante en las tarjetas en lenguaje sencillo de abajo. Sin aplicación, sin cuenta, sin notificaciones — solo agréguela a favoritos.",
+    "parentHelp.p2":"<b>Cómo leerla:</b> <i>Próximamente</i> = decisiones con fecha. <i>En vigor ahora</i> = reglas ya activas en la escuela. <i>Las familias pueden actuar</i> = las pocas cosas que valen su tiempo. Cada tarjeta dice qué cambia para su hijo/a, quién decide realmente y enlaza su fuente — si una afirmación no tiene comprobante, no aparece aquí. Las reuniones tienen botones 📅 que se agregan directamente al calendario de su teléfono.",
+    "parentHelp.p3":"<b>¿Escuchó un rumor?</b> Búsquelo — el enlace al final de esta página rastrea todo lo que se ha registrado, desde el principio. ¿Aún nada? Pregunte en una reunión de la PTA; si es real, se convierte en una tarjeta.",
+    "parentHelp.p4":"<b>La pestaña «Escritorio VP»</b> es el banco de trabajo del directivo — los datos sin procesar detrás de estas tarjetas. Es de lectura abierta; solo los directivos de la PTA pueden cambiar lo que se publica.",
+    "sec.coming":"Próximamente","sec.effect":"En vigor ahora","sec.actions":"Las familias pueden actuar",
+    "sec.expected":"Próximo esperado","loading":"Cargando…",
+    "parent.older":"¿Busca algo más antiguo o los datos sin procesar detrás de estas tarjetas? <a href=\"#desk\">Busque todo lo que hemos registrado →</a>",
+    "deskHelp.summary":"Cómo funciona este escritorio (léalo una vez — también es el manual de traspaso)",
+    "deskHelp.p1":"<b>Próximo esperado</b> son las obligaciones conocidas del puesto con sus fechas límite. Una línea roja significa que algo ya debería existir y nadie lo ha verificado — haga clic en su enlace de comprobación, confirme la realidad y el directivo lo marca como hecho en el archivo de datos. Un vacío donde debería haber un informe es un hallazgo, no una nada.",
+    "deskHelp.p2":"<b>El feed de abajo</b> es todo lo que captó el programa nocturno: primero el distrito (etiqueta AUSD), luego el estado. ● = prioridad. Los números de proyecto de ley enlazan al texto legal real en el sitio de la Legislatura — las noticias son la interpretación de alguien; la ley es la ley. Las reuniones de la junta llevan enlaces 📅 para agregar al calendario.",
+    "deskHelp.p3":"<b>La búsqueda</b> rastrea cada elemento registrado, no solo lo que está en pantalla, agrupado por mes. <b>Generar informe de la PTA</b> crea la actualización mensual lista para pegar: primero la sección del distrito, con comprobantes incluidos.",
+    "deskHelp.p4":"<b>Estado:</b> la línea «Fuentes activas» nombra cualquier feed que se haya quedado en silencio; una advertencia roja STALE (desactualizado) significa que la propia tarea nocturna se detuvo. Ambas son llamativas a propósito — el único fallo real de esta herramienta es quedarse desactualizada en silencio.",
+    "deskHelp.p5":"<b>La publicación</b> ocurre en el repositorio, no en esta página: el directivo edita los archivos de datos (el manual de operación del README del repositorio explica cada tarea). La página en sí es de solo lectura para todos.",
+    "btn.gen":"Generar informe de la PTA","btn.copy":"Copiar informe","btn.copied":"Copiado ✓",
+    "btn.copyfail":"Copia bloqueada — mantenga presionado el informe para seleccionarlo",
+    "filter.all":"Todo","filter.district":"Nuestro distrito","filter.hot":"Solo prioridad",
+    "search.ph":"Busque en toda la cronología — cada elemento registrado","search.aria":"Buscar en la cronología",
+    "footer":"Editado por el VP de Legislación de la PTA de Holly Avenue. Las tarjetas para familias las escribe una persona; el Escritorio VP se alimenta cada noche de las noticias y el calendario de la junta del Distrito de Arcadia, LAist, el Departamento de Educación de California y Google News (que incluye EdSource y otros medios). Verifique cualquier asunto importante con la fuente original. Creado con herramientas AXM — <a href=\"https://axm.tools\">axm.tools</a>.",
+    "fact.affects":"Afecta a","fact.who":"Quién decide","fact.timing":"Plazos","fact.law":"La ley en sí",
+    "law.statute":"Texto de la ley","src.source":"Fuente","watch.check":"Verificar","watch.done":"✓ hecho",
+    "watch.overdue":d=>"previsto para el "+d+" — aún no aparece","watch.by":d=>"para el "+d,
+    "coming.empty":()=>'No hay ninguna reunión de la junta ni ventana de decisión en el radar por ahora. El distrito publica las agendas unos días antes — <a href="https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" target="_blank" rel="noopener">consulte Simbli</a> si quiere verlo usted mismo.',
+    "effect.empty":"Nada nuevo en vigor.",
+    "parent.notset":'La vista para familias aún no está configurada — consulte el <a href="#desk">Escritorio VP</a> para ver los datos sin procesar.',
+    "stamp.updated":d=>"Actualizado el "+d+".","stamp.stale":n=>" DESACTUALIZADO: la tarea nocturna lleva "+n+" días sin ejecutarse.",
+    "sources.reporting":(o,t)=>"Fuentes activas: "+o+" de "+t,"sources.quiet":n=>" — en silencio: "+n,
+    "sources.districtdown":". Una fuente del distrito está caída — puede que falten elementos en la sección de AUSD.",
+    "item.firstseen":d=>"visto por primera vez el "+d,"laws.text":"Texto legal: ",
+    "list.nodata":"Aún no hay datos — la tarea nocturna no se ha ejecutado. Ejecute scripts/fetch.py una vez y haga commit de data/items.json.",
+    "list.miss":(q,old)=>"Nada en la cronología coincide con «"+q+"»."+(old?" Los registros se remontan al "+old+".":""),
+    "list.nomatch":"Nada coincide por ahora.",
+  },
+};
+const SUPPORTED=["en","zh-Hant","ko","es"];
+let LOCALE=SUPPORTED.includes(document.documentElement.lang)?document.documentElement.lang:"en";
+function DATE_LOC(){return {"zh-Hant":"zh-Hant",ko:"ko",es:"es"}[LOCALE]||"en-US"}
+function t(id,...a){
+  const v=(MSG[LOCALE]&&MSG[LOCALE][id])!==undefined?MSG[LOCALE][id]:MSG.en[id];
+  if(v===undefined)return id;
+  return typeof v==="function"?v(...a):v;
+}
+// Re-paint everything the locale touches: static [data-i18n] nodes plus the
+// JS-rendered views (which read t() at render time).
+function applyStatic(){
+  document.querySelectorAll("[data-i18n]").forEach(e=>e.textContent=t(e.dataset.i18n));
+  document.querySelectorAll("[data-i18n-html]").forEach(e=>e.innerHTML=t(e.dataset.i18nHtml));
+  document.querySelectorAll("[data-i18n-ph]").forEach(e=>e.setAttribute("placeholder",t(e.dataset.i18nPh)));
+  document.querySelectorAll("[data-i18n-al]").forEach(e=>e.setAttribute("aria-label",t(e.dataset.i18nAl)));
+}
+
 /* ---------- view switching (hash-routed: #desk = VP Desk) ---------- */
 const vParent=document.getElementById("parent"),vDesk=document.getElementById("desk");
 function route(){
@@ -199,19 +414,33 @@ function route(){
   document.getElementById("nav-parent").setAttribute("aria-current",String(!desk));
   document.getElementById("nav-desk").setAttribute("aria-current",String(desk));
   document.getElementById("tagline").firstChild.textContent=desk
-    ?"Working desk: sources, receipts, and the monthly board report. "
-    :"What district and state decisions mean for your kid's school week. ";
+    ?t("tagline.desk"):t("tagline.parent");
 }
-window.addEventListener("hashchange",route);route();
+window.addEventListener("hashchange",route);
 
 /* ---------- dark mode toggle (initial theme set in <head> pre-paint) ---------- */
 const themeBtn=document.getElementById("theme");
-function paintThemeBtn(){themeBtn.textContent=document.documentElement.dataset.theme==="dark"?"☀️":"🌙"}
+function paintThemeBtn(){
+  themeBtn.textContent=document.documentElement.dataset.theme==="dark"?"☀️":"🌙";
+  themeBtn.setAttribute("aria-label",t("theme.toggle"));themeBtn.title=t("theme.toggle");
+}
 themeBtn.onclick=()=>{
-  const t=document.documentElement.dataset.theme==="dark"?"light":"dark";
-  document.documentElement.dataset.theme=t;localStorage.setItem("pta-theme",t);paintThemeBtn();
+  const th=document.documentElement.dataset.theme==="dark"?"light":"dark";
+  document.documentElement.dataset.theme=th;localStorage.setItem("pta-theme",th);paintThemeBtn();
 };
-paintThemeBtn();
+
+/* ---------- language selector (initial locale set in <head> pre-paint) ---------- */
+const langSel=document.getElementById("lang");
+function syncLangSel(){langSel.value=LOCALE}
+function setLocale(l){
+  LOCALE=SUPPORTED.includes(l)?l:"en";
+  document.documentElement.lang=LOCALE;localStorage.setItem("pta-locale",LOCALE);
+  syncLangSel();paintThemeBtn();applyStatic();route();
+  renderParent();refreshMeta();applyFilterCounts();render();
+}
+langSel.onchange=()=>setLocale(langSel.value);
+// Initial paint of everything that isn't data-driven (data views render on fetch).
+syncLangSel();paintThemeBtn();applyStatic();route();
 
 function esc(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 // parse YYYY-MM-DD by hand: new Date("2026-07-02") is UTC midnight, which
@@ -220,7 +449,7 @@ function fmtDate(s){
   if(!s)return"";
   const[y,m,d]=s.split("-").map(Number);
   if(!y||!m||!d)return s;
-  return new Date(y,m-1,d).toLocaleDateString("en-US",{month:"short",day:"numeric"})
+  return new Date(y,m-1,d).toLocaleDateString(DATE_LOC(),{month:"short",day:"numeric"})
     +(y!==new Date().getFullYear()?", "+y:"");
 }
 
@@ -252,8 +481,21 @@ function calLinks(ev){
 const BOARDROOM="Arcadia Education Center Board Room, 150 S 3rd Ave, Arcadia, CA 91006";
 
 /* ---------- Parent View: curated consequences from data/parent.json ---------- */
-fetch("data/parent.json").then(r=>r.json()).then(p=>{
+// Data is fetched once and cached; renderParent() re-runs on locale switch so the
+// chrome around the (verbatim) curated cards re-translates without a refetch.
+let PARENT=null;
+fetch("data/parent.json").then(r=>r.json())
+  .then(p=>{PARENT=p;renderParent();})
+  .catch(()=>{PARENT="__err";renderParent();});
+
+function renderParent(){
+  if(PARENT===null)return;
   const coming=document.getElementById("coming");
+  if(PARENT==="__err"){
+    coming.innerHTML='<div class="empty">'+t("parent.notset")+'</div>';
+    return;
+  }
+  const p=PARENT;
   // Cards with an "until" date retire themselves the day after — a meeting
   // announced as "coming up" must never still say so once it has happened.
   const live=(p.coming_up||[]).filter(c=>{
@@ -261,15 +503,9 @@ fetch("data/parent.json").then(r=>r.json()).then(p=>{
     const[y,m,d]=c.until.split("-").map(Number);
     return new Date(y,m-1,d,23,59)>=new Date();
   });
-  if(live.length){
-    coming.innerHTML=live.map(card).join("");
-  }else{
-    coming.innerHTML='<div class="empty">No board meeting or decision window on the radar right now. '+
-      'The district posts agendas a few days ahead — '+
-      '<a href="https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" target="_blank" rel="noopener">check Simbli</a> if you want to look yourself.</div>';
-  }
+  coming.innerHTML=live.length?live.map(card).join(""):'<div class="empty">'+t("coming.empty")+'</div>';
   document.getElementById("effect").innerHTML=(p.in_effect||[]).map(card).join("")||
-    '<div class="empty">Nothing new in effect.</div>';
+    '<div class="empty">'+t("effect.empty")+'</div>';
   document.getElementById("actions").innerHTML=(p.actions||[]).map(a=>`
     <div class="card">
       <h3>${a.url?`<a href="${a.url}" target="_blank" rel="noopener">${esc(a.label)}</a>`:esc(a.label)}</h3>
@@ -288,29 +524,26 @@ fetch("data/parent.json").then(r=>r.json()).then(p=>{
       // done items linger 45 days as receipts, then retire on their own
       if(w.status==="done"&&due&&(today-due)/864e5>45)return"";
       const overdue=w.status!=="done"&&due&&due<today;
-      const when=w.status==="done"?"✓ done":
-        (overdue?"expected by "+fmtDate(w.expected_by)+" — not seen yet":"by "+fmtDate(w.expected_by));
+      const when=w.status==="done"?t("watch.done"):
+        (overdue?t("watch.overdue",fmtDate(w.expected_by)):t("watch.by",fmtDate(w.expected_by)));
       return `<div class="witem${overdue?" overdue":""}">
         <strong>${esc(w.what)}</strong><span class="wdue">${when}</span>
         <div class="wwhy">${esc(w.why)}
-          ${w.check_url?`<a href="${w.check_url}" target="_blank" rel="noopener">${esc(w.check_label||"Check")}</a>`:""}</div>
+          ${w.check_url?`<a href="${w.check_url}" target="_blank" rel="noopener">${esc(w.check_label||t("watch.check"))}</a>`:""}</div>
       </div>`;}).join("");
   }
-}).catch(()=>{
-  document.getElementById("coming").innerHTML=
-    '<div class="empty">Parent view not set up yet — see the <a href="#desk">VP Desk</a> for the raw feed.</div>';
-});
+}
 
 function card(c){
   return `<div class="card">
     <h3>${esc(c.title)}</h3>
     <div class="impact">${esc(c.kid_impact)}</div>
     <div class="facts">
-      <div><span class="k">Affects</span><strong>${esc(c.impact_area)}</strong></div>
-      <div><span class="k">Who decides</span><strong>${esc(c.owner)}</strong></div>
-      ${c.time_sensitivity?`<div><span class="k">Timing</span><strong>${esc(c.time_sensitivity)}</strong></div>`:""}
-      ${c.law_url?`<div><span class="k">The law itself</span><strong><a href="${esc(c.law_url)}" target="_blank" rel="noopener">${esc(c.law_label||"Statute text")}</a></strong></div>`:""}
-      ${c.source_url?`<div class="src"><a href="${c.source_url}" target="_blank" rel="noopener">Source</a></div>`:""}
+      <div><span class="k">${t("fact.affects")}</span><strong>${esc(c.impact_area)}</strong></div>
+      <div><span class="k">${t("fact.who")}</span><strong>${esc(c.owner)}</strong></div>
+      ${c.time_sensitivity?`<div><span class="k">${t("fact.timing")}</span><strong>${esc(c.time_sensitivity)}</strong></div>`:""}
+      ${c.law_url?`<div><span class="k">${t("fact.law")}</span><strong><a href="${esc(c.law_url)}" target="_blank" rel="noopener">${esc(c.law_label||t("law.statute"))}</a></strong></div>`:""}
+      ${c.source_url?`<div class="src"><a href="${c.source_url}" target="_blank" rel="noopener">${t("src.source")}</a></div>`:""}
     </div>
     ${c.action?`<a class="act" href="${c.action.url}" target="_blank" rel="noopener">${esc(c.action.label)}</a>`:""}
     ${c.when?`<div style="margin-top:.6rem">${calLinks({when:c.when,mins:c.duration_min,uid:c.id,title:c.title,loc:c.location,url:c.source_url})}</div>`:""}
@@ -318,9 +551,11 @@ function card(c){
 }
 
 /* ---------- VP Desk: the officer workflow ---------- */
-let ITEMS=[],ARCHIVE=[],FILTER="all";
+let ITEMS=[],ARCHIVE=[],FILTER="all",META=null;
 const list=document.getElementById("list"),report=document.getElementById("report"),
-      copyBtn=document.getElementById("copy"),qBox=document.getElementById("q");
+      copyBtn=document.getElementById("copy"),qBox=document.getElementById("q"),
+      srcline=document.getElementById("srcline");
+const FKEY={all:"filter.all",district:"filter.district",hot:"filter.hot"};
 // The page is deliberately read-only: no edit buttons that dead-end a
 // volunteer at a GitHub login. Curation = the officer edits data/parent.json
 // in the repo (see the README's operating manual).
@@ -331,34 +566,47 @@ fetch("data/archive.json").then(r=>r.json())
   .catch(()=>{});
 
 fetch("data/items.json").then(r=>r.json()).then(d=>{
-  ITEMS=d.items||[];
-  const counts={all:ITEMS.length,
+  META=d;ITEMS=d.items||[];
+  applyFilterCounts();refreshMeta();render();
+}).catch(()=>list.innerHTML='<div class="empty">'+t("list.nodata")+'</div>');
+
+// filter buttons carry their live counts; label re-translates on locale switch
+function applyFilterCounts(){
+  const counts=META?{all:ITEMS.length,
     district:ITEMS.filter(i=>i.scope==="district").length,
-    hot:ITEMS.filter(i=>i.priority==="hot").length};
-  document.querySelectorAll("[data-f]").forEach(b=>b.textContent+=" ("+counts[b.dataset.f]+")");
-  const stamp=document.getElementById("stamp"),age=(Date.now()-new Date(d.generated))/864e5;
-  stamp.textContent="Updated "+new Date(d.generated).toLocaleDateString()+".";
-  if(age>2){stamp.textContent+=" STALE: the nightly job hasn't run in "+Math.floor(age)+" days.";stamp.classList.add("alert")}
-  const src=d.sources||[];
+    hot:ITEMS.filter(i=>i.priority==="hot").length}:null;
+  document.querySelectorAll("[data-f]").forEach(b=>{
+    b.textContent=t(FKEY[b.dataset.f])+(counts?" ("+counts[b.dataset.f]+")":"");
+  });
+}
+
+// freshness stamp + per-source health line, both re-rendered idempotently into
+// stable containers so a locale switch never duplicates or strands them
+function refreshMeta(){
+  if(!META)return;
+  const stamp=document.getElementById("stamp"),age=(Date.now()-new Date(META.generated))/864e5;
+  stamp.classList.remove("alert");
+  stamp.textContent=t("stamp.updated",new Date(META.generated).toLocaleDateString(DATE_LOC()));
+  if(age>2){stamp.textContent+=t("stamp.stale",Math.floor(age));stamp.classList.add("alert")}
+  const src=META.sources||[];
+  srcline.classList.remove("alert");srcline.textContent="";srcline.style.display="none";
   if(src.length){
+    srcline.style.display="block";
     // One dead feed keeps the run green and just goes quiet — say so on the
     // desk instead of making an empty district section the only tell.
     const down=src.filter(s=>!s.ok),names=[...new Set(down.map(s=>s.source))];
-    const el=document.createElement("div");el.className="sub";
-    el.textContent="Sources reporting: "+(src.length-down.length)+" of "+src.length+
-      (names.length?" — quiet: "+names.join(", "):"");
+    srcline.textContent=t("sources.reporting",src.length-down.length,src.length)+
+      (names.length?t("sources.quiet",names.join(", ")):"");
     if(down.some(s=>s.scope==="district")){
-      el.classList.add("alert");
-      el.textContent+=". A district source is down — the AUSD section may be missing items.";
+      srcline.classList.add("alert");
+      srcline.textContent+=t("sources.districtdown");
     }
-    vDesk.insertBefore(el,vDesk.firstChild);
   }
-  render();
-}).catch(()=>list.innerHTML='<div class="empty">No data yet — the nightly job hasn\'t run. Run scripts/fetch.py once and commit data/items.json.</div>');
+}
 
 function fmtMonth(ym){
   const[y,m]=ym.split("-").map(Number);
-  return new Date(y,m-1,1).toLocaleDateString("en-US",{month:"long",year:"numeric"});
+  return new Date(y,m-1,1).toLocaleDateString(DATE_LOC(),{month:"long",year:"numeric"});
 }
 function itemHTML(i){
   // scraped board meetings (ausd-mtg-<date>) are calendar-able: 7pm boardroom
@@ -368,9 +616,9 @@ function itemHTML(i){
   return `
     <div class="item ${i.priority}">
       <div class="title">${i.scope==="district"?'<span class="tag">AUSD</span>':''}<a href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.title)}</a></div>
-      <div class="meta">${esc(i.source)} · first seen ${fmtDate(i.first_seen)}${cal}</div>
+      <div class="meta">${esc(i.source)} · ${t("item.firstseen",fmtDate(i.first_seen))}${cal}</div>
       <div class="summary">${esc(i.summary)}</div>
-      ${(i.bills||[]).length?'<div class="laws">Law text: '+i.bills.map(b=>`<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title)}</a>`).join(" · ")+"</div>":""}
+      ${(i.bills||[]).length?'<div class="laws">'+t("laws.text")+i.bills.map(b=>`<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title)}</a>`).join(" · ")+"</div>":""}
     </div>`;
 }
 function render(){
@@ -384,8 +632,8 @@ function render(){
   if(!rows.length){
     const oldest=pool.length?pool[pool.length-1].first_seen:"";
     list.innerHTML='<div class="empty">'+(q
-      ?"Nothing in the timeline matches “"+esc(q)+"”."+(oldest?" Records go back to "+fmtDate(oldest)+".":"")
-      :"Nothing matching right now.")+'</div>';
+      ?t("list.miss",esc(q),oldest?fmtDate(oldest):"")
+      :t("list.nomatch"))+'</div>';
     return;
   }
   // group by month so scrolling back reads as a timeline
@@ -427,8 +675,8 @@ document.getElementById("gen").onclick=()=>{
   report.textContent=out;report.style.display="block";copyBtn.style.display="inline-block";
 };
 copyBtn.onclick=()=>navigator.clipboard.writeText(report.textContent)
-  .then(()=>copyBtn.textContent="Copied ✓")
-  .catch(()=>copyBtn.textContent="Copy blocked — press-and-hold the report to select it");
+  .then(()=>copyBtn.textContent=t("btn.copied"))
+  .catch(()=>copyBtn.textContent=t("btn.copyfail"));
 </script>
 </body>
 </html>
