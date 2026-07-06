@@ -160,3 +160,17 @@ title+summary.
 Rule-based filtering means false negatives are possible. Anything you plan to
 report to parents, verify against the linked primary source. The tracker is a
 net, not an oracle.
+
+## Languages
+
+The page chrome is hand-translated in four locales — English, 中文 (zh-Hant),
+한국어, Español — matching the district community's top home languages. It's a
+small inline vanilla-JS catalog in `index.html` (`MSG`), no build step, choice
+persisted as `pta-locale`. **Only chrome is translated**: curated card and
+source content stays in its original language (translating civic content is a
+curation job), and an on-page hint tells readers to use the browser's
+translate-page feature for the rest. To add or change a string: edit `MSG`
+in all four locales, or add the id to English only (missing translations fall
+back to English by design). The monthly report generator deliberately stays
+English — it's the officer's paste-ready board document. Family doctrine:
+axm-genesis `docs/LOCALIZATION.md`.
