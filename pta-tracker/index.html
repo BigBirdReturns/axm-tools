@@ -8,6 +8,8 @@
 <meta property="og:title" content="Holly Avenue PTA — Legislation Watch">
 <meta property="og:description" content="Does it affect my kid? Is something about to be decided? What can I do? Answered in 30 seconds.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8a4b2d">
 <script>
 // theme before first paint: saved choice wins, otherwise follow the OS
 document.documentElement.dataset.theme=localStorage.getItem("pta-theme")||
@@ -203,6 +205,7 @@ document.documentElement.lang=(function(){
     <button data-f="hot" aria-pressed="false">Priority only</button>
     <button id="gen" data-i18n="btn.gen">Generate PTA report</button>
     <button id="copy" style="display:none" data-i18n="btn.copy">Copy report</button>
+    <button id="share" style="display:none" data-i18n="btn.share">Share report</button>
   </div>
   <div class="controls">
     <input id="q" type="search" placeholder="Search the whole timeline — every item ever tracked"
@@ -253,6 +256,7 @@ const MSG={
     "deskHelp.p5":"<b>Publishing</b> happens in the repo, not on this page: the officer edits the data files (the repo README's operating manual walks through every task). The page itself is read-only for everyone.",
     "btn.gen":"Generate PTA report","btn.copy":"Copy report","btn.copied":"Copied ✓",
     "btn.copyfail":"Copy blocked — press-and-hold the report to select it",
+    "btn.share":"Share report",
     "filter.all":"All","filter.district":"Our district","filter.hot":"Priority only",
     "search.ph":"Search the whole timeline — every item ever tracked","search.aria":"Search the timeline",
     "footer":"Curated by the Holly Avenue PTA VP of Legislation. Parent cards are written by a person; the VP Desk is fed nightly from Arcadia USD news &amp; board schedule, LAist, California Dept. of Education, and Google News (which carries EdSource and other outlets). Verify anything consequential against the primary source. Built on AXM tooling — <a href=\"https://axm.tools\">axm.tools</a>.",
@@ -292,6 +296,7 @@ const MSG={
     "deskHelp.p5":"<b>發佈</b>是在程式碼庫裡進行，而非在本頁：由幹部編輯資料檔（程式碼庫 README 的操作手冊逐項說明）。頁面本身對所有人皆為唯讀。",
     "btn.gen":"產生家長會報告","btn.copy":"複製報告","btn.copied":"已複製 ✓",
     "btn.copyfail":"無法複製——請長按報告以選取文字",
+    "btn.share":"分享報告",
     "filter.all":"全部","filter.district":"本學區","filter.hot":"僅優先",
     "search.ph":"搜尋整個時間軸——追蹤過的每一則項目","search.aria":"搜尋時間軸",
     "footer":"由 Holly Avenue 家長會立法副會長策劃。家長卡片由真人撰寫；副會長工作台每晚彙整自 Arcadia 學區新聞與董事會行程、LAist、加州教育廳，以及 Google News（涵蓋 EdSource 等媒體）。任何重要事項請對照原始來源查證。建構於 AXM 工具——<a href=\"https://axm.tools\">axm.tools</a>。",
@@ -331,6 +336,7 @@ const MSG={
     "deskHelp.p5":"<b>게시</b>는 이 페이지가 아니라 저장소에서 이루어집니다: 임원이 자료 파일을 편집합니다(저장소 README의 운영 매뉴얼이 각 작업을 안내합니다). 페이지 자체는 모두에게 읽기 전용입니다.",
     "btn.gen":"PTA 보고서 생성","btn.copy":"보고서 복사","btn.copied":"복사됨 ✓",
     "btn.copyfail":"복사 차단됨 — 보고서를 길게 눌러 선택하세요",
+    "btn.share":"보고서 공유",
     "filter.all":"전체","filter.district":"우리 학군","filter.hot":"우선순위만",
     "search.ph":"전체 타임라인 검색 — 추적한 모든 항목","search.aria":"타임라인 검색",
     "footer":"Holly Avenue PTA 입법 담당 부회장이 편집합니다. 학부모 카드는 사람이 작성하며, 부회장 데스크는 매일 밤 Arcadia 학군 소식 및 이사회 일정, LAist, 캘리포니아 교육부, Google News(EdSource 등 매체 포함)에서 취합됩니다. 중요한 사항은 원본 출처와 대조해 확인하세요. AXM 도구로 제작 — <a href=\"https://axm.tools\">axm.tools</a>.",
@@ -370,6 +376,7 @@ const MSG={
     "deskHelp.p5":"<b>La publicación</b> ocurre en el repositorio, no en esta página: el directivo edita los archivos de datos (el manual de operación del README del repositorio explica cada tarea). La página en sí es de solo lectura para todos.",
     "btn.gen":"Generar informe de la PTA","btn.copy":"Copiar informe","btn.copied":"Copiado ✓",
     "btn.copyfail":"Copia bloqueada — mantenga presionado el informe para seleccionarlo",
+    "btn.share":"Compartir informe",
     "filter.all":"Todo","filter.district":"Nuestro distrito","filter.hot":"Solo prioridad",
     "search.ph":"Busque en toda la cronología — cada elemento registrado","search.aria":"Buscar en la cronología",
     "footer":"Editado por el VP de Legislación de la PTA de Holly Avenue. Las tarjetas para familias las escribe una persona; el Escritorio VP se alimenta cada noche de las noticias y el calendario de la junta del Distrito de Arcadia, LAist, el Departamento de Educación de California y Google News (que incluye EdSource y otros medios). Verifique cualquier asunto importante con la fuente original. Creado con herramientas AXM — <a href=\"https://axm.tools\">axm.tools</a>.",
@@ -553,8 +560,8 @@ function card(c){
 /* ---------- VP Desk: the officer workflow ---------- */
 let ITEMS=[],ARCHIVE=[],FILTER="all",META=null;
 const list=document.getElementById("list"),report=document.getElementById("report"),
-      copyBtn=document.getElementById("copy"),qBox=document.getElementById("q"),
-      srcline=document.getElementById("srcline");
+      copyBtn=document.getElementById("copy"),shareBtn=document.getElementById("share"),
+      qBox=document.getElementById("q"),srcline=document.getElementById("srcline");
 const FKEY={all:"filter.all",district:"filter.district",hot:"filter.hot"};
 // The page is deliberately read-only: no edit buttons that dead-end a
 // volunteer at a GitHub login. Curation = the officer edits data/parent.json
@@ -673,10 +680,22 @@ document.getElementById("gen").onclick=()=>{
   if(!recent.length)out+="No significant education-policy developments this period.\n";
   out+="\nQuestions welcome — full links available on the tracker site.";
   report.textContent=out;report.style.display="block";copyBtn.style.display="inline-block";
+  // Web Share only where the platform provides it (mobile, mostly) — the page
+  // stays read-only: what's shared is the generated report text, nothing else.
+  if(navigator.share)shareBtn.style.display="inline-block";
 };
 copyBtn.onclick=()=>navigator.clipboard.writeText(report.textContent)
   .then(()=>copyBtn.textContent=t("btn.copied"))
   .catch(()=>copyBtn.textContent=t("btn.copyfail"));
+shareBtn.onclick=()=>navigator.share({title:document.title,text:report.textContent}).catch(()=>{});
+
+/* ---------- offline: service worker (static file, no build step) ----------
+   Network-first for data/*.json (fresh when online, cached offline — the
+   staleness banner above already tells the reader how old data is);
+   cache-first with background refresh for the page shell. */
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js").catch(()=>{/* offline support is best-effort */});
+}
 </script>
 </body>
 </html>
