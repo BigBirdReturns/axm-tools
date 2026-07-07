@@ -34,13 +34,13 @@ last.
 |---|---|---|---|---|---|
 | **GhostBox** | `bigbirdreturns.github.io/GhostBox/` | Dark Ecosystem | void `#0D0C09` | **ember `#C24B2C`** | The intelligence / tension / findings spoke — ember is *earned* (it is the findings token). Warm, editorial-evidence feel. |
 | **axm-core** | `…/axm-core/` | Dark (runtime) | `#0d1117` | cyan/steel `#39d0d8` | The hub / query runtime — cold instrument convention. |
-| **axm-console** | `…/axm-console/` | Dark (runtime) | `#0d1117` | cyan/steel | Operator cockpit; currently the runtime convention. *Flavor may be given its own accent later — TBD.* |
-| **axm-aide** | `…/axm-aide/` | Dark (runtime) | `#0d1117` | cyan/steel | Personal spoke; currently the runtime convention. *Flavor TBD.* |
+| **axm-console** | `…/axm-console/` | Dark Ecosystem | `#0d0c09` | **teal/pine `#1c8175`** | The operator cockpit / command seat — a grounded, cool instrument distinct from core's brighter runtime cyan. |
+| **axm-aide** | `…/axm-aide/` | Dark Ecosystem | void `#0D0C09` | **gold `#c8a24a`** | The personal spoke — custody of your memory. Warm gold reads personal/valuable, distinct from ember/teal/cyan. |
 | exit-demo / ship (on GhostBox) | `…/GhostBox/exit-demo.html`, `ship.html` | instruments | dark | cyan = *sealed/sovereign* | Technical instruments hosted under GhostBox's frame; here cyan is a **functional signal** (the sovereign/sealed record color), not a brand choice. |
 
-*(Rows marked TBD are honest: they currently ride the runtime convention and have
-not been given a deliberate flavor. Recording that is the point — an unassigned
-flavor is a known gap, not a mystery.)*
+*(Every property above now has a deliberate flavor. The type stack — Barlow
+Condensed + IBM Plex — is the family thread they all share; the accent is what
+makes each itself.)*
 
 ## When you add or move a property
 
