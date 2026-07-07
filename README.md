@@ -92,3 +92,11 @@ for the local-device path that fills `observed.json`.
    with the upload-artifact + deploy-pages steps (see `pta-fetch.yml`).
 3. Pre-seed `<tool>/data/` so the page renders before the first run.
 4. Add the tool to the table above and to the root `index.html`.
+
+## Succession
+
+This repo is meant to outlive its tools, its platform, and whoever is
+maintaining it this year. [`CONTINUITY.md`](CONTINUITY.md) is the handoff
+document: which properties are invariant, which parts are expected to rot,
+and how to change things legitimately — written for the next maintainer,
+human or AI.

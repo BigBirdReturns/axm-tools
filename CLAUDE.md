@@ -5,6 +5,13 @@ self-contained tool per directory, stdlib-only Python, committed-JSON state,
 Pages deployed from the fetch workflow). Those conventions are deliberate —
 don't add dependencies, build steps, or shared libraries to "improve" things.
 
+Before any structural decision (new directory, changed convention, platform
+work), read **`CONTINUITY.md`** — the long-horizon handoff document. It
+separates the invariants from the parts that are allowed to rot, and it is
+written for whoever maintains this repo next, human or model. This file is
+the *quirks ledger* that CONTINUITY.md §8 refers to: when you verify a new
+fact about the outside world, add it below and date it.
+
 ## Ground rules
 
 - **Python is stdlib-only.** No requirements.txt exists on purpose. If a
@@ -64,9 +71,31 @@ and `first_seen` stamps are permanent once committed.
   per-source health line is the tell). All feeds dead = exit nonzero so
   GitHub emails the owner.
 
+## identity/ (reference area, not a tool — verified July 2026)
+
+- **No workflow, no `data/`, deliberately.** Don't fit it into the tool
+  layout. Its internal law is `identity/scg/SCG_MARK_CONSTITUTION.md` —
+  read it before touching anything under `identity/`.
+- **`releases/` folders are frozen.** Never edit one, even to fix an
+  error; a change is a new `vX/` folder. `SCG-Identity-v3.0` is the
+  ratified baseline; `v3.1` is the current deployment reference
+  (application-layer only: the LinkedIn cover is wordmark-only because
+  the avatar already carries the mark — never two dandelions at once).
+- **The docs there name paths from the full axm.tools monorepo** (a
+  root-level `scg-pixel-mark.js`, `/public/assets/scg/`) that don't exist
+  in this repo. Already reconciled via "Deployment scope" notes in the
+  living docs — don't "fix" the paths, and don't let a merge overwrite
+  those notes (re-apply small edits by hand instead).
+- **The mark renders live from `identity/scg/source/scg-pixel-mark.js`**
+  (the showcase at `identity/index.html` draws all 79 cells from it).
+  Never copy the file elsewhere in this repo, never redraw the mark.
+
 ## History worth knowing
 
 Multiple sessions built this in parallel; `git log` on `main` is the
 authoritative record. The v1 single-view page was archived, then removed —
 recover it from history (`git log --all -- pta-tracker/index-v1-archive.html`)
-rather than rewriting it.
+rather than rewriting it. The `identity/` area landed across PRs #5 and #7
+(July 2026); the second exists because a PR merged mid-session strands any
+later commits on its branch — a merged PR never picks up new pushes, so
+follow-ups need a fresh PR from a restarted branch.
