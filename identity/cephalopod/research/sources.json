@@ -1,0 +1,78 @@
+{
+  "captured_at": "2026-07-12",
+  "status": "design-research-not-canonical-source",
+  "target": "anti-fragile cephalopod square pixel icon",
+  "sources": [
+    {
+      "id": "spriters-snes-s-index",
+      "url": "https://www.spriters-resource.com/snes/S.html",
+      "local_copy": null,
+      "use": "platform browse context"
+    },
+    {
+      "id": "spriters-snes-simcity",
+      "url": "https://www.spriters-resource.com/snes/simcity/",
+      "local_copy": null,
+      "use": "SimCity screen, terrain, UI and icon inventory"
+    },
+    {
+      "id": "spriters-launch-octopus",
+      "url": "https://www.spriters-resource.com/snes/mmx/asset/3126/",
+      "local_copy": null,
+      "page_metadata": {
+        "format": "GIF",
+        "dimensions": "715x649",
+        "reported_size": "52.48 KB",
+        "credit": "Freedom Fighter"
+      },
+      "use": "limb segmentation and pose economy; negative reference for franchise anatomy"
+    },
+    {
+      "id": "spriters-genesis-index",
+      "url": "https://www.spriters-resource.com/sega_genesis/",
+      "local_copy": null,
+      "use": "platform browse context"
+    },
+    {
+      "id": "spriters-sonic2-badniks",
+      "url": "https://www.spriters-resource.com/sega_genesis/sonicth2/asset/10398/",
+      "local_copy": null,
+      "page_metadata": {
+        "format": "PNG",
+        "dimensions": "1036x1240",
+        "reported_size": "97.38 KB",
+        "credit": "Paraemon"
+      },
+      "use": "concise multi-enemy silhouettes and object assembly; negative reference for robotic language"
+    },
+    {
+      "id": "spriters-gba-index",
+      "url": "https://www.spriters-resource.com/game_boy_advance/",
+      "local_copy": null,
+      "use": "platform browse context"
+    },
+    {
+      "id": "spriters-game-watch-octopus",
+      "url": "https://www.spriters-resource.com/game_boy_advance/gnwgal4/asset/21287/",
+      "local_copy": null,
+      "page_metadata": {
+        "format": "PNG",
+        "dimensions": "565x547",
+        "reported_size": "35.25 KB",
+        "credit": "Eddo"
+      },
+      "use": "figure-ground separation and arm legibility at reduced detail"
+    },
+    {
+      "id": "simcity-sfc-debug-capture",
+      "url": "https://retro-v.games/wp-content/uploads/2024/02/sfc-simcity-debug.png",
+      "local_copy": "references/simcity-sfc-debug.png",
+      "sha256": "14faab639526ce45d662a0675ad5b6f83a76e11a1bdadd7dbebff1de38534a59",
+      "dimensions": "256x224",
+      "format": "indexed PNG",
+      "use": "ordered coexistence of screen layers and register-like UI; direct corruption grammar reference"
+    }
+  ],
+  "redistribution_policy": "Do not mirror full commercial sprite sheets. Preserve URLs, metadata, original analysis, and only the minimal low-resolution debug capture needed to evidence the corruption mechanism.",
+  "canonical_source_policy": "No external asset or generated proof is a canonical source for the cephalopod mark."
+}
