@@ -9,6 +9,6 @@ These images are exploratory design evidence. They are not canonical pixel maps,
 3. organism-to-failure coupling, where every fault must create a usable advantage; and
 4. integrated candidates spanning anchor, distributed intelligence, emergence, and rerouting.
 
-The sheet was generated from the research brief and then cropped to remove an unreliable generated reference strip. The retained area is useful for comparing hypotheses, but no pixel in it has source authority. Any candidate selected for development must be rebuilt as an explicit bitmap map.
+The sheet was generated from the research brief, cropped to remove an unreliable generated reference strip, and losslessly stored as an indexed 32-color PNG without resizing. The retained area is useful for comparing hypotheses, but no pixel in it has source authority. Any candidate selected for development must be rebuilt as an explicit bitmap map.
 
-File SHA-256: `6a766fb811994599e3dc44e1dc84ada193dc8d1eb895ab0ec6bd0b8069842529`.
+File SHA-256: `7a50f00cfdc0a38ccb8779c8c8684454c83adfa7b072a55fe674b65b53f6c15b`.
