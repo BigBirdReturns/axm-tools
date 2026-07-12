@@ -6,7 +6,9 @@ Version 2 corrects two failures in the first package. The source residue records
 
 ## Durable source material
 
-- `index.html` is self-contained. It includes the source-residue atlas and the exact run-length-encoded maps for all 16 candidates at 32×32, 24×24, 16×16, and 12×12.
+- `index.html` is the dependency-free review surface. It renders the adjacent atlas and exact map ledger without a build step.
+- `SOURCE_RESIDUE_ATLAS.svg` is an original visual trace of source-specific construction habits. No third-party sprite pixels are reproduced.
+- `variants-v2.rle.json` contains exact run-length-encoded maps for all 16 candidates at 32×32, 24×24, 16×16, and 12×12.
 - `RESEARCH.md` records source-specific observations, transferable construction residue, and rejected character residue.
 - `SOURCES.json` records page metadata and the capture boundary.
 - `PROOF_MATRIX.md` describes the four controlled searches and all sixteen hypotheses.
