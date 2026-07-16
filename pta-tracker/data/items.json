@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-15T14:20:03.827945Z",
+  "generated": "2026-07-16T14:32:59.135874Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -17,7 +17,7 @@
       "source": "LAist Education",
       "scope": "state",
       "ok": true,
-      "kept": 0
+      "kept": 1
     },
     {
       "source": "CA Dept of Education",
@@ -29,16 +29,64 @@
       "source": "Google News",
       "scope": "state",
       "ok": true,
-      "kept": 10
+      "kept": 9
     },
     {
       "source": "AUSD board schedule",
       "scope": "district",
       "ok": true,
-      "kept": 0
+      "kept": 1
     }
   ],
   "items": [
+    {
+      "id": "f9af1fa82617",
+      "source": "LAist Education",
+      "title": "Trump administration launches crackdown on teacher sexual misconduct",
+      "summary": "Education Secretary Linda McMahon issued guidance following a KQED-ProPublica investigation.",
+      "link": "https://laist.com/news/education/trump-administration-launches-crackdown-on-teacher-sexual-misconduct",
+      "published": "Wed, 15 Jul 2026 23:00:00 GMT",
+      "priority": "normal",
+      "scope": "state",
+      "first_seen": "2026-07-16",
+      "bills": []
+    },
+    {
+      "id": "08efcddde77f",
+      "source": "Local News Matters",
+      "title": "New California law ensures K-12 students are being taught by humans rather than AI",
+      "summary": "",
+      "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNWjFrZTZXdkluQTBZcU9aSmI3VE52bzlwQnM4QVhFWjJGVC1obGdndGZVczdFa20td3FkeDVOWXE3WVZab1JuTGJhdk9mRmN6UE9YWHMza19YT2p5N1lwWHA5SzdEMDVNdEVGR1lrdE1jWVBQUC0wOEVhSUNENUE1U2dwZmRoWDVWek5iSUZsWnZRX0xOMEQzcU9ZR1U2SFo1MGsySWU4RU1GUHZWc0hQaFJvdndGeHlyYWw2YjZENjc?oc=5",
+      "published": "Wed, 15 Jul 2026 22:00:00 GMT",
+      "priority": "normal",
+      "scope": "state",
+      "first_seen": "2026-07-16",
+      "bills": []
+    },
+    {
+      "id": "082249ab6037",
+      "source": "Los Angeles Times",
+      "title": "LAUSD bans screen time before the second grade, marking one of nation\u2019s strictest policies",
+      "summary": "",
+      "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOR0FwLUpzNzJYeW1oaHdMN28yMnVJQXF5Tnc2eEhSQ0pNR3pRUWZ0a2ZsZXdhSVpYSzNBYkJqVk02YXpidjhLZ05GcElzTHRlbDFzdzhVT2NaTW9Jak4yRlhfYlZnQURuUzJNVjhwTVNjNkRDcVRNeDAtZ1hiQWFqOVNlUWVzNWxSbEhSYUhjLVZQYnQx?oc=5",
+      "published": "Tue, 23 Jun 2026 07:00:00 GMT",
+      "priority": "hot",
+      "scope": "state",
+      "first_seen": "2026-07-16",
+      "bills": []
+    },
+    {
+      "id": "ausd-mtg-2026-07-28",
+      "source": "AUSD Board of Education",
+      "title": "AUSD board meeting \u2014 Tuesday, July 28 at 7:00 p.m.",
+      "summary": "Regular Board of Education meeting, Arcadia Education Center Board Room (unless the schedule notes otherwise). Agenda posts on Simbli the Friday before \u2014 worth a skim for anything parents will ask about.",
+      "link": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
+      "published": "2026-07-28",
+      "priority": "hot",
+      "scope": "district",
+      "first_seen": "2026-07-16",
+      "bills": []
+    },
     {
       "id": "da142c14b2b9",
       "source": "EdSource",
