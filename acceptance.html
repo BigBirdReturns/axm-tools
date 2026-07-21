@@ -32,25 +32,30 @@ html[data-theme="void"]{
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:16px}
 a{color:var(--ink);text-decoration-color:var(--olive);text-underline-offset:3px}
 a:hover{text-decoration-color:var(--ember)}
-.wrap{max-width:960px;margin:0 auto;padding:36px 24px 80px}
+.wrap{max-width:1160px;margin:0 auto;padding:24px 24px 80px}
 .mono{font-family:var(--mono)}
 
-/* ---- letterhead: identity + chrome, quiet ---- */
-.letterhead{border-top:3px double var(--rule);border-bottom:1px solid var(--line);padding:14px 0 12px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
-.letterhead .org{font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:.24em;text-transform:uppercase}
-.letterhead .meta{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right}
-#themeToggle{appearance:none;background:var(--panel);border:1px solid var(--line);border-radius:2px;color:var(--ink);padding:6px 12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
-#themeToggle:hover{background:var(--panel2);border-color:var(--olive)}
-
-/* stamp: an honest caption, not a siren */
-.stamp{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-left:2px solid var(--line);padding:2px 0 2px 10px;margin-top:12px}
-
-/* ---- hero: ONE headline voice ---- */
-.hero{padding:30px 0 4px}
-.hero h1{font-family:var(--display);font-weight:600;font-size:clamp(34px,5.4vw,56px);line-height:1.04;letter-spacing:.005em;margin:0 0 14px;max-width:840px}
-.hero p.lead{font-size:16.5px;max-width:68ch;margin:0;color:var(--ink);opacity:.88}
-.heroact{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:24px 0 10px}
-.heroact .hint{font-family:var(--mono);font-size:11px;color:var(--muted);max-width:52ch}
+/* ---- launch screen: a visibly new OSW edition, still one offline file ---- */
+.launch{position:relative;overflow:hidden;color:#ECE7D8;background:#0D0C09;border:1px solid #2b2820;box-shadow:0 18px 50px rgba(13,12,9,.18)}
+.launch:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.42;background-image:linear-gradient(rgba(143,146,112,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(143,146,112,.12) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(90deg,transparent 0,#000 58%,#000 100%)}
+.launch:after{content:"";position:absolute;width:340px;height:340px;right:-170px;top:70px;border:1px solid rgba(212,98,63,.55);border-radius:50%;box-shadow:0 0 0 36px rgba(212,98,63,.035),0 0 0 72px rgba(212,98,63,.025)}
+.missionbar{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 18px;border-bottom:1px solid #2b2820;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+.missionbrand{display:flex;align-items:center;gap:12px;font-weight:700}.missionbrand b{color:#d4623f}.missionmeta{display:flex;align-items:center;gap:18px;color:#9b9e7e}
+#themeToggle{appearance:none;background:transparent;border:1px solid #55503d;border-radius:2px;color:#ECE7D8;padding:6px 10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+#themeToggle:hover{border-color:#8f9270;background:#161410}
+.launchbody{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.23fr) minmax(330px,.77fr);gap:34px;padding:54px 52px 46px}
+.launchcopy{align-self:center}.kicker{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#d4623f;margin-bottom:18px}
+.hero{padding:0}.hero h1{font-family:var(--display);font-weight:600;font-size:clamp(46px,6.3vw,78px);line-height:.94;letter-spacing:-.012em;margin:0 0 22px;max-width:760px}.hero h1 span{display:block;color:#9aa06b}
+.hero p.lead{font-size:16.5px;line-height:1.58;max-width:62ch;margin:0;color:#d6d0c1}
+.heroact{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:28px 0 0}.heroact .fakebtn{background:#ECE7D8;color:#0D0C09}.heroact .fakebtn.secondary{background:transparent;color:#ECE7D8;border-color:#55503d}.heroact .fakebtn.secondary:hover{background:#1d1a14}.heroact .hint{width:100%;font-family:var(--mono);font-size:10.5px;color:#9b9e7e;margin-top:3px}
+.caseboard{align-self:stretch;background:rgba(22,20,16,.92);border:1px solid #3a3529;box-shadow:0 12px 34px rgba(0,0,0,.28);min-width:0}
+.casehead{display:flex;justify-content:space-between;gap:12px;padding:13px 15px;border-bottom:1px solid #3a3529;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#9b9e7e}.livepulse{color:#9aa06b}.livepulse:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#9aa06b;margin-right:7px;box-shadow:0 0 0 4px rgba(154,160,107,.12)}
+.caseid{padding:17px 17px 12px}.caseid strong{display:block;font-family:var(--display);font-size:27px;line-height:1.05}.caseid span{font-family:var(--mono);font-size:10px;color:#9b9e7e}
+.casemath{display:grid;grid-template-columns:1fr auto;gap:0 14px;padding:0 17px 15px}.casemath span,.casemath b{padding:9px 0;border-bottom:1px solid #2b2820;font-family:var(--mono);font-size:11px}.casemath span{color:#9b9e7e}.casemath b{text-align:right;font-size:14px}.casemath .physical,.casemath .physical+b{color:#d4623f;border-bottom:0;font-weight:700}
+.caseverdict{padding:14px 17px;background:rgba(194,75,44,.14);border-top:1px solid rgba(212,98,63,.4);font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#d4623f}.caseverdict b{display:block;margin-top:5px;font-family:var(--display);font-size:25px;letter-spacing:.02em;color:#ECE7D8}
+.casefoot{padding:11px 17px;font-family:var(--mono);font-size:9.5px;line-height:1.5;color:#777a5f}
+.evolution{position:relative;z-index:1;display:grid;grid-template-columns:1.35fr repeat(4,1fr);border-top:1px solid #2b2820;background:rgba(13,12,9,.86)}
+.evolution>div{min-height:82px;padding:14px 16px;border-right:1px solid #2b2820}.evolution>div:last-child{border-right:0}.evolution .shift{background:#d4623f;color:#0D0C09}.evolution small{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:#777a5f;margin-bottom:7px}.evolution .shift small{color:rgba(13,12,9,.65)}.evolution strong{display:block;font-size:12px;line-height:1.35}.evolution .shift strong{font-family:var(--display);font-size:18px;line-height:1.05;text-transform:uppercase}
 
 /* ---- competition contract: one input boundary, one execution boundary, one output boundary ---- */
 .contract{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
@@ -170,10 +175,12 @@ details[open] summary{border-bottom:1px solid var(--line)}
 .detail ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:13px}
 .hidden{display:none}
 
-@media(max-width:720px){.letterhead{flex-direction:column}.letterhead .meta{text-align:left}.sechead .note{margin-left:0;width:100%}.contract{grid-template-columns:1fr}.stack{grid-template-columns:1fr}.stackstep{border-right:0;border-bottom:1px solid var(--line);min-height:0}.stackstep:last-child{border-bottom:0}}
+@media(max-width:900px){.launchbody{grid-template-columns:1fr;padding:42px 34px}.caseboard{max-width:620px}.evolution{grid-template-columns:repeat(2,1fr)}.evolution>div{border-bottom:1px solid #2b2820}.evolution .shift{grid-column:1/-1}.evolution>div:nth-last-child(-n+2){border-bottom:0}}
+@media(max-width:720px){.wrap{padding:10px 10px 60px}.missionbar{align-items:flex-start}.missionmeta{justify-content:flex-end}.missionmeta>span{display:none}.launchbody{padding:34px 20px 28px;gap:28px}.hero h1{font-size:clamp(42px,14vw,62px)}.hero p.lead{font-size:15px}.caseboard{width:100%}.evolution{grid-template-columns:1fr 1fr}.evolution>div{min-height:74px}.contract{grid-template-columns:1fr}.stack{grid-template-columns:1fr}.stackstep{border-right:0;border-bottom:1px solid var(--line);min-height:0}.stackstep:last-child{border-bottom:0}.sechead .note{margin-left:0;width:100%}}
 @media print{
   html,html[data-theme="void"]{--bg:#ffffff;--panel:#ffffff;--panel2:#f0ebe0;--ink:#1a1614;--muted:#6b6a5e;--line:#ddd6c6;--rule:#1a1614;--ember:#b23b2e;--gold:#7d6118;--ok:#54682f;--emberT:rgba(178,59,46,.10);--goldT:rgba(125,97,24,.11);--okT:rgba(84,104,47,.11);--olive:#7C7F57;--btnbg:#1a1614;--btnfg:#ffffff;--cardshadow:none}
-  #themeToggle,.heroact,section[data-screen-label="Load surfaces"]{display:none}
+  #themeToggle,.heroact,section[data-screen-label="Load surfaces"],.evolution{display:none}
+  .launch{color:#1a1614;background:#fff;box-shadow:none}.launch:before,.launch:after{display:none}.missionbar,.caseboard{border-color:#ddd6c6}.launchbody{grid-template-columns:1fr 340px;padding:24px}.hero p.lead{color:#1a1614}.kicker,.caseverdict{color:#b23b2e}.caseboard{background:#fff;color:#1a1614;box-shadow:none}.casehead,.caseid span,.casemath span,.casefoot{color:#6b6a5e}.casemath span,.casemath b{border-color:#ddd6c6}.caseverdict{background:#fff;border-color:#b23b2e}.caseverdict b{color:#1a1614}
   body{font-size:12px}
   .wrap{padding:0}
   .finding,.verdict,.asks,.boundary,.box{break-inside:avoid}
@@ -191,21 +198,45 @@ details[open] summary{border-bottom:1px solid var(--line)}
 <body>
 <div class="wrap">
 
-<header data-screen-label="Letterhead">
-  <div class="letterhead">
-    <div class="org">AXM · OSW Equipment Evidence Challenge</div>
-    <button id="themeToggle" type="button">theme</button>
+<header class="launch" data-screen-label="OSW launch hero">
+  <div class="missionbar">
+    <div class="missionbrand"><b>AXM</b><span>OSW / Pentagon Industry Challenge</span></div>
+    <div class="missionmeta"><span>Public sandbox edition · synthetic dummy data · not CUI · July 2026</span><button id="themeToggle" type="button">theme</button></div>
   </div>
-  <div class="stamp">v1.0 · public and synthetic evidence only · not CUI · not a deployed integration</div>
 
-  <div class="hero" id="heroFinding">
-    <h1>Administrative availability is not physical availability.</h1>
-    <p class="lead">This standalone page reads ordinary inventory, maintenance, and due-in exports — Excel, CSV, JSON — and checks whether a part the record says is in stock could actually return an asset to service. It is the runnable boundary for an industry competition inside the sponsor's sandbox: five synthetic files are already loaded, and every finding recomputes when they are replaced.</p>
-    <div class="heroact">
-      <a class="fakebtn" href="#try">Run the worked case</a>
-      <a class="fakebtn secondary" href="acceptance.html" download="AXM_OSW_Equipment_Evidence_Demo_v1.0.html">Download the standalone HTML</a>
-      <span class="hint">One file. No install, account, server, API key, or network connection after download.</span>
+  <div class="launchbody">
+    <div class="launchcopy hero" id="heroFinding">
+      <div class="kicker">New edition · runnable competition boundary</div>
+      <h1>Can the record prove the equipment is <span>actually available?</span></h1>
+      <p class="lead">Drop in the ordinary inventory, maintenance, and due-in exports the sandbox already has. AXM reconstructs the claim locally, preserves every load-bearing row and hash, and stops exactly where the evidence stops.</p>
+      <div class="heroact">
+        <a class="fakebtn" href="#try">Run the worked case</a>
+        <a class="fakebtn secondary" href="acceptance.html" download="AXM_OSW_Equipment_Evidence_Demo_v1.0.html">Take the one-file demo</a>
+        <a class="fakebtn secondary" href="https://github.com/BigBirdReturns/axm-tools/blob/main/acceptance.html">Inspect source</a>
+        <span class="hint">One HTML file · no install · no account · no server · no outbound network</span>
+      </div>
     </div>
+
+    <aside class="caseboard" aria-label="Worked synthetic case preview">
+      <div class="casehead"><span>Worked case / preloaded</span><span class="livepulse">computed live</span></div>
+      <div class="caseid"><strong>WO-7001 / ASSET-A17</strong><span>required part · P-100 · synthetic</span></div>
+      <div class="casemath">
+        <span>Administrative on hand</span><b>3</b>
+        <span>Serviceable quantity</span><b>3</b>
+        <span>Already allocated</span><b>3</b>
+        <span class="physical">Physically available</span><b>0</b>
+      </div>
+      <div class="caseverdict">Evidence-bounded result<b>Masked shortage</b></div>
+      <div class="casefoot">Every number below replays from the exact source bytes. Replace the five dummy files and the finding recomputes in this browser.</div>
+    </aside>
+  </div>
+
+  <div class="evolution" aria-label="What changed in this edition">
+    <div class="shift"><small>Then → now</small><strong>Intake demo becomes an executable industry challenge</strong></div>
+    <div><small>01 · boundary</small><strong>Left / execution / right contract</strong></div>
+    <div><small>02 · evidence</small><strong>File, row, record ID, SHA-256</strong></div>
+    <div><small>03 · replay</small><strong>Offline, deterministic, one file</strong></div>
+    <div><small>04 · seam</small><strong>Snaps into constraint management</strong></div>
   </div>
 </header>
 
