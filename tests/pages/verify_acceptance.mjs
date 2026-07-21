@@ -106,6 +106,15 @@ check("constraint-management seam is visible",
 check("standalone download and repository trail are present",
   (await page.getAttribute('a[download="AXM_OSW_Equipment_Evidence_Demo_v1.0.html"]', "href")) === "acceptance.html" &&
   (await page.$$eval('a[href^="https://github.com/BigBirdReturns/axm-tools"]', (as) => as.length)) >= 3);
+check("new OSW launch screen is unmistakable",
+  await page.$eval('header[data-screen-label="OSW launch hero"]', (e) => {
+    const text = e.innerText.toLowerCase();
+    return text.includes("osw / pentagon industry challenge") &&
+      text.includes("runnable competition boundary") &&
+      text.includes("masked shortage") &&
+      text.includes("physically available") &&
+      text.includes("intake demo becomes an executable industry challenge");
+  }));
 
 // --- theme toggle ---
 const before = await page.$eval("html", (e) => e.dataset.theme);
