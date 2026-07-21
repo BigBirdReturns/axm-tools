@@ -79,6 +79,10 @@ are touching tells you how much care to take.
 
 ## 3. Map (snapshot, July 2026 — trust the tree over this list)
 
+- `acceptance.html` — the buyer-facing OSW equipment-evidence challenge:
+  one offline page that exercises physical-availability findings against
+  synthetic or sponsor-provided operational exports. Its real browser path is
+  guarded by `tests/pages/verify_acceptance.mjs`.
 - `pta-tracker/` — the living tool: nightly legislation fetch for a K-6
   PTA, relevance filter, board report, offline PWA. Its README is the
   operating manual.

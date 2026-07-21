@@ -85,6 +85,27 @@ check("no draft framing chrome in the handed-over page",
   (await page.$("#framingBar")) === null);
 check("ecosystem section links the live properties",
   (await page.$$eval('section[data-screen-label="The system behind this page"] a', (as) => as.length)) >= 9);
+check("OSW competition contract exposes all three boundaries",
+  await page.$eval('section[data-screen-label="Competition contract"]', (e) => {
+    const text = e.textContent.toLowerCase();
+    return text.includes("left boundary") &&
+      text.includes("execution boundary") &&
+      text.includes("right boundary");
+  }));
+check("phase-one exclusions remain explicit",
+  await page.$eval('section[data-screen-label="Competition contract"]', (e) =>
+    e.innerText.includes("Production credentials") &&
+    e.innerText.includes("equipment command") &&
+    e.innerText.includes("current readiness")));
+check("constraint-management seam is visible",
+  await page.$eval('section[data-screen-label="Constraint stack"]', (e) =>
+    e.innerText.includes("Normal transactions") &&
+    e.innerText.includes("AXM tests the premise") &&
+    e.innerText.includes("Flow systems act honestly") &&
+    e.innerText.includes("Evidence becomes portable")));
+check("standalone download and repository trail are present",
+  (await page.getAttribute('a[download="AXM_OSW_Equipment_Evidence_Demo_v1.0.html"]', "href")) === "acceptance.html" &&
+  (await page.$$eval('a[href^="https://github.com/BigBirdReturns/axm-tools"]', (as) => as.length)) >= 3);
 
 // --- theme toggle ---
 const before = await page.$eval("html", (e) => e.dataset.theme);

@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AXM Surface Acceptance — Physical Availability Demonstration</title>
+<meta name="description" content="A zero-install OSW sandbox demonstration that tests whether ordinary operational records support a claim of physical equipment availability.">
+<meta name="axm-release" content="osw-equipment-evidence/1.0">
+<title>AXM OSW Equipment Evidence Challenge — Physical Availability</title>
 <!-- System font stack only — this page makes zero network requests, by design.
      (House faces Barlow Condensed / IBM Plex render if installed locally; otherwise system equivalents.) -->
 <style>
@@ -49,6 +51,27 @@ a:hover{text-decoration-color:var(--ember)}
 .hero p.lead{font-size:16.5px;max-width:68ch;margin:0;color:var(--ink);opacity:.88}
 .heroact{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:24px 0 10px}
 .heroact .hint{font-family:var(--mono);font-size:11px;color:var(--muted);max-width:52ch}
+
+/* ---- competition contract: one input boundary, one execution boundary, one output boundary ---- */
+.contract{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.contractstep{position:relative;border:1px solid var(--line);border-top:3px solid var(--olive);border-radius:3px;background:var(--panel);box-shadow:var(--cardshadow);padding:16px 17px;min-height:180px}
+.contractstep:nth-child(2){border-top-color:var(--gold)}
+.contractstep:nth-child(3){border-top-color:var(--ok)}
+.contractstep .lane{display:block;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.contractstep h3{font-family:var(--display);font-size:23px;line-height:1.08;margin:0 0 9px}
+.contractstep p{font-size:13.5px;margin:0;color:var(--muted)}
+.outside{border:1px dashed var(--line);border-radius:3px;background:var(--panel2);padding:12px 14px;margin-top:12px;font-size:13px;color:var(--muted)}
+.outside b{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-right:5px}
+
+/* ---- constraint stack: ordinary transactions become safe inputs only after acceptance ---- */
+.stack{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:3px;background:var(--panel);box-shadow:var(--cardshadow);overflow:hidden}
+.stackstep{padding:15px 14px;border-right:1px solid var(--line);min-height:150px}
+.stackstep:last-child{border-right:0}
+.stackstep .n{display:block;font-family:var(--mono);font-size:10px;color:var(--olive);margin-bottom:16px}
+.stackstep h3{font-size:14px;line-height:1.25;margin:0 0 7px}
+.stackstep p{font-size:12.5px;color:var(--muted);margin:0}
+.stackstep.axm{background:var(--panel2);box-shadow:inset 0 3px 0 var(--ember)}
+.stacknote{font-size:13.5px;max-width:72ch;margin:14px 0 0;color:var(--muted)}
 
 /* ---- section heads: real headings, tiny number, quiet note ---- */
 .sechead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:14px;margin:52px 0 18px}
@@ -147,7 +170,7 @@ details[open] summary{border-bottom:1px solid var(--line)}
 .detail ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:13px}
 .hidden{display:none}
 
-@media(max-width:720px){.letterhead{flex-direction:column}.letterhead .meta{text-align:left}.sechead .note{margin-left:0;width:100%}}
+@media(max-width:720px){.letterhead{flex-direction:column}.letterhead .meta{text-align:left}.sechead .note{margin-left:0;width:100%}.contract{grid-template-columns:1fr}.stack{grid-template-columns:1fr}.stackstep{border-right:0;border-bottom:1px solid var(--line);min-height:0}.stackstep:last-child{border-bottom:0}}
 @media print{
   html,html[data-theme="void"]{--bg:#ffffff;--panel:#ffffff;--panel2:#f0ebe0;--ink:#1a1614;--muted:#6b6a5e;--line:#ddd6c6;--rule:#1a1614;--ember:#b23b2e;--gold:#7d6118;--ok:#54682f;--emberT:rgba(178,59,46,.10);--goldT:rgba(125,97,24,.11);--okT:rgba(84,104,47,.11);--olive:#7C7F57;--btnbg:#1a1614;--btnfg:#ffffff;--cardshadow:none}
   #themeToggle,.heroact,section[data-screen-label="Load surfaces"]{display:none}
@@ -170,16 +193,43 @@ details[open] summary{border-bottom:1px solid var(--line)}
 
 <header data-screen-label="Letterhead">
   <div class="letterhead">
-    <div class="org">AXM · Surface Acceptance — Standalone Demonstration</div>
+    <div class="org">AXM · OSW Equipment Evidence Challenge</div>
     <button id="themeToggle" type="button">theme</button>
   </div>
-  <div class="stamp">Dummy data · not CUI · not a system of record · not a deployed integration</div>
+  <div class="stamp">v1.0 · public and synthetic evidence only · not CUI · not a deployed integration</div>
 
   <div class="hero" id="heroFinding">
     <h1>Administrative availability is not physical availability.</h1>
-    <p class="lead">This standalone page reads ordinary inventory, maintenance, and due-in exports — Excel, CSV, JSON — and checks whether a part the record says is in stock could actually return an asset to service. Five dummy files are already loaded below as a worked example; drop in your own and every finding recomputes.</p>
+    <p class="lead">This standalone page reads ordinary inventory, maintenance, and due-in exports — Excel, CSV, JSON — and checks whether a part the record says is in stock could actually return an asset to service. It is the runnable boundary for an industry competition inside the sponsor's sandbox: five synthetic files are already loaded, and every finding recomputes when they are replaced.</p>
+    <div class="heroact">
+      <a class="fakebtn" href="#try">Run the worked case</a>
+      <a class="fakebtn secondary" href="acceptance.html" download="AXM_OSW_Equipment_Evidence_Demo_v1.0.html">Download the standalone HTML</a>
+      <span class="hint">One file. No install, account, server, API key, or network connection after download.</span>
+    </div>
   </div>
 </header>
+
+<section data-screen-label="Competition contract">
+  <div class="sechead"><span class="secnum">00</span><h2>Sandbox competition contract</h2><span class="note">the left and right boundaries, made executable</span></div>
+  <div class="contract">
+    <article class="contractstep">
+      <span class="lane">Left boundary · sponsor</span>
+      <h3>Records already available</h3>
+      <p>One closed or representative equipment case plus the inventory, maintenance, and due-in exports the sandbox already contains. Imperfect fields are expected; absent fields remain declared gaps.</p>
+    </article>
+    <article class="contractstep">
+      <span class="lane">Execution boundary · AXM</span>
+      <h3>Local evidence reconstruction</h3>
+      <p>The browser hashes the supplied bytes, maps familiar field names, joins blocked work to the required part, and separates administrative on-hand quantity from serviceable, unallocated stock.</p>
+    </article>
+    <article class="contractstep">
+      <span class="lane">Right boundary · evaluator</span>
+      <h3>Finding, gaps, and replay</h3>
+      <p>The evaluator receives a bounded finding, exact file/row/hash pointers, explicit limitations, and downloadable JSON or HTML. A human compares the result with known operational reality.</p>
+    </article>
+  </div>
+  <div class="outside"><b>Outside phase one</b> Production credentials, source-system write-back, equipment command, material movement, maintenance release, and certification of current readiness.</div>
+</section>
 
 <section id="try" data-screen-label="Load surfaces">
   <div class="sechead"><span class="secnum">01</span><h2>Load surfaces</h2><span class="note">five dummy files are pre-loaded as a worked example — replace them with your own</span></div>
@@ -231,9 +281,21 @@ details[open] summary{border-bottom:1px solid var(--line)}
   </div>
 </section>
 
+<section data-screen-label="Constraint stack">
+  <div class="sechead"><span class="secnum">06</span><h2>Where this snaps into constraint management</h2><span class="note">transaction flow → evidence acceptance → constraint action → custody</span></div>
+  <div class="stack">
+    <article class="stackstep"><span class="n">01 · observe</span><h3>Normal transactions</h3><p>Invoices, work orders, receipts, counts, requisitions, and status updates create the operational record.</p></article>
+    <article class="stackstep axm"><span class="n">02 · accept</span><h3>AXM tests the premise</h3><p>Do those records support the physical state the next decision assumes? If not, the exact mismatch becomes the result.</p></article>
+    <article class="stackstep"><span class="n">03 · constrain</span><h3>Flow systems act honestly</h3><p>Planning and constraint logic can work from accepted state—or carry the declared uncertainty instead of silently optimizing fiction.</p></article>
+    <article class="stackstep"><span class="n">04 · preserve</span><h3>Evidence becomes portable</h3><p>Accepted surfaces can move into AXM custody, sealing, detached verification, and replay without changing the source system.</p></article>
+  </div>
+  <p class="stacknote">AXM is not another transaction system or optimizer. It is the governance layer between recorded state and consequential action: the part that checks whether the premise is physically supportable before speed magnifies the error.</p>
+</section>
+
 <section data-screen-label="The system behind this page">
-  <div class="sechead"><span class="secnum">06</span><h2>The system behind this page</h2><span class="note">every property below is live — all demo data synthetic; proven, not deployed</span></div>
+  <div class="sechead"><span class="secnum">07</span><h2>The system behind this page</h2><span class="note">follow the working surfaces into the public repository</span></div>
   <ol class="asks">
+    <li><span class="n">↳</span><span><a href="https://github.com/BigBirdReturns/axm-tools/blob/main/acceptance.html">View this exact standalone source</a> in <a href="https://github.com/BigBirdReturns/axm-tools">axm-tools</a> — the page, its dependency-free XLSX reader, and its headless-browser acceptance test are public.</span></li>
     <li><span class="n">↳</span><span><a href="https://bigbirdreturns.github.io/GhostBox/">GhostBox</a> — the intelligence spoke: watch the incumbent, stage the switch.
       <span class="src">its <a href="https://bigbirdreturns.github.io/GhostBox/exit-demo.html">exit demo</a> shows an export leaving a vendor silo and sealing into a sovereign record; the <a href="https://bigbirdreturns.github.io/GhostBox/ship.html">Ship of Theseus</a> shows a nine-plank vendor workflow sealed at each plank's honest tier</span></span></li>
     <li><span class="n">↳</span><span><a href="https://github.com/BigBirdReturns/axm-genesis">axm-genesis</a> — the frozen kernel underneath everything: sealed shards signed Ed25519 ‖ ML-DSA-44, verifiable offline against the record's own bytes and an out-of-band key.
@@ -246,7 +308,7 @@ details[open] summary{border-bottom:1px solid var(--line)}
   </ol>
 </section>
 
-<p class="footer">If a finding above does not match operational reality when run against your own exports, that mismatch is the most valuable output this page can produce — it identifies exactly which record, field, or timestamp is misrepresenting the physical state.</p>
+<p class="footer">If a finding above does not match operational reality when run against your own exports, that mismatch is the most valuable output this page can produce — it identifies exactly which record, field, or timestamp is misrepresenting the physical state. <a href="https://github.com/BigBirdReturns/axm-tools">Inspect the repository and test harness.</a></p>
 </div>
 
 <script>
