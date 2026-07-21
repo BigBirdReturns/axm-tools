@@ -10,6 +10,7 @@ a year and still be working when you come back.
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
+| [`acceptance.html`](acceptance.html) | OSW-ready physical-availability and evidence challenge: runs synthetic inventory, maintenance, and due-in surfaces locally, then accepts ordinary sponsor exports without transmitting them | [standalone demonstration](https://bigbirdreturns.github.io/axm-tools/acceptance.html) — one HTML file, zero network requests |
 | [`pta-tracker/`](pta-tracker/) | District-first legislation watch for an Arcadia USD K-6 PTA: nightly fetch, relevance filter, one-click monthly board report | [static page](https://bigbirdreturns.github.io/axm-tools/pta-tracker/) + nightly Action |
 
 ## Reference areas (not tools)
