@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-21T22:12:18.238428Z",
+  "generated": "2026-07-22T02:05:50.890828Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -10,8 +10,8 @@
     {
       "source": "Google News",
       "scope": "district",
-      "ok": true,
-      "kept": 0
+      "ok": false,
+      "error": "HTTP Error 503: Service Unavailable"
     },
     {
       "source": "LAist Education",
@@ -28,8 +28,8 @@
     {
       "source": "Google News",
       "scope": "state",
-      "ok": true,
-      "kept": 9
+      "ok": false,
+      "error": "HTTP Error 503: Service Unavailable"
     },
     {
       "source": "AUSD board schedule",
