@@ -1,0 +1,46 @@
+name: AXM Readiness check
+
+on:
+  push:
+    paths:
+      - acceptance.html
+      - acceptance-assets/**
+      - .github/workflows/acceptance-check.yml
+  pull_request:
+    paths:
+      - acceptance.html
+      - acceptance-assets/**
+      - .github/workflows/acceptance-check.yml
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check JavaScript syntax
+        run: |
+          for file in acceptance-assets/app-*.js; do
+            node --check "$file"
+          done
+      - name: Build standalone launcher
+        run: python acceptance-assets/build_offline.py
+      - name: Check deployment boundaries
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          page = Path('acceptance.html').read_text(encoding='utf-8')
+          offline = Path('AXM_Readiness_Offline.html').read_text(encoding='utf-8')
+          assert 'connect-src \'none\'' in page
+          assert 'acceptance-assets/app.css' in page
+          assert 'AXM Readiness — Equipment Evidence' in page
+          assert 'acceptance-assets/app-' not in offline
+          assert '<style>' in offline and '<script>' in offline
+          assert 'connect-src \'none\'' in offline
+          print('AXM Readiness checks passed')
+          PY
