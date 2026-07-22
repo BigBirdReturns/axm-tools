@@ -78,3 +78,34 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-attempt-${{ github.run_attempt }}
+
+      # A successful deploy writes a tiny receipt back to main. The push uses
+      # GITHUB_TOKEN and therefore does not recursively trigger this workflow.
+      # This gives maintainers a durable answer to "what artifact is live?"
+      # without trusting the Pages UI or a CDN cache.
+      - name: Record successful Pages deployment
+        env:
+          PAGE_URL: ${{ steps.deploy.outputs.page_url }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          receipt = {
+              "deployed_at": datetime.now(timezone.utc).isoformat(),
+              "source_sha": os.environ["GITHUB_SHA"],
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "page_url": os.environ.get("PAGE_URL", ""),
+              "axm_readiness_release": "readiness-equipment-evidence/1.0",
+          }
+          Path(".github/pages-deployment.json").write_text(
+              json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
+          )
+          PY
+          git config user.name "pages-deploy-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add .github/pages-deployment.json
+          git commit -m "pages: record successful deployment" || exit 0
+          git push
