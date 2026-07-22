@@ -1,10 +1,8 @@
-# Regression harness for acceptance.html — the buyer-facing intake demo.
+# Regression harness for acceptance.html — the buyer-facing AXM Readiness demo.
 #
-# The page is pure client-side JS in one offline file, so its logic only
-# exists in the browser: the honest test drives the real page headless and
-# asserts the intake rules' observable behavior (worked-example verdicts,
-# the dependency-free XLSX reader, the honesty boundary, zero network
-# requests). See tests/pages/verify_acceptance.mjs.
+# The production page is modular and served through GitHub Pages. The browser
+# harness starts a loopback-only HTTP server, drives the real UI, and rejects
+# requests outside that local origin. See tests/pages/verify_acceptance.mjs.
 
 name: Acceptance page
 
@@ -25,8 +23,8 @@ jobs:
 
       - name: Install Playwright + Chromium
         run: |
-          npm install --no-save playwright@1
-          npx playwright install --with-deps chromium
+          npm install --no-save playwright@1 >/tmp/acceptance-npm-install.log 2>&1
+          npx playwright install --with-deps chromium >/tmp/acceptance-browser-install.log 2>&1
 
       - name: Drive acceptance.html and assert the intake rules
         run: node tests/pages/verify_acceptance.mjs
