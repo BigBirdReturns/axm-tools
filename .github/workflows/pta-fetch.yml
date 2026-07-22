@@ -54,6 +54,9 @@ jobs:
             git push
           fi
 
+      - name: Build AXM Readiness offline launcher
+        run: python acceptance-assets/build_offline.py
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
