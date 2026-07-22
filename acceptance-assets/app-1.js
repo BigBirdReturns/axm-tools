@@ -2,6 +2,7 @@ function init(){
   let theme="light";try{theme=localStorage.getItem("axm_readiness_theme")||theme}catch(_e){}
   if(theme!=="light"&&theme!=="dark")theme="light";
   state.theme=theme;document.documentElement.dataset.theme=theme;updateThemeIcon();
+  document.querySelector(".sidefoot").innerHTML="Offline · one file · no account.<br>Files are hashed in this browser; nothing leaves this machine.<br><br>Public page: dummy or de-identified data only.<br>CUI: use the offline copy inside an authorized environment.";
   document.querySelectorAll(".navbtn").forEach(b=>b.addEventListener("click",()=>go(b.dataset.tab)));
   $("goDataBtn").addEventListener("click",()=>go("data"));
   $("themeBtn").addEventListener("click",toggleTheme);
