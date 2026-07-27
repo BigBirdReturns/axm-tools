@@ -46,7 +46,39 @@ relevance, and generate the monthly board report on demand.
    health record — one dead feed keeps the run green, so the page says
    which sources went quiet instead of leaving an empty district section
    as the only tell (red warning if it's a district source).
-6. `index.html` is a static page (GitHub Pages) with **All / Our district /
+6. Every run also writes `data/gaps.json` — machine-written and rebuilt from
+   scratch each time (nothing accumulates, nothing is appended), so it can
+   never drift out of sync with the feed it's reporting on. It exists
+   because the feed reliably finds things but nothing else signals when a
+   hot item never got a parent card — silence on the parent page is
+   indistinguishable from "nothing is happening" unless something checks.
+   It looks for three shapes of that gap: an **uncovered_hot** item is a
+   hot, district-scope feed item less than 60 days old that appears in no
+   parent card's `covers` list (state-scope hot items are VP-desk context,
+   not automatically parent-facing, so they're exempt); an **expired_card**
+   is a `coming_up` card whose `until` date has already passed and needs
+   archiving or replacing; **stale_curation** flags `parent.json` itself
+   when its `updated` date is more than 45 days old — except between
+   June 20 and August 5, when the district goes quiet for summer and an
+   unedited page is the expected state, not a defect, so the check stands
+   down for those weeks rather than crying wolf every night of break. The
+   file also always records `checked` (this run's timestamp) and
+   `reviewed` (how many live items it examined), so a clean run reads as
+   "14 items reviewed today, zero gaps" instead of a bare, unfalsifiable
+   "all clear" that a broken cron job could produce forever. Deliberately,
+   the detector never drafts the missing sentence: it surfaces raw evidence
+   (a verbatim snippet copied from the source, the source's own date, the
+   URL) and stops there. Automated narrative summarization of policy is the
+   documented failure mode this avoids — CNET's AI byline ran at a 53%
+   correction rate, and the LA Times' Quakebot once auto-published a 1925
+   earthquake as breaking news — and a fluent, ready-to-publish machine
+   sentence gets rubber-stamped rather than checked, which is worse than
+   no sentence at all. The report lands as one GitHub issue per run,
+   opened or updated in place, rather than one alert per gap: a detector
+   that pings once for every miss trains its own reader to stop looking,
+   and the day it finds the one gap that actually matters is the day it
+   gets ignored along with the noise.
+7. `index.html` is a static page (GitHub Pages) with **All / Our district /
    Priority** filters and a **Generate PTA report** button producing a
    paste-ready monthly update — district section first, law-text links
    included.
@@ -112,7 +144,24 @@ owner, it isn't ready to be a card. To draft one, copy an existing card in
 `coming_up` or `in_effect` as the template — or hand the source item to a
 Claude session and review what it writes. Cards can carry a `law_url` /
 `law_label` pointing at the statute text on leginfo, so parents see the
-black-letter law, not just coverage.
+black-letter law, not just coverage. A card can also carry an optional
+`"covers": ["<items.json id>", ...]` array — the feed item ids that card
+accounts for. This is the only thing that tells the gap detector a hot
+item already became a parent-facing decision instead of sitting unread:
+add the id in the same edit you write the card. Leave `covers` off, or
+leave an id out of it, and that feed item stays flagged as an
+`uncovered_hot` gap indefinitely — the detector only trusts what's
+written down, not what a human would obviously infer.
+
+**Acting on a gap flag.** `data/gaps.json` (background above) surfaces as
+one GitHub issue per run. Work it top to bottom — `uncovered_hot` first
+(a parent-facing promise already broken), then `expired_card`, then
+`stale_curation` — and treat the `evidence` field as a starting point to
+verify against the linked source, never as a sentence to paste in: write
+the card yourself, then add the item's id to that card's `covers` array so
+it doesn't reflag tomorrow. An `expired_card` gap means archive or replace
+the card; a `stale_curation` gap means walk the whole file and confirm
+nothing's gone stale, then edit `updated`.
 
 **Calendars.** Give a `coming_up` card a `"when"` (`YYYY-MM-DDTHH:MM`, local
 time; optional `"duration_min"` and `"location"`) and the card grows
@@ -132,6 +181,7 @@ schedule:
 | `in_effect` cards | stay until the officer retires them (laws don't expire on a timer; review at semester turnover) |
 | Watchlist, open | red flag forever until marked done — a blank where a report should be is a finding |
 | Watchlist, done | ✓ receipt for 45 days past its date, then hidden |
+| `data/gaps.json` | rebuilt whole-cloth every run — no history of its own, so yesterday's gap list carries no weight once tonight's run replaces it |
 
 **Searching back.** The VP Desk search box covers every item ever tracked,
 grouped by month — "what did we know about phones in March" is one query,

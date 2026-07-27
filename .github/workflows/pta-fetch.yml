@@ -19,6 +19,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write
 
 # one Pages deployment at a time; queue rather than cancel so a merge and
 # the nightly run can't clobber each other
@@ -41,6 +42,91 @@ jobs:
 
       - name: Fetch and filter feeds
         run: python pta-tracker/scripts/fetch.py
+
+      # fetch.py writes data/gaps.json every run - it flags missing human
+      # work (an uncovered hot item, an expired card, stale curation), never
+      # parent-facing prose. One issue, edited in place, is how that reaches
+      # a human without recreating the alarm fatigue of a per-item alert:
+      # this step is the only thing that turns "batched" into "someone got
+      # pinged." continue-on-error keeps a flaky `gh` call from taking down
+      # the data refresh and Pages deploy that matter far more than the issue.
+      - name: Sync gap-tracking issue
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          gaps = json.loads(Path("pta-tracker/data/gaps.json").read_text())
+          items = gaps.get("gaps", [])
+
+          lines = [
+              f"Checked `{gaps.get('checked', '')}` — "
+              f"{gaps.get('reviewed', 0)} feed items reviewed, "
+              f"{len(items)} gap(s) found.",
+              "",
+              "Machine-maintained by `pta-fetch.yml` from `data/gaps.json`. "
+              "It flags missing human work on the parent page and never "
+              "proposes parent-facing prose - a human still writes any "
+              "sentence that goes on the site. One issue total, edited in "
+              "place each run; it closes itself when the count reaches zero.",
+              "",
+          ]
+          for g in items:
+              lines.append(f"### {g.get('kind', '?')}: {g.get('title', '')}")
+              lines.append(f"- ref: `{g.get('ref', '')}`")
+              if g.get("source_url"):
+                  date = g.get("source_date", "")
+                  lines.append(f"- source: {g['source_url']} ({date})")
+              if g.get("why"):
+                  lines.append(f"- why: {g['why']}")
+              if g.get("evidence"):
+                  lines.append(f"- evidence: > {g['evidence']}")
+              lines.append("")
+
+          Path("/tmp/gap-issue-body.md").write_text("\n".join(lines))
+          Path("/tmp/gap-count.txt").write_text(str(len(items)))
+          PY
+
+          gh label create tracker-gap --color FBCA04 \
+            --description "Auto-managed: missing parent-card coverage or stale curation" \
+            || true
+
+          # search both states so a gap reopening after "closed" reuses the
+          # same issue instead of spawning a second one under the label.
+          # `// empty` matters: .[0] on a no-match list is `null`, and
+          # string-interpolating null yields the literal text "null", which
+          # bash's -n treats as non-empty - that would misroute every
+          # zero-issue run into an edit-nonexistent-issue failure.
+          existing=$(gh issue list --label tracker-gap --state all \
+            --json number,state --jq '.[0] // empty | "\(.number) \(.state)"' || true)
+          number=$(echo "$existing" | cut -d' ' -f1)
+          state=$(echo "$existing" | cut -d' ' -f2)
+          count=$(cat /tmp/gap-count.txt)
+
+          if [ "$count" = "0" ]; then
+            if [ -n "$number" ] && [ "$state" = "OPEN" ]; then
+              gh issue close "$number" \
+                --comment "All district hot items are covered, and no cards or curation are past due, as of this run." \
+                || echo "::warning::could not close gap issue #$number"
+            fi
+            # no issue, or already closed: zero gaps is a no-op, on purpose
+          else
+            if [ -n "$number" ]; then
+              if [ "$state" = "CLOSED" ]; then
+                gh issue reopen "$number" || echo "::warning::could not reopen gap issue #$number"
+              fi
+              gh issue edit "$number" --body-file /tmp/gap-issue-body.md \
+                || echo "::warning::could not update gap issue #$number"
+            else
+              gh issue create --title "PTA tracker: parent-page gaps" \
+                --label tracker-gap --body-file /tmp/gap-issue-body.md \
+                || echo "::warning::could not create gap issue"
+            fi
+          fi
 
       - name: Commit updated data
         run: |

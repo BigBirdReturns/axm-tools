@@ -68,6 +68,9 @@ document.documentElement.lang=(function(){
   .actlist .detail{font-size:.85rem;color:var(--muted);margin-top:.25rem}
   .empty{color:var(--muted);font-style:italic;padding:.4rem 0 .8rem;font-size:.92rem}
   .src{font-size:.75rem;margin-top:.5rem}
+  /* ---- staleness footnotes: quiet, not alarms - silence must look checked, not blank ---- */
+  .confirmed{font-size:.72rem;color:var(--muted);margin-top:.55rem}
+  .checked{color:var(--muted);font-size:.85rem;margin-top:-.3rem;padding-bottom:.6rem}
   .alert{color:var(--hot);font-weight:bold}
   /* ---- VP Desk watchlist: scheduled obligations, flagged when overdue ---- */
   .witem{padding:.55rem 0;border-bottom:1px solid var(--soft);font-size:.9rem}
@@ -265,6 +268,8 @@ const MSG={
     "watch.overdue":d=>"expected by "+d+" — not seen yet","watch.by":d=>"by "+d,
     "coming.empty":()=>'No board meeting or decision window on the radar right now. The district posts agendas a few days ahead — <a href="https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" target="_blank" rel="noopener">check Simbli</a> if you want to look yourself.',
     "effect.empty":"Nothing new in effect.",
+    "card.confirmed":d=>"Last confirmed "+d+".",
+    "empty.checked":(n,d)=>"Checked "+n+" feed items as of "+d+" — none needed a parent card here.",
     "parent.notset":'Parent view not set up yet — see the <a href="#desk">VP Desk</a> for the raw feed.',
     "stamp.updated":d=>"Updated "+d+".","stamp.stale":n=>" STALE: the nightly job hasn't run in "+n+" days.",
     "sources.reporting":(o,t)=>"Sources reporting: "+o+" of "+t,"sources.quiet":n=>" — quiet: "+n,
@@ -305,6 +310,8 @@ const MSG={
     "watch.overdue":d=>"應於 "+d+" 前完成——尚未見到","watch.by":d=>d+" 前",
     "coming.empty":()=>'目前雷達上沒有董事會會議或決策時程。學區會在幾天前公布議程——想自己查看，可<a href="https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" target="_blank" rel="noopener">查看 Simbli</a>。',
     "effect.empty":"目前沒有新生效的項目。",
+    "card.confirmed":d=>"最後查核於 "+d+"。",
+    "empty.checked":(n,d)=>"已於 "+d+" 查核 "+n+" 則資料流項目——沒有一則需要在此建立家長卡片。",
     "parent.notset":'家長版尚未設定——請至<a href="#desk">副會長工作台</a>查看原始資料流。',
     "stamp.updated":d=>"更新於 "+d+"。","stamp.stale":n=>" 過期：每晚排程已 "+n+" 天未執行。",
     "sources.reporting":(o,t)=>"來源回報："+o+"／"+t,"sources.quiet":n=>"——沉寂："+n,
@@ -345,6 +352,8 @@ const MSG={
     "watch.overdue":d=>d+"까지 예정 — 아직 확인되지 않음","watch.by":d=>d+"까지",
     "coming.empty":()=>'현재 레이더에 잡히는 이사회 회의나 결정 일정이 없습니다. 학군은 며칠 전에 안건을 게시합니다 — 직접 확인하려면 <a href="https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" target="_blank" rel="noopener">Simbli 확인</a>.',
     "effect.empty":"새로 시행 중인 항목이 없습니다.",
+    "card.confirmed":d=>"마지막 확인: "+d+".",
+    "empty.checked":(n,d)=>d+" 기준으로 피드 항목 "+n+"건을 확인했습니다 — 학부모용 카드가 필요한 항목은 없었습니다.",
     "parent.notset":'학부모용 화면이 아직 설정되지 않았습니다 — 원본 자료는 <a href="#desk">부회장 데스크</a>를 참고하세요.',
     "stamp.updated":d=>"업데이트: "+d+".","stamp.stale":n=>" 오래됨: 야간 작업이 "+n+"일째 실행되지 않았습니다.",
     "sources.reporting":(o,t)=>"보고 중인 출처: "+t+"개 중 "+o+"개","sources.quiet":n=>" — 잠잠함: "+n,
@@ -385,6 +394,8 @@ const MSG={
     "watch.overdue":d=>"previsto para el "+d+" — aún no aparece","watch.by":d=>"para el "+d,
     "coming.empty":()=>'No hay ninguna reunión de la junta ni ventana de decisión en el radar por ahora. El distrito publica las agendas unos días antes — <a href="https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" target="_blank" rel="noopener">consulte Simbli</a> si quiere verlo usted mismo.',
     "effect.empty":"Nada nuevo en vigor.",
+    "card.confirmed":d=>"Confirmado por última vez el "+d+".",
+    "empty.checked":(n,d)=>"Se revisaron "+n+" elementos del feed hasta el "+d+"; ninguno necesitó una tarjeta para las familias aquí.",
     "parent.notset":'La vista para familias aún no está configurada — consulte el <a href="#desk">Escritorio VP</a> para ver los datos sin procesar.',
     "stamp.updated":d=>"Actualizado el "+d+".","stamp.stale":n=>" DESACTUALIZADO: la tarea nocturna lleva "+n+" días sin ejecutarse.",
     "sources.reporting":(o,t)=>"Fuentes activas: "+o+" de "+t,"sources.quiet":n=>" — en silencio: "+n,
@@ -459,6 +470,15 @@ function fmtDate(s){
   return new Date(y,m-1,d).toLocaleDateString(DATE_LOC(),{month:"short",day:"numeric"})
     +(y!==new Date().getFullYear()?", "+y:"");
 }
+// full form (always carries the year) for the curation-staleness footnote: a
+// "last confirmed" date has to stand alone and read right months after the
+// fact, not just at a glance the week it was written
+function fmtDateFull(s){
+  if(!s)return"";
+  const[y,m,d]=s.split("-").map(Number);
+  if(!y||!m||!d)return s;
+  return new Date(y,m-1,d).toLocaleDateString(DATE_LOC(),{month:"long",day:"numeric",year:"numeric"});
+}
 
 /* ---------- add-to-calendar ----------
    .ics data-URI download covers iPhone/Apple Calendar/Outlook; a template
@@ -503,6 +523,15 @@ function renderParent(){
     return;
   }
   const p=PARENT;
+  // Silence on this page must never look identical to "nobody checked": a
+  // card that just sits here forever reads as current whether or not anyone
+  // re-verified it. If the curator's own "updated" stamp is stale, every
+  // card gets an honest, quiet footnote instead of staying silent about it.
+  let confirmed=null;
+  if(p.updated){
+    const[uy,um,ud]=p.updated.split("-").map(Number);
+    if(uy&&(new Date()-new Date(uy,um-1,ud))/864e5>45)confirmed=fmtDateFull(p.updated);
+  }
   // Cards with an "until" date retire themselves the day after — a meeting
   // announced as "coming up" must never still say so once it has happened.
   const live=(p.coming_up||[]).filter(c=>{
@@ -510,13 +539,21 @@ function renderParent(){
     const[y,m,d]=c.until.split("-").map(Number);
     return new Date(y,m-1,d,23,59)>=new Date();
   });
-  coming.innerHTML=live.length?live.map(card).join(""):'<div class="empty">'+t("coming.empty")+'</div>';
-  document.getElementById("effect").innerHTML=(p.in_effect||[]).map(card).join("")||
-    '<div class="empty">'+t("effect.empty")+'</div>';
+  // An empty bucket needs to look inspected, not abandoned: pair the existing
+  // empty-state copy with the count of items.json's live feed reviewed and the
+  // run's own timestamp, once that data has arrived (fetched independently of
+  // parent.json — see the items.json .then() below, which re-runs this).
+  const checkedLine=META?'<div class="checked">'+
+    t("empty.checked",ITEMS.length,fmtDate(META.generated.slice(0,10)))+'</div>':"";
+  coming.innerHTML=live.length?live.map(c=>card(c,confirmed)).join("")
+    :'<div class="empty">'+t("coming.empty")+'</div>'+checkedLine;
+  document.getElementById("effect").innerHTML=(p.in_effect||[]).map(c=>card(c,confirmed)).join("")||
+    ('<div class="empty">'+t("effect.empty")+'</div>'+checkedLine);
   document.getElementById("actions").innerHTML=(p.actions||[]).map(a=>`
     <div class="card">
       <h3>${a.url?`<a href="${a.url}" target="_blank" rel="noopener">${esc(a.label)}</a>`:esc(a.label)}</h3>
       <div class="detail">${esc(a.detail)}</div>
+      ${confirmed?`<div class="confirmed">${t("card.confirmed",confirmed)}</div>`:""}
     </div>`).join("");
   // VP Desk watchlist: the role's scheduled obligations. Anything past its
   // expected_by that isn't marked done gets flagged — a blank where a report
@@ -541,7 +578,7 @@ function renderParent(){
   }
 }
 
-function card(c){
+function card(c,confirmed){
   return `<div class="card">
     <h3>${esc(c.title)}</h3>
     <div class="impact">${esc(c.kid_impact)}</div>
@@ -554,6 +591,7 @@ function card(c){
     </div>
     ${c.action?`<a class="act" href="${c.action.url}" target="_blank" rel="noopener">${esc(c.action.label)}</a>`:""}
     ${c.when?`<div style="margin-top:.6rem">${calLinks({when:c.when,mins:c.duration_min,uid:c.id,title:c.title,loc:c.location,url:c.source_url})}</div>`:""}
+    ${confirmed?`<div class="confirmed">${t("card.confirmed",confirmed)}</div>`:""}
   </div>`;
 }
 
@@ -575,6 +613,9 @@ fetch("data/archive.json").then(r=>r.json())
 fetch("data/items.json").then(r=>r.json()).then(d=>{
   META=d;ITEMS=d.items||[];
   applyFilterCounts();refreshMeta();render();
+  // parent.json may have rendered first (fetches race); re-run so an already
+  // -empty bucket picks up the reviewed-count proof now that it exists.
+  renderParent();
 }).catch(()=>list.innerHTML='<div class="empty">'+t("list.nodata")+'</div>');
 
 // filter buttons carry their live counts; label re-translates on locale switch

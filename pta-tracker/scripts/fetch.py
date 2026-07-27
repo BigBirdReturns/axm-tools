@@ -47,6 +47,8 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data" / "items.json"
 OBSERVED = ROOT / "data" / "observed.json"
 ARCHIVE = ROOT / "data" / "archive.json"
+PARENT = ROOT / "data" / "parent.json"
+GAPS = ROOT / "data" / "gaps.json"
 
 AGENDA_PAGE = "https://www.ausd.net/apps/pages/agenda"
 SIMBLI_MEETINGS = (
@@ -493,6 +495,164 @@ def fetch_all() -> tuple[list[dict], list[dict]]:
     return items, health
 
 
+# --- gap detection ----------------------------------------------------------
+# The feed reliably finds things; nothing used to signal when a hot item had
+# no matching parent card, so silence on the parent page was indistinguishable
+# from "nothing is happening." This never invents parent-facing prose (that's
+# the documented failure mode - CNET's 53% AI-story error rate, Quakebot
+# republishing a 1925 quake as breaking news): it only surfaces the item's own
+# verbatim summary/title so a human decides what sentence to write, if any.
+UNCOVERED_HOT_MAX_AGE_DAYS = 60
+STALE_CURATION_DAYS = 45
+# District staff and this page both go quiet over summer; a curator not
+# touching parent.json in that window is the expected shape, not a defect.
+DORMANT_START = (6, 20)
+DORMANT_END = (8, 5)
+
+
+def _load_parent() -> dict:
+    """Read parent.json defensively.
+
+    It's hand-edited, not machine-written, so it can be missing, briefly
+    malformed mid-edit, or lacking keys we've since added (like "covers").
+    The gap report matters far less than the nightly feed refresh, so any
+    failure here degrades to "no cards known" instead of killing the run.
+    """
+    if not PARENT.exists():
+        return {}
+    try:
+        raw = json.loads(PARENT.read_text())
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"[warn] parent.json unreadable, skipping gap checks against it: {e}", file=sys.stderr)
+        return {}
+    return raw if isinstance(raw, dict) else {}
+
+
+def _in_dormant_window(today: datetime.date) -> bool:
+    return DORMANT_START <= (today.month, today.day) <= DORMANT_END
+
+
+def _iso_day(published: str | None) -> str:
+    """Normalize a feed publish date to YYYY-MM-DD, or "" if unparseable.
+
+    Feed items carry RFC 822 dates ("Tue, 21 Jul 2026 21:03:51 GMT") while
+    hand-seeded and board-meeting items carry ISO. Slicing the first ten
+    characters works for one and produces "Tue, 21 Ju" for the other - and
+    the gap report's whole job is to hand a curator a date they can trust.
+    Same dual-format order as too_old().
+    """
+    if not published:
+        return ""
+    try:
+        return email.utils.parsedate_to_datetime(published).date().isoformat()
+    except (TypeError, ValueError):
+        try:
+            return datetime.datetime.fromisoformat(published).date().isoformat()
+        except (TypeError, ValueError):
+            return ""
+
+
+def find_gaps(merged: list[dict], today: datetime.date) -> dict:
+    """Build the gaps.json payload per the GAPS CONTRACT.
+
+    `merged` is this run's live item set (already deduped/aged by main()),
+    so "reviewed" below is a real count of what was actually checked, not a
+    guess - the "nothing found" case needs to be substantiated, not silent.
+    """
+    parent = _load_parent()
+
+    covered = set()
+    for bucket in ("coming_up", "in_effect", "actions"):
+        for card in parent.get(bucket) or []:
+            if isinstance(card, dict):
+                # "covers" is hand-typed; a curator writing "covers": "seed-ab3216"
+                # instead of ["seed-ab3216"] would otherwise have set.update()
+                # iterate the string character by character, silently covering
+                # nothing and flagging the item forever
+                covers = card.get("covers")
+                if isinstance(covers, str):
+                    covers = [covers]
+                elif not isinstance(covers, list):
+                    covers = []
+                covered.update(c for c in covers if isinstance(c, str))
+
+    cutoff = (today - datetime.timedelta(days=UNCOVERED_HOT_MAX_AGE_DAYS)).isoformat()
+    gaps = []
+    for item in merged:
+        if item.get("priority") != "hot" or item.get("scope") != "district":
+            continue  # state items are VP-desk context, not auto parent cards
+        if item.get("id") in covered:
+            continue
+        if item.get("first_seen", "") < cutoff:
+            continue  # don't resurrect ancient history on first run
+        gaps.append(
+            {
+                "kind": "uncovered_hot",
+                "ref": item.get("id", ""),
+                "title": item.get("title", ""),
+                "why": "Hot district item with no parent card's \"covers\" listing it - "
+                "a human needs to decide whether this needs a card.",
+                "source_url": item.get("link", ""),
+                "source_date": _iso_day(item.get("published")),
+                "evidence": item.get("summary") or item.get("title", ""),
+            }
+        )
+
+    for card in parent.get("coming_up") or []:
+        if not isinstance(card, dict):
+            continue
+        until = card.get("until", "")
+        # hand-typed field: a bare 20260728 is valid JSON but not a string,
+        # and comparing int to str raises rather than just being wrong
+        if isinstance(until, str) and until and until < today.isoformat():
+            gaps.append(
+                {
+                    "kind": "expired_card",
+                    "ref": card.get("id", ""),
+                    "title": card.get("title", ""),
+                    "why": "This card's \"until\" date has passed - archive or replace it.",
+                    "source_url": card.get("source_url", ""),
+                    "source_date": until,
+                    "evidence": "",
+                }
+            )
+
+    updated = parent.get("updated", "")
+    if updated and not _in_dormant_window(today):
+        try:
+            stale_days = (today - datetime.date.fromisoformat(updated)).days
+        except (ValueError, TypeError):
+            stale_days = 0
+        if stale_days > STALE_CURATION_DAYS:
+            gaps.append(
+                {
+                    "kind": "stale_curation",
+                    "ref": "parent.json",
+                    "title": "Parent page curation",
+                    "why": f"parent.json hasn't been updated in {stale_days} days "
+                    "(outside the June 20 - Aug 5 dormant window).",
+                    "source_url": "",
+                    "source_date": updated,
+                    "evidence": "",
+                }
+            )
+
+    order = {"uncovered_hot": 0, "expired_card": 1, "stale_curation": 2}
+    gaps.sort(key=lambda g: order[g["kind"]])
+
+    return {
+        "note": "Machine-written, regenerated every run, append-nothing - this "
+        "file flags MISSING HUMAN WORK on the parent page. It never writes "
+        "parent-facing prose; each gap carries a verbatim source snippet so a "
+        "human writes the sentence, not the script.",
+        "checked": datetime.datetime.now(datetime.timezone.utc)
+        .isoformat()
+        .replace("+00:00", "Z"),
+        "reviewed": len(merged),
+        "gaps": gaps,
+    }
+
+
 def main() -> None:
     previous = {}
     if DATA.exists():
@@ -563,9 +723,25 @@ def main() -> None:
             indent=2,
         )
     )
+    # The gap report is a convenience for the curator; the feed refresh is the
+    # district's actual service. A typo in hand-edited parent.json must never
+    # be able to cost everyone the nightly data - so this can fail alone.
+    gaps_report = None
+    try:
+        gaps_report = find_gaps(merged, datetime.date.today())
+        GAPS.write_text(json.dumps(gaps_report, indent=2))
+    except Exception as e:  # noqa: BLE001 - deliberately broad; see above
+        print(f"[warn] gap check skipped: {e}", file=sys.stderr)
+
     hot = sum(1 for i in merged if i["priority"] == "hot")
     district = sum(1 for i in merged if i.get("scope") == "district")
-    print(f"wrote {len(merged)} items ({hot} hot, {district} district)")
+    tail = (
+        f"; {len(gaps_report['gaps'])} gaps found reviewing "
+        f"{gaps_report['reviewed']} items"
+        if gaps_report
+        else "; gap check skipped"
+    )
+    print(f"wrote {len(merged)} items ({hot} hot, {district} district){tail}")
 
 
 if __name__ == "__main__":
