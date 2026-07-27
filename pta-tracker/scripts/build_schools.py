@@ -6,11 +6,23 @@ AUSD has six elementary schools and nearly every card in this tracker is
 district- or state-level, i.e. identical for all six - one corpus, six
 front doors. index.html is BOTH the live default-school (Holly Avenue) page
 and the build template: this script reads it once and, for every school
-listed in data/schools.json (published or not - "published" only gates who
-we may point at the page, never whether it gets built), writes a copy at
+listed in data/schools.json with "published": true, writes a copy at
 <slug>/index.html carrying that school's identity. The template itself is
 never modified on disk; it stays the default page exactly as the root URL
 already serves it.
+
+schools.json keeps all six schools as data whether or not they're
+published - the corpus is one shared write for the whole district - but only
+published schools get built. An unpublished school is PARKED: nothing about
+it should exist in the working tree until its PTA opts in, because a built-
+but-unlinked page is still a page a search engine or a stray link can find,
+carrying another PTA's name without that PTA having agreed to anything.
+Unparking is exactly flipping "published" to true and rerunning this script;
+nothing else needs to change for that school to reappear correctly. The
+sweep below is the other half of that: it removes a school's generated
+directory the run after "published" goes back to false, using the same
+marker-file safety as the schools.json-removal case so it can never delete
+a directory it did not create.
 
 School identity is injected, never inferred: the page resolves its data
 directory as `window.SCHOOL_BASE || "data/"` and its school id as
@@ -317,19 +329,22 @@ def write_text(path, text):
         f.write(text)
 
 
-def sweep_stale(current_slugs):
-    """Remove generated directories for schools no longer in schools.json.
-    Only ever touches a directory that (a) is not a protected hand-
-    maintained name and (b) actually carries our marker file - so a
-    directory this script didn't create is never at risk, no matter its
-    name."""
+def sweep_stale(keep_slugs):
+    """Remove generated directories for slugs we should NOT have built this
+    run - a school dropped from schools.json entirely, or one still listed
+    but no longer "published" (parked). Only ever touches a directory that
+    (a) is not a protected hand-maintained name and (b) actually carries our
+    marker file - so a directory this script didn't create is never at risk,
+    no matter its name. `keep_slugs` is the published set, not the full
+    roster, which is what makes flipping "published" back to false enough to
+    make a school's page disappear on the next run."""
     removed = []
     for entry in sorted(ROOT.iterdir()):
         if not entry.is_dir() or entry.name in PROTECTED_NAMES:
             continue
         if not (entry / MARKER_NAME).exists():
             continue
-        if entry.name not in current_slugs:
+        if entry.name not in keep_slugs:
             shutil.rmtree(entry)
             removed.append(entry.name)
     return removed
@@ -343,8 +358,14 @@ def main():
     default_school = next(s for s in schools if s["id"] == default_id)
     defaults = extract_default_fields(base_html, default_school["short"])
 
+    published_schools = [s for s in schools if s.get("published", False)]
+    parked_schools = [s for s in schools if not s.get("published", False)]
+
+    for school in parked_schools:
+        print(f"parked {school['slug']}/  (published=false in {SCHOOLS_JSON.name})")
+
     failures = []
-    for school in schools:
+    for school in published_schools:
         try:
             html = build_school_html(base_html, defaults, school, default_school["short"])
             out_dir = ROOT / school["slug"]
@@ -357,19 +378,16 @@ def main():
                 out_dir / MARKER_NAME,
                 json.dumps({"id": school["id"], "slug": school["slug"]}) + "\n",
             )
-            print(
-                f"built {school['slug']}/  (id={school['id']}, "
-                f"published={school.get('published', False)})"
-            )
+            print(f"built {school['slug']}/  (id={school['id']})")
         except SystemExit:
             raise
         except Exception as e:  # noqa: BLE001 - report and keep going
             failures.append(school["slug"])
             print(f"FAILED {school['slug']}: {e}", file=sys.stderr)
 
-    removed = sweep_stale({s["slug"] for s in schools})
+    removed = sweep_stale({s["slug"] for s in published_schools})
     for slug in removed:
-        print(f"removed stale {slug}/  (no longer in {SCHOOLS_JSON.name})")
+        print(f"swept {slug}/  (not published in {SCHOOLS_JSON.name})")
 
     if failures:
         fail(f"failed to build: {', '.join(failures)}")

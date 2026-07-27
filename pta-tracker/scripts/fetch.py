@@ -14,6 +14,13 @@ District sources (the actual job):
      system (Simbli itself sits behind Incapsula bot protection, so agendas
      are for humans to click, not for us to scrape)
 
+School sources (scope "school" - a single campus's own voice, not the
+district's):
+  3a. Holly Avenue News RSS  - ha.ausd.net's own announcements (same Edlio
+                                CMS as the district feed). Its events feed
+                                403s behind bot protection, same story as
+                                Simbli, so it isn't in FEEDS.
+
 State sources (context):
   4. LAist education RSS     - LA-county angle
   5. CDE "What's New" RSS    - Dept. of Education official announcements
@@ -48,6 +55,7 @@ DATA = ROOT / "data" / "items.json"
 OBSERVED = ROOT / "data" / "observed.json"
 ARCHIVE = ROOT / "data" / "archive.json"
 PARENT = ROOT / "data" / "parent.json"
+DERIVED = ROOT / "data" / "derived.json"
 GAPS = ROOT / "data" / "gaps.json"
 SCHOOLS = ROOT / "data" / "schools.json"
 
@@ -57,24 +65,31 @@ SIMBLI_MEETINGS = (
     "?S=36030512"
 )
 
-# (source label, url, scope) - scope is "district" or "state"
+# (source label, url, scope, school) - scope is "district", "state", or
+# "school"; school is the schools.json id a "school"-scope feed belongs to,
+# and None for every district/state feed (there is exactly one school today,
+# but the 4th slot is what lets a second campus's feed join without another
+# schema change).
 FEEDS = [
-    ("AUSD News", "https://www.ausd.net/apps/news/rss", "district"),
+    ("AUSD News", "https://www.ausd.net/apps/news/rss", "district", None),
     (
         "Google News",
         "https://news.google.com/rss/search?"
         "q=%22Arcadia%20Unified%22%20OR%20%22Arcadia%20USD%22"
         "&hl=en-US&gl=US&ceid=US:en",
         "district",
+        None,
     ),
-    ("LAist Education", "https://laist.com/education.rss", "state"),
-    ("CA Dept of Education", "https://www.cde.ca.gov/rssfeed.asp", "state"),
+    ("Holly Avenue News", "https://ha.ausd.net/apps/news/rss", "school", "ha"),
+    ("LAist Education", "https://laist.com/education.rss", "state", None),
+    ("CA Dept of Education", "https://www.cde.ca.gov/rssfeed.asp", "state", None),
     (
         "Google News",
         "https://news.google.com/rss/search?"
         "q=California%20K-12%20education%20law%20OR%20legislation"
         "%20OR%20%22school%20district%22&hl=en-US&gl=US&ceid=US:en",
         "state",
+        None,
     ),
 ]
 
@@ -128,9 +143,16 @@ DISTRICT_SKIP = [
 
 def score(text: str, scope: str) -> str | None:
     t = text.lower()
-    if scope == "district":
-        # low-volume feeds from our own district: keep what parents may need
-        # to act on, drop the awards-and-celebrations firehose
+    if scope in ("district", "school"):
+        # Low-volume feeds from our own district - and, same intent, a
+        # single school's own feed - keep what parents may need to act on
+        # and drop the awards-and-celebrations firehose. A school's feed is
+        # lower-volume still and closer to its own parents by default, but
+        # that's a difference of degree, not of vocabulary: reusing
+        # DISTRICT_HOT/DISTRICT_SKIP unchanged means "almost everything from
+        # our own school is relevant" falls out of the same "keep unless
+        # it's fluff" rule already tuned for the district feed, rather than
+        # a second wordlist to keep in sync with the first.
         if any(re.search(p, t, re.I) for p in DISTRICT_SKIP) and not any(
             re.search(p, t, re.I) for p in DISTRICT_HOT
         ):
@@ -405,7 +427,7 @@ def load_observed() -> list[dict]:
     if not OBSERVED.exists():
         return []
     try:
-        raw = json.loads(OBSERVED.read_text()).get("items", [])
+        raw = json.loads(OBSERVED.read_text(encoding="utf-8")).get("items", [])
     except (json.JSONDecodeError, OSError) as e:
         print(f"[warn] observed.json unreadable: {e}", file=sys.stderr)
         return []
@@ -439,7 +461,7 @@ def fetch_all() -> tuple[list[dict], list[dict]]:
     """
     items = []
     health = []
-    for source, url, scope in FEEDS:
+    for source, url, scope, school in FEEDS:
         try:
             entries = parse_feed(_get(url))
         except Exception as e:  # one broken feed shouldn't kill the run
@@ -464,18 +486,19 @@ def fetch_all() -> tuple[list[dict], list[dict]]:
             if not relevance:
                 continue
             uid = hashlib.sha1((e["link"] or title).encode()).hexdigest()[:12]
-            items.append(
-                {
-                    "id": uid,
-                    "source": e["via"] or source,
-                    "title": title,
-                    "summary": summary,
-                    "link": e["link"],
-                    "published": e["published"],
-                    "priority": relevance,
-                    "scope": scope,
-                }
-            )
+            item = {
+                "id": uid,
+                "source": e["via"] or source,
+                "title": title,
+                "summary": summary,
+                "link": e["link"],
+                "published": e["published"],
+                "priority": relevance,
+                "scope": scope,
+            }
+            if school:  # scope "school" items carry which campus they're for
+                item["school"] = school
+            items.append(item)
             kept += 1
         health.append({"source": source, "scope": scope, "ok": True, "kept": kept})
     if not any(h["ok"] for h in health):
@@ -494,6 +517,134 @@ def fetch_all() -> tuple[list[dict], list[dict]]:
     )
     items.extend(meetings or [])
     return items, health
+
+
+# --- derived cards -----------------------------------------------------------
+# The recurring failure mode this repo is actually built to survive isn't a
+# broken feed, it's a volunteer who stops writing the monthly card. A board
+# meeting's date/time/location are FACTS the scraper already has in full;
+# only "what this means for your kid" is a CONSEQUENCE, and that stays human.
+# So a curator writes the sentence once (parent.json "templates"), and every
+# run instantiates it with scraped facts into its own file - never into
+# parent.json itself, which stays hand-curated and hand-owned.
+DERIVED_NOTE = (
+    "Machine-written every run, never hand-edited; facts scraped from the "
+    "district, prose instantiated from human-written templates in "
+    "parent.json. Delete it and the next run rebuilds it."
+)
+
+
+def _empty_derived() -> dict:
+    return {
+        "note": DERIVED_NOTE,
+        "generated": datetime.datetime.now(datetime.timezone.utc)
+        .isoformat()
+        .replace("+00:00", "Z"),
+        "coming_up": [],
+    }
+
+
+def build_derived(merged: list[dict], parent: dict, today: datetime.date) -> dict:
+    """Instantiate parent.json's board_meeting template with scraped facts.
+
+    Board-meeting items already carry a stable, purpose-built id
+    ("ausd-mtg-YYYY-MM-DD") minted once, in fetch_board_meetings(), by
+    reading the actual agenda-page schedule. Finding them here by that id
+    prefix reuses that same output instead of re-deriving "is this item a
+    board meeting" from a second regex over titles - which would just be a
+    new place for the id format and the title wording to silently drift
+    apart from each other.
+
+    The one prohibition: if a curator hasn't written templates.board_meeting
+    yet, this returns an EMPTY coming_up and warns - it never invents the
+    missing sentence to fill the gap.
+    """
+    templates = parent.get("templates") or {}
+    tmpl = templates.get("board_meeting")
+    if not isinstance(tmpl, dict):
+        print(
+            "[warn] parent.json has no templates.board_meeting - "
+            "derived.json will carry no cards",
+            file=sys.stderr,
+        )
+        return _empty_derived()
+
+    cards = []
+    for item in merged:
+        item_id = item.get("id", "")
+        if not item_id.startswith("ausd-mtg-"):
+            continue
+        try:
+            date = datetime.date.fromisoformat(item.get("published", ""))
+        except (TypeError, ValueError):
+            continue  # can't place it in time, so can't say "coming up"
+        if date < today:
+            continue  # never resurrect a meeting that's already happened
+        try:
+            title = tmpl["title"].format(
+                weekday=f"{date:%A}", month=f"{date:%B}", day=str(date.day)
+            )
+            kid_impact = tmpl["kid_impact"]
+            impact_area = tmpl["impact_area"]
+            owner = tmpl["owner"]
+            time_sensitivity = tmpl["time_sensitivity"]
+        except (KeyError, IndexError, AttributeError) as e:
+            # Malformed template - same prohibition applies: skip the card
+            # rather than guess at the missing piece.
+            print(f"[warn] templates.board_meeting malformed: {e}", file=sys.stderr)
+            continue
+        cards.append(
+            {
+                "id": f"derived-board-{date.isoformat()}",
+                "kind": "meeting",
+                "derived": True,
+                "source_item": item_id,
+                "until": date.isoformat(),
+                "when": f"{date.isoformat()}T19:00",
+                # Mirrors the hand-written coming_up meeting card in
+                # parent.json field-for-field (location/source_url/action) -
+                # this is a fact-only fill-in of that same shape, not a new one.
+                "location": "Arcadia Education Center Board Room, "
+                "150 S 3rd Ave, Arcadia, CA 91006",
+                "title": title,
+                "kid_impact": kid_impact,
+                "impact_area": impact_area,
+                "owner": owner,
+                "time_sensitivity": time_sensitivity,
+                "source_url": AGENDA_PAGE,
+                "covers": [item_id],
+                "action": {
+                    "type": "read",
+                    "label": "Check the agenda on Simbli",
+                    "url": SIMBLI_MEETINGS,
+                },
+            }
+        )
+    cards.sort(key=lambda c: c["source_item"])
+    out = _empty_derived()
+    out["coming_up"] = cards
+    return out
+
+
+def _load_derived() -> dict:
+    """Read derived.json defensively, same posture as _load_parent().
+
+    It's machine-written by this same run, so it's normally present and
+    fresh - but a first run before it exists, a hand-deleted file, or a
+    build step that failed and left nothing behind must not make the gap
+    check fall over.
+    """
+    if not DERIVED.exists():
+        return {}
+    try:
+        raw = json.loads(DERIVED.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        print(
+            f"[warn] derived.json unreadable, skipping its coverage in gap checks: {e}",
+            file=sys.stderr,
+        )
+        return {}
+    return raw if isinstance(raw, dict) else {}
 
 
 # --- gap detection ----------------------------------------------------------
@@ -522,7 +673,15 @@ def _load_parent() -> dict:
     if not PARENT.exists():
         return {}
     try:
-        raw = json.loads(PARENT.read_text())
+        # encoding is explicit on purpose, everywhere this repo touches a
+        # file. Path.read_text() otherwise uses locale.getpreferredencoding(),
+        # which is cp1252 on a stock Windows box: parent.json's UTF-8 em dash
+        # (E2 80 94) then decodes as "â€”" WITHOUT raising, because cp1252 has
+        # no invalid bytes, and json.loads() is perfectly happy with the
+        # result. The corruption only becomes visible on the parent page,
+        # inside a sentence a human wrote. A curator's words must survive the
+        # trip byte-for-byte or not be shipped at all.
+        raw = json.loads(PARENT.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as e:
         print(f"[warn] parent.json unreadable, skipping gap checks against it: {e}", file=sys.stderr)
         return {}
@@ -544,7 +703,7 @@ def _load_school_ids() -> set[str]:
     if not SCHOOLS.exists():
         return set()
     try:
-        raw = json.loads(SCHOOLS.read_text())
+        raw = json.loads(SCHOOLS.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as e:
         print(f"[warn] schools.json unreadable, skipping school-aware gap checks: {e}", file=sys.stderr)
         return set()
@@ -741,8 +900,17 @@ def find_gaps(merged: list[dict], today: datetime.date) -> dict:
     # aren't - that's the one case school-awareness is meaningful for.
     covered_all = set()
     covered_by_school: dict[str, set[str]] = {}
-    for bucket in ("coming_up", "in_effect", "actions"):
-        for card in parent.get(bucket) or []:
+    card_buckets = [parent.get(b) or [] for b in ("coming_up", "in_effect", "actions")]
+    # A derived card satisfies this same "covers" contract, not a parallel
+    # one - build_derived() gives each one exactly one covers entry, its own
+    # source_item, so folding derived.json's coming_up cards into this same
+    # loop can only account for the specific hot item that card instantiates.
+    # It never widens into "derived cards cover whatever they resemble" -
+    # that would let automation silently absorb judgment calls it has no
+    # template for.
+    card_buckets.append(_load_derived().get("coming_up") or [])
+    for cards in card_buckets:
+        for card in cards:
             if not isinstance(card, dict):
                 continue
             # "covers" is hand-typed; a curator writing "covers": "seed-ab3216"
@@ -765,31 +933,66 @@ def find_gaps(merged: list[dict], today: datetime.date) -> dict:
     cutoff = (today - datetime.timedelta(days=UNCOVERED_HOT_MAX_AGE_DAYS)).isoformat()
     gaps = []
     for item in merged:
-        if item.get("priority") != "hot" or item.get("scope") != "district":
-            continue  # state items are VP-desk context, not auto parent cards
+        # score() treats "district" and "school" as one vocabulary (see the
+        # comment there), so a school's own feed can produce a hot item. It
+        # has to be answerable to the same coverage rule, or adding the feed
+        # just means hot Holly Avenue news is the one kind of local news
+        # nobody is ever told is uncovered - the exact silence this detector
+        # exists to break. Anything else ("state") stays out: that's VP-desk
+        # context, not material for an auto-flagged parent card.
+        scope = item.get("scope")
+        if item.get("priority") != "hot" or scope not in ("district", "school"):
+            continue
         item_id = item.get("id")
         if item_id in covered_all:
             continue
+        # Who does this item's coverage have to satisfy? A district item
+        # concerns every campus, so only the whole roster is full coverage.
+        # An item from a single school's own feed concerns exactly that
+        # campus, so a card scoped to that campus IS full coverage - checking
+        # it against the roster instead would report five other schools
+        # "missing" a card about news that was never theirs, and would
+        # re-flag an item a curator had already handled. Same equivalence as
+        # score()'s, applied to the coverage half.
+        item_school = item.get("school") if scope == "school" else None
+        if not isinstance(item_school, str) or not item_school:
+            item_school = None
+        audience = {item_school} if item_school else known_schools
         gap_schools = None
         if item_id in covered_by_school:
-            if not known_schools:
+            if not audience:
                 # a school-specific card exists but we can't tell which
                 # schools it leaves out without a roster - that's still
                 # human attention on this item, so don't re-flag it on a
-                # guess (see _load_school_ids)
+                # guess (see _load_school_ids). Only reachable for district
+                # items; a school item names its own audience.
                 continue
-            missing = sorted(known_schools - covered_by_school[item_id])
+            missing = sorted(audience - covered_by_school[item_id])
             if not missing:
                 continue  # the school-specific cards add up to full coverage
             gap_schools = missing
+        elif item_school:
+            # Uncovered outright, and only one campus's page is affected -
+            # say which, so the curator isn't left to infer it from the id.
+            gap_schools = [item_school]
         if item.get("first_seen", "") < cutoff:
             continue  # don't resurrect ancient history on first run
         gap = {
             "kind": "uncovered_hot",
             "ref": item.get("id", ""),
             "title": item.get("title", ""),
-            "why": "Hot district item with no parent card's \"covers\" listing it - "
-            "a human needs to decide whether this needs a card.",
+            # Two fixed, human-written sentences picked by scope - not a
+            # sentence assembled about the item. "district item" is simply
+            # false for a school-feed item, and a gap report that misstates
+            # what it looked at is worse than one that says less.
+            "why": (
+                "Hot district item with no parent card's \"covers\" listing it - "
+                "a human needs to decide whether this needs a card."
+                if scope == "district"
+                else "Hot item from a school's own feed with no parent card's "
+                "\"covers\" listing it - a human needs to decide whether this "
+                "needs a card."
+            ),
             "source_url": item.get("link", ""),
             "source_date": _iso_day(item.get("published")),
             "evidence": item.get("summary") or item.get("title", ""),
@@ -878,7 +1081,7 @@ def find_gaps(merged: list[dict], today: datetime.date) -> dict:
 def main() -> None:
     previous = {}
     if DATA.exists():
-        for item in json.loads(DATA.read_text()).get("items", []):
+        for item in json.loads(DATA.read_text(encoding="utf-8")).get("items", []):
             previous[item["id"]] = item
 
     fresh, health = fetch_all()
@@ -900,7 +1103,7 @@ def main() -> None:
     merged, aged_out = ranked[:120], ranked[120:]
     if aged_out:
         try:
-            archived = json.loads(ARCHIVE.read_text()).get("items", [])
+            archived = json.loads(ARCHIVE.read_text(encoding="utf-8")).get("items", [])
         except (OSError, json.JSONDecodeError):
             archived = []
         by_id = {a["id"]: a for a in archived}
@@ -919,7 +1122,8 @@ def main() -> None:
                     ),
                 },
                 indent=2,
-            )
+            ),
+            encoding="utf-8",
         )
 
     # link bill references to the statute text; resolved once per item,
@@ -943,15 +1147,32 @@ def main() -> None:
                 "items": merged,
             },
             indent=2,
-        )
+        ),
+        encoding="utf-8",
     )
+    # Derived cards are a convenience layered on top of the feed, same as the
+    # gap report below - the feed refresh is the district's actual service,
+    # so a bad template or a malformed parent.json must never be able to
+    # cost everyone the nightly data. Runs before the gap check (which reads
+    # derived.json back off disk) so a hot board-meeting item that's already
+    # automated doesn't also get flagged as uncovered.
+    try:
+        DERIVED.write_text(
+            json.dumps(
+                build_derived(merged, _load_parent(), datetime.date.today()), indent=2
+            ),
+            encoding="utf-8",
+        )
+    except Exception as e:  # noqa: BLE001 - deliberately broad; see above
+        print(f"[warn] derived-card build skipped: {e}", file=sys.stderr)
+
     # The gap report is a convenience for the curator; the feed refresh is the
     # district's actual service. A typo in hand-edited parent.json must never
     # be able to cost everyone the nightly data - so this can fail alone.
     gaps_report = None
     try:
         gaps_report = find_gaps(merged, datetime.date.today())
-        GAPS.write_text(json.dumps(gaps_report, indent=2))
+        GAPS.write_text(json.dumps(gaps_report, indent=2), encoding="utf-8")
     except Exception as e:  # noqa: BLE001 - deliberately broad; see above
         print(f"[warn] gap check skipped: {e}", file=sys.stderr)
 

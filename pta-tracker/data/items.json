@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-27T21:39:09.210131Z",
+  "generated": "2026-07-27T23:48:08.351900Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -14,6 +14,12 @@
       "kept": 0
     },
     {
+      "source": "Holly Avenue News",
+      "scope": "school",
+      "ok": true,
+      "kept": 1
+    },
+    {
       "source": "LAist Education",
       "scope": "state",
       "ok": true,
@@ -22,14 +28,14 @@
     {
       "source": "CA Dept of Education",
       "scope": "state",
-      "ok": true,
-      "kept": 0
+      "ok": false,
+      "error": "not well-formed (invalid token): line 25, column 2398"
     },
     {
       "source": "Google News",
       "scope": "state",
       "ok": true,
-      "kept": 10
+      "kept": 9
     },
     {
       "source": "AUSD board schedule",
@@ -39,6 +45,19 @@
     }
   ],
   "items": [
+    {
+      "id": "92aef775a2ec",
+      "source": "Holly Avenue News",
+      "title": "Free Resource: Parent Training Series via Zoom!",
+      "summary": "Parents! Here is a great, FREE parent training series offered by the UC Davis MIND Institute. Click on the flyer to get the details.",
+      "link": "http://ha.ausd.net/apps/news/article/2192876",
+      "published": "Mon, 27 Apr 2026 16:54:00 -0700",
+      "priority": "normal",
+      "scope": "school",
+      "school": "ha",
+      "first_seen": "2026-07-27",
+      "bills": []
+    },
     {
       "id": "0609b5407d10",
       "source": "Piedmont Exedra",

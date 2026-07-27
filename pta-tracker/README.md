@@ -16,6 +16,13 @@ demand.
      meetings in the next 3 weeks become priority items linking to the Simbli
      agenda system (Simbli itself is behind bot protection, so agendas are
      linked for humans, not scraped)
+   - **Holly Avenue's own news RSS** (`ha.ausd.net/apps/news/rss`) — the
+     school's own Edlio announcements, scope `"school"` rather than
+     `"district"`, so a card built from it is Holly Avenue's voice, not
+     AUSD's. Its events feed 403s behind the exact same bot protection as
+     Simbli, so it is not in the fetcher's source list either — school
+     *events* still need a human or `data/observed.json`, the same escape
+     hatch board-meeting agendas use
    - **Google News query for "Arcadia Unified"** — local press coverage
    - **State feeds** — LAist Education, the CDE "What's New" feed, and a
      Google News query for California K-12 legislation that catches
@@ -55,9 +62,16 @@ demand.
    hot item never got a parent card — silence on the parent page is
    indistinguishable from "nothing is happening" unless something checks.
    It looks for three shapes of that gap: an **uncovered_hot** item is a
-   hot, district-scope feed item less than 60 days old that appears in no
-   parent card's `covers` list (state-scope hot items are VP-desk context,
-   not automatically parent-facing, so they're exempt); an **expired_card**
+   hot, *local* feed item less than 60 days old that appears in no parent
+   card's `covers` list — local meaning district scope or a single school's
+   own feed, the same two scopes `score()` reads with one vocabulary, since
+   news from your own campus is not less parent-facing than news from the
+   district (state-scope hot items are VP-desk context, not automatically
+   parent-facing, so those stay exempt). A school-scope gap carries
+   `"schools": ["<id>"]` naming the one campus whose page needs the card,
+   and is satisfied outright by a card scoped to that campus — it is not
+   measured against the whole roster, because news from Holly Avenue was
+   never the other five schools' to cover; an **expired_card**
    is a `coming_up` card whose `until` date has already passed and needs
    archiving or replacing; **stale_curation** flags `parent.json` itself
    when its `updated` date is more than 45 days old — except between
@@ -80,7 +94,45 @@ demand.
    that pings once for every miss trains its own reader to stop looking,
    and the day it finds the one gap that actually matters is the day it
    gets ignored along with the noise.
-7. `index.html` is a static page (GitHub Pages) with **All / Our district /
+7. Every run also writes `data/derived.json` — the fix for this project's
+   other durability gap, sitting next to the gap detector rather than inside
+   it. A board meeting's date, time, and location are **facts**; the
+   scraper already has all of them the moment the agenda page updates. "What
+   this means for your kid" is a **consequence**, and that judgment call
+   stays human, every time, no exceptions. What moves is the boundary
+   between the two: a curator writes a *reusable sentence* once, in
+   `data/parent.json`'s `"templates"` key (`board_meeting` today — a title,
+   a `kid_impact` line, an owner, a time-sensitivity note, with
+   `{weekday}`/`{month}`/`{day}` placeholders), and every nightly run
+   instantiates that same sentence with whichever meeting the scraper found,
+   producing a `coming_up` card with no new prose written that night. The
+   recurring obligation to hand-write a card for a routine, every-few-weeks
+   board meeting goes away; the obligation to write and approve the sentence
+   the *first* time does not, and never will — a template is still
+   human-authored parent-facing text, just written once instead of monthly.
+   This is deliberately narrow: it removes the human from the *typing*, not
+   from the *interpreting*. Anything genuinely campus-specific, anything
+   where "what this means" isn't a rewording of a fact pattern the curator
+   already blessed, still gets a hand-written card the normal way — nothing
+   about `data/derived.json` reaches into `parent.json` or edits it.
+   `data/derived.json` itself is machine-written every run from scratch
+   (same posture as `gaps.json`: nothing accumulates, nothing is hand-
+   edited, deleting it costs nothing because the next run rebuilds it
+   whole), and its cards carry `"derived": true` plus a `"source_item"`
+   pointing back at the `items.json` id they were instantiated from, so the
+   page can label them and a reader can trace one to its source. A
+   hand-written card always wins over a derived one describing the same
+   underlying item — the page matches a hand card's `covers` list against a
+   derived card's `source_item` and drops the derived card if a human
+   already wrote the real thing — so a curator who writes the human version
+   early never sees a duplicate auto-card sitting next to it.
+   What this does not do: it does not produce a second maintainer. Every
+   interpretive card — the ones that are actually about a kid's school
+   week, not a meeting's date — still depends on the one VP-Legislation
+   officer noticing, judging, and writing. Automating the routine, factual
+   cards buys that officer time and lowers the cost of a bad week; it does
+   not create a backup for them, and it was never meant to.
+8. `index.html` is a static page (GitHub Pages) with **All / Our district /
    Priority** filters and a **Generate PTA report** button producing a
    paste-ready monthly update — district section first, law-text links
    included.
@@ -144,8 +196,8 @@ Instead it reads a `window.SCHOOL` / `window.SCHOOL_BASE` pair, falling back
 to `schools.json`'s `default` and `data/` when neither is set. That fallback
 is what lets one `index.html` serve as both the live default-school page
 (opened directly, nothing injected) and the build template. `scripts/
-build_schools.py` runs in CI and, for every school in `schools.json` —
-published or not — writes `pta-tracker/<slug>/index.html` with a one-line
+build_schools.py` runs in CI and, for every **published** school in
+`schools.json`, writes `pta-tracker/<slug>/index.html` with a one-line
 `<script>` injected before the main script block to set that pair, and the
 `<title>`, canonical link, and Open Graph tags rewritten for that school. No
 `fetch()` call or route ever changes: the data directory is always resolved
@@ -179,20 +231,31 @@ must never silently widen into a scope everybody gets. The page and the gap
 detector are held to one written contract for this — see
 `SCOPE_CONTRACT_SHA256` in `scripts/fetch.py`.
 
-**`published` is a governance flag, not a build gate.** Every school's page
-builds and deploys on every run, published or not — deliberately, so that
-turning a school on is a single flag-flip with the whole corpus already
-correct behind it, not a from-scratch build the day its PTA finally opts in.
-But an unpublished school's page must never be linked or announced anywhere
-user-facing: speaking to another school's families, in their PTA's name,
-about their kids' school, is that PTA's decision to make, not a default this
-tool gets to assume on their behalf. Publishing a school means that school's
-PTA affirmatively said yes — record who, in `published_note` — and saying
-yes isn't a free action even then: every school added multiplies the
-surface a factual error can reach, while the number of people actually
+**`published` gates the build, and the other five schools are parked.**
+`schools.json` keeps all six schools as data either way — that shared
+roster is the whole reason one corpus can serve six campuses for close to
+the curation cost of one — but `build_schools.py` only writes a directory
+for a school with `"published": true`. Baldwin Stocker, Camino Grove,
+Highland Oaks, Hugo Reid, and Longley Way are **parked**: still fully
+described in `schools.json`, not built, not in the deployed tree, not
+reachable at any URL. That's a deliberate tightening from this project's
+earlier stance of building every school's page regardless of publication
+and merely not linking to it — a built-but-unlinked page is still a page a
+search engine, a stray link, or a mistyped URL can find, carrying another
+PTA's name without that PTA having agreed to anything. Parking removes that
+surface entirely instead of just declining to advertise it.
+Unparking a school is exactly flipping its `published` flag to `true` and
+rerunning `build_schools.py` — nothing else changes, because the corpus
+behind it was already correct the whole time. The governance question is
+unchanged by any of this: publishing still means that school's PTA
+affirmatively said yes — record who, in `published_note` — and saying yes
+isn't a free action even then, because every school added multiplies the
+surface a factual error can reach while the number of people actually
 reviewing `parent.json` before it ships does not grow to match. Add schools
 because a PTA asked in, not because the marginal curation cost rounds to
-zero — the exposure doesn't round to zero along with it.
+zero — the exposure doesn't round to zero along with it. Re-parking works
+the same way in reverse: flip the flag back to `false` and rerun, and the
+next build sweeps that school's directory back out.
 
 ## Operating manual (the human 10%)
 

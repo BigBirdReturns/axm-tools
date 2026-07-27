@@ -86,7 +86,9 @@ jobs:
           import json
           from pathlib import Path
 
-          gaps = json.loads(Path("pta-tracker/data/gaps.json").read_text())
+          gaps = json.loads(
+              Path("pta-tracker/data/gaps.json").read_text(encoding="utf-8")
+          )
           items = gaps.get("gaps", [])
 
           lines = [
@@ -113,8 +115,10 @@ jobs:
                   lines.append(f"- evidence: > {g['evidence']}")
               lines.append("")
 
-          Path("/tmp/gap-issue-body.md").write_text("\n".join(lines))
-          Path("/tmp/gap-count.txt").write_text(str(len(items)))
+          Path("/tmp/gap-issue-body.md").write_text(
+              "\n".join(lines), encoding="utf-8"
+          )
+          Path("/tmp/gap-count.txt").write_text(str(len(items)), encoding="utf-8")
           PY
 
           gh label create tracker-gap --color FBCA04 \

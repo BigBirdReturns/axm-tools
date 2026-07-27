@@ -1,4 +1,14 @@
 {
+  "templates": {
+    "note": "Human-written sentences the nightly run fills with scraped facts. The machine substitutes dates and places; it never writes the meaning. Edit the wording here and every generated card changes with it.",
+    "board_meeting": {
+      "title": "AUSD Board of Education meets {weekday}, {month} {day}",
+      "kid_impact": "Board meetings are where district decisions get made — phone rules, budgets, calendars — before they ever reach a classroom.",
+      "impact_area": "District decisions",
+      "owner": "AUSD Board of Education",
+      "time_sensitivity": "Agenda posts on Simbli a few days before the meeting"
+    }
+  },
   "note": "Curated by the VP Legislation, by hand. The nightly fetch never touches this file — parent cards are written consequences, not scraped headlines. Every card needs: kid_impact (one sentence, what changes for a student/family), owner (who actually decides), and at most one action. Keep kid_impact to ONE sentence at a 4th-6th grade reading level: the single-sentence form is the one with evidence behind it, and this audience reads it in four languages. Give any dated coming_up card an 'until' (YYYY-MM-DD): the page hides it the day after, so a past meeting can never sit there saying 'coming up'. Give any card a 'covers' array of items.json ids it accounts for — the nightly gap check flags every district hot item that no card covers, so an uncovered id is a card someone still owes. If an item can't be phrased as a consequence with an owner, it stays in the VP Desk. The watchlist is VP-Desk-only: known scheduled obligations with a date they're expected by — the page flags anything past due that isn't marked done, so a blank where a report should be never goes unnoticed.",
   "updated": "2026-07-27",
   "coming_up": [

@@ -91,6 +91,10 @@ document.documentElement.lang=(function(){
   .src{font-size:.75rem;margin-top:.5rem}
   /* ---- staleness footnotes: quiet, not alarms - silence must look checked, not blank ---- */
   .confirmed{font-size:.72rem;color:var(--muted);margin-top:.55rem}
+  /* auto-filled cards: a quiet provenance note, not a warning — same visual
+     weight as .confirmed, sitting right under the title so it reads as
+     "here's where this came from" rather than "something's wrong" */
+  .autofill{font-size:.72rem;color:var(--muted);margin:-.15rem 0 .5rem}
   .checked{color:var(--muted);font-size:.85rem;margin-top:-.3rem;padding-bottom:.6rem}
   .alert{color:var(--hot);font-weight:bold}
   /* ---- VP Desk watchlist: scheduled obligations, flagged when overdue ---- */
@@ -303,6 +307,8 @@ const MSG={
     "list.nodata":"No data yet — the nightly job hasn't run. Run scripts/fetch.py once and commit data/items.json.",
     "list.miss":(q,old)=>"Nothing in the timeline matches “"+q+"”."+(old?" Records go back to "+old+".":""),
     "list.nomatch":"Nothing matching right now.",
+    "card.derived":"🗓 Auto-filled from the district calendar.",
+    "tag.school":name=>"School news: "+name,
   },
   "zh-Hant":{
     "nav.parent":"家長版","nav.desk":"副會長工作台",
@@ -346,6 +352,8 @@ const MSG={
     "list.nodata":"尚無資料——每晚排程尚未執行。請執行一次 scripts/fetch.py 並提交 data/items.json。",
     "list.miss":(q,old)=>"時間軸中沒有符合「"+q+"」的項目。"+(old?" 紀錄可回溯至 "+old+"。":""),
     "list.nomatch":"目前沒有符合的項目。",
+    "card.derived":"🗓 依據學區行事曆自動生成。",
+    "tag.school":name=>"校園新聞："+name,
   },
   // Simplified Chinese: not a character-level transliteration of zh-Hant above.
   // The audience arrives mainly through WeChat, so this uses mainland conventions
@@ -393,6 +401,8 @@ const MSG={
     "list.nodata":"还没有数据——每晚的定时任务尚未运行。请先运行一次 scripts/fetch.py 并提交 data/items.json。",
     "list.miss":(q,old)=>"时间线里没有匹配“"+q+"”的内容。"+(old?" 记录可以回溯到 "+old+"。":""),
     "list.nomatch":"目前没有匹配的内容。",
+    "card.derived":"🗓 根据学区日历自动生成。",
+    "tag.school":name=>"校园新闻："+name,
   },
   ko:{
     "nav.parent":"학부모용","nav.desk":"부회장 데스크",
@@ -436,6 +446,8 @@ const MSG={
     "list.nodata":"아직 데이터가 없습니다 — 야간 작업이 실행되지 않았습니다. scripts/fetch.py를 한 번 실행하고 data/items.json을 커밋하세요.",
     "list.miss":(q,old)=>"타임라인에 「"+q+"」와 일치하는 항목이 없습니다."+(old?" 기록은 "+old+"까지 거슬러 올라갑니다.":""),
     "list.nomatch":"현재 일치하는 항목이 없습니다.",
+    "card.derived":"🗓 학군 일정에서 자동으로 채워짐.",
+    "tag.school":name=>"학교 소식: "+name,
   },
   es:{
     "nav.parent":"Para familias","nav.desk":"Escritorio VP",
@@ -479,6 +491,8 @@ const MSG={
     "list.nodata":"Aún no hay datos — la tarea nocturna no se ha ejecutado. Ejecute scripts/fetch.py una vez y haga commit de data/items.json.",
     "list.miss":(q,old)=>"Nada en la cronología coincide con «"+q+"»."+(old?" Los registros se remontan al "+old+".":""),
     "list.nomatch":"Nada coincide por ahora.",
+    "card.derived":"🗓 Completado automáticamente según el calendario del distrito.",
+    "tag.school":name=>"Noticias de la escuela: "+name,
   },
 };
 const SUPPORTED=["en","zh-Hant","zh-Hans","ko","es"];
@@ -680,6 +694,16 @@ fetch(DATA_BASE+"parent.json").then(r=>r.json())
   .then(p=>{PARENT=p;renderParent();})
   .catch(()=>{PARENT="__err";renderParent();});
 
+// derived.json is machine-written every run from scraped facts poured into
+// human-written templates (see data/parent.json's "templates" key). It is a
+// pure addition to Coming Up, never a replacement for parent.json, so a
+// missing or malformed file just means zero auto-cards this run — the same
+// silent-degrade contract as every other fetch on this page.
+let DERIVED=null;
+fetch(DATA_BASE+"derived.json").then(r=>r.json())
+  .then(d=>{DERIVED=d;renderParent();})
+  .catch(()=>{DERIVED="__err";renderParent();});
+
 function renderParent(){
   if(PARENT===null)return;
   const coming=document.getElementById("coming");
@@ -699,18 +723,48 @@ function renderParent(){
   }
   // Cards with an "until" date retire themselves the day after — a meeting
   // announced as "coming up" must never still say so once it has happened.
-  const live=(p.coming_up||[]).filter(inSchoolScope).filter(c=>{
+  const notExpired=c=>{
     if(!c.until)return true;
     const[y,m,d]=c.until.split("-").map(Number);
     return new Date(y,m-1,d,23,59)>=new Date();
-  });
+  };
+  const live=(p.coming_up||[]).filter(inSchoolScope).filter(notExpired);
+  // Derived cards (data/derived.json) are the machine-instantiated
+  // counterpart to hand cards: same shape, minus a human's judgment call.
+  // A hand card "wins" over a derived one that describes the same underlying
+  // item — matched by the hand card's "covers" (an items.json id, or a list
+  // of them) against the derived card's "source_item" — so a volunteer who
+  // already wrote the human version never sees a duplicate auto-card next
+  // to it. Missing/malformed derived.json degrades to "no auto-cards",
+  // never a blank or broken page.
+  let derivedLive=[];
+  if(DERIVED&&DERIVED!=="__err"&&Array.isArray(DERIVED.coming_up)){
+    // Every bucket a hand card can live in, not just coming_up — the same
+    // three find_gaps() in fetch.py reads. A curator who answers a meeting
+    // with an "actions" card has covered it as far as the gap tracker is
+    // concerned; if this only checked coming_up, the tracker would report
+    // it handled while the page still showed the auto-card beside it.
+    const covered=new Set();
+    ["coming_up","in_effect","actions"].forEach(b=>{
+      (Array.isArray(p[b])?p[b]:[]).forEach(c=>{
+        if(!c||typeof c!=="object")return;
+        let cv=c.covers;
+        if(typeof cv==="string")cv=[cv];
+        if(Array.isArray(cv))cv.forEach(id=>{if(typeof id==="string")covered.add(id)});
+      });
+    });
+    derivedLive=DERIVED.coming_up.filter(c=>c&&c.derived&&!covered.has(c.source_item))
+      .filter(inSchoolScope).filter(notExpired);
+  }
+  const allComing=live.concat(derivedLive)
+    .sort((a,b)=>(a.when||a.until||"").localeCompare(b.when||b.until||""));
   // An empty bucket needs to look inspected, not abandoned: pair the existing
   // empty-state copy with the count of items.json's live feed reviewed and the
   // run's own timestamp, once that data has arrived (fetched independently of
   // parent.json — see the items.json .then() below, which re-runs this).
   const checkedLine=META?'<div class="checked">'+
     t("empty.checked",ITEMS.length,fmtDate(META.generated.slice(0,10)))+'</div>':"";
-  coming.innerHTML=live.length?live.map(c=>card(c,confirmed)).join("")
+  coming.innerHTML=allComing.length?allComing.map(c=>card(c,confirmed)).join("")
     :'<div class="empty">'+t("coming.empty")+'</div>'+checkedLine;
   document.getElementById("effect").innerHTML=(p.in_effect||[]).filter(inSchoolScope).map(c=>card(c,confirmed)).join("")||
     ('<div class="empty">'+t("effect.empty")+'</div>'+checkedLine);
@@ -746,6 +800,7 @@ function renderParent(){
 function card(c,confirmed){
   return `<div class="card">
     <h3>${esc(c.title)}</h3>
+    ${c.derived?`<div class="autofill">${t("card.derived")}</div>`:""}
     <div class="impact">${esc(c.kid_impact)}</div>
     <div class="facts">
       <div><span class="k">${t("fact.affects")}</span><strong>${esc(c.impact_area)}</strong></div>
@@ -784,9 +839,13 @@ fetch(DATA_BASE+"items.json").then(r=>r.json()).then(d=>{
 }).catch(()=>list.innerHTML='<div class="empty">'+t("list.nodata")+'</div>');
 
 // filter buttons carry their live counts; label re-translates on locale switch
+// "Our district" reads as "local, not Sacramento" — Holly Avenue's own news
+// is even more local than AUSD-wide items, so scope "school" counts as
+// "district" here too rather than needing a third filter button.
+function isLocalScope(i){return i.scope==="district"||i.scope==="school"}
 function applyFilterCounts(){
   const counts=META?{all:ITEMS.length,
-    district:ITEMS.filter(i=>i.scope==="district").length,
+    district:ITEMS.filter(isLocalScope).length,
     hot:ITEMS.filter(i=>i.priority==="hot").length}:null;
   document.querySelectorAll("[data-f]").forEach(b=>{
     b.textContent=t(FKEY[b.dataset.f])+(counts?" ("+counts[b.dataset.f]+")":"");
@@ -810,13 +869,25 @@ function refreshMeta(){
     const down=src.filter(s=>!s.ok),names=[...new Set(down.map(s=>s.source))];
     srcline.textContent=t("sources.reporting",src.length-down.length,src.length)+
       (names.length?t("sources.quiet",names.join(", ")):"");
-    if(down.some(s=>s.scope==="district")){
+    // isLocalScope, not scope==="district": a dead Holly Avenue feed silences
+    // the most local news on the page, so it earns the same visible alarm as
+    // a dead AUSD feed rather than sitting quietly in the "quiet:" list. The
+    // sentence appended below covers both — school items file under the same
+    // "Our district" section it names.
+    if(down.some(isLocalScope)){
       srcline.classList.add("alert");
       srcline.textContent+=t("sources.districtdown");
     }
   }
 }
 
+// schools.json's short name for a school id, falling back to the raw id if
+// the roster hasn't landed yet (or doesn't know it) — same "degrade, don't
+// blank" posture as schoolShort() above.
+function schoolNameFor(id){
+  if(SCHOOLS){const s=(SCHOOLS.schools||[]).find(x=>x.id===id);if(s&&s.short)return s.short;}
+  return id||"";
+}
 function fmtMonth(ym){
   const[y,m]=ym.split("-").map(Number);
   return new Date(y,m-1,1).toLocaleDateString(DATE_LOC(),{month:"long",year:"numeric"});
@@ -826,9 +897,16 @@ function itemHTML(i){
   const cal=/^ausd-mtg-\d{4}-\d{2}-\d{2}$/.test(i.id||"")
     ?" "+calLinks({when:i.id.slice(9)+"T19:00",uid:i.id,title:"AUSD Board of Education meeting",loc:BOARDROOM,url:i.link})
     :"";
+  // district items get the existing "AUSD" tag; a school's own feed (e.g.
+  // Holly Avenue's news RSS) gets a tag naming the school instead, with the
+  // full "School news: <name>" phrase on the title for screen readers/hover —
+  // same visual treatment, distinguishable content.
+  const tag=i.scope==="district"?'<span class="tag">AUSD</span>'
+    :i.scope==="school"?`<span class="tag" title="${esc(t("tag.school",schoolNameFor(i.school)))}">${esc(schoolNameFor(i.school))}</span>`
+    :"";
   return `
     <div class="item ${i.priority}">
-      <div class="title">${i.scope==="district"?'<span class="tag">AUSD</span>':''}<a href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.title)}</a></div>
+      <div class="title">${tag}<a href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.title)}</a></div>
       <div class="meta">${esc(i.source)} · ${t("item.firstseen",fmtDate(i.first_seen))}${cal}</div>
       <div class="summary">${esc(i.summary)}</div>
       ${(i.bills||[]).length?'<div class="laws">'+t("laws.text")+i.bills.map(b=>`<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title)}</a>`).join(" · ")+"</div>":""}
@@ -839,7 +917,7 @@ function render(){
   // searching reaches the archive; browsing shows the live feed
   const pool=q?ITEMS.concat(ARCHIVE):ITEMS;
   const rows=pool.filter(i=>
-    (FILTER==="all"||(FILTER==="hot"&&i.priority==="hot")||(FILTER==="district"&&i.scope==="district"))
+    (FILTER==="all"||(FILTER==="hot"&&i.priority==="hot")||(FILTER==="district"&&isLocalScope(i)))
     &&(!q||((i.title||"")+" "+(i.summary||"")+" "+(i.source||"")).toLowerCase().includes(q)))
     .sort((a,b)=>(b.first_seen||"").localeCompare(a.first_seen||""));
   if(!rows.length){
@@ -869,8 +947,8 @@ document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{
 document.getElementById("gen").onclick=()=>{
   const cutoff=new Date();cutoff.setDate(cutoff.getDate()-31);
   const recent=ITEMS.filter(i=>new Date(i.first_seen||0)>=cutoff);
-  const district=recent.filter(i=>i.scope==="district");
-  const state=recent.filter(i=>i.scope!=="district");
+  const district=recent.filter(isLocalScope);
+  const state=recent.filter(i=>!isLocalScope(i));
   const hot=state.filter(i=>i.priority==="hot"),rest=state.filter(i=>i.priority!=="hot");
   const bullet=i=>"• "+i.title+"\n"+(i.summary?"  "+i.summary+"\n":"")
     +"  ("+i.source+": "+i.link+")\n"
