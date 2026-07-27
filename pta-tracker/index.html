@@ -4,9 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Holly Avenue PTA — Legislation Watch</title>
-<meta name="description" content="What district and state decisions mean for your kid's school week at Holly Avenue Elementary. Plus the VP-Legislation working desk: sources, receipts, and the monthly board report.">
-<meta property="og:title" content="Holly Avenue PTA — Legislation Watch">
-<meta property="og:description" content="Does it affect my kid? Is something about to be decided? What can I do? Answered in 30 seconds.">
+<meta name="description" content="A free page from the Holly Avenue Elementary PTA: what Arcadia USD and California decisions actually mean for your kid's school week — what's coming up, what's already in effect, and what parents can do about it.">
+<link rel="canonical" href="https://bigbirdreturns.github.io/axm-tools/pta-tracker/">
+<!-- Sharing preview card (chat apps, WeChat, Messages). Meta tags only — inert,
+     no network fetch at page load; this page still ships zero external requests. -->
+<meta property="og:title" content="Holly Avenue PTA — What's changing at your kid's school">
+<meta property="og:description" content="Does it affect my kid? Is something about to be decided? What can I do? Plain-language updates from the Holly Avenue Elementary PTA on Arcadia USD and California school decisions — answered in 30 seconds.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bigbirdreturns.github.io/axm-tools/pta-tracker/">
+<meta property="og:site_name" content="Holly Avenue Elementary PTA">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:image" content="https://bigbirdreturns.github.io/axm-tools/pta-tracker/icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="Holly Avenue Elementary PTA Legislation Watch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Holly Avenue PTA — What's changing at your kid's school">
+<meta name="twitter:description" content="Does it affect my kid? Is something about to be decided? What can I do? Plain-language updates from the Holly Avenue Elementary PTA on Arcadia USD and California school decisions — answered in 30 seconds.">
+<meta name="twitter:image" content="https://bigbirdreturns.github.io/axm-tools/pta-tracker/icon-512.png">
+<meta name="twitter:image:alt" content="Holly Avenue Elementary PTA Legislation Watch">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#8a4b2d">
@@ -22,6 +42,7 @@ document.documentElement.lang=(function(){
   var s=localStorage.getItem("pta-locale");if(s)return s;
   var l=(navigator.language||"").toLowerCase();
   if(/^zh-(hant|tw|hk|mo)/.test(l))return"zh-Hant";
+  if(l.slice(0,2)==="zh")return"zh-Hans";
   if(l.slice(0,2)==="ko")return"ko";
   if(l.slice(0,2)==="es")return"es";
   return"en";
@@ -128,7 +149,8 @@ document.documentElement.lang=(function(){
     <a href="#desk" id="nav-desk" aria-current="false" data-i18n="nav.desk">VP Desk</a>
     <select id="lang" aria-label="Language · 語言 · 언어 · Idioma" title="Language">
       <option value="en">English</option>
-      <option value="zh-Hant">中文</option>
+      <option value="zh-Hant">中文（繁體）</option>
+      <option value="zh-Hans">中文（简体）</option>
       <option value="ko">한국어</option>
       <option value="es">Español</option>
     </select>
@@ -321,6 +343,52 @@ const MSG={
     "list.miss":(q,old)=>"時間軸中沒有符合「"+q+"」的項目。"+(old?" 紀錄可回溯至 "+old+"。":""),
     "list.nomatch":"目前沒有符合的項目。",
   },
+  // Simplified Chinese: not a character-level transliteration of zh-Hant above.
+  // The audience arrives mainly through WeChat, so this uses mainland conventions
+  // (萨克拉门托 not 沙加緬度, 加载 not 載入, 志愿者 not 義工, 粘贴 not 貼上,
+  // 教育委员会 for the school board rather than Taiwan's 董事會).
+  "zh-Hans":{
+    "nav.parent":"家长版","nav.desk":"副会长工作台",
+    "tagline.parent":"学区和州政府的决定，对您孩子这一周的校园生活有什么影响。",
+    "tagline.desk":"工作台：来源、依据，以及每月提交教育委员会的报告。",
+    "theme.toggle":"切换深色模式",
+    "note.translate":"🌐 菜单和标签已翻译成您选择的语言（简体中文版为新增，尚待家长校对——用词不妥请告诉家长会）。新闻卡片及其来源保持原文语言——如果想连卡片内容也一起翻译，请使用浏览器自带的“翻译此网页”功能。",
+    "parentHelp.summary":"第一次来？30 秒了解这个页面",
+    "parentHelp.p1":"这是 Holly Avenue 家长会（PTA）志愿者运营的免费页面，替您盯着 Arcadia 学区（AUSD）和萨克拉门托州政府的动向。每天晚上由程序检查学区新闻、教育委员会会议和加州教育法规；再由家长会负责人把重要的内容整理成下面这些大白话卡片。不用装 App、不用注册账号、不用开推送通知——把它收藏起来就行。",
+    "parentHelp.p2":"<b>怎么看：</b><i>即将发生</i>＝已经定了日期的决定。<i>目前生效</i>＝学校里已经在执行的规定。<i>家长可以行动</i>＝少数值得您花时间的事。每张卡片都会说明对您孩子有什么变化、由谁拍板，并附上来源链接——没有依据的说法不会放在这里。会议带有 📅 按钮，可以直接加入手机日历。",
+    "parentHelp.p3":"<b>听到传闻？</b>搜一下——本页底部的链接会翻查我们追踪过的全部记录，一直回溯到最早。还是找不到？在家长会会议上提出来；如果确有其事，它就会变成一张卡片。",
+    "parentHelp.p4":"<b>“副会长工作台”标签页</b>是负责人的工作区——这些卡片背后的原始信息流。任何人都可以查看；只有家长会负责人才能改动发布的内容。",
+    "sec.coming":"即将发生","sec.effect":"目前生效","sec.actions":"家长可以行动",
+    "sec.expected":"预期下一步","loading":"加载中…",
+    "parent.older":"想找更早的内容，或这些卡片背后的原始信息流？<a href=\"#desk\">搜索我们追踪过的全部记录 →</a>",
+    "deskHelp.summary":"这个工作台怎么用（读一次就够——它也是交接手册）",
+    "deskHelp.p1":"<b>预期下一步</b>列出这个岗位已知的职责和截止日期。红色的一行表示某样东西按理说现在应该已经有了，却还没有人核实——点它的核查链接，确认实际情况后，由负责人在数据文件里标记完成。该有报告的地方却是空白，这本身就是一项发现，而不是没事。",
+    "deskHelp.p2":"<b>下面的信息流</b>是每晚程序抓取到的全部内容：先是学区（AUSD 标签），然后是州一级。● ＝优先。法案编号链接到州议会网站上的法律条文原文——新闻是别人的解读，法律才是法律。教育委员会会议带有 📅 加入日历的链接。",
+    "deskHelp.p3":"<b>搜索</b>会翻查追踪过的每一条内容，而不只是屏幕上这些，并按月份分组。<b>生成家长会报告</b>会做出可以直接粘贴的每月更新：学区部分在前，并附上依据。",
+    "deskHelp.p4":"<b>运行状况：</b>“来源报告情况”那一行会点名任何已经没有动静的信息源；红色 STALE（数据过期）警告表示每晚的定时任务本身停了。两者都是故意做得醒目——这个工具唯一真正的失效方式，就是悄无声息地过期。",
+    "deskHelp.p5":"<b>发布</b>是在代码仓库里完成的，而不是在这个页面上：由负责人编辑数据文件（仓库 README 里的操作手册对每项任务都有说明）。页面本身对所有人都是只读的。",
+    "btn.gen":"生成家长会报告","btn.copy":"复制报告","btn.copied":"已复制 ✓",
+    "btn.copyfail":"无法复制——请长按报告来选中文字",
+    "btn.share":"分享报告",
+    "filter.all":"全部","filter.district":"本学区","filter.hot":"仅优先",
+    "search.ph":"搜索整条时间线——追踪过的每一条内容","search.aria":"搜索时间线",
+    "footer":"由 Holly Avenue 家长会立法事务副会长编辑整理。家长卡片由真人撰写；副会长工作台每晚汇总自 Arcadia 学区新闻与教育委员会日程、LAist、加州教育部，以及 Google News（涵盖 EdSource 等媒体）。任何重要事项请对照原始来源核实。基于 AXM 工具构建——<a href=\"https://axm.tools\">axm.tools</a>。",
+    "fact.affects":"影响对象","fact.who":"由谁拍板","fact.timing":"时间节点","fact.law":"法律原文",
+    "law.statute":"法律条文","src.source":"来源","watch.check":"核查","watch.done":"✓ 完成",
+    "watch.overdue":d=>"应在 "+d+" 前完成——尚未看到","watch.by":d=>d+" 前",
+    "coming.empty":()=>'目前雷达上没有教育委员会会议或需要拍板的时间窗口。学区会提前几天公布议程——想自己查看，可以<a href="https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" target="_blank" rel="noopener">查看 Simbli</a>。',
+    "effect.empty":"目前没有新生效的内容。",
+    "card.confirmed":d=>"最后核实于 "+d+"。",
+    "empty.checked":(n,d)=>"截至 "+d+" 已核查 "+n+" 条信息流内容——没有一条需要在这里做成家长卡片。",
+    "parent.notset":'家长版还没有设置好——请到<a href="#desk">副会长工作台</a>查看原始信息流。',
+    "stamp.updated":d=>"更新于 "+d+"。","stamp.stale":n=>" 数据过期：每晚的定时任务已经 "+n+" 天没有运行。",
+    "sources.reporting":(o,t)=>"来源报告情况："+o+"／"+t,"sources.quiet":n=>"——没有动静："+n,
+    "sources.districtdown":"。有一个学区来源中断了——AUSD 部分可能会缺内容。",
+    "item.firstseen":d=>"首次发现 "+d,"laws.text":"法律条文：",
+    "list.nodata":"还没有数据——每晚的定时任务尚未运行。请先运行一次 scripts/fetch.py 并提交 data/items.json。",
+    "list.miss":(q,old)=>"时间线里没有匹配“"+q+"”的内容。"+(old?" 记录可以回溯到 "+old+"。":""),
+    "list.nomatch":"目前没有匹配的内容。",
+  },
   ko:{
     "nav.parent":"학부모용","nav.desk":"부회장 데스크",
     "tagline.parent":"학군과 주정부의 결정이 자녀의 학교생활 한 주에 어떤 영향을 주는지 알려드립니다. ",
@@ -406,9 +474,9 @@ const MSG={
     "list.nomatch":"Nada coincide por ahora.",
   },
 };
-const SUPPORTED=["en","zh-Hant","ko","es"];
+const SUPPORTED=["en","zh-Hant","zh-Hans","ko","es"];
 let LOCALE=SUPPORTED.includes(document.documentElement.lang)?document.documentElement.lang:"en";
-function DATE_LOC(){return {"zh-Hant":"zh-Hant",ko:"ko",es:"es"}[LOCALE]||"en-US"}
+function DATE_LOC(){return {"zh-Hant":"zh-Hant","zh-Hans":"zh-Hans",ko:"ko",es:"es"}[LOCALE]||"en-US"}
 function t(id,...a){
   const v=(MSG[LOCALE]&&MSG[LOCALE][id])!==undefined?MSG[LOCALE][id]:MSG.en[id];
   if(v===undefined)return id;
