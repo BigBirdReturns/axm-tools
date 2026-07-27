@@ -49,6 +49,7 @@ OBSERVED = ROOT / "data" / "observed.json"
 ARCHIVE = ROOT / "data" / "archive.json"
 PARENT = ROOT / "data" / "parent.json"
 GAPS = ROOT / "data" / "gaps.json"
+SCHOOLS = ROOT / "data" / "schools.json"
 
 AGENDA_PAGE = "https://www.ausd.net/apps/pages/agenda"
 SIMBLI_MEETINGS = (
@@ -528,6 +529,174 @@ def _load_parent() -> dict:
     return raw if isinstance(raw, dict) else {}
 
 
+def _load_school_ids() -> set[str]:
+    """Known school ids from schools.json, or an empty set if unreadable.
+
+    schools.json is also hand-maintained (a new campus is added by editing
+    it), so it gets the same defensive treatment as parent.json. Without a
+    roster we cannot tell which schools a school-specific card is still
+    missing, nor which ids are typos - so an empty set degrades gap detection
+    back to pre-schools, district-wide-only behavior rather than guessing.
+    Note that card SCOPE never consults this (see _card_schools); only the
+    two questions that genuinely need a roster do - "who is still missing?"
+    in find_gaps(), and "is this id real?" in _unknown_school_refs().
+    """
+    if not SCHOOLS.exists():
+        return set()
+    try:
+        raw = json.loads(SCHOOLS.read_text())
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"[warn] schools.json unreadable, skipping school-aware gap checks: {e}", file=sys.stderr)
+        return set()
+    if not isinstance(raw, dict):
+        return set()
+    return {
+        s["id"]
+        for s in raw.get("schools") or []
+        if isinstance(s, dict) and isinstance(s.get("id"), str)
+    }
+
+
+def _card_schools(card: dict) -> list[str] | None:
+    """A card's explicit school scope, or None when it's district-wide.
+
+    No "schools" key, an empty/malformed one, or the literal ["*"] all mean
+    "every school" per the CONTRACT - that's the common case (nearly every
+    card is district- or state-level) and it must stay a single gap, not
+    fan out per school. Only a genuine list of specific ids narrows it.
+
+    Deliberately does NOT filter against the roster, and takes no roster
+    argument so it cannot start: an earlier version dropped unknown ids and
+    returned None when nothing survived, which turned a one-character typo
+    ("hz" for "ha") into "this card covers every school." The page has no such
+    filter - it just asks whether the list contains the school it is rendering
+    for - so that card in fact rendered on no page at all, while this function
+    told the gap tracker the item was handled. Item invisible, alarm silent:
+    the exact failure this tool exists to catch. Unrecognised ids therefore
+    stay in the list, where they match nothing here for the same reason they
+    match nothing there, and _unknown_school_refs() names the typo out loud.
+
+    This is one half of a contract; the other half is cardSchools() in
+    index.html, pinned by SCOPE_CONTRACT_SHA256 below. Change one, change both.
+    """
+    schools = card.get("schools")
+    if isinstance(schools, str):  # hand-typed "ha" instead of ["ha"]
+        schools = [schools]
+    if not isinstance(schools, list):
+        return None
+    schools = [s for s in schools if isinstance(s, str)]
+    if not schools or "*" in schools:
+        return None
+    return schools
+
+
+# ---------------------------------------------------------------------------
+# The scope contract, pinned.
+#
+# _card_schools() above and cardSchools()/inSchoolScope() in index.html must
+# answer "which schools is this card for?" identically. Nothing in the
+# language stops them from drifting apart, and drift is silent by
+# construction: the page shows a card to nobody while this file reports it
+# covered. So the JS half is fenced between two markers and its
+# whitespace-stripped SHA-256 is pinned here. On mismatch we raise a
+# scope_logic_drift gap - which the workflow turns into a GitHub issue, i.e.
+# a human is asked whether the two still agree.
+#
+# A pin, not a lock: an intentional edit is fine, it just cannot be quiet.
+# Update this constant with the hash the gap's "evidence" line reports.
+# ---------------------------------------------------------------------------
+INDEX_HTML = ROOT / "index.html"
+SCOPE_CONTRACT_RE = re.compile(
+    r"/\* SCOPE-CONTRACT-BEGIN(.*?)/\* SCOPE-CONTRACT-END \*/", re.S
+)
+SCOPE_CONTRACT_SHA256 = (
+    "ee4513ebeb3b4761737d5939272bec9b273df62905a9be33cdb2beca0f7f86d5"
+)
+
+
+def _scope_contract_hash() -> str | None:
+    """Whitespace-stripped SHA-256 of index.html's half of the scope contract,
+    or None if the file or its markers are gone. Whitespace is stripped so
+    reindenting the block is not treated as a semantic change; everything
+    else - including the comment that states the contract - is in scope,
+    because rewording what the contract SAYS is exactly as worth a second
+    human look as rewording what it does."""
+    try:
+        html = INDEX_HTML.read_text(encoding="utf-8")
+    except OSError:
+        return None
+    m = SCOPE_CONTRACT_RE.search(html)
+    if not m:
+        return None
+    return hashlib.sha256("".join(m.group(0).split()).encode("utf-8")).hexdigest()
+
+
+def _scope_contract_gap() -> dict | None:
+    got = _scope_contract_hash()
+    if got == SCOPE_CONTRACT_SHA256:
+        return None
+    if got is None:
+        why = (
+            "index.html's SCOPE-CONTRACT block is missing or unreadable - the "
+            "page's card-scoping logic can no longer be checked against "
+            "_card_schools() in fetch.py."
+        )
+    else:
+        why = (
+            "index.html's card-scoping logic changed. Confirm it still agrees "
+            "with _card_schools() in scripts/fetch.py - if the two disagree, a "
+            "card can render on no page while this tracker reports it covered "
+            "- then update SCOPE_CONTRACT_SHA256 to the hash below."
+        )
+    return {
+        "kind": "scope_logic_drift",
+        "ref": "index.html:SCOPE-CONTRACT",
+        "title": "Page and gap tracker may disagree about card school scope",
+        "why": why,
+        "source_url": "",
+        "source_date": "",
+        "evidence": f"expected {SCOPE_CONTRACT_SHA256}, found {got}",
+    }
+
+
+def _unknown_school_refs(parent: dict, known: set[str]) -> list[dict]:
+    """One gap per card naming a school id no roster knows.
+
+    Without this, an unrecognised id is a scope that matches nothing, which
+    is safe (see _card_schools) but mute: the card just never appears and
+    nobody is told why. Naming the card and the bad id is what turns a
+    silent no-op back into a five-second fix. Needs a roster to compare
+    against, so it says nothing when schools.json is unreadable."""
+    if not known:
+        return []
+    gaps = []
+    for bucket in ("coming_up", "in_effect", "actions"):
+        for card in parent.get(bucket) or []:
+            if not isinstance(card, dict):
+                continue
+            schools = _card_schools(card)
+            if not schools:
+                continue
+            bad = [s for s in schools if s not in known]
+            if not bad:
+                continue
+            gaps.append(
+                {
+                    "kind": "unknown_school_ref",
+                    "ref": card.get("id", ""),
+                    "title": card.get("title") or card.get("label", ""),
+                    "why": "This card's \"schools\" names an id that is not in "
+                    "schools.json, so the card shows on no school's page at all. "
+                    "Fix the id or add the school.",
+                    "source_url": card.get("source_url", ""),
+                    "source_date": "",
+                    "evidence": f"unknown: {', '.join(sorted(bad))}; "
+                    f"known: {', '.join(sorted(known))}",
+                }
+            )
+    return gaps
+
+
 def _in_dormant_window(today: datetime.date) -> bool:
     return DORMANT_START <= (today.month, today.day) <= DORMANT_END
 
@@ -560,43 +729,74 @@ def find_gaps(merged: list[dict], today: datetime.date) -> dict:
     guess - the "nothing found" case needs to be substantiated, not silent.
     """
     parent = _load_parent()
+    known_schools = _load_school_ids()
 
-    covered = set()
+    # Six schools share one corpus, so coverage has to stay keyed by item id,
+    # not by (item id, school) - otherwise one district-wide card would need
+    # writing six times, and one missing card would flag six gaps instead of
+    # one. covered_all is the common case (a card with no "schools" key, or
+    # ["*"]) - it satisfies every school outright. covered_by_school only
+    # exists for cards that opted into a narrower scope; an item lands here
+    # when it's covered for SOME schools but the roster shows others still
+    # aren't - that's the one case school-awareness is meaningful for.
+    covered_all = set()
+    covered_by_school: dict[str, set[str]] = {}
     for bucket in ("coming_up", "in_effect", "actions"):
         for card in parent.get(bucket) or []:
-            if isinstance(card, dict):
-                # "covers" is hand-typed; a curator writing "covers": "seed-ab3216"
-                # instead of ["seed-ab3216"] would otherwise have set.update()
-                # iterate the string character by character, silently covering
-                # nothing and flagging the item forever
-                covers = card.get("covers")
-                if isinstance(covers, str):
-                    covers = [covers]
-                elif not isinstance(covers, list):
-                    covers = []
-                covered.update(c for c in covers if isinstance(c, str))
+            if not isinstance(card, dict):
+                continue
+            # "covers" is hand-typed; a curator writing "covers": "seed-ab3216"
+            # instead of ["seed-ab3216"] would otherwise have set.update()
+            # iterate the string character by character, silently covering
+            # nothing and flagging the item forever
+            covers = card.get("covers")
+            if isinstance(covers, str):
+                covers = [covers]
+            elif not isinstance(covers, list):
+                covers = []
+            covers = [c for c in covers if isinstance(c, str)]
+            schools = _card_schools(card)
+            if schools is None:
+                covered_all.update(covers)
+            else:
+                for c in covers:
+                    covered_by_school.setdefault(c, set()).update(schools)
 
     cutoff = (today - datetime.timedelta(days=UNCOVERED_HOT_MAX_AGE_DAYS)).isoformat()
     gaps = []
     for item in merged:
         if item.get("priority") != "hot" or item.get("scope") != "district":
             continue  # state items are VP-desk context, not auto parent cards
-        if item.get("id") in covered:
+        item_id = item.get("id")
+        if item_id in covered_all:
             continue
+        gap_schools = None
+        if item_id in covered_by_school:
+            if not known_schools:
+                # a school-specific card exists but we can't tell which
+                # schools it leaves out without a roster - that's still
+                # human attention on this item, so don't re-flag it on a
+                # guess (see _load_school_ids)
+                continue
+            missing = sorted(known_schools - covered_by_school[item_id])
+            if not missing:
+                continue  # the school-specific cards add up to full coverage
+            gap_schools = missing
         if item.get("first_seen", "") < cutoff:
             continue  # don't resurrect ancient history on first run
-        gaps.append(
-            {
-                "kind": "uncovered_hot",
-                "ref": item.get("id", ""),
-                "title": item.get("title", ""),
-                "why": "Hot district item with no parent card's \"covers\" listing it - "
-                "a human needs to decide whether this needs a card.",
-                "source_url": item.get("link", ""),
-                "source_date": _iso_day(item.get("published")),
-                "evidence": item.get("summary") or item.get("title", ""),
-            }
-        )
+        gap = {
+            "kind": "uncovered_hot",
+            "ref": item.get("id", ""),
+            "title": item.get("title", ""),
+            "why": "Hot district item with no parent card's \"covers\" listing it - "
+            "a human needs to decide whether this needs a card.",
+            "source_url": item.get("link", ""),
+            "source_date": _iso_day(item.get("published")),
+            "evidence": item.get("summary") or item.get("title", ""),
+        }
+        if gap_schools:
+            gap["schools"] = gap_schools
+        gaps.append(gap)
 
     for card in parent.get("coming_up") or []:
         if not isinstance(card, dict):
@@ -605,17 +805,22 @@ def find_gaps(merged: list[dict], today: datetime.date) -> dict:
         # hand-typed field: a bare 20260728 is valid JSON but not a string,
         # and comparing int to str raises rather than just being wrong
         if isinstance(until, str) and until and until < today.isoformat():
-            gaps.append(
-                {
-                    "kind": "expired_card",
-                    "ref": card.get("id", ""),
-                    "title": card.get("title", ""),
-                    "why": "This card's \"until\" date has passed - archive or replace it.",
-                    "source_url": card.get("source_url", ""),
-                    "source_date": until,
-                    "evidence": "",
-                }
-            )
+            gap = {
+                "kind": "expired_card",
+                "ref": card.get("id", ""),
+                "title": card.get("title", ""),
+                "why": "This card's \"until\" date has passed - archive or replace it.",
+                "source_url": card.get("source_url", ""),
+                "source_date": until,
+                "evidence": "",
+            }
+            # the card already declares its own scope; a school-specific
+            # coming_up card expiring is that school's curator's business,
+            # so pass the scope through rather than recomputing anything
+            schools = _card_schools(card)
+            if schools:
+                gap["schools"] = schools
+            gaps.append(gap)
 
     updated = parent.get("updated", "")
     if updated and not _in_dormant_window(today):
@@ -637,8 +842,25 @@ def find_gaps(merged: list[dict], today: datetime.date) -> dict:
                 }
             )
 
-    order = {"uncovered_hot": 0, "expired_card": 1, "stale_curation": 2}
-    gaps.sort(key=lambda g: order[g["kind"]])
+    # Integrity gaps go last into the list and first out of the sort: a card
+    # pointed at a school that doesn't exist, or a page whose scoping logic no
+    # longer matches this file's, makes every "covered" verdict above it
+    # suspect - so a human should read those before working the queue.
+    gaps.extend(_unknown_school_refs(parent, known_schools))
+    drift = _scope_contract_gap()
+    if drift:
+        gaps.append(drift)
+
+    order = {
+        "scope_logic_drift": 0,
+        "unknown_school_ref": 1,
+        "uncovered_hot": 2,
+        "expired_card": 3,
+        "stale_curation": 4,
+    }
+    # .get, not [] - an unranked new kind should sort last, not raise and take
+    # the whole nightly fetch down with it
+    gaps.sort(key=lambda g: order.get(g["kind"], 99))
 
     return {
         "note": "Machine-written, regenerated every run, append-nothing - this "

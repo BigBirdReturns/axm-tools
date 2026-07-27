@@ -1,0 +1,66 @@
+{
+  "note": "The schools this tracker can serve. Nearly every card is district or state level and therefore identical for all of them - that is the whole reason one corpus can feed many schools, and why adding a school costs almost no curation. \"published\" is a governance flag, not a technical one: a school's page is built either way, but only published schools are linked or announced. Speaking to another school's families in their PTA's name is theirs to agree to, not ours to assume - flip it when that PTA says yes, and name who said so in \"published_note\". Source: ausd.net school directory, verified 2026-07-27.",
+  "default": "ha",
+  "schools": [
+    {
+      "id": "ha",
+      "slug": "holly-avenue",
+      "name": "Holly Avenue Elementary",
+      "short": "Holly Avenue",
+      "level": "elementary",
+      "site": "https://ha.ausd.net",
+      "published": true,
+      "published_note": "Home school of the VP Legislation who maintains this tracker."
+    },
+    {
+      "id": "bs",
+      "slug": "baldwin-stocker",
+      "name": "Baldwin Stocker Elementary",
+      "short": "Baldwin Stocker",
+      "level": "elementary",
+      "site": "https://bs.ausd.net",
+      "published": false,
+      "published_note": ""
+    },
+    {
+      "id": "cg",
+      "slug": "camino-grove",
+      "name": "Camino Grove Elementary",
+      "short": "Camino Grove",
+      "level": "elementary",
+      "site": "https://cg.ausd.net",
+      "published": false,
+      "published_note": ""
+    },
+    {
+      "id": "ho",
+      "slug": "highland-oaks",
+      "name": "Highland Oaks Elementary",
+      "short": "Highland Oaks",
+      "level": "elementary",
+      "site": "https://ho.ausd.net",
+      "published": false,
+      "published_note": ""
+    },
+    {
+      "id": "hr",
+      "slug": "hugo-reid",
+      "name": "Hugo Reid Elementary",
+      "short": "Hugo Reid",
+      "level": "elementary",
+      "site": "https://hr.ausd.net",
+      "published": false,
+      "published_note": ""
+    },
+    {
+      "id": "lw",
+      "slug": "longley-way",
+      "name": "Longley Way Elementary",
+      "short": "Longley Way",
+      "level": "elementary",
+      "site": "https://lw.ausd.net",
+      "published": false,
+      "published_note": ""
+    }
+  ]
+}

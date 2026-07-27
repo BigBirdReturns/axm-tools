@@ -43,6 +43,32 @@ jobs:
       - name: Fetch and filter feeds
         run: python pta-tracker/scripts/fetch.py
 
+      # Regenerates pta-tracker/<slug>/index.html for every school in
+      # data/schools.json (published or not - build_schools.py's own docstring
+      # covers why) so each nightly refresh ships all six front doors, not
+      # just the Holly Avenue default. Runs after the fetch (so a school page
+      # never ships stale relative to today's items.json) and before the
+      # Pages artifact is captured below.
+      #
+      # continue-on-error for the same reason the gap-issue step below has it,
+      # and more urgently: schools.json is hand-maintained ("a new campus is
+      # added by editing it"), so one malformed edit makes this script exit 1 -
+      # and a failed step skips every remaining step in the job, which would
+      # mean no items.json commit and no Pages deploy. The feed refresh is the
+      # district's actual service; a page generator must never be able to cost
+      # everyone their data. The `|| { echo ::error:: ; exit 1; }` keeps the
+      # failure loud (a red annotation on the run, and outcome != success for
+      # the commit gate below) while the job carries on with the last good
+      # per-school pages still on disk and in the artifact.
+      - name: Build per-school pages
+        id: build_schools
+        continue-on-error: true
+        run: |
+          python pta-tracker/scripts/build_schools.py || {
+            echo "::error title=Per-school pages not rebuilt::build_schools.py failed - check pta-tracker/data/schools.json. The data refresh and Pages deploy continued; per-school pages stay at the last good build."
+            exit 1
+          }
+
       # fetch.py writes data/gaps.json every run - it flags missing human
       # work (an uncovered hot item, an expired card, stale curation), never
       # parent-facing prose. One issue, edited in place, is how that reaches
@@ -129,10 +155,31 @@ jobs:
           fi
 
       - name: Commit updated data
+        env:
+          SCHOOLS_BUILT: ${{ steps.build_schools.outcome }}
         run: |
           git config user.name "pta-tracker-bot"
           git config user.email "actions@users.noreply.github.com"
           git add pta-tracker/data/items.json
+          # build_schools.py just rewrote pta-tracker/<slug>/ for every school
+          # in schools.json and swept away any slug no longer listed there -
+          # stage that whole result (additions and removals alike) so the
+          # per-school pages a viewer gets are always what this run built,
+          # not a stale artifact-only copy that never made it into history.
+          # The exclusions keep this from re-scanning data/ (handled by the
+          # line above, plus archive.json/gaps.json which are deliberately
+          # not committed) or scripts/ (source, never build output).
+          #
+          # Gated on the build's own outcome because continue-on-error lets a
+          # failed build reach this step: staging a half-written or swept-away
+          # tree would turn "tonight's page build broke" into "the committed
+          # pages are broken too." Nothing staged means the last good build
+          # stays live and only the data refresh lands.
+          if [ "$SCHOOLS_BUILT" = "success" ]; then
+            git add -A -- pta-tracker ':!pta-tracker/data' ':!pta-tracker/scripts'
+          else
+            echo "::warning::per-school pages not staged: build_schools.py did not succeed this run"
+          fi
           if git diff --cached --quiet; then
             echo "No new items."
           else

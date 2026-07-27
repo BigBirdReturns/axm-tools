@@ -39,13 +39,13 @@
       "title": "Stronger abuse-prevention rules at every school",
       "kid_impact": "Schools must now run expanded background checks on job applicants, train staff and students to recognize signs of grooming or abuse, and post their safe-environment policy where parents can see it.",
       "impact_area": "Student safety",
-      "owner": "Arcadia USD; Holly Avenue must post its policy",
+      "owner": "Arcadia USD; your school must post its policy",
       "time_sensitivity": "In effect July 1",
       "law_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB848",
       "law_label": "SB 848 — Pupil safety: employee misconduct, abuse prevention",
       "source_url": "https://edsource.org/2026/california-schools-new-laws/761168",
       "covers": ["seed-sb848"],
-      "action": { "type": "check", "label": "Ask the office where the policy is posted", "url": "https://ha.ausd.net" }
+      "action": { "type": "check", "label": "Ask the office where the policy is posted", "url": "{{school_site}}" }
     },
     {
       "id": "parent-sb760",

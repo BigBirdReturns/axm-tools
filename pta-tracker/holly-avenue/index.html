@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Holly Avenue PTA — Legislation Watch</title>
 <meta name="description" content="A free page from the Holly Avenue Elementary PTA: what Arcadia USD and California decisions actually mean for your kid's school week — what's coming up, what's already in effect, and what parents can do about it.">
-<link rel="canonical" href="https://bigbirdreturns.github.io/axm-tools/pta-tracker/">
+<link rel="canonical" href="https://bigbirdreturns.github.io/axm-tools/pta-tracker/holly-avenue/">
 <!-- Sharing preview card (chat apps, WeChat, Messages). Meta tags only — inert,
      no network fetch at page load; this page still ships zero external requests. -->
 <meta property="og:title" content="Holly Avenue PTA — What's changing at your kid's school">
 <meta property="og:description" content="Does it affect my kid? Is something about to be decided? What can I do? Plain-language updates from the Holly Avenue Elementary PTA on Arcadia USD and California school decisions — answered in 30 seconds.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://bigbirdreturns.github.io/axm-tools/pta-tracker/">
+<meta property="og:url" content="https://bigbirdreturns.github.io/axm-tools/pta-tracker/holly-avenue/">
 <meta property="og:site_name" content="Holly Avenue Elementary PTA">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="zh_CN">
@@ -250,6 +250,7 @@ document.documentElement.lang=(function(){
   Built on AXM tooling — <a href="https://axm.tools">axm.tools</a>.
 </footer>
 
+<script>window.SCHOOL="ha";window.SCHOOL_BASE="../data/";</script>
 <script>
 /* ---------- i18n: chrome-only, en + zh-Hant ----------
    Ported in spirit from axm-world's i18n module, minus the build step this
@@ -899,7 +900,7 @@ shareBtn.onclick=()=>navigator.share({title:document.title,text:report.textConte
    staleness banner above already tells the reader how old data is);
    cache-first with background refresh for the page shell. */
 if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("sw.js").catch(()=>{/* offline support is best-effort */});
+  navigator.serviceWorker.register("../sw.js").catch(()=>{/* offline support is best-effort */});
 }
 </script>
 </body>

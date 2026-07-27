@@ -1,9 +1,11 @@
 # PTA Legislation Tracker
 
 A zero-maintenance, district-first tracker for what parents at an Arcadia USD
-K-6 campus need to know. Built for the Holly Avenue Elementary PTA. It does
-the VP-Legislation job: watch the district and the state, filter for
-relevance, and generate the monthly board report on demand.
+K-6 campus need to know. Built by the Holly Avenue Elementary PTA and now
+serving one page per AUSD elementary school off one shared corpus (see
+"Multiple schools" below). It does the VP-Legislation job: watch the district
+and the state, filter for relevance, and generate the monthly board report on
+demand.
 
 ## How it works
 
@@ -108,6 +110,89 @@ deploys Pages in one run. To stand up a fresh copy elsewhere:
 `data/items.json` ships pre-seeded with the four education laws that took
 effect July 1, 2026, so the page renders meaningfully before the first
 nightly run.
+
+## Multiple schools
+
+Arcadia USD runs six elementary schools, and the tracker's actual job —
+watch the district and the state, filter for relevance — doesn't change per
+campus. A boundary item, a state cellphone law, a board meeting: the same
+card is just as true at Baldwin Stocker, Camino Grove, Highland Oaks, Hugo
+Reid, and Longley Way as it is at Holly Avenue. That overlap is the whole
+reason one shared corpus can serve all six for close to the curation cost of
+one — the rare campus-specific exception gets scoped, everything else is
+free.
+
+The real motive is durability, not reach. A tracker maintained by exactly
+one PTA officer has exactly one point of failure: the day that officer stops
+curating, the page goes stale and nobody notices until a "coming up" card is
+quietly a month past its meeting. Six schools sharing a corpus means six
+PTAs have a reason to keep it alive, and any one of them picking up the pen
+keeps `parent.json` current for the other five. That's the fix for this
+project's largest actual risk — which was never the scraper, it was
+single-maintainer staleness.
+
+`data/schools.json` is the registry: each school's `id`, `slug`, display
+`name`/`short`, `site` (its ausd.net page — used for direct links and for
+the `{{school_site}}` action-URL token below), and a `published` flag.
+`default` names which school id renders when none is specified at all —
+currently Holly Avenue, because that's what the live root URL already
+promised, and adding five more schools must not break that promise.
+
+**How school identity reaches the page.** `index.html` never infers a school
+from its own URL — that would make every page a special case to maintain.
+Instead it reads a `window.SCHOOL` / `window.SCHOOL_BASE` pair, falling back
+to `schools.json`'s `default` and `data/` when neither is set. That fallback
+is what lets one `index.html` serve as both the live default-school page
+(opened directly, nothing injected) and the build template. `scripts/
+build_schools.py` runs in CI and, for every school in `schools.json` —
+published or not — writes `pta-tracker/<slug>/index.html` with a one-line
+`<script>` injected before the main script block to set that pair, and the
+`<title>`, canonical link, and Open Graph tags rewritten for that school. No
+`fetch()` call or route ever changes: the data directory is always resolved
+as `window.SCHOOL_BASE || "data/"`, so a per-school page one directory
+deeper just points back up at the one shared `data/`.
+
+**Scoping a card to fewer than six schools.** A card in `parent.json` with no
+`"schools"` key is district-wide and renders for every school — this will be
+true of nearly every card, because nearly every card actually is about the
+district or the state. Add `"schools": ["ha", "hr"]` to show a card only at
+Holly Avenue and Hugo Reid, for the rare card that's genuinely
+campus-specific (a Holly Avenue carnival, a Hugo Reid boundary change).
+`"schools": ["*"]` also means district-wide, so a card copied in from
+elsewhere with an explicit wildcard doesn't need editing. An action's `url`
+can contain the literal token `{{school_site}}`, substituted at render time
+with the current school's `site` — this is what lets one written card say
+"ask the office where the policy is posted" and have it point at the actual
+campus reading the page, instead of six near-duplicate cards differing only
+in a URL. The live `parent-sb848` card in `data/parent.json` is exactly that
+case: its action url is the literal `"{{school_site}}"`, so the Hugo Reid
+page sends a Hugo Reid parent to hr.ausd.net.
+
+**A school id you can't misspell quietly.** `"schools"` values are matched
+against `schools.json`'s roster and nowhere else. A typo (`"hz"` for `"ha"`)
+therefore matches no school and the card renders on no page — so
+`fetch.py`'s gap detector treats that card as covering nothing, keeps the
+underlying hot item flagged, *and* raises a separate `unknown_school_ref`
+gap naming the card and the bad id. The one thing it deliberately does not
+do is treat an unrecognised id as "district-wide": a scope nobody can read
+must never silently widen into a scope everybody gets. The page and the gap
+detector are held to one written contract for this — see
+`SCOPE_CONTRACT_SHA256` in `scripts/fetch.py`.
+
+**`published` is a governance flag, not a build gate.** Every school's page
+builds and deploys on every run, published or not — deliberately, so that
+turning a school on is a single flag-flip with the whole corpus already
+correct behind it, not a from-scratch build the day its PTA finally opts in.
+But an unpublished school's page must never be linked or announced anywhere
+user-facing: speaking to another school's families, in their PTA's name,
+about their kids' school, is that PTA's decision to make, not a default this
+tool gets to assume on their behalf. Publishing a school means that school's
+PTA affirmatively said yes — record who, in `published_note` — and saying
+yes isn't a free action even then: every school added multiplies the
+surface a factual error can reach, while the number of people actually
+reviewing `parent.json` before it ships does not grow to match. Add schools
+because a PTA asked in, not because the marginal curation cost rounds to
+zero — the exposure doesn't round to zero along with it.
 
 ## Operating manual (the human 10%)
 
