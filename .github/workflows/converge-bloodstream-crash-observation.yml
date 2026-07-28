@@ -6,6 +6,13 @@ on:
       - agent/reobserve-bloodstream-crash-recovery
     paths:
       - '.github/workflows/converge-bloodstream-crash-observation.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/converge-bloodstream-crash-observation.yml'
+      - 'organ-evolution/data/observed.json'
+      - 'organ-evolution/scripts/test_observe.py'
 
 permissions:
   contents: write
