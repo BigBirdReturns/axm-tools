@@ -104,7 +104,7 @@ class ObserveTests(unittest.TestCase):
             self.assertTrue(js.rstrip().endswith(";"))
             self.assertEqual(json.loads(js[len("window.AXM_ORGAN_OBSERVATIONS = "):].rstrip()[:-1]), result)
 
-    def test_production_source_map_matches_the_declared_estate(self):
+    def test_production_source_map_and_local_evidence_match_the_declared_estate(self):
         production_sources = observe.load_json(TOOL / "data" / "sources.json", observe.SOURCES_FORMAT)
         production_local = observe.load_json(TOOL / "data" / "observed.json", observe.LOCAL_FORMAT)
         source_rows, _ = observe.validate_sources(production_sources)
@@ -114,7 +114,15 @@ class ObserveTests(unittest.TestCase):
         }
         mapped = {row["organId"] for row in source_rows}
         self.assertEqual(mapped, declared)
-        self.assertEqual(observe.validate_local(production_local, declared), [])
+        local = observe.validate_local(production_local, declared)
+        self.assertEqual(
+            [row["id"] for row in local],
+            ["observation.bloodstream.hardening-20260728"],
+        )
+        self.assertEqual(local[0]["organId"], "organ.bloodstream")
+        self.assertEqual(local[0]["state"], "verified")
+        self.assertIn("Hosted synthetic-ledger qualification only", local[0]["limits"])
+        observe.assert_no_authority_mutation(production_local)
 
     def test_committed_observation_projections_are_exact_and_non_authoritative(self):
         observed = observe.load_json(TOOL / "data" / "observations.json", observe.FORMAT)
