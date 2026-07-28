@@ -1,6 +1,6 @@
 window.AXM_ORGAN_OBSERVATIONS = {
   "format": "axm-organ-observations/1",
-  "generatedAt": "2026-07-28T03:05:36.728524Z",
+  "generatedAt": "2026-07-28T03:27:04.526766Z",
   "organs": [
     {
       "findings": [
@@ -141,10 +141,10 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "createdAt": "2026-07-28T02:46:43Z",
               "draft": true,
               "headRef": "feature/action-semantic-objectives-v1",
-              "headSha": "8a4e3c402ea19860cb7e79d66c0bd87de9e4770b",
+              "headSha": "12b84fb212c2f8ee81987794e3deb5dbc505cb35",
               "number": 187,
               "title": "Execute semantic action objectives deterministically",
-              "updatedAt": "2026-07-28T03:03:28Z",
+              "updatedAt": "2026-07-28T03:09:32Z",
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/187"
             }
           ],
@@ -332,7 +332,24 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "summary": "BigBirdReturns/axm-bloodstream could not be observed: GitHub HTTP 404 for /repos/BigBirdReturns/axm-bloodstream: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/repos#get-a-repository\",\"status\":\"404\"}"
         }
       ],
-      "localObservations": [],
+      "localObservations": [
+        {
+          "claim": "Bloodstream hardening preserved append-only circulation and pure folding while adding routing, invalidation, recovery, stale observation, exact verification and heartbeat receipts, a sanitized public observation, and a succession contract. The complete reconstruction and transaction path passed under Python 3.11 and 3.12; the accepted main commit is 140d00894a49fe4e882b89d6b1ac4ba2ce02dedb.",
+          "evidenceRefs": [
+            "https://github.com/BigBirdReturns/axm-bloodstream/pull/2",
+            "https://github.com/BigBirdReturns/axm-bloodstream/actions/runs/30325636708",
+            "sha256:5c616076efe56fe543056c590ff3ad7e02a646ce10ba341aea1ce7cc1ce1db9c",
+            "sha256:136555106454d8f8a3eeb56bedd8b8d51fdf7c9aa7bfd47e3fc0591e1571ad11"
+          ],
+          "id": "observation.bloodstream.hardening-20260728",
+          "kind": "hosted_qualification",
+          "limits": "Hosted synthetic-ledger qualification only. The private repository metadata and the local operational jobs.jsonl remain outside the public observer. This observation does not admit, prioritize, schedule, merge, execute, or accept work.",
+          "observedAt": "2026-07-28T03:20:24Z",
+          "organId": "organ.bloodstream",
+          "source": "BigBirdReturns/axm-bloodstream PR #2; Actions run 30325636708; artifacts 8675556500 and 8675554295",
+          "state": "verified"
+        }
+      ],
       "organId": "organ.bloodstream",
       "repositories": []
     },
@@ -917,7 +934,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/122"
             },
             {
-              "ageDays": 6,
+              "ageDays": 7,
               "baseRef": "agent/chair-inbox-v1-repair-001",
               "createdAt": "2026-07-21T03:21:03Z",
               "draft": true,
@@ -1108,7 +1125,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960345"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941463"
           ],
           "summary": "BigBirdReturns/axm-tools: Acceptance page is in_progress."
         },
@@ -1116,7 +1133,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960342"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941459"
           ],
           "summary": "BigBirdReturns/axm-tools: Organ evolution observe + deploy is in_progress."
         },
@@ -1124,7 +1141,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960350"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941455"
           ],
           "summary": "BigBirdReturns/axm-tools: Organ evolution surface is in_progress."
         },
@@ -1132,7 +1149,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960372"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941452"
           ],
           "summary": "BigBirdReturns/axm-tools: PTA tracker fetch + deploy is pending."
         }
@@ -1142,7 +1159,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
       "repositories": [
         {
           "archived": false,
-          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/ce0a8762cfe4b39168112452efffcfe213a4a1a0",
+          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/ddb8d5f772c200cff6b288920d7681cb127cd08f",
           "defaultBranch": "main",
           "findings": [
             {
@@ -1155,7 +1172,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960345"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941463"
               ],
               "summary": "BigBirdReturns/axm-tools: Acceptance page is in_progress."
             },
@@ -1163,7 +1180,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960342"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941459"
               ],
               "summary": "BigBirdReturns/axm-tools: Organ evolution observe + deploy is in_progress."
             },
@@ -1171,7 +1188,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960350"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941455"
               ],
               "summary": "BigBirdReturns/axm-tools: Organ evolution surface is in_progress."
             },
@@ -1179,7 +1196,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960372"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941452"
               ],
               "summary": "BigBirdReturns/axm-tools: PTA tracker fetch + deploy is pending."
             }
@@ -1187,8 +1204,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "fork": false,
           "fullName": "BigBirdReturns/axm-tools",
           "headAgeDays": 0,
-          "headAt": "2026-07-28T03:05:25Z",
-          "headSha": "ce0a8762cfe4b39168112452efffcfe213a4a1a0",
+          "headAt": "2026-07-28T03:26:47Z",
+          "headSha": "ddb8d5f772c200cff6b288920d7681cb127cd08f",
           "latestTag": "archive/claude/session-planning-1h0xlw",
           "license": null,
           "observedRef": "main",
@@ -1278,47 +1295,47 @@ window.AXM_ORGAN_OBSERVATIONS = {
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T03:05:28Z",
+              "createdAt": "2026-07-28T03:26:49Z",
               "event": "push",
-              "headSha": "ce0a8762cfe4b39168112452efffcfe213a4a1a0",
-              "id": 30324960345,
+              "headSha": "ddb8d5f772c200cff6b288920d7681cb127cd08f",
+              "id": 30325941463,
               "name": "Acceptance page",
               "status": "in_progress",
-              "updatedAt": "2026-07-28T03:05:38Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960345"
+              "updatedAt": "2026-07-28T03:26:53Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941463"
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T03:05:28Z",
+              "createdAt": "2026-07-28T03:26:49Z",
               "event": "push",
-              "headSha": "ce0a8762cfe4b39168112452efffcfe213a4a1a0",
-              "id": 30324960342,
+              "headSha": "ddb8d5f772c200cff6b288920d7681cb127cd08f",
+              "id": 30325941459,
               "name": "Organ evolution observe + deploy",
               "status": "in_progress",
-              "updatedAt": "2026-07-28T03:05:33Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960342"
+              "updatedAt": "2026-07-28T03:27:01Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941459"
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T03:05:28Z",
+              "createdAt": "2026-07-28T03:26:49Z",
               "event": "push",
-              "headSha": "ce0a8762cfe4b39168112452efffcfe213a4a1a0",
-              "id": 30324960350,
+              "headSha": "ddb8d5f772c200cff6b288920d7681cb127cd08f",
+              "id": 30325941455,
               "name": "Organ evolution surface",
               "status": "in_progress",
-              "updatedAt": "2026-07-28T03:05:32Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960350"
+              "updatedAt": "2026-07-28T03:26:54Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941455"
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T03:05:28Z",
+              "createdAt": "2026-07-28T03:26:49Z",
               "event": "push",
-              "headSha": "ce0a8762cfe4b39168112452efffcfe213a4a1a0",
-              "id": 30324960372,
+              "headSha": "ddb8d5f772c200cff6b288920d7681cb127cd08f",
+              "id": 30325941452,
               "name": "PTA tracker fetch + deploy",
               "status": "pending",
-              "updatedAt": "2026-07-28T03:05:29Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30324960372"
+              "updatedAt": "2026-07-28T03:26:50Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30325941452"
             }
           ]
         }
@@ -1663,7 +1680,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
     },
     "sourcesFormat": "axm-organ-sources/1"
   },
-  "sourceDigest": "organobs1_3f1dcef4354e80d3a8ff9d0b814f8bb566019465ef6cac8b96c112438a6845b5",
+  "sourceDigest": "organobs1_1916fe153147de7e94e781a4d29ced4855104e73de5f8de00e0765ed53776a1e",
   "unavailable": [
     {
       "error": "GitHub HTTP 404 for /repos/BigBirdReturns/axm-bloodstream: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/repos#get-a-repository\",\"status\":\"404\"}",
