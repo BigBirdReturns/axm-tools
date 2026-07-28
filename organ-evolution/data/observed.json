@@ -1,4 +1,21 @@
 {
   "format": "axm-organ-local-observations/1",
-  "observations": []
+  "observations": [
+    {
+      "id": "observation.bloodstream.hardening-20260728",
+      "organId": "organ.bloodstream",
+      "observedAt": "2026-07-28T03:20:24Z",
+      "kind": "hosted_qualification",
+      "state": "verified",
+      "claim": "Bloodstream hardening preserved append-only circulation and pure folding while adding routing, invalidation, recovery, stale observation, exact verification and heartbeat receipts, a sanitized public observation, and a succession contract. The complete reconstruction and transaction path passed under Python 3.11 and 3.12; the accepted main commit is 140d00894a49fe4e882b89d6b1ac4ba2ce02dedb.",
+      "source": "BigBirdReturns/axm-bloodstream PR #2; Actions run 30325636708; artifacts 8675556500 and 8675554295",
+      "limits": "Hosted synthetic-ledger qualification only. The private repository metadata and the local operational jobs.jsonl remain outside the public observer. This observation does not admit, prioritize, schedule, merge, execute, or accept work.",
+      "evidenceRefs": [
+        "https://github.com/BigBirdReturns/axm-bloodstream/pull/2",
+        "https://github.com/BigBirdReturns/axm-bloodstream/actions/runs/30325636708",
+        "sha256:5c616076efe56fe543056c590ff3ad7e02a646ce10ba341aea1ce7cc1ce1db9c",
+        "sha256:136555106454d8f8a3eeb56bedd8b8d51fdf7c9aa7bfd47e3fc0591e1571ad11"
+      ]
+    }
+  ]
 }
