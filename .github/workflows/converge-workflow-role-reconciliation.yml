@@ -1,0 +1,119 @@
+name: Converge workflow-role reconciliation
+
+on:
+  push:
+    branches:
+      - agent/workflow-role-reconciliation
+    paths:
+      - '.github/workflows/converge-workflow-role-reconciliation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: converge-workflow-role-reconciliation
+  cancel-in-progress: true
+
+jobs:
+  converge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/workflow-role-reconciliation
+          fetch-depth: 0
+          show-progress: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Bind explicit workflow roles into the observer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('organ-evolution/scripts/observe.py')
+          text = path.read_text(encoding='utf-8')
+
+          replacements = []
+          replacements.append((
+              'from urllib.request import Request, urlopen\n\nFORMAT = "axm-organ-observations/1"',
+              'from urllib.request import Request, urlopen\n\nfrom workflow_roles import apply_workflow_roles, validate_workflow_policy, workflow_finding\n\nFORMAT = "axm-organ-observations/1"'
+          ))
+          replacements.append((
+              '            full_name = repository["fullName"]\n            if full_name in seen_repos:',
+              '            full_name = repository["fullName"]\n            validate_workflow_policy(repository.get("workflowPolicy"))\n            if full_name in seen_repos:'
+          ))
+          replacements.append((
+              '''    for workflow in workflows:\n        conclusion = workflow.get("conclusion")\n        status = workflow.get("status")\n        age = age_days(workflow.get("updatedAt") or workflow.get("createdAt"), now)\n        if conclusion in BAD_WORKFLOW_CONCLUSIONS:\n            add("workflow_not_green", "critical", f"{full_name}: {workflow.get('name')} concluded {conclusion}.", [workflow.get("url")])\n        elif status and status != "completed":\n            add("workflow_pending", "attention", f"{full_name}: {workflow.get('name')} is {status}.", [workflow.get("url")])\n        elif isinstance(age, int) and age > rules.stale_workflow_days:\n            add("workflow_stale", "attention", f"{full_name}: latest {workflow.get('name')} receipt is {age} days old.", [workflow.get("url")])''',
+              '''    for workflow in workflows:\n        age = age_days(workflow.get("updatedAt") or workflow.get("createdAt"), now)\n        finding = workflow_finding(\n            workflow,\n            full_name,\n            age,\n            BAD_WORKFLOW_CONCLUSIONS,\n            rules.stale_workflow_days,\n        )\n        if finding:\n            findings.append(finding)'''
+          ))
+          replacements.append((
+              '''def collect_repository(\n    provider: Provider,\n    full_name: str,\n    requested_ref: str | None,\n    rules: SourceRules,\n    now: datetime,\n) -> dict[str, Any]:''',
+              '''def collect_repository(\n    provider: Provider,\n    full_name: str,\n    requested_ref: str | None,\n    workflow_policy: dict[str, Any] | None,\n    rules: SourceRules,\n    now: datetime,\n) -> dict[str, Any]:'''
+          ))
+          replacements.append((
+              '    runs = latest_workflows(provider.runs(full_name, observed_ref))',
+              '    runs = apply_workflow_roles(latest_workflows(provider.runs(full_name, observed_ref)), workflow_policy)'
+          ))
+          replacements.append((
+              '                observed = collect_repository(provider, repository["fullName"], repository.get("ref"), rules, now)',
+              '''                observed = collect_repository(\n                    provider,\n                    repository["fullName"],\n                    repository.get("ref"),\n                    repository.get("workflowPolicy"),\n                    rules,\n                    now,\n                )'''
+          ))
+
+          for old, new in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'observe.py patch anchor count {count}: {old[:80]!r}')
+              text = text.replace(old, new)
+          path.write_text(text, encoding='utf-8', newline='\n')
+
+          tests = Path('organ-evolution/scripts/test_observe.py')
+          text = tests.read_text(encoding='utf-8')
+          old = '        self.assertIn("workflow_not_green", codes)'
+          new = '        self.assertIn("workflow_required_not_green", codes)'
+          if text.count(old) != 1:
+              raise SystemExit('expected one old workflow finding assertion')
+          text = text.replace(old, new)
+
+          anchor = '\n\nif __name__ == "__main__":\n    unittest.main()\n'
+          additions = '''\n\n    def test_declared_workflow_role_is_bound_to_the_observed_result(self):\n        result = self.compile()\n        blood = next(row for row in result["organs"] if row["organId"] == "organ.bloodstream")\n        workflow = blood["repositories"][0]["workflows"][0]\n        self.assertEqual(workflow["role"], "permanent_gate")\n        self.assertEqual(workflow["lifecycle"], "current")\n        self.assertTrue(workflow["required"])\n        self.assertEqual(workflow["roleSource"], "declared")\n        finding = next(row for row in blood["findings"] if row["code"] == "workflow_required_not_green")\n        self.assertEqual(finding["severity"], "critical")\n\n    def test_superseded_failure_remains_visible_without_becoming_a_current_gate(self):\n        sources = json.loads(json.dumps(self.sources))\n        declaration = sources["organs"][1]["repositories"][0]["workflowPolicy"]["declarations"][0]\n        declaration["role"] = "bounded_repair_carrier"\n        declaration["lifecycle"] = "superseded"\n        declaration["required"] = False\n        result = observe.compile_observations(\n            sources, self.local, observe.FixtureProvider(self.fixture), self.now\n        )\n        blood = next(row for row in result["organs"] if row["organId"] == "organ.bloodstream")\n        workflow = blood["repositories"][0]["workflows"][0]\n        self.assertEqual(workflow["lifecycle"], "superseded")\n        finding = next(row for row in blood["findings"] if row["code"] == "workflow_historical_not_green")\n        self.assertEqual(finding["severity"], "context")\n        self.assertFalse(any(row["severity"] == "critical" and row["code"].startswith("workflow_") for row in blood["findings"]))\n\n    def test_unclassified_red_workflow_fails_visible(self):\n        sources = json.loads(json.dumps(self.sources))\n        sources["organs"][1]["repositories"][0].pop("workflowPolicy")\n        result = observe.compile_observations(\n            sources, self.local, observe.FixtureProvider(self.fixture), self.now\n        )\n        blood = next(row for row in result["organs"] if row["organId"] == "organ.bloodstream")\n        workflow = blood["repositories"][0]["workflows"][0]\n        self.assertEqual(workflow["role"], "unknown")\n        self.assertEqual(workflow["roleSource"], "unclassified")\n        finding = next(row for row in blood["findings"] if row["code"] == "workflow_unclassified_not_green")\n        self.assertEqual(finding["severity"], "critical")\n\n    def test_non_current_workflow_cannot_be_required(self):\n        sources = json.loads(json.dumps(self.sources))\n        declaration = sources["organs"][1]["repositories"][0]["workflowPolicy"]["declarations"][0]\n        declaration["lifecycle"] = "historical"\n        with self.assertRaises(ValueError):\n            observe.validate_sources(sources)\n'''
+          if text.count(anchor) != 1:
+              raise SystemExit('test insertion anchor missing')
+          text = text.replace(anchor, additions + anchor)
+          tests.write_text(text, encoding='utf-8', newline='\n')
+          PY
+
+      - name: Qualify the role law before publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          python organ-evolution/scripts/validate.py
+          python organ-evolution/scripts/test_observe.py
+          python organ-evolution/scripts/observe.py \
+            --sources organ-evolution/data/fixtures/sources.fixture.json \
+            --observed organ-evolution/data/fixtures/observed.fixture.json \
+            --fixture organ-evolution/data/fixtures/github.fixture.json \
+            --now 2026-07-28T00:00:00Z \
+            --output "$RUNNER_TEMP/observations.json" \
+            --js-output "$RUNNER_TEMP/observations.js"
+          node --check organ-evolution/observations-view.js
+          node --check tests/pages/verify_organ_observations.mjs
+          git diff --check
+
+      - name: Publish the carrier-free workflow-role implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/converge-workflow-role-reconciliation.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add organ-evolution tests/pages/verify_organ_observations.mjs
+          git diff --cached --check
+          git commit -m 'Classify workflow roles without laundering results'
+          git push origin HEAD:agent/workflow-role-reconciliation
