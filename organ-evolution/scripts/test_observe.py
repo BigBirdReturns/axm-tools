@@ -51,7 +51,7 @@ class ObserveTests(unittest.TestCase):
         result = self.compile()
         blood = next(row for row in result["organs"] if row["organId"] == "organ.bloodstream")
         codes = {row["code"] for row in blood["findings"]}
-        self.assertIn("workflow_not_green", codes)
+        self.assertIn("workflow_required_not_green", codes)
         self.assertIn("succession_record_absent", codes)
         self.assertIn("stale_draft_pr", codes)
         self.assertIn("release_tag_absent", codes)
@@ -130,6 +130,54 @@ class ObserveTests(unittest.TestCase):
         js = (TOOL / "data" / "observations.js").read_text(encoding="utf-8")
         self.assertTrue(js.startswith("window.AXM_ORGAN_OBSERVATIONS = "))
         self.assertEqual(json.loads(js[len("window.AXM_ORGAN_OBSERVATIONS = "):].rstrip()[:-1]), observed)
+
+
+    def test_declared_workflow_role_is_bound_to_the_observed_result(self):
+        result = self.compile()
+        blood = next(row for row in result["organs"] if row["organId"] == "organ.bloodstream")
+        workflow = blood["repositories"][0]["workflows"][0]
+        self.assertEqual(workflow["role"], "permanent_gate")
+        self.assertEqual(workflow["lifecycle"], "current")
+        self.assertTrue(workflow["required"])
+        self.assertEqual(workflow["roleSource"], "declared")
+        finding = next(row for row in blood["findings"] if row["code"] == "workflow_required_not_green")
+        self.assertEqual(finding["severity"], "critical")
+
+    def test_superseded_failure_remains_visible_without_becoming_a_current_gate(self):
+        sources = json.loads(json.dumps(self.sources))
+        declaration = sources["organs"][1]["repositories"][0]["workflowPolicy"]["declarations"][0]
+        declaration["role"] = "bounded_repair_carrier"
+        declaration["lifecycle"] = "superseded"
+        declaration["required"] = False
+        result = observe.compile_observations(
+            sources, self.local, observe.FixtureProvider(self.fixture), self.now
+        )
+        blood = next(row for row in result["organs"] if row["organId"] == "organ.bloodstream")
+        workflow = blood["repositories"][0]["workflows"][0]
+        self.assertEqual(workflow["lifecycle"], "superseded")
+        finding = next(row for row in blood["findings"] if row["code"] == "workflow_historical_not_green")
+        self.assertEqual(finding["severity"], "context")
+        self.assertFalse(any(row["severity"] == "critical" and row["code"].startswith("workflow_") for row in blood["findings"]))
+
+    def test_unclassified_red_workflow_fails_visible(self):
+        sources = json.loads(json.dumps(self.sources))
+        sources["organs"][1]["repositories"][0].pop("workflowPolicy")
+        result = observe.compile_observations(
+            sources, self.local, observe.FixtureProvider(self.fixture), self.now
+        )
+        blood = next(row for row in result["organs"] if row["organId"] == "organ.bloodstream")
+        workflow = blood["repositories"][0]["workflows"][0]
+        self.assertEqual(workflow["role"], "unknown")
+        self.assertEqual(workflow["roleSource"], "unclassified")
+        finding = next(row for row in blood["findings"] if row["code"] == "workflow_unclassified_not_green")
+        self.assertEqual(finding["severity"], "critical")
+
+    def test_non_current_workflow_cannot_be_required(self):
+        sources = json.loads(json.dumps(self.sources))
+        declaration = sources["organs"][1]["repositories"][0]["workflowPolicy"]["declarations"][0]
+        declaration["lifecycle"] = "historical"
+        with self.assertRaises(ValueError):
+            observe.validate_sources(sources)
 
 
 if __name__ == "__main__":
