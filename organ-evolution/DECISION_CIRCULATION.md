@@ -79,4 +79,4 @@ The permanent browser journey imports the same fixture, compiles it in Chromium,
 
 ## Current limit
 
-The fixture is synthetic. A valid exported job is a reconstructable decision assertion, not proof that Bloodstream accepted it, that an owning organ executed it, that a verifier is independent, or that the named authority accepted a terminal outcome. Those are separate receipts in the next circulation boundary.
+The fixture is synthetic. A valid exported job is a reconstructable decision assertion, not proof that Bloodstream accepted it, that an owning organ executed it, that a verifier is independent, or that the named authority accepted a terminal outcome. The first downstream consumer must independently verify the job before recording it, and must preserve rejection as evidence rather than silently repairing the source. Those are separate receipts in the next circulation boundary.
