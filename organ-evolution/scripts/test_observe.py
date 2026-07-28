@@ -120,14 +120,19 @@ class ObserveTests(unittest.TestCase):
             [row["id"] for row in local],
             [
                 "observation.bloodstream.hardening-20260728",
+                "observation.bloodstream.decision-intake-20260728",
                 "observation.supplier-foundry.asset-pilot-20260728",
             ],
         )
         self.assertEqual(local[0]["organId"], "organ.bloodstream")
         self.assertEqual(local[0]["state"], "verified")
         self.assertIn("Hosted synthetic-ledger qualification only", local[0]["limits"])
-        self.assertEqual(local[1]["organId"], "organ.supplier-foundry")
-        self.assertIn("measurement recommendation only", local[1]["limits"])
+        self.assertEqual(local[1]["organId"], "organ.bloodstream")
+        self.assertEqual(local[1]["state"], "verified")
+        self.assertIn("Synthetic accepted-decision", local[1]["limits"])
+        self.assertIn("PR #3", local[1]["source"])
+        self.assertEqual(local[2]["organId"], "organ.supplier-foundry")
+        self.assertIn("measurement recommendation only", local[2]["limits"])
         observe.assert_no_authority_mutation(production_local)
 
     def test_committed_observation_projections_are_exact_and_non_authoritative(self):
@@ -136,7 +141,6 @@ class ObserveTests(unittest.TestCase):
         js = (TOOL / "data" / "observations.js").read_text(encoding="utf-8")
         self.assertTrue(js.startswith("window.AXM_ORGAN_OBSERVATIONS = "))
         self.assertEqual(json.loads(js[len("window.AXM_ORGAN_OBSERVATIONS = "):].rstrip()[:-1]), observed)
-
 
     def test_declared_workflow_role_is_bound_to_the_observed_result(self):
         result = self.compile()
@@ -184,7 +188,6 @@ class ObserveTests(unittest.TestCase):
         declaration["lifecycle"] = "historical"
         with self.assertRaises(ValueError):
             observe.validate_sources(sources)
-
 
     def test_same_repository_can_supply_a_scoped_suborgan_without_hiding_omissions(self):
         sources = json.loads(json.dumps(self.sources))
