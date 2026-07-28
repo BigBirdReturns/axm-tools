@@ -121,6 +121,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf .organ-payload
+          rm -f .github/workflows/organ-evolution-check.yml
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
