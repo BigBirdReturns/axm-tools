@@ -1,0 +1,128 @@
+name: Converge Bloodstream crash-recovery observation
+
+on:
+  push:
+    branches:
+      - agent/reobserve-bloodstream-crash-recovery
+    paths:
+      - '.github/workflows/converge-bloodstream-crash-observation.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: converge-bloodstream-crash-observation
+  cancel-in-progress: true
+
+jobs:
+  converge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/reobserve-bloodstream-crash-recovery
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Add the attributed qualification without changing authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          observed_path = Path('organ-evolution/data/observed.json')
+          observed = json.loads(observed_path.read_text(encoding='utf-8'))
+          rows = observed['observations']
+          new_id = 'observation.bloodstream.crash-recovery-20260728'
+          if any(row.get('id') == new_id for row in rows):
+              raise SystemExit(f'{new_id} already exists')
+          insert_at = next(
+              index + 1
+              for index, row in enumerate(rows)
+              if row.get('id') == 'observation.bloodstream.decision-intake-20260728'
+          )
+          rows.insert(insert_at, {
+              'id': new_id,
+              'organId': 'organ.bloodstream',
+              'observedAt': '2026-07-28T15:56:45Z',
+              'kind': 'hosted_qualification',
+              'state': 'verified',
+              'claim': 'Bloodstream decision intake is now crash-recoverable across intent preparation, custody publication, partial JSONL append, complete append before receipt, and intake receipt before transaction completion. Recovery binds the original ledger prefix and exact prepared payload, appends only an exact missing suffix, never truncates or rewrites accepted ledger bytes, preserves stable decision-job and separate execution identities, and retains the external terminal-acceptance assertion as a distinct unauthenticated fact. The accepted Bloodstream main commit is be94aae31cf680beaff005e527b761844dbd31c6.',
+              'source': 'BigBirdReturns/axm-bloodstream PR #4; Actions run 30375821286; artifacts 8694872308 and 8694871820',
+              'limits': 'Synthetic accepted-decision, execution, and external-acceptance fixtures only. This establishes append-only interruption recovery, exact prefix and suffix custody, stable identities, transaction completion receipts, and sanitized observation. It does not authenticate a production mandate, production executor, independent real-world verifier, accepted production outcome, Unity run, Quest run, or physical action receipt.',
+              'evidenceRefs': [
+                  'https://github.com/BigBirdReturns/axm-bloodstream/pull/4',
+                  'https://github.com/BigBirdReturns/axm-bloodstream/actions/runs/30375821286',
+                  'sha256:16a3515c17dc4455183b6d2d813441ebb2a4e454e17a18304db3acc9fcd3eb9d',
+                  'sha256:10e56d6ac7b725ab2ce646be9e94a4714d9861123a6f388bc7df71170b84c41f',
+              ],
+          })
+          observed_path.write_text(
+              json.dumps(observed, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+              newline='\n',
+          )
+
+          test_path = Path('organ-evolution/scripts/test_observe.py')
+          source = test_path.read_text(encoding='utf-8')
+          old = '''                "observation.bloodstream.hardening-20260728",
+                "observation.bloodstream.decision-intake-20260728",
+                "observation.supplier-foundry.asset-pilot-20260728",
+'''
+          new = '''                "observation.bloodstream.hardening-20260728",
+                "observation.bloodstream.decision-intake-20260728",
+                "observation.bloodstream.crash-recovery-20260728",
+                "observation.supplier-foundry.asset-pilot-20260728",
+'''
+          if source.count(old) != 1:
+              raise SystemExit(f'expected one observation-ID anchor, found {source.count(old)}')
+          source = source.replace(old, new)
+
+          old = '''        self.assertEqual(local[1]["organId"], "organ.bloodstream")
+        self.assertEqual(local[1]["state"], "verified")
+        self.assertIn("Synthetic accepted-decision", local[1]["limits"])
+        self.assertIn("PR #3", local[1]["source"])
+        self.assertEqual(local[2]["organId"], "organ.supplier-foundry")
+        self.assertIn("measurement recommendation only", local[2]["limits"])
+'''
+          new = '''        self.assertEqual(local[1]["organId"], "organ.bloodstream")
+        self.assertEqual(local[1]["state"], "verified")
+        self.assertIn("Synthetic accepted-decision", local[1]["limits"])
+        self.assertIn("PR #3", local[1]["source"])
+        self.assertEqual(local[2]["organId"], "organ.bloodstream")
+        self.assertEqual(local[2]["state"], "verified")
+        self.assertIn("append-only interruption recovery", local[2]["limits"])
+        self.assertIn("PR #4", local[2]["source"])
+        self.assertEqual(local[3]["organId"], "organ.supplier-foundry")
+        self.assertIn("measurement recommendation only", local[3]["limits"])
+'''
+          if source.count(old) != 1:
+              raise SystemExit(f'expected one observation-assertion anchor, found {source.count(old)}')
+          test_path.write_text(source.replace(old, new), encoding='utf-8', newline='\n')
+          PY
+
+      - name: Qualify the observation and complete observer regression set
+        shell: bash
+        run: |
+          set -euo pipefail
+          python organ-evolution/scripts/test_observe.py -v
+          python organ-evolution/scripts/validate.py
+          git diff --check
+
+      - name: Publish the carrier-free observation change
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/converge-bloodstream-crash-observation.yml
+          git add organ-evolution/data/observed.json organ-evolution/scripts/test_observe.py
+          git diff --cached --check
+          git commit -m 'Reobserve the accepted Bloodstream crash-recovery boundary'
+          git push origin HEAD:agent/reobserve-bloodstream-crash-recovery
