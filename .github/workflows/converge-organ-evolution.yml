@@ -6,6 +6,13 @@ on:
       - agent/organ-evolution-evaluation-surface
     paths:
       - '.github/workflows/converge-organ-evolution.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/converge-organ-evolution.yml'
+      - '.organ-payload/**'
+      - 'organ-evolution/**'
 
 permissions:
   contents: write
