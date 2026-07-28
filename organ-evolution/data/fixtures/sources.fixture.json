@@ -1,0 +1,22 @@
+{
+  "format": "axm-organ-sources/1",
+  "rules": {
+    "staleCommitDays": 30,
+    "staleDraftDays": 10,
+    "staleWorkflowDays": 14
+  },
+  "organs": [
+    {
+      "organId": "organ.genesis",
+      "repositories": [
+        {"fullName": "BigBirdReturns/axm-genesis"}
+      ]
+    },
+    {
+      "organId": "organ.bloodstream",
+      "repositories": [
+        {"fullName": "BigBirdReturns/axm-bloodstream"}
+      ]
+    }
+  ]
+}

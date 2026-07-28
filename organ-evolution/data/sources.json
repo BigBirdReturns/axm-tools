@@ -1,0 +1,64 @@
+{
+  "format": "axm-organ-sources/1",
+  "rules": {
+    "staleCommitDays": 180,
+    "staleDraftDays": 45,
+    "staleWorkflowDays": 30
+  },
+  "organs": [
+    {
+      "organId": "organ.genesis",
+      "repositories": [
+        {"fullName": "BigBirdReturns/axm-genesis"}
+      ]
+    },
+    {
+      "organId": "organ.core",
+      "repositories": [
+        {"fullName": "BigBirdReturns/axm-core"}
+      ]
+    },
+    {
+      "organId": "organ.embodied",
+      "repositories": [
+        {"fullName": "BigBirdReturns/axm-embodied"}
+      ]
+    },
+    {
+      "organId": "organ.bloodstream",
+      "repositories": [
+        {"fullName": "BigBirdReturns/axm-bloodstream"}
+      ]
+    },
+    {
+      "organId": "organ.hinge",
+      "repositories": [
+        {"fullName": "BigBirdReturns/axm-hinge"}
+      ]
+    },
+    {
+      "organId": "organ.tierbench",
+      "repositories": [
+        {"fullName": "BigBirdReturns/tier-bench"}
+      ]
+    },
+    {
+      "organId": "organ.arc",
+      "repositories": [
+        {"fullName": "BigBirdReturns/axm-arc"}
+      ]
+    },
+    {
+      "organId": "organ.world",
+      "repositories": [
+        {"fullName": "BigBirdReturns/axm-world"}
+      ]
+    },
+    {
+      "organId": "organ.tools",
+      "repositories": [
+        {"fullName": "BigBirdReturns/axm-tools"}
+      ]
+    }
+  ]
+}
