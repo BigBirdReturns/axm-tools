@@ -74,7 +74,7 @@ function repositoryObservationHtml(repository) {
   const signals = repository.signals || {};
   return `<article class="repo-observation">
     <div class="repo-head">
-      <div><a href="${esc(repository.url || '#')}" target="_blank" rel="noreferrer"><b>${esc(repository.fullName)}</b></a><span>${esc(repository.observedRef || repository.defaultBranch || '')}</span></div>
+      <div><a href="${esc(repository.url || '#')}" target="_blank" rel="noreferrer"><b>${esc(repository.fullName)}</b></a><span>${esc(repository.observedRef || repository.defaultBranch || '')}${repository.scopePath ? ` · ${esc(repository.scopePath)}` : ''}</span></div>
       <code>${esc(shortSha(repository.headSha))}</code>
     </div>
     <dl class="repo-facts">
@@ -87,6 +87,7 @@ function repositoryObservationHtml(repository) {
       <span class="tag ${signals.readme ? 'green' : 'red'}">README ${signals.readme ? 'present' : 'absent'}</span>
       <span class="tag ${signals.license || repository.license ? 'green' : 'gold'}">license ${signals.license || repository.license ? 'present' : 'open'}</span>
       <span class="tag ${(signals.successionFiles || []).length ? 'green' : 'gold'}">succession ${(signals.successionFiles || []).length ? 'present' : 'open'}</span>
+      ${repository.workflowSelection ? `<span class="tag cyan">workflows ${esc(repository.workflowSelection.mode)} · ${repository.workflowSelection.includedCount}/${repository.workflowSelection.observedCount}</span>` : ''}
     </div>
     <div class="workflow-list">${workflows.length ? workflows.map(workflow => `<a class="workflow-row" href="${esc(workflow.url || repository.url || '#')}" target="_blank" rel="noreferrer" title="${esc(workflow.roleBasis || '')}"><span class="pulse ${workflowTone(workflow) === 'red' ? 'fail' : workflowTone(workflow) === 'gold' ? 'warn' : ''}"></span><span><b>${esc(workflow.name)}</b><small>${esc(workflowRoleText(workflow))}</small><small>${esc(workflow.status || '')} · ${esc(workflow.conclusion || 'pending')}</small></span><code>${esc(shortSha(workflow.headSha))}</code></a>`).join('') : '<div class="empty">No workflow receipt observed.</div>'}</div>
   </article>`;
