@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/breakout-parity/BP-RECEIPT-1.0.schema.json",
+  "title": "Breakout Parity Exercise Receipt",
+  "type": "object",
+  "required": ["protocol", "schema", "scenario", "generated_at", "final_month", "gate", "threats", "actions", "evidence_boundary", "canonical_sha256"],
+  "properties": {
+    "protocol": {"const": "BP-DV/1.0"},
+    "schema": {"const": "BP-SCENARIO/1.0"},
+    "scenario": {
+      "type": "object",
+      "required": ["id", "title"],
+      "properties": {"id": {"type": "string"}, "title": {"type": "string"}}
+    },
+    "gate": {
+      "type": "object",
+      "required": ["state", "reason", "pass", "metrics"],
+      "properties": {
+        "state": {"enum": ["baseline_incomplete", "operate", "hold", "fail"]},
+        "pass": {"type": "boolean"},
+        "metrics": {
+          "type": "object",
+          "required": ["margin", "risk", "restore", "load", "holdouts"]
+        }
+      }
+    },
+    "n_minus_one": {
+      "type": "object",
+      "required": ["occurred", "resource", "flex_activated", "passed"]
+    },
+    "threats": {"type": "array"},
+    "actions": {"type": "array"},
+    "canonical_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
