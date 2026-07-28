@@ -1,6 +1,6 @@
 {
   "format": "axm-organ-observations/1",
-  "generatedAt": "2026-07-28T15:37:43.188455Z",
+  "generatedAt": "2026-07-28T17:00:39.741006Z",
   "organs": [
     {
       "findings": [
@@ -88,7 +88,7 @@
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/175"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-27T15:58:32Z",
               "draft": true,
@@ -117,10 +117,10 @@
               "createdAt": "2026-07-27T21:45:47Z",
               "draft": true,
               "headRef": "demo/underdrain-authority-v1",
-              "headSha": "395bc539165cc525678ba7eb83434c8cd674437b",
+              "headSha": "66c7f6d032eb3d495f025454a9d997086dd7ba65",
               "number": 182,
               "title": "Author UNDERDRAIN as a continuous mechanism-driven pilot candidate",
-              "updatedAt": "2026-07-28T05:45:26Z",
+              "updatedAt": "2026-07-28T17:00:04Z",
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/182"
             },
             {
@@ -489,19 +489,21 @@
           "state": "verified"
         },
         {
-          "claim": "Bloodstream now independently verifies and preserves axm-organ-evolution-job/1 records while keeping the accepted decision and circulation route stable, storing execution evidence separately, and refusing to convert verified execution into a terminal fact without a separately named external acceptance reference and actor. The exact Tools producer was rebuilt byte-for-byte, the open path appended job plus execution evidence without terminal mutation, the terminal path appended the external assertion separately, and the accepted Bloodstream main commit is 4e2d33ada244bbf915a8c508833a5b4d55e6b563.",
+          "claim": "Bloodstream independently verifies and preserves axm-organ-evolution-job/1 records while keeping the accepted decision and circulation route stable, storing execution evidence separately, and refusing to convert verified execution into a terminal fact without a separately named external acceptance reference and actor. The intake is now crash-recoverable after intent preparation, custody publication, a partial JSONL append, a complete append before receipt, and an intake receipt before transaction completion. Recovery binds the original ledger prefix and exact prepared payload, appends only an exact missing suffix, and never truncates or rewrites accepted ledger bytes. The accepted Bloodstream main commit is be94aae31cf680beaff005e527b761844dbd31c6.",
           "evidenceRefs": [
             "https://github.com/BigBirdReturns/axm-bloodstream/pull/3",
+            "https://github.com/BigBirdReturns/axm-bloodstream/pull/4",
             "https://github.com/BigBirdReturns/axm-bloodstream/actions/runs/30370037237",
-            "sha256:ed128606fc5ee999994743a15001c74e44307c9feb55a865dfcb702195186346",
-            "sha256:dc42f0188d129973e3d3171f5f4cddb5c88eeeb909f3c2e447755035ac96bae4"
+            "https://github.com/BigBirdReturns/axm-bloodstream/actions/runs/30375821286",
+            "sha256:16a3515c17dc4455183b6d2d813441ebb2a4e454e17a18304db3acc9fcd3eb9d",
+            "sha256:10e56d6ac7b725ab2ce646be9e94a4714d9861123a6f388bc7df71170b84c41f"
           ],
           "id": "observation.bloodstream.decision-intake-20260728",
           "kind": "hosted_qualification",
-          "limits": "Synthetic accepted-decision and execution fixtures only. This establishes cross-repository identity, custody, idempotent circulation, external terminal-assertion separation, and sanitized observation. It does not authenticate a production mandate, production executor, verifier independence, accepted real-world outcome, Unity run, Quest run, or physical action receipt.",
-          "observedAt": "2026-07-28T14:46:56Z",
+          "limits": "Synthetic accepted-decision, execution, and external-acceptance fixtures only. This establishes cross-repository identity, stable decision-job and separate execution custody, idempotent circulation, append-only interruption recovery, exact prefix and suffix verification, transaction completion receipts, external terminal-assertion separation, and sanitized observation. It does not authenticate a production mandate, production executor, verifier independence, accepted production outcome, Unity run, Quest run, or physical action receipt.",
+          "observedAt": "2026-07-28T15:56:45Z",
           "organId": "organ.bloodstream",
-          "source": "BigBirdReturns/axm-bloodstream PR #3; Actions run 30370037237; artifacts 8692458535 and 8692453506",
+          "source": "BigBirdReturns/axm-bloodstream PR #3 and PR #4; Actions runs 30370037237 and 30375821286; exact-head artifacts 8694872308 and 8694871820",
           "state": "verified"
         }
       ],
@@ -520,7 +522,7 @@
           "findings": [],
           "fork": false,
           "fullName": "BigBirdReturns/axm-core",
-          "headAgeDays": 4,
+          "headAgeDays": 5,
           "headAt": "2026-07-23T16:01:13Z",
           "headSha": "968df05e36c059c3aa25b50ade069c3754ba0c90",
           "latestTag": "v1.0.0",
@@ -1808,9 +1810,17 @@
           "code": "workflow_required_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30374287561"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907615"
           ],
           "summary": "BigBirdReturns/axm-tools: current scheduled observer Organ evolution observe + deploy is in_progress."
+        },
+        {
+          "code": "workflow_advisory_pending",
+          "severity": "context",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907669"
+          ],
+          "summary": "BigBirdReturns/axm-tools: current publication job PTA tracker fetch + deploy is pending."
         }
       ],
       "localObservations": [],
@@ -1818,7 +1828,7 @@
       "repositories": [
         {
           "archived": false,
-          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/cac750f3d9a72865feaaf48b4b6fc1fc024c453f",
+          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/8108b8d5f05e9b5c5e5ca1e4ce2e09d0c0e943cc",
           "defaultBranch": "main",
           "findings": [
             {
@@ -1831,16 +1841,24 @@
               "code": "workflow_required_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30374287561"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907615"
               ],
               "summary": "BigBirdReturns/axm-tools: current scheduled observer Organ evolution observe + deploy is in_progress."
+            },
+            {
+              "code": "workflow_advisory_pending",
+              "severity": "context",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907669"
+              ],
+              "summary": "BigBirdReturns/axm-tools: current publication job PTA tracker fetch + deploy is pending."
             }
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-tools",
           "headAgeDays": 0,
-          "headAt": "2026-07-28T15:08:41Z",
-          "headSha": "cac750f3d9a72865feaaf48b4b6fc1fc024c453f",
+          "headAt": "2026-07-28T17:00:26Z",
+          "headSha": "8108b8d5f05e9b5c5e5ca1e4ce2e09d0c0e943cc",
           "latestTag": "archive/claude/session-planning-1h0xlw",
           "license": null,
           "observedRef": "main",
@@ -2001,10 +2019,10 @@
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-28T15:06:28Z",
+              "createdAt": "2026-07-28T17:00:30Z",
               "event": "push",
-              "headSha": "f2d2ebc276414550c52255a58e36baae3ad822c6",
-              "id": 30371721848,
+              "headSha": "8108b8d5f05e9b5c5e5ca1e4ce2e09d0c0e943cc",
+              "id": 30380907661,
               "lifecycle": "current",
               "name": "Acceptance page",
               "required": true,
@@ -2012,15 +2030,15 @@
               "roleBasis": "The established browser acceptance surface is a current repository gate.",
               "roleSource": "declared",
               "status": "completed",
-              "updatedAt": "2026-07-28T15:08:55Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30371721848"
+              "updatedAt": "2026-07-28T17:01:10Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907661"
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T15:37:32Z",
-              "event": "schedule",
-              "headSha": "cac750f3d9a72865feaaf48b4b6fc1fc024c453f",
-              "id": 30374287561,
+              "createdAt": "2026-07-28T17:00:30Z",
+              "event": "push",
+              "headSha": "8108b8d5f05e9b5c5e5ca1e4ce2e09d0c0e943cc",
+              "id": 30380907615,
               "lifecycle": "current",
               "name": "Organ evolution observe + deploy",
               "required": true,
@@ -2028,15 +2046,15 @@
               "roleBasis": "The live census must continue to compile, validate, and publish bounded observations.",
               "roleSource": "declared",
               "status": "in_progress",
-              "updatedAt": "2026-07-28T15:37:38Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30374287561"
+              "updatedAt": "2026-07-28T17:00:35Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907615"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-28T15:06:25Z",
+              "createdAt": "2026-07-28T17:00:30Z",
               "event": "push",
-              "headSha": "f2d2ebc276414550c52255a58e36baae3ad822c6",
-              "id": 30371718205,
+              "headSha": "8108b8d5f05e9b5c5e5ca1e4ce2e09d0c0e943cc",
+              "id": 30380907598,
               "lifecycle": "current",
               "name": "Organ evolution surface",
               "required": true,
@@ -2044,24 +2062,24 @@
               "roleBasis": "The anatomy, observation, and decision workbench has its own current browser and source gate.",
               "roleSource": "declared",
               "status": "completed",
-              "updatedAt": "2026-07-28T15:08:46Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30371718205"
+              "updatedAt": "2026-07-28T17:01:15Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907598"
             },
             {
-              "conclusion": "success",
-              "createdAt": "2026-07-28T15:06:28Z",
+              "conclusion": null,
+              "createdAt": "2026-07-28T17:00:30Z",
               "event": "push",
-              "headSha": "f2d2ebc276414550c52255a58e36baae3ad822c6",
-              "id": 30371721703,
+              "headSha": "8108b8d5f05e9b5c5e5ca1e4ce2e09d0c0e943cc",
+              "id": 30380907669,
               "lifecycle": "current",
               "name": "PTA tracker fetch + deploy",
               "required": false,
               "role": "publication_job",
               "roleBasis": "The PTA tool's data publication is an advisory sibling lane, not the authority for every Tools surface.",
               "roleSource": "declared",
-              "status": "completed",
-              "updatedAt": "2026-07-28T15:08:45Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30371721703"
+              "status": "pending",
+              "updatedAt": "2026-07-28T17:00:31Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907669"
             }
           ]
         }
@@ -2190,10 +2208,10 @@
               "createdAt": "2026-07-28T03:31:33Z",
               "draft": true,
               "headRef": "feature/action-semantic-objectives-v1",
-              "headSha": "20311ee66dafbef28cc59482a223b2f0181d9ca5",
+              "headSha": "41811fb9b61390492ff30d0731d310b869c2e148",
               "number": 212,
               "title": "Mirror deterministic semantic objectives across World and Unity",
-              "updatedAt": "2026-07-28T06:26:40Z",
+              "updatedAt": "2026-07-28T16:51:25Z",
               "url": "https://github.com/BigBirdReturns/axm-world/pull/212"
             },
             {
@@ -2207,6 +2225,30 @@
               "title": "Qualify and publish the World runtime-1.1 semantic receiver",
               "updatedAt": "2026-07-28T05:43:10Z",
               "url": "https://github.com/BigBirdReturns/axm-world/pull/213"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "feature/action-semantic-objectives-v1",
+              "createdAt": "2026-07-28T16:54:49Z",
+              "draft": true,
+              "headRef": "demo/underdrain-authored-pilot-v2",
+              "headSha": "42e38433f7cbaa2ac18cd3f53193d5584138c6a9",
+              "number": 217,
+              "title": "Ship UNDERDRAIN as a continuous authored pilot",
+              "updatedAt": "2026-07-28T16:54:49Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/pull/217"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "demo/underdrain-authored-pilot-v2",
+              "createdAt": "2026-07-28T16:58:51Z",
+              "draft": true,
+              "headRef": "qualify/underdrain-authored-pilot-v2",
+              "headSha": "2cd22559613f28d3d48c1079f571b6c8aba2615d",
+              "number": 218,
+              "title": "Complete the continuous UNDERDRAIN authored pilot",
+              "updatedAt": "2026-07-28T16:58:51Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/pull/218"
             }
           ],
           "scopePath": null,
@@ -2532,7 +2574,7 @@
     },
     "sourcesFormat": "axm-organ-sources/1"
   },
-  "sourceDigest": "organobs1_f33d23453f45273dfa04f53a17fe492f6b1387d24168f58f3ae0a6b0e6403bf2",
+  "sourceDigest": "organobs1_957cd6df34ed094937f80957b132b0633e067c70962c7f1dea6b9831e36dade9",
   "unavailable": [
     {
       "error": "GitHub HTTP 404 for /repos/BigBirdReturns/axm-bloodstream: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/repos#get-a-repository\",\"status\":\"404\"}",
