@@ -48,8 +48,8 @@ class DecisionJobTests(unittest.TestCase):
         self.assertEqual(first["decision"]["decisionId"], second["decision"]["decisionId"])
         self.assertNotEqual(first["source"]["modelDigest"], second["source"]["modelDigest"])
         self.assertNotEqual(first["jobId"], second["jobId"])
-        # The source model digest is part of the job custody identity. Within one
-        # accepted model, execution is excluded from the job identity itself.
+        # The exact source model is custody evidence. Removing the execution
+        # assertion therefore changes source identity while preserving decision.
         no_execution = copy.deepcopy(self.model)
         no_execution["decision"].pop("execution")
         third = self.build(no_execution)
@@ -63,7 +63,6 @@ class DecisionJobTests(unittest.TestCase):
         without_execution["jobId"] = decision_job.digest(
             "organjob1", decision_job.without_keys(without_execution, "jobId")
         )
-        # The source model remains unchanged, so the exact job identity is stable.
         self.assertEqual(job["jobId"], without_execution["jobId"])
         decision_job.verify_job(without_execution)
 
@@ -132,15 +131,18 @@ class DecisionJobTests(unittest.TestCase):
             with self.subTest(path=path):
                 job = self.build()
                 parent = job if path[0] is None else job[path[0]]
-                parent[path[1]] = parent[path[1]][:-1] + ("0" if parent[path[1]][-1] != "0" else "1")
+                parent[path[1]] = parent[path[1]][:-1] + (
+                    "0" if parent[path[1]][-1] != "0" else "1"
+                )
                 with self.assertRaises(decision_job.DecisionJobError):
                     decision_job.verify_job(job)
 
     def test_authority_expansion_fails_closed(self) -> None:
         job = self.build()
+        job.pop("execution")
         job["authority"]["compiler"] = "may accept outcomes"
         job["jobId"] = decision_job.digest(
-            "organjob1", decision_job.without_keys(job, "jobId", "execution")
+            "organjob1", decision_job.without_keys(job, "jobId")
         )
         with self.assertRaisesRegex(decision_job.DecisionJobError, "authority membrane"):
             decision_job.verify_job(job)
@@ -148,14 +150,17 @@ class DecisionJobTests(unittest.TestCase):
     def test_duplicate_json_keys_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "duplicate.json"
-            path.write_text('{"format":"axm-organ-evolution/1","format":"other"}', encoding="utf-8")
+            path.write_text(
+                '{"format":"axm-organ-evolution/1","format":"other"}',
+                encoding="utf-8",
+            )
             with self.assertRaisesRegex(decision_job.DecisionJobError, "duplicate JSON key"):
                 decision_job.load_json(path)
 
     def test_float_semantics_fail_closed(self) -> None:
         model = copy.deepcopy(self.model)
         model["candidates"][0]["dimensions"]["function"] = 4.0
-        with self.assertRaisesRegex(decision_job.DecisionJobError, "floating-point"):
+        with self.assertRaisesRegex(decision_job.DecisionJobError, "integer 0..5"):
             decision_job.build_job(model)
 
     def test_cli_build_and_verify_round_trip(self) -> None:
