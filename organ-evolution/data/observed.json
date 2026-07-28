@@ -20,17 +20,19 @@
     {
       "id": "observation.bloodstream.decision-intake-20260728",
       "organId": "organ.bloodstream",
-      "observedAt": "2026-07-28T14:46:56Z",
+      "observedAt": "2026-07-28T15:56:45Z",
       "kind": "hosted_qualification",
       "state": "verified",
-      "claim": "Bloodstream now independently verifies and preserves axm-organ-evolution-job/1 records while keeping the accepted decision and circulation route stable, storing execution evidence separately, and refusing to convert verified execution into a terminal fact without a separately named external acceptance reference and actor. The exact Tools producer was rebuilt byte-for-byte, the open path appended job plus execution evidence without terminal mutation, the terminal path appended the external assertion separately, and the accepted Bloodstream main commit is 4e2d33ada244bbf915a8c508833a5b4d55e6b563.",
-      "source": "BigBirdReturns/axm-bloodstream PR #3; Actions run 30370037237; artifacts 8692458535 and 8692453506",
-      "limits": "Synthetic accepted-decision and execution fixtures only. This establishes cross-repository identity, custody, idempotent circulation, external terminal-assertion separation, and sanitized observation. It does not authenticate a production mandate, production executor, verifier independence, accepted real-world outcome, Unity run, Quest run, or physical action receipt.",
+      "claim": "Bloodstream independently verifies and preserves axm-organ-evolution-job/1 records while keeping the accepted decision and circulation route stable, storing execution evidence separately, and refusing to convert verified execution into a terminal fact without a separately named external acceptance reference and actor. The intake is now crash-recoverable after intent preparation, custody publication, a partial JSONL append, a complete append before receipt, and an intake receipt before transaction completion. Recovery binds the original ledger prefix and exact prepared payload, appends only an exact missing suffix, and never truncates or rewrites accepted ledger bytes. The accepted Bloodstream main commit is be94aae31cf680beaff005e527b761844dbd31c6.",
+      "source": "BigBirdReturns/axm-bloodstream PR #3 and PR #4; Actions runs 30370037237 and 30375821286; exact-head artifacts 8694872308 and 8694871820",
+      "limits": "Synthetic accepted-decision, execution, and external-acceptance fixtures only. This establishes cross-repository identity, stable decision-job and separate execution custody, idempotent circulation, append-only interruption recovery, exact prefix and suffix verification, transaction completion receipts, external terminal-assertion separation, and sanitized observation. It does not authenticate a production mandate, production executor, verifier independence, accepted production outcome, Unity run, Quest run, or physical action receipt.",
       "evidenceRefs": [
         "https://github.com/BigBirdReturns/axm-bloodstream/pull/3",
+        "https://github.com/BigBirdReturns/axm-bloodstream/pull/4",
         "https://github.com/BigBirdReturns/axm-bloodstream/actions/runs/30370037237",
-        "sha256:ed128606fc5ee999994743a15001c74e44307c9feb55a865dfcb702195186346",
-        "sha256:dc42f0188d129973e3d3171f5f4cddb5c88eeeb909f3c2e447755035ac96bae4"
+        "https://github.com/BigBirdReturns/axm-bloodstream/actions/runs/30375821286",
+        "sha256:16a3515c17dc4455183b6d2d813441ebb2a4e454e17a18304db3acc9fcd3eb9d",
+        "sha256:10e56d6ac7b725ab2ce646be9e94a4714d9861123a6f388bc7df71170b84c41f"
       ]
     },
     {
