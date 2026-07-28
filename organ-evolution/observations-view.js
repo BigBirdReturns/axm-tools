@@ -83,9 +83,9 @@ function renderObservationPanel() {
   }
   const findings = row.findings || [];
   const local = row.localObservations || [];
-  return `<div class="section-title"><div><h2>Observed implementation state</h2><p>Collected facts may create attention findings. They never change the organ health envelope, candidate dimensions, hard gates, motive claims, or decision record.</p></div><div class="right"><span class="tag cyan">${esc(digestValue || 'unsealed observation')}</span></div></div>
+  return `<div class="section-title"><div><h2>Observed implementation state</h2><p>Collected facts may create attention findings. They never change the organ health envelope, candidate dimensions, hard gates, motive claims, or decision record.</p></div><div class="right"><span class="tag cyan" title="${esc(digestValue || '')}">${esc(digestValue ? shortSha(digestValue) : 'unsealed')}</span></div></div>
     <section class="card observation-panel">
-      <div class="observation-custody"><div><span>Collected</span><b>${esc(observationDate(generated))}</b></div><div><span>Repositories</span><b>${(row.repositories || []).length}</b></div><div><span>Local observations</span><b>${local.length}</b></div><div><span>Attention findings</span><b>${findings.length}</b></div></div>
+      <div class="observation-custody"><div><span>Collected</span><b>${esc(observationDate(generated))}</b></div><div><span>Repositories</span><b>${(row.repositories || []).length}</b></div><div><span>Local observations</span><b>${local.length}</b></div><div><span>Attention findings</span><b>${findings.length}</b></div><div><span>Digest</span><b>${esc(digestValue || 'unsealed observation')}</b></div></div>
       <div class="repo-grid">${(row.repositories || []).map(repositoryObservationHtml).join('') || '<div class="empty">Every configured repository was unavailable during collection.</div>'}</div>
       <div class="grid two observation-lower">
         <div><h3>Attention findings</h3><div class="flag-list">${findings.length ? findings.map(finding => `<div class="flag ${observationSeverityTone(finding.severity)}"><b>${esc(cap(finding.code))}</b><p>${esc(finding.summary)}</p></div>`).join('') : '<div class="flag good"><b>No observation finding</b><p>The collector found no configured structural attention condition. This is not a health or readiness verdict.</p></div>'}</div></div>
