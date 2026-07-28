@@ -583,7 +583,7 @@ def build_job(model: dict[str, Any]) -> dict[str, Any]:
         "source": source,
         "decision": decision,
         "circulation": source_circulation(source_decision.get("circulation")),
-        "authority": AUTHORITY,
+        "authority": json.loads(json.dumps(AUTHORITY)),
         "limits": [
             "The compiler validates structure and declared decision geometry; it does not authenticate the mandate, decider, cited evidence, implementation, or outcome.",
             "Bloodstream may preserve and report this job but cannot admit it, prioritize it, execute it, or accept its outcome.",
