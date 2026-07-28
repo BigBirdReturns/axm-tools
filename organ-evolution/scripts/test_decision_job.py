@@ -46,15 +46,16 @@ class DecisionJobTests(unittest.TestCase):
         )
         second = self.build(changed)
         self.assertEqual(first["decision"]["decisionId"], second["decision"]["decisionId"])
-        self.assertNotEqual(first["source"]["modelDigest"], second["source"]["modelDigest"])
-        self.assertNotEqual(first["jobId"], second["jobId"])
-        # The exact source model is custody evidence. Removing the execution
-        # assertion therefore changes source identity while preserving decision.
+        self.assertEqual(first["source"]["modelDigest"], second["source"]["modelDigest"])
+        self.assertEqual(first["jobId"], second["jobId"])
+        self.assertNotEqual(first["execution"]["executionId"], second["execution"]["executionId"])
         no_execution = copy.deepcopy(self.model)
         no_execution["decision"].pop("execution")
         third = self.build(no_execution)
         self.assertEqual(first["decision"]["decisionId"], third["decision"]["decisionId"])
-        self.assertNotEqual(first["source"]["modelDigest"], third["source"]["modelDigest"])
+        self.assertEqual(first["source"]["modelDigest"], third["source"]["modelDigest"])
+        self.assertEqual(first["jobId"], third["jobId"])
+        self.assertNotIn("execution", third)
 
     def test_job_identity_excludes_the_bound_execution_record(self) -> None:
         job = self.build()
