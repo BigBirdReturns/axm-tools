@@ -66,15 +66,31 @@ try {
   await page.goto(ORIGIN + "/organ-evolution/");
   await page.waitForSelector("#organList .organ-button");
 
-  check("worked estate loads nine organs",
-    await page.locator("#organList .organ-button").count() === 9);
+  check("worked estate loads ten organs",
+    await page.locator("#organList .organ-button").count() === 10);
   check("Bloodstream is the default organ",
     (await page.locator("#organList .organ-button.active").innerText()).includes("Bloodstream"));
   check("anatomy renders the estate dependency map",
-    await page.locator(".organ-map svg .map-node").count() === 9);
+    await page.locator(".organ-map svg .map-node").count() === 10);
   check("authority membrane remains explicit",
     (await page.locator("#workspace").innerText()).includes("Authority membrane") &&
     (await page.locator("#workspace").innerText()).includes("Forbidden"));
+  check("Supplier Foundry is a first-class estate organ",
+    (await page.locator("#organList").innerText()).includes("Supplier Foundry"));
+
+  await page.getByRole("button", { name: /Supplier Foundry/ }).click();
+  const foundryAnatomy = await page.locator("#workspace").innerText();
+  check("Supplier Foundry refuses capability, policy, and scheduling authority",
+    foundryAnatomy.includes("define domain capability") &&
+    foundryAnatomy.includes("choose estate policy") &&
+    foundryAnatomy.includes("schedule the estate"));
+  await page.click('[data-view="evolution"]');
+  const foundryPostures = (await page.locator(".candidate-strip").innerText()).toUpperCase();
+  check("Supplier Foundry exposes a bounded admissible lane and a held expansion",
+    await page.locator(".candidate-strip .candidate").count() === 2 &&
+    foundryPostures.includes("ADMISSIBLE") &&
+    foundryPostures.includes("HOLD"), foundryPostures);
+  await page.getByRole("button", { name: /Bloodstream/ }).click();
 
   await page.click('[data-view="evolution"]');
   await page.waitForSelector(".candidate-strip .candidate");
@@ -130,7 +146,7 @@ try {
   await page.setInputFiles('#fileInput', EXAMPLE);
   await page.waitForTimeout(150);
   check("example JSON round-trips through the import seam",
-    await page.locator("#organList .organ-button").count() === 9 &&
+    await page.locator("#organList .organ-button").count() === 10 &&
     (await page.locator("#organList .organ-button.active").innerText()).includes("Bloodstream"));
 
   await page.click('#newOrganBtn');
@@ -140,7 +156,7 @@ try {
   await page.click('#dialogSave');
   await page.waitForTimeout(80);
   check("a new local organ can be created without backend write-back",
-    await page.locator("#organList .organ-button").count() === 10 &&
+    await page.locator("#organList .organ-button").count() === 11 &&
     (await page.locator("#organList").innerText()).includes("Test Organ"));
 
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });

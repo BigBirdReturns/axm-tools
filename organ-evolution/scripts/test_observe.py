@@ -110,18 +110,24 @@ class ObserveTests(unittest.TestCase):
         source_rows, _ = observe.validate_sources(production_sources)
         declared = {
             "organ.genesis", "organ.core", "organ.embodied", "organ.bloodstream",
-            "organ.hinge", "organ.tierbench", "organ.arc", "organ.world", "organ.tools",
+            "organ.hinge", "organ.tierbench", "organ.supplier-foundry",
+            "organ.arc", "organ.world", "organ.tools",
         }
         mapped = {row["organId"] for row in source_rows}
         self.assertEqual(mapped, declared)
         local = observe.validate_local(production_local, declared)
         self.assertEqual(
             [row["id"] for row in local],
-            ["observation.bloodstream.hardening-20260728"],
+            [
+                "observation.bloodstream.hardening-20260728",
+                "observation.supplier-foundry.asset-pilot-20260728",
+            ],
         )
         self.assertEqual(local[0]["organId"], "organ.bloodstream")
         self.assertEqual(local[0]["state"], "verified")
         self.assertIn("Hosted synthetic-ledger qualification only", local[0]["limits"])
+        self.assertEqual(local[1]["organId"], "organ.supplier-foundry")
+        self.assertIn("measurement recommendation only", local[1]["limits"])
         observe.assert_no_authority_mutation(production_local)
 
     def test_committed_observation_projections_are_exact_and_non_authoritative(self):
@@ -178,6 +184,95 @@ class ObserveTests(unittest.TestCase):
         declaration["lifecycle"] = "historical"
         with self.assertRaises(ValueError):
             observe.validate_sources(sources)
+
+
+    def test_same_repository_can_supply_a_scoped_suborgan_without_hiding_omissions(self):
+        sources = json.loads(json.dumps(self.sources))
+        fixture = json.loads(json.dumps(self.fixture))
+        blood_repo = fixture["repositories"]["BigBirdReturns/axm-bloodstream"]
+        blood_repo["runs"]["workflow_runs"].append({
+            "id": 203, "workflow_id": 3, "name": "Sibling publication",
+            "event": "push", "status": "completed", "conclusion": "failure",
+            "head_sha": "2222222222222222222222222222222222222222",
+            "created_at": "2026-07-26T12:06:00Z",
+            "updated_at": "2026-07-26T12:11:00Z",
+            "html_url": "https://github.com/BigBirdReturns/axm-bloodstream/actions/runs/203",
+        })
+        blood_repo["tree"]["tree"].extend([
+            {"path": "supplier_foundry/README.md", "type": "blob"},
+            {"path": "supplier_foundry/CONTINUITY.md", "type": "blob"},
+        ])
+        sources["organs"].append({
+            "organId": "organ.supplier-foundry",
+            "repositories": [{
+                "fullName": "BigBirdReturns/axm-bloodstream",
+                "scopePath": "supplier_foundry",
+                "workflowScope": "declared_only",
+                "workflowPolicy": {"declarations": [{
+                    "matchName": "ci", "role": "permanent_gate",
+                    "lifecycle": "current", "required": True,
+                    "basis": "Scoped fixture gate.",
+                }]},
+            }],
+        })
+        result = observe.compile_observations(
+            sources, self.local, observe.FixtureProvider(fixture), self.now
+        )
+        foundry = next(row for row in result["organs"] if row["organId"] == "organ.supplier-foundry")
+        repository = foundry["repositories"][0]
+        self.assertEqual(repository["scopePath"], "supplier_foundry")
+        self.assertEqual(repository["workflowSelection"]["mode"], "declared_only")
+        self.assertEqual(repository["workflowSelection"]["observedCount"], 2)
+        self.assertEqual(repository["workflowSelection"]["includedCount"], 1)
+        self.assertEqual(repository["workflowSelection"]["omittedCount"], 1)
+        self.assertEqual([row["name"] for row in repository["workflows"]], ["ci"])
+        self.assertTrue(repository["signals"]["readme"])
+        self.assertEqual(repository["signals"]["successionFiles"], ["CONTINUITY.md"])
+
+    def test_duplicate_repository_scope_is_refused_but_parent_and_suborgan_are_distinct(self):
+        sources = json.loads(json.dumps(self.sources))
+        scoped = {
+            "organId": "organ.supplier-foundry",
+            "repositories": [{
+                "fullName": "BigBirdReturns/axm-bloodstream",
+                "scopePath": "supplier_foundry",
+                "workflowScope": "declared_only",
+                "workflowPolicy": {"declarations": [{
+                    "matchName": "ci", "role": "permanent_gate",
+                    "lifecycle": "current", "required": True,
+                    "basis": "Scoped fixture gate.",
+                }]},
+            }],
+        }
+        sources["organs"].append(scoped)
+        observe.validate_sources(sources)
+        duplicate = json.loads(json.dumps(scoped))
+        duplicate["organId"] = "organ.supplier-foundry-copy"
+        sources["organs"].append(duplicate)
+        with self.assertRaises(observe.ObservationError):
+            observe.validate_sources(sources)
+
+    def test_required_scoped_workflow_absence_fails_visible(self):
+        sources = json.loads(json.dumps(self.sources))
+        sources["organs"].append({
+            "organId": "organ.supplier-foundry",
+            "repositories": [{
+                "fullName": "BigBirdReturns/axm-bloodstream",
+                "scopePath": "supplier_foundry",
+                "workflowScope": "declared_only",
+                "workflowPolicy": {"declarations": [{
+                    "matchName": "Supplier Foundry asset pilot",
+                    "role": "permanent_gate", "lifecycle": "current",
+                    "required": True, "basis": "Required scoped gate.",
+                }]},
+            }],
+        })
+        result = observe.compile_observations(
+            sources, self.local, observe.FixtureProvider(self.fixture), self.now
+        )
+        foundry = next(row for row in result["organs"] if row["organId"] == "organ.supplier-foundry")
+        finding = next(row for row in foundry["findings"] if row["code"] == "workflow_required_unobserved")
+        self.assertEqual(finding["severity"], "critical")
 
 
 if __name__ == "__main__":

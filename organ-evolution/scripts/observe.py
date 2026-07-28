@@ -20,6 +20,14 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
+from observation_scope import (
+    mapping_identity,
+    required_workflow_gaps,
+    scoped_label,
+    scoped_tree_signals,
+    select_workflows,
+    validate_repository_scope,
+)
 from workflow_roles import apply_workflow_roles, validate_workflow_policy, workflow_finding
 
 FORMAT = "axm-organ-observations/1"
@@ -266,9 +274,14 @@ def validate_sources(value: dict[str, Any]) -> tuple[list[dict[str, Any]], Sourc
                 raise ObservationError(f"{organ_id} repository requires fullName")
             full_name = repository["fullName"]
             validate_workflow_policy(repository.get("workflowPolicy"))
-            if full_name in seen_repos:
-                raise ObservationError(f"repository mapped more than once: {full_name}")
-            seen_repos.add(full_name)
+            try:
+                scope_path, _workflow_scope = validate_repository_scope(repository)
+            except ValueError as exc:
+                raise ObservationError(str(exc)) from exc
+            identity = mapping_identity(full_name, scope_path)
+            if identity in seen_repos:
+                raise ObservationError(f"repository scope mapped more than once: {identity}")
+            seen_repos.add(identity)
             count += 1
     if count > MAX_REPOSITORIES:
         raise ObservationError("sources maps too many repositories")
@@ -336,22 +349,12 @@ def latest_workflows(raw_runs: dict[str, Any]) -> list[dict[str, Any]]:
     return sorted(latest.values(), key=lambda row: (str(row.get("name")), str(row.get("id"))))
 
 
-def tree_signals(raw_tree: dict[str, Any]) -> dict[str, Any]:
-    rows = raw_tree.get("tree", []) if isinstance(raw_tree, dict) else []
-    paths = {str(row.get("path")) for row in rows if isinstance(row, dict) and row.get("type") == "blob"}
-    upper = {path.upper(): path for path in paths}
-    has_readme = any(path == "README" or path.startswith("README.") for path in upper)
-    has_license = any(path == "LICENSE" or path.startswith("LICENSE.") or path == "COPYING" for path in upper)
-    succession_names = {"CONTINUITY.MD", "AGENTS.MD", "CLAUDE.MD", "MAINTAINERS.MD", "CONTRIBUTING.MD"}
-    succession = sorted(path for path in paths if path.upper() in succession_names)
-    workflows = sorted(path for path in paths if path.startswith(".github/workflows/") and path.endswith((".yml", ".yaml")))
-    return {
-        "readme": has_readme,
-        "license": has_license,
-        "successionFiles": succession,
-        "workflowFiles": workflows,
-        "treeTruncated": bool(raw_tree.get("truncated")),
-    }
+def tree_signals(
+    raw_tree: dict[str, Any],
+    scope_path: str | None = None,
+    workflow_policy: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    return scoped_tree_signals(raw_tree, scope_path, workflow_policy)
 
 
 def repository_findings(repository: dict[str, Any], rules: SourceRules, now: datetime) -> list[dict[str, Any]]:
@@ -360,7 +363,7 @@ def repository_findings(repository: dict[str, Any], rules: SourceRules, now: dat
     def add(code: str, severity: str, summary: str, refs: list[str] | None = None) -> None:
         findings.append({"code": code, "severity": severity, "summary": summary, "sourceRefs": refs or []})
 
-    full_name = repository["fullName"]
+    full_name = scoped_label(repository["fullName"], repository.get("scopePath"))
     if repository.get("archived"):
         add("repository_archived", "critical", f"{full_name} is archived.", [repository.get("url")])
     head_age = repository.get("headAgeDays")
@@ -368,11 +371,11 @@ def repository_findings(repository: dict[str, Any], rules: SourceRules, now: dat
         add("default_branch_stale", "attention", f"{full_name} default branch has no commit for {head_age} days.", [repository.get("commitUrl")])
     signals = repository.get("signals", {})
     if not signals.get("readme"):
-        add("readme_absent", "attention", f"{full_name} has no root README in the observed tree.")
+        add("readme_absent", "attention", f"{full_name} has no README in the observed repository scope.")
     if not signals.get("license") and not repository.get("license"):
-        add("license_absent", "attention", f"{full_name} exposes no repository license or root license file.")
+        add("license_absent", "attention", f"{full_name} exposes no repository or scoped license record.")
     if not signals.get("successionFiles"):
-        add("succession_record_absent", "attention", f"{full_name} has no root continuity, agent, maintainer, or contribution handoff file.")
+        add("succession_record_absent", "attention", f"{full_name} has no continuity, agent, maintainer, or contribution handoff file in the observed scope.")
     workflows = repository.get("workflows", [])
     if not workflows and not signals.get("workflowFiles"):
         add("workflow_absent", "attention", f"{full_name} has no observed workflow run or workflow file.")
@@ -387,6 +390,14 @@ def repository_findings(repository: dict[str, Any], rules: SourceRules, now: dat
         )
         if finding:
             findings.append(finding)
+    findings.extend(
+        required_workflow_gaps(
+            repository.get("workflowPolicy"),
+            workflows,
+            repository["fullName"],
+            repository.get("scopePath"),
+        )
+    )
     for pull in repository.get("openPullRequests", []):
         age = pull.get("ageDays")
         if pull.get("draft") and isinstance(age, int) and age > rules.stale_draft_days:
@@ -400,6 +411,8 @@ def collect_repository(
     provider: Provider,
     full_name: str,
     requested_ref: str | None,
+    scope_path: str | None,
+    workflow_scope: str,
     workflow_policy: dict[str, Any] | None,
     rules: SourceRules,
     now: datetime,
@@ -414,7 +427,12 @@ def collect_repository(
     author = commit_info.get("author") or {}
     commit_at = committer.get("date") or author.get("date")
     tree_sha = ((commit_info.get("tree") or {}).get("sha")) or ""
-    runs = apply_workflow_roles(latest_workflows(provider.runs(full_name, observed_ref)), workflow_policy)
+    annotated_runs = apply_workflow_roles(
+        latest_workflows(provider.runs(full_name, observed_ref)), workflow_policy
+    )
+    runs, workflow_selection = select_workflows(
+        annotated_runs, workflow_policy, workflow_scope
+    )
     pulls_raw = provider.pulls(full_name)
     pulls = []
     for row in pulls_raw[:100]:
@@ -434,16 +452,23 @@ def collect_repository(
         )
     tags_raw = provider.tags(full_name)
     tags = [{"name": row.get("name"), "sha": ((row.get("commit") or {}).get("sha"))} for row in tags_raw[:10]]
-    signals = tree_signals(provider.tree(full_name, tree_sha)) if tree_sha else {
+    signals = tree_signals(provider.tree(full_name, tree_sha), scope_path, workflow_policy) if tree_sha else {
         "readme": False,
         "license": False,
         "successionFiles": [],
         "workflowFiles": [],
+        "scopePath": scope_path,
+        "scopedFileCount": 0,
+        "declaredWorkflowNames": [],
         "treeTruncated": True,
     }
     license_value = repo.get("license") or {}
     output = {
         "fullName": full_name,
+        "scopePath": scope_path,
+        "workflowScope": workflow_scope,
+        "workflowSelection": workflow_selection,
+        "workflowPolicy": workflow_policy or {"declarations": []},
         "url": repo.get("html_url") or f"https://github.com/{full_name}",
         "visibility": repo.get("visibility") or ("private" if repo.get("private") else "public"),
         "archived": bool(repo.get("archived")),
@@ -464,6 +489,8 @@ def collect_repository(
             "provider": "github",
             "repositoryApi": repo.get("url"),
             "collectedRef": observed_ref,
+            "scopePath": scope_path,
+            "workflowScope": workflow_scope,
         },
     }
     output["findings"] = repository_findings(output, rules, now)
@@ -490,10 +517,13 @@ def compile_observations(
         aggregate_findings: list[dict[str, Any]] = []
         for repository in sorted(source_row["repositories"], key=lambda row: row["fullName"]):
             try:
+                scope_path, workflow_scope = validate_repository_scope(repository)
                 observed = collect_repository(
                     provider,
                     repository["fullName"],
                     repository.get("ref"),
+                    scope_path,
+                    workflow_scope,
                     repository.get("workflowPolicy"),
                     rules,
                     now,

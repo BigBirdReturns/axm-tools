@@ -15,7 +15,9 @@
             "declarations": [
               {
                 "matchName": "CI",
-                "aliases": ["ci"],
+                "aliases": [
+                  "ci"
+                ],
                 "role": "permanent_gate",
                 "lifecycle": "current",
                 "required": true,
@@ -153,6 +155,27 @@
       ]
     },
     {
+      "organId": "organ.supplier-foundry",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/tier-bench",
+          "scopePath": "supplier_foundry",
+          "workflowScope": "declared_only",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "Supplier Foundry asset pilot",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The exact-provider, semantic-equivalence, network-isolation, fallback, and rip-out transaction is the current Supplier Foundry gate."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
       "organId": "organ.arc",
       "repositories": [
         {
@@ -161,7 +184,9 @@
             "declarations": [
               {
                 "matchName": ".github/workflows/apply-bounded-json.yml",
-                "aliases": ["Apply bounded JSON integration"],
+                "aliases": [
+                  "Apply bounded JSON integration"
+                ],
                 "role": "bounded_repair_carrier",
                 "lifecycle": "superseded",
                 "required": false,

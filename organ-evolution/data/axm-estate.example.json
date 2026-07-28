@@ -599,6 +599,96 @@
       ]
     },
     {
+      "id": "organ.supplier-foundry",
+      "name": "Supplier Foundry",
+      "class": "fabrication",
+      "stage": "emerging",
+      "mission": "Acquire, isolate, qualify, transform, package, substitute, and remove external suppliers without allowing the supplier or adapter to define capability, policy, or accepted authority.",
+      "functions": [
+        {
+          "id": "fn.foundry.acquire",
+          "name": "Exact supplier acquisition and license custody",
+          "criticality": 4,
+          "coverage": 3
+        },
+        {
+          "id": "fn.foundry.qualify",
+          "name": "Capability conformance and provider comparison",
+          "criticality": 5,
+          "coverage": 3
+        },
+        {
+          "id": "fn.foundry.ripout",
+          "name": "Substitution, fallback, and supplier-independent rip-out",
+          "criticality": 5,
+          "coverage": 4
+        }
+      ],
+      "inputs": [
+        "human-owned capability contract",
+        "exact supplier manifests",
+        "canonical source product",
+        "budgets and license policy"
+      ],
+      "outputs": [
+        "qualified supplier bundle",
+        "measurement recommendation",
+        "neutral fallback",
+        "rip-out verification receipt"
+      ],
+      "dependencies": [
+        {
+          "target": "organ.tierbench",
+          "kind": "measurement and qualification host",
+          "criticality": 4,
+          "replaceability": 3
+        }
+      ],
+      "authority": {
+        "owns": [
+          "supplier acquisition, isolation, qualification, packaging, substitution, and revocation evidence"
+        ],
+        "forbidden": [
+          "define domain capability",
+          "choose estate policy",
+          "accept evidence or outcomes",
+          "mutate Arc law or campaigns",
+          "schedule the estate",
+          "turn a measured recommendation into a vendor mandate"
+        ]
+      },
+      "custodians": {
+        "authors": [
+          "actor.steward"
+        ],
+        "maintainers": [
+          "actor.operator"
+        ],
+        "operators": [
+          "actor.operator",
+          "actor.reviewer"
+        ],
+        "stewards": [
+          "actor.steward"
+        ]
+      },
+      "health": {
+        "function": 3,
+        "authority": 5,
+        "observability": 5,
+        "adaptability": 4,
+        "succession": 4,
+        "replaceability": 5,
+        "efficiency": 3,
+        "containment": 5
+      },
+      "pressures": [
+        "supplier and license churn",
+        "performance versus product-size tradeoffs",
+        "pressure to become a universal package manager or control plane"
+      ]
+    },
+    {
       "id": "organ.arc",
       "name": "Arc",
       "class": "decision",
@@ -899,6 +989,15 @@
       "source": "no admissible source",
       "claim": "A proposed scope expansion is driven by ego or status defense.",
       "limits": "The surface records this as an interest hypothesis only and will not use it as a causal fact."
+    },
+    {
+      "id": "evidence.supplier-foundry.asset-pilot",
+      "title": "Supplier Foundry glTF asset commodity pilot",
+      "tier": "measured",
+      "independence": "mixed",
+      "source": "Tier Bench PR #140; workflow 30329697910; artifacts 8676909336 and 8676907830",
+      "claim": "Two exact OSS providers produced byte-deterministic, semantically equivalent bounded glTF products under network quarantine; the complete supplier runtime was then removed and the consumer bundle verified with bundled standard-library tools.",
+      "limits": "One synthetic static two-triangle fixture on hosted Linux. No production asset, visual, texture, animation, skin, morph, Unity, Quest, browser, or GPU result is established."
     }
   ],
   "candidates": [
@@ -1243,6 +1342,147 @@
       ],
       "dissent": [
         "The hosted path already demonstrates enough reuse to justify a package boundary."
+      ]
+    },
+    {
+      "id": "candidate.foundry.retain-asset-pilot",
+      "organId": "organ.supplier-foundry",
+      "name": "Retain Supplier Foundry at the proven asset-optimization boundary",
+      "action": "retain",
+      "summary": "Admit the organ for exact supplier acquisition, bounded asset conformance, provider comparison, neutral fallback, and rip-out while refusing every broader policy or scheduling claim.",
+      "changes": {
+        "preserve": [
+          "asset.optimize.gltf/v1 contract",
+          "exact package-lock custody",
+          "source fallback",
+          "supplier-independent verifier",
+          "measurement recommendation only"
+        ],
+        "alter": [
+          "replace synthetic-only evidence with additional governed fixtures before production routing"
+        ],
+        "retire": [],
+        "introduce": [
+          "scoped estate observation",
+          "successor reconstruction record",
+          "consumer adoption receipt"
+        ]
+      },
+      "dimensions": {
+        "function": 4,
+        "authority": 5,
+        "reversibility": 5,
+        "dependency": 4,
+        "adaptability": 5,
+        "observability": 5,
+        "succession": 4,
+        "efficiency": 4,
+        "userValue": 4,
+        "captureResistance": 5,
+        "containment": 5,
+        "evidence": 4
+      },
+      "gates": {
+        "function": "pass",
+        "authority": "pass",
+        "evidence": "pass",
+        "migration": "pass",
+        "reversibility": "pass"
+      },
+      "actorLinks": {
+        "sponsors": [
+          "actor.steward"
+        ],
+        "validators": [
+          "actor.reviewer"
+        ],
+        "deciders": [
+          "actor.steward"
+        ],
+        "beneficiaries": [
+          "actor.operator",
+          "actor.consumer"
+        ]
+      },
+      "evidenceIds": [
+        "evidence.supplier-foundry.asset-pilot",
+        "evidence.tier.measured"
+      ],
+      "risks": [
+        "The current capability evidence may be mistaken for production-asset or runtime performance."
+      ],
+      "dissent": [
+        "A dedicated organ may be unnecessary if asset optimization remains one small Tier Bench experiment."
+      ]
+    },
+    {
+      "id": "candidate.foundry.expand-texture-class",
+      "organId": "organ.supplier-foundry",
+      "name": "Extend Supplier Foundry to texture compression",
+      "action": "specialize",
+      "summary": "Add a separate texture.compress.ktx2/v1 capability only after a governed image corpus, visual-quality oracle, device decode measurements, license review, fallback, and rip-out plan exist.",
+      "changes": {
+        "preserve": [
+          "asset pilot authority membrane",
+          "capability-specific contracts",
+          "exact supplier custody",
+          "neutral fallback and rip-out"
+        ],
+        "alter": [
+          "generalize provider adapters only where the second capability proves the shared seam"
+        ],
+        "retire": [],
+        "introduce": [
+          "texture corpus",
+          "visual-quality comparator",
+          "device decode and memory receipts",
+          "KTX2 fallback contract"
+        ]
+      },
+      "dimensions": {
+        "function": 3,
+        "authority": 5,
+        "reversibility": 4,
+        "dependency": 3,
+        "adaptability": 4,
+        "observability": 3,
+        "succession": 3,
+        "efficiency": 3,
+        "userValue": 5,
+        "captureResistance": 5,
+        "containment": 4,
+        "evidence": 1
+      },
+      "gates": {
+        "function": "warn",
+        "authority": "pass",
+        "evidence": "open",
+        "migration": "open",
+        "reversibility": "pass"
+      },
+      "actorLinks": {
+        "sponsors": [
+          "actor.steward"
+        ],
+        "validators": [
+          "actor.reviewer"
+        ],
+        "deciders": [
+          "actor.steward"
+        ],
+        "beneficiaries": [
+          "actor.operator",
+          "actor.consumer"
+        ]
+      },
+      "evidenceIds": [
+        "evidence.supplier-foundry.asset-pilot"
+      ],
+      "risks": [
+        "A file-size win may conceal unacceptable visual loss, decode latency, memory growth, or platform-specific failure."
+      ],
+      "dissent": [
+        "Texture compression may deliver more immediate Quest value than further static-mesh fixtures."
       ]
     }
   ],

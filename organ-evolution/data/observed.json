@@ -16,6 +16,22 @@
         "sha256:5c616076efe56fe543056c590ff3ad7e02a646ce10ba341aea1ce7cc1ce1db9c",
         "sha256:136555106454d8f8a3eeb56bedd8b8d51fdf7c9aa7bfd47e3fc0591e1571ad11"
       ]
+    },
+    {
+      "id": "observation.supplier-foundry.asset-pilot-20260728",
+      "organId": "organ.supplier-foundry",
+      "observedAt": "2026-07-28T04:47:14Z",
+      "kind": "hosted_qualification",
+      "state": "verified",
+      "claim": "Supplier Foundry capability asset.optimize.gltf/v1 qualified @gltf-transform/cli 4.4.1 and gltfpack 1.2.0 as deterministic semantically equivalent providers under network quarantine. The accepted Tier Bench main commit is 49e630a8f3a37545544bc5ac827f2cbf14f568b1; the exact source fallback and supplier-independent rip-out both passed.",
+      "source": "Tier Bench PR #140; Actions run 30329697910; artifacts 8676909336 and 8676907830",
+      "limits": "One synthetic static two-triangle fixture on hosted Linux. Selection is a measurement recommendation only and establishes no production, visual, Unity, Quest, browser, or GPU result.",
+      "evidenceRefs": [
+        "https://github.com/BigBirdReturns/tier-bench/pull/140",
+        "https://github.com/BigBirdReturns/tier-bench/actions/runs/30329697910",
+        "sha256:abcc2c8c13363af2e957c08cafd3970207aa1059d4d21ddb5928f850ed1445ce",
+        "sha256:ae3a340024088e1619f94f66dbedbf4c4af1594b8cb94372d7f396a65fe4be43"
+      ]
     }
   ]
 }
