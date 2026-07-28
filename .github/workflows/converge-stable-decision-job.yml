@@ -1,0 +1,169 @@
+name: Converge stable decision job identity
+
+on:
+  push:
+    branches:
+      - agent/stable-decision-job-identity
+    paths:
+      - '.github/workflows/converge-stable-decision-job.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  converge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/stable-decision-job-identity
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Exclude optional execution evidence from the immutable source projection
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          python_path = Path('organ-evolution/scripts/decision_job.py')
+          text = python_path.read_text(encoding='utf-8')
+          anchor = '''def without_keys(value: dict[str, Any], *keys: str) -> dict[str, Any]:
+              removed = set(keys)
+              return {name: item for name, item in value.items() if name not in removed}
+
+
+          def indexed'''.replace('          ', '')
+          replacement = '''def without_keys(value: dict[str, Any], *keys: str) -> dict[str, Any]:
+              removed = set(keys)
+              return {name: item for name, item in value.items() if name not in removed}
+
+
+          def source_model_projection(model: dict[str, Any]) -> dict[str, Any]:
+              """Bind the accepted workspace without optional execution evidence."""
+              projection = json.loads(json.dumps(model))
+              decision = projection.get("decision")
+              if isinstance(decision, dict):
+                  decision.pop("execution", None)
+              return projection
+
+
+          def indexed'''.replace('          ', '')
+          if text.count(anchor) != 1:
+              raise SystemExit(f'Python projection insertion anchor count: {text.count(anchor)}')
+          text = text.replace(anchor, replacement)
+          old = '        "modelDigest": digest("orgmodel1", model),\n'
+          new = '        "modelDigest": digest("orgmodel1", source_model_projection(model)),\n'
+          if text.count(old) != 1:
+              raise SystemExit(f'Python model digest anchor count: {text.count(old)}')
+          python_path.write_text(text.replace(old, new), encoding='utf-8', newline='\n')
+
+          js_path = Path('organ-evolution/decision-job.js')
+          text = js_path.read_text(encoding='utf-8')
+          anchor = '''  function withoutKeys(value, ...keys) {
+              const removed = new Set(keys);
+              return Object.fromEntries(Object.entries(value).filter(([key]) => !removed.has(key)));
+            }
+
+            function exactKeys'''.replace('          ', '')
+          replacement = '''  function withoutKeys(value, ...keys) {
+              const removed = new Set(keys);
+              return Object.fromEntries(Object.entries(value).filter(([key]) => !removed.has(key)));
+            }
+
+            function sourceModelProjection(model) {
+              const projection = clone(model);
+              if (projection.decision && typeof projection.decision === 'object' && !Array.isArray(projection.decision)) {
+                delete projection.decision.execution;
+              }
+              return projection;
+            }
+
+            function exactKeys'''.replace('          ', '')
+          if text.count(anchor) != 1:
+              raise SystemExit(f'JavaScript projection insertion anchor count: {text.count(anchor)}')
+          text = text.replace(anchor, replacement)
+          old = "        modelDigest: await digest('orgmodel1', model),\n"
+          new = "        modelDigest: await digest('orgmodel1', sourceModelProjection(model)),\n"
+          if text.count(old) != 1:
+              raise SystemExit(f'JavaScript model digest anchor count: {text.count(old)}')
+          js_path.write_text(text.replace(old, new), encoding='utf-8', newline='\n')
+
+          test_path = Path('organ-evolution/scripts/test_decision_job.py')
+          text = test_path.read_text(encoding='utf-8')
+          old = '''    def test_execution_revision_does_not_rewrite_decision_or_job_identity(self) -> None:
+              first = self.build()
+              changed = copy.deepcopy(self.model)
+              changed["decision"]["execution"]["verificationRefs"].append(
+                  "urn:fixture:verification:second"
+              )
+              second = self.build(changed)
+              self.assertEqual(first["decision"]["decisionId"], second["decision"]["decisionId"])
+              self.assertNotEqual(first["source"]["modelDigest"], second["source"]["modelDigest"])
+              self.assertNotEqual(first["jobId"], second["jobId"])
+              # The exact source model is custody evidence. Removing the execution
+              # assertion therefore changes source identity while preserving decision.
+              no_execution = copy.deepcopy(self.model)
+              no_execution["decision"].pop("execution")
+              third = self.build(no_execution)
+              self.assertEqual(first["decision"]["decisionId"], third["decision"]["decisionId"])
+              self.assertNotEqual(first["source"]["modelDigest"], third["source"]["modelDigest"])
+          '''.replace('          ', '')
+          new = '''    def test_execution_revision_does_not_rewrite_decision_or_job_identity(self) -> None:
+              first = self.build()
+              changed = copy.deepcopy(self.model)
+              changed["decision"]["execution"]["verificationRefs"].append(
+                  "urn:fixture:verification:second"
+              )
+              second = self.build(changed)
+              self.assertEqual(first["decision"]["decisionId"], second["decision"]["decisionId"])
+              self.assertEqual(first["source"]["modelDigest"], second["source"]["modelDigest"])
+              self.assertEqual(first["jobId"], second["jobId"])
+              self.assertNotEqual(first["execution"]["executionId"], second["execution"]["executionId"])
+              no_execution = copy.deepcopy(self.model)
+              no_execution["decision"].pop("execution")
+              third = self.build(no_execution)
+              self.assertEqual(first["decision"]["decisionId"], third["decision"]["decisionId"])
+              self.assertEqual(first["source"]["modelDigest"], third["source"]["modelDigest"])
+              self.assertEqual(first["jobId"], third["jobId"])
+              self.assertNotIn("execution", third)
+          '''.replace('          ', '')
+          if text.count(old) != 1:
+              raise SystemExit(f'Test replacement anchor count: {text.count(old)}')
+          test_path.write_text(text.replace(old, new), encoding='utf-8', newline='\n')
+
+          doc_path = Path('organ-evolution/DECISION_CIRCULATION.md')
+          text = doc_path.read_text(encoding='utf-8')
+          old = '`organjob1_` binds the exact source-model identity, decision, circulation route, authority membrane, and limits. The optional execution record is excluded from the job digest and binds back to the job through its own `organexec1_` identity.'
+          new = '`organjob1_` binds the exact decision-bearing source projection, decision, circulation route, authority membrane, and limits. The source projection excludes the optional execution record. Execution therefore binds back to the stable job through its own `organexec1_` identity without rewriting the decision or job.'
+          if text.count(old) != 1:
+              raise SystemExit(f'Documentation replacement anchor count: {text.count(old)}')
+          doc_path.write_text(text.replace(old, new), encoding='utf-8', newline='\n')
+          PY
+
+      - name: Qualify both compilers and the immutable identity law
+        run: |
+          set -euo pipefail
+          python organ-evolution/scripts/test_decision_job.py -v
+          python organ-evolution/scripts/validate.py
+          node --check organ-evolution/decision-job.js
+          git diff --check
+
+      - name: Publish the carrier-free repair
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add organ-evolution/scripts/decision_job.py organ-evolution/decision-job.js organ-evolution/scripts/test_decision_job.py organ-evolution/DECISION_CIRCULATION.md
+          git rm .github/workflows/converge-stable-decision-job.yml
+          git diff --cached --check
+          git commit -m 'Keep decision job identity stable across execution evidence'
+          git push origin HEAD:agent/stable-decision-job-identity
