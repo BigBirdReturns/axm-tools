@@ -1,9 +1,12 @@
 // Drives the real Organ Evolution surface through a loopback-only origin.
 // The page has no runtime dependencies, backend, analytics, or external requests.
 
+import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { dirname, extname, join, normalize, resolve } from "node:path";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { isDeepStrictEqual } from "node:util";
 import { createServer } from "node:http";
 
 async function loadPlaywright() {
@@ -14,6 +17,8 @@ async function loadPlaywright() {
 const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(here, "../..");
 const EXAMPLE = resolve(ROOT, "organ-evolution/data/axm-estate.example.json");
+const ACCEPTED = resolve(ROOT, "organ-evolution/data/fixtures/accepted-decision.fixture.json");
+const DECISION_COMPILER = resolve(ROOT, "organ-evolution/scripts/decision_job.py");
 const MIME = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -142,6 +147,8 @@ try {
     ["Classification.", "Actors and mechanism.", "Receipts and limits.", "Wider map.", "Control question."].every(x => memo.includes(x)));
   check("decision surface does not auto-accept blocked work",
     (await page.locator("#workspace").innerText()).includes("Blocked"));
+  check("circulation export remains disabled before an accepted admissible decision",
+    await page.locator('#exportJobBtn').isDisabled());
 
   await page.setInputFiles('#fileInput', EXAMPLE);
   await page.waitForTimeout(150);
@@ -158,6 +165,64 @@ try {
   check("a new local organ can be created without backend write-back",
     await page.locator("#organList .organ-button").count() === 11 &&
     (await page.locator("#organList").innerText()).includes("Test Organ"));
+
+  const fixture = JSON.parse(await readFile(ACCEPTED, "utf-8"));
+  const decisionPage = await browser.newPage({ viewport: { width: 1180, height: 900 } });
+  const decisionErrors = [];
+  const decisionExternal = [];
+  decisionPage.on("pageerror", error => decisionErrors.push(String(error.message)));
+  decisionPage.on("request", request => {
+    const url = request.url();
+    if (url.startsWith("http") && !url.startsWith(ORIGIN + "/")) decisionExternal.push(url);
+  });
+  await decisionPage.goto(ORIGIN + "/organ-evolution/");
+  await decisionPage.setInputFiles('#fileInput', ACCEPTED);
+  await decisionPage.waitForTimeout(100);
+  await decisionPage.click('[data-view="decision"]');
+  check("accepted decision renders mandate, circulation, and execution custody",
+    (await decisionPage.locator("#workspace").innerText()).includes("Mandate and circulation") &&
+    (await decisionPage.locator("#workspace").innerText()).includes("Execution evidence") &&
+    (await decisionPage.locator("#workspace").innerText()).includes("Compiler boundary"));
+  check("accepted admissible fixture enables circulation export",
+    !(await decisionPage.locator('#exportJobBtn').isDisabled()));
+
+  const browserJob = await decisionPage.evaluate(async accepted => {
+    return await window.AXM_DECISION_JOB.build(accepted);
+  }, fixture);
+  const temp = await mkdtemp(join(tmpdir(), "organ-decision-"));
+  const pythonOutput = join(temp, "job.json");
+  try {
+    execFileSync(process.env.PYTHON || "python", [
+      DECISION_COMPILER,
+      "build",
+      ACCEPTED,
+      "--output",
+      pythonOutput,
+    ], {stdio: "pipe"});
+    const pythonJob = JSON.parse(await readFile(pythonOutput, "utf-8"));
+    check("browser and Python compile byte-equivalent decision jobs",
+      isDeepStrictEqual(browserJob, pythonJob));
+
+    const downloadPromise = decisionPage.waitForEvent('download');
+    await decisionPage.click('#exportJobBtn');
+    const jobDownload = await downloadPromise;
+    const downloadedPath = await jobDownload.path();
+    const downloadedJob = JSON.parse(await readFile(downloadedPath, "utf-8"));
+    check("the visible export seam emits the exact qualified job",
+      isDeepStrictEqual(downloadedJob, pythonJob));
+    check("decision, job, and execution identities remain independently bound",
+      pythonJob.decision.decisionId.startsWith("orgdec1_") &&
+      pythonJob.jobId.startsWith("organjob1_") &&
+      pythonJob.execution.executionId.startsWith("organexec1_") &&
+      pythonJob.execution.jobId === pythonJob.jobId);
+  } finally {
+    await rm(temp, {recursive: true, force: true});
+  }
+  check("decision compiler page has no JavaScript errors",
+    decisionErrors.length === 0, JSON.stringify(decisionErrors));
+  check("decision compiler page makes zero outbound requests",
+    decisionExternal.length === 0, JSON.stringify(decisionExternal));
+  await decisionPage.close();
 
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
   const mobileErrors = [];
