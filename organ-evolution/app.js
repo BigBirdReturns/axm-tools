@@ -29,8 +29,26 @@ function saveDialog(){
   }
   persist();render();document.getElementById('editorDialog').close();toast('Workspace updated.');
 }
+function fieldValue(id){return document.getElementById(id)?.value??'';}
+function fieldLines(id){return fieldValue(id).split('\n').map(x=>x.trim()).filter(Boolean);}
 function updateDecision(){
-  model.decision={organId:selectedOrganId,candidateId:document.getElementById('decisionCandidate').value,state:document.getElementById('decisionState').value,decider:document.getElementById('decisionDecider').value,rationale:document.getElementById('decisionRationale').value.trim(),openQuestions:document.getElementById('decisionQuestions').value.split('\n').map(x=>x.trim()).filter(Boolean)};selectedCandidateId=model.decision.candidateId;persist();render();toast('Decision record updated.');
+  const executionState=fieldValue('executionState')||'not_started';
+  const execution=executionState==='not_started'?{state:'not_started'}:{state:executionState,authority:fieldValue('executionAuthority').trim(),implementationRefs:fieldLines('executionImplementationRefs'),verificationRefs:fieldLines('executionVerificationRefs')};
+  if(['verified','failed'].includes(executionState)){execution.outcome=fieldValue('executionOutcome');execution.completedAt=fieldValue('executionCompletedAt').trim();}
+  model.decision={
+    organId:selectedOrganId,
+    candidateId:fieldValue('decisionCandidate'),
+    state:fieldValue('decisionState'),
+    decider:fieldValue('decisionDecider'),
+    decidedAt:fieldValue('decisionDecidedAt').trim(),
+    mandateRef:fieldValue('decisionMandateRef').trim(),
+    mandateBasis:fieldValue('decisionMandateBasis').trim(),
+    rationale:fieldValue('decisionRationale').trim(),
+    openQuestions:fieldLines('decisionQuestions'),
+    circulation:{lane:fieldValue('circulationLane'),task:fieldValue('circulationTask').trim(),surface:fieldValue('circulationSurface').trim(),producer:fieldValue('circulationProducer').trim(),consumers:fieldLines('circulationConsumers'),blockedOn:fieldValue('circulationBlockedOn').trim()},
+    execution,
+  };
+  selectedCandidateId=model.decision.candidateId;persist();render();toast('Decision record updated.');
 }
 function download(name,text,type='application/json'){
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
@@ -40,6 +58,13 @@ function exportMemo(){const text=document.getElementById('memo')?.innerText||'';
 function exportCsv(){
   const rows=[['organ','candidate','action','posture',...DIMENSIONS.map(d=>d[0]),...GATES.map(g=>'gate_'+g[0]),'evidence_records','independent_anchor']];candidateSet().forEach(c=>{const e=evidenceStrength(c);rows.push([organ(c.organId)?.name,c.name,c.action,posture(c).label,...DIMENSIONS.map(([k])=>c.dimensions?.[k]??0),...GATES.map(([k])=>c.gates?.[k]||'open'),e.rows.length,e.independent])});
   const csv=rows.map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\n');download(`${slug(organ()?.name)}-candidate-comparison.csv`,csv,'text/csv');
+}
+async function exportDecisionJob(){
+  try{
+    const value=await window.AXM_DECISION_JOB.build(model);
+    download(`${slug(organ()?.name)}-${slug(candidate()?.name)}-circulation-job.json`,JSON.stringify(value,null,2)+'\n');
+    toast(`Circulation job exported: ${value.jobId.slice(0,22)}…`);
+  }catch(error){toast(`Job export refused: ${error.message}`);}
 }
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2200);}
 function handleClick(e){
@@ -59,6 +84,7 @@ function handleClick(e){
   if(e.target.id==='saveDecisionBtn'){updateDecision();return;}
   if(e.target.id==='exportMemoBtn'){exportMemo();return;}
   if(e.target.id==='exportCsvBtn'){exportCsv();return;}
+  if(e.target.id==='exportJobBtn'){exportDecisionJob();return;}
 }
 function handleInput(e){
   const c=candidate();if(e.target.matches('[data-dimension]')&&c){c.dimensions[e.target.dataset.dimension]=Number(e.target.value);e.target.nextElementSibling.textContent=e.target.value;persist();return;}
