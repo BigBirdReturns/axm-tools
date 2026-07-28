@@ -67,26 +67,28 @@ try {
   const body = await page.locator("#workspace").innerText();
   check("default Bloodstream anatomy carries the live observation panel",
     body.includes("Observed implementation state") && body.includes("BigBirdReturns/axm-bloodstream"));
-  check("failed workflow remains visible as a repository fact",
-    body.includes("Workflow Not Green") && body.includes("concluded failure"));
+  check("required current workflow failure remains visible",
+    body.includes("Workflow Required Not Green") && body.includes("concluded failure"));
+  check("workflow result is displayed with declared role and lifecycle",
+    body.includes("Permanent Gate · Current · required · declared"));
   check("local observation retains source and limitation",
     body.includes("operator restart receipt") && body.includes("One workstation and one ledger only"));
   check("machine facts do not present themselves as readiness or authority",
-    body.includes("never change the organ health envelope") && body.includes("This is not a health or readiness verdict"));
-  check("source digest is rendered",
-    body.includes("organobs1_60f5cf7fe4911fdeb008c88b04e5f66e2291f9fefd6860ffacfa6be96ad2722e"));
+    body.includes("Neither record changes the organ health envelope") && body.includes("This is not a health or readiness verdict"));
+  check("complete source digest is rendered in a wrap-safe custody field",
+    body.includes("Complete observation identity") && body.includes("organobs1_"));
 
   const top = await page.locator("#topStats").innerText();
-  check("top rail distinguishes observed organs and red workflows",
-    top.includes("2 observed organs") && top.includes("1 red workflows"));
+  check("top rail distinguishes current red gates from role gaps",
+    top.includes("2 observed organs") && top.includes("1 current red gates") && top.includes("0 workflow role gaps"));
 
   await page.getByRole("button", { name: /Genesis/ }).click();
   await page.waitForTimeout(50);
   const genesis = await page.locator("#workspace").innerText();
   check("switching organs switches the observed repository",
     genesis.includes("BigBirdReturns/axm-genesis") && !genesis.includes("BigBirdReturns/axm-bloodstream"));
-  check("green workflow and release tag remain visible",
-    genesis.includes("completed · success") && genesis.includes("v1.0.0"));
+  check("green required gate and release tag remain visible",
+    genesis.includes("Permanent Gate · Current · required · declared") && genesis.includes("completed · success") && genesis.includes("v1.0.0"));
 
   check("observation overlay emits no JavaScript errors", pageErrors.length === 0, JSON.stringify(pageErrors));
   check("observation overlay makes zero outbound requests", externalRequests.length === 0, JSON.stringify(externalRequests));
