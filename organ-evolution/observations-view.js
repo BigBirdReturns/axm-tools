@@ -8,31 +8,50 @@ const ORGAN_OBSERVATIONS = window.AXM_ORGAN_OBSERVATIONS || {
   unavailable: [],
 };
 
+const BAD_WORKFLOW_CONCLUSIONS = ['failure', 'timed_out', 'cancelled', 'action_required', 'startup_failure'];
+
 function organObservation(id = selectedOrganId) {
   return (ORGAN_OBSERVATIONS.organs || []).find(row => row.organId === id) || null;
 }
 
 function observationSeverityTone(severity) {
-  return severity === 'critical' ? 'high' : severity === 'attention' ? '' : 'good';
+  if (severity === 'critical') return 'high';
+  if (severity === 'context') return 'context';
+  return severity === 'attention' ? '' : 'good';
 }
 
 function workflowTone(workflow) {
-  if (['failure', 'timed_out', 'cancelled', 'action_required', 'startup_failure'].includes(workflow.conclusion)) return 'red';
+  if (BAD_WORKFLOW_CONCLUSIONS.includes(workflow.conclusion)) return 'red';
   if (workflow.status && workflow.status !== 'completed') return 'gold';
   return workflow.conclusion === 'success' ? 'green' : 'gold';
+}
+
+function workflowRoleText(workflow) {
+  const role = cap(workflow.role || 'unknown');
+  const lifecycle = cap(workflow.lifecycle || 'current');
+  const obligation = workflow.required ? 'required' : 'advisory';
+  const source = workflow.roleSource === 'declared' ? 'declared' : 'unclassified';
+  return `${role} · ${lifecycle} · ${obligation} · ${source}`;
 }
 
 function observationSummary() {
   const organs = ORGAN_OBSERVATIONS.organs || [];
   const repositories = organs.flatMap(row => row.repositories || []);
+  const workflows = repositories.flatMap(repo => repo.workflows || []);
   const findings = organs.flatMap(row => row.findings || []);
-  const redWorkflows = repositories.flatMap(repo => repo.workflows || []).filter(run => workflowTone(run) === 'red').length;
+  const currentRed = workflows.filter(workflow =>
+    BAD_WORKFLOW_CONCLUSIONS.includes(workflow.conclusion) &&
+    (workflow.lifecycle || 'current') === 'current' &&
+    (workflow.required || workflow.roleSource === 'unclassified')
+  ).length;
   return {
     organs: organs.filter(row => (row.repositories || []).length || (row.localObservations || []).length).length,
     repositories: repositories.length,
+    currentRed,
+    roleGaps: workflows.filter(workflow => workflow.roleSource !== 'declared').length,
     critical: findings.filter(row => row.severity === 'critical').length,
-    attention: findings.length,
-    redWorkflows,
+    attention: findings.filter(row => row.severity === 'attention').length,
+    context: findings.filter(row => row.severity === 'context').length,
   };
 }
 
@@ -69,7 +88,7 @@ function repositoryObservationHtml(repository) {
       <span class="tag ${signals.license || repository.license ? 'green' : 'gold'}">license ${signals.license || repository.license ? 'present' : 'open'}</span>
       <span class="tag ${(signals.successionFiles || []).length ? 'green' : 'gold'}">succession ${(signals.successionFiles || []).length ? 'present' : 'open'}</span>
     </div>
-    <div class="workflow-list">${workflows.length ? workflows.map(workflow => `<a class="workflow-row" href="${esc(workflow.url || repository.url || '#')}" target="_blank" rel="noreferrer"><span class="pulse ${workflowTone(workflow) === 'red' ? 'fail' : workflowTone(workflow) === 'gold' ? 'warn' : ''}"></span><span><b>${esc(workflow.name)}</b><small>${esc(workflow.status || '')} · ${esc(workflow.conclusion || 'pending')}</small></span><code>${esc(shortSha(workflow.headSha))}</code></a>`).join('') : '<div class="empty">No workflow receipt observed.</div>'}</div>
+    <div class="workflow-list">${workflows.length ? workflows.map(workflow => `<a class="workflow-row" href="${esc(workflow.url || repository.url || '#')}" target="_blank" rel="noreferrer" title="${esc(workflow.roleBasis || '')}"><span class="pulse ${workflowTone(workflow) === 'red' ? 'fail' : workflowTone(workflow) === 'gold' ? 'warn' : ''}"></span><span><b>${esc(workflow.name)}</b><small>${esc(workflowRoleText(workflow))}</small><small>${esc(workflow.status || '')} · ${esc(workflow.conclusion || 'pending')}</small></span><code>${esc(shortSha(workflow.headSha))}</code></a>`).join('') : '<div class="empty">No workflow receipt observed.</div>'}</div>
   </article>`;
 }
 
@@ -83,9 +102,11 @@ function renderObservationPanel() {
   }
   const findings = row.findings || [];
   const local = row.localObservations || [];
-  return `<div class="section-title"><div><h2>Observed implementation state</h2><p>Collected facts may create attention findings. They never change the organ health envelope, candidate dimensions, hard gates, motive claims, or decision record. This is not a health or readiness verdict.</p></div><div class="right"><span class="tag cyan" title="${esc(digestValue || '')}">${esc(digestValue ? shortSha(digestValue) : 'unsealed')}</span></div></div>
+  const shortDigest = digestValue ? shortSha(digestValue.replace(/^organobs1_/, '')) : 'unsealed';
+  return `<div class="section-title"><div><h2>Observed implementation state</h2><p>Collected facts may create attention findings. Workflow role and lifecycle are declared separately from workflow result. Neither record changes the organ health envelope, candidate dimensions, hard gates, motive claims, or decision. This is not a health or readiness verdict.</p></div><div class="right"><span class="tag cyan">organobs1_${esc(shortDigest)}</span></div></div>
     <section class="card observation-panel">
-      <div class="observation-custody"><div><span>Collected</span><b>${esc(observationDate(generated))}</b></div><div><span>Repositories</span><b>${(row.repositories || []).length}</b></div><div><span>Local observations</span><b>${local.length}</b></div><div><span>Attention findings</span><b>${findings.length}</b></div><div><span>Digest</span><b>${esc(digestValue || 'unsealed observation')}</b></div></div>
+      <div class="observation-custody"><div><span>Collected</span><b>${esc(observationDate(generated))}</b></div><div><span>Repositories</span><b>${(row.repositories || []).length}</b></div><div><span>Local observations</span><b>${local.length}</b></div><div><span>Attention findings</span><b>${findings.filter(f => f.severity !== 'context').length}</b></div></div>
+      <div class="observation-digest"><span>Complete observation identity</span><code>${esc(digestValue || 'unsealed observation')}</code></div>
       <div class="repo-grid">${(row.repositories || []).map(repositoryObservationHtml).join('') || '<div class="empty">Every configured repository was unavailable during collection.</div>'}</div>
       <div class="grid two observation-lower">
         <div><h3>Attention findings</h3><div class="flag-list">${findings.length ? findings.map(finding => `<div class="flag ${observationSeverityTone(finding.severity)}"><b>${esc(cap(finding.code))}</b><p>${esc(finding.summary)}</p></div>`).join('') : '<div class="flag good"><b>No observation finding</b><p>The collector found no configured structural attention condition. This is not a health or readiness verdict.</p></div>'}</div></div>
@@ -101,8 +122,9 @@ renderTop = function renderTopWithObservations() {
   document.getElementById('topStats').insertAdjacentHTML('beforeend', [
     ['observed organs', summary.organs],
     ['observed repos', summary.repositories],
-    ['red workflows', summary.redWorkflows],
-    ['observation findings', summary.attention],
+    ['current red gates', summary.currentRed],
+    ['workflow role gaps', summary.roleGaps],
+    ['critical findings', summary.critical],
   ].map(([label, value]) => `<div class="statpill"><strong>${value}</strong> ${label}</div>`).join(''));
 };
 
