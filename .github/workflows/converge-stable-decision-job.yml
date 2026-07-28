@@ -33,133 +33,107 @@ jobs:
           ref: agent/stable-decision-job-identity
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
       - name: Exclude optional execution evidence from the immutable source projection
-        id: patch
-        continue-on-error: true
         shell: bash
         run: |
-          set -o pipefail
-          {
-            python - <<'PY'
-            from pathlib import Path
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
 
-            python_path = Path('organ-evolution/scripts/decision_job.py')
-            text = python_path.read_text(encoding='utf-8')
-            if 'def source_model_projection(' not in text:
-                marker = '\ndef indexed(rows: Any, label: str) -> dict[str, dict[str, Any]]:\n'
-                helper = '''
-            def source_model_projection(model: dict[str, Any]) -> dict[str, Any]:
-                """Bind the accepted workspace without optional execution evidence."""
-                projection = json.loads(json.dumps(model))
-                decision = projection.get("decision")
-                if isinstance(decision, dict):
-                    decision.pop("execution", None)
-                return projection
+          python_path = Path('organ-evolution/scripts/decision_job.py')
+          text = python_path.read_text(encoding='utf-8')
+          if 'def source_model_projection(' not in text:
+              marker = '\ndef indexed(rows: Any, label: str) -> dict[str, dict[str, Any]]:\n'
+              helper = '''
+          def source_model_projection(model: dict[str, Any]) -> dict[str, Any]:
+              """Bind the accepted workspace without optional execution evidence."""
+              projection = json.loads(json.dumps(model))
+              decision = projection.get("decision")
+              if isinstance(decision, dict):
+                  decision.pop("execution", None)
+              return projection
 
 
-            '''.replace('            ', '')
-                if text.count(marker) != 1:
-                    raise SystemExit(f'Python insertion marker count: {text.count(marker)}')
-                text = text.replace(marker, '\n' + helper + marker.lstrip('\n'), 1)
-            old = '        "modelDigest": digest("orgmodel1", model),\n'
-            new = '        "modelDigest": digest("orgmodel1", source_model_projection(model)),\n'
-            if old in text:
-                text = text.replace(old, new, 1)
-            elif new not in text:
-                raise SystemExit('Python model digest seam is unknown')
-            python_path.write_text(text, encoding='utf-8', newline='\n')
+          '''.replace('          ', '')
+              if text.count(marker) != 1:
+                  raise SystemExit(f'Python insertion marker count: {text.count(marker)}')
+              text = text.replace(marker, '\n' + helper + marker.lstrip('\n'), 1)
+          old = '        "modelDigest": digest("orgmodel1", model),\n'
+          new = '        "modelDigest": digest("orgmodel1", source_model_projection(model)),\n'
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif new not in text:
+              raise SystemExit('Python model digest seam is unknown')
+          python_path.write_text(text, encoding='utf-8', newline='\n')
 
-            js_path = Path('organ-evolution/decision-job.js')
-            text = js_path.read_text(encoding='utf-8')
-            if 'function sourceModelProjection(' not in text:
-                marker = '  function exactKeys(value, required, label) {\n'
-                helper = '''  function sourceModelProjection(model) {
-              const projection = clone(model);
-              if (projection.decision && typeof projection.decision === 'object' && !Array.isArray(projection.decision)) {
-                delete projection.decision.execution;
-              }
-              return projection;
+          js_path = Path('organ-evolution/decision-job.js')
+          text = js_path.read_text(encoding='utf-8')
+          if 'function sourceModelProjection(' not in text:
+              marker = '  function exactKeys(value, required, label) {\n'
+              helper = '''  function sourceModelProjection(model) {
+            const projection = clone(model);
+            if (projection.decision && typeof projection.decision === 'object' && !Array.isArray(projection.decision)) {
+              delete projection.decision.execution;
             }
+            return projection;
+          }
 
-            '''.replace('            ', '')
-                if text.count(marker) != 1:
-                    raise SystemExit(f'JavaScript insertion marker count: {text.count(marker)}')
-                text = text.replace(marker, helper + marker, 1)
-            old = "        modelDigest: await digest('orgmodel1', model),\n"
-            new = "        modelDigest: await digest('orgmodel1', sourceModelProjection(model)),\n"
-            if old in text:
-                text = text.replace(old, new, 1)
-            elif new not in text:
-                raise SystemExit('JavaScript model digest seam is unknown')
-            js_path.write_text(text, encoding='utf-8', newline='\n')
+          '''.replace('          ', '')
+              if text.count(marker) != 1:
+                  raise SystemExit(f'JavaScript insertion marker count: {text.count(marker)}')
+              text = text.replace(marker, helper + marker, 1)
+          old = "        modelDigest: await digest('orgmodel1', model),\n"
+          new = "        modelDigest: await digest('orgmodel1', sourceModelProjection(model)),\n"
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif new not in text:
+              raise SystemExit('JavaScript model digest seam is unknown')
+          js_path.write_text(text, encoding='utf-8', newline='\n')
 
-            test_path = Path('organ-evolution/scripts/test_decision_job.py')
-            text = test_path.read_text(encoding='utf-8')
-            start_marker = '    def test_execution_revision_does_not_rewrite_decision_or_job_identity(self) -> None:\n'
-            end_marker = '    def test_job_identity_excludes_the_bound_execution_record(self) -> None:\n'
-            start = text.find(start_marker)
-            end = text.find(end_marker)
-            if start < 0 or end <= start:
-                raise SystemExit('Decision identity test seam is unknown')
-            replacement = '''    def test_execution_revision_does_not_rewrite_decision_or_job_identity(self) -> None:
-                first = self.build()
-                changed = copy.deepcopy(self.model)
-                changed["decision"]["execution"]["verificationRefs"].append(
-                    "urn:fixture:verification:second"
-                )
-                second = self.build(changed)
-                self.assertEqual(first["decision"]["decisionId"], second["decision"]["decisionId"])
-                self.assertEqual(first["source"]["modelDigest"], second["source"]["modelDigest"])
-                self.assertEqual(first["jobId"], second["jobId"])
-                self.assertNotEqual(first["execution"]["executionId"], second["execution"]["executionId"])
-                no_execution = copy.deepcopy(self.model)
-                no_execution["decision"].pop("execution")
-                third = self.build(no_execution)
-                self.assertEqual(first["decision"]["decisionId"], third["decision"]["decisionId"])
-                self.assertEqual(first["source"]["modelDigest"], third["source"]["modelDigest"])
-                self.assertEqual(first["jobId"], third["jobId"])
-                self.assertNotIn("execution", third)
+          test_path = Path('organ-evolution/scripts/test_decision_job.py')
+          text = test_path.read_text(encoding='utf-8')
+          start_marker = '    def test_execution_revision_does_not_rewrite_decision_or_job_identity(self) -> None:\n'
+          end_marker = '    def test_job_identity_excludes_the_bound_execution_record(self) -> None:\n'
+          start = text.find(start_marker)
+          end = text.find(end_marker)
+          if start < 0 or end <= start:
+              raise SystemExit('Decision identity test seam is unknown')
+          replacement = '''    def test_execution_revision_does_not_rewrite_decision_or_job_identity(self) -> None:
+              first = self.build()
+              changed = copy.deepcopy(self.model)
+              changed["decision"]["execution"]["verificationRefs"].append(
+                  "urn:fixture:verification:second"
+              )
+              second = self.build(changed)
+              self.assertEqual(first["decision"]["decisionId"], second["decision"]["decisionId"])
+              self.assertEqual(first["source"]["modelDigest"], second["source"]["modelDigest"])
+              self.assertEqual(first["jobId"], second["jobId"])
+              self.assertNotEqual(first["execution"]["executionId"], second["execution"]["executionId"])
+              no_execution = copy.deepcopy(self.model)
+              no_execution["decision"].pop("execution")
+              third = self.build(no_execution)
+              self.assertEqual(first["decision"]["decisionId"], third["decision"]["decisionId"])
+              self.assertEqual(first["source"]["modelDigest"], third["source"]["modelDigest"])
+              self.assertEqual(first["jobId"], third["jobId"])
+              self.assertNotIn("execution", third)
 
-            '''.replace('            ', '')
-            text = text[:start] + replacement + text[end:]
-            test_path.write_text(text, encoding='utf-8', newline='\n')
+          '''.replace('          ', '')
+          text = text[:start] + replacement + text[end:]
+          test_path.write_text(text, encoding='utf-8', newline='\n')
 
-            doc_path = Path('organ-evolution/DECISION_CIRCULATION.md')
-            text = doc_path.read_text(encoding='utf-8')
-            old = '`organjob1_` binds the exact source-model identity, decision, circulation route, authority membrane, and limits. The optional execution record is excluded from the job digest and binds back to the job through its own `organexec1_` identity.'
-            new = '`organjob1_` binds the exact decision-bearing source projection, decision, circulation route, authority membrane, and limits. The source projection excludes the optional execution record. Execution therefore binds back to the stable job through its own `organexec1_` identity without rewriting the decision or job.'
-            if old in text:
-                text = text.replace(old, new, 1)
-            elif new not in text:
-                raise SystemExit('Documentation identity seam is unknown')
-            doc_path.write_text(text, encoding='utf-8', newline='\n')
-            PY
-            python organ-evolution/scripts/test_decision_job.py -v
-            python organ-evolution/scripts/validate.py
-            node --check organ-evolution/decision-job.js
-            git diff --check
-          } 2>&1 | tee "$RUNNER_TEMP/stable-decision-job.log"
-
-      - name: Upload convergence diagnostics
-        if: always()
-        continue-on-error: true
-        uses: actions/upload-artifact@v4
-        with:
-          name: stable-decision-job-convergence
-          path: ${{ runner.temp }}/stable-decision-job.log
-          if-no-files-found: warn
-          retention-days: 7
+          doc_path = Path('organ-evolution/DECISION_CIRCULATION.md')
+          text = doc_path.read_text(encoding='utf-8')
+          old = '`organjob1_` binds the exact source-model identity, decision, circulation route, authority membrane, and limits. The optional execution record is excluded from the job digest and binds back to the job through its own `organexec1_` identity.'
+          new = '`organjob1_` binds the exact decision-bearing source projection, decision, circulation route, authority membrane, and limits. The source projection excludes the optional execution record. Execution therefore binds back to the stable job through its own `organexec1_` identity without rewriting the decision or job.'
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif new not in text:
+              raise SystemExit('Documentation identity seam is unknown')
+          doc_path.write_text(text, encoding='utf-8', newline='\n')
+          PY
+          git diff --check
 
       - name: Publish the carrier-free repair
-        if: always() && steps.patch.outcome == 'success'
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
@@ -169,7 +143,3 @@ jobs:
           git diff --cached --check
           git commit -m 'Keep decision job identity stable across execution evidence'
           git push origin HEAD:agent/stable-decision-job-identity
-
-      - name: Preserve convergence result
-        if: always() && steps.patch.outcome != 'success'
-        run: exit 1
