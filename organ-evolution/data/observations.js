@@ -1,6 +1,6 @@
 window.AXM_ORGAN_OBSERVATIONS = {
   "format": "axm-organ-observations/1",
-  "generatedAt": "2026-07-28T05:18:36.593266Z",
+  "generatedAt": "2026-07-28T15:37:43.188455Z",
   "organs": [
     {
       "findings": [
@@ -52,7 +52,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/153"
             },
             {
-              "ageDays": 2,
+              "ageDays": 3,
               "baseRef": "main",
               "createdAt": "2026-07-25T06:33:52Z",
               "draft": true,
@@ -117,10 +117,10 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "createdAt": "2026-07-27T21:45:47Z",
               "draft": true,
               "headRef": "demo/underdrain-authority-v1",
-              "headSha": "1b20b126b192ae34152bcb9e2f6fbc6c2aabc0d6",
+              "headSha": "395bc539165cc525678ba7eb83434c8cd674437b",
               "number": 182,
               "title": "Author UNDERDRAIN as a continuous mechanism-driven pilot candidate",
-              "updatedAt": "2026-07-28T05:08:10Z",
+              "updatedAt": "2026-07-28T05:45:26Z",
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/182"
             },
             {
@@ -486,6 +486,22 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedAt": "2026-07-28T03:20:24Z",
           "organId": "organ.bloodstream",
           "source": "BigBirdReturns/axm-bloodstream PR #2; Actions run 30325636708; artifacts 8675556500 and 8675554295",
+          "state": "verified"
+        },
+        {
+          "claim": "Bloodstream now independently verifies and preserves axm-organ-evolution-job/1 records while keeping the accepted decision and circulation route stable, storing execution evidence separately, and refusing to convert verified execution into a terminal fact without a separately named external acceptance reference and actor. The exact Tools producer was rebuilt byte-for-byte, the open path appended job plus execution evidence without terminal mutation, the terminal path appended the external assertion separately, and the accepted Bloodstream main commit is 4e2d33ada244bbf915a8c508833a5b4d55e6b563.",
+          "evidenceRefs": [
+            "https://github.com/BigBirdReturns/axm-bloodstream/pull/3",
+            "https://github.com/BigBirdReturns/axm-bloodstream/actions/runs/30370037237",
+            "sha256:ed128606fc5ee999994743a15001c74e44307c9feb55a865dfcb702195186346",
+            "sha256:dc42f0188d129973e3d3171f5f4cddb5c88eeeb909f3c2e447755035ac96bae4"
+          ],
+          "id": "observation.bloodstream.decision-intake-20260728",
+          "kind": "hosted_qualification",
+          "limits": "Synthetic accepted-decision and execution fixtures only. This establishes cross-repository identity, custody, idempotent circulation, external terminal-assertion separation, and sanitized observation. It does not authenticate a production mandate, production executor, verifier independence, accepted real-world outcome, Unity run, Quest run, or physical action receipt.",
+          "observedAt": "2026-07-28T14:46:56Z",
+          "organId": "organ.bloodstream",
+          "source": "BigBirdReturns/axm-bloodstream PR #3; Actions run 30370037237; artifacts 8692458535 and 8692453506",
           "state": "verified"
         }
       ],
@@ -1066,7 +1082,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "findings": [],
           "fork": false,
           "fullName": "BigBirdReturns/axm-hinge",
-          "headAgeDays": 4,
+          "headAgeDays": 5,
           "headAt": "2026-07-23T06:20:52Z",
           "headSha": "9c36ae56750712059ac2ec1af7589de5c7d62d4c",
           "latestTag": "archive/agent/hinge-impact-layer",
@@ -1210,7 +1226,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/69"
             },
             {
-              "ageDays": 15,
+              "ageDays": 16,
               "baseRef": "main",
               "createdAt": "2026-07-12T08:53:32Z",
               "draft": true,
@@ -1483,7 +1499,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/69"
             },
             {
-              "ageDays": 15,
+              "ageDays": 16,
               "baseRef": "main",
               "createdAt": "2026-07-12T08:53:32Z",
               "draft": true,
@@ -1792,33 +1808,9 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_required_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241730"
-          ],
-          "summary": "BigBirdReturns/axm-tools: current permanent gate Acceptance page is in_progress."
-        },
-        {
-          "code": "workflow_required_pending",
-          "severity": "attention",
-          "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241707"
-          ],
-          "summary": "BigBirdReturns/axm-tools: current permanent gate Organ evolution surface is in_progress."
-        },
-        {
-          "code": "workflow_required_pending",
-          "severity": "attention",
-          "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241745"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30374287561"
           ],
           "summary": "BigBirdReturns/axm-tools: current scheduled observer Organ evolution observe + deploy is in_progress."
-        },
-        {
-          "code": "workflow_advisory_pending",
-          "severity": "context",
-          "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241742"
-          ],
-          "summary": "BigBirdReturns/axm-tools: current publication job PTA tracker fetch + deploy is pending."
         }
       ],
       "localObservations": [],
@@ -1826,7 +1818,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
       "repositories": [
         {
           "archived": false,
-          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/ee5946a726bbc4406707c0f428c117abbc947d5c",
+          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/cac750f3d9a72865feaaf48b4b6fc1fc024c453f",
           "defaultBranch": "main",
           "findings": [
             {
@@ -1839,40 +1831,16 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_required_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241730"
-              ],
-              "summary": "BigBirdReturns/axm-tools: current permanent gate Acceptance page is in_progress."
-            },
-            {
-              "code": "workflow_required_pending",
-              "severity": "attention",
-              "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241707"
-              ],
-              "summary": "BigBirdReturns/axm-tools: current permanent gate Organ evolution surface is in_progress."
-            },
-            {
-              "code": "workflow_required_pending",
-              "severity": "attention",
-              "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241745"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30374287561"
               ],
               "summary": "BigBirdReturns/axm-tools: current scheduled observer Organ evolution observe + deploy is in_progress."
-            },
-            {
-              "code": "workflow_advisory_pending",
-              "severity": "context",
-              "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241742"
-              ],
-              "summary": "BigBirdReturns/axm-tools: current publication job PTA tracker fetch + deploy is pending."
             }
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-tools",
           "headAgeDays": 0,
-          "headAt": "2026-07-28T05:18:14Z",
-          "headSha": "ee5946a726bbc4406707c0f428c117abbc947d5c",
+          "headAt": "2026-07-28T15:08:41Z",
+          "headSha": "cac750f3d9a72865feaaf48b4b6fc1fc024c453f",
           "latestTag": "archive/claude/session-planning-1h0xlw",
           "license": null,
           "observedRef": "main",
@@ -1903,7 +1871,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
             "license": false,
             "readme": true,
             "scopePath": null,
-            "scopedFileCount": 153,
+            "scopedFileCount": 159,
             "successionFiles": [
               "AGENTS.md",
               "CLAUDE.md",
@@ -2032,27 +2000,27 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/29885914577"
             },
             {
-              "conclusion": null,
-              "createdAt": "2026-07-28T05:18:17Z",
+              "conclusion": "success",
+              "createdAt": "2026-07-28T15:06:28Z",
               "event": "push",
-              "headSha": "ee5946a726bbc4406707c0f428c117abbc947d5c",
-              "id": 30331241730,
+              "headSha": "f2d2ebc276414550c52255a58e36baae3ad822c6",
+              "id": 30371721848,
               "lifecycle": "current",
               "name": "Acceptance page",
               "required": true,
               "role": "permanent_gate",
               "roleBasis": "The established browser acceptance surface is a current repository gate.",
               "roleSource": "declared",
-              "status": "in_progress",
-              "updatedAt": "2026-07-28T05:18:20Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241730"
+              "status": "completed",
+              "updatedAt": "2026-07-28T15:08:55Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30371721848"
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T05:18:17Z",
-              "event": "push",
-              "headSha": "ee5946a726bbc4406707c0f428c117abbc947d5c",
-              "id": 30331241745,
+              "createdAt": "2026-07-28T15:37:32Z",
+              "event": "schedule",
+              "headSha": "cac750f3d9a72865feaaf48b4b6fc1fc024c453f",
+              "id": 30374287561,
               "lifecycle": "current",
               "name": "Organ evolution observe + deploy",
               "required": true,
@@ -2060,40 +2028,40 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The live census must continue to compile, validate, and publish bounded observations.",
               "roleSource": "declared",
               "status": "in_progress",
-              "updatedAt": "2026-07-28T05:18:32Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241745"
+              "updatedAt": "2026-07-28T15:37:38Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30374287561"
             },
             {
-              "conclusion": null,
-              "createdAt": "2026-07-28T05:18:17Z",
+              "conclusion": "success",
+              "createdAt": "2026-07-28T15:06:25Z",
               "event": "push",
-              "headSha": "ee5946a726bbc4406707c0f428c117abbc947d5c",
-              "id": 30331241707,
+              "headSha": "f2d2ebc276414550c52255a58e36baae3ad822c6",
+              "id": 30371718205,
               "lifecycle": "current",
               "name": "Organ evolution surface",
               "required": true,
               "role": "permanent_gate",
               "roleBasis": "The anatomy, observation, and decision workbench has its own current browser and source gate.",
               "roleSource": "declared",
-              "status": "in_progress",
-              "updatedAt": "2026-07-28T05:18:26Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241707"
+              "status": "completed",
+              "updatedAt": "2026-07-28T15:08:46Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30371718205"
             },
             {
-              "conclusion": null,
-              "createdAt": "2026-07-28T05:18:17Z",
+              "conclusion": "success",
+              "createdAt": "2026-07-28T15:06:28Z",
               "event": "push",
-              "headSha": "ee5946a726bbc4406707c0f428c117abbc947d5c",
-              "id": 30331241742,
+              "headSha": "f2d2ebc276414550c52255a58e36baae3ad822c6",
+              "id": 30371721703,
               "lifecycle": "current",
               "name": "PTA tracker fetch + deploy",
               "required": false,
               "role": "publication_job",
               "roleBasis": "The PTA tool's data publication is an advisory sibling lane, not the authority for every Tools surface.",
               "roleSource": "declared",
-              "status": "pending",
-              "updatedAt": "2026-07-28T05:18:18Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241742"
+              "status": "completed",
+              "updatedAt": "2026-07-28T15:08:45Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30371721703"
             }
           ]
         }
@@ -2145,7 +2113,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/136"
             },
             {
-              "ageDays": 2,
+              "ageDays": 3,
               "baseRef": "main",
               "createdAt": "2026-07-25T06:38:21Z",
               "draft": true,
@@ -2198,10 +2166,10 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "createdAt": "2026-07-27T22:02:29Z",
               "draft": true,
               "headRef": "demo/underdrain-standalone-v1",
-              "headSha": "512fc0b30647d31c665dd0448d15b2225e254dff",
+              "headSha": "6b7f72c0e22ae2455b62f5c5c397949ebe8c4580",
               "number": 207,
               "title": "Ship UNDERDRAIN as a standalone axm-world action demo",
-              "updatedAt": "2026-07-27T22:02:29Z",
+              "updatedAt": "2026-07-28T05:41:44Z",
               "url": "https://github.com/BigBirdReturns/axm-world/pull/207"
             },
             {
@@ -2222,10 +2190,10 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "createdAt": "2026-07-28T03:31:33Z",
               "draft": true,
               "headRef": "feature/action-semantic-objectives-v1",
-              "headSha": "9c75112e72cfde9e30a1b280f4ab392b10d26957",
+              "headSha": "20311ee66dafbef28cc59482a223b2f0181d9ca5",
               "number": 212,
               "title": "Mirror deterministic semantic objectives across World and Unity",
-              "updatedAt": "2026-07-28T03:53:23Z",
+              "updatedAt": "2026-07-28T06:26:40Z",
               "url": "https://github.com/BigBirdReturns/axm-world/pull/212"
             },
             {
@@ -2234,10 +2202,10 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "createdAt": "2026-07-28T04:26:31Z",
               "draft": true,
               "headRef": "qualify/world-semantic-objectives-v1",
-              "headSha": "8a4b8799a686e6bcb623c1e0ebff4504b756f86b",
+              "headSha": "cbbbc0a1b0a9ea2874d5d7c1074829fc691285ce",
               "number": 213,
               "title": "Qualify and publish the World runtime-1.1 semantic receiver",
-              "updatedAt": "2026-07-28T05:17:30Z",
+              "updatedAt": "2026-07-28T05:43:10Z",
               "url": "https://github.com/BigBirdReturns/axm-world/pull/213"
             }
           ],
@@ -2564,7 +2532,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
     },
     "sourcesFormat": "axm-organ-sources/1"
   },
-  "sourceDigest": "organobs1_16cf6bc4136a3fd3e84eebbdcd46ed93d40cca05c0b21d54806c08351ebb1621",
+  "sourceDigest": "organobs1_f33d23453f45273dfa04f53a17fe492f6b1387d24168f58f3ae0a6b0e6403bf2",
   "unavailable": [
     {
       "error": "GitHub HTTP 404 for /repos/BigBirdReturns/axm-bloodstream: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/repos#get-a-repository\",\"status\":\"404\"}",
