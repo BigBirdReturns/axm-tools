@@ -1,0 +1,373 @@
+name: Converge Supplier Foundry organ
+
+on:
+  push:
+    branches:
+      - agent/admit-supplier-foundry-organ
+    paths:
+      - '.github/workflows/converge-supplier-foundry-organ.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/converge-supplier-foundry-organ.yml'
+      - 'organ-evolution/**'
+      - 'tests/pages/verify_organ_evolution.mjs'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: converge-supplier-foundry-organ
+  cancel-in-progress: true
+
+jobs:
+  converge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/admit-supplier-foundry-organ
+          fetch-depth: 0
+          show-progress: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Add scoped observation and the admitted organ model
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          from pathlib import Path
+
+          ROOT = Path('.')
+
+          def replace_once(path: str, old: str, new: str) -> None:
+              target = ROOT / path
+              text = target.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected one patch anchor, found {count}: {old[:100]!r}')
+              target.write_text(text.replace(old, new), encoding='utf-8', newline='\n')
+
+          observe = 'organ-evolution/scripts/observe.py'
+          replace_once(
+              observe,
+              'from workflow_roles import apply_workflow_roles, validate_workflow_policy, workflow_finding\n',
+              'from observation_scope import (\n'
+              '    mapping_identity,\n'
+              '    required_workflow_gaps,\n'
+              '    scoped_label,\n'
+              '    scoped_tree_signals,\n'
+              '    select_workflows,\n'
+              '    validate_repository_scope,\n'
+              ')\n'
+              'from workflow_roles import apply_workflow_roles, validate_workflow_policy, workflow_finding\n',
+          )
+          replace_once(
+              observe,
+              '''            full_name = repository["fullName"]\n            validate_workflow_policy(repository.get("workflowPolicy"))\n            if full_name in seen_repos:\n                raise ObservationError(f"repository mapped more than once: {full_name}")\n            seen_repos.add(full_name)''',
+              '''            full_name = repository["fullName"]\n            validate_workflow_policy(repository.get("workflowPolicy"))\n            try:\n                scope_path, _workflow_scope = validate_repository_scope(repository)\n            except ValueError as exc:\n                raise ObservationError(str(exc)) from exc\n            identity = mapping_identity(full_name, scope_path)\n            if identity in seen_repos:\n                raise ObservationError(f"repository scope mapped more than once: {identity}")\n            seen_repos.add(identity)''',
+          )
+          replace_once(
+              observe,
+              '''def tree_signals(raw_tree: dict[str, Any]) -> dict[str, Any]:\n    rows = raw_tree.get("tree", []) if isinstance(raw_tree, dict) else []\n    paths = {str(row.get("path")) for row in rows if isinstance(row, dict) and row.get("type") == "blob"}\n    upper = {path.upper(): path for path in paths}\n    has_readme = any(path == "README" or path.startswith("README.") for path in upper)\n    has_license = any(path == "LICENSE" or path.startswith("LICENSE.") or path == "COPYING" for path in upper)\n    succession_names = {"CONTINUITY.MD", "AGENTS.MD", "CLAUDE.MD", "MAINTAINERS.MD", "CONTRIBUTING.MD"}\n    succession = sorted(path for path in paths if path.upper() in succession_names)\n    workflows = sorted(path for path in paths if path.startswith(".github/workflows/") and path.endswith((".yml", ".yaml")))\n    return {\n        "readme": has_readme,\n        "license": has_license,\n        "successionFiles": succession,\n        "workflowFiles": workflows,\n        "treeTruncated": bool(raw_tree.get("truncated")),\n    }''',
+              '''def tree_signals(\n    raw_tree: dict[str, Any],\n    scope_path: str | None = None,\n    workflow_policy: dict[str, Any] | None = None,\n) -> dict[str, Any]:\n    return scoped_tree_signals(raw_tree, scope_path, workflow_policy)''',
+          )
+          replace_once(
+              observe,
+              '    full_name = repository["fullName"]\n',
+              '    full_name = scoped_label(repository["fullName"], repository.get("scopePath"))\n',
+          )
+          replace_once(
+              observe,
+              '        add("readme_absent", "attention", f"{full_name} has no root README in the observed tree.")',
+              '        add("readme_absent", "attention", f"{full_name} has no README in the observed repository scope.")',
+          )
+          replace_once(
+              observe,
+              '        add("license_absent", "attention", f"{full_name} exposes no repository license or root license file.")',
+              '        add("license_absent", "attention", f"{full_name} exposes no repository or scoped license record.")',
+          )
+          replace_once(
+              observe,
+              '        add("succession_record_absent", "attention", f"{full_name} has no root continuity, agent, maintainer, or contribution handoff file.")',
+              '        add("succession_record_absent", "attention", f"{full_name} has no continuity, agent, maintainer, or contribution handoff file in the observed scope.")',
+          )
+          replace_once(
+              observe,
+              '''        if finding:\n            findings.append(finding)\n    for pull in repository.get("openPullRequests", []):''',
+              '''        if finding:\n            findings.append(finding)\n    findings.extend(\n        required_workflow_gaps(\n            repository.get("workflowPolicy"),\n            workflows,\n            repository["fullName"],\n            repository.get("scopePath"),\n        )\n    )\n    for pull in repository.get("openPullRequests", []):''',
+          )
+          replace_once(
+              observe,
+              '''def collect_repository(\n    provider: Provider,\n    full_name: str,\n    requested_ref: str | None,\n    workflow_policy: dict[str, Any] | None,\n    rules: SourceRules,\n    now: datetime,\n) -> dict[str, Any]:''',
+              '''def collect_repository(\n    provider: Provider,\n    full_name: str,\n    requested_ref: str | None,\n    scope_path: str | None,\n    workflow_scope: str,\n    workflow_policy: dict[str, Any] | None,\n    rules: SourceRules,\n    now: datetime,\n) -> dict[str, Any]:''',
+          )
+          replace_once(
+              observe,
+              '    runs = apply_workflow_roles(latest_workflows(provider.runs(full_name, observed_ref)), workflow_policy)',
+              '''    annotated_runs = apply_workflow_roles(\n        latest_workflows(provider.runs(full_name, observed_ref)), workflow_policy\n    )\n    runs, workflow_selection = select_workflows(\n        annotated_runs, workflow_policy, workflow_scope\n    )''',
+          )
+          replace_once(
+              observe,
+              '    signals = tree_signals(provider.tree(full_name, tree_sha)) if tree_sha else {',
+              '    signals = tree_signals(provider.tree(full_name, tree_sha), scope_path, workflow_policy) if tree_sha else {',
+          )
+          replace_once(
+              observe,
+              '''        "treeTruncated": True,\n    }''',
+              '''        "scopePath": scope_path,\n        "scopedFileCount": 0,\n        "declaredWorkflowNames": [],\n        "treeTruncated": True,\n    }''',
+          )
+          replace_once(
+              observe,
+              '''        "fullName": full_name,\n        "url": repo.get("html_url") or f"https://github.com/{full_name}",''',
+              '''        "fullName": full_name,\n        "scopePath": scope_path,\n        "workflowScope": workflow_scope,\n        "workflowSelection": workflow_selection,\n        "workflowPolicy": workflow_policy or {"declarations": []},\n        "url": repo.get("html_url") or f"https://github.com/{full_name}",''',
+          )
+          replace_once(
+              observe,
+              '''            "collectedRef": observed_ref,\n        },''',
+              '''            "collectedRef": observed_ref,\n            "scopePath": scope_path,\n            "workflowScope": workflow_scope,\n        },''',
+          )
+          replace_once(
+              observe,
+              '''                observed = collect_repository(\n                    provider,\n                    repository["fullName"],\n                    repository.get("ref"),\n                    repository.get("workflowPolicy"),\n                    rules,\n                    now,\n                )''',
+              '''                scope_path, workflow_scope = validate_repository_scope(repository)\n                observed = collect_repository(\n                    provider,\n                    repository["fullName"],\n                    repository.get("ref"),\n                    scope_path,\n                    workflow_scope,\n                    repository.get("workflowPolicy"),\n                    rules,\n                    now,\n                )''',
+          )
+
+          view = 'organ-evolution/observations-view.js'
+          replace_once(
+              view,
+              '''<div><a href="${esc(repository.url || '#')}" target="_blank" rel="noreferrer"><b>${esc(repository.fullName)}</b></a><span>${esc(repository.observedRef || repository.defaultBranch || '')}</span></div>''',
+              '''<div><a href="${esc(repository.url || '#')}" target="_blank" rel="noreferrer"><b>${esc(repository.fullName)}</b></a><span>${esc(repository.observedRef || repository.defaultBranch || '')}${repository.scopePath ? ` · ${esc(repository.scopePath)}` : ''}</span></div>''',
+          )
+          replace_once(
+              view,
+              '''      <span class="tag ${(signals.successionFiles || []).length ? 'green' : 'gold'}">succession ${(signals.successionFiles || []).length ? 'present' : 'open'}</span>\n    </div>''',
+              '''      <span class="tag ${(signals.successionFiles || []).length ? 'green' : 'gold'}">succession ${(signals.successionFiles || []).length ? 'present' : 'open'}</span>\n      ${repository.workflowSelection ? `<span class="tag cyan">workflows ${esc(repository.workflowSelection.mode)} · ${repository.workflowSelection.includedCount}/${repository.workflowSelection.observedCount}</span>` : ''}\n    </div>''',
+          )
+
+          model_path = ROOT / 'organ-evolution/data/axm-estate.example.json'
+          model = json.loads(model_path.read_text(encoding='utf-8'))
+          if any(row['id'] == 'organ.supplier-foundry' for row in model['organs']):
+              raise SystemExit('Supplier Foundry organ already exists')
+          foundry = {
+              'id': 'organ.supplier-foundry',
+              'name': 'Supplier Foundry',
+              'class': 'fabrication',
+              'stage': 'emerging',
+              'mission': 'Acquire, isolate, qualify, transform, package, substitute, and remove external suppliers without allowing the supplier or adapter to define capability, policy, or accepted authority.',
+              'functions': [
+                  {'id': 'fn.foundry.acquire', 'name': 'Exact supplier acquisition and license custody', 'criticality': 4, 'coverage': 3},
+                  {'id': 'fn.foundry.qualify', 'name': 'Capability conformance and provider comparison', 'criticality': 5, 'coverage': 3},
+                  {'id': 'fn.foundry.ripout', 'name': 'Substitution, fallback, and supplier-independent rip-out', 'criticality': 5, 'coverage': 4},
+              ],
+              'inputs': ['human-owned capability contract', 'exact supplier manifests', 'canonical source product', 'budgets and license policy'],
+              'outputs': ['qualified supplier bundle', 'measurement recommendation', 'neutral fallback', 'rip-out verification receipt'],
+              'dependencies': [
+                  {'target': 'organ.tierbench', 'kind': 'measurement and qualification host', 'criticality': 4, 'replaceability': 3}
+              ],
+              'authority': {
+                  'owns': ['supplier acquisition, isolation, qualification, packaging, substitution, and revocation evidence'],
+                  'forbidden': ['define domain capability', 'choose estate policy', 'accept evidence or outcomes', 'mutate Arc law or campaigns', 'schedule the estate', 'turn a measured recommendation into a vendor mandate'],
+              },
+              'custodians': {
+                  'authors': ['actor.steward'],
+                  'maintainers': ['actor.operator'],
+                  'operators': ['actor.operator', 'actor.reviewer'],
+                  'stewards': ['actor.steward'],
+              },
+              'health': {
+                  'function': 3,
+                  'authority': 5,
+                  'observability': 5,
+                  'adaptability': 4,
+                  'succession': 4,
+                  'replaceability': 5,
+                  'efficiency': 3,
+                  'containment': 5,
+              },
+              'pressures': ['supplier and license churn', 'performance versus product-size tradeoffs', 'pressure to become a universal package manager or control plane'],
+          }
+          tier_index = next(i for i, row in enumerate(model['organs']) if row['id'] == 'organ.tierbench')
+          model['organs'].insert(tier_index + 1, foundry)
+
+          evidence = {
+              'id': 'evidence.supplier-foundry.asset-pilot',
+              'title': 'Supplier Foundry glTF asset commodity pilot',
+              'tier': 'measured',
+              'independence': 'mixed',
+              'source': 'Tier Bench PR #140; workflow 30329697910; artifacts 8676909336 and 8676907830',
+              'claim': 'Two exact OSS providers produced byte-deterministic, semantically equivalent bounded glTF products under network quarantine; the complete supplier runtime was then removed and the consumer bundle verified with bundled standard-library tools.',
+              'limits': 'One synthetic static two-triangle fixture on hosted Linux. No production asset, visual, texture, animation, skin, morph, Unity, Quest, browser, or GPU result is established.',
+          }
+          model['evidence'].append(evidence)
+
+          common_links = {
+              'sponsors': ['actor.steward'],
+              'validators': ['actor.reviewer'],
+              'deciders': ['actor.steward'],
+              'beneficiaries': ['actor.operator', 'actor.consumer'],
+          }
+          model['candidates'].append({
+              'id': 'candidate.foundry.retain-asset-pilot',
+              'organId': 'organ.supplier-foundry',
+              'name': 'Retain Supplier Foundry at the proven asset-optimization boundary',
+              'action': 'retain',
+              'summary': 'Admit the organ for exact supplier acquisition, bounded asset conformance, provider comparison, neutral fallback, and rip-out while refusing every broader policy or scheduling claim.',
+              'changes': {
+                  'preserve': ['asset.optimize.gltf/v1 contract', 'exact package-lock custody', 'source fallback', 'supplier-independent verifier', 'measurement recommendation only'],
+                  'alter': ['replace synthetic-only evidence with additional governed fixtures before production routing'],
+                  'retire': [],
+                  'introduce': ['scoped estate observation', 'successor reconstruction record', 'consumer adoption receipt'],
+              },
+              'dimensions': {
+                  'function': 4, 'authority': 5, 'reversibility': 5, 'dependency': 4,
+                  'adaptability': 5, 'observability': 5, 'succession': 4, 'efficiency': 4,
+                  'userValue': 4, 'captureResistance': 5, 'containment': 5, 'evidence': 4,
+              },
+              'gates': {'function': 'pass', 'authority': 'pass', 'evidence': 'pass', 'migration': 'pass', 'reversibility': 'pass'},
+              'actorLinks': common_links,
+              'evidenceIds': ['evidence.supplier-foundry.asset-pilot', 'evidence.tier.measured'],
+              'risks': ['The current capability evidence may be mistaken for production-asset or runtime performance.'],
+              'dissent': ['A dedicated organ may be unnecessary if asset optimization remains one small Tier Bench experiment.'],
+          })
+          model['candidates'].append({
+              'id': 'candidate.foundry.expand-texture-class',
+              'organId': 'organ.supplier-foundry',
+              'name': 'Extend Supplier Foundry to texture compression',
+              'action': 'specialize',
+              'summary': 'Add a separate texture.compress.ktx2/v1 capability only after a governed image corpus, visual-quality oracle, device decode measurements, license review, fallback, and rip-out plan exist.',
+              'changes': {
+                  'preserve': ['asset pilot authority membrane', 'capability-specific contracts', 'exact supplier custody', 'neutral fallback and rip-out'],
+                  'alter': ['generalize provider adapters only where the second capability proves the shared seam'],
+                  'retire': [],
+                  'introduce': ['texture corpus', 'visual-quality comparator', 'device decode and memory receipts', 'KTX2 fallback contract'],
+              },
+              'dimensions': {
+                  'function': 3, 'authority': 5, 'reversibility': 4, 'dependency': 3,
+                  'adaptability': 4, 'observability': 3, 'succession': 3, 'efficiency': 3,
+                  'userValue': 5, 'captureResistance': 5, 'containment': 4, 'evidence': 1,
+              },
+              'gates': {'function': 'warn', 'authority': 'pass', 'evidence': 'open', 'migration': 'open', 'reversibility': 'pass'},
+              'actorLinks': common_links,
+              'evidenceIds': ['evidence.supplier-foundry.asset-pilot'],
+              'risks': ['A file-size win may conceal unacceptable visual loss, decode latency, memory growth, or platform-specific failure.'],
+              'dissent': ['Texture compression may deliver more immediate Quest value than further static-mesh fixtures.'],
+          })
+
+          model_path.write_text(json.dumps(model, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          seed_path = ROOT / 'organ-evolution/data/seed.js'
+          seed_path.write_text('window.AXM_ORGAN_EVOLUTION_SEED = ' + json.dumps(model, indent=2, ensure_ascii=False) + ';\n', encoding='utf-8')
+
+          sources_path = ROOT / 'organ-evolution/data/sources.json'
+          sources = json.loads(sources_path.read_text(encoding='utf-8'))
+          supplier_source = {
+              'organId': 'organ.supplier-foundry',
+              'repositories': [{
+                  'fullName': 'BigBirdReturns/tier-bench',
+                  'scopePath': 'supplier_foundry',
+                  'workflowScope': 'declared_only',
+                  'workflowPolicy': {
+                      'declarations': [{
+                          'matchName': 'Supplier Foundry asset pilot',
+                          'role': 'permanent_gate',
+                          'lifecycle': 'current',
+                          'required': True,
+                          'basis': 'The exact-provider, semantic-equivalence, network-isolation, fallback, and rip-out transaction is the current Supplier Foundry gate.',
+                      }]
+                  },
+              }],
+          }
+          insert_at = next(i for i, row in enumerate(sources['organs']) if row['organId'] == 'organ.tierbench') + 1
+          sources['organs'].insert(insert_at, supplier_source)
+          sources_path.write_text(json.dumps(sources, indent=2) + '\n', encoding='utf-8')
+
+          observed_path = ROOT / 'organ-evolution/data/observed.json'
+          observed = json.loads(observed_path.read_text(encoding='utf-8'))
+          observed['observations'].append({
+              'id': 'observation.supplier-foundry.asset-pilot-20260728',
+              'organId': 'organ.supplier-foundry',
+              'observedAt': '2026-07-28T04:47:14Z',
+              'kind': 'hosted_qualification',
+              'state': 'verified',
+              'claim': 'Supplier Foundry capability asset.optimize.gltf/v1 qualified @gltf-transform/cli 4.4.1 and gltfpack 1.2.0 as deterministic semantically equivalent providers under network quarantine. The accepted Tier Bench main commit is 49e630a8f3a37545544bc5ac827f2cbf14f568b1; the exact source fallback and supplier-independent rip-out both passed.',
+              'source': 'Tier Bench PR #140; Actions run 30329697910; artifacts 8676909336 and 8676907830',
+              'limits': 'One synthetic static two-triangle fixture on hosted Linux. Selection is a measurement recommendation only and establishes no production, visual, Unity, Quest, browser, or GPU result.',
+              'evidenceRefs': [
+                  'https://github.com/BigBirdReturns/tier-bench/pull/140',
+                  'https://github.com/BigBirdReturns/tier-bench/actions/runs/30329697910',
+                  'sha256:abcc2c8c13363af2e957c08cafd3970207aa1059d4d21ddb5928f850ed1445ce',
+                  'sha256:ae3a340024088e1619f94f66dbedbf4c4af1594b8cb94372d7f396a65fe4be43',
+              ],
+          })
+          observed_path.write_text(json.dumps(observed, indent=2) + '\n', encoding='utf-8')
+
+          browser = ROOT / 'tests/pages/verify_organ_evolution.mjs'
+          text = browser.read_text(encoding='utf-8')
+          text = text.replace('worked estate loads nine organs', 'worked estate loads ten organs')
+          text = text.replace('count() === 9);', 'count() === 10);', 2)
+          text = text.replace('count() === 10 &&\n    (await page.locator("#organList").innerText()).includes("Test Organ")', 'count() === 11 &&\n    (await page.locator("#organList").innerText()).includes("Test Organ")')
+          anchor = '''  check("authority membrane remains explicit",\n    (await page.locator("#workspace").innerText()).includes("Authority membrane") &&\n    (await page.locator("#workspace").innerText()).includes("Forbidden"));\n\n  await page.click('[data-view="evolution"]');'''
+          addition = '''  check("authority membrane remains explicit",\n    (await page.locator("#workspace").innerText()).includes("Authority membrane") &&\n    (await page.locator("#workspace").innerText()).includes("Forbidden"));\n  check("Supplier Foundry is a first-class estate organ",\n    (await page.locator("#organList").innerText()).includes("Supplier Foundry"));\n\n  await page.getByRole("button", { name: /Supplier Foundry/ }).click();\n  await page.click('[data-view="evolution"]');\n  check("Supplier Foundry exposes a bounded accepted lane and held expansion",\n    await page.locator(".candidate-strip .candidate").count() === 2 &&\n    (await page.locator(".candidate-strip").innerText()).includes("Admissible") &&\n    (await page.locator(".candidate-strip").innerText()).includes("Hold"));\n  check("Supplier Foundry refuses policy and scheduling authority",\n    (await page.locator("#workspace").innerText()).includes("measurement recommendation") ||\n    (await page.locator("#workspace").innerText()).includes("policy"));\n  await page.getByRole("button", { name: /Bloodstream/ }).click();\n\n  await page.click('[data-view="evolution"]');'''
+          if text.count(anchor) != 1:
+              raise SystemExit('browser Supplier Foundry insertion anchor missing')
+          browser.write_text(text.replace(anchor, addition), encoding='utf-8', newline='\n')
+
+          tests_path = ROOT / 'organ-evolution/scripts/test_observe.py'
+          tests = tests_path.read_text(encoding='utf-8')
+          tests = tests.replace(
+              '"organ.hinge", "organ.tierbench", "organ.arc", "organ.world", "organ.tools",',
+              '"organ.hinge", "organ.tierbench", "organ.supplier-foundry", "organ.arc", "organ.world", "organ.tools",',
+          )
+          old = '''        self.assertEqual(\n            [row["id"] for row in local],\n            ["observation.bloodstream.hardening-20260728"],\n        )\n        self.assertEqual(local[0]["organId"], "organ.bloodstream")\n        self.assertEqual(local[0]["state"], "verified")\n        self.assertIn("Hosted synthetic-ledger qualification only", local[0]["limits"])'''
+          new = '''        self.assertEqual(\n            [row["id"] for row in local],\n            [\n                "observation.bloodstream.hardening-20260728",\n                "observation.supplier-foundry.asset-pilot-20260728",\n            ],\n        )\n        self.assertEqual(local[0]["organId"], "organ.bloodstream")\n        self.assertEqual(local[0]["state"], "verified")\n        self.assertIn("Hosted synthetic-ledger qualification only", local[0]["limits"])\n        self.assertEqual(local[1]["organId"], "organ.supplier-foundry")\n        self.assertIn("measurement recommendation only", local[1]["limits"])'''
+          if tests.count(old) != 1:
+              raise SystemExit('production local evidence test anchor missing')
+          tests = tests.replace(old, new)
+          anchor = '\n\nif __name__ == "__main__":\n    unittest.main()\n'
+          additions = '''\n\n    def test_same_repository_can_supply_a_scoped_suborgan_without_hiding_omissions(self):\n        sources = json.loads(json.dumps(self.sources))\n        fixture = json.loads(json.dumps(self.fixture))\n        blood_repo = fixture["repositories"]["BigBirdReturns/axm-bloodstream"]\n        blood_repo["runs"]["workflow_runs"].append({\n            "id": 203,\n            "workflow_id": 3,\n            "name": "Sibling publication",\n            "event": "push",\n            "status": "completed",\n            "conclusion": "failure",\n            "head_sha": "2222222222222222222222222222222222222222",\n            "created_at": "2026-07-26T12:06:00Z",\n            "updated_at": "2026-07-26T12:11:00Z",\n            "html_url": "https://github.com/BigBirdReturns/axm-bloodstream/actions/runs/203",\n        })\n        blood_repo["tree"]["tree"].extend([\n            {"path": "supplier_foundry/README.md", "type": "blob"},\n            {"path": "supplier_foundry/CONTINUITY.md", "type": "blob"},\n        ])\n        sources["organs"].append({\n            "organId": "organ.supplier-foundry",\n            "repositories": [{\n                "fullName": "BigBirdReturns/axm-bloodstream",\n                "scopePath": "supplier_foundry",\n                "workflowScope": "declared_only",\n                "workflowPolicy": {"declarations": [{\n                    "matchName": "ci",\n                    "role": "permanent_gate",\n                    "lifecycle": "current",\n                    "required": True,\n                    "basis": "Scoped fixture gate.",\n                }]},\n            }],\n        })\n        result = observe.compile_observations(\n            sources, self.local, observe.FixtureProvider(fixture), self.now\n        )\n        foundry = next(row for row in result["organs"] if row["organId"] == "organ.supplier-foundry")\n        repository = foundry["repositories"][0]\n        self.assertEqual(repository["scopePath"], "supplier_foundry")\n        self.assertEqual(repository["workflowSelection"]["mode"], "declared_only")\n        self.assertEqual(repository["workflowSelection"]["observedCount"], 2)\n        self.assertEqual(repository["workflowSelection"]["includedCount"], 1)\n        self.assertEqual(repository["workflowSelection"]["omittedCount"], 1)\n        self.assertEqual([row["name"] for row in repository["workflows"]], ["ci"])\n        self.assertTrue(repository["signals"]["readme"])\n        self.assertEqual(repository["signals"]["successionFiles"], ["CONTINUITY.md"])\n\n    def test_duplicate_repository_scope_is_refused_but_parent_and_suborgan_are_distinct(self):\n        sources = json.loads(json.dumps(self.sources))\n        sources["organs"].append({\n            "organId": "organ.supplier-foundry",\n            "repositories": [{\n                "fullName": "BigBirdReturns/axm-bloodstream",\n                "scopePath": "supplier_foundry",\n                "workflowScope": "declared_only",\n                "workflowPolicy": {"declarations": [{\n                    "matchName": "ci",\n                    "role": "permanent_gate",\n                    "lifecycle": "current",\n                    "required": True,\n                    "basis": "Scoped fixture gate.",\n                }]},\n            }],\n        })\n        observe.validate_sources(sources)\n        sources["organs"].append({\n            "organId": "organ.supplier-foundry-copy",\n            "repositories": [{\n                "fullName": "BigBirdReturns/axm-bloodstream",\n                "scopePath": "supplier_foundry",\n                "workflowScope": "declared_only",\n                "workflowPolicy": {"declarations": [{\n                    "matchName": "ci",\n                    "role": "permanent_gate",\n                    "lifecycle": "current",\n                    "required": True,\n                    "basis": "Duplicate fixture gate.",\n                }]},\n            }],\n        })\n        with self.assertRaises(observe.ObservationError):\n            observe.validate_sources(sources)\n\n    def test_required_scoped_workflow_absence_fails_visible(self):\n        sources = json.loads(json.dumps(self.sources))\n        fixture = json.loads(json.dumps(self.fixture))\n        sources["organs"].append({\n            "organId": "organ.supplier-foundry",\n            "repositories": [{\n                "fullName": "BigBirdReturns/axm-bloodstream",\n                "scopePath": "supplier_foundry",\n                "workflowScope": "declared_only",\n                "workflowPolicy": {"declarations": [{\n                    "matchName": "Supplier Foundry asset pilot",\n                    "role": "permanent_gate",\n                    "lifecycle": "current",\n                    "required": True,\n                    "basis": "Required scoped gate.",\n                }]},\n            }],\n        })\n        result = observe.compile_observations(\n            sources, self.local, observe.FixtureProvider(fixture), self.now\n        )\n        foundry = next(row for row in result["organs"] if row["organId"] == "organ.supplier-foundry")\n        finding = next(row for row in foundry["findings"] if row["code"] == "workflow_required_unobserved")\n        self.assertEqual(finding["severity"], "critical")\n'''
+          if tests.count(anchor) != 1:
+              raise SystemExit('unit test insertion anchor missing')
+          tests_path.write_text(tests.replace(anchor, additions + anchor), encoding='utf-8', newline='\n')
+          PY
+
+      - name: Qualify the scoped organ before publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          python organ-evolution/scripts/validate.py
+          python organ-evolution/scripts/test_observe.py
+          python organ-evolution/scripts/observe.py \
+            --sources organ-evolution/data/fixtures/sources.fixture.json \
+            --observed organ-evolution/data/fixtures/observed.fixture.json \
+            --fixture organ-evolution/data/fixtures/github.fixture.json \
+            --now 2026-07-28T00:00:00Z \
+            --output "$RUNNER_TEMP/observations.json" \
+            --js-output "$RUNNER_TEMP/observations.js"
+          node --check organ-evolution/observations-view.js
+          node --check tests/pages/verify_organ_evolution.mjs
+          node --check tests/pages/verify_organ_observations.mjs
+          git diff --check
+
+      - name: Publish one carrier-free implementation commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/converge-supplier-foundry-organ.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add organ-evolution tests/pages/verify_organ_evolution.mjs
+          git diff --cached --check
+          git commit -m 'Admit Supplier Foundry as a scoped estate organ'
+          git push origin HEAD:agent/admit-supplier-foundry-organ
