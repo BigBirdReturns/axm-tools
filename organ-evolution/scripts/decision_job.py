@@ -143,6 +143,16 @@ def without_keys(value: dict[str, Any], *keys: str) -> dict[str, Any]:
     return {name: item for name, item in value.items() if name not in removed}
 
 
+
+def source_model_projection(model: dict[str, Any]) -> dict[str, Any]:
+    """Bind the accepted workspace without optional execution evidence."""
+    projection = json.loads(json.dumps(model))
+    decision = projection.get("decision")
+    if isinstance(decision, dict):
+        decision.pop("execution", None)
+    return projection
+
+
 def indexed(rows: Any, label: str) -> dict[str, dict[str, Any]]:
     if not isinstance(rows, list):
         raise DecisionJobError(f"{label} must be an array")
@@ -576,7 +586,7 @@ def build_job(model: dict[str, Any]) -> dict[str, Any]:
     source = {
         "modelFormat": MODEL_FORMAT,
         "estateId": estate_id,
-        "modelDigest": digest("orgmodel1", model),
+        "modelDigest": digest("orgmodel1", source_model_projection(model)),
     }
     bundle: dict[str, Any] = {
         "format": JOB_FORMAT,

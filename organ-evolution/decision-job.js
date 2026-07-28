@@ -61,6 +61,14 @@
     return Object.fromEntries(Object.entries(value).filter(([key]) => !removed.has(key)));
   }
 
+  function sourceModelProjection(model) {
+  const projection = clone(model);
+  if (projection.decision && typeof projection.decision === 'object' && !Array.isArray(projection.decision)) {
+    delete projection.decision.execution;
+  }
+  return projection;
+}
+
   function exactKeys(value, required, label) {
     if (!value || typeof value !== 'object' || Array.isArray(value)) {
       throw new DecisionJobError(`${label} must be an object`);
@@ -414,7 +422,7 @@
       source: {
         modelFormat: MODEL_FORMAT,
         estateId: decision.estateId,
-        modelDigest: await digest('orgmodel1', model),
+        modelDigest: await digest('orgmodel1', sourceModelProjection(model)),
       },
       decision,
       circulation: sourceCirculation(sourceDecision.circulation),

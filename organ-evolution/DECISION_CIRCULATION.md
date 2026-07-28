@@ -37,7 +37,7 @@ These checks establish structural admissibility. They do not establish that the 
 
 `orgdec1_` binds the accepted decision, candidate geometry, decider assertion, mandate assertion, gates, dimensions, migration ledger, and cited evidence. Execution evidence cannot rewrite this identity.
 
-`organjob1_` binds the exact source-model identity, decision, circulation route, authority membrane, and limits. The optional execution record is excluded from the job digest and binds back to the job through its own `organexec1_` identity.
+`organjob1_` binds the exact decision-bearing source projection, decision, circulation route, authority membrane, and limits. The source projection excludes the optional execution record. Execution therefore binds back to the stable job through its own `organexec1_` identity without rewriting the decision or job.
 
 The source-model digest remains visible so a later workspace revision cannot impersonate the exact source from which the job was compiled.
 
