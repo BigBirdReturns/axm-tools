@@ -1,0 +1,54 @@
+name: Patch decision authority copy
+
+on:
+  push:
+    branches:
+      - agent/decision-circulation-contract
+    paths:
+      - '.github/workflows/patch-decision-authority-copy.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/decision-circulation-contract
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Copy the authority membrane into each compiled job
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('organ-evolution/scripts/decision_job.py')
+          text = path.read_text(encoding='utf-8')
+          old = '        "authority": AUTHORITY,\n'
+          new = '        "authority": json.loads(json.dumps(AUTHORITY)),\n'
+          if text.count(old) != 1:
+              raise SystemExit(f'authority insertion count: {text.count(old)}')
+          path.write_text(text.replace(old, new), encoding='utf-8', newline='\n')
+          PY
+          python organ-evolution/scripts/test_decision_job.py -v
+          python organ-evolution/scripts/validate.py
+          git diff --check
+
+      - name: Publish the tested repair and remove this carrier
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add organ-evolution/scripts/decision_job.py
+          git rm .github/workflows/patch-decision-authority-copy.yml
+          git diff --cached --check
+          git commit -m 'Copy the decision job authority membrane by value'
+          git push origin HEAD:agent/decision-circulation-contract
