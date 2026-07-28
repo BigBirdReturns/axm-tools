@@ -20,6 +20,8 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
+from workflow_roles import apply_workflow_roles, validate_workflow_policy, workflow_finding
+
 FORMAT = "axm-organ-observations/1"
 SOURCES_FORMAT = "axm-organ-sources/1"
 LOCAL_FORMAT = "axm-organ-local-observations/1"
@@ -263,6 +265,7 @@ def validate_sources(value: dict[str, Any]) -> tuple[list[dict[str, Any]], Sourc
             if not isinstance(repository, dict) or not isinstance(repository.get("fullName"), str):
                 raise ObservationError(f"{organ_id} repository requires fullName")
             full_name = repository["fullName"]
+            validate_workflow_policy(repository.get("workflowPolicy"))
             if full_name in seen_repos:
                 raise ObservationError(f"repository mapped more than once: {full_name}")
             seen_repos.add(full_name)
@@ -374,15 +377,16 @@ def repository_findings(repository: dict[str, Any], rules: SourceRules, now: dat
     if not workflows and not signals.get("workflowFiles"):
         add("workflow_absent", "attention", f"{full_name} has no observed workflow run or workflow file.")
     for workflow in workflows:
-        conclusion = workflow.get("conclusion")
-        status = workflow.get("status")
         age = age_days(workflow.get("updatedAt") or workflow.get("createdAt"), now)
-        if conclusion in BAD_WORKFLOW_CONCLUSIONS:
-            add("workflow_not_green", "critical", f"{full_name}: {workflow.get('name')} concluded {conclusion}.", [workflow.get("url")])
-        elif status and status != "completed":
-            add("workflow_pending", "attention", f"{full_name}: {workflow.get('name')} is {status}.", [workflow.get("url")])
-        elif isinstance(age, int) and age > rules.stale_workflow_days:
-            add("workflow_stale", "attention", f"{full_name}: latest {workflow.get('name')} receipt is {age} days old.", [workflow.get("url")])
+        finding = workflow_finding(
+            workflow,
+            full_name,
+            age,
+            BAD_WORKFLOW_CONCLUSIONS,
+            rules.stale_workflow_days,
+        )
+        if finding:
+            findings.append(finding)
     for pull in repository.get("openPullRequests", []):
         age = pull.get("ageDays")
         if pull.get("draft") and isinstance(age, int) and age > rules.stale_draft_days:
@@ -396,6 +400,7 @@ def collect_repository(
     provider: Provider,
     full_name: str,
     requested_ref: str | None,
+    workflow_policy: dict[str, Any] | None,
     rules: SourceRules,
     now: datetime,
 ) -> dict[str, Any]:
@@ -409,7 +414,7 @@ def collect_repository(
     author = commit_info.get("author") or {}
     commit_at = committer.get("date") or author.get("date")
     tree_sha = ((commit_info.get("tree") or {}).get("sha")) or ""
-    runs = latest_workflows(provider.runs(full_name, observed_ref))
+    runs = apply_workflow_roles(latest_workflows(provider.runs(full_name, observed_ref)), workflow_policy)
     pulls_raw = provider.pulls(full_name)
     pulls = []
     for row in pulls_raw[:100]:
@@ -485,7 +490,14 @@ def compile_observations(
         aggregate_findings: list[dict[str, Any]] = []
         for repository in sorted(source_row["repositories"], key=lambda row: row["fullName"]):
             try:
-                observed = collect_repository(provider, repository["fullName"], repository.get("ref"), rules, now)
+                observed = collect_repository(
+                    provider,
+                    repository["fullName"],
+                    repository.get("ref"),
+                    repository.get("workflowPolicy"),
+                    rules,
+                    now,
+                )
                 repositories.append(observed)
                 aggregate_findings.extend(observed["findings"])
             except ObservationError as exc:

@@ -9,13 +9,39 @@
     {
       "organId": "organ.genesis",
       "repositories": [
-        {"fullName": "BigBirdReturns/axm-genesis"}
+        {
+          "fullName": "BigBirdReturns/axm-genesis",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "ci",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "Fixture current gate."
+              }
+            ]
+          }
+        }
       ]
     },
     {
       "organId": "organ.bloodstream",
       "repositories": [
-        {"fullName": "BigBirdReturns/axm-bloodstream"}
+        {
+          "fullName": "BigBirdReturns/axm-bloodstream",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "ci",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "Fixture required circulation gate."
+              }
+            ]
+          }
+        }
       ]
     }
   ]
