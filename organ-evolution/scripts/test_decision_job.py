@@ -39,23 +39,23 @@ class DecisionJobTests(unittest.TestCase):
         self.assertEqual(first, second)
 
     def test_execution_revision_does_not_rewrite_decision_or_job_identity(self) -> None:
-    first = self.build()
-    changed = copy.deepcopy(self.model)
-    changed["decision"]["execution"]["verificationRefs"].append(
-        "urn:fixture:verification:second"
-    )
-    second = self.build(changed)
-    self.assertEqual(first["decision"]["decisionId"], second["decision"]["decisionId"])
-    self.assertEqual(first["source"]["modelDigest"], second["source"]["modelDigest"])
-    self.assertEqual(first["jobId"], second["jobId"])
-    self.assertNotEqual(first["execution"]["executionId"], second["execution"]["executionId"])
-    no_execution = copy.deepcopy(self.model)
-    no_execution["decision"].pop("execution")
-    third = self.build(no_execution)
-    self.assertEqual(first["decision"]["decisionId"], third["decision"]["decisionId"])
-    self.assertEqual(first["source"]["modelDigest"], third["source"]["modelDigest"])
-    self.assertEqual(first["jobId"], third["jobId"])
-    self.assertNotIn("execution", third)
+        first = self.build()
+        changed = copy.deepcopy(self.model)
+        changed["decision"]["execution"]["verificationRefs"].append(
+            "urn:fixture:verification:second"
+        )
+        second = self.build(changed)
+        self.assertEqual(first["decision"]["decisionId"], second["decision"]["decisionId"])
+        self.assertEqual(first["source"]["modelDigest"], second["source"]["modelDigest"])
+        self.assertEqual(first["jobId"], second["jobId"])
+        self.assertNotEqual(first["execution"]["executionId"], second["execution"]["executionId"])
+        no_execution = copy.deepcopy(self.model)
+        no_execution["decision"].pop("execution")
+        third = self.build(no_execution)
+        self.assertEqual(first["decision"]["decisionId"], third["decision"]["decisionId"])
+        self.assertEqual(first["source"]["modelDigest"], third["source"]["modelDigest"])
+        self.assertEqual(first["jobId"], third["jobId"])
+        self.assertNotIn("execution", third)
 
     def test_job_identity_excludes_the_bound_execution_record(self) -> None:
         job = self.build()
