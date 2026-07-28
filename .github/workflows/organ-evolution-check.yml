@@ -1,0 +1,66 @@
+name: Organ evolution surface
+
+on:
+  push:
+    paths:
+      - 'organ-evolution/**'
+      - 'tests/pages/verify_organ_evolution.mjs'
+      - '.github/workflows/organ-evolution-check.yml'
+      - 'index.html'
+      - 'README.md'
+      - 'CONTINUITY.md'
+  pull_request:
+    paths:
+      - 'organ-evolution/**'
+      - 'tests/pages/verify_organ_evolution.mjs'
+      - '.github/workflows/organ-evolution-check.yml'
+      - 'index.html'
+      - 'README.md'
+      - 'CONTINUITY.md'
+
+jobs:
+  organ-evolution:
+    name: Organ evolution (static + browser)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate the model, references, and no-network source boundary
+        run: python organ-evolution/scripts/validate.py
+
+      - name: Install disposable browser harness
+        run: |
+          npm install --no-save playwright@1 >"$RUNNER_TEMP/organ-evolution-npm.log" 2>&1
+          npx playwright install --with-deps chromium >"$RUNNER_TEMP/organ-evolution-browser-install.log" 2>&1
+
+      - name: Drive the real production surface
+        id: browser
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node tests/pages/verify_organ_evolution.mjs 2>&1 | tee "$RUNNER_TEMP/organ-evolution-browser.log"
+
+      - name: Upload exact browser qualification diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: organ-evolution-qualification
+          path: |
+            ${{ runner.temp }}/organ-evolution-npm.log
+            ${{ runner.temp }}/organ-evolution-browser-install.log
+            ${{ runner.temp }}/organ-evolution-browser.log
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Preserve the browser gate result
+        if: steps.browser.outcome != 'success'
+        run: exit 1
