@@ -1,6 +1,6 @@
 window.AXM_ORGAN_OBSERVATIONS = {
   "format": "axm-organ-observations/1",
-  "generatedAt": "2026-07-28T04:26:45.238625Z",
+  "generatedAt": "2026-07-28T05:18:36.593266Z",
   "organs": [
     {
       "findings": [
@@ -76,7 +76,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/169"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-27T05:13:23Z",
               "draft": true,
@@ -117,10 +117,10 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "createdAt": "2026-07-27T21:45:47Z",
               "draft": true,
               "headRef": "demo/underdrain-authority-v1",
-              "headSha": "6c0703196459469a91fd9bb01e8f88c6fa0d809e",
+              "headSha": "1b20b126b192ae34152bcb9e2f6fbc6c2aabc0d6",
               "number": 182,
-              "title": "Author UNDERDRAIN through the continuous narrative-action estate",
-              "updatedAt": "2026-07-28T03:32:30Z",
+              "title": "Author UNDERDRAIN as a continuous mechanism-driven pilot candidate",
+              "updatedAt": "2026-07-28T05:08:10Z",
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/182"
             },
             {
@@ -148,9 +148,24 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/187"
             }
           ],
+          "scopePath": null,
           "signals": {
+            "declaredWorkflowNames": [
+              ".github/workflows/apply-bounded-json.yml",
+              "Apply bounded JSON integration",
+              "Arc product parity",
+              "Arc supply-chain evidence",
+              "Creator recovery kit",
+              "Gate 7A clean-room cartridge",
+              "Import and canonicalization hardening",
+              "Persistence custody",
+              "deploy",
+              "test"
+            ],
             "license": true,
             "readme": true,
+            "scopePath": null,
+            "scopedFileCount": 465,
             "successionFiles": [
               "AGENTS.md",
               "CLAUDE.md"
@@ -173,7 +188,9 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "source": {
             "collectedRef": "main",
             "provider": "github",
-            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-arc"
+            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-arc",
+            "scopePath": null,
+            "workflowScope": "all"
           },
           "tags": [
             {
@@ -219,6 +236,83 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "url": "https://github.com/BigBirdReturns/axm-arc",
           "visibility": "public",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "aliases": [
+                  "Apply bounded JSON integration"
+                ],
+                "basis": "The file declares itself a one-shot publication workflow that removes its temporary carriers; its historical failure is not a current Arc gate.",
+                "lifecycle": "superseded",
+                "matchName": ".github/workflows/apply-bounded-json.yml",
+                "required": false,
+                "role": "bounded_repair_carrier"
+              },
+              {
+                "basis": "The current static Arc product must remain reproducible and internally coherent.",
+                "lifecycle": "current",
+                "matchName": "Arc product parity",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "Current release products require exact supply-chain evidence.",
+                "lifecycle": "current",
+                "matchName": "Arc supply-chain evidence",
+                "required": true,
+                "role": "release_gate"
+              },
+              {
+                "basis": "Creator recovery and reconstructability are current release obligations.",
+                "lifecycle": "current",
+                "matchName": "Creator recovery kit",
+                "required": true,
+                "role": "release_gate"
+              },
+              {
+                "basis": "Clean-room cartridge acceptance is a current release boundary.",
+                "lifecycle": "current",
+                "matchName": "Gate 7A clean-room cartridge",
+                "required": true,
+                "role": "release_gate"
+              },
+              {
+                "basis": "Bounded import and canonicalization are current engine law.",
+                "lifecycle": "current",
+                "matchName": "Import and canonicalization hardening",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "Portable-run and save custody are current engine obligations.",
+                "lifecycle": "current",
+                "matchName": "Persistence custody",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "The ordinary Arc suite is the baseline source gate.",
+                "lifecycle": "current",
+                "matchName": "test",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "Publication is visible but does not substitute for engine and custody gates.",
+                "lifecycle": "current",
+                "matchName": "deploy",
+                "required": false,
+                "role": "publication_job"
+              }
+            ]
+          },
+          "workflowScope": "all",
+          "workflowSelection": {
+            "includedCount": 9,
+            "mode": "all",
+            "observedCount": 9,
+            "omittedCount": 0
+          },
           "workflows": [
             {
               "conclusion": "failure",
@@ -417,9 +511,17 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "license": "Apache-2.0",
           "observedRef": "main",
           "openPullRequests": [],
+          "scopePath": null,
           "signals": {
+            "declaredWorkflowNames": [
+              "ci",
+              "pages",
+              "pages build and deployment"
+            ],
             "license": true,
             "readme": true,
+            "scopePath": null,
+            "scopedFileCount": 100,
             "successionFiles": [
               "AGENTS.md",
               "CLAUDE.md"
@@ -433,7 +535,9 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "source": {
             "collectedRef": "main",
             "provider": "github",
-            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-core"
+            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-core",
+            "scopePath": null,
+            "workflowScope": "all"
           },
           "tags": [
             {
@@ -475,6 +579,38 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "url": "https://github.com/BigBirdReturns/axm-core",
           "visibility": "public",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "basis": "Core's current repository test and integration contract.",
+                "lifecycle": "current",
+                "matchName": "ci",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "Documentation publication is advisory to Core function.",
+                "lifecycle": "current",
+                "matchName": "pages",
+                "required": false,
+                "role": "publication_job"
+              },
+              {
+                "basis": "GitHub's historical Pages record is not a current Core gate.",
+                "lifecycle": "historical",
+                "matchName": "pages build and deployment",
+                "required": false,
+                "role": "publication_job"
+              }
+            ]
+          },
+          "workflowScope": "all",
+          "workflowSelection": {
+            "includedCount": 3,
+            "mode": "all",
+            "observedCount": 3,
+            "omittedCount": 0
+          },
           "workflows": [
             {
               "conclusion": "success",
@@ -566,7 +702,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-27T05:02:28Z",
               "draft": true,
@@ -578,9 +714,17 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-embodied/pull/15"
             }
           ],
+          "scopePath": null,
           "signals": {
+            "declaredWorkflowNames": [
+              "Deploy GitHub Pages",
+              "ci",
+              "pages build and deployment"
+            ],
             "license": true,
             "readme": true,
+            "scopePath": null,
+            "scopedFileCount": 49,
             "successionFiles": [
               "CONTINUITY.md"
             ],
@@ -593,7 +737,9 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "source": {
             "collectedRef": "main",
             "provider": "github",
-            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-embodied"
+            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-embodied",
+            "scopePath": null,
+            "workflowScope": "all"
           },
           "tags": [
             {
@@ -619,6 +765,38 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "url": "https://github.com/BigBirdReturns/axm-embodied",
           "visibility": "public",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "basis": "The spoke test and Genesis drift boundary are the current embodied source gate.",
+                "lifecycle": "current",
+                "matchName": "ci",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "The documentation site is useful but does not establish physical evidence custody.",
+                "lifecycle": "current",
+                "matchName": "Deploy GitHub Pages",
+                "required": false,
+                "role": "publication_job"
+              },
+              {
+                "basis": "The platform-generated historical Pages record is retained without becoming a current custody gate.",
+                "lifecycle": "historical",
+                "matchName": "pages build and deployment",
+                "required": false,
+                "role": "publication_job"
+              }
+            ]
+          },
+          "workflowScope": "all",
+          "workflowSelection": {
+            "includedCount": 3,
+            "mode": "all",
+            "observedCount": 3,
+            "omittedCount": 0
+          },
           "workflows": [
             {
               "conclusion": "success",
@@ -716,9 +894,18 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-genesis/pull/26"
             }
           ],
+          "scopePath": null,
           "signals": {
+            "declaredWorkflowNames": [
+              "CI",
+              "ci",
+              "pages",
+              "pages build and deployment"
+            ],
             "license": true,
             "readme": true,
+            "scopePath": null,
+            "scopedFileCount": 353,
             "successionFiles": [
               "CONTRIBUTING.md"
             ],
@@ -731,7 +918,9 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "source": {
             "collectedRef": "main",
             "provider": "github",
-            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-genesis"
+            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-genesis",
+            "scopePath": null,
+            "workflowScope": "all"
           },
           "tags": [
             {
@@ -777,6 +966,41 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "url": "https://github.com/BigBirdReturns/axm-genesis",
           "visibility": "public",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "aliases": [
+                  "ci"
+                ],
+                "basis": "The kernel compile, verification, and continuity suite is the current repository gate.",
+                "lifecycle": "current",
+                "matchName": "CI",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "Pages publishes documentation but does not establish kernel correctness.",
+                "lifecycle": "current",
+                "matchName": "pages",
+                "required": false,
+                "role": "publication_job"
+              },
+              {
+                "basis": "GitHub's historical Pages deployment record is retained as context, not a current kernel gate.",
+                "lifecycle": "historical",
+                "matchName": "pages build and deployment",
+                "required": false,
+                "role": "publication_job"
+              }
+            ]
+          },
+          "workflowScope": "all",
+          "workflowSelection": {
+            "includedCount": 3,
+            "mode": "all",
+            "observedCount": 3,
+            "omittedCount": 0
+          },
           "workflows": [
             {
               "conclusion": "success",
@@ -849,9 +1073,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "license": "Apache-2.0",
           "observedRef": "main",
           "openPullRequests": [],
+          "scopePath": null,
           "signals": {
+            "declaredWorkflowNames": [
+              "python"
+            ],
             "license": true,
             "readme": true,
+            "scopePath": null,
+            "scopedFileCount": 42,
             "successionFiles": [
               "AGENTS.md",
               "CLAUDE.md"
@@ -864,7 +1094,9 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "source": {
             "collectedRef": "main",
             "provider": "github",
-            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-hinge"
+            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-hinge",
+            "scopePath": null,
+            "workflowScope": "all"
           },
           "tags": [
             {
@@ -878,6 +1110,24 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "url": "https://github.com/BigBirdReturns/axm-hinge",
           "visibility": "public",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "basis": "The current Hinge ledger and review-state regression gate.",
+                "lifecycle": "current",
+                "matchName": "python",
+                "required": true,
+                "role": "permanent_gate"
+              }
+            ]
+          },
+          "workflowScope": "all",
+          "workflowSelection": {
+            "includedCount": 1,
+            "mode": "all",
+            "observedCount": 1,
+            "omittedCount": 0
+          },
           "workflows": [
             {
               "conclusion": "success",
@@ -901,19 +1151,36 @@ window.AXM_ORGAN_OBSERVATIONS = {
     },
     {
       "findings": [],
-      "localObservations": [],
-      "organId": "organ.tierbench",
+      "localObservations": [
+        {
+          "claim": "Supplier Foundry capability asset.optimize.gltf/v1 qualified @gltf-transform/cli 4.4.1 and gltfpack 1.2.0 as deterministic semantically equivalent providers under network quarantine. The accepted Tier Bench main commit is 49e630a8f3a37545544bc5ac827f2cbf14f568b1; the exact source fallback and supplier-independent rip-out both passed.",
+          "evidenceRefs": [
+            "https://github.com/BigBirdReturns/tier-bench/pull/140",
+            "https://github.com/BigBirdReturns/tier-bench/actions/runs/30329697910",
+            "sha256:abcc2c8c13363af2e957c08cafd3970207aa1059d4d21ddb5928f850ed1445ce",
+            "sha256:ae3a340024088e1619f94f66dbedbf4c4af1594b8cb94372d7f396a65fe4be43"
+          ],
+          "id": "observation.supplier-foundry.asset-pilot-20260728",
+          "kind": "hosted_qualification",
+          "limits": "One synthetic static two-triangle fixture on hosted Linux. Selection is a measurement recommendation only and establishes no production, visual, Unity, Quest, browser, or GPU result.",
+          "observedAt": "2026-07-28T04:47:14Z",
+          "organId": "organ.supplier-foundry",
+          "source": "Tier Bench PR #140; Actions run 30329697910; artifacts 8676909336 and 8676907830",
+          "state": "verified"
+        }
+      ],
+      "organId": "organ.supplier-foundry",
       "repositories": [
         {
           "archived": false,
-          "commitUrl": "https://github.com/BigBirdReturns/tier-bench/commit/d137522ecaec5b150751a7a92cbbe738fcc4c2c9",
+          "commitUrl": "https://github.com/BigBirdReturns/tier-bench/commit/5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
           "defaultBranch": "main",
           "findings": [],
           "fork": false,
           "fullName": "BigBirdReturns/tier-bench",
           "headAgeDays": 0,
-          "headAt": "2026-07-27T18:23:15Z",
-          "headSha": "d137522ecaec5b150751a7a92cbbe738fcc4c2c9",
+          "headAt": "2026-07-28T04:57:30Z",
+          "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
           "latestTag": "v0.1.0",
           "license": "MIT",
           "observedRef": "main",
@@ -1051,13 +1318,17 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/139"
             }
           ],
+          "scopePath": "supplier_foundry",
           "signals": {
-            "license": true,
+            "declaredWorkflowNames": [
+              "Supplier Foundry asset pilot"
+            ],
+            "license": false,
             "readme": true,
+            "scopePath": "supplier_foundry",
+            "scopedFileCount": 10,
             "successionFiles": [
-              "AGENTS.md",
-              "CLAUDE.md",
-              "CONTRIBUTING.md"
+              "CONTINUITY.md"
             ],
             "treeTruncated": false,
             "workflowFiles": [
@@ -1069,6 +1340,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               ".github/workflows/residue-refinery.yml",
               ".github/workflows/sovereign-desktop.yml",
               ".github/workflows/sovereign-theory.yml",
+              ".github/workflows/supplier-foundry-asset-pilot.yml",
               ".github/workflows/validate.yml",
               ".github/workflows/world-experience-atlas.yml"
             ]
@@ -1076,7 +1348,9 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "source": {
             "collectedRef": "main",
             "provider": "github",
-            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/tier-bench"
+            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/tier-bench",
+            "scopePath": "supplier_foundry",
+            "workflowScope": "declared_only"
           },
           "tags": [
             {
@@ -1122,6 +1396,289 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "url": "https://github.com/BigBirdReturns/tier-bench",
           "visibility": "public",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "basis": "The exact-provider, semantic-equivalence, network-isolation, fallback, and rip-out transaction is the current Supplier Foundry gate.",
+                "lifecycle": "current",
+                "matchName": "Supplier Foundry asset pilot",
+                "required": true,
+                "role": "permanent_gate"
+              }
+            ]
+          },
+          "workflowScope": "declared_only",
+          "workflowSelection": {
+            "basis": "Only exact human-declared workflow names are projected into this sub-organ. The omitted count remains visible and the parent organ may observe the whole repository.",
+            "declaredNames": [
+              "Supplier Foundry asset pilot"
+            ],
+            "includedCount": 1,
+            "mode": "declared_only",
+            "observedCount": 6,
+            "omittedCount": 5
+          },
+          "workflows": [
+            {
+              "conclusion": "success",
+              "createdAt": "2026-07-28T04:57:32Z",
+              "event": "push",
+              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+              "id": 30330202697,
+              "lifecycle": "current",
+              "name": "Supplier Foundry asset pilot",
+              "required": true,
+              "role": "permanent_gate",
+              "roleBasis": "The exact-provider, semantic-equivalence, network-isolation, fallback, and rip-out transaction is the current Supplier Foundry gate.",
+              "roleSource": "declared",
+              "status": "completed",
+              "updatedAt": "2026-07-28T04:57:58Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202697"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "findings": [],
+      "localObservations": [],
+      "organId": "organ.tierbench",
+      "repositories": [
+        {
+          "archived": false,
+          "commitUrl": "https://github.com/BigBirdReturns/tier-bench/commit/5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+          "defaultBranch": "main",
+          "findings": [],
+          "fork": false,
+          "fullName": "BigBirdReturns/tier-bench",
+          "headAgeDays": 0,
+          "headAt": "2026-07-28T04:57:30Z",
+          "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+          "latestTag": "v0.1.0",
+          "license": "MIT",
+          "observedRef": "main",
+          "openPullRequests": [
+            {
+              "ageDays": 17,
+              "baseRef": "main",
+              "createdAt": "2026-07-11T01:31:31Z",
+              "draft": true,
+              "headRef": "codex/sol2-p2-durability-proposals",
+              "headSha": "0c5227ee0c506403689c4a07669e4441bd6d0d28",
+              "number": 68,
+              "title": "Proposal: remediate SOL-2 P2 durability findings",
+              "updatedAt": "2026-07-11T01:31:31Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/68"
+            },
+            {
+              "ageDays": 17,
+              "baseRef": "main",
+              "createdAt": "2026-07-11T01:43:37Z",
+              "draft": true,
+              "headRef": "codex/pr67-adversarial-review",
+              "headSha": "03d7987d48eb69b5005342da3d2608b00afe37ea",
+              "number": 69,
+              "title": "Review: PR 67 ceiling-run custody and causal framing",
+              "updatedAt": "2026-07-11T01:43:37Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/69"
+            },
+            {
+              "ageDays": 15,
+              "baseRef": "main",
+              "createdAt": "2026-07-12T08:53:32Z",
+              "draft": true,
+              "headRef": "claude/residue-recorder-constitution",
+              "headSha": "7d93e872fb6ed4890b06ed17c0c2fc005d9802cf",
+              "number": 72,
+              "title": "docs: residue recorder constitution v0.4, governance under review",
+              "updatedAt": "2026-07-12T19:42:00Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/72"
+            },
+            {
+              "ageDays": 14,
+              "baseRef": "main",
+              "createdAt": "2026-07-13T19:03:09Z",
+              "draft": true,
+              "headRef": "codex/arc-d-b2-custody-v2",
+              "headSha": "b025adefba2689f4ce1a7edc824aafb9c33dd050",
+              "number": 89,
+              "title": "Build ARC-D B2 custody-v2 components fail closed",
+              "updatedAt": "2026-07-13T19:22:04Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/89"
+            },
+            {
+              "ageDays": 13,
+              "baseRef": "main",
+              "createdAt": "2026-07-14T20:54:09Z",
+              "draft": true,
+              "headRef": "codex/tier-pilot-production-entry",
+              "headSha": "6455671140319e51cd75255718db6c18e40abac6",
+              "number": 103,
+              "title": "Implement authenticated pilot production entrypoint",
+              "updatedAt": "2026-07-14T20:54:09Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/103"
+            },
+            {
+              "ageDays": 7,
+              "baseRef": "agent/monster-wrangler-desk",
+              "createdAt": "2026-07-21T01:19:36Z",
+              "draft": true,
+              "headRef": "codex/chair-inbox-v1",
+              "headSha": "32e19a083f9dbf12bea2a305905f6ad36808c26b",
+              "number": 121,
+              "title": "Ship Tier Desk ChatGPT Chair inbox",
+              "updatedAt": "2026-07-21T01:19:36Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/121"
+            },
+            {
+              "ageDays": 7,
+              "baseRef": "codex/chair-inbox-v1",
+              "createdAt": "2026-07-21T01:46:38Z",
+              "draft": true,
+              "headRef": "agent/chair-inbox-v1-repair-001",
+              "headSha": "bd22ff99539b8b8748a72141d8cf3decf1e9c7cc",
+              "number": 122,
+              "title": "Fail closed on ChatGPT Chair intake",
+              "updatedAt": "2026-07-23T04:55:21Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/122"
+            },
+            {
+              "ageDays": 7,
+              "baseRef": "agent/chair-inbox-v1-repair-001",
+              "createdAt": "2026-07-21T03:21:03Z",
+              "draft": true,
+              "headRef": "agent/newsroom-constitution-v1",
+              "headSha": "696dde5bdbfe50cd07efef5896f4b087bc135cc6",
+              "number": 123,
+              "title": "Freeze the Tier Desk newsroom constitution",
+              "updatedAt": "2026-07-21T03:23:19Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/123"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "main",
+              "createdAt": "2026-07-27T20:30:42Z",
+              "draft": true,
+              "headRef": "agent/local-coding-flight-v1",
+              "headSha": "e8601308d6a07a4a6b9a5c9d61bb10f116efde32",
+              "number": 136,
+              "title": "Add an attested RTX 3090 local coding flight",
+              "updatedAt": "2026-07-27T20:34:27Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/136"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "main",
+              "createdAt": "2026-07-27T22:39:31Z",
+              "draft": true,
+              "headRef": "agent/conditional-memory-lab-v1",
+              "headSha": "bc77b6a90687a1e07728ff0c618024771f36fca3",
+              "number": 137,
+              "title": "Build the distributed Conditional Memory Lab",
+              "updatedAt": "2026-07-28T01:53:47Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/137"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "main",
+              "createdAt": "2026-07-28T00:01:05Z",
+              "draft": true,
+              "headRef": "codex/model-floor-external-completeness-verify-20260727",
+              "headSha": "0639d5870fffd810dcd8b3c13c21a3bf316efe2d",
+              "number": 139,
+              "title": "Complete external model-floor pagination",
+              "updatedAt": "2026-07-28T00:13:21Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/139"
+            }
+          ],
+          "scopePath": null,
+          "signals": {
+            "declaredWorkflowNames": [],
+            "license": true,
+            "readme": true,
+            "scopePath": null,
+            "scopedFileCount": 2817,
+            "successionFiles": [
+              "AGENTS.md",
+              "CLAUDE.md",
+              "CONTRIBUTING.md"
+            ],
+            "treeTruncated": false,
+            "workflowFiles": [
+              ".github/workflows/breadth-durability.yml",
+              ".github/workflows/kimi3-observatory.yml",
+              ".github/workflows/model-floor.yml",
+              ".github/workflows/model-waterline.yml",
+              ".github/workflows/pages.yml",
+              ".github/workflows/residue-refinery.yml",
+              ".github/workflows/sovereign-desktop.yml",
+              ".github/workflows/sovereign-theory.yml",
+              ".github/workflows/supplier-foundry-asset-pilot.yml",
+              ".github/workflows/validate.yml",
+              ".github/workflows/world-experience-atlas.yml"
+            ]
+          },
+          "source": {
+            "collectedRef": "main",
+            "provider": "github",
+            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/tier-bench",
+            "scopePath": null,
+            "workflowScope": "all"
+          },
+          "tags": [
+            {
+              "name": "v0.1.0",
+              "sha": "9d7260b9179caef63322afa5dc0eda827519497e"
+            },
+            {
+              "name": "archive/codex/tier-v9-canary-report",
+              "sha": "f0e7589517708808e273852b8c8f20b4019dbeea"
+            },
+            {
+              "name": "archive/codex/tier-runner",
+              "sha": "9f779d978dd9488eda51e66be3b258c0e7b77b13"
+            },
+            {
+              "name": "archive/codex/tier-pilot-resume-recovery",
+              "sha": "e18a4f84b78a88ba3c785ce965c3f56b48b5a165"
+            },
+            {
+              "name": "archive/codex/tier-pilot-ratification-normalize",
+              "sha": "c389483ddeedf31752aa201a363b19cc33c397ec"
+            },
+            {
+              "name": "archive/codex/tier-pilot-ratification-gates",
+              "sha": "050dae3c2709213eaf6c3374201cef2c6cd3b5ed"
+            },
+            {
+              "name": "archive/codex/tier-pilot-bridge-landed",
+              "sha": "12957f877c94063d8e90c81dc29121446cc43288"
+            },
+            {
+              "name": "archive/codex/tier-pilot-bridge",
+              "sha": "51372e70c0ca4cf0c81050a3c51f042b08355c3e"
+            },
+            {
+              "name": "archive/codex/tier-pilot-admin",
+              "sha": "4781ed5a0bbbe9cb92ed4fc860cf0d386105b37f"
+            },
+            {
+              "name": "archive/codex/tier-help-hash-bytes",
+              "sha": "74dfd3e3d85f0d262fbd27eeb794ad13fa50bb48"
+            }
+          ],
+          "url": "https://github.com/BigBirdReturns/tier-bench",
+          "visibility": "public",
+          "workflowPolicy": {
+            "declarations": []
+          },
+          "workflowScope": "all",
+          "workflowSelection": {
+            "includedCount": 6,
+            "mode": "all",
+            "observedCount": 6,
+            "omittedCount": 0
+          },
           "workflows": [
             {
               "conclusion": "success",
@@ -1141,10 +1698,26 @@ window.AXM_ORGAN_OBSERVATIONS = {
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-27T18:23:18Z",
+              "createdAt": "2026-07-28T04:57:32Z",
               "event": "push",
-              "headSha": "d137522ecaec5b150751a7a92cbbe738fcc4c2c9",
-              "id": 30293531217,
+              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+              "id": 30330202697,
+              "lifecycle": "current",
+              "name": "Supplier Foundry asset pilot",
+              "required": false,
+              "role": "unknown",
+              "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
+              "roleSource": "unclassified",
+              "status": "completed",
+              "updatedAt": "2026-07-28T04:57:58Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202697"
+            },
+            {
+              "conclusion": "success",
+              "createdAt": "2026-07-28T04:57:32Z",
+              "event": "push",
+              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+              "id": 30330202714,
               "lifecycle": "current",
               "name": "breadth-durability",
               "required": false,
@@ -1152,15 +1725,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-27T18:24:03Z",
-              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30293531217"
+              "updatedAt": "2026-07-28T04:58:19Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202714"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-27T18:23:19Z",
+              "createdAt": "2026-07-28T04:57:32Z",
               "event": "push",
-              "headSha": "d137522ecaec5b150751a7a92cbbe738fcc4c2c9",
-              "id": 30293532532,
+              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+              "id": 30330202700,
               "lifecycle": "current",
               "name": "kimi3-observatory",
               "required": false,
@@ -1168,15 +1741,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-27T18:23:33Z",
-              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30293532532"
+              "updatedAt": "2026-07-28T04:57:41Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202700"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-27T18:23:19Z",
+              "createdAt": "2026-07-28T04:57:32Z",
               "event": "push",
-              "headSha": "d137522ecaec5b150751a7a92cbbe738fcc4c2c9",
-              "id": 30293532118,
+              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+              "id": 30330202732,
               "lifecycle": "current",
               "name": "model-floor",
               "required": false,
@@ -1184,15 +1757,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-27T18:23:34Z",
-              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30293532118"
+              "updatedAt": "2026-07-28T04:57:48Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202732"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-27T18:23:19Z",
+              "createdAt": "2026-07-28T04:57:32Z",
               "event": "push",
-              "headSha": "d137522ecaec5b150751a7a92cbbe738fcc4c2c9",
-              "id": 30293531413,
+              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+              "id": 30330202702,
               "lifecycle": "current",
               "name": "sovereign-desktop",
               "required": false,
@@ -1200,8 +1773,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-27T18:23:32Z",
-              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30293531413"
+              "updatedAt": "2026-07-28T04:57:47Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202702"
             }
           ]
         }
@@ -1213,13 +1786,13 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "license_absent",
           "severity": "attention",
           "sourceRefs": [],
-          "summary": "BigBirdReturns/axm-tools exposes no repository license or root license file."
+          "summary": "BigBirdReturns/axm-tools exposes no repository or scoped license record."
         },
         {
           "code": "workflow_required_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759877"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241730"
           ],
           "summary": "BigBirdReturns/axm-tools: current permanent gate Acceptance page is in_progress."
         },
@@ -1227,7 +1800,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_required_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759847"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241707"
           ],
           "summary": "BigBirdReturns/axm-tools: current permanent gate Organ evolution surface is in_progress."
         },
@@ -1235,7 +1808,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_required_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759856"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241745"
           ],
           "summary": "BigBirdReturns/axm-tools: current scheduled observer Organ evolution observe + deploy is in_progress."
         },
@@ -1243,7 +1816,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_advisory_pending",
           "severity": "context",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759858"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241742"
           ],
           "summary": "BigBirdReturns/axm-tools: current publication job PTA tracker fetch + deploy is pending."
         }
@@ -1253,20 +1826,20 @@ window.AXM_ORGAN_OBSERVATIONS = {
       "repositories": [
         {
           "archived": false,
-          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/876a068287b08b39d2445b04d0ff13dc43a92281",
+          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/ee5946a726bbc4406707c0f428c117abbc947d5c",
           "defaultBranch": "main",
           "findings": [
             {
               "code": "license_absent",
               "severity": "attention",
               "sourceRefs": [],
-              "summary": "BigBirdReturns/axm-tools exposes no repository license or root license file."
+              "summary": "BigBirdReturns/axm-tools exposes no repository or scoped license record."
             },
             {
               "code": "workflow_required_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759877"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241730"
               ],
               "summary": "BigBirdReturns/axm-tools: current permanent gate Acceptance page is in_progress."
             },
@@ -1274,7 +1847,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_required_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759847"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241707"
               ],
               "summary": "BigBirdReturns/axm-tools: current permanent gate Organ evolution surface is in_progress."
             },
@@ -1282,7 +1855,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_required_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759856"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241745"
               ],
               "summary": "BigBirdReturns/axm-tools: current scheduled observer Organ evolution observe + deploy is in_progress."
             },
@@ -1290,7 +1863,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_advisory_pending",
               "severity": "context",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759858"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241742"
               ],
               "summary": "BigBirdReturns/axm-tools: current publication job PTA tracker fetch + deploy is pending."
             }
@@ -1298,8 +1871,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "fork": false,
           "fullName": "BigBirdReturns/axm-tools",
           "headAgeDays": 0,
-          "headAt": "2026-07-28T04:26:31Z",
-          "headSha": "876a068287b08b39d2445b04d0ff13dc43a92281",
+          "headAt": "2026-07-28T05:18:14Z",
+          "headSha": "ee5946a726bbc4406707c0f428c117abbc947d5c",
           "latestTag": "archive/claude/session-planning-1h0xlw",
           "license": null,
           "observedRef": "main",
@@ -1317,9 +1890,20 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/14"
             }
           ],
+          "scopePath": null,
           "signals": {
+            "declaredWorkflowNames": [
+              "AXM Readiness check",
+              "Acceptance page",
+              "Organ evolution observe + deploy",
+              "Organ evolution surface",
+              "PTA tracker fetch + deploy",
+              "pages build and deployment"
+            ],
             "license": false,
             "readme": true,
+            "scopePath": null,
+            "scopedFileCount": 153,
             "successionFiles": [
               "AGENTS.md",
               "CLAUDE.md",
@@ -1337,7 +1921,9 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "source": {
             "collectedRef": "main",
             "provider": "github",
-            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-tools"
+            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-tools",
+            "scopePath": null,
+            "workflowScope": "all"
           },
           "tags": [
             {
@@ -1375,6 +1961,59 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "url": "https://github.com/BigBirdReturns/axm-tools",
           "visibility": "public",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "basis": "The established browser acceptance surface is a current repository gate.",
+                "lifecycle": "current",
+                "matchName": "Acceptance page",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "The anatomy, observation, and decision workbench has its own current browser and source gate.",
+                "lifecycle": "current",
+                "matchName": "Organ evolution surface",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "The live census must continue to compile, validate, and publish bounded observations.",
+                "lifecycle": "current",
+                "matchName": "Organ evolution observe + deploy",
+                "required": true,
+                "role": "scheduled_observer"
+              },
+              {
+                "basis": "The existing readiness contract remains a current tool gate.",
+                "lifecycle": "current",
+                "matchName": "AXM Readiness check",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "The PTA tool's data publication is an advisory sibling lane, not the authority for every Tools surface.",
+                "lifecycle": "current",
+                "matchName": "PTA tracker fetch + deploy",
+                "required": false,
+                "role": "publication_job"
+              },
+              {
+                "basis": "The platform-generated historical Pages record remains visible without becoming a current workbench gate.",
+                "lifecycle": "historical",
+                "matchName": "pages build and deployment",
+                "required": false,
+                "role": "publication_job"
+              }
+            ]
+          },
+          "workflowScope": "all",
+          "workflowSelection": {
+            "includedCount": 5,
+            "mode": "all",
+            "observedCount": 5,
+            "omittedCount": 0
+          },
           "workflows": [
             {
               "conclusion": "success",
@@ -1394,10 +2033,10 @@ window.AXM_ORGAN_OBSERVATIONS = {
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T04:26:34Z",
+              "createdAt": "2026-07-28T05:18:17Z",
               "event": "push",
-              "headSha": "876a068287b08b39d2445b04d0ff13dc43a92281",
-              "id": 30328759877,
+              "headSha": "ee5946a726bbc4406707c0f428c117abbc947d5c",
+              "id": 30331241730,
               "lifecycle": "current",
               "name": "Acceptance page",
               "required": true,
@@ -1405,15 +2044,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The established browser acceptance surface is a current repository gate.",
               "roleSource": "declared",
               "status": "in_progress",
-              "updatedAt": "2026-07-28T04:26:38Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759877"
+              "updatedAt": "2026-07-28T05:18:20Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241730"
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T04:26:34Z",
+              "createdAt": "2026-07-28T05:18:17Z",
               "event": "push",
-              "headSha": "876a068287b08b39d2445b04d0ff13dc43a92281",
-              "id": 30328759856,
+              "headSha": "ee5946a726bbc4406707c0f428c117abbc947d5c",
+              "id": 30331241745,
               "lifecycle": "current",
               "name": "Organ evolution observe + deploy",
               "required": true,
@@ -1421,15 +2060,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The live census must continue to compile, validate, and publish bounded observations.",
               "roleSource": "declared",
               "status": "in_progress",
-              "updatedAt": "2026-07-28T04:26:39Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759856"
+              "updatedAt": "2026-07-28T05:18:32Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241745"
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T04:26:34Z",
+              "createdAt": "2026-07-28T05:18:17Z",
               "event": "push",
-              "headSha": "876a068287b08b39d2445b04d0ff13dc43a92281",
-              "id": 30328759847,
+              "headSha": "ee5946a726bbc4406707c0f428c117abbc947d5c",
+              "id": 30331241707,
               "lifecycle": "current",
               "name": "Organ evolution surface",
               "required": true,
@@ -1437,15 +2076,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The anatomy, observation, and decision workbench has its own current browser and source gate.",
               "roleSource": "declared",
               "status": "in_progress",
-              "updatedAt": "2026-07-28T04:26:44Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759847"
+              "updatedAt": "2026-07-28T05:18:26Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241707"
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T04:26:34Z",
+              "createdAt": "2026-07-28T05:18:17Z",
               "event": "push",
-              "headSha": "876a068287b08b39d2445b04d0ff13dc43a92281",
-              "id": 30328759858,
+              "headSha": "ee5946a726bbc4406707c0f428c117abbc947d5c",
+              "id": 30331241742,
               "lifecycle": "current",
               "name": "PTA tracker fetch + deploy",
               "required": false,
@@ -1453,8 +2092,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The PTA tool's data publication is an advisory sibling lane, not the authority for every Tools surface.",
               "roleSource": "declared",
               "status": "pending",
-              "updatedAt": "2026-07-28T04:26:35Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30328759858"
+              "updatedAt": "2026-07-28T05:18:18Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30331241742"
             }
           ]
         }
@@ -1466,7 +2105,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "license_absent",
           "severity": "attention",
           "sourceRefs": [],
-          "summary": "BigBirdReturns/axm-world exposes no repository license or root license file."
+          "summary": "BigBirdReturns/axm-world exposes no repository or scoped license record."
         }
       ],
       "localObservations": [],
@@ -1481,7 +2120,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "license_absent",
               "severity": "attention",
               "sourceRefs": [],
-              "summary": "BigBirdReturns/axm-world exposes no repository license or root license file."
+              "summary": "BigBirdReturns/axm-world exposes no repository or scoped license record."
             }
           ],
           "fork": false,
@@ -1518,7 +2157,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/146"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-27T04:32:56Z",
               "draft": true,
@@ -1530,7 +2169,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/203"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "qualify/action-runtime-closure-v1",
               "createdAt": "2026-07-27T05:17:29Z",
               "draft": true,
@@ -1595,16 +2234,24 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "createdAt": "2026-07-28T04:26:31Z",
               "draft": true,
               "headRef": "qualify/world-semantic-objectives-v1",
-              "headSha": "4970be61e4b10ee11613bf398be3930ee887bab2",
+              "headSha": "8a4b8799a686e6bcb623c1e0ebff4504b756f86b",
               "number": 213,
               "title": "Qualify and publish the World runtime-1.1 semantic receiver",
-              "updatedAt": "2026-07-28T04:26:31Z",
+              "updatedAt": "2026-07-28T05:17:30Z",
               "url": "https://github.com/BigBirdReturns/axm-world/pull/213"
             }
           ],
+          "scopePath": null,
           "signals": {
+            "declaredWorkflowNames": [
+              "Asset release custody",
+              "Supply-chain evidence",
+              "test"
+            ],
             "license": false,
             "readme": true,
+            "scopePath": null,
+            "scopedFileCount": 606,
             "successionFiles": [
               "AGENTS.md",
               "CLAUDE.md"
@@ -1629,7 +2276,9 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "source": {
             "collectedRef": "main",
             "provider": "github",
-            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-world"
+            "repositoryApi": "https://api.github.com/repos/BigBirdReturns/axm-world",
+            "scopePath": null,
+            "workflowScope": "all"
           },
           "tags": [
             {
@@ -1675,6 +2324,38 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "url": "https://github.com/BigBirdReturns/axm-world",
           "visibility": "public",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "basis": "The ordinary World source suite is the baseline receiver gate.",
+                "lifecycle": "current",
+                "matchName": "test",
+                "required": true,
+                "role": "permanent_gate"
+              },
+              {
+                "basis": "World release products require exact provenance and dependency evidence.",
+                "lifecycle": "current",
+                "matchName": "Supply-chain evidence",
+                "required": true,
+                "role": "release_gate"
+              },
+              {
+                "basis": "Governed runtime assets require current release custody.",
+                "lifecycle": "current",
+                "matchName": "Asset release custody",
+                "required": true,
+                "role": "release_gate"
+              }
+            ]
+          },
+          "workflowScope": "all",
+          "workflowSelection": {
+            "includedCount": 12,
+            "mode": "all",
+            "observedCount": 12,
+            "omittedCount": 0
+          },
           "workflows": [
             {
               "conclusion": "success",
@@ -1883,7 +2564,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
     },
     "sourcesFormat": "axm-organ-sources/1"
   },
-  "sourceDigest": "organobs1_eac7ae9c86383cadecf5789252502bf6276c8664190badf7f64a5369c904ce2f",
+  "sourceDigest": "organobs1_16cf6bc4136a3fd3e84eebbdcd46ed93d40cca05c0b21d54806c08351ebb1621",
   "unavailable": [
     {
       "error": "GitHub HTTP 404 for /repos/BigBirdReturns/axm-bloodstream: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/repos#get-a-repository\",\"status\":\"404\"}",
