@@ -45,7 +45,9 @@ jobs:
       - name: Drive the real production surface
         id: browser
         continue-on-error: true
-        run: node tests/pages/verify_organ_evolution.mjs 2>&1 | tee "$RUNNER_TEMP/organ-evolution-browser.log"
+        run: |
+          set -o pipefail
+          node tests/pages/verify_organ_evolution.mjs 2>&1 | tee "$RUNNER_TEMP/organ-evolution-browser.log"
 
       - name: Upload exact browser qualification diagnostics
         if: always()
