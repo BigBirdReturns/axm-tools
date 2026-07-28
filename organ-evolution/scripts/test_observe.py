@@ -110,18 +110,24 @@ class ObserveTests(unittest.TestCase):
         source_rows, _ = observe.validate_sources(production_sources)
         declared = {
             "organ.genesis", "organ.core", "organ.embodied", "organ.bloodstream",
-            "organ.hinge", "organ.tierbench", "organ.arc", "organ.world", "organ.tools",
+            "organ.hinge", "organ.tierbench", "organ.supplier-foundry",
+            "organ.arc", "organ.world", "organ.tools",
         }
         mapped = {row["organId"] for row in source_rows}
         self.assertEqual(mapped, declared)
         local = observe.validate_local(production_local, declared)
         self.assertEqual(
             [row["id"] for row in local],
-            ["observation.bloodstream.hardening-20260728"],
+            [
+                "observation.bloodstream.hardening-20260728",
+                "observation.supplier-foundry.asset-pilot-20260728",
+            ],
         )
         self.assertEqual(local[0]["organId"], "organ.bloodstream")
         self.assertEqual(local[0]["state"], "verified")
         self.assertIn("Hosted synthetic-ledger qualification only", local[0]["limits"])
+        self.assertEqual(local[1]["organId"], "organ.supplier-foundry")
+        self.assertIn("measurement recommendation only", local[1]["limits"])
         observe.assert_no_authority_mutation(production_local)
 
     def test_committed_observation_projections_are_exact_and_non_authoritative(self):
