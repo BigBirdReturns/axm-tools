@@ -1,0 +1,8 @@
+role,evidence_collection,managed_access,technical_finding,service_or_rollback,consequence_or_assurance,appeal_or_audit,gate_or_recertification
+Facilitator and Gate Authority,no,no,no,no,no,process only,yes
+Evidence Cell,yes,request only,no,no,no,no,no
+Inspection and Managed Access Team,inspection record only,yes,no,cure verification only,no,no,no
+Technical Findings Panel,receives evidence,no,yes,no,no,records dissent,no
+Services and Rollback Secretariat,no,no,receives finding,yes,no,restoration record,no
+Assurance and Response Council,no,no,receives finding,no,yes,no,no
+Review Chamber and Inspector General,audits provenance,audits scope,audits finding,audits restoration,audits authority,yes,no

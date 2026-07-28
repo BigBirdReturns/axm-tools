@@ -1,0 +1,82 @@
+{
+  "project": "Omega Accord Lab V11",
+  "title": "Demonstrative Verification Operations Lab",
+  "protocol": "BP-DV/1.0",
+  "scenario_schema": "BP-SCENARIO/1.0",
+  "decision": "runnable_synthetic_institutional_workflow_demonstrated",
+  "real_world_operationality": "not_demonstrated",
+  "external_review": "none",
+  "institutional_endorsement": "none",
+  "reference_results": {
+    "qualified": {
+      "gate": "operate",
+      "pass": true,
+      "margin": 24,
+      "risk": 5.621683104471215e-05,
+      "restore": 1,
+      "holdouts": 0,
+      "n1": true,
+      "load": 0.22922212363206151,
+      "falseActions": 0,
+      "month": 30,
+      "receipt_sha256": "6c6997d4611c594fa3f56ae1291b59aa7078ec7be489ab7be408d6f2857a8911"
+    },
+    "holdout": {
+      "gate": "hold",
+      "pass": false,
+      "margin": -5.106,
+      "risk": 0.95,
+      "restore": 1,
+      "holdouts": 1,
+      "n1": false,
+      "load": 0.7580610719624172,
+      "falseActions": 0,
+      "month": 8,
+      "receipt_sha256": "2090775817537c0417d9b4b8dfa65b550930725357dc831224879095921d504c"
+    },
+    "n1": {
+      "gate": "operate",
+      "pass": true,
+      "margin": 24,
+      "risk": 5.621683104471215e-05,
+      "restore": 1,
+      "holdouts": 0,
+      "n1": true,
+      "load": 0.45844424726412303,
+      "falseActions": 0,
+      "month": 21,
+      "receipt_sha256": "84bfcdea8c9776c811eb0df6a52a1a7671dc649b16027f97fdb5d4391a4c37f1"
+    },
+    "saturation": {
+      "gate": "hold",
+      "pass": false,
+      "margin": -38.83551971636112,
+      "risk": 0.95,
+      "restore": 1,
+      "holdouts": 0,
+      "n1": true,
+      "load": 9.662169952726854,
+      "falseActions": 0,
+      "month": 2,
+      "receipt_sha256": "40d79ae2f97b526964f20f9753df5c85e27b347ddaa240c3e5f690e8914dbee1"
+    },
+    "authority_failure": {
+      "gate": "operate",
+      "blocked_attempts": 3,
+      "falseActions": 2,
+      "actions": 4
+    },
+    "mobile": {
+      "body": 390,
+      "viewport": 390,
+      "roles": 7,
+      "actions": 4
+    }
+  },
+  "acceptance_boundary": {
+    "qualified_and_n1_scenarios": "must_pass",
+    "holdout_and_saturation_scenarios": "must_hold",
+    "authority_overreach": "must_be_rejected_and_logged"
+  },
+  "evidence_boundary": "Synthetic internal demonstrator. Timing, risk, confidence, and capacity values are not empirical institutional measurements."
+}

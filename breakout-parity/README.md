@@ -7,6 +7,7 @@ Public concept-prior date: 2026-07-26
 Framework version: 4.0.0-draft-release  
 Literature amendment: 1  
 Operational claim amendment: 4  
+Demonstrator amendment: 5  
 Project codename: Omega Accord Lab
 
 Breakout Parity treats nuclear proliferation as a control-system problem. Destroying an inventory or facility does not end proliferation when technical knowledge, motive, restart capacity, weapon-usable material, and political grievance remain. The framework therefore asks whether detection, technical attribution, and effective response can complete before a violator converts breakout into coercive advantage, while compliant states receive a superior package of security, energy reliability, economic access, status, and institutional continuity.
@@ -43,13 +44,30 @@ probability of any breach <= 5%
 restoration on time >= 95%
 N-1 capacity passed
 no known uncovered strategic holdout
+portfolio load inside the certified saturation boundary
 ```
 
 These are model acceptance thresholds, not empirical estimates of current institutional capability or forecasts of named states. A failed gate stops further reductions and activates hold-and-reinforce procedures. It does not automatically authorize preventive war or permit a claim that operational zero remains stable.
 
+## Current demonstrator status
+
+V11 converts the V10 control law into a runnable, role-separated synthetic tabletop at [`demonstrator/`](demonstrator/). It contains seven bounded institutional seats, a persistent threat registry, finite resource queues, N-1 failure, decoys, disputed interpretation, rollback, cure, restoration, authority-overreach rejection, gate evaluation, and canonical receipt export.
+
+The retained reference paths behave as required:
+
+| Scenario | Required disposition | Retained result |
+| --- | --- | --- |
+| Qualified entry with decoy and N-1 loss | Operate after cure, restoration, and recertification | PASS |
+| Preexisting hidden network holdout | Reveal the uncovered lineage and return to HOLD | PASS |
+| Ambiguous event under critical-node failure | Preserve dissent and role separation, clear decoys, control the real case, restore, and pass N-1 | PASS |
+| Portfolio saturation | Hold before optimistic continuation or indiscriminate action | PASS |
+| Authority-failure path | Reject and record actions attempted from the wrong seats | PASS |
+
+V11 demonstrates that the architecture can be represented as an auditable institutional workflow. It does not demonstrate that current institutions possess the required legal authority, data access, throughput, sensing reliability, restoration credibility, or political support. The next falsification step is a role-separated exercise using synthetic or sanitized data and measured interface times.
+
 ## What this public record establishes
 
-This directory preserves the framework's twelve exact claims, mechanisms, responsible actor classes, first actions, and falsification tests as published on 26 July 2026. It establishes the date and content of Jonathan Sandhu's exact formulation. It does not establish priority over the underlying problems or mechanisms, and it does not establish institutional delivery, acknowledgement, review, testing, sponsorship, or adoption.
+This directory preserves the framework's twelve exact claims, mechanisms, responsible actor classes, first actions, and falsification tests as published on 26 July 2026. It establishes the date and content of Jonathan Sandhu's exact formulation. It does not establish priority over the underlying problems or mechanisms, and it does not establish institutional delivery, acknowledgement, external review, sponsorship, or adoption.
 
 The complete qualified V4 archive is identified by this SHA-256 digest:
 
@@ -73,7 +91,7 @@ The structured first pass covers eighteen literature lanes and 108 anchor source
 
 Strong prior art exists for reconstitution after abolition, post-zero instability, nuclear latency and hedging, fissile-material control, verification of absence and dismantlement, alliance assurance, organizational failure, compliance and enforcement, domestic conversion, and the causes of proliferation and restraint. The candidate contribution is therefore narrower: timed cross-domain integration, persistent rolling-threat control, constrained portfolio capacity, executable restoration, gate-controlled sequencing, and a functional retirement test for mutual assured destruction.
 
-The six institutional outreach drafts remain unsent. The public record has been corrected before any recipient is asked to review the architecture.
+The six institutional outreach drafts remain unsent. The public record and runnable demonstrator precede any request for external review.
 
 ## Files
 
@@ -82,8 +100,12 @@ The six institutional outreach drafts remain unsent. The public record has been 
 - `NOTICE_PROTOCOL_AMENDMENT_1.md`: the evidence ladder separating public existence, attempted transmission, channel acceptance, acknowledgement, review, testing, and formal insertion.
 - `LITERATURE_STATUS_AMENDMENT_1.md`: the corrected prior-art and novelty boundary.
 - `PUBLIC_CLAIM_AMENDMENT_4.md`: the V10 qualified-entry, failure-boundary, and operating-gate correction.
+- `PUBLIC_CLAIM_AMENDMENT_5.md`: the V11 runnable-workflow and next-falsification-step correction.
 - `V10_DECISION_RECORD.json`: machine-readable V10 decision and evidence boundary.
 - `V10_RESULT_SUMMARY.csv`: selected V10 entry, validation, red-team, and saturation results.
+- `V11_DEMONSTRATOR_DECISION_RECORD.json`: machine-readable V11 workflow result and evidence boundary.
+- `V11_RESULT_SUMMARY.csv`: retained V11 scenario dispositions.
+- `demonstrator/`: runnable static tabletop, protocol, role cards, acceptance tests, field-data request, and source ledger.
 - `CLAIM_GENEALOGY_V1.csv`: antecedents, support, contradictions, inherited mechanisms, candidate deltas, revisions, and required tests for all twelve claims.
 - `CORE_BIBLIOGRAPHY_V1.csv`: public anchor records spanning the literature lanes.
 - `CONTRADICTION_REGISTER_V1.csv`: serious objections and their resolution experiments.
@@ -94,10 +116,10 @@ The six institutional outreach drafts remain unsent. The public record has been 
 
 ## Evidence boundary
 
-The simulation results are assumption-driven mechanism experiments, not empirical forecasts. Their use is comparative: to expose dependencies, sequencing failures, and conditions under which a regime becomes brittle. The public record requires model ensembles, historical replay, pre-registration, independent replication, and an explicit forecast prohibition before quantitative outputs receive operational weight.
+The simulation results are assumption-driven mechanism experiments, not empirical forecasts. Their use is comparative: to expose dependencies, sequencing failures, and conditions under which a regime becomes brittle. The demonstrator scenarios are synthetic. Passing them establishes internal consistency and fail-closed behavior, rather than real institutional performance. The public record requires model ensembles, historical replay, pre-registration, independent replication, and an explicit forecast prohibition before quantitative outputs receive operational weight.
 
 ## Control question
 
-Can the regime prove, against adverse confidence bounds and after the largest critical-node failure, that every strategically relevant threat begins inside the monitored baseline and retains at least six months of conservative portfolio margin before coercive advantage?
+Can separate real institutions use sanitized data to reproduce the V11 workflow, measure every handoff and queue, preserve role authority and dissent, restore corrected compliance on schedule, and retain a positive adverse-bound margin after a critical-node failure?
 
 Documentation is licensed under CC BY 4.0. Code in the complete estate is licensed under MIT unless a file states otherwise.

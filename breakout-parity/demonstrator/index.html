@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Breakout Parity Demonstrator</title>
+<meta name="description" content="Offline synthetic tabletop for testing a rolling-threat control architecture with bounded institutional roles, finite queues, N-1 failure, restoration, and auditable gate receipts.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+<header>
+  <div>
+    <div class="eyebrow">Omega Accord Lab V11 · synthetic demonstrative verification exercise</div>
+    <h1>Breakout Parity Demonstrator</h1>
+    <p class="lede">A zero-network tabletop for testing whether bounded institutions can preserve a conservative margin to coercive advantage under rolling threats, decoys, disputed evidence, restoration obligations, and N-1 failure. It contains no weapon-design detail and represents no real state.</p>
+  </div>
+  <div class="version">Protocol <code>BP-DV/1.0</code>Scenario schema <code>BP-SCENARIO/1.0</code></div>
+</header>
+
+<div class="toolbar">
+  <label for="scenarioSelect">Scenario</label>
+  <select id="scenarioSelect"></select>
+  <button class="btn" id="resetBtn">Reset</button>
+  <button class="btn primary" id="referenceBtn">Run reference path</button>
+  <button class="btn danger" id="redTeamBtn">Run authority-failure path</button>
+  <button class="btn secondary" id="exportBtn">Export receipt</button>
+  <button class="btn" id="copyBtn">Copy receipt</button>
+</div>
+
+<div id="gateBanner" class="gate hold">
+  <div class="state" id="gateState">Baseline incomplete</div>
+  <div class="reason" id="gateReason">Select a scenario and qualify the baseline.</div>
+  <div class="month" id="monthLabel">M+0</div>
+</div>
+
+<div class="metrics">
+  <div class="metric"><b id="marginMetric">—</b><span>Adverse p10 margin</span><small>Minimum across active real threats</small></div>
+  <div class="metric"><b id="riskMetric">—</b><span>Estimated breach risk</span><small>Synthetic gate estimate</small></div>
+  <div class="metric"><b id="restoreMetric">—</b><span>Restoration on time</span><small>Corrected actors returned as promised</small></div>
+  <div class="metric"><b id="n1Metric">—</b><span>N-1 capacity</span><small>Largest critical-node loss</small></div>
+  <div class="metric"><b id="holdoutMetric">—</b><span>Known holdouts</span><small>Uncovered strategic lineages</small></div>
+  <div class="metric"><b id="loadMetric">—</b><span>Portfolio load</span><small>Demand divided by usable capacity</small></div>
+</div>
+
+<div class="layout">
+  <section class="panel">
+    <div class="panel-head"><h2>Persistent threat registry</h2><div class="roles" id="roleButtons"></div></div>
+    <div class="registry-wrap"><table>
+      <thead><tr><th>ID</th><th>Lineage</th><th>Observed class</th><th>Coverage</th><th>State</th><th>Confidence</th><th>Finding</th><th>Margin</th></tr></thead>
+      <tbody id="registryBody"></tbody>
+    </table></div>
+    <div class="panel-body">
+      <div id="selectedCase" class="selected-case"></div>
+      <p class="seat-note" id="seatNote"></p>
+      <div class="action-grid" id="actionGrid"></div>
+    </div>
+  </section>
+
+  <aside>
+    <section class="panel">
+      <div class="tabs">
+        <button class="tab active" data-tab="injects">Injects</button>
+        <button class="tab" data-tab="resources">Capacity</button>
+        <button class="tab" data-tab="receipt">Receipt</button>
+        <button class="tab" data-tab="authority">Authority</button>
+      </div>
+      <div class="panel-body tabview active" id="tab-injects">
+        <div id="injectBox"></div>
+        <div class="log" id="eventLog"></div>
+      </div>
+      <div class="panel-body tabview" id="tab-resources"><div class="resources" id="resourceGrid"></div></div>
+      <div class="panel-body tabview" id="tab-receipt"><div class="receipt" id="receiptBox"></div></div>
+      <div class="panel-body tabview" id="tab-authority"><div class="matrix" id="authorityMatrix"></div></div>
+    </section>
+  </aside>
+</div>
+
+<section class="panel" style="margin-top:1rem">
+  <div class="panel-head"><h2>Protocol boundary</h2></div>
+  <div class="panel-body">
+    <div class="callout"><strong>Fail-closed rule.</strong> A hidden strategic holdout, negative adverse margin, failed N-1 capacity, restoration below threshold, or certified saturation forces a HOLD. The demonstrator never converts a technical finding directly into military force.</div>
+    <p>This synthetic exercise separates evidence collection, managed access, technical findings, services and rollback, consequences and assurance, and independent review. A role may not perform another role’s action. The facilitator can advance, hold, reinforce, and recertify, but cannot rewrite a technical finding.</p>
+  </div>
+</section>
+
+<footer>Public research demonstrator. No affiliation with or endorsement by the IAEA, CTBTO, HCoC, IPNDV, UNIDIR, any government, or any nuclear operator. All scenarios are synthetic and contain no operational weapon-design information.</footer>
+</div>
+<script src="data.js"></script>
+<script src="engine-core.js"></script>
+<script src="sha-fix.js"></script>
+<script src="engine-actions.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>
