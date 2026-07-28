@@ -85,10 +85,11 @@ try {
     foundryAnatomy.includes("choose estate policy") &&
     foundryAnatomy.includes("schedule the estate"));
   await page.click('[data-view="evolution"]');
+  const foundryPostures = (await page.locator(".candidate-strip").innerText()).toUpperCase();
   check("Supplier Foundry exposes a bounded admissible lane and a held expansion",
     await page.locator(".candidate-strip .candidate").count() === 2 &&
-    (await page.locator(".candidate-strip").innerText()).includes("Admissible") &&
-    (await page.locator(".candidate-strip").innerText()).includes("Hold"));
+    foundryPostures.includes("ADMISSIBLE") &&
+    foundryPostures.includes("HOLD"), foundryPostures);
   await page.getByRole("button", { name: /Bloodstream/ }).click();
 
   await page.click('[data-view="evolution"]');
