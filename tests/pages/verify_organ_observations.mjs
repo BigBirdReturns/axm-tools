@@ -75,8 +75,9 @@ try {
     body.includes("operator restart receipt") && body.includes("One workstation and one ledger only"));
   check("machine facts do not present themselves as readiness or authority",
     body.includes("Neither record changes the organ health envelope") && body.includes("This is not a health or readiness verdict"));
+  const digest = await page.locator(".observation-digest code").innerText();
   check("complete source digest is rendered in a wrap-safe custody field",
-    body.includes("Complete observation identity") && body.includes("organobs1_"));
+    digest.startsWith("organobs1_") && digest.length === 74, digest);
 
   const top = await page.locator("#topStats").innerText();
   check("top rail distinguishes current red gates from role gaps",
