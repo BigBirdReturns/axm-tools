@@ -103,8 +103,9 @@ try {
   const actorText = await page.locator("#workspace").innerText();
   check("actor view preserves self-declared, ascribed, and inferred interests",
     actorText.includes("Self Declared") && actorText.includes("Ascribed") && actorText.includes("Inferred"));
+  const roleHeaders = await page.locator(".role-grid .head").allTextContents();
   check("actor matrix separates sponsor, validator, decider, and beneficiary",
-    actorText.includes("Sponsor") && actorText.includes("Validator") && actorText.includes("Decider") && actorText.includes("Beneficiary"));
+    ["Sponsor", "Validator", "Decider", "Beneficiary"].every(label => roleHeaders.includes(label)));
 
   await page.click('[data-view="evidence"]');
   check("evidence ledger distinguishes class and independence",
