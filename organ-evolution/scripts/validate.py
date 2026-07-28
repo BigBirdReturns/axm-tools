@@ -11,11 +11,19 @@ from pathlib import Path
 TOOL = Path(__file__).resolve().parents[1]
 HTML = TOOL / "index.html"
 EXAMPLE = TOOL / "data" / "axm-estate.example.json"
+ACCEPTED = TOOL / "data" / "fixtures" / "accepted-decision.fixture.json"
 CORE = TOOL / "core.js"
+DECISION_JOB_JS = TOOL / "decision-job.js"
 VIEWS = TOOL / "views.js"
+DECISION_VIEW_JS = TOOL / "decision-circulation-view.js"
 APP = TOOL / "app.js"
 STYLE = TOOL / "styles.css"
 SEED_JS = TOOL / "data" / "seed.js"
+
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import decision_job  # noqa: E402
 
 REQUIRED_ROOT = {"format", "estate", "actors", "organs", "evidence", "candidates", "scenarios", "decision"}
 DIMENSIONS = {
@@ -103,7 +111,7 @@ def validate_model(model: dict) -> None:
             fail(f"organ id lacks organ. prefix: {organ['id']}")
         health = organ.get("health", {})
         for key, value in health.items():
-            if not isinstance(value, int) or not 0 <= value <= 5:
+            if not isinstance(value, int) or isinstance(value, bool) or not 0 <= value <= 5:
                 fail(f"{organ['id']} health {key} is outside integer 0..5")
         function_ids = [row["id"] for row in organ.get("functions", [])]
         if duplicates(function_ids):
@@ -111,7 +119,7 @@ def validate_model(model: dict) -> None:
         for function in organ.get("functions", []):
             for field in ("criticality", "coverage"):
                 value = function.get(field)
-                if not isinstance(value, int) or not 0 <= value <= 5:
+                if not isinstance(value, int) or isinstance(value, bool) or not 0 <= value <= 5:
                     fail(f"{function['id']} {field} is outside integer 0..5")
         for dependency in organ.get("dependencies", []):
             if dependency["target"] not in organ_set:
@@ -133,7 +141,7 @@ def validate_model(model: dict) -> None:
         if set(candidate.get("dimensions", {})) != DIMENSIONS:
             fail(f"{candidate['id']} dimensions do not match the full evaluation envelope")
         for key, value in candidate["dimensions"].items():
-            if not isinstance(value, int) or not 0 <= value <= 5:
+            if not isinstance(value, int) or isinstance(value, bool) or not 0 <= value <= 5:
                 fail(f"{candidate['id']} dimension {key} is outside integer 0..5")
         if set(candidate.get("gates", {})) != GATES:
             fail(f"{candidate['id']} gates do not match the hard-gate set")
@@ -165,8 +173,7 @@ def validate_model(model: dict) -> None:
         fail("decision references an unknown decider")
 
 
-def validate_surface(html: str, app: str, style: str) -> None:
-    source = html + "\n" + app + "\n" + style
+def validate_surface(html: str, source: str) -> None:
     required_text = [
         "Organ Evolution",
         "Estate adaptation workbench",
@@ -177,15 +184,27 @@ def validate_surface(html: str, app: str, style: str) -> None:
         "Stress tests",
         "Decision record",
         "axm-organ-evolution/1",
+        "axm-organ-evolution-job/1",
         "Motivation without mind-reading",
         "The table preserves the full fitness envelope",
         "It does not establish that the proposal is wise",
+        "Export circulation job",
+        "Compiler boundary",
     ]
     for text in required_text:
-        if text not in source:
+        if text not in html + "\n" + source:
             fail(f"production page is missing required boundary text: {text}")
 
-    for required_asset in ['href="styles.css"', 'src="data/seed.js"', 'src="core.js"', 'src="views.js"', 'src="app.js"']:
+    required_assets = [
+        'href="styles.css"',
+        'src="data/seed.js"',
+        'src="core.js"',
+        'src="decision-job.js"',
+        'src="views.js"',
+        'src="decision-circulation-view.js"',
+        'src="app.js"',
+    ]
+    for required_asset in required_assets:
         if required_asset not in html:
             fail(f"production page is missing local asset reference: {required_asset}")
 
@@ -198,7 +217,7 @@ def validate_surface(html: str, app: str, style: str) -> None:
         r'<iframe',
     ]
     for pattern in forbidden:
-        if re.search(pattern, source, flags=re.IGNORECASE):
+        if re.search(pattern, html + "\n" + source, flags=re.IGNORECASE):
             fail(f"production page contains forbidden external/runtime pattern: {pattern}")
 
 
@@ -206,17 +225,32 @@ if __name__ == "__main__":
     try:
         html = HTML.read_text(encoding="utf-8")
         example = load_json(EXAMPLE)
+        accepted = decision_job.load_json(ACCEPTED)
         seed = embedded_seed(SEED_JS.read_text(encoding="utf-8"))
         validate_model(example)
+        validate_model(accepted)
         validate_model(seed)
         if seed != example:
             fail("embedded worked example differs from data/axm-estate.example.json")
-        validate_surface(html, "\n".join([CORE.read_text(encoding="utf-8"), VIEWS.read_text(encoding="utf-8"), APP.read_text(encoding="utf-8")]), STYLE.read_text(encoding="utf-8"))
+        job = decision_job.build_job(accepted)
+        decision_job.verify_job(job)
+        if not job["decision"]["decisionId"].startswith("orgdec1_"):
+            fail("accepted fixture did not produce a decision identity")
+        if not job["jobId"].startswith("organjob1_"):
+            fail("accepted fixture did not produce a circulation job identity")
+        if not (job.get("execution") or {}).get("executionId", "").startswith("organexec1_"):
+            fail("accepted fixture did not produce a bound execution identity")
+        scripts = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in (CORE, DECISION_JOB_JS, VIEWS, DECISION_VIEW_JS, APP)
+        )
+        validate_surface(html, scripts + "\n" + STYLE.read_text(encoding="utf-8"))
     except Exception as exc:
         print(f"FAIL: {exc}", file=sys.stderr)
         raise SystemExit(1)
 
     print(
-        "PASS: organ evolution surface, embedded example, graph references, "
-        "authority gates, evidence classes, and no-network boundary"
+        "PASS: organ evolution surface, accepted-decision fixture, browser/Python "
+        "circulation contract, graph references, authority gates, evidence classes, "
+        "and no-network boundary"
     )
