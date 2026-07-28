@@ -150,15 +150,16 @@ jobs:
 
       - name: Upload convergence diagnostics
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: stable-decision-job-convergence
           path: ${{ runner.temp }}/stable-decision-job.log
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 7
 
       - name: Publish the carrier-free repair
-        if: steps.patch.outcome == 'success'
+        if: always() && steps.patch.outcome == 'success'
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
@@ -170,5 +171,5 @@ jobs:
           git push origin HEAD:agent/stable-decision-job-identity
 
       - name: Preserve convergence result
-        if: steps.patch.outcome != 'success'
+        if: always() && steps.patch.outcome != 'success'
         run: exit 1
