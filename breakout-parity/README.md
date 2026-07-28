@@ -6,6 +6,7 @@ Author: Jonathan Sandhu
 Public concept-prior date: 2026-07-26  
 Framework version: 4.0.0-draft-release  
 Literature amendment: 1  
+Operational claim amendment: 4  
 Project codename: Omega Accord Lab
 
 Breakout Parity treats nuclear proliferation as a control-system problem. Destroying an inventory or facility does not end proliferation when technical knowledge, motive, restart capacity, weapon-usable material, and political grievance remain. The framework therefore asks whether detection, technical attribution, and effective response can complete before a violator converts breakout into coercive advantage, while compliant states receive a superior package of security, energy reliability, economic access, status, and institutional continuity.
@@ -28,6 +29,24 @@ The architecture contains four service-producing operating systems followed by a
 
 The adoption unit is a bounded claim or pilot with a named owner, antecedents, failure condition, receipt, and correction path. Publication does not imply endorsement by any institution named in the framework.
 
+## Current operational finding
+
+V10 narrows the architecture to a conditionally sufficient rolling-threat control system inside a qualified operating envelope. It can manage heterogeneous covered threats, decoys, open-world arrivals, sensor disruption, N-1 institutional failure, recurrence, and restoration behavior only after a trustworthy entry baseline has been established.
+
+The transition fails when a strategically relevant hidden programme, material path, supplier, sanctuary, or network already exists outside that baseline. It also fails when transformative capability compresses the coercive-advantage clock beyond the maximum qualified sensing, custody, interpretation, response, and reinforcement envelope.
+
+The recommended experimental operating gate is:
+
+```text
+adverse-bound p10 portfolio margin >= 6 months
+probability of any breach <= 5%
+restoration on time >= 95%
+N-1 capacity passed
+no known uncovered strategic holdout
+```
+
+These are model acceptance thresholds, not empirical estimates of current institutional capability or forecasts of named states. A failed gate stops further reductions and activates hold-and-reinforce procedures. It does not automatically authorize preventive war or permit a claim that operational zero remains stable.
+
 ## What this public record establishes
 
 This directory preserves the framework's twelve exact claims, mechanisms, responsible actor classes, first actions, and falsification tests as published on 26 July 2026. It establishes the date and content of Jonathan Sandhu's exact formulation. It does not establish priority over the underlying problems or mechanisms, and it does not establish institutional delivery, acknowledgement, review, testing, sponsorship, or adoption.
@@ -38,17 +57,23 @@ The complete qualified V4 archive is identified by this SHA-256 digest:
 4a72a71b7c85482fb103c8e7e10e9ca94b0ce1923bd231a457533fd50d155b56
 ```
 
-The binary archive and fixed-layout briefs remain in the release-candidate estate pending dedicated repository and DOI publication. Their absence from this compact host is recorded rather than concealed.
+The local V10 qualified-entry archive is identified by:
+
+```text
+21452a8c0be8f323ddc5ab189382f84d9ad797d07a1c6cc38ca3191eebbcd284
+```
+
+The binary archives and fixed-layout briefs remain outside this compact host pending dedicated repository and DOI custody. Their absence is recorded rather than concealed.
 
 ## Literature status
 
 The original capsule followed a targeted institutional-capability and current-policy review, independent systems synthesis, and simulation. It did not follow a field-wide literature review. Literature Status Amendment 1 corrects that boundary without rewriting the historical claim set.
 
-The structured first pass now covers eighteen literature lanes and 108 anchor sources. Sixty-seven entries were checked through official, publisher, author, or institutional records. Forty-one remain bibliographic seeds pending lawful full-text acquisition and coding. The review has produced twenty-four coded contradictions, eighteen model revisions, and six review-derived extension requirements. Every lane remains open for backward and forward citation chaining, contrary-school search, and saturation testing.
+The structured first pass covers eighteen literature lanes and 108 anchor sources. Sixty-seven entries were checked through official, publisher, author, or institutional records. Forty-one remain bibliographic seeds pending lawful full-text acquisition and coding. The review produced twenty-four coded contradictions, eighteen model revisions, and six review-derived extension requirements. Every lane remains open for backward and forward citation chaining, contrary-school search, and saturation testing.
 
-Strong prior art exists for reconstitution after abolition, post-zero instability, nuclear latency and hedging, fissile-material control, verification of absence and dismantlement, alliance assurance, organizational failure, compliance and enforcement, domestic conversion, and the causes of proliferation and restraint. The candidate contribution is therefore narrower: a possible integration of time to coercive advantage, constrained portfolio response, executable restoration, gate-controlled sequencing, and a functional retirement test for mutual assured destruction. Novelty and sufficiency remain unproven.
+Strong prior art exists for reconstitution after abolition, post-zero instability, nuclear latency and hedging, fissile-material control, verification of absence and dismantlement, alliance assurance, organizational failure, compliance and enforcement, domestic conversion, and the causes of proliferation and restraint. The candidate contribution is therefore narrower: timed cross-domain integration, persistent rolling-threat control, constrained portfolio capacity, executable restoration, gate-controlled sequencing, and a functional retirement test for mutual assured destruction.
 
-The six institutional outreach drafts remain unsent until the public genealogy, contradictions, and model repairs are incorporated into recipient-specific packets.
+The six institutional outreach drafts remain unsent. The public record has been corrected before any recipient is asked to review the architecture.
 
 ## Files
 
@@ -56,20 +81,23 @@ The six institutional outreach drafts remain unsent until the public genealogy, 
 - `CONTROL_ARCHITECTURE.md`: the operating model, gate logic, authority triage, and retirement test.
 - `NOTICE_PROTOCOL_AMENDMENT_1.md`: the evidence ladder separating public existence, attempted transmission, channel acceptance, acknowledgement, review, testing, and formal insertion.
 - `LITERATURE_STATUS_AMENDMENT_1.md`: the corrected prior-art and novelty boundary.
+- `PUBLIC_CLAIM_AMENDMENT_4.md`: the V10 qualified-entry, failure-boundary, and operating-gate correction.
+- `V10_DECISION_RECORD.json`: machine-readable V10 decision and evidence boundary.
+- `V10_RESULT_SUMMARY.csv`: selected V10 entry, validation, red-team, and saturation results.
 - `CLAIM_GENEALOGY_V1.csv`: antecedents, support, contradictions, inherited mechanisms, candidate deltas, revisions, and required tests for all twelve claims.
-- `CORE_BIBLIOGRAPHY_V1.csv`: fifty-four public anchor records spanning all eighteen literature lanes.
-- `CONTRADICTION_REGISTER_V1.csv`: twenty-four serious objections and their resolution experiments.
-- `MODEL_REVISION_QUEUE_V1.csv`: eighteen changes required before the simulator can support operational sufficiency claims.
-- `EXTENSION_REQUIREMENTS_V1.csv`: six literature-derived requirements, identified as `XR-013` through `XR-018` so the original claim ledger remains immutable.
+- `CORE_BIBLIOGRAPHY_V1.csv`: public anchor records spanning the literature lanes.
+- `CONTRADICTION_REGISTER_V1.csv`: serious objections and their resolution experiments.
+- `MODEL_REVISION_QUEUE_V1.csv`: changes required before the simulator can support operational sufficiency claims.
+- `EXTENSION_REQUIREMENTS_V1.csv`: literature-derived requirements, identified as `XR-013` through `XR-018` so the original claim ledger remains immutable.
 - `SOURCE_LEDGER_VERIFIED_2026-07-26.csv`: the original current-institution source ledger.
 - `RELEASE_RECORD.json`: machine-readable identity, scope, and integrity record.
 
 ## Evidence boundary
 
-The simulation results are assumption-driven mechanism experiments, not empirical forecasts. Their use is comparative: to expose dependencies, sequencing failures, and conditions under which a regime becomes brittle. V7 further requires model ensembles, historical replay, pre-registration, independent replication, and an explicit forecast prohibition before quantitative outputs receive operational weight.
+The simulation results are assumption-driven mechanism experiments, not empirical forecasts. Their use is comparative: to expose dependencies, sequencing failures, and conditions under which a regime becomes brittle. The public record requires model ensembles, historical replay, pre-registration, independent replication, and an explicit forecast prohibition before quantitative outputs receive operational weight.
 
 ## Control question
 
-After inherited theory, contrary evidence, regional variation, organizational failure, legal constraints, and case history are loaded into the architecture, which remaining Breakout Parity integration changes an operational decision or assigns an interface that would otherwise remain unowned?
+Can the regime prove, against adverse confidence bounds and after the largest critical-node failure, that every strategically relevant threat begins inside the monitored baseline and retains at least six months of conservative portfolio margin before coercive advantage?
 
 Documentation is licensed under CC BY 4.0. Code in the complete estate is licensed under MIT unless a file states otherwise.
