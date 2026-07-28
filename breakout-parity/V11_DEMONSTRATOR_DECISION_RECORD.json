@@ -61,7 +61,8 @@
       "receipt_sha256": "40d79ae2f97b526964f20f9753df5c85e27b347ddaa240c3e5f690e8914dbee1"
     },
     "authority_failure": {
-      "gate": "operate",
+      "gate": "hold",
+      "pass": false,
       "blocked_attempts": 3,
       "falseActions": 2,
       "actions": 4
@@ -76,7 +77,7 @@
   "acceptance_boundary": {
     "qualified_and_n1_scenarios": "must_pass",
     "holdout_and_saturation_scenarios": "must_hold",
-    "authority_overreach": "must_be_rejected_and_logged"
+    "authority_overreach": "must_be_rejected_logged_and_force_hold"
   },
   "evidence_boundary": "Synthetic internal demonstrator. Timing, risk, confidence, and capacity values are not empirical institutional measurements."
 }
