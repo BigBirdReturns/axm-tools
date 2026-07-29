@@ -1,6 +1,6 @@
 window.AXM_ORGAN_OBSERVATIONS = {
   "format": "axm-organ-observations/1",
-  "generatedAt": "2026-07-28T17:00:39.741006Z",
+  "generatedAt": "2026-07-29T15:22:49.984674Z",
   "organs": [
     {
       "findings": [
@@ -8,7 +8,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_historical_not_green",
           "severity": "context",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-arc/actions/runs/30220178769"
+            "https://github.com/BigBirdReturns/axm-arc/actions/runs/30423434951"
           ],
           "summary": "BigBirdReturns/axm-arc: .github/workflows/apply-bounded-json.yml concluded failure, but it is declared superseded bounded repair carrier; the red receipt remains visible without being treated as a current organ gate."
         }
@@ -25,14 +25,14 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_historical_not_green",
               "severity": "context",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-arc/actions/runs/30220178769"
+                "https://github.com/BigBirdReturns/axm-arc/actions/runs/30423434951"
               ],
               "summary": "BigBirdReturns/axm-arc: .github/workflows/apply-bounded-json.yml concluded failure, but it is declared superseded bounded repair carrier; the red receipt remains visible without being treated as a current organ gate."
             }
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-arc",
-          "headAgeDays": 1,
+          "headAgeDays": 2,
           "headAt": "2026-07-26T21:00:31Z",
           "headSha": "318faaab6fb1c4b0eefe66516d3573bdb8f97369",
           "latestTag": "archive/codex/gate3-lamp-district",
@@ -40,7 +40,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 3,
+              "ageDays": 4,
               "baseRef": "main",
               "createdAt": "2026-07-24T18:27:52Z",
               "draft": true,
@@ -52,7 +52,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/153"
             },
             {
-              "ageDays": 3,
+              "ageDays": 4,
               "baseRef": "main",
               "createdAt": "2026-07-25T06:33:52Z",
               "draft": true,
@@ -64,7 +64,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/158"
             },
             {
-              "ageDays": 1,
+              "ageDays": 2,
               "baseRef": "main",
               "createdAt": "2026-07-26T20:29:42Z",
               "draft": true,
@@ -76,7 +76,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/169"
             },
             {
-              "ageDays": 1,
+              "ageDays": 2,
               "baseRef": "main",
               "createdAt": "2026-07-27T05:13:23Z",
               "draft": true,
@@ -100,7 +100,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/177"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-27T18:05:16Z",
               "draft": true,
@@ -112,19 +112,19 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/181"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "integration/continuous-authority-estate-v1",
               "createdAt": "2026-07-27T21:45:47Z",
               "draft": true,
               "headRef": "demo/underdrain-authority-v1",
-              "headSha": "66c7f6d032eb3d495f025454a9d997086dd7ba65",
+              "headSha": "aaa5685903a348b3c1ba875622fbe99d90c1da35",
               "number": 182,
-              "title": "Author UNDERDRAIN as a continuous mechanism-driven pilot candidate",
-              "updatedAt": "2026-07-28T17:00:04Z",
+              "title": "Author UNDERDRAIN as a machine-qualified continuous pilot authority",
+              "updatedAt": "2026-07-29T06:15:45Z",
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/182"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "integration/continuous-authority-estate-v1",
               "createdAt": "2026-07-28T00:11:32Z",
               "draft": true,
@@ -136,7 +136,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/184"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "feature/authored-experience-contract-v1",
               "createdAt": "2026-07-28T02:46:43Z",
               "draft": true,
@@ -316,10 +316,10 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "workflows": [
             {
               "conclusion": "failure",
-              "createdAt": "2026-07-26T21:00:42Z",
+              "createdAt": "2026-07-29T04:52:14Z",
               "event": "push",
               "headSha": "318faaab6fb1c4b0eefe66516d3573bdb8f97369",
-              "id": 30220178769,
+              "id": 30423434951,
               "lifecycle": "superseded",
               "name": ".github/workflows/apply-bounded-json.yml",
               "required": false,
@@ -327,8 +327,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The file declares itself a one-shot publication workflow that removes its temporary carriers; its historical failure is not a current Arc gate.",
               "roleSource": "declared",
               "status": "completed",
-              "updatedAt": "2026-07-26T21:00:42Z",
-              "url": "https://github.com/BigBirdReturns/axm-arc/actions/runs/30220178769"
+              "updatedAt": "2026-07-29T04:52:14Z",
+              "url": "https://github.com/BigBirdReturns/axm-arc/actions/runs/30423434951"
             },
             {
               "conclusion": "success",
@@ -528,7 +528,20 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "latestTag": "v1.0.0",
           "license": "Apache-2.0",
           "observedRef": "main",
-          "openPullRequests": [],
+          "openPullRequests": [
+            {
+              "ageDays": 0,
+              "baseRef": "main",
+              "createdAt": "2026-07-29T01:50:37Z",
+              "draft": true,
+              "headRef": "agent/intake-compatibility-floor",
+              "headSha": "52af7f08e6cbe2ea58ecbdb0647c884eaacc9d9c",
+              "number": 28,
+              "title": "Add the universal intake compatibility floor",
+              "updatedAt": "2026-07-29T03:49:31Z",
+              "url": "https://github.com/BigBirdReturns/axm-core/pull/28"
+            }
+          ],
           "scopePath": null,
           "signals": {
             "declaredWorkflowNames": [
@@ -712,7 +725,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-embodied",
-          "headAgeDays": 0,
+          "headAgeDays": 1,
           "headAt": "2026-07-28T04:25:24Z",
           "headSha": "d8c4d13457175d41aeb50a66ac92a752529b6931",
           "latestTag": "v1.4.0",
@@ -720,7 +733,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 1,
+              "ageDays": 2,
               "baseRef": "main",
               "createdAt": "2026-07-27T05:02:28Z",
               "draft": true,
@@ -730,6 +743,18 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "title": "Hold the fully qualified post-v1 action-evidence estate for physical acceptance",
               "updatedAt": "2026-07-27T05:52:09Z",
               "url": "https://github.com/BigBirdReturns/axm-embodied/pull/15"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "main",
+              "createdAt": "2026-07-29T04:55:38Z",
+              "draft": true,
+              "headRef": "contract/action-player-floor-v1",
+              "headSha": "056470f2ffe0948bb445f0091c6f367abeb8aa48",
+              "number": 20,
+              "title": "Adopt the consolidated Action Player Floor evidence contract",
+              "updatedAt": "2026-07-29T04:58:55Z",
+              "url": "https://github.com/BigBirdReturns/axm-embodied/pull/20"
             }
           ],
           "scopePath": null,
@@ -880,7 +905,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "findings": [],
           "fork": false,
           "fullName": "BigBirdReturns/axm-genesis",
-          "headAgeDays": 13,
+          "headAgeDays": 14,
           "headAt": "2026-07-14T21:16:21Z",
           "headSha": "411ef40e6cfc3ecb97ac3e256c8151be678347c8",
           "latestTag": "v1.2.0",
@@ -888,7 +913,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 21,
+              "ageDays": 22,
               "baseRef": "main",
               "createdAt": "2026-07-06T18:02:00Z",
               "draft": false,
@@ -900,7 +925,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-genesis/pull/23"
             },
             {
-              "ageDays": 20,
+              "ageDays": 21,
               "baseRef": "main",
               "createdAt": "2026-07-07T18:18:21Z",
               "draft": false,
@@ -1084,13 +1109,26 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "findings": [],
           "fork": false,
           "fullName": "BigBirdReturns/axm-hinge",
-          "headAgeDays": 5,
+          "headAgeDays": 6,
           "headAt": "2026-07-23T06:20:52Z",
           "headSha": "9c36ae56750712059ac2ec1af7589de5c7d62d4c",
           "latestTag": "archive/agent/hinge-impact-layer",
           "license": "Apache-2.0",
           "observedRef": "main",
-          "openPullRequests": [],
+          "openPullRequests": [
+            {
+              "ageDays": 0,
+              "baseRef": "main",
+              "createdAt": "2026-07-29T04:54:31Z",
+              "draft": true,
+              "headRef": "contract/action-player-floor-v1",
+              "headSha": "cb35189b9dab0192a35a290d0906bc466cf27dc5",
+              "number": 6,
+              "title": "Adopt the consolidated Action Player Floor invalidator contract",
+              "updatedAt": "2026-07-29T04:58:36Z",
+              "url": "https://github.com/BigBirdReturns/axm-hinge/pull/6"
+            }
+          ],
           "scopePath": null,
           "signals": {
             "declaredWorkflowNames": [
@@ -1191,20 +1229,20 @@ window.AXM_ORGAN_OBSERVATIONS = {
       "repositories": [
         {
           "archived": false,
-          "commitUrl": "https://github.com/BigBirdReturns/tier-bench/commit/5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+          "commitUrl": "https://github.com/BigBirdReturns/tier-bench/commit/9693cb99694338e72c15d0ffbb87b5a1c5bbf16a",
           "defaultBranch": "main",
           "findings": [],
           "fork": false,
           "fullName": "BigBirdReturns/tier-bench",
           "headAgeDays": 0,
-          "headAt": "2026-07-28T04:57:30Z",
-          "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+          "headAt": "2026-07-29T05:15:52Z",
+          "headSha": "9693cb99694338e72c15d0ffbb87b5a1c5bbf16a",
           "latestTag": "v0.1.0",
           "license": "MIT",
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 17,
+              "ageDays": 18,
               "baseRef": "main",
               "createdAt": "2026-07-11T01:31:31Z",
               "draft": true,
@@ -1216,7 +1254,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/68"
             },
             {
-              "ageDays": 17,
+              "ageDays": 18,
               "baseRef": "main",
               "createdAt": "2026-07-11T01:43:37Z",
               "draft": true,
@@ -1228,7 +1266,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/69"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "main",
               "createdAt": "2026-07-12T08:53:32Z",
               "draft": true,
@@ -1240,7 +1278,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/72"
             },
             {
-              "ageDays": 14,
+              "ageDays": 15,
               "baseRef": "main",
               "createdAt": "2026-07-13T19:03:09Z",
               "draft": true,
@@ -1252,7 +1290,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/89"
             },
             {
-              "ageDays": 13,
+              "ageDays": 14,
               "baseRef": "main",
               "createdAt": "2026-07-14T20:54:09Z",
               "draft": true,
@@ -1264,7 +1302,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/103"
             },
             {
-              "ageDays": 7,
+              "ageDays": 8,
               "baseRef": "agent/monster-wrangler-desk",
               "createdAt": "2026-07-21T01:19:36Z",
               "draft": true,
@@ -1276,7 +1314,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/121"
             },
             {
-              "ageDays": 7,
+              "ageDays": 8,
               "baseRef": "codex/chair-inbox-v1",
               "createdAt": "2026-07-21T01:46:38Z",
               "draft": true,
@@ -1288,7 +1326,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/122"
             },
             {
-              "ageDays": 7,
+              "ageDays": 8,
               "baseRef": "agent/chair-inbox-v1-repair-001",
               "createdAt": "2026-07-21T03:21:03Z",
               "draft": true,
@@ -1300,7 +1338,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/123"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-27T20:30:42Z",
               "draft": true,
@@ -1312,7 +1350,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/136"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-27T22:39:31Z",
               "draft": true,
@@ -1324,7 +1362,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/137"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-28T00:01:05Z",
               "draft": true,
@@ -1334,6 +1372,42 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "title": "Complete external model-floor pagination",
               "updatedAt": "2026-07-28T00:13:21Z",
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/139"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "agent/conditional-memory-lab-v1",
+              "createdAt": "2026-07-28T17:51:00Z",
+              "draft": true,
+              "headRef": "agent/task-computer-v1",
+              "headSha": "695be3123a9999de559b7b0f81b427db7969a777",
+              "number": 142,
+              "title": "Build the project-native Task Computer laboratory",
+              "updatedAt": "2026-07-28T18:52:32Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/142"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "main",
+              "createdAt": "2026-07-28T19:30:36Z",
+              "draft": false,
+              "headRef": "agent/axm-estate-lab",
+              "headSha": "8588788559d0f3751c4857c132b571d5fb4610d8",
+              "number": 143,
+              "title": "Add the AXM Estate Lab",
+              "updatedAt": "2026-07-29T05:16:07Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/143"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "agent/task-computer-v1",
+              "createdAt": "2026-07-29T02:26:07Z",
+              "draft": true,
+              "headRef": "agent/task-floor-v1",
+              "headSha": "aaef33467f689bad5038af1e03c0262093a0c463",
+              "number": 147,
+              "title": "Establish the Task Floor interoperability and conformance layer",
+              "updatedAt": "2026-07-29T03:13:26Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/147"
             }
           ],
           "scopePath": "supplier_foundry",
@@ -1344,12 +1418,13 @@ window.AXM_ORGAN_OBSERVATIONS = {
             "license": false,
             "readme": true,
             "scopePath": "supplier_foundry",
-            "scopedFileCount": 10,
+            "scopedFileCount": 20,
             "successionFiles": [
               "CONTINUITY.md"
             ],
             "treeTruncated": false,
             "workflowFiles": [
+              ".github/workflows/action-player-floor.yml",
               ".github/workflows/breadth-durability.yml",
               ".github/workflows/kimi3-observatory.yml",
               ".github/workflows/model-floor.yml",
@@ -1358,6 +1433,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               ".github/workflows/residue-refinery.yml",
               ".github/workflows/sovereign-desktop.yml",
               ".github/workflows/sovereign-theory.yml",
+              ".github/workflows/supplier-foundry-asset-floor.yml",
               ".github/workflows/supplier-foundry-asset-pilot.yml",
               ".github/workflows/validate.yml",
               ".github/workflows/world-experience-atlas.yml"
@@ -1433,16 +1509,16 @@ window.AXM_ORGAN_OBSERVATIONS = {
             ],
             "includedCount": 1,
             "mode": "declared_only",
-            "observedCount": 6,
-            "omittedCount": 5
+            "observedCount": 8,
+            "omittedCount": 7
           },
           "workflows": [
             {
               "conclusion": "success",
-              "createdAt": "2026-07-28T04:57:32Z",
+              "createdAt": "2026-07-29T02:09:19Z",
               "event": "push",
-              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
-              "id": 30330202697,
+              "headSha": "4452808842f7d6353145ba5be2ade11f5fadc98c",
+              "id": 30416065959,
               "lifecycle": "current",
               "name": "Supplier Foundry asset pilot",
               "required": true,
@@ -1450,8 +1526,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The exact-provider, semantic-equivalence, network-isolation, fallback, and rip-out transaction is the current Supplier Foundry gate.",
               "roleSource": "declared",
               "status": "completed",
-              "updatedAt": "2026-07-28T04:57:58Z",
-              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202697"
+              "updatedAt": "2026-07-29T02:09:42Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30416065959"
             }
           ]
         }
@@ -1464,20 +1540,20 @@ window.AXM_ORGAN_OBSERVATIONS = {
       "repositories": [
         {
           "archived": false,
-          "commitUrl": "https://github.com/BigBirdReturns/tier-bench/commit/5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+          "commitUrl": "https://github.com/BigBirdReturns/tier-bench/commit/9693cb99694338e72c15d0ffbb87b5a1c5bbf16a",
           "defaultBranch": "main",
           "findings": [],
           "fork": false,
           "fullName": "BigBirdReturns/tier-bench",
           "headAgeDays": 0,
-          "headAt": "2026-07-28T04:57:30Z",
-          "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
+          "headAt": "2026-07-29T05:15:52Z",
+          "headSha": "9693cb99694338e72c15d0ffbb87b5a1c5bbf16a",
           "latestTag": "v0.1.0",
           "license": "MIT",
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 17,
+              "ageDays": 18,
               "baseRef": "main",
               "createdAt": "2026-07-11T01:31:31Z",
               "draft": true,
@@ -1489,7 +1565,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/68"
             },
             {
-              "ageDays": 17,
+              "ageDays": 18,
               "baseRef": "main",
               "createdAt": "2026-07-11T01:43:37Z",
               "draft": true,
@@ -1501,7 +1577,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/69"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "main",
               "createdAt": "2026-07-12T08:53:32Z",
               "draft": true,
@@ -1513,7 +1589,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/72"
             },
             {
-              "ageDays": 14,
+              "ageDays": 15,
               "baseRef": "main",
               "createdAt": "2026-07-13T19:03:09Z",
               "draft": true,
@@ -1525,7 +1601,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/89"
             },
             {
-              "ageDays": 13,
+              "ageDays": 14,
               "baseRef": "main",
               "createdAt": "2026-07-14T20:54:09Z",
               "draft": true,
@@ -1537,7 +1613,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/103"
             },
             {
-              "ageDays": 7,
+              "ageDays": 8,
               "baseRef": "agent/monster-wrangler-desk",
               "createdAt": "2026-07-21T01:19:36Z",
               "draft": true,
@@ -1549,7 +1625,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/121"
             },
             {
-              "ageDays": 7,
+              "ageDays": 8,
               "baseRef": "codex/chair-inbox-v1",
               "createdAt": "2026-07-21T01:46:38Z",
               "draft": true,
@@ -1561,7 +1637,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/122"
             },
             {
-              "ageDays": 7,
+              "ageDays": 8,
               "baseRef": "agent/chair-inbox-v1-repair-001",
               "createdAt": "2026-07-21T03:21:03Z",
               "draft": true,
@@ -1573,7 +1649,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/123"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-27T20:30:42Z",
               "draft": true,
@@ -1585,7 +1661,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/136"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-27T22:39:31Z",
               "draft": true,
@@ -1597,7 +1673,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/137"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "main",
               "createdAt": "2026-07-28T00:01:05Z",
               "draft": true,
@@ -1607,6 +1683,42 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "title": "Complete external model-floor pagination",
               "updatedAt": "2026-07-28T00:13:21Z",
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/139"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "agent/conditional-memory-lab-v1",
+              "createdAt": "2026-07-28T17:51:00Z",
+              "draft": true,
+              "headRef": "agent/task-computer-v1",
+              "headSha": "695be3123a9999de559b7b0f81b427db7969a777",
+              "number": 142,
+              "title": "Build the project-native Task Computer laboratory",
+              "updatedAt": "2026-07-28T18:52:32Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/142"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "main",
+              "createdAt": "2026-07-28T19:30:36Z",
+              "draft": false,
+              "headRef": "agent/axm-estate-lab",
+              "headSha": "8588788559d0f3751c4857c132b571d5fb4610d8",
+              "number": 143,
+              "title": "Add the AXM Estate Lab",
+              "updatedAt": "2026-07-29T05:16:07Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/143"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "agent/task-computer-v1",
+              "createdAt": "2026-07-29T02:26:07Z",
+              "draft": true,
+              "headRef": "agent/task-floor-v1",
+              "headSha": "aaef33467f689bad5038af1e03c0262093a0c463",
+              "number": 147,
+              "title": "Establish the Task Floor interoperability and conformance layer",
+              "updatedAt": "2026-07-29T03:13:26Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/pull/147"
             }
           ],
           "scopePath": null,
@@ -1615,7 +1727,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
             "license": true,
             "readme": true,
             "scopePath": null,
-            "scopedFileCount": 2817,
+            "scopedFileCount": 2845,
             "successionFiles": [
               "AGENTS.md",
               "CLAUDE.md",
@@ -1623,6 +1735,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
             ],
             "treeTruncated": false,
             "workflowFiles": [
+              ".github/workflows/action-player-floor.yml",
               ".github/workflows/breadth-durability.yml",
               ".github/workflows/kimi3-observatory.yml",
               ".github/workflows/model-floor.yml",
@@ -1631,6 +1744,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               ".github/workflows/residue-refinery.yml",
               ".github/workflows/sovereign-desktop.yml",
               ".github/workflows/sovereign-theory.yml",
+              ".github/workflows/supplier-foundry-asset-floor.yml",
               ".github/workflows/supplier-foundry-asset-pilot.yml",
               ".github/workflows/validate.yml",
               ".github/workflows/world-experience-atlas.yml"
@@ -1692,12 +1806,28 @@ window.AXM_ORGAN_OBSERVATIONS = {
           },
           "workflowScope": "all",
           "workflowSelection": {
-            "includedCount": 6,
+            "includedCount": 8,
             "mode": "all",
-            "observedCount": 6,
+            "observedCount": 8,
             "omittedCount": 0
           },
           "workflows": [
+            {
+              "conclusion": "success",
+              "createdAt": "2026-07-29T05:15:54Z",
+              "event": "push",
+              "headSha": "9693cb99694338e72c15d0ffbb87b5a1c5bbf16a",
+              "id": 30424570364,
+              "lifecycle": "current",
+              "name": "AXM action player floor",
+              "required": false,
+              "role": "unknown",
+              "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
+              "roleSource": "unclassified",
+              "status": "completed",
+              "updatedAt": "2026-07-29T05:16:26Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30424570364"
+            },
             {
               "conclusion": "success",
               "createdAt": "2026-07-26T19:39:08Z",
@@ -1716,10 +1846,26 @@ window.AXM_ORGAN_OBSERVATIONS = {
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-28T04:57:32Z",
+              "createdAt": "2026-07-29T02:09:19Z",
               "event": "push",
-              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
-              "id": 30330202697,
+              "headSha": "4452808842f7d6353145ba5be2ade11f5fadc98c",
+              "id": 30416066009,
+              "lifecycle": "current",
+              "name": "Supplier Foundry asset floor",
+              "required": false,
+              "role": "unknown",
+              "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
+              "roleSource": "unclassified",
+              "status": "completed",
+              "updatedAt": "2026-07-29T02:09:37Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30416066009"
+            },
+            {
+              "conclusion": "success",
+              "createdAt": "2026-07-29T02:09:19Z",
+              "event": "push",
+              "headSha": "4452808842f7d6353145ba5be2ade11f5fadc98c",
+              "id": 30416065959,
               "lifecycle": "current",
               "name": "Supplier Foundry asset pilot",
               "required": false,
@@ -1727,15 +1873,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-28T04:57:58Z",
-              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202697"
+              "updatedAt": "2026-07-29T02:09:42Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30416065959"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-28T04:57:32Z",
+              "createdAt": "2026-07-29T05:15:54Z",
               "event": "push",
-              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
-              "id": 30330202714,
+              "headSha": "9693cb99694338e72c15d0ffbb87b5a1c5bbf16a",
+              "id": 30424570365,
               "lifecycle": "current",
               "name": "breadth-durability",
               "required": false,
@@ -1743,15 +1889,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-28T04:58:19Z",
-              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202714"
+              "updatedAt": "2026-07-29T05:16:42Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30424570365"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-28T04:57:32Z",
+              "createdAt": "2026-07-29T05:15:54Z",
               "event": "push",
-              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
-              "id": 30330202700,
+              "headSha": "9693cb99694338e72c15d0ffbb87b5a1c5bbf16a",
+              "id": 30424570371,
               "lifecycle": "current",
               "name": "kimi3-observatory",
               "required": false,
@@ -1759,15 +1905,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-28T04:57:41Z",
-              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202700"
+              "updatedAt": "2026-07-29T05:16:11Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30424570371"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-28T04:57:32Z",
+              "createdAt": "2026-07-29T05:15:54Z",
               "event": "push",
-              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
-              "id": 30330202732,
+              "headSha": "9693cb99694338e72c15d0ffbb87b5a1c5bbf16a",
+              "id": 30424570357,
               "lifecycle": "current",
               "name": "model-floor",
               "required": false,
@@ -1775,15 +1921,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-28T04:57:48Z",
-              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202732"
+              "updatedAt": "2026-07-29T05:16:08Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30424570357"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-28T04:57:32Z",
+              "createdAt": "2026-07-29T05:15:54Z",
               "event": "push",
-              "headSha": "5c18ffeba4fbe5a9e902f505f5dc73b62686d887",
-              "id": 30330202702,
+              "headSha": "9693cb99694338e72c15d0ffbb87b5a1c5bbf16a",
+              "id": 30424570369,
               "lifecycle": "current",
               "name": "sovereign-desktop",
               "required": false,
@@ -1791,8 +1937,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-28T04:57:47Z",
-              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30330202702"
+              "updatedAt": "2026-07-29T05:16:11Z",
+              "url": "https://github.com/BigBirdReturns/tier-bench/actions/runs/30424570369"
             }
           ]
         }
@@ -1810,17 +1956,9 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_required_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907615"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30465548078"
           ],
           "summary": "BigBirdReturns/axm-tools: current scheduled observer Organ evolution observe + deploy is in_progress."
-        },
-        {
-          "code": "workflow_advisory_pending",
-          "severity": "context",
-          "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907669"
-          ],
-          "summary": "BigBirdReturns/axm-tools: current publication job PTA tracker fetch + deploy is pending."
         }
       ],
       "localObservations": [],
@@ -1828,7 +1966,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
       "repositories": [
         {
           "archived": false,
-          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/8108b8d5f05e9b5c5e5ca1e4ce2e09d0c0e943cc",
+          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/826a6795b91e62d7aea69165d8bae80d1e52eb91",
           "defaultBranch": "main",
           "findings": [
             {
@@ -1841,30 +1979,22 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_required_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907615"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30465548078"
               ],
               "summary": "BigBirdReturns/axm-tools: current scheduled observer Organ evolution observe + deploy is in_progress."
-            },
-            {
-              "code": "workflow_advisory_pending",
-              "severity": "context",
-              "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907669"
-              ],
-              "summary": "BigBirdReturns/axm-tools: current publication job PTA tracker fetch + deploy is pending."
             }
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-tools",
           "headAgeDays": 0,
-          "headAt": "2026-07-28T17:00:26Z",
-          "headSha": "8108b8d5f05e9b5c5e5ca1e4ce2e09d0c0e943cc",
+          "headAt": "2026-07-29T14:41:56Z",
+          "headSha": "826a6795b91e62d7aea69165d8bae80d1e52eb91",
           "latestTag": "archive/claude/session-planning-1h0xlw",
           "license": null,
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 15,
+              "ageDays": 16,
               "baseRef": "main",
               "createdAt": "2026-07-12T22:36:48Z",
               "draft": true,
@@ -1874,6 +2004,18 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "title": "identity: capture sprite-site residue and divergent cephalopod proofs",
               "updatedAt": "2026-07-12T22:36:48Z",
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/14"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "main",
+              "createdAt": "2026-07-29T04:53:39Z",
+              "draft": true,
+              "headRef": "contract/action-player-floor-v1",
+              "headSha": "daadc8e03fff92ec55e97295a5b4aede3812f34c",
+              "number": 39,
+              "title": "Adopt the consolidated Action Player Floor inspection contract",
+              "updatedAt": "2026-07-29T04:58:22Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/pull/39"
             }
           ],
           "scopePath": null,
@@ -2035,10 +2177,10 @@ window.AXM_ORGAN_OBSERVATIONS = {
             },
             {
               "conclusion": null,
-              "createdAt": "2026-07-28T17:00:30Z",
-              "event": "push",
-              "headSha": "8108b8d5f05e9b5c5e5ca1e4ce2e09d0c0e943cc",
-              "id": 30380907615,
+              "createdAt": "2026-07-29T15:22:40Z",
+              "event": "schedule",
+              "headSha": "826a6795b91e62d7aea69165d8bae80d1e52eb91",
+              "id": 30465548078,
               "lifecycle": "current",
               "name": "Organ evolution observe + deploy",
               "required": true,
@@ -2046,8 +2188,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The live census must continue to compile, validate, and publish bounded observations.",
               "roleSource": "declared",
               "status": "in_progress",
-              "updatedAt": "2026-07-28T17:00:35Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907615"
+              "updatedAt": "2026-07-29T15:22:45Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30465548078"
             },
             {
               "conclusion": "success",
@@ -2066,20 +2208,20 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907598"
             },
             {
-              "conclusion": null,
-              "createdAt": "2026-07-28T17:00:30Z",
-              "event": "push",
-              "headSha": "8108b8d5f05e9b5c5e5ca1e4ce2e09d0c0e943cc",
-              "id": 30380907669,
+              "conclusion": "success",
+              "createdAt": "2026-07-29T14:41:10Z",
+              "event": "schedule",
+              "headSha": "a70ed55eac3f48067685e567e1542d7fa855e4c4",
+              "id": 30462098336,
               "lifecycle": "current",
               "name": "PTA tracker fetch + deploy",
               "required": false,
               "role": "publication_job",
               "roleBasis": "The PTA tool's data publication is an advisory sibling lane, not the authority for every Tools surface.",
               "roleSource": "declared",
-              "status": "pending",
-              "updatedAt": "2026-07-28T17:00:31Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30380907669"
+              "status": "completed",
+              "updatedAt": "2026-07-29T14:42:00Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/30462098336"
             }
           ]
         }
@@ -2092,6 +2234,30 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "severity": "attention",
           "sourceRefs": [],
           "summary": "BigBirdReturns/axm-world exposes no repository or scoped license record."
+        },
+        {
+          "code": "workflow_unclassified_not_green",
+          "severity": "critical",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-world/actions/runs/30384118111"
+          ],
+          "summary": "BigBirdReturns/axm-world: .github/workflows/run-underdrain-authored-pilot-convergence.yml concluded failure and has no exact workflow-role declaration. It remains critical until classified."
+        },
+        {
+          "code": "workflow_unclassified_not_green",
+          "severity": "critical",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-world/actions/runs/30402034937"
+          ],
+          "summary": "BigBirdReturns/axm-world: Qualify UNDERDRAIN natural player plane trigger concluded failure and has no exact workflow-role declaration. It remains critical until classified."
+        },
+        {
+          "code": "workflow_unclassified_not_green",
+          "severity": "critical",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448406"
+          ],
+          "summary": "BigBirdReturns/axm-world: Run action semantic cue receiver convergence concluded failure and has no exact workflow-role declaration. It remains critical until classified."
         }
       ],
       "localObservations": [],
@@ -2099,7 +2265,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
       "repositories": [
         {
           "archived": false,
-          "commitUrl": "https://github.com/BigBirdReturns/axm-world/commit/d1f569ee41fa92ede64731e3a6a445be6cb9b080",
+          "commitUrl": "https://github.com/BigBirdReturns/axm-world/commit/17ddbe18eeefd29e05486aadbc08288b2f461b31",
           "defaultBranch": "main",
           "findings": [
             {
@@ -2107,19 +2273,43 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "severity": "attention",
               "sourceRefs": [],
               "summary": "BigBirdReturns/axm-world exposes no repository or scoped license record."
+            },
+            {
+              "code": "workflow_unclassified_not_green",
+              "severity": "critical",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-world/actions/runs/30384118111"
+              ],
+              "summary": "BigBirdReturns/axm-world: .github/workflows/run-underdrain-authored-pilot-convergence.yml concluded failure and has no exact workflow-role declaration. It remains critical until classified."
+            },
+            {
+              "code": "workflow_unclassified_not_green",
+              "severity": "critical",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-world/actions/runs/30402034937"
+              ],
+              "summary": "BigBirdReturns/axm-world: Qualify UNDERDRAIN natural player plane trigger concluded failure and has no exact workflow-role declaration. It remains critical until classified."
+            },
+            {
+              "code": "workflow_unclassified_not_green",
+              "severity": "critical",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448406"
+              ],
+              "summary": "BigBirdReturns/axm-world: Run action semantic cue receiver convergence concluded failure and has no exact workflow-role declaration. It remains critical until classified."
             }
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-world",
-          "headAgeDays": 1,
-          "headAt": "2026-07-26T23:08:29Z",
-          "headSha": "d1f569ee41fa92ede64731e3a6a445be6cb9b080",
+          "headAgeDays": 0,
+          "headAt": "2026-07-29T06:49:37Z",
+          "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
           "latestTag": "archive/codex/world-enterprise-client",
           "license": null,
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 3,
+              "ageDays": 4,
               "baseRef": "main",
               "createdAt": "2026-07-24T18:33:05Z",
               "draft": true,
@@ -2131,7 +2321,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/136"
             },
             {
-              "ageDays": 3,
+              "ageDays": 4,
               "baseRef": "main",
               "createdAt": "2026-07-25T06:38:21Z",
               "draft": true,
@@ -2143,7 +2333,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/146"
             },
             {
-              "ageDays": 1,
+              "ageDays": 2,
               "baseRef": "main",
               "createdAt": "2026-07-27T04:32:56Z",
               "draft": true,
@@ -2155,7 +2345,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/203"
             },
             {
-              "ageDays": 1,
+              "ageDays": 2,
               "baseRef": "qualify/action-runtime-closure-v1",
               "createdAt": "2026-07-27T05:17:29Z",
               "draft": true,
@@ -2167,7 +2357,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/205"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "qualify/action-runtime-closure-v1",
               "createdAt": "2026-07-27T17:51:48Z",
               "draft": true,
@@ -2179,19 +2369,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/206"
             },
             {
-              "ageDays": 0,
-              "baseRef": "integration/continuous-authority-estate-v1",
-              "createdAt": "2026-07-27T22:02:29Z",
-              "draft": true,
-              "headRef": "demo/underdrain-standalone-v1",
-              "headSha": "6b7f72c0e22ae2455b62f5c5c397949ebe8c4580",
-              "number": 207,
-              "title": "Ship UNDERDRAIN as a standalone axm-world action demo",
-              "updatedAt": "2026-07-28T05:41:44Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/pull/207"
-            },
-            {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "integration/continuous-authority-estate-v1",
               "createdAt": "2026-07-27T23:51:57Z",
               "draft": true,
@@ -2203,7 +2381,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/208"
             },
             {
-              "ageDays": 0,
+              "ageDays": 1,
               "baseRef": "qualify/action-runtime-closure-v1",
               "createdAt": "2026-07-28T03:31:33Z",
               "draft": true,
@@ -2211,20 +2389,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "headSha": "41811fb9b61390492ff30d0731d310b869c2e148",
               "number": 212,
               "title": "Mirror deterministic semantic objectives across World and Unity",
-              "updatedAt": "2026-07-28T16:51:25Z",
+              "updatedAt": "2026-07-28T17:12:02Z",
               "url": "https://github.com/BigBirdReturns/axm-world/pull/212"
-            },
-            {
-              "ageDays": 0,
-              "baseRef": "feature/action-semantic-objectives-v1",
-              "createdAt": "2026-07-28T04:26:31Z",
-              "draft": true,
-              "headRef": "qualify/world-semantic-objectives-v1",
-              "headSha": "cbbbc0a1b0a9ea2874d5d7c1074829fc691285ce",
-              "number": 213,
-              "title": "Qualify and publish the World runtime-1.1 semantic receiver",
-              "updatedAt": "2026-07-28T05:43:10Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/pull/213"
             },
             {
               "ageDays": 0,
@@ -2232,23 +2398,47 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "createdAt": "2026-07-28T16:54:49Z",
               "draft": true,
               "headRef": "demo/underdrain-authored-pilot-v2",
-              "headSha": "42e38433f7cbaa2ac18cd3f53193d5584138c6a9",
+              "headSha": "10f8a20a0cd0375aff97a853ae5175d5438745db",
               "number": 217,
-              "title": "Ship UNDERDRAIN as a continuous authored pilot",
-              "updatedAt": "2026-07-28T16:54:49Z",
+              "title": "Rebuild UNDERDRAIN representation and player-space acceptance",
+              "updatedAt": "2026-07-29T01:30:48Z",
               "url": "https://github.com/BigBirdReturns/axm-world/pull/217"
             },
             {
               "ageDays": 0,
               "baseRef": "demo/underdrain-authored-pilot-v2",
-              "createdAt": "2026-07-28T16:58:51Z",
+              "createdAt": "2026-07-28T21:36:02Z",
               "draft": true,
-              "headRef": "qualify/underdrain-authored-pilot-v2",
-              "headSha": "2cd22559613f28d3d48c1079f571b6c8aba2615d",
-              "number": 218,
-              "title": "Complete the continuous UNDERDRAIN authored pilot",
-              "updatedAt": "2026-07-28T16:58:51Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/pull/218"
+              "headRef": "feature/underdrain-natural-player-v1",
+              "headSha": "af21836a0d6f08db1ce9f40c50550bc5aa7eff1f",
+              "number": 226,
+              "title": "Replace the UNDERDRAIN diorama with a natural Unity player plane",
+              "updatedAt": "2026-07-29T08:24:13Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/pull/226"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "main",
+              "createdAt": "2026-07-28T21:42:22Z",
+              "draft": false,
+              "headRef": "carrier/qualify-underdrain-natural-player-v1",
+              "headSha": "9ddb06b74e6a802b365b3cdc7b8227363ada47e8",
+              "number": 227,
+              "title": "Run the one-shot natural player source qualification",
+              "updatedAt": "2026-07-28T21:45:34Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/pull/227"
+            },
+            {
+              "ageDays": 0,
+              "baseRef": "feature/underdrain-natural-player-v1",
+              "createdAt": "2026-07-29T15:14:30Z",
+              "draft": true,
+              "headRef": "feature/underdrain-unity6000-player-train-v1",
+              "headSha": "79bd48ad7e1517afe59218441bce03bfb29998ab",
+              "number": 234,
+              "title": "Qualify the real UNDERDRAIN Unity 6000 player product",
+              "updatedAt": "2026-07-29T15:17:53Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/pull/234"
             }
           ],
           "scopePath": null,
@@ -2261,7 +2451,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
             "license": false,
             "readme": true,
             "scopePath": null,
-            "scopedFileCount": 606,
+            "scopedFileCount": 609,
             "successionFiles": [
               "AGENTS.md",
               "CLAUDE.md"
@@ -2279,6 +2469,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               ".github/workflows/holder-estate.yml",
               ".github/workflows/local-estate-replication.yml",
               ".github/workflows/pages.yml",
+              ".github/workflows/qualify-underdrain-natural-player-trigger.yml",
+              ".github/workflows/run-action-semantic-cue-receiver-convergence.yml",
               ".github/workflows/supply-chain-evidence.yml",
               ".github/workflows/test.yml"
             ]
@@ -2368,11 +2560,27 @@ window.AXM_ORGAN_OBSERVATIONS = {
           },
           "workflows": [
             {
-              "conclusion": "success",
-              "createdAt": "2026-07-26T23:08:31Z",
+              "conclusion": "failure",
+              "createdAt": "2026-07-28T17:42:37Z",
               "event": "push",
-              "headSha": "d1f569ee41fa92ede64731e3a6a445be6cb9b080",
-              "id": 30224608800,
+              "headSha": "10a50721dc17f77d0b1441c645fbc9a769f2dc67",
+              "id": 30384118111,
+              "lifecycle": "current",
+              "name": ".github/workflows/run-underdrain-authored-pilot-convergence.yml",
+              "required": false,
+              "role": "unknown",
+              "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
+              "roleSource": "unclassified",
+              "status": "completed",
+              "updatedAt": "2026-07-28T17:42:37Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30384118111"
+            },
+            {
+              "conclusion": "success",
+              "createdAt": "2026-07-29T06:49:39Z",
+              "event": "push",
+              "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
+              "id": 30429448192,
               "lifecycle": "current",
               "name": "Asset release custody",
               "required": true,
@@ -2380,15 +2588,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "Governed runtime assets require current release custody.",
               "roleSource": "declared",
               "status": "completed",
-              "updatedAt": "2026-07-26T23:15:37Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30224608800"
+              "updatedAt": "2026-07-29T06:56:06Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448192"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-26T23:08:31Z",
+              "createdAt": "2026-07-29T06:49:39Z",
               "event": "push",
-              "headSha": "d1f569ee41fa92ede64731e3a6a445be6cb9b080",
-              "id": 30224608791,
+              "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
+              "id": 30429448253,
               "lifecycle": "current",
               "name": "Browser support and performance",
               "required": false,
@@ -2396,15 +2604,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-26T23:10:11Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30224608791"
+              "updatedAt": "2026-07-29T06:52:04Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448253"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-26T23:08:31Z",
+              "createdAt": "2026-07-29T06:49:39Z",
               "event": "push",
-              "headSha": "d1f569ee41fa92ede64731e3a6a445be6cb9b080",
-              "id": 30224608785,
+              "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
+              "id": 30429448228,
               "lifecycle": "current",
               "name": "Bundled product parity",
               "required": false,
@@ -2412,31 +2620,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-26T23:19:46Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30224608785"
+              "updatedAt": "2026-07-29T07:01:33Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448228"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-26T21:42:00Z",
+              "createdAt": "2026-07-29T06:49:39Z",
               "event": "push",
-              "headSha": "e0f8a47e1a31505159ba10eb521a2a5d66403fc1",
-              "id": 30221618410,
-              "lifecycle": "current",
-              "name": "Canon trace and current estate status",
-              "required": false,
-              "role": "unknown",
-              "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
-              "roleSource": "unclassified",
-              "status": "completed",
-              "updatedAt": "2026-07-26T21:43:03Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30221618410"
-            },
-            {
-              "conclusion": "success",
-              "createdAt": "2026-07-26T23:08:31Z",
-              "event": "push",
-              "headSha": "d1f569ee41fa92ede64731e3a6a445be6cb9b080",
-              "id": 30224608790,
+              "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
+              "id": 30429448287,
               "lifecycle": "current",
               "name": "Gate 6 Relief Circuit",
               "required": false,
@@ -2444,15 +2636,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-26T23:11:29Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30224608790"
+              "updatedAt": "2026-07-29T06:52:57Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448287"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-26T23:08:31Z",
+              "createdAt": "2026-07-29T06:49:39Z",
               "event": "push",
-              "headSha": "d1f569ee41fa92ede64731e3a6a445be6cb9b080",
-              "id": 30224608776,
+              "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
+              "id": 30429448316,
               "lifecycle": "current",
               "name": "Gate 7 neutral clean-room cartridge",
               "required": false,
@@ -2460,15 +2652,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-26T23:10:54Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30224608776"
+              "updatedAt": "2026-07-29T06:52:05Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448316"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-26T23:08:31Z",
+              "createdAt": "2026-07-29T06:49:39Z",
               "event": "push",
-              "headSha": "d1f569ee41fa92ede64731e3a6a445be6cb9b080",
-              "id": 30224608795,
+              "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
+              "id": 30429448180,
               "lifecycle": "current",
               "name": "Holder estate custody",
               "required": false,
@@ -2476,31 +2668,47 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-26T23:10:09Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30224608795"
+              "updatedAt": "2026-07-29T06:52:06Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448180"
             },
             {
-              "conclusion": "success",
-              "createdAt": "2026-07-26T17:09:51Z",
-              "event": "pull_request",
-              "headSha": "fa9e9930312ecf8ab8245263f463f9477abd7489",
-              "id": 30211996202,
+              "conclusion": "failure",
+              "createdAt": "2026-07-28T21:46:45Z",
+              "event": "push",
+              "headSha": "3ee7fafcf498615a913534226a7cc8f1f39c6a78",
+              "id": 30402034937,
               "lifecycle": "current",
-              "name": "Local estate replication",
+              "name": "Qualify UNDERDRAIN natural player plane trigger",
               "required": false,
               "role": "unknown",
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-26T17:33:25Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30211996202"
+              "updatedAt": "2026-07-28T21:47:20Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30402034937"
+            },
+            {
+              "conclusion": "failure",
+              "createdAt": "2026-07-29T06:49:39Z",
+              "event": "push",
+              "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
+              "id": 30429448406,
+              "lifecycle": "current",
+              "name": "Run action semantic cue receiver convergence",
+              "required": false,
+              "role": "unknown",
+              "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
+              "roleSource": "unclassified",
+              "status": "completed",
+              "updatedAt": "2026-07-29T06:50:07Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448406"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-26T23:08:31Z",
+              "createdAt": "2026-07-29T06:49:39Z",
               "event": "push",
-              "headSha": "d1f569ee41fa92ede64731e3a6a445be6cb9b080",
-              "id": 30224608786,
+              "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
+              "id": 30429448356,
               "lifecycle": "current",
               "name": "Supply-chain evidence",
               "required": true,
@@ -2508,31 +2716,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "World release products require exact provenance and dependency evidence.",
               "roleSource": "declared",
               "status": "completed",
-              "updatedAt": "2026-07-26T23:11:24Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30224608786"
+              "updatedAt": "2026-07-29T06:52:46Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448356"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-26T05:11:16Z",
+              "createdAt": "2026-07-29T06:49:39Z",
               "event": "push",
-              "headSha": "c09618dd834e9b34e578354e596c91fe984b7d7e",
-              "id": 30188973393,
-              "lifecycle": "current",
-              "name": "engine-drift",
-              "required": false,
-              "role": "unknown",
-              "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
-              "roleSource": "unclassified",
-              "status": "completed",
-              "updatedAt": "2026-07-26T05:11:28Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30188973393"
-            },
-            {
-              "conclusion": "success",
-              "createdAt": "2026-07-26T23:08:31Z",
-              "event": "push",
-              "headSha": "d1f569ee41fa92ede64731e3a6a445be6cb9b080",
-              "id": 30224608772,
+              "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
+              "id": 30429448265,
               "lifecycle": "current",
               "name": "pages",
               "required": false,
@@ -2540,15 +2732,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-07-26T23:09:21Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30224608772"
+              "updatedAt": "2026-07-29T06:50:42Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448265"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-07-26T23:08:32Z",
+              "createdAt": "2026-07-29T06:49:39Z",
               "event": "push",
-              "headSha": "d1f569ee41fa92ede64731e3a6a445be6cb9b080",
-              "id": 30224609073,
+              "headSha": "17ddbe18eeefd29e05486aadbc08288b2f461b31",
+              "id": 30429448337,
               "lifecycle": "current",
               "name": "test",
               "required": true,
@@ -2556,8 +2748,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The ordinary World source suite is the baseline receiver gate.",
               "roleSource": "declared",
               "status": "completed",
-              "updatedAt": "2026-07-26T23:09:42Z",
-              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30224609073"
+              "updatedAt": "2026-07-29T06:50:50Z",
+              "url": "https://github.com/BigBirdReturns/axm-world/actions/runs/30429448337"
             }
           ]
         }
@@ -2574,7 +2766,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
     },
     "sourcesFormat": "axm-organ-sources/1"
   },
-  "sourceDigest": "organobs1_957cd6df34ed094937f80957b132b0633e067c70962c7f1dea6b9831e36dade9",
+  "sourceDigest": "organobs1_0b5dc7f45f5fdb4f0a291985a947f9c6cfa9031a5223c177c87be9ff4c8ef819",
   "unavailable": [
     {
       "error": "GitHub HTTP 404 for /repos/BigBirdReturns/axm-bloodstream: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/repos#get-a-repository\",\"status\":\"404\"}",
