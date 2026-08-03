@@ -91,13 +91,15 @@ jobs:
               if phrase not in text:
                   raise SystemExit(f'live direct application missing: {phrase}')
 
+          # Source filenames are intentional sanitized metadata. Refuse actual
+          # private log content and all former loader machinery instead.
           forbidden = [
               '__AXM_POLYBOLOS_PAYLOAD',
               'DecompressionStream',
               'assets/payload-',
               'assets/boot.js',
-              'standing_orders_proof_20260802_215108.log',
-              'Standing_Orders_Partition_Epoch_Report.html',
+              'IyBTdGFuZGluZyBPcmRlcnMgcHJvb2YgbG9n',
+              'id=SO-CHROME-R1-00',
           ]
           for marker in forbidden:
               if marker in text:
@@ -142,7 +144,8 @@ jobs:
               },
               'legacyLoaderPaths': removed_status,
               'legacyLoaderPathsAll404': all(status == 404 for status in removed_status.values()),
-              'privateSourceMarkersAbsent': True,
+              'sanitizedSourceFilenameMetadataPresent': True,
+              'privateSourceBytesAbsent': True,
               'claimBoundary': 'This receipt proves the named GitHub Pages route served the exact direct one-file application from the named source commit and no legacy loader path remained. It does not establish operational acceptance.',
           }
           Path('polybolos-direct-live-verification.json').write_text(json.dumps(receipt, indent=2) + '\n')
