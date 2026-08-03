@@ -10,7 +10,7 @@ a year and still be working when you come back.
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
-| [`polybolos/`](polybolos/) | Stable source-bound evidence contract for denied communications: records the requested handoff as complete, preserves the bounded fifteen-decision scenario as a permanent pass, accepts later evidence locally, and offers optional versioned qualification plans without retrospective scoring | [static evidence surface](https://bigbirdreturns.github.io/axm-tools/polybolos/) — sanitized public cartridge, explicit private-source opt-in |
+| [`polybolos/`](polybolos/) | Stable source-bound evidence contract for denied communications: records the requested handoff as complete, preserves the bounded fifteen-decision scenario as a permanent pass, accepts later evidence locally, and offers optional versioned qualification plans without retrospective scoring | [one-file evidence tool](https://bigbirdreturns.github.io/axm-tools/polybolos/) — direct standalone page, sanitized public cartridge, explicit private-source opt-in |
 | [`acceptance.html`](acceptance.html) | OSW-ready physical-availability and evidence challenge: runs synthetic inventory, maintenance, and due-in surfaces locally, then accepts ordinary sponsor exports without transmitting them | [standalone demonstration](https://bigbirdreturns.github.io/axm-tools/acceptance.html) — one HTML file, zero network requests |
 | [`organ-evolution/`](organ-evolution/) | Evaluate organ anatomy and candidate evolutions against function, authority, evidence, actors, migration, stress, and succession without a backend | [static workbench](https://bigbirdreturns.github.io/axm-tools/organ-evolution/) |
 | [`pta-tracker/`](pta-tracker/) | District-first legislation watch for an Arcadia USD K-6 PTA: nightly fetch, relevance filter, one-click monthly board report | [static page](https://bigbirdreturns.github.io/axm-tools/pta-tracker/) + nightly Action |
@@ -27,12 +27,22 @@ the tool layout, so don't try to fit them into it.
 |------|------------|---------|
 | [`identity/`](identity/) | The AXM / SCG identity system: the pixel-dandelion mark, its four-token palette and type, frozen release bundles, and the provenance law (`SCG_MARK_CONSTITUTION.md`) that governs every rendering | [live showcase](https://bigbirdreturns.github.io/axm-tools/identity/) — self-contained page, no Action |
 
-`identity/` is deliberately **not** a tool: no `scripts/`, no `data/`, no
-workflow. Its `index.html` is a read-only showcase that renders the mark
-live from the canonical source (`identity/scg/source/scg-pixel-mark.js`) —
-it never redraws it. The rules live in the constitution; treat frozen
-`releases/` bundles as immutable (a change is a new `vX`, never an edit in
-place).
+`identity/` is deliberately **not** a tool: no workflow, no `data/`, deliberately. Its internal law is `identity/scg/SCG_MARK_CONSTITUTION.md` — read it before touching anything there. The rules that generalize to any future reference area:
+
+- **A frozen release is never edited after freeze** — not even to fix
+  errors. The frozen copy preserves the ratified state; a change is a new
+  `vX/` folder. (Current: `SCG-Identity-v3.1` is the deployment
+  reference; `v3.0` is the ratified baseline beneath it.)
+- **When a living doc contradicts reality, fix the doc** with a dated,
+  string-only note. **When reality outgrows a frozen record, cut a new
+  frozen version.** Never the reverse in either case.
+- The identity docs reference paths from a larger axm.tools monorepo
+  (a root-level `scg-pixel-mark.js`, `/public/assets/scg/`) that do not
+  exist in this repo. This is known and reconciled — see the "Deployment
+  scope" sections. Do not "fix" those paths to match this repo.
+- The mark is rendered live from
+  `identity/scg/source/scg-pixel-mark.js`. Never copy it elsewhere in
+  this repo, never redraw the mark.
 
 ## The shape of a tool
 
