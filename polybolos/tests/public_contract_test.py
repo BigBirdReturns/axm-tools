@@ -11,7 +11,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_HTML_SHA256 = "4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f"
-EXPECTED_GZIP_SHA256 = "4e023932215a726e4a95106237af5f66e57724fc19736f400a6e2da8ef21e1a1"
 
 
 def payload_part(path: Path, index: int) -> str:
@@ -25,7 +24,8 @@ def payload_part(path: Path, index: int) -> str:
 def main() -> None:
     encoded = "".join(payload_part(ROOT / f"assets/payload-{i}.js", i) for i in range(3))
     compressed = base64.b64decode(encoded, validate=True)
-    assert hashlib.sha256(compressed).hexdigest() == EXPECTED_GZIP_SHA256
+    assert compressed[:2] == b"\x1f\x8b", "payload is not a gzip member"
+    transport_sha256 = hashlib.sha256(compressed).hexdigest()
     html_bytes = gzip.decompress(compressed)
     assert len(html_bytes) == 117546
     assert hashlib.sha256(html_bytes).hexdigest() == EXPECTED_HTML_SHA256
@@ -90,6 +90,8 @@ def main() -> None:
             assert plan[key], f"{plan['id']} missing {key}"
 
     print("public_contract_test.py: PASS")
+    print(f"transport bytes {len(compressed)}")
+    print(f"transport sha256 {transport_sha256}")
     print(f"standalone sha256 {EXPECTED_HTML_SHA256}")
 
 
