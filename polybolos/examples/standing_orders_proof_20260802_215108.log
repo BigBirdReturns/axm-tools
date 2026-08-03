@@ -1,0 +1,59 @@
+# Standing Orders proof log
+# Format: [TIMESTAMP] | EVENT | DETAILS
+# Timestamp: local wall clock
+# Source: Ctrl+Alt+S / SO_CHROME_TEST (inject path — not Lattice auto-detect)
+#
+[2026-08-02 21:50:42.837] | PROOF_START | Comms UP, SO inactive, allowlist loaded: SMALL_UAS
+[2026-08-02 21:50:42.837] | INJECT_DOWN | Admin TEST ONLY inject path (not Lattice auto-detect)
+[2026-08-02 21:50:42.837] | COMMS_STATUS | DOWN (inject)
+[2026-08-02 21:50:42.837] | SO_ACTIVATED | standing_orders_active=true, engagement_mode=AUTO
+[2026-08-02 21:50:42.860] | THREAT_FED | id=SO-CHROME-R1-00, class=SMALL_UAS, in_allowlist=true, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:42.866] | DECISION | threat=SMALL_UAS, decision=AUTHORIZE, standing_orders_active=true
+[2026-08-02 21:50:42.866] | AUTH_COUNT | 1
+[2026-08-02 21:50:44.351] | THREAT_FED | id=SO-CHROME-R1-01, class=SMALL_UAS, in_allowlist=true, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:44.378] | DECISION | threat=SMALL_UAS, decision=AUTHORIZE, standing_orders_active=true
+[2026-08-02 21:50:44.378] | AUTH_COUNT | 2
+[2026-08-02 21:50:45.856] | THREAT_FED | id=SO-CHROME-R1-02, class=SMALL_UAS, in_allowlist=true, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:45.883] | DECISION | threat=SMALL_UAS, decision=AUTHORIZE, standing_orders_active=true
+[2026-08-02 21:50:45.883] | AUTH_COUNT | 3
+[2026-08-02 21:50:47.363] | THREAT_FED | id=SO-CHROME-R1-03, class=SMALL_UAS, in_allowlist=true, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:47.390] | DECISION | threat=SMALL_UAS, decision=AUTHORIZE, standing_orders_active=true
+[2026-08-02 21:50:47.390] | AUTH_COUNT | 4
+[2026-08-02 21:50:48.871] | THREAT_FED | id=SO-CHROME-R1-04, class=SMALL_UAS, in_allowlist=true, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:48.897] | DECISION | threat=SMALL_UAS, decision=AUTHORIZE, standing_orders_active=true
+[2026-08-02 21:50:48.897] | AUTH_COUNT | 5
+[2026-08-02 21:50:50.385] | THREAT_FED | id=SO-CHROME-R1-05, class=SMALL_UAS, in_allowlist=true, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:50.399] | DECISION | threat=SMALL_UAS, decision=AUTHORIZE, standing_orders_active=true
+[2026-08-02 21:50:50.399] | AUTH_COUNT | 6
+[2026-08-02 21:50:51.889] | THREAT_FED | id=SO-CHROME-R1-06, class=SMALL_UAS, in_allowlist=true, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:51.901] | DECISION | threat=SMALL_UAS, decision=AUTHORIZE, standing_orders_active=true
+[2026-08-02 21:50:51.901] | AUTH_COUNT | 7
+[2026-08-02 21:50:53.397] | THREAT_FED | id=SO-CHROME-R1-07, class=SMALL_UAS, in_allowlist=true, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:53.421] | DECISION | threat=SMALL_UAS, decision=AUTHORIZE, standing_orders_active=true
+[2026-08-02 21:50:53.421] | AUTH_COUNT | 8
+[2026-08-02 21:50:54.924] | THREAT_FED | id=SO-CHROME-R1-08, class=SMALL_UAS, in_allowlist=true, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:54.953] | DECISION | threat=SMALL_UAS, decision=AUTHORIZE, standing_orders_active=true
+[2026-08-02 21:50:54.953] | AUTH_COUNT | 9
+[2026-08-02 21:50:56.449] | THREAT_FED | id=SO-CHROME-R1-09, class=SMALL_UAS, in_allowlist=true, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:56.478] | DECISION | threat=SMALL_UAS, decision=AUTHORIZE, standing_orders_active=true
+[2026-08-02 21:50:56.478] | AUTH_COUNT | 10
+[2026-08-02 21:50:57.970] | THREAT_FED | id=SO-CHROME-R1-10, class=MEDIUM_UAS, in_allowlist=false, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:57.997] | DECISION | threat=MEDIUM_UAS, decision=SAFE_DENY, standing_orders_active=true
+[2026-08-02 21:50:57.997] | SAFE_DENY_COUNT | 1
+[2026-08-02 21:50:59.495] | THREAT_FED | id=SO-CHROME-R1-11, class=MEDIUM_UAS, in_allowlist=false, source=inject/SO_CHROME_TEST
+[2026-08-02 21:50:59.521] | DECISION | threat=MEDIUM_UAS, decision=SAFE_DENY, standing_orders_active=true
+[2026-08-02 21:50:59.521] | SAFE_DENY_COUNT | 2
+[2026-08-02 21:51:01.017] | THREAT_FED | id=SO-CHROME-R1-12, class=MEDIUM_UAS, in_allowlist=false, source=inject/SO_CHROME_TEST
+[2026-08-02 21:51:01.018] | DECISION | threat=MEDIUM_UAS, decision=SAFE_DENY, standing_orders_active=true
+[2026-08-02 21:51:01.019] | SAFE_DENY_COUNT | 3
+[2026-08-02 21:51:02.546] | THREAT_FED | id=SO-CHROME-R1-13, class=MEDIUM_UAS, in_allowlist=false, source=inject/SO_CHROME_TEST
+[2026-08-02 21:51:02.547] | DECISION | threat=MEDIUM_UAS, decision=SAFE_DENY, standing_orders_active=true
+[2026-08-02 21:51:02.547] | SAFE_DENY_COUNT | 4
+[2026-08-02 21:51:04.054] | THREAT_FED | id=SO-CHROME-R1-14, class=MEDIUM_UAS, in_allowlist=false, source=inject/SO_CHROME_TEST
+[2026-08-02 21:51:04.055] | DECISION | threat=MEDIUM_UAS, decision=SAFE_DENY, standing_orders_active=true
+[2026-08-02 21:51:04.055] | SAFE_DENY_COUNT | 5
+[2026-08-02 21:51:08.342] | INJECT_UP | Admin TEST ONLY inject path, restored_comms=UP
+[2026-08-02 21:51:08.342] | COMMS_STATUS | UP (inject)
+[2026-08-02 21:51:08.342] | SO_DEACTIVATED | standing_orders_active=false
+[2026-08-02 21:51:08.342] | RECONCILE_ACK | last_ack=15, so_period_cleared=0, source=inject
+[2026-08-02 21:51:08.342] | PROOF_END | Total SO-period: 26s, AUTH: 10, SAFE_DENY: 5
