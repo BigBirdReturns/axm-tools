@@ -1,0 +1,157 @@
+name: TEMP Polybolos direct live verification
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/temp-polybolos-direct-live-verification.yml
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Compare the live route with the exact direct application
+        env:
+          LIVE_URL: https://bigbirdreturns.github.io/axm-tools/polybolos/index.html
+          EXPECTED_SOURCE_COMMIT: e65e71262f91e29c78b48eed3383c28078ae43ee
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import os
+          import time
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from urllib.error import HTTPError
+          from urllib.request import Request, urlopen
+
+          live_url = os.environ['LIVE_URL']
+          expected_source = os.environ['EXPECTED_SOURCE_COMMIT']
+          local_path = Path('polybolos/index.html')
+          local = local_path.read_bytes()
+          expected_sha = '4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f'
+          if len(local) != 117546 or hashlib.sha256(local).hexdigest() != expected_sha:
+              raise SystemExit('local direct application identity mismatch')
+
+          deployment = json.loads(Path('.github/pages-deployment.json').read_text())
+          if deployment.get('source_sha') != expected_source:
+              raise SystemExit(f"deployment receipt names {deployment.get('source_sha')}, expected {expected_source}")
+
+          def fetch(url: str) -> bytes:
+              separator = '&' if '?' in url else '?'
+              req = Request(
+                  f'{url}{separator}receipt={time.time_ns()}',
+                  headers={
+                      'User-Agent': 'axm-tools-polybolos-direct-live-verifier/1',
+                      'Cache-Control': 'no-cache',
+                      'Pragma': 'no-cache',
+                  },
+              )
+              with urlopen(req, timeout=30) as response:
+                  if response.status != 200:
+                      raise RuntimeError(f'{url} returned HTTP {response.status}')
+                  return response.read()
+
+          deadline = time.monotonic() + 420
+          last = 'not fetched'
+          while time.monotonic() < deadline:
+              try:
+                  live = fetch(live_url)
+                  last = f"bytes={len(live)} sha256={hashlib.sha256(live).hexdigest()}"
+                  if live == local:
+                      break
+              except Exception as error:
+                  last = f'{type(error).__name__}: {error}'
+              time.sleep(5)
+          else:
+              raise SystemExit('live route did not converge to the exact direct application: ' + last)
+
+          text = live.decode('utf-8')
+          required = [
+              'polybolos-evidence-contract/2.0.0',
+              'FIRST DATA HANDOFF · COMPLETE',
+              'MARK HANDOFF · COMPLETE',
+              'Load evidence',
+              'Analyze selected files',
+              'Export frozen plan JSON',
+              'Show', 'Receipt', 'Evidence', 'Improve', 'Intake', 'AXM',
+          ]
+          for phrase in required:
+              if phrase not in text:
+                  raise SystemExit(f'live direct application missing: {phrase}')
+
+          forbidden = [
+              '__AXM_POLYBOLOS_PAYLOAD',
+              'DecompressionStream',
+              'assets/payload-',
+              'assets/boot.js',
+              'standing_orders_proof_20260802_215108.log',
+              'Standing_Orders_Partition_Epoch_Report.html',
+          ]
+          for marker in forbidden:
+              if marker in text:
+                  raise SystemExit(f'forbidden live marker: {marker}')
+
+          removed = [
+              'https://bigbirdreturns.github.io/axm-tools/polybolos/LOADER_MANIFEST.json',
+              'https://bigbirdreturns.github.io/axm-tools/polybolos/assets/boot.js',
+              'https://bigbirdreturns.github.io/axm-tools/polybolos/assets/payload-0.js',
+              'https://bigbirdreturns.github.io/axm-tools/polybolos/assets/payload-1.js',
+              'https://bigbirdreturns.github.io/axm-tools/polybolos/assets/payload-1a.js',
+              'https://bigbirdreturns.github.io/axm-tools/polybolos/assets/payload-1b.js',
+              'https://bigbirdreturns.github.io/axm-tools/polybolos/assets/payload-1c.js',
+              'https://bigbirdreturns.github.io/axm-tools/polybolos/assets/payload-1d.js',
+              'https://bigbirdreturns.github.io/axm-tools/polybolos/assets/payload-2.js',
+          ]
+          removed_status = {}
+          for url in removed:
+              req = Request(f'{url}?receipt={time.time_ns()}', headers={'User-Agent': 'axm-tools-polybolos-direct-live-verifier/1'})
+              try:
+                  with urlopen(req, timeout=30) as response:
+                      removed_status[url] = response.status
+              except HTTPError as error:
+                  removed_status[url] = error.code
+              if removed_status[url] != 404:
+                  raise SystemExit(f'legacy loader artifact remains live: {url} -> {removed_status[url]}')
+
+          receipt = {
+              'schema': 'axm-polybolos-direct-live-verification/1',
+              'status': 'pass',
+              'checkedAt': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+              'sourceCommit': expected_source,
+              'deploymentRunId': deployment.get('run_id'),
+              'deployedAt': deployment.get('deployed_at'),
+              'liveUrl': live_url,
+              'directApplication': {
+                  'bytes': len(live),
+                  'sha256': hashlib.sha256(live).hexdigest(),
+                  'matchedMainByteForByte': live == local,
+                  'inlineApplication': True,
+                  'networkRuntimeDependency': False,
+              },
+              'legacyLoaderPaths': removed_status,
+              'legacyLoaderPathsAll404': all(status == 404 for status in removed_status.values()),
+              'privateSourceMarkersAbsent': True,
+              'claimBoundary': 'This receipt proves the named GitHub Pages route served the exact direct one-file application from the named source commit and no legacy loader path remained. It does not establish operational acceptance.',
+          }
+          Path('polybolos-direct-live-verification.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps(receipt, indent=2))
+          PY
+
+      - name: Retain the live verification receipt
+        uses: actions/upload-artifact@v7
+        with:
+          name: polybolos-direct-live-verification
+          path: polybolos-direct-live-verification.json
+          if-no-files-found: error
