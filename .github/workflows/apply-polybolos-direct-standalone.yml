@@ -1,0 +1,403 @@
+name: apply-polybolos-direct-standalone
+
+on:
+  push:
+    branches:
+      - fix/polybolos-direct-standalone
+    paths:
+      - .github/workflows/apply-polybolos-direct-standalone.yml
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-polybolos-direct-standalone
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact branch head
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up validation runtimes
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Reconstruct the exact uploaded standalone and make it the page
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = "fix/polybolos-direct-standalone"
+          python - <<'PY'
+          import base64
+          import gzip
+          import hashlib
+          import json
+          import re
+          import shutil
+          from pathlib import Path
+
+          root = Path('polybolos')
+          manifest = json.loads((root / 'LOADER_MANIFEST.json').read_text())
+          expected_parts = {
+              'boot.js',
+              'payload-0.js',
+              'payload-1.js',
+              'payload-1a.js',
+              'payload-1b.js',
+              'payload-1c.js',
+              'payload-1d.js',
+              'payload-2.js',
+          }
+          observed_parts = {p.name for p in (root / 'assets').iterdir() if p.is_file()}
+          if observed_parts != expected_parts:
+              raise SystemExit(f'unexpected legacy asset inventory: {sorted(observed_parts)}')
+
+          assignment = re.compile(r"globalThis\.__AXM_POLYBOLOS_PAYLOAD\[(\d+)\]='([^']*)';")
+          parts = {}
+          for row in manifest['payload']['parts']:
+              text = (root / row['path']).read_text(encoding='utf-8')
+              match = assignment.search(text)
+              if not match:
+                  raise SystemExit(f"payload assignment missing in {row['path']}")
+              index = int(match.group(1))
+              value = match.group(2)
+              if index != row['arrayIndex']:
+                  raise SystemExit(f"payload index mismatch in {row['path']}")
+              if len(value) != row['base64Characters']:
+                  raise SystemExit(f"payload length mismatch in {row['path']}")
+              parts[index] = value
+
+          encoded = ''.join(parts[index] for index in manifest['payload']['transportOrder'])
+          compressed = base64.b64decode(encoded, validate=True)
+          if len(compressed) != 32620:
+              raise SystemExit('unexpected compressed byte count')
+          if hashlib.sha256(compressed).hexdigest() != '4e023932215a726e4a95106237af5f66e57724fc19736f400a6e2da8ef21e1a1':
+              raise SystemExit('compressed identity mismatch')
+
+          standalone = gzip.decompress(compressed)
+          if len(standalone) != 117546:
+              raise SystemExit('unexpected standalone byte count')
+          if hashlib.sha256(standalone).hexdigest() != '4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f':
+              raise SystemExit('standalone identity mismatch')
+
+          (root / 'index.html').write_bytes(standalone)
+          shutil.rmtree(root / 'assets')
+          (root / 'LOADER_MANIFEST.json').unlink()
+          print('materialized direct standalone:', len(standalone), hashlib.sha256(standalone).hexdigest())
+          PY
+
+      - name: Replace loader-specific qualification with direct-file qualification
+        run: |
+          set -euo pipefail
+          cat > polybolos/tests/public_contract_test.py <<'PY'
+          #!/usr/bin/env python3
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import re
+          from pathlib import Path
+
+          ROOT = Path(__file__).resolve().parents[1]
+          EXPECTED_BYTES = 117_546
+          EXPECTED_SHA256 = '4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f'
+
+          def main() -> None:
+              path = ROOT / 'index.html'
+              data = path.read_bytes()
+              assert len(data) == EXPECTED_BYTES
+              assert hashlib.sha256(data).hexdigest() == EXPECTED_SHA256
+              html = data.decode('utf-8')
+
+              required = [
+                  'polybolos-evidence-contract/2.0.0',
+                  'FIRST DATA HANDOFF · COMPLETE',
+                  'MARK HANDOFF · COMPLETE',
+                  'The network disappears.',
+                  'The authority does not widen.',
+                  '“2 of 16” is not a score.',
+                  'No full qualification profile is selected.',
+                  'AVAILABLE PROSPECTIVELY',
+                  'NOT REQUESTED · NOT CLAIMED',
+                  'REFERENCE · NOT MARK SCORECARD',
+                  'Include original source bytes in private bundle',
+              ]
+              for phrase in required:
+                  assert phrase in html, f'missing required product language: {phrase}'
+
+              forbidden = [
+                  'ACCEPTANCE ELIGIBLE FALSE',
+                  'MARK AUTOMATIC STATUS       INCOMPLETE',
+                  'IyBTdGFuZGluZyBPcmRlcnMgcHJvb2YgbG9n',
+                  'id=SO-CHROME-R1-00',
+                  '__AXM_POLYBOLOS_PAYLOAD',
+                  'DecompressionStream',
+              ]
+              for phrase in forbidden:
+                  assert phrase not in html, f'forbidden public content: {phrase}'
+
+              assert not (ROOT / 'assets').exists()
+              assert not (ROOT / 'LOADER_MANIFEST.json').exists()
+              assert not (ROOT / 'examples/standing_orders_proof_20260802_215108.log').exists()
+              assert not (ROOT / 'examples/Standing_Orders_Partition_Epoch_Report.html').exists()
+
+              scripts = re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', html, re.I)
+              assert len(scripts) >= 4
+              assert not re.search(r'<script[^>]+src=', html, re.I)
+
+              receipt = json.loads((ROOT / 'data/mark-public-receipt.json').read_text(encoding='utf-8'))
+              assert receipt['publicRawBytesPackaged'] is False
+              assert receipt['requestedTransaction']['result'] == 'complete'
+              assert receipt['scenarioReceipt']['result'] == 'pass'
+              observed = receipt['scenarioReceipt']['observed']
+              assert observed == {
+                  'eventRecords': 54,
+                  'authorize': 10,
+                  'safeDeny': 5,
+                  'mappingDeviations': 0,
+                  'lastAck': 15,
+                  'partitionMs': 25505,
+                  'communications': ['UP', 'DOWN', 'UP'],
+                  'standingOrders': ['INACTIVE', 'ACTIVE', 'INACTIVE'],
+              }
+              statuses = {item['label']: item['status'] for item in receipt['tiers']}
+              assert statuses['Presentation integration'] == 'COMPLETE'
+              assert statuses['Source-bound evidence'] == 'COMPLETE FOR THIS HANDOFF'
+              assert statuses['Bounded scenario demonstration'] == 'PASS'
+              assert statuses['Claim-specific qualification'] == 'AVAILABLE PROSPECTIVELY'
+              assert statuses['Operational acceptance'] == 'NOT REQUESTED · NOT CLAIMED'
+
+              catalog = json.loads((ROOT / 'data/qualification-catalog.json').read_text(encoding='utf-8'))
+              assert 'no effect until it is selected' in catalog['rule'].lower()
+              assert len(catalog['plans']) >= 6
+              assert len({plan['id'] for plan in catalog['plans']}) == len(catalog['plans'])
+              for plan in catalog['plans']:
+                  for key in ('claim', 'requires', 'passes', 'excludes'):
+                      assert plan[key], f"{plan['id']} missing {key}"
+
+              print('public_contract_test.py: PASS')
+              print(f'direct bytes {len(data)}')
+              print(f'direct sha256 {EXPECTED_SHA256}')
+              print(f'inline scripts {len(scripts)}')
+
+          if __name__ == '__main__':
+              main()
+          PY
+
+          cat > .github/workflows/polybolos-contract.yml <<'YAML'
+          name: Polybolos stable evidence contract
+
+          on:
+            pull_request:
+              paths:
+                - "polybolos/**"
+                - ".github/workflows/polybolos-contract.yml"
+            push:
+              branches: [main]
+              paths:
+                - "polybolos/**"
+                - ".github/workflows/polybolos-contract.yml"
+            workflow_dispatch: {}
+
+          permissions:
+            contents: read
+
+          jobs:
+            contract:
+              runs-on: ubuntu-latest
+              steps:
+                - uses: actions/checkout@v6
+                - uses: actions/setup-python@v6
+                  with:
+                    python-version: "3.12"
+                - uses: actions/setup-node@v6
+                  with:
+                    node-version: "24"
+                - name: Validate the direct one-file public contract
+                  run: python polybolos/tests/public_contract_test.py
+                - name: Check every inline JavaScript block
+                  run: |
+                    python - <<'PY'
+                    import re
+                    from pathlib import Path
+                    html = Path('polybolos/index.html').read_text(encoding='utf-8')
+                    scripts = re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', html, re.I)
+                    if len(scripts) < 4:
+                        raise SystemExit('expected at least four inline scripts')
+                    root = Path('/tmp/polybolos-inline-scripts')
+                    root.mkdir(exist_ok=True)
+                    for index, script in enumerate(scripts):
+                        (root / f'{index:02d}.js').write_text(script, encoding='utf-8')
+                    print(f'extracted {len(scripts)} scripts')
+                    PY
+                    for script in /tmp/polybolos-inline-scripts/*.js; do node --check "$script"; done
+          YAML
+
+      - name: Correct documentation to name the actual one-file product
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          readme = Path('polybolos/README.md')
+          text = readme.read_text(encoding='utf-8')
+          text = text.replace(
+              '- **Offline app** is reconstructed from the committed static payload and can operate inside an authorized environment with zero network requests.',
+              '- **Offline app** is the committed `index.html` itself: one directly inspectable file that operates inside an authorized environment with zero network requests.'
+          )
+          text = text.replace(
+              'The public loader reconstructs a content-addressed one-file application from seven same-origin static transport fragments. `tests/public_contract_test.py` verifies the exact reconstructed SHA-256, required product language, receipt state, plan catalog, and public-custody boundary.',
+              'The public `index.html` is the content-addressed one-file application itself. `tests/public_contract_test.py` verifies its exact bytes and SHA-256, required product language, receipt state, plan catalog, inline-script inventory, and public-custody boundary.'
+          )
+          old = '''```bash
+          python polybolos/tests/public_contract_test.py
+          node --check polybolos/assets/boot.js
+          node --check polybolos/assets/payload-0.js
+          node --check polybolos/assets/payload-1.js
+          node --check polybolos/assets/payload-1a.js
+          node --check polybolos/assets/payload-1b.js
+          node --check polybolos/assets/payload-1c.js
+          node --check polybolos/assets/payload-1d.js
+          node --check polybolos/assets/payload-2.js
+          ```'''
+          new = '''```bash
+          python polybolos/tests/public_contract_test.py
+          # CI also extracts every inline <script> block from index.html
+          # and runs node --check on each block.
+          ```'''
+          if old not in text:
+              raise SystemExit('polybolos README validation block changed unexpectedly')
+          text = text.replace(old, new)
+          text = text.replace(
+              'Browser support for `DecompressionStream`, Web Crypto, local file APIs, Blob downloads, and unfamiliar vendor formats may change.',
+              'Browser support for Web Crypto, local file APIs, Blob downloads, and unfamiliar vendor formats may change.'
+          )
+          readme.write_text(text, encoding='utf-8')
+
+          root_readme = Path('README.md')
+          text = root_readme.read_text(encoding='utf-8')
+          text = text.replace(
+              '[static evidence surface](https://bigbirdreturns.github.io/axm-tools/polybolos/) — sanitized public cartridge, explicit private-source opt-in',
+              '[one-file evidence tool](https://bigbirdreturns.github.io/axm-tools/polybolos/) — direct standalone page, sanitized public cartridge, explicit private-source opt-in'
+          )
+          root_readme.write_text(text, encoding='utf-8')
+
+          continuity = Path('CONTINUITY.md')
+          text = continuity.read_text(encoding='utf-8')
+          marker = '- `acceptance.html` — the buyer-facing OSW equipment-evidence challenge:'
+          if '- `polybolos/` — the direct one-file evidence contract' not in text:
+              text = text.replace(marker, '- `polybolos/` — the direct one-file evidence contract for the completed\n  Mark handoff, bounded scenario receipt, local evidence intake, and prospective\n  claim plans. `polybolos/index.html` is the product, not a loader for another\n  hidden artifact; guarded by `polybolos/tests/public_contract_test.py`.\n' + marker)
+          continuity.write_text(text, encoding='utf-8')
+
+          claude = Path('CLAUDE.md')
+          text = claude.read_text(encoding='utf-8')
+          note = '''\n## polybolos/ (verified August 2026)\n\n- **`polybolos/index.html` is the actual one-file application.** Do not wrap it in\n  gzip/Base64 fragments or a reconstruction bootloader. The direct file is 117,546\n  bytes with SHA-256 `4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f`.\n- The public page is sanitized. Mark's original source bytes remain absent from the\n  current tree and enter a private export only through explicit local opt-in.\n'''
+          if '## polybolos/ (verified August 2026)' not in text:
+              text += note
+          claude.write_text(text, encoding='utf-8')
+          PY
+
+          cat > polybolos/VALIDATION.md <<'MD'
+          # Validation ledger
+
+          Release: `polybolos-evidence-contract/2.0.0`
+
+          ## Constitutional result
+
+          The public surface records Mark Brown’s presentation-integration transaction as `COMPLETE` and the bounded fifteen-decision allowlist scenario as `PASS`. It does not calculate a retrospective global gate score, mark the handoff acceptance-ineligible, or allow a later qualification plan to alter the completed receipt.
+
+          `CONSTITUTION.md` is the governing contract.
+
+          ## Source-bound result
+
+          The direct producer trace records 54 timestamped events, 15 decisions, 10 `AUTHORIZE` outcomes, 5 `SAFE_DENY` outcomes, zero observed mapping deviations, an exact 25,505 ms partition interval, communications restoration, Standing Orders deactivation, and acknowledgment through sequence 15.
+
+          The accompanying producer report supplies broader claims about authority, operator presence, local-link state, lease behavior, negative controls, and reconciliation. Those remain attributed claims unless a prospective plan is selected and its frozen evidence requirements are met.
+
+          ## Public application identity
+
+          The committed `polybolos/index.html` is the public and offline application. It is served directly, with no build, payload reconstruction, Base64 transport, gzip decompression, external script, or automatic network request.
+
+          ```text
+          direct bytes    117,546
+          direct SHA-256  4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f
+          ```
+
+          The application contains the six coordinated views `Show`, `Receipt`, `Evidence`, `Improve`, `Intake`, and `AXM`.
+
+          ## Custody split
+
+          The current public tree and public runtime contain a sanitized normalized cartridge rather than Mark’s original source files. Public exports omit a `sources/` directory. Private exports include original source bytes only after explicit local opt-in.
+
+          Historical Git commits prior to this release are outside the current-tree guarantee and require a separate history-rewrite transaction if permanent purge is ever required.
+
+          ## Automated checks
+
+          `polybolos/tests/public_contract_test.py`:
+
+          - verifies the direct file’s exact byte count and SHA-256;
+          - requires the completed handoff and bounded scenario pass language;
+          - requires the anti-score and prospective-plan language;
+          - rejects prohibited global ineligibility language and loader machinery;
+          - rejects private raw-log markers;
+          - verifies the permanent receipt and optional plan catalog;
+          - confirms the former raw example paths and legacy loader files are absent.
+
+          CI extracts every inline JavaScript block from the direct HTML and runs `node --check` on each block.
+
+          The Pages artifact must be independently fetched after merge and compared with the same direct identity before the release is called deployed.
+          MD
+
+          cat >> polybolos/RELEASE_NOTES_2.0.0.md <<'MD'
+
+          ## Direct one-file publication correction
+
+          The public route now serves the exact 117,546-byte standalone application directly as `polybolos/index.html`. The temporary gzip/Base64 fragment transport and bootloader were removed. This changes no evidence result or user capability; it removes indirection and makes the application itself inspectable, portable, and identical to the offline handoff file.
+          MD
+
+          rm -f .github/workflows/apply-polybolos-direct-standalone.yml
+
+      - name: Qualify the exact direct-file product
+        run: |
+          set -euo pipefail
+          python polybolos/tests/public_contract_test.py
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path('polybolos/index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', html, re.I)
+          root = Path('/tmp/polybolos-inline-scripts')
+          root.mkdir(exist_ok=True)
+          for index, script in enumerate(scripts):
+              (root / f'{index:02d}.js').write_text(script, encoding='utf-8')
+          print(f'extracted {len(scripts)} scripts')
+          PY
+          for script in /tmp/polybolos-inline-scripts/*.js; do node --check "$script"; done
+          test ! -e polybolos/assets
+          test ! -e polybolos/LOADER_MANIFEST.json
+          test ! -e .github/workflows/apply-polybolos-direct-standalone.yml
+          git diff --check
+
+      - name: Commit the direct application under an exact branch lease
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Serve Polybolos as the direct one-file application"
+          python polybolos/tests/public_contract_test.py
+          test -z "$(git status --porcelain)"
+          remote_head="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | cut -f1)"
+          test "$remote_head" = "$GITHUB_SHA"
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
