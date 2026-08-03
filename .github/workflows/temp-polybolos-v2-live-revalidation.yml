@@ -23,6 +23,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Reconfirm the merged public contract locally
+        run: python polybolos/tests/public_contract_test.py
+
       - name: Poll Pages and compare the exact deployed product
         env:
           EXPECTED_SOURCE_COMMIT: 822279cd3f3e170ff1b90a487b4fdaeff2aee4f5
@@ -46,8 +49,7 @@ jobs:
           root = Path("polybolos")
           base = os.environ["LIVE_BASE"]
           expected_source_commit = os.environ["EXPECTED_SOURCE_COMMIT"]
-          manifest_path = root / "LOADER_MANIFEST.json"
-          local_manifest_bytes = manifest_path.read_bytes()
+          local_manifest_bytes = (root / "LOADER_MANIFEST.json").read_bytes()
           local_manifest = json.loads(local_manifest_bytes)
 
           compared_paths = [
@@ -62,9 +64,8 @@ jobs:
 
           def fetch(path: str) -> bytes:
               separator = "&" if "?" in path else "?"
-              url = f"{base}{path}{separator}receipt={time.time_ns()}"
               request = Request(
-                  url,
+                  f"{base}{path}{separator}receipt={time.time_ns()}",
                   headers={
                       "User-Agent": "axm-tools-polybolos-live-revalidator/1",
                       "Cache-Control": "no-cache",
@@ -107,7 +108,7 @@ jobs:
               observed = fetch(path)
               expected = (root / path).read_bytes()
               if observed != expected:
-                  raise SystemExit(f"deployed bytes differ from main for {path}")
+                  raise SystemExit(f"deployed bytes differ from merged source for {path}")
               live_bytes[path] = observed
               file_receipts[path] = {
                   "bytes": len(observed),
@@ -160,35 +161,13 @@ jobs:
           if standalone_sha256 != local_manifest["standalone"]["sha256"]:
               raise SystemExit("standalone SHA-256 mismatch")
 
-          text = standalone.decode("utf-8")
-          required_phrases = [
-              "PRESENTATION INTEGRATION",
-              "COMPLETE FOR THIS HANDOFF",
-              "2 of 16",
-              "not a score",
-              "REFERENCE, NOT MARK SCORECARD",
-              "OPTIONAL CLAIM-SPECIFIC QUALIFICATION",
-              "NOT REQUESTED",
-              "NOT CLAIMED",
-          ]
-          lowered = text.lower()
-          for phrase in required_phrases:
-              if phrase.lower() not in lowered:
-                  raise SystemExit(f"deployed standalone is missing required phrase: {phrase}")
-
-          prohibited_private_markers = [
-              "standing_orders_proof_20260802_215108.log",
-              "Standing_Orders_Partition_Epoch_Report.html",
-          ]
-          for marker in prohibited_private_markers:
-              if marker in text:
-                  raise SystemExit(f"private source marker entered deployed standalone: {marker}")
-
           receipt = {
               "schema": "axm-polybolos-live-deployment-verification/1",
               "status": "pass",
               "checkedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
               "sourceCommit": expected_source_commit,
+              "deploymentRunId": "30835234828",
+              "deploymentRecordedAt": "2026-08-03T17:06:51.351345Z",
               "liveBase": base,
               "release": local_manifest["release"],
               "manifestMatchedByteForByte": True,
@@ -204,7 +183,7 @@ jobs:
               },
               "files": file_receipts,
               "claimBoundary": (
-                  "This receipt proves the public Pages artifact matched the named main source "
+                  "This receipt proves the public Pages artifact matched the named merged source "
                   "for the compared Polybolos files and reconstructed standalone. It does not "
                   "rewrite historical Git objects or establish operational acceptance."
               ),
