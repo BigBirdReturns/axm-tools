@@ -1,49 +1,54 @@
-# AXM × Polybolos Partition Authority Surface
+# AXM × Polybolos
 
-This directory contains a self-contained browser surface for turning heterogeneous Standing Orders and communications-partition artifacts into a professional, evidence-bound presentation.
+`polybolos/` is a static, local-first evidence surface for turning producer-supplied Standing Orders and communications-partition artifacts into a professional source-bound demonstration, a permanent bounded-scenario receipt, and optional prospective qualification plans.
 
-The worked fixture is the supplied `SO_CHROME_TEST` transaction from 2 August 2026. It contains a direct event log and a narrative HTML report. The surface preserves both files independently, computes SHA-256 over their bytes, normalizes the event sequence, and distinguishes direct observations from report assertions, derived values, open gates, and conflicts.
+This release corrects the earlier denominator-substitution failure. Mark Brown’s first handoff is recorded as complete for the transaction actually requested, and the fifteen-decision allowlist scenario remains a pass for the claim it exercised. Later authority, operator, lease, restart, reconciliation, automatic-detection, and operational-acceptance plans remain available without retroactively grading the earlier work.
 
-## What the page does
+## Public front door
 
-`index.html` reconstructs the validated standalone entirely in the browser from same-origin static payload parts. The resulting application makes no network requests. It accepts logs, text, JSON, JSONL, CSV, TSV, HTML, XML, XLSX, XLSM, DOCX, PPTX, PDFs, images, ZIP archives, and unfamiliar binary files. Known formats receive embedded local parsing. Unknown content is retained as a source object with filename, media type, byte count, magic bytes, parser disposition, and SHA-256 rather than being rejected or assigned invented meaning.
+The public page opens with a sanitized normalized cartridge. It does not package Mark’s original log or report bytes. It shows:
 
-The surface generates five coordinated views:
+- the professional AXM × Polybolos argument;
+- the completed presentation-integration transaction;
+- the permanent source-bound scenario receipt;
+- observed, derived, asserted, open, and conflicting claims;
+- source provenance, test outcome, and qualification relation as separate dimensions;
+- an optional versioned qualification menu;
+- the independent 20,000-observation AXM campaign as a reference, never a Mark scorecard;
+- the common AXM mechanism connecting Polybolos and equipment readiness.
 
-- **Show** renders the professional authority-under-partition page.
-- **Scenarios** separates exercised transitions from described but unwitnessed controls.
-- **Evidence** exposes the source ledger, claim crosswalk, normalized events, and exact proof boundary.
-- **Intake** replaces the worked fixture with a new source set without editing the HTML.
-- **AXM** shows how the Polybolos adapter and the existing equipment-readiness adapter resolve to the same source-custody and claim-binding transaction.
+## Local intake
 
-The user can export normalized JSON, a new standalone HTML carrying the current evidence, or a portable ZIP containing the original sources, normalized evidence, manifest, checksum ledger, README, and reopening standalone.
+The **Intake** view reads and hashes files in the browser without transmitting them. Known text and structured formats receive local adapters. Other Office, PDF, image, archive, and unfamiliar binary formats remain admitted as source objects with identity and parser disposition rather than being discarded or assigned invented meaning.
 
-## Evidence states
+Imported HTML is treated as inert text and is never executed.
 
-- `OBSERVED`: directly carried by the loaded source records.
-- `ASSERTED`: present in narrative material but not in the direct event trace.
-- `DERIVED`: computed from source values with the mechanism named.
-- `OPEN`: a required witness or artifact has not been supplied.
-- `CONFLICT`: the loaded sources contain incompatible closure statements.
+When Mark loads his exact source pair locally, the application recognizes both SHA-256 identities and reconstructs the private source-bound cartridge. Other source sets receive a source-intake receipt and remain unqualified until a bounded claim or prospective plan is selected.
 
-## Worked-fixture boundary
+## Exports
 
-The direct log supports an administrator-injected communications transition, Standing Orders activation, ten in-allowlist `SMALL_UAS` authorizations, five out-of-allowlist `MEDIUM_UAS` safe denials, explicit restoration, deactivation, and acknowledgment through sequence 15.
+- **Receipt JSON** preserves the completed transaction, bounded claim, result, scope, and anti-goalpost law.
+- **Normalized evidence JSON** preserves claims, events, metrics, source identities, provenance, outcome, and scope.
+- **Public bundle** omits original source bytes.
+- **Private bundle** includes original bytes only after explicit local opt-in.
+- **Offline app** is reconstructed from the committed static payload and can operate inside an authorized environment with zero network requests.
 
-The supplied trace does not directly witness automatic Lattice detection, local-link state, operator presence, cryptographic authority, an issued and expired offline lease, process-restart retention, a node-signed journal, human disposition, operational deployment, targeting, engagement, or combat effectiveness. Narrative claims remain visible as assertions and do not overwrite that boundary.
+## Repository law
 
-## AXM boundary
+`CONSTITUTION.md` governs the product. A change that introduces a retrospective global score, allows a new plan to alter an earlier receipt, collapses evidence status into test outcome, or republishes private source bytes by default is a constitutional regression.
 
-This page is an intake, normalization, analysis, and presentation surface. It does not mint Genesis shards, issue command authority, actuate a system, write back to a source system, or convert a human-facing report into operational qualification. Accepted surfaces are candidates for promotion into AXM custody, sealing, detached verification, query, and replay.
+The public loader reconstructs a content-addressed one-file application from three same-origin static payload fragments. `tests/public_contract_test.py` verifies the exact reconstructed SHA-256, required product language, receipt state, plan catalog, and public-custody boundary.
 
-## Deployment
+## Validation
 
-The page has no build step, backend, account, API key, or third-party JavaScript dependency. GitHub Pages serves the local loader and payload parts; the reconstructed application makes no network requests. The Standalone control exports one HTML file for email, removable media, or authorized offline use.
-
-The public page is intended for synthetic, unclassified, or de-identified evidence. Controlled operational data should use the exported standalone only inside an authorized environment.
-
-Browser intake is bounded at 60 files, 128 MB per file, and 512 MB per batch to prevent a malformed or accidental source set from exhausting the tab.
+```bash
+python polybolos/tests/public_contract_test.py
+node --check polybolos/assets/boot.js
+node --check polybolos/assets/payload-0.js
+node --check polybolos/assets/payload-1.js
+node --check polybolos/assets/payload-2.js
+```
 
 ## What can rot
 
-Browser support for `DecompressionStream`, Office Open XML edge cases, new archive compression methods, and future Standing Orders event vocabularies may change. A parser failure must remain visible and fall back to source custody. It must never silently drop the file or promote an unsupported claim.
+Browser support for `DecompressionStream`, Web Crypto, local file APIs, Blob downloads, and unfamiliar vendor formats may change. A parser failure must stay visible, retain source custody, and leave unsupported claims open. It must never silently discard a source or infer operational meaning.
