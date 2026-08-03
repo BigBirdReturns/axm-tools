@@ -1,0 +1,40 @@
+{
+  "schema": "axm-static-standalone-loader/1",
+  "version": "1.1.0",
+  "standalone": {
+    "path": "AXM_Polybolos_Partition_Authority_Standalone.html",
+    "bytes": 119161,
+    "sha256": "e292cea1e66579858c22f9eb27f0cb7344ddc2c57f83c3bd011d1d0d140fde55"
+  },
+  "loader": {
+    "path": "index.html",
+    "bytes": 1753,
+    "sha256": "547d9cb078439093140dfd3f270a8e89939d200c59d467c581ec8cb6f6c4a8c0"
+  },
+  "boot": {
+    "path": "assets/boot.js",
+    "bytes": 1227,
+    "sha256": "af9bd53bb35cfb4d7dc5e8f257030d38f692c37d6661775b13bb603ac0213a89"
+  },
+  "payload": {
+    "encoding": "base64+gzip",
+    "compressed_bytes": 35703,
+    "parts": [
+      {
+        "path": "assets/payload-0.js",
+        "bytes": 16117,
+        "sha256": "d8ddf347cc3e5c7c0482e10c5f9ee4b98a8ddca162d5e5ee0ff37a4de6c3ea4b"
+      },
+      {
+        "path": "assets/payload-1.js",
+        "bytes": 16117,
+        "sha256": "9d5d5095c36e33ba456615baa542c2443af2fec9306c4bf317e728123381e0be"
+      },
+      {
+        "path": "assets/payload-2.js",
+        "bytes": 15721,
+        "sha256": "6a08d9d7b83366e5de196cb5c3870d261bf155ade30762b170c2ab18550b395c"
+      }
+    ]
+  }
+}
