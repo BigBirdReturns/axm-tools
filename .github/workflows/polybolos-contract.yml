@@ -19,22 +19,29 @@ jobs:
   contract:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: "22"
-      - name: Reconstruct and validate the public contract
+          node-version: "24"
+      - name: Validate the direct one-file public contract
         run: python polybolos/tests/public_contract_test.py
-      - name: Check loader JavaScript syntax
+      - name: Check every inline JavaScript block
         run: |
-          node --check polybolos/assets/boot.js
-          node --check polybolos/assets/payload-0.js
-          node --check polybolos/assets/payload-1.js
-          node --check polybolos/assets/payload-1a.js
-          node --check polybolos/assets/payload-1b.js
-          node --check polybolos/assets/payload-1c.js
-          node --check polybolos/assets/payload-1d.js
-          node --check polybolos/assets/payload-2.js
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          html = Path('polybolos/index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>', html, re.I)
+          if len(scripts) < 4:
+              raise SystemExit('expected at least four inline scripts')
+          root = Path('/tmp/polybolos-inline-scripts')
+          root.mkdir(exist_ok=True)
+          for index, script in enumerate(scripts):
+              (root / f'{index:02d}.js').write_text(script, encoding='utf-8')
+          print(f'extracted {len(scripts)} scripts')
+          PY
+          for script in /tmp/polybolos-inline-scripts/*.js; do node --check "$script"; done

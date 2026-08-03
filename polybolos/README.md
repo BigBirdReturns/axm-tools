@@ -31,28 +31,22 @@ When Mark loads his exact source pair locally, the application recognizes both S
 - **Normalized evidence JSON** preserves claims, events, metrics, source identities, provenance, outcome, and scope.
 - **Public bundle** omits original source bytes.
 - **Private bundle** includes original bytes only after explicit local opt-in.
-- **Offline app** is reconstructed from the committed static payload and can operate inside an authorized environment with zero network requests.
+- **Offline app** is the committed `index.html` itself: one directly inspectable file that operates inside an authorized environment with zero network requests.
 
 ## Repository law
 
 `CONSTITUTION.md` governs the product. A change that introduces a retrospective global score, allows a new plan to alter an earlier receipt, collapses evidence status into test outcome, or republishes private source bytes by default is a constitutional regression.
 
-The public loader reconstructs a content-addressed one-file application from seven same-origin static transport fragments. `tests/public_contract_test.py` verifies the exact reconstructed SHA-256, required product language, receipt state, plan catalog, and public-custody boundary.
+The public `index.html` is the content-addressed one-file application itself. `tests/public_contract_test.py` verifies its exact bytes and SHA-256, required product language, receipt state, plan catalog, inline-script inventory, and public-custody boundary.
 
 ## Validation
 
 ```bash
 python polybolos/tests/public_contract_test.py
-node --check polybolos/assets/boot.js
-node --check polybolos/assets/payload-0.js
-node --check polybolos/assets/payload-1.js
-node --check polybolos/assets/payload-1a.js
-node --check polybolos/assets/payload-1b.js
-node --check polybolos/assets/payload-1c.js
-node --check polybolos/assets/payload-1d.js
-node --check polybolos/assets/payload-2.js
+# CI also extracts every inline <script> block from index.html
+# and runs node --check on each block.
 ```
 
 ## What can rot
 
-Browser support for `DecompressionStream`, Web Crypto, local file APIs, Blob downloads, and unfamiliar vendor formats may change. A parser failure must stay visible, retain source custody, and leave unsupported claims open. It must never silently discard a source or infer operational meaning.
+Browser support for Web Crypto, local file APIs, Blob downloads, and unfamiliar vendor formats may change. A parser failure must stay visible, retain source custody, and leave unsupported claims open. It must never silently discard a source or infer operational meaning.

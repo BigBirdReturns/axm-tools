@@ -1,48 +1,22 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import base64
-import gzip
 import hashlib
 import json
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_HTML_SHA256 = "4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f"
-EXPECTED_GZIP_SHA256 = "4e023932215a726e4a95106237af5f66e57724fc19736f400a6e2da8ef21e1a1"
-PAYLOAD_PARTS = [
-    ("payload-0.js", 0),
-    ("payload-1.js", 1),
-    ("payload-1a.js", 3),
-    ("payload-1b.js", 4),
-    ("payload-1c.js", 5),
-    ("payload-1d.js", 6),
-    ("payload-2.js", 2),
-]
-
-
-def payload_part(path: Path, index: int) -> str:
-    text = path.read_text(encoding="utf-8")
-    match = re.search(rf"__AXM_POLYBOLOS_PAYLOAD\[{index}\]='([^']*)';", text)
-    if not match:
-        raise AssertionError(f"payload part {index} is missing or malformed in {path.name}")
-    return match.group(1)
+EXPECTED_BYTES = 117_546
+EXPECTED_SHA256 = "4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f"
 
 
 def main() -> None:
-    encoded = "".join(payload_part(ROOT / "assets" / name, index) for name, index in PAYLOAD_PARTS)
-    compressed = base64.b64decode(encoded, validate=True)
-    assert len(compressed) == 32620
-    assert hashlib.sha256(compressed).hexdigest() == EXPECTED_GZIP_SHA256
-    html_bytes = gzip.decompress(compressed)
-    assert len(html_bytes) == 117546
-    assert hashlib.sha256(html_bytes).hexdigest() == EXPECTED_HTML_SHA256
-    html = html_bytes.decode("utf-8")
-
-    loader = (ROOT / "index.html").read_text(encoding="utf-8")
-    for name, _ in PAYLOAD_PARTS:
-        assert f'assets/{name}' in loader, f"loader does not reference {name}"
+    path = ROOT / "index.html"
+    data = path.read_bytes()
+    assert len(data) == EXPECTED_BYTES
+    assert hashlib.sha256(data).hexdigest() == EXPECTED_SHA256
+    html = data.decode("utf-8")
 
     required = [
         "polybolos-evidence-contract/2.0.0",
@@ -65,12 +39,20 @@ def main() -> None:
         "MARK AUTOMATIC STATUS       INCOMPLETE",
         "IyBTdGFuZGluZyBPcmRlcnMgcHJvb2YgbG9n",
         "id=SO-CHROME-R1-00",
+        "__AXM_POLYBOLOS_PAYLOAD",
+        "DecompressionStream",
     ]
     for phrase in forbidden:
         assert phrase not in html, f"forbidden public content: {phrase}"
 
+    assert not (ROOT / "assets").exists()
+    assert not (ROOT / "LOADER_MANIFEST.json").exists()
     assert not (ROOT / "examples/standing_orders_proof_20260802_215108.log").exists()
     assert not (ROOT / "examples/Standing_Orders_Partition_Epoch_Report.html").exists()
+
+    scripts = re.findall(r"<script(?:\s[^>]*)?>([\s\S]*?)</script>", html, re.I)
+    assert len(scripts) >= 4
+    assert not re.search(r"<script[^>]+src=", html, re.I)
 
     receipt = json.loads((ROOT / "data/mark-public-receipt.json").read_text(encoding="utf-8"))
     assert receipt["publicRawBytesPackaged"] is False
@@ -103,9 +85,9 @@ def main() -> None:
             assert plan[key], f"{plan['id']} missing {key}"
 
     print("public_contract_test.py: PASS")
-    print(f"transport bytes {len(compressed)}")
-    print(f"transport sha256 {EXPECTED_GZIP_SHA256}")
-    print(f"standalone sha256 {EXPECTED_HTML_SHA256}")
+    print(f"direct bytes {len(data)}")
+    print(f"direct sha256 {EXPECTED_SHA256}")
+    print(f"inline scripts {len(scripts)}")
 
 
 if __name__ == "__main__":
