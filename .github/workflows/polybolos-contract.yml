@@ -1,0 +1,40 @@
+name: Polybolos stable evidence contract
+
+on:
+  pull_request:
+    paths:
+      - "polybolos/**"
+      - ".github/workflows/polybolos-contract.yml"
+  push:
+    branches: [main]
+    paths:
+      - "polybolos/**"
+      - ".github/workflows/polybolos-contract.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Reconstruct and validate the public contract
+        run: python polybolos/tests/public_contract_test.py
+      - name: Check loader JavaScript syntax
+        run: |
+          node --check polybolos/assets/boot.js
+          node --check polybolos/assets/payload-0.js
+          node --check polybolos/assets/payload-1.js
+          node --check polybolos/assets/payload-1a.js
+          node --check polybolos/assets/payload-1b.js
+          node --check polybolos/assets/payload-1c.js
+          node --check polybolos/assets/payload-1d.js
+          node --check polybolos/assets/payload-2.js
