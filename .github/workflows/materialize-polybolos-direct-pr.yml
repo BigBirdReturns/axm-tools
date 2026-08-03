@@ -1,0 +1,82 @@
+name: materialize-polybolos-direct-pr
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/materialize-polybolos-direct-pr.yml
+      - .github/workflows/apply-polybolos-direct-standalone.yml
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: materialize-polybolos-direct-pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Replace the loader with the exact uploaded standalone
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64, gzip, hashlib, json, re, shutil
+          from pathlib import Path
+
+          root = Path('polybolos')
+          manifest = json.loads((root / 'LOADER_MANIFEST.json').read_text())
+          assignment = re.compile(r"globalThis\.__AXM_POLYBOLOS_PAYLOAD\[(\d+)\]='([^']*)';")
+          parts = {}
+          for row in manifest['payload']['parts']:
+              text = (root / row['path']).read_text(encoding='utf-8')
+              match = assignment.search(text)
+              if not match:
+                  raise SystemExit(f"payload assignment missing in {row['path']}")
+              index, value = int(match.group(1)), match.group(2)
+              if index != row['arrayIndex'] or len(value) != row['base64Characters']:
+                  raise SystemExit(f"payload contract mismatch in {row['path']}")
+              parts[index] = value
+          compressed = base64.b64decode(''.join(parts[i] for i in manifest['payload']['transportOrder']), validate=True)
+          if len(compressed) != 32620 or hashlib.sha256(compressed).hexdigest() != '4e023932215a726e4a95106237af5f66e57724fc19736f400a6e2da8ef21e1a1':
+              raise SystemExit('compressed payload identity mismatch')
+          standalone = gzip.decompress(compressed)
+          if len(standalone) != 117546 or hashlib.sha256(standalone).hexdigest() != '4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f':
+              raise SystemExit('standalone identity mismatch')
+          (root / 'index.html').write_bytes(standalone)
+          shutil.rmtree(root / 'assets')
+          (root / 'LOADER_MANIFEST.json').unlink()
+          Path('.github/workflows/apply-polybolos-direct-standalone.yml').unlink(missing_ok=True)
+          Path('.github/workflows/materialize-polybolos-direct-pr.yml').unlink(missing_ok=True)
+          print(len(standalone), hashlib.sha256(standalone).hexdigest())
+          PY
+          test "$(wc -c < polybolos/index.html)" = "117546"
+          test "$(sha256sum polybolos/index.html | cut -d' ' -f1)" = "4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f"
+          test ! -e polybolos/assets
+          test ! -e polybolos/LOADER_MANIFEST.json
+          git diff --check
+
+      - name: Commit the exact direct product under branch lease
+        env:
+          HEAD_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Materialize the exact Polybolos standalone"
+          remote_head="$(git ls-remote origin "refs/heads/$HEAD_BRANCH" | cut -f1)"
+          test "$remote_head" = "${{ github.event.pull_request.head.sha || github.sha }}"
+          git push origin "HEAD:refs/heads/$HEAD_BRANCH"
