@@ -1,0 +1,224 @@
+name: TEMP Polybolos v2 live deployment revalidation
+
+on:
+  push:
+    branches:
+      - ops/polybolos-v2-live-revalidation
+  pull_request:
+    paths:
+      - .github/workflows/temp-polybolos-v2-live-revalidation.yml
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  revalidate-live-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Poll Pages and compare the exact deployed product
+        env:
+          EXPECTED_SOURCE_COMMIT: 822279cd3f3e170ff1b90a487b4fdaeff2aee4f5
+          LIVE_BASE: https://bigbirdreturns.github.io/axm-tools/polybolos/
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import base64
+          import gzip
+          import hashlib
+          import json
+          import os
+          import re
+          import time
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from urllib.error import HTTPError
+          from urllib.request import Request, urlopen
+
+          root = Path("polybolos")
+          base = os.environ["LIVE_BASE"]
+          expected_source_commit = os.environ["EXPECTED_SOURCE_COMMIT"]
+          manifest_path = root / "LOADER_MANIFEST.json"
+          local_manifest_bytes = manifest_path.read_bytes()
+          local_manifest = json.loads(local_manifest_bytes)
+
+          compared_paths = [
+              "index.html",
+              "LOADER_MANIFEST.json",
+              "CONSTITUTION.md",
+              "assets/boot.js",
+              *[row["path"] for row in local_manifest["payload"]["parts"]],
+              "data/mark-public-receipt.json",
+              "data/qualification-catalog.json",
+          ]
+
+          def fetch(path: str) -> bytes:
+              separator = "&" if "?" in path else "?"
+              url = f"{base}{path}{separator}receipt={time.time_ns()}"
+              request = Request(
+                  url,
+                  headers={
+                      "User-Agent": "axm-tools-polybolos-live-revalidator/1",
+                      "Cache-Control": "no-cache",
+                      "Pragma": "no-cache",
+                  },
+              )
+              with urlopen(request, timeout=30) as response:
+                  if response.status != 200:
+                      raise RuntimeError(f"{path} returned HTTP {response.status}")
+                  return response.read()
+
+          deadline = time.monotonic() + 600
+          last_observation = "no response"
+          while time.monotonic() < deadline:
+              try:
+                  observed_manifest = fetch("LOADER_MANIFEST.json")
+                  if observed_manifest == local_manifest_bytes:
+                      break
+                  try:
+                      observed = json.loads(observed_manifest)
+                      last_observation = (
+                          f"release={observed.get('release')} "
+                          f"standalone={observed.get('standalone', {}).get('sha256')} "
+                          f"payload={observed.get('payload', {}).get('compressedSha256')}"
+                      )
+                  except Exception:
+                      last_observation = f"non-JSON manifest bytes={len(observed_manifest)}"
+              except Exception as error:
+                  last_observation = f"{type(error).__name__}: {error}"
+              time.sleep(5)
+          else:
+              raise SystemExit(
+                  "Pages did not publish the exact v2 manifest within the bounded poll: "
+                  + last_observation
+              )
+
+          live_bytes: dict[str, bytes] = {}
+          file_receipts: dict[str, dict[str, object]] = {}
+          for path in compared_paths:
+              observed = fetch(path)
+              expected = (root / path).read_bytes()
+              if observed != expected:
+                  raise SystemExit(f"deployed bytes differ from main for {path}")
+              live_bytes[path] = observed
+              file_receipts[path] = {
+                  "bytes": len(observed),
+                  "sha256": hashlib.sha256(observed).hexdigest(),
+              }
+
+          for removed_path in [
+              "examples/standing_orders_proof_20260802_215108.log",
+              "examples/Standing_Orders_Partition_Epoch_Report.html",
+          ]:
+              try:
+                  fetch(removed_path)
+              except HTTPError as error:
+                  if error.code != 404:
+                      raise
+              else:
+                  raise SystemExit(f"removed private example remains publicly fetchable: {removed_path}")
+
+          parts: dict[int, str] = {}
+          assignment = re.compile(
+              r"globalThis\.__AXM_POLYBOLOS_PAYLOAD\[(\d+)\]='([^']*)';"
+          )
+          for row in local_manifest["payload"]["parts"]:
+              text = live_bytes[row["path"]].decode("utf-8")
+              match = assignment.search(text)
+              if not match:
+                  raise SystemExit(f"payload assignment missing in {row['path']}")
+              array_index = int(match.group(1))
+              value = match.group(2)
+              if array_index != row["arrayIndex"]:
+                  raise SystemExit(f"payload array index mismatch in {row['path']}")
+              if len(value) != row["base64Characters"]:
+                  raise SystemExit(f"payload character count mismatch in {row['path']}")
+              parts[array_index] = value
+
+          transport = "".join(
+              parts[index] for index in local_manifest["payload"]["transportOrder"]
+          )
+          compressed = base64.b64decode(transport, validate=True)
+          compressed_sha256 = hashlib.sha256(compressed).hexdigest()
+          if len(compressed) != local_manifest["payload"]["compressedBytes"]:
+              raise SystemExit("compressed payload byte count mismatch")
+          if compressed_sha256 != local_manifest["payload"]["compressedSha256"]:
+              raise SystemExit("compressed payload SHA-256 mismatch")
+
+          standalone = gzip.decompress(compressed)
+          standalone_sha256 = hashlib.sha256(standalone).hexdigest()
+          if len(standalone) != local_manifest["standalone"]["bytes"]:
+              raise SystemExit("standalone byte count mismatch")
+          if standalone_sha256 != local_manifest["standalone"]["sha256"]:
+              raise SystemExit("standalone SHA-256 mismatch")
+
+          text = standalone.decode("utf-8")
+          required_phrases = [
+              "PRESENTATION INTEGRATION",
+              "COMPLETE FOR THIS HANDOFF",
+              "2 of 16",
+              "not a score",
+              "REFERENCE, NOT MARK SCORECARD",
+              "OPTIONAL CLAIM-SPECIFIC QUALIFICATION",
+              "NOT REQUESTED",
+              "NOT CLAIMED",
+          ]
+          lowered = text.lower()
+          for phrase in required_phrases:
+              if phrase.lower() not in lowered:
+                  raise SystemExit(f"deployed standalone is missing required phrase: {phrase}")
+
+          prohibited_private_markers = [
+              "standing_orders_proof_20260802_215108.log",
+              "Standing_Orders_Partition_Epoch_Report.html",
+          ]
+          for marker in prohibited_private_markers:
+              if marker in text:
+                  raise SystemExit(f"private source marker entered deployed standalone: {marker}")
+
+          receipt = {
+              "schema": "axm-polybolos-live-deployment-verification/1",
+              "status": "pass",
+              "checkedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+              "sourceCommit": expected_source_commit,
+              "liveBase": base,
+              "release": local_manifest["release"],
+              "manifestMatchedByteForByte": True,
+              "deployedFilesMatchedByteForByte": True,
+              "privateExamplePathsReturned404": True,
+              "compressedPayload": {
+                  "bytes": len(compressed),
+                  "sha256": compressed_sha256,
+              },
+              "standalone": {
+                  "bytes": len(standalone),
+                  "sha256": standalone_sha256,
+              },
+              "files": file_receipts,
+              "claimBoundary": (
+                  "This receipt proves the public Pages artifact matched the named main source "
+                  "for the compared Polybolos files and reconstructed standalone. It does not "
+                  "rewrite historical Git objects or establish operational acceptance."
+              ),
+          }
+          Path("polybolos-live-deployment-verification.json").write_text(
+              json.dumps(receipt, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(receipt, indent=2))
+          PY
+
+      - name: Retain deployed-artifact verification receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: polybolos-v2-live-deployment-verification
+          path: polybolos-live-deployment-verification.json
+          if-no-files-found: error
