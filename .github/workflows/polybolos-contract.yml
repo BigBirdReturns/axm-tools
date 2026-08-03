@@ -33,4 +33,8 @@ jobs:
           node --check polybolos/assets/boot.js
           node --check polybolos/assets/payload-0.js
           node --check polybolos/assets/payload-1.js
+          node --check polybolos/assets/payload-1a.js
+          node --check polybolos/assets/payload-1b.js
+          node --check polybolos/assets/payload-1c.js
+          node --check polybolos/assets/payload-1d.js
           node --check polybolos/assets/payload-2.js

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import ast
 import base64
 import gzip
 import hashlib
@@ -11,25 +10,39 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_HTML_SHA256 = "4beaae5aec641a3f0ba3f3e6c7d6c44b3ba2284b0b70ec50e34c24b73475543f"
+EXPECTED_GZIP_SHA256 = "4e023932215a726e4a95106237af5f66e57724fc19736f400a6e2da8ef21e1a1"
+PAYLOAD_PARTS = [
+    ("payload-0.js", 0),
+    ("payload-1.js", 1),
+    ("payload-1a.js", 3),
+    ("payload-1b.js", 4),
+    ("payload-1c.js", 5),
+    ("payload-1d.js", 6),
+    ("payload-2.js", 2),
+]
 
 
 def payload_part(path: Path, index: int) -> str:
     text = path.read_text(encoding="utf-8")
     match = re.search(rf"__AXM_POLYBOLOS_PAYLOAD\[{index}\]='([^']*)';", text)
     if not match:
-        raise AssertionError(f"payload part {index} is missing or malformed")
-    return ast.literal_eval(repr(match.group(1)))
+        raise AssertionError(f"payload part {index} is missing or malformed in {path.name}")
+    return match.group(1)
 
 
 def main() -> None:
-    encoded = "".join(payload_part(ROOT / f"assets/payload-{i}.js", i) for i in range(3))
+    encoded = "".join(payload_part(ROOT / "assets" / name, index) for name, index in PAYLOAD_PARTS)
     compressed = base64.b64decode(encoded, validate=True)
-    assert compressed[:2] == b"\x1f\x8b", "payload is not a gzip member"
-    transport_sha256 = hashlib.sha256(compressed).hexdigest()
+    assert len(compressed) == 32620
+    assert hashlib.sha256(compressed).hexdigest() == EXPECTED_GZIP_SHA256
     html_bytes = gzip.decompress(compressed)
     assert len(html_bytes) == 117546
     assert hashlib.sha256(html_bytes).hexdigest() == EXPECTED_HTML_SHA256
     html = html_bytes.decode("utf-8")
+
+    loader = (ROOT / "index.html").read_text(encoding="utf-8")
+    for name, _ in PAYLOAD_PARTS:
+        assert f'assets/{name}' in loader, f"loader does not reference {name}"
 
     required = [
         "polybolos-evidence-contract/2.0.0",
@@ -91,7 +104,7 @@ def main() -> None:
 
     print("public_contract_test.py: PASS")
     print(f"transport bytes {len(compressed)}")
-    print(f"transport sha256 {transport_sha256}")
+    print(f"transport sha256 {EXPECTED_GZIP_SHA256}")
     print(f"standalone sha256 {EXPECTED_HTML_SHA256}")
 
 

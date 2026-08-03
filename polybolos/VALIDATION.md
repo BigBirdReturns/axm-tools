@@ -16,7 +16,7 @@ The accompanying producer report supplies broader claims about authority, operat
 
 ## Public application identity
 
-The committed public loader reconstructs one exact sanitized standalone from three gzip/Base64 payload fragments.
+The committed public loader reconstructs one exact sanitized standalone from seven same-origin gzip/Base64 transport fragments in the order `[0, 1, 3, 4, 5, 6, 2]`.
 
 ```text
 reconstructed bytes    117,546
@@ -37,8 +37,7 @@ Historical Git commits prior to this release are outside the current-tree guaran
 
 `polybolos/tests/public_contract_test.py`:
 
-- reconstructs the committed standalone;
-- verifies its SHA-256;
+- reconstructs the committed standalone and verifies both transport and standalone identities;
 - requires the completed handoff and bounded scenario pass language;
 - requires the anti-score and prospective-plan language;
 - rejects prohibited global ineligibility language;

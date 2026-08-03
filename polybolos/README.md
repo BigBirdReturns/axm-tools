@@ -37,7 +37,7 @@ When Mark loads his exact source pair locally, the application recognizes both S
 
 `CONSTITUTION.md` governs the product. A change that introduces a retrospective global score, allows a new plan to alter an earlier receipt, collapses evidence status into test outcome, or republishes private source bytes by default is a constitutional regression.
 
-The public loader reconstructs a content-addressed one-file application from three same-origin static payload fragments. `tests/public_contract_test.py` verifies the exact reconstructed SHA-256, required product language, receipt state, plan catalog, and public-custody boundary.
+The public loader reconstructs a content-addressed one-file application from seven same-origin static transport fragments. `tests/public_contract_test.py` verifies the exact reconstructed SHA-256, required product language, receipt state, plan catalog, and public-custody boundary.
 
 ## Validation
 
@@ -46,6 +46,10 @@ python polybolos/tests/public_contract_test.py
 node --check polybolos/assets/boot.js
 node --check polybolos/assets/payload-0.js
 node --check polybolos/assets/payload-1.js
+node --check polybolos/assets/payload-1a.js
+node --check polybolos/assets/payload-1b.js
+node --check polybolos/assets/payload-1c.js
+node --check polybolos/assets/payload-1d.js
 node --check polybolos/assets/payload-2.js
 ```
 
