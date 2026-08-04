@@ -1,0 +1,407 @@
+{
+  "canonicalization": "sorted-key compact UTF-8 JSON; integral numbers serialized as integers",
+  "cases": [
+    {
+      "case_id": "C-MT-001",
+      "contract": "media_time",
+      "expected": {
+        "canonical_sha256": "db12079b8f0369a67601de40bb64525ccac4a86f53d4d231a6ba8d683d79ec4a",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "precision_us": 1000,
+        "us": 0
+      }
+    },
+    {
+      "case_id": "C-MT-NEG-001",
+      "contract": "media_time",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_MEDIA_TIME",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "precision_us": 1,
+        "us": -1
+      }
+    },
+    {
+      "case_id": "C-RR-001",
+      "contract": "rational_rate",
+      "expected": {
+        "canonical_sha256": "fb1bba98c1ab0f25cd6c4e0c2b639e62226d523f0582be3a784ef22f96f53a20",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "denominator": 1,
+        "numerator": 1
+      }
+    },
+    {
+      "case_id": "C-RR-NEG-001",
+      "contract": "rational_rate",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_RATE_DENOMINATOR",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "denominator": 0,
+        "numerator": 1
+      }
+    },
+    {
+      "case_id": "C-ADAPTER-001",
+      "contract": "adapter_manifest",
+      "expected": {
+        "canonical_sha256": "309b5b6ab47e600dba275da9abbeb8c70904565ed20aa68e3fa6443f56b4df59",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "adapter_class": "direct_player",
+        "adapter_id": "adapter:mpv-json-ipc",
+        "adapter_version": "0.1.0",
+        "authority_ceiling": [
+          "observation_only",
+          "actuation_request_only"
+        ],
+        "capabilities": {
+          "audio": "loopback",
+          "captions": "external",
+          "clock": "direct",
+          "controls": [
+            "play",
+            "pause",
+            "seek_exact",
+            "seek_relative",
+            "set_rate"
+          ],
+          "identity": "metadata",
+          "pixels": "window",
+          "seek": "exact"
+        },
+        "entrypoint": {
+          "command": "python -m aperture.adapters.mpv",
+          "protocol": "stdio_jsonl"
+        },
+        "execution_mode": "process",
+        "format": "axm-aperture-adapter-manifest/1",
+        "license": {
+          "dependency_license": "GPL-2.0-or-later",
+          "integration": "external_process",
+          "project_license": "MIT"
+        },
+        "platforms": [
+          "windows",
+          "linux",
+          "macos"
+        ],
+        "privacy": {
+          "local_only": true,
+          "retains_audio": false,
+          "retains_pixels": false
+        },
+        "source_ref": {
+          "ref": "https://mpv.io/manual/stable/#json-ipc",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      }
+    },
+    {
+      "case_id": "C-ADAPTER-NEG-001",
+      "contract": "adapter_manifest",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_ADAPTER_AUTHORITY",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "adapter_class": "direct_player",
+        "adapter_id": "adapter:mpv-json-ipc",
+        "adapter_version": "0.1.0",
+        "authority_ceiling": [
+          "narrative_truth"
+        ],
+        "capabilities": {
+          "audio": "loopback",
+          "captions": "external",
+          "clock": "direct",
+          "controls": [
+            "play",
+            "pause",
+            "seek_exact",
+            "seek_relative",
+            "set_rate"
+          ],
+          "identity": "metadata",
+          "pixels": "window",
+          "seek": "exact"
+        },
+        "entrypoint": {
+          "command": "python -m aperture.adapters.mpv",
+          "protocol": "stdio_jsonl"
+        },
+        "execution_mode": "process",
+        "format": "axm-aperture-adapter-manifest/1",
+        "license": {
+          "dependency_license": "GPL-2.0-or-later",
+          "integration": "external_process",
+          "project_license": "MIT"
+        },
+        "platforms": [
+          "windows",
+          "linux",
+          "macos"
+        ],
+        "privacy": {
+          "local_only": true,
+          "retains_audio": false,
+          "retains_pixels": false
+        },
+        "source_ref": {
+          "ref": "https://mpv.io/manual/stable/#json-ipc",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      }
+    },
+    {
+      "case_id": "C-OBS-001",
+      "contract": "playback_observation",
+      "expected": {
+        "canonical_sha256": "8c0c1e659a2a295896f5922869d33fb985638c1c61e787a47da7b1c9987dcc47",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "adapter_id": "adapter:mpv-json-ipc",
+        "authority": "observation_only",
+        "capabilities": {
+          "audio": "loopback",
+          "captions": "external",
+          "clock": "direct",
+          "controls": [
+            "play",
+            "pause",
+            "seek_exact"
+          ],
+          "identity": "metadata",
+          "pixels": "window",
+          "seek": "exact"
+        },
+        "discontinuity": {
+          "kind": "none",
+          "previous_observation_id": null
+        },
+        "evidence": [
+          {
+            "kind": "api",
+            "ref": "mpv-ipc://session-001/property/time-pos",
+            "retained": true,
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        ],
+        "format": "axm-aperture-playback-observation/1",
+        "identity_hints": {
+          "duration_us": 7200000000,
+          "episode": null,
+          "provider_item_id": null,
+          "season": null,
+          "title": "Aperture Golden Story"
+        },
+        "observation_id": "obs:mpv:000001",
+        "observed_at": "2026-08-04T18:00:00Z",
+        "playback": {
+          "position": {
+            "precision_us": 1000,
+            "us": 1380000000
+          },
+          "rate": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "state": "playing",
+          "updated_at": "2026-08-04T18:00:00Z"
+        },
+        "source": {
+          "device_id": "device:windows-oracle",
+          "provider": "mpv",
+          "session_id": "session:mpv:001"
+        }
+      }
+    },
+    {
+      "case_id": "C-OBS-NEG-001",
+      "contract": "playback_observation",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_AUTHORITY_PROMOTION",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "adapter_id": "adapter:bad",
+        "authority": "narrative_truth",
+        "capabilities": {
+          "audio": "none",
+          "captions": "none",
+          "clock": "predicted",
+          "controls": [],
+          "identity": "title_hint",
+          "pixels": "none",
+          "seek": "none"
+        },
+        "discontinuity": {
+          "kind": "none",
+          "previous_observation_id": null
+        },
+        "evidence": [],
+        "format": "axm-aperture-playback-observation/1",
+        "identity_hints": {
+          "duration_us": null,
+          "episode": null,
+          "provider_item_id": null,
+          "season": null,
+          "title": "Golden Story"
+        },
+        "observation_id": "obs:bad:1",
+        "observed_at": "2026-08-04T18:00:00Z",
+        "playback": {
+          "position": {
+            "precision_us": 5000000,
+            "us": 30000000
+          },
+          "rate": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "state": "playing",
+          "updated_at": "2026-08-04T18:00:00Z"
+        },
+        "source": {
+          "device_id": "device:bad",
+          "provider": "closed-tv",
+          "session_id": "session:bad"
+        }
+      }
+    },
+    {
+      "case_id": "C-ANCHOR-001",
+      "contract": "playback_anchor",
+      "expected": {
+        "canonical_sha256": "4932252a456471c8713b68bb061afcb6c7fdcf29b4fe8faed5a7db34000e1224",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "anchor_id": "anchor:golden:mpv:001",
+        "capabilities": {
+          "audio": "loopback",
+          "captions": "external",
+          "clock": "direct",
+          "controls": [
+            "play",
+            "pause",
+            "seek_exact"
+          ],
+          "identity": "metadata",
+          "pixels": "window",
+          "seek": "exact"
+        },
+        "clock": {
+          "canonical_position": {
+            "precision_us": 1000,
+            "us": 1320000000
+          },
+          "clock_confidence": 1.0,
+          "clock_mode": "direct",
+          "provider_position": {
+            "precision_us": 1000,
+            "us": 1380000000
+          },
+          "rate": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "state": "playing",
+          "updated_at": "2026-08-04T18:00:00Z"
+        },
+        "conflicts": [],
+        "evidence_refs": [
+          "mpv-ipc://session-001/property/time-pos",
+          "edition-map://golden/theatrical-to-canonical"
+        ],
+        "format": "axm-aperture-playback-anchor/1",
+        "observation_refs": [
+          "obs:mpv:000001"
+        ],
+        "source": {
+          "device_id": "device:windows-oracle",
+          "provider": "mpv",
+          "session_id": "session:mpv:001"
+        },
+        "work": {
+          "canonical_id": "work:aperture-golden-story",
+          "edition_id": "edition:golden:theatrical",
+          "identity_confidence": 1.0,
+          "identity_mode": "verified",
+          "story_package_id": "storypkg:golden:v1"
+        }
+      }
+    },
+    {
+      "case_id": "C-ANCHOR-NEG-001",
+      "contract": "playback_anchor",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_FALSE_EXACT",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "anchor_id": "anchor:false-exact",
+        "capabilities": {
+          "audio": "none",
+          "captions": "none",
+          "clock": "predicted",
+          "controls": [],
+          "identity": "title_hint",
+          "pixels": "none",
+          "seek": "none"
+        },
+        "clock": {
+          "canonical_position": null,
+          "clock_confidence": 0.4,
+          "clock_mode": "predicted",
+          "provider_position": {
+            "precision_us": 5000000,
+            "us": 10000000
+          },
+          "rate": {
+            "denominator": 1,
+            "numerator": 1
+          },
+          "state": "playing",
+          "updated_at": "2026-08-04T18:00:00Z"
+        },
+        "conflicts": [],
+        "evidence_refs": [],
+        "format": "axm-aperture-playback-anchor/1",
+        "observation_refs": [
+          "obs:title-only"
+        ],
+        "source": {
+          "device_id": "device:closed-tv",
+          "provider": "closed-tv",
+          "session_id": "session:title-only"
+        },
+        "work": {
+          "canonical_id": null,
+          "edition_id": null,
+          "identity_confidence": 0.4,
+          "identity_mode": "verified",
+          "story_package_id": null
+        }
+      }
+    }
