@@ -1,0 +1,39 @@
+{
+  "archive": {
+    "bytes": 21556,
+    "file_count": 27,
+    "path": "aperture-g1-mini.tar.xz",
+    "sha256": "9a3790c5d006173707118a99aa8112a30827e4d8b6f9b7a45a4a73fc1f398206",
+    "top_level": "aperture-program"
+  },
+  "authority": "transport-only",
+  "conformance": {
+    "case_count": 75,
+    "expected_common_result_sha256": "dc7ed5061068384a9dd7f9469b8747c1cc276b2cdf1c489fad9755d2290da6a1",
+    "implementations": [
+      "python",
+      "typescript",
+      "csharp"
+    ],
+    "protocol_version": "1.0.0-draft.1"
+  },
+  "format": "axm-aperture-g1-hosted-carrier/1",
+  "limits": {
+    "maximum_archive_bytes": 262144,
+    "maximum_expanded_bytes": 2097152,
+    "maximum_members": 128
+  },
+  "parts": [
+    {
+      "bytes": 12000,
+      "path": "part-00.bin",
+      "sha256": "6a09c4c126bf54de67bda8ec7c1e8e066e0975e1b347d4bbe6732ae078e2321a"
+    },
+    {
+      "bytes": 9556,
+      "path": "part-01.bin",
+      "sha256": "bfb89e2ac31ad70f157de80c59137aff5a9cc3001cb1c164d7a7bdb727eaef50"
+    }
+  ],
+  "target_repository": "BigBirdReturns/axm-aperture"
+}

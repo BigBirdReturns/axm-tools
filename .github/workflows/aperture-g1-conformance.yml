@@ -1,0 +1,89 @@
+name: AXM Aperture G1 hosted conformance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".aperture-g1-carrier/**"
+      - ".github/workflows/aperture-g1-conformance.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aperture-g1-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  conformance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out exact carrier
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up exact .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.423"
+
+      - name: Install exact TypeScript compiler
+        run: npm install --global typescript@5.8.3
+
+      - name: Record toolchain
+        run: |
+          python --version
+          node --version
+          tsc --version
+          dotnet --info
+
+      - name: Materialize checksum-bound conformance source
+        run: |
+          python .aperture-g1-carrier/materialize.py \
+            --workspace "$GITHUB_WORKSPACE"
+
+      - name: Execute all three implementations
+        run: |
+          python aperture-program/scripts/run_conformance.py \
+            --root aperture-program \
+            --write-results
+
+      - name: Write hosted C# receipt
+        env:
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python .aperture-g1-carrier/write_ci_receipt.py \
+            --root aperture-program \
+            --manifest .aperture-g1-carrier/CARRIER_MANIFEST.json \
+            --run-url "$RUN_URL" \
+            --repository "${{ github.repository }}" \
+            --ref "${{ github.ref }}" \
+            --commit "${{ github.sha }}"
+
+      - name: Revalidate receipt-bound output
+        run: |
+          python aperture-program/scripts/run_conformance.py \
+            --root aperture-program \
+            --implementations python,typescript,csharp
+
+      - name: Upload qualification receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: axm-aperture-g1-hosted-conformance
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            aperture-program/reports/conformance/
+            aperture-program/receipts/G1-csharp-ci.json
+            .aperture-g1-carrier/CARRIER_MANIFEST.json
