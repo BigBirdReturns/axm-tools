@@ -1,0 +1,316 @@
+    {
+      "case_id": "C-SELECT-001",
+      "contract": "selection_receipt",
+      "expected": {
+        "canonical_sha256": "4736e66d91122c9681ca2fa8107b614c125f5171abe448a3f8eb2801bfc74121",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "candidate_digest": "7777777777777777777777777777777777777777777777777777777777777777",
+        "explanation": [
+          "Closes the strongest unresolved causal gap.",
+          "Segment has not been directly exposed.",
+          "Entry context remains below the configured ceiling."
+        ],
+        "format": "axm-aperture-selection-receipt/1",
+        "policy": {
+          "hard_filters": [
+            "same_work",
+            "maximum_duration",
+            "story_revision"
+          ],
+          "policy_id": "selection-policy:bridge:v1",
+          "weights": {
+            "causal_bridge_value": 1000,
+            "entry_context_cost": -100,
+            "immediate_repeat_penalty": -250,
+            "uncovered_duration": 800
+          }
+        },
+        "query_id": "query:golden:bridge:001",
+        "reason": "bridge",
+        "same_work_only": true,
+        "scores": {
+          "causal_bridge_value": 1.0,
+          "entry_context_cost": 0.1,
+          "immediate_repeat_penalty": 0.0,
+          "uncovered_duration": 1.0
+        },
+        "selected": {
+          "canonical_end_us": 1320000000,
+          "canonical_start_us": 1140000000,
+          "scene_id": "scene:earlier-map-reveal",
+          "work_id": "work:aperture-golden-story"
+        },
+        "selection_id": "selection:golden:bridge:001",
+        "story_package_id": "storypkg:golden:v1",
+        "story_package_revision": 1,
+        "viewer_profile_id": "viewer:golden:jonathan",
+        "work_id": "work:aperture-golden-story"
+      }
+    },
+    {
+      "case_id": "C-SELECT-NEG-001",
+      "contract": "selection_receipt",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_CROSS_WORK",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "candidate_digest": "2222222222222222222222222222222222222222222222222222222222222222",
+        "explanation": [
+          "Other title has high engagement."
+        ],
+        "format": "axm-aperture-selection-receipt/1",
+        "policy": {
+          "hard_filters": [
+            "engagement"
+          ],
+          "policy_id": "bad-policy",
+          "weights": {
+            "click_probability": 1000
+          }
+        },
+        "query_id": "query:golden:drop",
+        "reason": "drop",
+        "same_work_only": false,
+        "scores": {
+          "click_probability": 1.0
+        },
+        "selected": {
+          "canonical_end_us": 120000000,
+          "canonical_start_us": 60000000,
+          "scene_id": "scene:other",
+          "work_id": "work:other-title"
+        },
+        "selection_id": "selection:bad:cross-title",
+        "story_package_id": "storypkg:other",
+        "story_package_revision": 1,
+        "viewer_profile_id": "viewer:golden",
+        "work_id": "work:golden"
+      }
+    },
+    {
+      "case_id": "C-ACT-001",
+      "contract": "actuation_command",
+      "expected": {
+        "canonical_sha256": "e1f6774f72349ca9960507479267ae8cae37b09af1dd647a49c334cb17a2d23d",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "action": "seek_exact",
+        "adapter_id": "adapter:mpv-json-ipc",
+        "command_id": "actuation:golden:seek:001",
+        "expected_postcondition": {
+          "maximum_position_error_us": 50000,
+          "required_state": "playing",
+          "settle_timeout_us": 2000000
+        },
+        "format": "axm-aperture-actuation-command/1",
+        "issued_at": "2026-08-04T18:05:10Z",
+        "precondition_anchor_digest": "8888888888888888888888888888888888888888888888888888888888888888",
+        "rate": null,
+        "relative_delta_us": null,
+        "target_position": {
+          "precision_us": 1000,
+          "us": 1380000000
+        },
+        "verification_required": true
+      }
+    },
+    {
+      "case_id": "C-ACT-NEG-001",
+      "contract": "actuation_command",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_SEEK_TARGET",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "action": "seek_exact",
+        "adapter_id": "adapter:mpv-json-ipc",
+        "command_id": "actuation:golden:seek:001",
+        "expected_postcondition": {
+          "maximum_position_error_us": 50000,
+          "required_state": "playing",
+          "settle_timeout_us": 2000000
+        },
+        "format": "axm-aperture-actuation-command/1",
+        "issued_at": "2026-08-04T18:05:10Z",
+        "precondition_anchor_digest": "8888888888888888888888888888888888888888888888888888888888888888",
+        "rate": null,
+        "relative_delta_us": null,
+        "target_position": null,
+        "verification_required": true
+      }
+    },
+    {
+      "case_id": "C-COMMUNITY-001",
+      "contract": "community_candidate",
+      "expected": {
+        "canonical_sha256": "613dca734b187ca4d9451541ba4c24151fe0d6814a4eedbf6220677528427581",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "base_revision": 1,
+        "candidate_digest": "9999999999999999999999999999999999999999999999999999999999999999",
+        "candidate_id": "candidate:golden:fact:001",
+        "contributor": {
+          "display_name": "Fixture Contributor",
+          "id": "contributor:fixture",
+          "reputation_refs": []
+        },
+        "format": "axm-aperture-community-candidate/1",
+        "package_id": "storypkg:golden:v1",
+        "proposal": {
+          "fact": {
+            "authority": "reviewed",
+            "fact_id": "fact:mentor-promised-transparency",
+            "first_reveal_position_id": "scene:earlier-map-reveal",
+            "proposition": "Ilyan promised Mara that he would disclose route risks.",
+            "provenance_refs": [
+              "source:holder-subtitle-review"
+            ],
+            "subject_ids": [
+              "character:ilyan",
+              "character:mara"
+            ]
+          },
+          "kind": "fact",
+          "op": "add"
+        },
+        "rights_attestation": {
+          "license": "CC0-1.0",
+          "redistributes_full_subtitles": false,
+          "redistributes_media": false,
+          "source_custody": "holder_local"
+        },
+        "standing": "candidate"
+      }
+    },
+    {
+      "case_id": "C-COMMUNITY-NEG-001",
+      "contract": "community_candidate",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_COMMUNITY_RIGHTS",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "base_revision": 1,
+        "candidate_digest": "3333333333333333333333333333333333333333333333333333333333333333",
+        "candidate_id": "candidate:bad:subtitle-dump",
+        "contributor": {
+          "display_name": "Bad Candidate",
+          "id": "contributor:bad",
+          "reputation_refs": []
+        },
+        "format": "axm-aperture-community-candidate/1",
+        "package_id": "storypkg:golden:v1",
+        "proposal": {
+          "kind": "scene",
+          "op": "replace",
+          "scene": {
+            "canonical_end_us": 10000000,
+            "canonical_start_us": 0,
+            "entry_context_cost": 0,
+            "fact_ids": [],
+            "location_ids": [],
+            "scene_id": "scene:bad",
+            "summary": "Contains full subtitles in omitted payload."
+          }
+        },
+        "rights_attestation": {
+          "license": "unknown",
+          "redistributes_full_subtitles": true,
+          "redistributes_media": false,
+          "source_custody": "public_copy"
+        },
+        "standing": "candidate"
+      }
+    },
+    {
+      "case_id": "C-SESSION-001",
+      "contract": "aperture_session",
+      "expected": {
+        "canonical_sha256": "e4ec1f2d7da68247e7b208091b689e6216b9759130e2cf83ed8b938693231777",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "closed_at": null,
+        "created_at": "2026-08-04T20:25:45Z",
+        "events": [
+          {
+            "event_digest": "6666666666666666666666666666666666666666666666666666666666666666",
+            "event_id": "obs:1",
+            "event_type": "observation",
+            "ordinal": 0
+          },
+          {
+            "event_digest": "7777777777777777777777777777777777777777777777777777777777777777",
+            "event_id": "exp:1",
+            "event_type": "exposure",
+            "ordinal": 1
+          }
+        ],
+        "format": "axm-aperture-session/1",
+        "initial_anchor_digest": "4444444444444444444444444444444444444444444444444444444444444444",
+        "policy_digests": [
+          "5555555555555555555555555555555555555555555555555555555555555555"
+        ],
+        "session_digest": "8888888888888888888888888888888888888888888888888888888888888888",
+        "session_id": "aperturesession1_3333333333333333333333333333333333333333333333333333333333333333",
+        "story_package_id": "storypkg:golden:v1",
+        "story_package_revision": 1,
+        "terminality": "complete_prefix",
+        "viewer_profile_id": "viewer:golden:jonathan",
+        "work_id": "work:aperture-golden-story"
+      }
+    },
+    {
+      "case_id": "C-SESSION-NEG-001",
+      "contract": "aperture_session",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_EVENT_ORDER",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "closed_at": null,
+        "created_at": "2026-08-04T20:25:45Z",
+        "events": [
+          {
+            "event_digest": "7777777777777777777777777777777777777777777777777777777777777777",
+            "event_id": "exp:1",
+            "event_type": "exposure",
+            "ordinal": 1
+          },
+          {
+            "event_digest": "6666666666666666666666666666666666666666666666666666666666666666",
+            "event_id": "obs:1",
+            "event_type": "observation",
+            "ordinal": 0
+          }
+        ],
+        "format": "axm-aperture-session/1",
+        "initial_anchor_digest": "4444444444444444444444444444444444444444444444444444444444444444",
+        "policy_digests": [
+          "5555555555555555555555555555555555555555555555555555555555555555"
+        ],
+        "session_digest": "8888888888888888888888888888888888888888888888888888888888888888",
+        "session_id": "aperturesession1_3333333333333333333333333333333333333333333333333333333333333333",
+        "story_package_id": "storypkg:golden:v1",
+        "story_package_revision": 1,
+        "terminality": "complete_prefix",
+        "viewer_profile_id": "viewer:golden:jonathan",
+        "work_id": "work:aperture-golden-story"
+      }
+    }
+  ],
+  "format": "axm-aperture-conformance-cases/1"
+}
