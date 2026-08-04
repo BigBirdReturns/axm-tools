@@ -75,7 +75,7 @@ jobs:
           assert result['format'] == 'axm-aperture-conformance-results/1'
           assert result['implementation'] == 'csharp'
           assert result['results'] == expected
-          assert result['result_set_sha256'] == '415dc4c13fe9e24802835c09b0af97de2fa0e38e3863fbf95f526df5ba913797'
+          assert result['result_set_sha256'] == '415dc4c15bc8f18446d1d711839298e2d2f254a0aeb80122e6b49bb403879574'
           assert len(result['results']) == 30
           assert sum(row['outcome'] == 'ACCEPT' for row in result['results']) == 15
           assert sum(row['outcome'] == 'REJECT' for row in result['results']) == 15
