@@ -1,0 +1,124 @@
+name: Aperture C# conformance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "aperture-csharp-qualification/**"
+      - ".github/workflows/aperture-csharp-conformance.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Reconstruct exact source and cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat aperture-csharp-qualification/Program.part-* > aperture-csharp-qualification/Program.cs
+          cat aperture-csharp-qualification/cases.part-* > aperture-csharp-qualification/conformance-cases.json
+          printf '%s  %s\n' \
+            '6a67564cc7e8eea81c58f2be92e02c2bb51cccd1d7a9788b176632625a86b107' \
+            'aperture-csharp-qualification/Program.cs' > /tmp/aperture-sha256
+          printf '%s  %s\n' \
+            '67799298884bc187ce835fc3e3e57fe11ee7dac3917069b8d37f0f57d30ec6a0' \
+            'aperture-csharp-qualification/ApertureConformance.csproj' >> /tmp/aperture-sha256
+          printf '%s  %s\n' \
+            '82f5d4f7ee02f3f10b0ce3870e9bd7222fe8295b5d71cb9fed2c16f852ea2eb4' \
+            'aperture-csharp-qualification/conformance-cases.json' >> /tmp/aperture-sha256
+          sha256sum -c /tmp/aperture-sha256
+
+      - name: Compile and execute under .NET 8
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet --info | tee aperture-csharp-qualification/dotnet-info.txt
+          dotnet build aperture-csharp-qualification/ApertureConformance.csproj \
+            --configuration Release \
+            -p:ContinuousIntegrationBuild=true
+          dotnet run \
+            --project aperture-csharp-qualification/ApertureConformance.csproj \
+            --configuration Release \
+            --no-build -- \
+            aperture-csharp-qualification/conformance-cases.json \
+            aperture-csharp-qualification/results.json
+
+      - name: Verify parity and issue qualification receipt
+        shell: bash
+        env:
+          GITHUB_RUN_ID_VALUE: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT_VALUE: ${{ github.run_attempt }}
+          GITHUB_SHA_VALUE: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path('aperture-csharp-qualification')
+          cases = json.loads((root / 'conformance-cases.json').read_text())
+          result = json.loads((root / 'results.json').read_text())
+          expected = [
+              {
+                  'case_id': row['case_id'],
+                  'outcome': row['expected']['outcome'],
+                  'code': row['expected']['code'],
+                  'canonical_sha256': row['expected']['canonical_sha256'],
+              }
+              for row in cases['cases']
+          ]
+          assert result['format'] == 'axm-aperture-conformance-results/1'
+          assert result['implementation'] == 'csharp'
+          assert result['results'] == expected
+          assert result['result_set_sha256'] == '415dc4c13fe9e24802835c09b0af97de2fa0e38e3863fbf95f526df5ba913797'
+          assert len(result['results']) == 30
+          assert sum(row['outcome'] == 'ACCEPT' for row in result['results']) == 15
+          assert sum(row['outcome'] == 'REJECT' for row in result['results']) == 15
+          sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+          dotnet_version = subprocess.check_output(['dotnet', '--version'], text=True).strip()
+          receipt = {
+              'format': 'axm-aperture-csharp-qualification/1',
+              'status': 'PASS',
+              'repository': 'BigBirdReturns/axm-tools',
+              'commit_sha': os.environ['GITHUB_SHA_VALUE'],
+              'workflow_run_id': int(os.environ['GITHUB_RUN_ID_VALUE']),
+              'workflow_run_attempt': int(os.environ['GITHUB_RUN_ATTEMPT_VALUE']),
+              'dotnet_version': dotnet_version,
+              'source_sha256': sha(root / 'Program.cs'),
+              'project_sha256': sha(root / 'ApertureConformance.csproj'),
+              'case_file_sha256': sha(root / 'conformance-cases.json'),
+              'result_sha256': sha(root / 'results.json'),
+              'result_set_sha256': result['result_set_sha256'],
+              'case_count': 30,
+              'accepted_count': 15,
+              'rejected_count': 15,
+              'authority': 'language-conformance-only',
+          }
+          core = json.dumps(receipt, sort_keys=True, separators=(',', ':')).encode()
+          receipt['receipt_sha256'] = hashlib.sha256(core).hexdigest()
+          (root / 'qualification.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
+          print(json.dumps(receipt, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload qualification artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aperture-csharp-conformance-${{ github.sha }}
+          path: |
+            aperture-csharp-qualification/Program.cs
+            aperture-csharp-qualification/ApertureConformance.csproj
+            aperture-csharp-qualification/conformance-cases.json
+            aperture-csharp-qualification/results.json
+            aperture-csharp-qualification/qualification.json
+            aperture-csharp-qualification/dotnet-info.txt
+          if-no-files-found: error
+          retention-days: 30
