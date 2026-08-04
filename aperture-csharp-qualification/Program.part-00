@@ -1,0 +1,159 @@
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+
+static class ApertureConformance
+{
+    private static readonly JsonWriterOptions WriterOptions = new()
+    {
+        Indented = false,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        SkipValidation = false,
+    };
+
+    public static byte[] CanonicalBytes(JsonElement value)
+    {
+        using var stream = new MemoryStream();
+        using (var writer = new Utf8JsonWriter(stream, WriterOptions))
+        {
+            WriteCanonical(writer, value);
+            writer.Flush();
+        }
+        return stream.ToArray();
+    }
+
+    private static void WriteCanonical(Utf8JsonWriter writer, JsonElement value)
+    {
+        switch (value.ValueKind)
+        {
+            case JsonValueKind.Object:
+                writer.WriteStartObject();
+                foreach (var property in value.EnumerateObject().OrderBy(p => p.Name, StringComparer.Ordinal))
+                {
+                    writer.WritePropertyName(property.Name);
+                    WriteCanonical(writer, property.Value);
+                }
+                writer.WriteEndObject();
+                break;
+            case JsonValueKind.Array:
+                writer.WriteStartArray();
+                foreach (var item in value.EnumerateArray()) WriteCanonical(writer, item);
+                writer.WriteEndArray();
+                break;
+            case JsonValueKind.String:
+                writer.WriteStringValue(value.GetString());
+                break;
+            case JsonValueKind.Number:
+                WriteCanonicalNumber(writer, value.GetRawText());
+                break;
+            case JsonValueKind.True:
+                writer.WriteBooleanValue(true);
+                break;
+            case JsonValueKind.False:
+                writer.WriteBooleanValue(false);
+                break;
+            case JsonValueKind.Null:
+                writer.WriteNullValue();
+                break;
+            default:
+                throw new InvalidOperationException($"Unsupported JSON value kind {value.ValueKind}");
+        }
+    }
+
+    private static void WriteCanonicalNumber(Utf8JsonWriter writer, string raw)
+    {
+        if (decimal.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
+        {
+            if (number == decimal.Truncate(number) && number >= long.MinValue && number <= long.MaxValue)
+            {
+                writer.WriteNumberValue(decimal.ToInt64(number));
+            }
+            else
+            {
+                writer.WriteNumberValue(number);
+            }
+            return;
+        }
+        writer.WriteRawValue(raw, skipInputValidation: false);
+    }
+
+    private static string Sha256(byte[] bytes) => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+
+    private static bool Has(JsonElement value, string property) => value.ValueKind == JsonValueKind.Object && value.TryGetProperty(property, out _);
+    private static JsonElement Get(JsonElement value, string property) => value.GetProperty(property);
+    private static string? GetString(JsonElement value, string property) => value.TryGetProperty(property, out var item) && item.ValueKind != JsonValueKind.Null ? item.GetString() : null;
+    private static bool IsTrue(JsonElement value, string property) => value.TryGetProperty(property, out var item) && item.ValueKind == JsonValueKind.True;
+    private static bool IsFalse(JsonElement value, string property) => value.TryGetProperty(property, out var item) && item.ValueKind == JsonValueKind.False;
+    private static long GetLong(JsonElement value, string property, long fallback = 0) => value.TryGetProperty(property, out var item) && item.TryGetInt64(out var parsed) ? parsed : fallback;
+    private static double GetDouble(JsonElement value, string property, double fallback = 0) => value.TryGetProperty(property, out var item) && item.TryGetDouble(out var parsed) ? parsed : fallback;
+
+    public static string Validate(string contract, JsonElement value)
+    {
+        switch (contract)
+        {
+            case "media_time":
+                return GetLong(value, "us", -1) >= 0 && GetLong(value, "precision_us", 0) > 0 ? "OK" : "E_MEDIA_TIME";
+            case "rational_rate":
+                return Has(value, "numerator") && GetLong(value, "denominator", 0) > 0 ? "OK" : "E_RATE_DENOMINATOR";
+            case "adapter_manifest":
+            {
+                var forbidden = new HashSet<string>(StringComparer.Ordinal) { "narrative_truth", "viewer_knowledge", "edition_verified" };
+                return Get(value, "authority_ceiling").EnumerateArray().Any(item => forbidden.Contains(item.GetString() ?? "")) ? "E_ADAPTER_AUTHORITY" : "OK";
+            }
+            case "playback_observation":
+                return GetString(value, "authority") == "observation_only" ? "OK" : "E_AUTHORITY_PROMOTION";
+            case "playback_anchor":
+            {
+                var work = Get(value, "work");
+                var falseExact = GetString(work, "identity_mode") == "verified" &&
+                    (string.IsNullOrWhiteSpace(GetString(work, "canonical_id")) || string.IsNullOrWhiteSpace(GetString(work, "edition_id")) || GetDouble(work, "identity_confidence") != 1.0);
+                return falseExact ? "E_FALSE_EXACT" : "OK";
+            }
+            case "edition_binding":
+            {
+                if (GetString(value, "verification_state") == "verified")
+                {
+                    var groups = new HashSet<string>(StringComparer.Ordinal);
+                    foreach (var row in Get(value, "fingerprints").EnumerateArray())
+                    {
+                        if (GetString(row, "kind") != "duration") groups.Add(GetString(row, "independence_group") ?? "");
+                    }
+                    if (groups.Count < 2 || GetDouble(value, "confidence") != 1.0 || string.IsNullOrWhiteSpace(GetString(value, "reviewed_by")) || string.IsNullOrWhiteSpace(GetString(value, "reviewed_at"))) return "E_DURATION_ONLY";
+                }
+                return "OK";
+            }
+            case "edition_time_map":
+            {
+                var provider = new List<(long Start, long End)>();
+                var canonical = new List<(long Start, long End)>();
+                foreach (var row in Get(value, "segments").EnumerateArray())
+                {
+                    if (row.TryGetProperty("provider_start_us", out var ps) && ps.ValueKind != JsonValueKind.Null && row.TryGetProperty("provider_end_us", out var pe) && pe.ValueKind != JsonValueKind.Null)
+                    {
+                        var start = ps.GetInt64(); var end = pe.GetInt64();
+                        if (end <= start) return "E_TIMEMAP_RANGE";
+                        provider.Add((start, end));
+                    }
+                    if (row.TryGetProperty("canonical_start_us", out var cs) && cs.ValueKind != JsonValueKind.Null && row.TryGetProperty("canonical_end_us", out var ce) && ce.ValueKind != JsonValueKind.Null)
+                    {
+                        var start = cs.GetInt64(); var end = ce.GetInt64();
+                        if (end <= start) return "E_TIMEMAP_RANGE";
+                        canonical.Add((start, end));
+                    }
+                }
+                foreach (var ranges in new[] { provider, canonical })
+                {
+                    ranges.Sort((a, b) => a.Start != b.Start ? a.Start.CompareTo(b.Start) : a.End.CompareTo(b.End));
+                    for (var index = 1; index < ranges.Count; index++) if (ranges[index].Start < ranges[index - 1].End) return "E_TIMEMAP_OVERLAP";
+                }
+                return "OK";
+            }
+            case "exposure_event":
+                return GetLong(value, "canonical_end_us") > GetLong(value, "canonical_start_us") ? "OK" : "E_EXPOSURE_RANGE";
+            case "knowledge_policy":
+            {
+                var precedence = Get(value, "precedence").EnumerateArray().Select(item => item.GetString()).ToArray();
+                return IsFalse(value, "assume_seen_implies_known") && precedence.SequenceEqual(new[] { "query", "story", "global" }) ? "OK" : "E_EXPOSURE_IS_NOT_KNOWLEDGE";
+            }
