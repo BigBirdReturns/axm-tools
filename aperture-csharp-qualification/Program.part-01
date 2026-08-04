@@ -1,0 +1,70 @@
+            case "aperture_query":
+                return IsTrue(Get(value, "constraints"), "same_work_only") ? "OK" : "E_CROSS_WORK";
+            case "answer_plan":
+                return IsFalse(Get(value, "model_policy"), "may_add_facts") ? "OK" : "E_MODEL_FACT";
+            case "selection_receipt":
+                return IsTrue(value, "same_work_only") ? "OK" : "E_CROSS_WORK";
+            case "actuation_command":
+            {
+                var action = GetString(value, "action");
+                if (action == "seek_exact" && (!value.TryGetProperty("target_position", out var target) || target.ValueKind == JsonValueKind.Null)) return "E_SEEK_TARGET";
+                if (action == "seek_relative" && (!value.TryGetProperty("relative_delta_us", out var delta) || delta.ValueKind == JsonValueKind.Null)) return "E_SEEK_TARGET";
+                if (action == "set_rate" && (!value.TryGetProperty("rate", out var rate) || rate.ValueKind == JsonValueKind.Null)) return "E_RATE_TARGET";
+                return "OK";
+            }
+            case "community_candidate":
+            {
+                var rights = Get(value, "rights_attestation");
+                return IsFalse(rights, "redistributes_media") && IsFalse(rights, "redistributes_full_subtitles") ? "OK" : "E_COMMUNITY_RIGHTS";
+            }
+            case "aperture_session":
+            {
+                var index = 0;
+                foreach (var row in Get(value, "events").EnumerateArray())
+                {
+                    if (GetLong(row, "ordinal", -1) != index) return "E_EVENT_ORDER";
+                    index++;
+                }
+                return "OK";
+            }
+            default:
+                throw new InvalidOperationException($"Unknown contract {contract}");
+        }
+    }
+
+    public static int Main(string[] args)
+    {
+        if (args.Length != 2)
+        {
+            Console.Error.WriteLine("usage: ApertureConformance CASES OUTPUT");
+            return 2;
+        }
+        using var document = JsonDocument.Parse(File.ReadAllBytes(args[0]));
+        var results = new List<Dictionary<string, object?>>();
+        foreach (var row in document.RootElement.GetProperty("cases").EnumerateArray())
+        {
+            var code = Validate(row.GetProperty("contract").GetString() ?? "", row.GetProperty("input"));
+            results.Add(new Dictionary<string, object?>
+            {
+                ["case_id"] = row.GetProperty("case_id").GetString(),
+                ["outcome"] = code == "OK" ? "ACCEPT" : "REJECT",
+                ["code"] = code,
+                ["canonical_sha256"] = code == "OK" ? Sha256(CanonicalBytes(row.GetProperty("input"))) : null,
+            });
+        }
+        var resultsElement = JsonSerializer.SerializeToElement(results);
+        var output = new Dictionary<string, object?>
+        {
+            ["format"] = "axm-aperture-conformance-results/1",
+            ["implementation"] = "csharp",
+            ["result_set_sha256"] = Sha256(CanonicalBytes(resultsElement)),
+            ["results"] = results,
+        };
+        var options = new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+        var text = JsonSerializer.Serialize(output, options) + Environment.NewLine;
+        Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(args[1]))!);
+        File.WriteAllText(args[1], text, new UTF8Encoding(false));
+        Console.Write(text);
+        return 0;
+    }
+}
