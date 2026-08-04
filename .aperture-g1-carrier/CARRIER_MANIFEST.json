@@ -9,6 +9,7 @@
   "authority": "transport-only",
   "conformance": {
     "case_count": 75,
+    "dotnet_sdk": "8.0.423",
     "expected_common_result_sha256": "dc7ed5061068384a9dd7f9469b8747c1cc276b2cdf1c489fad9755d2290da6a1",
     "implementations": [
       "python",

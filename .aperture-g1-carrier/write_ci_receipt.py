@@ -41,7 +41,8 @@ def main() -> int:
     parser.add_argument("--run-url", required=True)
     parser.add_argument("--repository", required=True)
     parser.add_argument("--ref", required=True)
-    parser.add_argument("--commit", required=True)
+    parser.add_argument("--workflow-commit", required=True)
+    parser.add_argument("--head-commit", required=True)
     args = parser.parse_args()
 
     root = args.root.resolve()
@@ -70,6 +71,17 @@ def main() -> int:
     if set(result_hashes.values()) != {expected}:
         raise SystemExit(f"hosted result digest mismatch: {result_hashes}")
 
+    toolchain = {
+        "python": platform.python_version(),
+        "node": command_version(["node", "--version"]),
+        "typescript": command_version(["tsc", "--version"]),
+        "dotnet": command_version(["dotnet", "--version"]),
+    }
+    if toolchain["dotnet"] != manifest["conformance"]["dotnet_sdk"]:
+        raise SystemExit(
+            f"exact .NET SDK drift: {toolchain['dotnet']} != {manifest['conformance']['dotnet_sdk']}"
+        )
+
     receipt = {
         "format": "axm-aperture-csharp-conformance-ci/1",
         "provider": "github-actions",
@@ -78,7 +90,8 @@ def main() -> int:
         "run_url": args.run_url,
         "repository": args.repository,
         "ref": args.ref,
-        "commit": args.commit,
+        "workflow_commit": args.workflow_commit,
+        "head_commit": args.head_commit,
         "protocol_version": manifest["conformance"]["protocol_version"],
         "case_count": manifest["conformance"]["case_count"],
         "source_sha256": digest(root / "conformance/csharp/Program.cs"),
@@ -86,12 +99,7 @@ def main() -> int:
         "result_sha256": result_hashes["csharp"],
         "common_result_sha256": expected,
         "summary_sha256": digest(summary_path),
-        "toolchain": {
-            "python": platform.python_version(),
-            "node": command_version(["node", "--version"]),
-            "typescript": command_version(["tsc", "--version"]),
-            "dotnet": command_version(["dotnet", "--version"]),
-        },
+        "toolchain": toolchain,
         "limits": [
             "The transport branch is not the normative Aperture repository.",
             "This receipt proves contract compilation and cross-language byte parity only.",
