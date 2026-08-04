@@ -1,0 +1,481 @@
+    {
+      "case_id": "C-EDITION-001",
+      "contract": "edition_binding",
+      "expected": {
+        "canonical_sha256": "f011e14e7f53dba90714073fdc5b71d7b13f06374138244f8778047d6426ea18",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "binding_digest": "2222222222222222222222222222222222222222222222222222222222222222",
+        "binding_id": "editionbinding1_1111111111111111111111111111111111111111111111111111111111111111",
+        "confidence": 1.0,
+        "edition_id": "edition:lantern:canonical",
+        "evidence_refs": [
+          "source:canonical.srt",
+          "source:canonical.nut"
+        ],
+        "fingerprints": [
+          {
+            "independence_group": "subtitle",
+            "kind": "subtitle_signature",
+            "source_ref": "source:canonical.srt",
+            "value": "subsig:lantern"
+          },
+          {
+            "independence_group": "audio",
+            "kind": "audio_whole",
+            "source_ref": "source:canonical.nut",
+            "value": "audiosha:263f"
+          }
+        ],
+        "format": "axm-aperture-edition-binding/1",
+        "label": "canonical",
+        "language": "en",
+        "region": null,
+        "reviewed_at": "2026-08-04T20:25:45Z",
+        "reviewed_by": "reviewer:fixture",
+        "runtime_us": 12000000,
+        "verification_state": "verified",
+        "work_id": "work:lantern-relay"
+      }
+    },
+    {
+      "case_id": "C-EDITION-NEG-001",
+      "contract": "edition_binding",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_DURATION_ONLY",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "binding_digest": "2222222222222222222222222222222222222222222222222222222222222222",
+        "binding_id": "editionbinding1_1111111111111111111111111111111111111111111111111111111111111111",
+        "confidence": 1.0,
+        "edition_id": "edition:lantern:canonical",
+        "evidence_refs": [
+          "source:canonical.srt",
+          "source:canonical.nut"
+        ],
+        "fingerprints": [
+          {
+            "independence_group": "duration",
+            "kind": "duration",
+            "source_ref": "source:runtime",
+            "value": "12000000"
+          }
+        ],
+        "format": "axm-aperture-edition-binding/1",
+        "label": "canonical",
+        "language": "en",
+        "region": null,
+        "reviewed_at": "2026-08-04T20:25:45Z",
+        "reviewed_by": "reviewer:fixture",
+        "runtime_us": 12000000,
+        "verification_state": "verified",
+        "work_id": "work:lantern-relay"
+      }
+    },
+    {
+      "case_id": "C-TIMEMAP-001",
+      "contract": "edition_time_map",
+      "expected": {
+        "canonical_sha256": "a3ec7c2beb3b99d16c414333b74b92dcfcf0a3ef5b01e659d1b7130164e6a972",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "canonical_duration_us": 7200000000,
+        "canonical_work_id": "work:aperture-golden-story",
+        "edition_id": "edition:golden:extended",
+        "evidence_refs": [
+          "edition-file://extended/subtitles.srt",
+          "edition-file://extended/audio.fp",
+          "review://edition-map/golden-001"
+        ],
+        "format": "axm-aperture-edition-time-map/1",
+        "generated_at": "2026-08-04T18:00:00Z",
+        "map_id": "timemap:golden:extended-to-canonical",
+        "map_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "provider_duration_us": 7320000000,
+        "segments": [
+          {
+            "canonical_end_us": null,
+            "canonical_start_us": null,
+            "confidence": 1.0,
+            "kind": "provider_only",
+            "provider_end_us": 60000000,
+            "provider_start_us": 0,
+            "reason": "studio logos"
+          },
+          {
+            "canonical_end_us": 2700000000,
+            "canonical_start_us": 0,
+            "confidence": 1.0,
+            "kind": "mapped",
+            "provider_end_us": 2760000000,
+            "provider_start_us": 60000000,
+            "reason": "main cut before inserted scene"
+          },
+          {
+            "canonical_end_us": null,
+            "canonical_start_us": null,
+            "confidence": 1.0,
+            "kind": "provider_only",
+            "provider_end_us": 2880000000,
+            "provider_start_us": 2760000000,
+            "reason": "extended scene"
+          },
+          {
+            "canonical_end_us": 7140000000,
+            "canonical_start_us": 2700000000,
+            "confidence": 1.0,
+            "kind": "mapped",
+            "provider_end_us": 7320000000,
+            "provider_start_us": 2880000000,
+            "reason": "main cut after inserted scene"
+          },
+          {
+            "canonical_end_us": 7200000000,
+            "canonical_start_us": 7140000000,
+            "confidence": 1.0,
+            "kind": "canonical_only",
+            "provider_end_us": null,
+            "provider_start_us": null,
+            "reason": "canonical restoration coda absent from provider cut"
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "C-TIMEMAP-NEG-001",
+      "contract": "edition_time_map",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_TIMEMAP_OVERLAP",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "canonical_duration_us": 20000000,
+        "canonical_work_id": "work:golden",
+        "edition_id": "edition:broken",
+        "evidence_refs": [
+          "review://broken"
+        ],
+        "format": "axm-aperture-edition-time-map/1",
+        "generated_at": "2026-08-04T18:00:00Z",
+        "map_id": "timemap:broken-overlap",
+        "map_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "provider_duration_us": 20000000,
+        "segments": [
+          {
+            "canonical_end_us": 12000000,
+            "canonical_start_us": 0,
+            "confidence": 1.0,
+            "kind": "mapped",
+            "provider_end_us": 12000000,
+            "provider_start_us": 0,
+            "reason": "first"
+          },
+          {
+            "canonical_end_us": 20000000,
+            "canonical_start_us": 10000000,
+            "confidence": 1.0,
+            "kind": "mapped",
+            "provider_end_us": 20000000,
+            "provider_start_us": 10000000,
+            "reason": "overlap"
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "C-EXPOSURE-001",
+      "contract": "exposure_event",
+      "expected": {
+        "canonical_sha256": "b2ae50a4851649fed8575c60fbe02c2944764057c48f61388f9dc8334f9826b2",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "attention": {
+          "afk": false,
+          "audible": true,
+          "foreground": true
+        },
+        "canonical_end_us": 1620000000,
+        "canonical_start_us": 1320000000,
+        "confidence": 1.0,
+        "edition_id": "edition:golden:theatrical",
+        "ended_at": "2026-08-04T18:05:00Z",
+        "event_id": "exposure:golden:000001",
+        "evidence_refs": [
+          "anchor:golden:mpv:001",
+          "activitywatch://bucket/window/entry-0042"
+        ],
+        "format": "axm-aperture-exposure-event/1",
+        "observation_mode": "direct",
+        "provider_end_us": 1680000000,
+        "provider_start_us": 1380000000,
+        "session_id": "session:aperture:golden:001",
+        "started_at": "2026-08-04T18:00:00Z",
+        "viewer_profile_id": "viewer:golden:jonathan",
+        "work_id": "work:aperture-golden-story"
+      }
+    },
+    {
+      "case_id": "C-EXPOSURE-NEG-001",
+      "contract": "exposure_event",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_EXPOSURE_RANGE",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "attention": {
+          "afk": false,
+          "audible": true,
+          "foreground": true
+        },
+        "canonical_end_us": 10000000,
+        "canonical_start_us": 20000000,
+        "confidence": 1.0,
+        "edition_id": "edition:broken",
+        "ended_at": "2026-08-04T18:00:10Z",
+        "event_id": "exposure:reverse",
+        "evidence_refs": [
+          "anchor:broken"
+        ],
+        "format": "axm-aperture-exposure-event/1",
+        "observation_mode": "direct",
+        "provider_end_us": 10000000,
+        "provider_start_us": 20000000,
+        "session_id": "session:broken",
+        "started_at": "2026-08-04T18:00:00Z",
+        "viewer_profile_id": "viewer:golden",
+        "work_id": "work:golden"
+      }
+    },
+    {
+      "case_id": "C-KNOW-001",
+      "contract": "knowledge_policy",
+      "expected": {
+        "canonical_sha256": "5fa2c9bab31387a6f5b764759d0aa7d5bdcc5940ef4d49c0b190831b07dbf64c",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "allow_inference": false,
+        "assume_seen_implies_known": false,
+        "format": "axm-aperture-knowledge-policy/1",
+        "policy_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policy_id": "knowledgepolicy1_9999999999999999999999999999999999999999999999999999999999999999",
+        "precedence": [
+          "query",
+          "story",
+          "global"
+        ],
+        "scope": "story",
+        "spoiler_mode": "necessary_antecedents",
+        "viewer_profile_id": "viewer:golden:jonathan",
+        "work_id": "work:aperture-golden-story"
+      }
+    },
+    {
+      "case_id": "C-KNOW-NEG-001",
+      "contract": "knowledge_policy",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_EXPOSURE_IS_NOT_KNOWLEDGE",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "allow_inference": false,
+        "assume_seen_implies_known": true,
+        "format": "axm-aperture-knowledge-policy/1",
+        "policy_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policy_id": "knowledgepolicy1_9999999999999999999999999999999999999999999999999999999999999999",
+        "precedence": [
+          "query",
+          "story",
+          "global"
+        ],
+        "scope": "story",
+        "spoiler_mode": "necessary_antecedents",
+        "viewer_profile_id": "viewer:golden:jonathan",
+        "work_id": "work:aperture-golden-story"
+      }
+    },
+    {
+      "case_id": "C-QUERY-001",
+      "contract": "aperture_query",
+      "expected": {
+        "canonical_sha256": "e1a8fa2ea527fe656ac239af228b5cc4828ed05929820e4befc7e29fef78f6d7",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "anchor_id": "anchor:golden:mpv:001",
+        "constraints": {
+          "allowed_continuity_ids": [],
+          "maximum_answer_facts": 8,
+          "same_work_only": true
+        },
+        "format": "axm-aperture-query/1",
+        "kind": "explain",
+        "knowledge_policy": {
+          "allow_new_outcomes": false,
+          "mode": "necessary_antecedents"
+        },
+        "query_id": "query:golden:explain:001",
+        "question": "Why is Mara angry with her mentor?",
+        "requested_at": "2026-08-04T18:05:05Z",
+        "viewer_profile_id": "viewer:golden:jonathan",
+        "work_id": "work:aperture-golden-story"
+      }
+    },
+    {
+      "case_id": "C-QUERY-NEG-001",
+      "contract": "aperture_query",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_CROSS_WORK",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "anchor_id": "anchor:golden:mpv:001",
+        "constraints": {
+          "allowed_continuity_ids": [],
+          "maximum_answer_facts": 8,
+          "same_work_only": false
+        },
+        "format": "axm-aperture-query/1",
+        "kind": "explain",
+        "knowledge_policy": {
+          "allow_new_outcomes": false,
+          "mode": "necessary_antecedents"
+        },
+        "query_id": "query:golden:explain:001",
+        "question": "Why is Mara angry with her mentor?",
+        "requested_at": "2026-08-04T18:05:05Z",
+        "viewer_profile_id": "viewer:golden:jonathan",
+        "work_id": "work:aperture-golden-story"
+      }
+    },
+    {
+      "case_id": "C-ANSWER-001",
+      "contract": "answer_plan",
+      "expected": {
+        "canonical_sha256": "e9c2aab4fe45b8e7efdaec9f3af90d2a28e80b4a2a082aa0049b49d187de60d6",
+        "code": "OK",
+        "outcome": "ACCEPT"
+      },
+      "input": {
+        "facts": [
+          {
+            "delivered": true,
+            "fact_id": "fact:mentor-withheld-map",
+            "proposition": "Ilyan withheld the route map from Mara.",
+            "provenance_refs": [
+              "source:story-review-001"
+            ],
+            "relation_to_query": "necessary"
+          },
+          {
+            "delivered": true,
+            "fact_id": "fact:mentor-promised-transparency",
+            "proposition": "Ilyan had promised Mara that he would disclose route risks.",
+            "provenance_refs": [
+              "source:story-review-002"
+            ],
+            "relation_to_query": "necessary"
+          },
+          {
+            "delivered": false,
+            "fact_id": "fact:mentor-later-dies",
+            "proposition": "Ilyan dies during the final crossing.",
+            "provenance_refs": [
+              "source:story-review-004"
+            ],
+            "relation_to_query": "outcome"
+          }
+        ],
+        "format": "axm-aperture-answer-plan/1",
+        "knowledge_events_to_emit": [
+          {
+            "acquisition_kind": "explained",
+            "fact_id": "fact:mentor-withheld-map"
+          },
+          {
+            "acquisition_kind": "explained",
+            "fact_id": "fact:mentor-promised-transparency"
+          }
+        ],
+        "model_policy": {
+          "may_add_facts": false,
+          "may_realize_prose": true,
+          "must_preserve_fact_ids": true
+        },
+        "plan_id": "answerplan:golden:001",
+        "query_id": "query:golden:explain:001",
+        "spoiler_disposition": {
+          "delivered_outcomes": [],
+          "requested_mode": "necessary_antecedents",
+          "withheld_outcomes": [
+            "fact:mentor-later-dies"
+          ]
+        },
+        "story_package_id": "storypkg:golden:v1",
+        "story_package_revision": 1,
+        "structured_fallback": [
+          "Ilyan promised to disclose route risks.",
+          "He then withheld the route map from Mara.",
+          "She has just discovered the omission."
+        ],
+        "withheld_fact_ids": [
+          "fact:mentor-later-dies"
+        ],
+        "work_id": "work:aperture-golden-story"
+      }
+    },
+    {
+      "case_id": "C-ANSWER-NEG-001",
+      "contract": "answer_plan",
+      "expected": {
+        "canonical_sha256": null,
+        "code": "E_MODEL_FACT",
+        "outcome": "REJECT"
+      },
+      "input": {
+        "facts": [
+          {
+            "delivered": true,
+            "fact_id": "fact:known",
+            "proposition": "Known fact.",
+            "provenance_refs": [
+              "source:reviewed"
+            ],
+            "relation_to_query": "necessary"
+          }
+        ],
+        "format": "axm-aperture-answer-plan/1",
+        "knowledge_events_to_emit": [],
+        "model_policy": {
+          "may_add_facts": true,
+          "may_realize_prose": true,
+          "must_preserve_fact_ids": false
+        },
+        "plan_id": "answerplan:bad:model-authority",
+        "query_id": "query:bad",
+        "spoiler_disposition": {
+          "delivered_outcomes": [],
+          "requested_mode": "full_continuity",
+          "withheld_outcomes": []
+        },
+        "story_package_id": "storypkg:golden:v1",
+        "story_package_revision": 1,
+        "structured_fallback": [],
+        "withheld_fact_ids": [],
+        "work_id": "work:golden"
+      }
+    },
