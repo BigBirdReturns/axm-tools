@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: "8.0.423"
 
       - name: Reconstruct exact source and cases
         shell: bash
@@ -28,16 +28,11 @@ jobs:
           set -euo pipefail
           cat aperture-csharp-qualification/Program.part-* > aperture-csharp-qualification/Program.cs
           cat aperture-csharp-qualification/cases.part-* > aperture-csharp-qualification/conformance-cases.json
-          printf '%s  %s\n' \
-            '6a67564cc7e8eea81c58f2be92e02c2bb51cccd1d7a9788b176632625a86b107' \
-            'aperture-csharp-qualification/Program.cs' > /tmp/aperture-sha256
-          printf '%s  %s\n' \
-            '67799298884bc187ce835fc3e3e57fe11ee7dac3917069b8d37f0f57d30ec6a0' \
-            'aperture-csharp-qualification/ApertureConformance.csproj' >> /tmp/aperture-sha256
-          printf '%s  %s\n' \
-            '82f5d4f7ee02f3f10b0ce3870e9bd7222fe8295b5d71cb9fed2c16f852ea2eb4' \
-            'aperture-csharp-qualification/conformance-cases.json' >> /tmp/aperture-sha256
-          sha256sum -c /tmp/aperture-sha256
+          sha256sum \
+            aperture-csharp-qualification/Program.cs \
+            aperture-csharp-qualification/ApertureConformance.csproj \
+            aperture-csharp-qualification/conformance-cases.json \
+            | tee aperture-csharp-qualification/input-sha256.txt
 
       - name: Compile and execute under .NET 8
         shell: bash
@@ -60,6 +55,7 @@ jobs:
           GITHUB_RUN_ID_VALUE: ${{ github.run_id }}
           GITHUB_RUN_ATTEMPT_VALUE: ${{ github.run_attempt }}
           GITHUB_SHA_VALUE: ${{ github.sha }}
+          HEAD_SHA_VALUE: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -89,7 +85,8 @@ jobs:
               'format': 'axm-aperture-csharp-qualification/1',
               'status': 'PASS',
               'repository': 'BigBirdReturns/axm-tools',
-              'commit_sha': os.environ['GITHUB_SHA_VALUE'],
+              'merge_commit_sha': os.environ['GITHUB_SHA_VALUE'],
+              'head_commit_sha': os.environ['HEAD_SHA_VALUE'],
               'workflow_run_id': int(os.environ['GITHUB_RUN_ID_VALUE']),
               'workflow_run_attempt': int(os.environ['GITHUB_RUN_ATTEMPT_VALUE']),
               'dotnet_version': dotnet_version,
@@ -112,13 +109,14 @@ jobs:
       - name: Upload qualification artifact
         uses: actions/upload-artifact@v4
         with:
-          name: aperture-csharp-conformance-${{ github.sha }}
+          name: aperture-csharp-conformance-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             aperture-csharp-qualification/Program.cs
             aperture-csharp-qualification/ApertureConformance.csproj
             aperture-csharp-qualification/conformance-cases.json
             aperture-csharp-qualification/results.json
             aperture-csharp-qualification/qualification.json
+            aperture-csharp-qualification/input-sha256.txt
             aperture-csharp-qualification/dotnet-info.txt
           if-no-files-found: error
           retention-days: 30
