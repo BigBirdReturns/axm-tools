@@ -1,0 +1,202 @@
+name: TEMP Aperture .NET 8.0.423 toolchain ferry
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/aperture-dotnet-8.0.423-ferry.yml
+      - aperture-toolchain/dotnet-8.0.423-ferry.md
+
+permissions:
+  contents: read
+
+jobs:
+  ferry:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-dotnet-8.0.423-ferry'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Resolve, verify, and package exact SDK
+        shell: bash
+        env:
+          TARGET_SDK: 8.0.423
+          METADATA_URL: https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/8.0/releases.json
+          EXPECTED_SMOKE_SHA256: 31c8e9a8d0d42f4dbf5d9241d20e4e6083af2a16035b59d1b90dd4e66838409f
+        run: |
+          set -euo pipefail
+          umask 022
+          work="$RUNNER_TEMP/aperture-dotnet-ferry"
+          out="$work/out"
+          install="$work/dotnet-$TARGET_SDK"
+          archive="$work/dotnet-sdk-$TARGET_SDK-linux-x64.tar.gz"
+          rm -rf "$work"
+          mkdir -p "$work" "$out" "$install"
+
+          curl --fail --location --retry 5 --retry-all-errors --connect-timeout 30 \
+            --user-agent 'AXM-Aperture-G1-Toolchain-Ferry/1' \
+            "$METADATA_URL" --output "$work/release-metadata.json"
+
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import pathlib
+
+          target = os.environ['TARGET_SDK']
+          url = os.environ['METADATA_URL']
+          work = pathlib.Path(os.environ['RUNNER_TEMP']) / 'aperture-dotnet-ferry'
+          raw = (work / 'release-metadata.json').read_bytes()
+          data = json.loads(raw)
+          candidates = {}
+          for release in data.get('releases', []):
+              sdk_objects = []
+              if isinstance(release.get('sdk'), dict):
+                  sdk_objects.append(release['sdk'])
+              sdk_objects.extend(item for item in release.get('sdks', []) if isinstance(item, dict))
+              for sdk in sdk_objects:
+                  if sdk.get('version') != target:
+                      continue
+                  for item in sdk.get('files', []):
+                      if item.get('rid') == 'linux-x64' and item.get('name', '').endswith('.tar.gz'):
+                          candidates[item['url']] = item
+          if len(candidates) != 1:
+              raise SystemExit(f'expected one unique linux-x64 SDK {target} archive, found {len(candidates)}')
+          selected = next(iter(candidates.values()))
+          source = {
+              'format': 'axm-aperture-dotnet-source/1',
+              'metadata_url': url,
+              'metadata_bytes': len(raw),
+              'metadata_sha256': hashlib.sha256(raw).hexdigest(),
+              'sdk_version': target,
+              'rid': selected['rid'],
+              'name': selected['name'],
+              'url': selected['url'],
+              'sha512': selected['hash'].lower(),
+          }
+          (work / 'source.json').write_text(json.dumps(source, indent=2, sort_keys=True) + '\n')
+          PY
+
+          source_url="$(python -c 'import json; print(json.load(open("'"$work"'/source.json"))["url"])')"
+          expected_sha512="$(python -c 'import json; print(json.load(open("'"$work"'/source.json"))["sha512"])')"
+          curl --fail --location --retry 5 --retry-all-errors --connect-timeout 30 \
+            --user-agent 'AXM-Aperture-G1-Toolchain-Ferry/1' \
+            "$source_url" --output "$archive"
+          observed_sha512="$(sha512sum "$archive" | awk '{print tolower($1)}')"
+          test "$observed_sha512" = "$expected_sha512"
+
+          tar -xzf "$archive" -C "$install"
+          export DOTNET_ROOT="$install"
+          export PATH="$install:$PATH"
+          export DOTNET_CLI_TELEMETRY_OPTOUT=1
+          export DOTNET_NOLOGO=1
+          export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+          test "$(dotnet --version)" = "$TARGET_SDK"
+          dotnet --info > "$work/dotnet-info.txt"
+
+          mkdir -p "$work/smoke"
+          cat > "$work/smoke/ApertureSmoke.csproj" <<'EOF'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>enable</Nullable>
+              <Deterministic>true</Deterministic>
+              <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+            </PropertyGroup>
+          </Project>
+          EOF
+          cat > "$work/smoke/Program.cs" <<'EOF'
+          using System;
+          using System.Security.Cryptography;
+          using System.Text;
+
+          internal static class Program
+          {
+              private static int Main()
+              {
+                  var payload = Encoding.UTF8.GetBytes("axm-aperture-native-csharp-g1");
+                  var digest = Convert.ToHexString(SHA256.HashData(payload)).ToLowerInvariant();
+                  Console.WriteLine($"APERTURE_NATIVE_CSHARP_PASS {digest}");
+                  return digest == "31c8e9a8d0d42f4dbf5d9241d20e4e6083af2a16035b59d1b90dd4e66838409f" ? 0 : 2;
+              }
+          }
+          EOF
+          dotnet build "$work/smoke/ApertureSmoke.csproj" --configuration Release \
+            --output "$work/smoke/bin" --nologo
+          dotnet "$work/smoke/bin/ApertureSmoke.dll" > "$work/smoke-stdout.txt"
+          grep -Fx "APERTURE_NATIVE_CSHARP_PASS $EXPECTED_SMOKE_SHA256" "$work/smoke-stdout.txt"
+
+          bundle="$out/dotnet-sdk-$TARGET_SDK-linux-x64.repacked.tar.gz"
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner \
+            -C "$work" -cf - "dotnet-$TARGET_SDK" | gzip -n -9 > "$bundle"
+          cp "$work/source.json" "$work/release-metadata.json" "$work/dotnet-info.txt" \
+            "$work/smoke-stdout.txt" "$out/"
+          cp "$work/smoke/Program.cs" "$work/smoke/ApertureSmoke.csproj" "$out/"
+
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import subprocess
+
+          work = pathlib.Path(os.environ['RUNNER_TEMP']) / 'aperture-dotnet-ferry'
+          out = work / 'out'
+          target = os.environ['TARGET_SDK']
+          source = json.loads((out / 'source.json').read_text())
+          bundle = out / f'dotnet-sdk-{target}-linux-x64.repacked.tar.gz'
+          archive = work / f'dotnet-sdk-{target}-linux-x64.tar.gz'
+
+          def digest(path, name):
+              h = hashlib.new(name)
+              with path.open('rb') as handle:
+                  for block in iter(lambda: handle.read(1024 * 1024), b''):
+                      h.update(block)
+              return h.hexdigest()
+
+          receipt = {
+              'format': 'axm-aperture-dotnet-toolchain-ferry-receipt/1',
+              'sdk_version': target,
+              'rid': 'linux-x64',
+              'source': source,
+              'source_archive_bytes': archive.stat().st_size,
+              'source_archive_sha256': digest(archive, 'sha256'),
+              'source_archive_sha512': digest(archive, 'sha512'),
+              'bundle': bundle.name,
+              'bundle_bytes': bundle.stat().st_size,
+              'bundle_sha256': digest(bundle, 'sha256'),
+              'bundle_sha512': digest(bundle, 'sha512'),
+              'extracted_file_count': sum(1 for path in (work / f'dotnet-{target}').rglob('*') if path.is_file()),
+              'dotnet_version': subprocess.check_output([str(work / f'dotnet-{target}' / 'dotnet'), '--version'], text=True).strip(),
+              'dotnet_info_sha256': digest(out / 'dotnet-info.txt', 'sha256'),
+              'smoke_source_sha256': digest(out / 'Program.cs', 'sha256'),
+              'smoke_project_sha256': digest(out / 'ApertureSmoke.csproj', 'sha256'),
+              'smoke_stdout_sha256': digest(out / 'smoke-stdout.txt', 'sha256'),
+              'runner_os': os.environ.get('RUNNER_OS'),
+              'runner_arch': os.environ.get('RUNNER_ARCH'),
+              'workflow_repository': os.environ.get('GITHUB_REPOSITORY'),
+              'workflow_sha': os.environ.get('GITHUB_SHA'),
+              'workflow_ref': os.environ.get('GITHUB_REF'),
+              'authority': 'toolchain acquisition only; no Aperture gate or product authority',
+          }
+          core = json.dumps(receipt, sort_keys=True, separators=(',', ':')).encode()
+          receipt['receipt_sha256'] = hashlib.sha256(core).hexdigest()
+          (out / 'toolchain-receipt.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
+          PY
+
+          (cd "$out" && sha256sum * > SHA256SUMS && sha512sum * > SHA512SUMS)
+          sha256sum "$out"/*
+
+      - name: Upload checksum-bound SDK ferry
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axm-aperture-dotnet-sdk-8.0.423-linux-x64
+          path: ${{ runner.temp }}/aperture-dotnet-ferry/out/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
