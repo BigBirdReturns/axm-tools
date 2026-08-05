@@ -54,10 +54,14 @@ jobs:
 
           git init -q "$repo"
           git -C "$repo" remote add origin "https://github.com/$ARC_REPOSITORY.git"
-          git -C "$repo" fetch --no-tags --depth=1 origin "$ARC_LANDED"
+          # Fetch complete reachable histories for both exact commits. A depth-1
+          # fetch of the merge commit hides the feature parent and makes a valid
+          # ancestry proof impossible.
+          git -C "$repo" fetch --no-tags origin "$ARC_LANDED"
           git -C "$repo" fetch --no-tags origin "$ARC_FEATURE"
           git -C "$repo" checkout -q --detach "$ARC_LANDED"
           test "$(git -C "$repo" rev-parse HEAD)" = "$ARC_LANDED"
+          git -C "$repo" cat-file -e "$ARC_FEATURE^{commit}"
           git -C "$repo" merge-base --is-ancestor "$ARC_FEATURE" "$ARC_LANDED"
           test -z "$(git -C "$repo" status --porcelain)"
 
