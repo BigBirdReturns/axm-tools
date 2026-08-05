@@ -33,7 +33,21 @@ jobs:
           from pathlib import Path
           import zipfile
 
-          expected = [
+          folder = Path('.import/home-lab-gradient')
+
+          def read_required(name):
+              path = folder / name
+              if not path.is_file():
+                  raise SystemExit(f'missing bounded transport part: {name}')
+              return path.read_bytes()
+
+          def require_digest(name, data, digest):
+              actual = hashlib.sha256(data).hexdigest()
+              if actual != digest:
+                  raise SystemExit(f'{name} digest mismatch: {actual}')
+              return data
+
+          expected_chunks = [
               ('chunk-00', '4ccf233d26a8e11d5df8e474c718327605a6c2a9c4c4bbf91850930b65132fad'),
               ('chunk-01', 'f75d96b257e80cddd56d49e30ba4726a95b8e193978ee2a6ff1fbcfa7f8866eb'),
               ('chunk-02', '80ab64cf15036bec67d41919a8566618bf1da93cf4e5b449c8bc8ae73244a84c'),
@@ -42,30 +56,32 @@ jobs:
               ('chunk-05', 'f48b841a3f8ed640101bd40ae41439ad050b2188de098d10f9f23426f283bcc7'),
               ('chunk-06', '663005ec9988cceed7e8ac21538c5b7a414c9d4970cdf5890c71fcd6ba34dd7c'),
               ('chunk-07', 'fa98357672076b45d9770b21601952b5c73ca945994692ff261105d98816e3bd'),
-              ('part-08a', 'b6a9430c0793f389a589b9da371ca9679edea9a6ad71e210fe17d34a40afb3f4'),
-              ('part-08b', '886ee91f7be5c11a69bcbb99874f3bfba4f3cb368dfd59cb683bb370209367c4'),
-              ('part-09a', '513c16d99ce39740ea91faced57e1a6e5bf7fb6a4cf9bb5abe1b0d16ea93d02a'),
-              ('part-09b', 'fda9e1978cecd2ca728f2a85c77e6ec5fbd20f4dcd86965f62ff9cdd211ad888'),
-              ('part-10a', 'fd35631b1cbc4bb8f47fb31890279bffea7c2524f93ba4a0e35cdc56bfee3b1a'),
-              ('part-10b', 'c54296d1223f1e87333ada2fe801f52fd97454fa93ff34715e0f47c4ea6c320f'),
           ]
-          folder = Path('.import/home-lab-gradient')
           parts = []
-          for name, digest in expected:
-              path = folder / name
-              if not path.is_file():
-                  raise SystemExit(f'missing bounded transport part: {name}')
-              data = path.read_bytes()
+          for name, digest in expected_chunks:
+              data = read_required(name)
               if name == 'chunk-01' and hashlib.sha256(data).hexdigest() != digest:
                   old = b'j0Z2fZJ3Uo'
                   new = b'j0Z2f2JSJ3Uo'
                   if data.count(old) != 1:
                       raise SystemExit('bounded chunk-01 repair pattern is absent or ambiguous')
                   data = data.replace(old, new, 1)
-              actual = hashlib.sha256(data).hexdigest()
-              if actual != digest:
-                  raise SystemExit(f'{name} digest mismatch: {actual}')
-              parts.append(data)
+              parts.append(require_digest(name, data, digest))
+
+          split_or_complete = [
+              ('08', '8de73456f856d53d711ebc958b549b9fbf944a9e1c94556aa2905f89ddcdaa7f'),
+              ('09', '3726eb8f47d2604b1f6f6e4f1bdeaee421c2eca3f92aee7c2c4fba3d0e49d6b3'),
+              ('10', '03f8e1478bdd1baff9c2eb2e29d7d964dd838157992b0d5fcd328e16aab3fa0f'),
+          ]
+          for number, digest in split_or_complete:
+              first_name = f'part-{number}a'
+              first = read_required(first_name)
+              if hashlib.sha256(first).hexdigest() == digest:
+                  segment = first
+              else:
+                  second_name = f'part-{number}b'
+                  segment = first + read_required(second_name)
+              parts.append(require_digest(f'segment-{number}', segment, digest))
 
           encoded = b''.join(parts)
           if len(encoded) != 109024:
