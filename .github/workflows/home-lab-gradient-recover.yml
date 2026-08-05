@@ -113,6 +113,7 @@ jobs:
           python home-lab-gradient/scripts/lab.py build --now 2026-08-05T00:00:00Z
           python -m unittest discover -s home-lab-gradient/tests -v
           python home-lab-gradient/scripts/lab.py validate
+          rm -f .github/workflows/home-lab-gradient-validate.yml
           git config user.name "home-lab-gradient-recovery-bot"
           git config user.email "actions@users.noreply.github.com"
           git add -A
