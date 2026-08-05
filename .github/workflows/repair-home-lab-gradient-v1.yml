@@ -1,3 +1,4 @@
+# One-use repair workflow. This revision intentionally retriggers after the workflow exists on the branch.
 name: repair-home-lab-gradient-v1
 
 on:
