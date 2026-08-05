@@ -26,7 +26,7 @@ jobs:
         run: |
           python -m py_compile home-lab-gradient/scripts/lab.py home-lab-gradient/tests/test_lab.py
           python home-lab-gradient/tests/test_lab.py
-          python home-lab-gradient/scripts/lab.py validate-source
+          python home-lab-gradient/scripts/lab.py validate
           git diff --check
       - name: Commit repaired source
         run: |
