@@ -38,7 +38,7 @@ jobs:
 
       - name: Build and self-verify ferry
         shell: bash
-        run: aperture-g2-ferry/build-ferry.sh
+        run: bash aperture-g2-ferry/build-ferry.sh
 
       - name: Upload checksum-bound provider runtime
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
