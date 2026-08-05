@@ -1,0 +1,89 @@
+name: TEMP AXM Aperture AP-402 desktop overlay target
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/aperture-ap402-overlay-target.yml"
+      - ".github/scripts/aperture-ap402-*.sh"
+      - ".gitattributes"
+      - "aperture-carrier/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aperture-ap402-overlay-target-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  AP400_WORLD_MERGE: 951837fc082a1f4ebfb217d8b276a51b36edae10
+  TARGET_REPOSITORY: BigBirdReturns/axm-aperture
+  SOURCE_ARCHIVE_SHA256: 603354d146c39aeb0d519440873a1cf47e91098f30b96ecd9cfadb7a11bd1602
+  TARGET_LEDGER_SHA256: 67d5ad81a5ae22938841932505c34c1d7a5d302d95e563f773b0287f59ea13c4
+  PREDECESSOR_RECEIPT_SHA256: 0d8c961bdf219c19437854ecad0bf8468c50f60d5d8b1643c369f70bba9fe89c
+  TARGET_MANIFEST_SHA256: 3ccadb8c8c803c889217f5af5fd12d8c0a4fc814a01000434ccf58678cd7b44f
+  TARGET_RECEIPT_SHA256: e482aee07714153c6a40172d123e15c9876c7c83e908ed4911d2fcb4d2bad2d9
+
+jobs:
+  qualify:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-ap402-overlay-target-v1'
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact temporary candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+      - name: Reconstruct and qualify non-capturing desktop overlay target
+        shell: bash
+        run: bash .github/scripts/aperture-ap402-qualify.sh
+
+  package:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-ap402-overlay-target-v1'
+    needs:
+      - qualify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact qualified candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+      - name: Rebuild and cold-verify checksum-bound overlay package
+        shell: bash
+        env:
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: bash .github/scripts/aperture-ap402-package.sh
+      - name: Upload checksum-bound AP-402 target
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axm-aperture-ap402-desktop-overlay-target-v1
+          path: ${{ runner.temp }}/ap402-package/out/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7

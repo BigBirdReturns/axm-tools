@@ -1,0 +1,63 @@
+{
+  "accepted_gates": [],
+  "aperture_gate_accepted": false,
+  "authority": {
+    "ap213_snapshot": "external_validated_input",
+    "ap401_coach_projection": "external_read_only_input",
+    "host_visibility": "external_observation_only",
+    "native_window_control": "none",
+    "secure_surface": "external_observation_only",
+    "window_intent": "overlay_output_only"
+  },
+  "candidate_budget_ms": 5,
+  "canonical_nfr_009_accepted": false,
+  "carrier_authority": "transport_and_qualification_only",
+  "carrier_repository": "BigBirdReturns/axm-tools",
+  "format": "axm-aperture-program-transaction/1",
+  "hosted_repository_accepted": false,
+  "outputs": [
+    "clients/desktop-overlay/",
+    "tests/ui/desktop-overlay/",
+    "receipts/AP-402.json"
+  ],
+  "predecessors": {
+    "AP-213_api_policy_sha256": "bc52ce6faa3383340ee6e5ba19147ac6417225e351530a5336c4d6b4fe8130c0",
+    "AP-401_artifact_id": "8946278614",
+    "AP-400_world_merge": "951837fc082a1f4ebfb217d8b276a51b36edae10"
+  },
+  "refusals": [
+    "snapshot_refresh_as_auto_open",
+    "window_intent_as_host_success",
+    "delivery_receipt_as_host_success",
+    "uncommanded_visible_window",
+    "secure_surface_content_disclosure",
+    "activation_reuse_after_secure_surface",
+    "cross_session_intent_reuse",
+    "package_or_viewer_substitution",
+    "unknown_fields",
+    "pixel_capture",
+    "native_topmost_control",
+    "hidden_transport",
+    "local_clock",
+    "client_persistence",
+    "provider_credentials",
+    "query_or_selection_execution",
+    "playback_execution"
+  ],
+  "requirements": [
+    "FR-043",
+    "FR-044",
+    "NFR-008",
+    "NFR-009",
+    "NFR-015",
+    "NFR-023",
+    "NFR-024"
+  ],
+  "source_files": 9,
+  "source_manifest_sha256": "3ccadb8c8c803c889217f5af5fd12d8c0a4fc814a01000434ccf58678cd7b44f",
+  "status": "source_candidate",
+  "target_repository": "BigBirdReturns/axm-aperture",
+  "tests_passed": 27,
+  "title": "Implement desktop overlay shell",
+  "transaction": "AP-402"
+}

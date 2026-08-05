@@ -1,0 +1,25 @@
+{
+  "ap213": {
+    "api_policy_sha256": "bc52ce6faa3383340ee6e5ba19147ac6417225e351530a5336c4d6b4fe8130c0",
+    "authority": "external_local_api_policy_identity_only",
+    "canonical_transaction_accepted_here": false,
+    "issue_receipt_sha256": "e932562396135c184693238e5793ba49c2f8b7deeebc077e8acb2ea3b987148f",
+    "publication_status": "local_candidate_unpushed"
+  },
+  "ap401": {
+    "artifact_id": 8946278614,
+    "artifact_outer_sha256": "96a1dda34a5c309913f576d249f0a2ebc6550e85af7908e2e3205d44b8b6d93a",
+    "canonical_transaction_accepted_here": false,
+    "carrier_head": "ae82c3ee6dbb0a1045b622c495b15d548b106be2",
+    "carrier_receipt_sha256": "d2465451080f8d9a91b28653bd7cd1bf8a91f77ff3fdf95f15c9f987a2e01d36",
+    "source_archive_sha256": "e0731e753c45a93f6d12fbca223a75c7e34dbde1822fb4b1e4638afb8247d67e",
+    "source_manifest_sha256": "91bf3ce0a359076504db7c14b306e3e11ac3f29c6ef60cbb493b78e7f6510cc5",
+    "target_receipt_sha256": "5c110578746a881837711f7545c772a9f4befb8f426d3ca50055065fdb89a6de"
+  },
+  "ap400_world_merge": "951837fc082a1f4ebfb217d8b276a51b36edae10",
+  "carrier_authority": "transport_and_qualification_only",
+  "format": "axm-aperture-ap402-predecessor-receipt/1",
+  "target_repository": "BigBirdReturns/axm-aperture",
+  "target_repository_present": false,
+  "transaction": "AP-402"
+}
