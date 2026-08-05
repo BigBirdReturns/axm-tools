@@ -1,0 +1,154 @@
+name: home-lab-tailnet-actuator-probe
+
+on:
+  push:
+    branches: [agent/home-lab-capability-gradient]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/home-lab-capability-gradient
+
+      - name: Select an existing Tailscale credential mode without exposing credentials
+        id: auth
+        shell: bash
+        env:
+          TS_OAUTH_CLIENT_ID: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          TS_AUDIENCE: ${{ secrets.TS_AUDIENCE }}
+          TS_OAUTH_SECRET: ${{ secrets.TS_OAUTH_SECRET }}
+          TAILSCALE_AUTHKEY: ${{ secrets.TAILSCALE_AUTHKEY }}
+          TS_AUTHKEY: ${{ secrets.TS_AUTHKEY }}
+        run: |
+          set -eu
+          mode=none
+          if [[ -n "$TS_OAUTH_CLIENT_ID" && -n "$TS_AUDIENCE" ]]; then
+            mode=federated
+          elif [[ -n "$TS_OAUTH_CLIENT_ID" && -n "$TS_OAUTH_SECRET" ]]; then
+            mode=oauth
+          elif [[ -n "$TAILSCALE_AUTHKEY" ]]; then
+            mode=authkey
+          elif [[ -n "$TS_AUTHKEY" ]]; then
+            mode=authkey_alt
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          printf '{"credential_mode":"%s"}\n' "$mode" > "$RUNNER_TEMP/credential-mode.json"
+
+      - name: Connect with workload identity federation
+        id: tailscale_federated
+        if: steps.auth.outputs.mode == 'federated'
+        continue-on-error: true
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          audience: ${{ secrets.TS_AUDIENCE }}
+          tags: tag:ci
+          ping: 100.64.0.20
+
+      - name: Connect with an OAuth client
+        id: tailscale_oauth
+        if: steps.auth.outputs.mode == 'oauth'
+        continue-on-error: true
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+          ping: 100.64.0.20
+
+      - name: Connect with TAILSCALE_AUTHKEY
+        id: tailscale_authkey
+        if: steps.auth.outputs.mode == 'authkey'
+        continue-on-error: true
+        uses: tailscale/github-action@v4
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          ping: 100.64.0.20
+
+      - name: Connect with TS_AUTHKEY
+        id: tailscale_authkey_alt
+        if: steps.auth.outputs.mode == 'authkey_alt'
+        continue-on-error: true
+        uses: tailscale/github-action@v4
+        with:
+          authkey: ${{ secrets.TS_AUTHKEY }}
+          ping: 100.64.0.20
+
+      - name: Probe only the known NUC address and bounded service ports
+        if: always()
+        shell: bash
+        env:
+          MODE: ${{ steps.auth.outputs.mode }}
+          FEDERATED_OUTCOME: ${{ steps.tailscale_federated.outcome }}
+          OAUTH_OUTCOME: ${{ steps.tailscale_oauth.outcome }}
+          AUTHKEY_OUTCOME: ${{ steps.tailscale_authkey.outcome }}
+          AUTHKEY_ALT_OUTCOME: ${{ steps.tailscale_authkey_alt.outcome }}
+        run: |
+          set +e
+          target=100.64.0.20
+          connected=false
+          ping_ok=false
+          if command -v tailscale >/dev/null 2>&1; then
+            tailscale status --peers=false >/dev/null 2>&1 && connected=true
+            timeout 20s tailscale ping --c 1 "$target" >/dev/null 2>&1 && ping_ok=true
+          fi
+
+          declare -A ports
+          for port in 22 80 443 8844 3000 9090; do
+            timeout 4s bash -c "</dev/tcp/$target/$port" >/dev/null 2>&1
+            if [[ $? -eq 0 ]]; then ports[$port]=true; else ports[$port]=false; fi
+          done
+
+          http_health=false
+          https_health=false
+          curl --silent --show-error --fail --max-time 5 "http://$target:8844/api/health" >/dev/null 2>&1 && http_health=true
+          curl --insecure --silent --show-error --fail --max-time 5 "https://$target/api/health" >/dev/null 2>&1 && https_health=true
+
+          export connected ping_ok http_health https_health
+          export PORT22="${ports[22]}" PORT80="${ports[80]}" PORT443="${ports[443]}"
+          export PORT8844="${ports[8844]}" PORT3000="${ports[3000]}" PORT9090="${ports[9090]}"
+          python - <<'PY'
+          import json, os
+          result = {
+              "schema": "axm-home-lab/tailnet-actuator-probe@1",
+              "credential_mode": os.environ.get("MODE") or "none",
+              "action_outcomes": {
+                  "federated": os.environ.get("FEDERATED_OUTCOME") or "not-run",
+                  "oauth": os.environ.get("OAUTH_OUTCOME") or "not-run",
+                  "authkey": os.environ.get("AUTHKEY_OUTCOME") or "not-run",
+                  "authkey_alt": os.environ.get("AUTHKEY_ALT_OUTCOME") or "not-run",
+              },
+              "tailscale_cli_connected": os.environ["connected"] == "true",
+              "nuc_ping": os.environ["ping_ok"] == "true",
+              "ports": {
+                  key.removeprefix("PORT"): os.environ[key] == "true"
+                  for key in ("PORT22", "PORT80", "PORT443", "PORT8844", "PORT3000", "PORT9090")
+              },
+              "receiver_health": {
+                  "http_8844": os.environ["http_health"] == "true",
+                  "https_443": os.environ["https_health"] == "true",
+              },
+              "claim_boundary": "Read-only credential and reachability discovery. No remote command was attempted.",
+          }
+          path = os.path.join(os.environ["RUNNER_TEMP"], "tailnet-actuator-probe.json")
+          with open(path, "w", encoding="utf-8", newline="\n") as handle:
+              json.dump(result, handle, indent=2, sort_keys=True)
+              handle.write("\n")
+          print(json.dumps(result, indent=2, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: home-lab-tailnet-actuator-probe
+          path: |
+            ${{ runner.temp }}/credential-mode.json
+            ${{ runner.temp }}/tailnet-actuator-probe.json
+          if-no-files-found: error
