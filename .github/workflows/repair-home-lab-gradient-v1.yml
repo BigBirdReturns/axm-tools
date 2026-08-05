@@ -1,9 +1,12 @@
-# One-use repair workflow. This revision intentionally retriggers after the workflow exists on the branch.
+# One-use repair workflow. Pull-request synchronization makes the run observable and retriable.
 name: repair-home-lab-gradient-v1
 
 on:
   push:
     branches: [agent/home-lab-capability-gradient]
+  pull_request:
+    branches: [main]
+    types: [synchronize, reopened]
 
 permissions:
   contents: write
