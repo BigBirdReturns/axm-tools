@@ -1,0 +1,882 @@
+{
+  "schema": "axm-community-lab/experiment-catalog@1",
+  "experiments": [
+    {
+      "id": "capture-estate-snapshot",
+      "title": "Capture stable estate identities",
+      "class": "observation",
+      "description": "Run one read-only collector on all three hosts and bind CPU, RAM, storage, GPU UUID, driver, attachment, runtime, and monotonic-clock facts into one digest-addressed snapshot.",
+      "requires": [],
+      "produces": [
+        {
+          "capability": "host_inventory",
+          "tier": "observed"
+        },
+        {
+          "capability": "device_identity",
+          "tier": "observed"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 8,
+        "machine_minutes": 2,
+        "new_packages": 0,
+        "data_moved_gib": 0,
+        "risk": 0,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "Three distinct host records are present.",
+        "All six accelerator domains are either identified or explicitly missing.",
+        "Every unknown remains null with a reason; no inferred topology is promoted.",
+        "The snapshot has a deterministic content digest."
+      ],
+      "artifacts": [
+        "estate-observation.json",
+        "estate-observation.receipt.json"
+      ],
+      "commands": [
+        "powershell -ExecutionPolicy Bypass -File scripts/collect-windows.ps1 -HostId <control-host|heavy-host-a|heavy-host-b> -OutFile \"$env:LOCALAPPDATA\\AXM\\home-lab-gradient\\observations\\<host-id>.json\"",
+        "python scripts/lab.py qualify-estate <control-host.json> <heavy-host-a.json> <heavy-host-b.json>"
+      ]
+    },
+    {
+      "id": "freeze-one-function",
+      "title": "Freeze one proven function contract",
+      "class": "standard-work",
+      "description": "Choose one already useful local function, initially the confirmed 4060 Qwen route or a deterministic GPU utility, and freeze exact input, output, runtime, cartridge, timeout, cleanup, and refusal semantics.",
+      "requires": [],
+      "produces": [
+        {
+          "capability": "function_contract",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 12,
+        "machine_minutes": 5,
+        "new_packages": 0,
+        "data_moved_gib": 0,
+        "risk": 0,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "The function has a stable ID and implementation digest.",
+        "Input and output schemas reject malformed records.",
+        "Runtime, model, flags, timeout, cleanup, and failure meanings are explicit.",
+        "A fixture replay returns the same contract-level result."
+      ],
+      "artifacts": [
+        "function-contract.json",
+        "function-fixture.json",
+        "function-contract.receipt.json"
+      ],
+      "commands": [
+        "python scripts/lab.py scaffold-function --id bounded-local-inference",
+        "python scripts/lab.py qualify-function --contract <state-dir>/functions/bounded-local-inference/function-contract.json --fixture <state-dir>/functions/bounded-local-inference/function-fixture.json"
+      ]
+    },
+    {
+      "id": "measure-clock-envelope",
+      "title": "Measure the event timing envelope",
+      "class": "measurement",
+      "description": "Measure wall-clock offset, monotonic timer resolution, and event timestamp uncertainty across all hosts so overlap and critical-path claims have a defensible clock floor.",
+      "requires": [
+        {
+          "capability": "host_inventory",
+          "tier": "observed"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "clock_envelope",
+          "tier": "measured"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 5,
+        "machine_minutes": 4,
+        "new_packages": 0,
+        "data_moved_gib": 0,
+        "risk": 0,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "Each host reports wall and monotonic samples.",
+        "Pairwise offset and jitter bounds are retained.",
+        "Experiments refuse precision finer than the measured envelope."
+      ],
+      "artifacts": [
+        "clock-envelope.json",
+        "clock-envelope.receipt.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start measure-clock-envelope"
+      ]
+    },
+    {
+      "id": "measure-path-costs",
+      "title": "Measure storage, network, and VRAM paths",
+      "class": "measurement",
+      "description": "Build the actual path matrix for cold storage, host RAM, GPU memory, and host-to-host transfers using cartridge-sized and handoff-sized payloads.",
+      "requires": [
+        {
+          "capability": "host_inventory",
+          "tier": "observed"
+        },
+        {
+          "capability": "device_identity",
+          "tier": "observed"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "path_cost_matrix",
+          "tier": "measured"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 8,
+        "machine_minutes": 18,
+        "new_packages": 0,
+        "data_moved_gib": 24,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "Every measured edge names source, destination, byte count, warm/cold state, and p50/p95.",
+        "Unmeasured edges remain unavailable rather than zero-cost.",
+        "The matrix distinguishes bulk cartridge traffic from compact handoffs."
+      ],
+      "artifacts": [
+        "path-cost-matrix.json",
+        "path-cost-matrix.receipt.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start measure-path-costs"
+      ]
+    },
+    {
+      "id": "baseline-one-function",
+      "title": "Baseline the frozen function on eligible workers",
+      "class": "measurement",
+      "description": "Run the same bounded fixture across every eligible CPU and GPU route, separating queue, cold start, warm execution, verification, cleanup, and delivery.",
+      "requires": [
+        {
+          "capability": "device_identity",
+          "tier": "observed"
+        },
+        {
+          "capability": "function_contract",
+          "tier": "qualified"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "worker_eligibility",
+          "tier": "measured"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 8,
+        "machine_minutes": 25,
+        "new_packages": 0,
+        "data_moved_gib": 2,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "Each route records eligibility or a bounded refusal.",
+        "Cold and warm p50/p95 are separated.",
+        "Thermal, memory, and cleanup state are retained.",
+        "No route inherits qualification from another device."
+      ],
+      "artifacts": [
+        "worker-baselines.jsonl",
+        "worker-baseline-summary.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start baseline-one-function"
+      ]
+    },
+    {
+      "id": "bind-function-receipts",
+      "title": "Bind exact invocation receipts",
+      "class": "custody",
+      "description": "Wrap the frozen function so every attempt records function and implementation digest, worker identity, inputs, runtime, timings, outputs, cleanup, and refusal or failure state.",
+      "requires": [
+        {
+          "capability": "function_contract",
+          "tier": "qualified"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "receipt_binding",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 15,
+        "machine_minutes": 5,
+        "new_packages": 0,
+        "data_moved_gib": 0,
+        "risk": 0,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "A successful run and a forced refusal both produce valid receipts.",
+        "Changing a covered input changes the receipt identity.",
+        "The accepted result is not inferred from process exit alone."
+      ],
+      "artifacts": [
+        "invocation.receipt.schema.json",
+        "success.receipt.json",
+        "refusal.receipt.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start bind-function-receipts"
+      ]
+    },
+    {
+      "id": "observe-residency-state",
+      "title": "Make cartridge residency observable",
+      "class": "measurement",
+      "description": "Instrument load, ready, execute, retain, evict, and cleanup states for one 3090 and the 4060, including retained layers and mutable state.",
+      "requires": [
+        {
+          "capability": "worker_eligibility",
+          "tier": "measured"
+        },
+        {
+          "capability": "receipt_binding",
+          "tier": "qualified"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "residency_state",
+          "tier": "measured"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 10,
+        "machine_minutes": 18,
+        "new_packages": 0,
+        "data_moved_gib": 8,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "The worker state distinguishes empty, loading, ready, busy, draining, and failed.",
+        "Immutable weights are never copied back merely to evict them.",
+        "Readiness is probed before admission.",
+        "Cleanup leaves a measured known state."
+      ],
+      "artifacts": [
+        "residency-events.jsonl",
+        "residency-state-machine.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start observe-residency-state"
+      ]
+    },
+    {
+      "id": "measure-rotation-costs",
+      "title": "Measure the cartridge rotation matrix",
+      "class": "measurement",
+      "description": "Measure sequence-dependent transitions among empty, same-family, different-adapter, and different-cartridge states on each heavy worker.",
+      "requires": [
+        {
+          "capability": "residency_state",
+          "tier": "measured"
+        },
+        {
+          "capability": "path_cost_matrix",
+          "tier": "measured"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "rotation_cost_matrix",
+          "tier": "measured"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 10,
+        "machine_minutes": 35,
+        "new_packages": 0,
+        "data_moved_gib": 48,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "Transition identity includes from-state, to-state, path, retained layers, and byte movement.",
+        "Cold, warm, and partial-layer p50/p95 remain separate.",
+        "Failed readiness and rollback are represented."
+      ],
+      "artifacts": [
+        "rotation-cost-matrix.json",
+        "rotation-events.jsonl"
+      ],
+      "commands": [
+        "python scripts/lab.py start measure-rotation-costs"
+      ]
+    },
+    {
+      "id": "fit-p95-cost-model",
+      "title": "Fit the first receipt-derived p95 model",
+      "class": "analysis",
+      "description": "Derive queue, hydration, rotation, execution, verification, and delivery distributions from receipts without introducing a learned routing policy.",
+      "requires": [
+        {
+          "capability": "worker_eligibility",
+          "tier": "measured"
+        },
+        {
+          "capability": "rotation_cost_matrix",
+          "tier": "measured"
+        },
+        {
+          "capability": "clock_envelope",
+          "tier": "measured"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "critical_path_cost_model",
+          "tier": "measured"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 6,
+        "machine_minutes": 2,
+        "new_packages": 0,
+        "data_moved_gib": 0,
+        "risk": 0,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "Every estimate cites the receipt cohort and sample count.",
+        "Missing distributions remain unknown rather than imputed.",
+        "Placement predictions expose all terms and uncertainty bounds."
+      ],
+      "artifacts": [
+        "cost-model.json",
+        "cost-model.report.html"
+      ],
+      "commands": [
+        "python scripts/lab.py start fit-p95-cost-model"
+      ]
+    },
+    {
+      "id": "qualify-dual-residency",
+      "title": "Keep distinct useful cartridges on both 3090s",
+      "class": "flow",
+      "description": "Run independent useful work with a different cartridge resident on each 3090 and verify that the estate gains concurrency without pretending they form transparent 48 GB VRAM.",
+      "requires": [
+        {
+          "capability": "worker_eligibility",
+          "tier": "measured"
+        },
+        {
+          "capability": "residency_state",
+          "tier": "measured"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "parallel_residency",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 8,
+        "machine_minutes": 20,
+        "new_packages": 0,
+        "data_moved_gib": 12,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "Both cards remain independently addressable.",
+        "No mandatory tensor exchange sits on the path.",
+        "Concurrent wall clock beats the serial baseline for the selected pair.",
+        "Residency and cleanup receipts close for both workers."
+      ],
+      "artifacts": [
+        "dual-residency-plan.json",
+        "dual-residency-receipts.jsonl"
+      ],
+      "commands": [
+        "python scripts/lab.py start qualify-dual-residency"
+      ]
+    },
+    {
+      "id": "qualify-compact-handoff",
+      "title": "Qualify one compact branch handoff",
+      "class": "flow",
+      "description": "Have a CPU, iGPU, or 4060 produce one compact structured artifact that a 3090 consumes, with no central broker copying the full input or a large intermediate tensor twice.",
+      "requires": [
+        {
+          "capability": "path_cost_matrix",
+          "tier": "measured"
+        },
+        {
+          "capability": "function_contract",
+          "tier": "qualified"
+        },
+        {
+          "capability": "receipt_binding",
+          "tier": "qualified"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "compact_handoff",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 12,
+        "machine_minutes": 15,
+        "new_packages": 0,
+        "data_moved_gib": 1,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "The handoff schema is stable and bounded.",
+        "Producer and consumer cite the same artifact digest.",
+        "Direct consumer pull is used where possible.",
+        "The handoff reduces or does not increase critical-path wall clock against the serial baseline."
+      ],
+      "artifacts": [
+        "handoff.schema.json",
+        "branch.receipt.json",
+        "join.receipt.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start qualify-compact-handoff"
+      ]
+    },
+    {
+      "id": "hide-one-rotation",
+      "title": "Hide one successor rotation under useful work",
+      "class": "setup-reduction",
+      "description": "Stage a successor cartridge in host RAM while another worker or branch computes, then compare reactive rotation against just-ahead preparation.",
+      "requires": [
+        {
+          "capability": "rotation_cost_matrix",
+          "tier": "measured"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "prefetch_overlap",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 10,
+        "machine_minutes": 20,
+        "new_packages": 0,
+        "data_moved_gib": 24,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "External and internal setup are separately timed.",
+        "Prepared state is discardable without invalidating the run.",
+        "Non-overlapped p95 setup is lower than the reactive baseline.",
+        "Prefetch does not starve the running operation or another admitted path."
+      ],
+      "artifacts": [
+        "rotation-overlap-plan.json",
+        "rotation-overlap-receipts.jsonl"
+      ],
+      "commands": [
+        "python scripts/lab.py start hide-one-rotation"
+      ]
+    },
+    {
+      "id": "qualify-wip-ledger",
+      "title": "Separate work, WIP, and prepared capability",
+      "class": "flow-control",
+      "description": "Represent committed work, mutable work in process, mounted capability, warm capability, kitted capability, and prepared options as different ledger objects with independent limits.",
+      "requires": [
+        {
+          "capability": "receipt_binding",
+          "tier": "qualified"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "wip_ledger",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 14,
+        "machine_minutes": 3,
+        "new_packages": 0,
+        "data_moved_gib": 0,
+        "risk": 0,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "A prepared cartridge does not consume a work token.",
+        "Mutable WIP has an owner and recovery boundary.",
+        "The ledger refuses silent category collapse.",
+        "Synthetic over-release is detected."
+      ],
+      "artifacts": [
+        "wip-ledger.schema.json",
+        "wip-ledger.fixture.json",
+        "wip-refusal.receipt.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start qualify-wip-ledger"
+      ]
+    },
+    {
+      "id": "qualify-capacity-token",
+      "title": "Admit one downstream capacity token",
+      "class": "flow-control",
+      "description": "Authorize a transition between two cells only when projected downstream capacity, residency compatibility, and delivery window are available.",
+      "requires": [
+        {
+          "capability": "wip_ledger",
+          "tier": "qualified"
+        },
+        {
+          "capability": "critical_path_cost_model",
+          "tier": "measured"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "capacity_token",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 14,
+        "machine_minutes": 5,
+        "new_packages": 0,
+        "data_moved_gib": 0,
+        "risk": 0,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "A valid token names route pair, capacity basis, window, expiry, and revocation.",
+        "Blocked downstream state refuses upstream release.",
+        "Expired tokens cannot be replayed as current authority."
+      ],
+      "artifacts": [
+        "capacity-token.schema.json",
+        "capacity-token.pass.json",
+        "capacity-token.refusal.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start qualify-capacity-token"
+      ]
+    },
+    {
+      "id": "qualify-safe-backfill",
+      "title": "Fill slack without stealing the successor window",
+      "class": "flow-control",
+      "description": "Run same-family backfill only when p95 completion plus cleanup fits before the latest safe rotation time, and cancel it when the activation event arrives early.",
+      "requires": [
+        {
+          "capability": "critical_path_cost_model",
+          "tier": "measured"
+        },
+        {
+          "capability": "residency_state",
+          "tier": "measured"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "backfill_admission",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 10,
+        "machine_minutes": 18,
+        "new_packages": 0,
+        "data_moved_gib": 1,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "Backfill has a computed latest finish time.",
+        "Early successor arrival cancels or refuses backfill.",
+        "The critical successor misses no deadline in the fixture campaign.",
+        "Cancellation and cleanup are receipted."
+      ],
+      "artifacts": [
+        "backfill-policy.json",
+        "backfill-campaign.receipts.jsonl"
+      ],
+      "commands": [
+        "python scripts/lab.py start qualify-safe-backfill"
+      ]
+    },
+    {
+      "id": "qualify-fallback-replay",
+      "title": "Replay one failed step on an alternate worker",
+      "class": "recovery",
+      "description": "Force a bounded worker failure after input admission and resume the step from recorded state on a different qualified route without rerunning upstream work.",
+      "requires": [
+        {
+          "capability": "worker_eligibility",
+          "tier": "measured"
+        },
+        {
+          "capability": "receipt_binding",
+          "tier": "qualified"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "fallback_replay",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 10,
+        "machine_minutes": 15,
+        "new_packages": 0,
+        "data_moved_gib": 2,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "The failure is explicit and bounded.",
+        "The alternate route reuses exact input and checkpoint digests.",
+        "Upstream accepted work is not replayed.",
+        "The final retirement record preserves both attempts."
+      ],
+      "artifacts": [
+        "failure.receipt.json",
+        "recovery.receipt.json",
+        "retirement.receipt.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start qualify-fallback-replay"
+      ]
+    },
+    {
+      "id": "qualify-conditional-rotation-lease",
+      "title": "Issue one conditional rotation lease",
+      "class": "scheduling",
+      "description": "Prepare and authorize the next 3090 machine state before the current operation finishes, with activation event, setup budget, capacity token, expiry, and bounded fallback.",
+      "requires": [
+        {
+          "capability": "prefetch_overlap",
+          "tier": "qualified"
+        },
+        {
+          "capability": "capacity_token",
+          "tier": "qualified"
+        },
+        {
+          "capability": "backfill_admission",
+          "tier": "qualified"
+        },
+        {
+          "capability": "receipt_binding",
+          "tier": "qualified"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "conditional_rotation_lease",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 18,
+        "machine_minutes": 20,
+        "new_packages": 0,
+        "data_moved_gib": 12,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "The lease names from-state, candidate next-state, activation, expiry, setup budget, and fallback.",
+        "The host agent can execute the transition without a control-plane round trip.",
+        "Late or absent activation follows the recorded fallback.",
+        "Every state transition is receipted."
+      ],
+      "artifacts": [
+        "rotation-lease.schema.json",
+        "rotation-lease.fixture.json",
+        "rotation-lease.receipts.jsonl"
+      ],
+      "commands": [
+        "python scripts/lab.py start qualify-conditional-rotation-lease"
+      ]
+    },
+    {
+      "id": "qualify-provisional-retirement",
+      "title": "Execute out of order and retire deterministically",
+      "class": "scheduling",
+      "description": "Allow two ready branches to execute in estate-optimal order while retaining provisional outputs until dependencies, provenance, and acceptance contracts are satisfied.",
+      "requires": [
+        {
+          "capability": "compact_handoff",
+          "tier": "qualified"
+        },
+        {
+          "capability": "receipt_binding",
+          "tier": "qualified"
+        },
+        {
+          "capability": "wip_ledger",
+          "tier": "qualified"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "provisional_retirement",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 16,
+        "machine_minutes": 15,
+        "new_packages": 0,
+        "data_moved_gib": 1,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "Execution order may differ from semantic commit order.",
+        "A missing dependency blocks retirement without deleting the provisional artifact.",
+        "Retirement binds exact branch receipts and join inputs.",
+        "Replaying the same fixture produces the same authoritative retirement order."
+      ],
+      "artifacts": [
+        "provisional-artifacts.jsonl",
+        "retirement-ledger.jsonl"
+      ],
+      "commands": [
+        "python scripts/lab.py start qualify-provisional-retirement"
+      ]
+    },
+    {
+      "id": "qualify-rolling-horizon",
+      "title": "Run a rolling-horizon two-3090 schedule",
+      "class": "scheduling",
+      "description": "Plan and execute a short real graph where one 3090 computes, the other rotates or runs an independent branch, setup is hidden, backfill is bounded, and the roles reverse.",
+      "requires": [
+        {
+          "capability": "conditional_rotation_lease",
+          "tier": "qualified"
+        },
+        {
+          "capability": "parallel_residency",
+          "tier": "qualified"
+        },
+        {
+          "capability": "critical_path_cost_model",
+          "tier": "measured"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "rolling_horizon_schedule",
+          "tier": "qualified"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 20,
+        "machine_minutes": 35,
+        "new_packages": 0,
+        "data_moved_gib": 24,
+        "risk": 1,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "The schedule is issued as coarse local subgraphs, not kernel-level commands.",
+        "At least one setup interval is hidden beneath useful work.",
+        "No unnecessary central synchronization barrier is introduced.",
+        "p95 run wall clock beats the reactive serial baseline for the selected graph."
+      ],
+      "artifacts": [
+        "rolling-horizon-plan.json",
+        "rolling-horizon-receipts.jsonl",
+        "baseline-comparison.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start qualify-rolling-horizon"
+      ]
+    },
+    {
+      "id": "qualify-three-host-fabric",
+      "title": "Qualify the three-host heterogeneous fabric",
+      "class": "integration",
+      "description": "Execute one real coarse graph across the three CPU and RAM islands, iGPU or 4060 preparation, both 3090 residency surfaces, storage locality, fallback, and deterministic retirement.",
+      "requires": [
+        {
+          "capability": "rolling_horizon_schedule",
+          "tier": "qualified"
+        },
+        {
+          "capability": "compact_handoff",
+          "tier": "qualified"
+        },
+        {
+          "capability": "fallback_replay",
+          "tier": "qualified"
+        },
+        {
+          "capability": "provisional_retirement",
+          "tier": "qualified"
+        }
+      ],
+      "produces": [
+        {
+          "capability": "three_host_function_fabric",
+          "tier": "accepted"
+        }
+      ],
+      "cost": {
+        "operator_minutes": 30,
+        "machine_minutes": 60,
+        "new_packages": 0,
+        "data_moved_gib": 32,
+        "risk": 2,
+        "irreversible": 0
+      },
+      "acceptance": [
+        "All three host agents execute bounded local subgraphs.",
+        "Data movement follows known object locations and measured paths.",
+        "One forced worker failure recovers without whole-run replay.",
+        "The accepted result and every non-accepted attempt retire under one source-bound ledger.",
+        "The measured wall clock does not regress against the best simpler qualified route."
+      ],
+      "artifacts": [
+        "estate-graph.json",
+        "estate-run.receipts.jsonl",
+        "estate-run.acceptance.json"
+      ],
+      "commands": [
+        "python scripts/lab.py start qualify-three-host-fabric"
+      ]
+    }
+  ],
+  "cost_semantics": {
+    "operator_minutes": "Estimated direct human attention, used only after admissibility and value comparisons.",
+    "machine_minutes": "Expected occupied machine time for the bounded experiment.",
+    "new_packages": "New runtime dependencies introduced by the experiment.",
+    "data_moved_gib": "Approximate deliberate test traffic, not retained evidence size.",
+    "risk": "0 read-only or synthetic; 1 bounded reversible runtime disturbance; 2 multi-host integration disturbance.",
+    "irreversible": "1 only when an experiment cannot be cleanly removed or replayed. All seeded experiments are reversible."
+  },
+  "claim_boundary": "The catalog is a deterministic planning floor. A listed experiment is not operationally complete until its acceptance artifacts exist and are ingested as evidence."
+}

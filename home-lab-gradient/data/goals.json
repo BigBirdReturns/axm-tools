@@ -1,0 +1,297 @@
+{
+  "schema": "axm-community-lab/capability-goals@1",
+  "tier_order": [
+    "unknown",
+    "declared",
+    "observed",
+    "measured",
+    "qualified",
+    "accepted"
+  ],
+  "capabilities": [
+    {
+      "id": "host_inventory",
+      "title": "Stable host inventory",
+      "description": "All three host identities, CPU and RAM pools, storage surfaces, and operating environments are explicit.",
+      "dependencies": [],
+      "minimum_tier": "observed"
+    },
+    {
+      "id": "device_identity",
+      "title": "Stable accelerator identity",
+      "description": "Each iGPU and dGPU has a stable local identity, UUID where available, attachment path, driver, and memory capacity.",
+      "dependencies": [
+        "host_inventory"
+      ],
+      "minimum_tier": "observed"
+    },
+    {
+      "id": "clock_envelope",
+      "title": "Cross-host timing envelope",
+      "description": "Clock offset, monotonic timer resolution, and event timestamp uncertainty are measured for every host.",
+      "dependencies": [
+        "host_inventory"
+      ],
+      "minimum_tier": "measured"
+    },
+    {
+      "id": "path_cost_matrix",
+      "title": "Data-path cost matrix",
+      "description": "Disk-to-RAM, RAM-to-VRAM, host-to-host, and relevant attachment-path throughput and latency are measured with sizes that resemble cartridges and handoffs.",
+      "dependencies": [
+        "host_inventory",
+        "device_identity"
+      ],
+      "minimum_tier": "measured"
+    },
+    {
+      "id": "function_contract",
+      "title": "One frozen proven function",
+      "description": "One useful function has exact input, output, runtime, cartridge, determinism, timeout, failure, and cleanup contracts.",
+      "dependencies": [],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "worker_eligibility",
+      "title": "Worker eligibility matrix",
+      "description": "The frozen function has cold and warm p50/p95 measurements on every eligible CPU, iGPU, and dGPU route.",
+      "dependencies": [
+        "device_identity",
+        "function_contract"
+      ],
+      "minimum_tier": "measured"
+    },
+    {
+      "id": "receipt_binding",
+      "title": "Function receipt binding",
+      "description": "Each invocation binds function digest, worker identity, inputs, runtime, timings, outputs, cleanup, and refusal state.",
+      "dependencies": [
+        "function_contract"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "residency_state",
+      "title": "Observable residency state",
+      "description": "Loaded cartridge layers, VRAM use, retained caches, eviction, and readiness are represented as explicit worker state.",
+      "dependencies": [
+        "worker_eligibility",
+        "receipt_binding"
+      ],
+      "minimum_tier": "measured"
+    },
+    {
+      "id": "rotation_cost_matrix",
+      "title": "Sequence-dependent rotation costs",
+      "description": "Cold, warm, partial-layer, and same-family transition costs are measured per worker and path.",
+      "dependencies": [
+        "residency_state",
+        "path_cost_matrix"
+      ],
+      "minimum_tier": "measured"
+    },
+    {
+      "id": "critical_path_cost_model",
+      "title": "Receipt-derived p95 cost model",
+      "description": "Execution, queue, hydration, rotation, verification, and delivery distributions are derived from retained receipts.",
+      "dependencies": [
+        "worker_eligibility",
+        "rotation_cost_matrix",
+        "clock_envelope"
+      ],
+      "minimum_tier": "measured"
+    },
+    {
+      "id": "parallel_residency",
+      "title": "Independent dual-3090 residency",
+      "description": "The two 3090s retain distinct useful cartridges and execute independent work without forced tensor traffic or synchronized eviction.",
+      "dependencies": [
+        "worker_eligibility",
+        "residency_state"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "prefetch_overlap",
+      "title": "External setup hidden under useful work",
+      "description": "A successor cartridge is staged in host RAM while the current operation runs, and non-overlapped setup is compared against a reactive baseline.",
+      "dependencies": [
+        "rotation_cost_matrix"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "compact_handoff",
+      "title": "Compact cross-worker handoff",
+      "description": "A branch emits a bounded structured artifact rather than a large opaque tensor and a different worker consumes it with an exact join contract.",
+      "dependencies": [
+        "path_cost_matrix",
+        "function_contract",
+        "receipt_binding"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "wip_ledger",
+      "title": "Explicit committed-work ledger",
+      "description": "Committed work, mutable WIP, mounted capability, and prepared options remain separate and countable.",
+      "dependencies": [
+        "receipt_binding"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "capacity_token",
+      "title": "Downstream capacity token",
+      "description": "A route transition is admitted only when the downstream cell can absorb it inside a bounded window.",
+      "dependencies": [
+        "wip_ledger",
+        "critical_path_cost_model"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "backfill_admission",
+      "title": "Slack-bounded backfill",
+      "description": "Same-family work may fill predicted slack but is refused or cancelled before it can delay the critical successor.",
+      "dependencies": [
+        "critical_path_cost_model",
+        "residency_state"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "fallback_replay",
+      "title": "Bounded alternate-route replay",
+      "description": "A failed invocation resumes from recorded state on a different qualified worker without replaying the whole graph.",
+      "dependencies": [
+        "worker_eligibility",
+        "receipt_binding"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "conditional_rotation_lease",
+      "title": "Conditional rotation lease",
+      "description": "The next machine state is prepared and authorized before the current operation finishes, with activation condition, expiry, downstream token, and fallback.",
+      "dependencies": [
+        "prefetch_overlap",
+        "capacity_token",
+        "backfill_admission",
+        "receipt_binding"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "provisional_retirement",
+      "title": "Out-of-order execution with deterministic retirement",
+      "description": "Ready branches may execute out of order, but only dependency-complete, source-bound outputs retire into authoritative run state.",
+      "dependencies": [
+        "compact_handoff",
+        "receipt_binding",
+        "wip_ledger"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "rolling_horizon_schedule",
+      "title": "Rolling-horizon two-3090 schedule",
+      "description": "The two 3090s rotate through a planned sequence of residencies while setup, backfill, and branch work overlap under p95 constraints.",
+      "dependencies": [
+        "conditional_rotation_lease",
+        "parallel_residency",
+        "critical_path_cost_model"
+      ],
+      "minimum_tier": "qualified"
+    },
+    {
+      "id": "three_host_function_fabric",
+      "title": "Three-host heterogeneous function fabric",
+      "description": "Host agents execute coarse local subgraphs across the three CPU/RAM islands, six accelerator domains, and storage paths under one deterministic retirement ledger.",
+      "dependencies": [
+        "rolling_horizon_schedule",
+        "compact_handoff",
+        "fallback_replay",
+        "provisional_retirement"
+      ],
+      "minimum_tier": "accepted"
+    }
+  ],
+  "goals": [
+    {
+      "id": "goal.easy-useful-floor",
+      "title": "Useful heterogeneous floor now",
+      "priority": "must",
+      "weight": 5,
+      "description": "Use the estate as several proven function routes without pretending the hardware is homogeneous.",
+      "requires": [
+        "host_inventory",
+        "device_identity",
+        "function_contract",
+        "worker_eligibility",
+        "receipt_binding"
+      ]
+    },
+    {
+      "id": "goal.hide-rotations",
+      "title": "Hide model and cartridge rotations",
+      "priority": "must",
+      "weight": 5,
+      "description": "Move external setup off the stopped interval and quantify the non-overlapped remainder.",
+      "requires": [
+        "residency_state",
+        "rotation_cost_matrix",
+        "prefetch_overlap",
+        "conditional_rotation_lease"
+      ]
+    },
+    {
+      "id": "goal.critical-path-scheduler",
+      "title": "Critical-path rather than utilization scheduling",
+      "priority": "must",
+      "weight": 5,
+      "description": "Place work using p95 completion time, topology, queue state, residency, and failure risk.",
+      "requires": [
+        "critical_path_cost_model",
+        "capacity_token",
+        "backfill_admission",
+        "rolling_horizon_schedule"
+      ]
+    },
+    {
+      "id": "goal.pull-controlled-flow",
+      "title": "Pull-controlled WIP and route capacity",
+      "priority": "should",
+      "weight": 4,
+      "description": "Prevent upstream cells from manufacturing queues or evicting useful state for blocked downstream work.",
+      "requires": [
+        "wip_ledger",
+        "capacity_token"
+      ]
+    },
+    {
+      "id": "goal.deterministic-retirement",
+      "title": "Flexible execution with deterministic retirement",
+      "priority": "must",
+      "weight": 5,
+      "description": "Permit local and out-of-order execution without giving up source identity, replay, refusal, or authoritative commit order.",
+      "requires": [
+        "receipt_binding",
+        "compact_handoff",
+        "fallback_replay",
+        "provisional_retirement"
+      ]
+    },
+    {
+      "id": "goal.full-estate-fabric",
+      "title": "Three-host local function fabric",
+      "priority": "later",
+      "weight": 3,
+      "description": "Operate the CPUs, RAM islands, iGPUs, 4060, two 3090s, and drives as one topology-aware estate without a serial control-plane factory.",
+      "requires": [
+        "three_host_function_fabric"
+      ]
+    }
+  ],
+  "claim_boundary": "Goal weights are declared mission priority, not probability or truth. Capabilities advance only through evidence at or above their required tier."
+}
