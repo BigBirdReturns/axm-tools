@@ -83,6 +83,11 @@ are touching tells you how much care to take.
   one offline page that exercises physical-availability findings against
   synthetic or sponsor-provided operational exports. Its real browser path is
   guarded by `tests/pages/verify_acceptance.mjs`.
+- `organ-evolution/` — the local-only estate-anatomy and evolution
+  workbench. It separates organ identity, function, implementation, supplier,
+  evidence, motive, authority, migration, and succession; guarded by
+  `organ-evolution/scripts/validate.py` and
+  `tests/pages/verify_organ_evolution.mjs`.
 - `pta-tracker/` — the living tool: nightly legislation fetch for a K-6
   PTA, relevance filter, board report, offline PWA. Its README is the
   operating manual.

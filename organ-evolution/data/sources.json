@@ -1,0 +1,344 @@
+{
+  "format": "axm-organ-sources/1",
+  "rules": {
+    "staleCommitDays": 180,
+    "staleDraftDays": 45,
+    "staleWorkflowDays": 30
+  },
+  "organs": [
+    {
+      "organId": "organ.genesis",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/axm-genesis",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "CI",
+                "aliases": [
+                  "ci"
+                ],
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The kernel compile, verification, and continuity suite is the current repository gate."
+              },
+              {
+                "matchName": "pages",
+                "role": "publication_job",
+                "lifecycle": "current",
+                "required": false,
+                "basis": "Pages publishes documentation but does not establish kernel correctness."
+              },
+              {
+                "matchName": "pages build and deployment",
+                "role": "publication_job",
+                "lifecycle": "historical",
+                "required": false,
+                "basis": "GitHub's historical Pages deployment record is retained as context, not a current kernel gate."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organId": "organ.core",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/axm-core",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "ci",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "Core's current repository test and integration contract."
+              },
+              {
+                "matchName": "pages",
+                "role": "publication_job",
+                "lifecycle": "current",
+                "required": false,
+                "basis": "Documentation publication is advisory to Core function."
+              },
+              {
+                "matchName": "pages build and deployment",
+                "role": "publication_job",
+                "lifecycle": "historical",
+                "required": false,
+                "basis": "GitHub's historical Pages record is not a current Core gate."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organId": "organ.embodied",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/axm-embodied",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "ci",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The spoke test and Genesis drift boundary are the current embodied source gate."
+              },
+              {
+                "matchName": "Deploy GitHub Pages",
+                "role": "publication_job",
+                "lifecycle": "current",
+                "required": false,
+                "basis": "The documentation site is useful but does not establish physical evidence custody."
+              },
+              {
+                "matchName": "pages build and deployment",
+                "role": "publication_job",
+                "lifecycle": "historical",
+                "required": false,
+                "basis": "The platform-generated historical Pages record is retained without becoming a current custody gate."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organId": "organ.bloodstream",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/axm-bloodstream",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "Bloodstream circulation",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The reconstruction and bounded circulation transaction is Bloodstream's current source gate."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organId": "organ.hinge",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/axm-hinge",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "python",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The current Hinge ledger and review-state regression gate."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organId": "organ.tierbench",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/tier-bench"
+        }
+      ]
+    },
+    {
+      "organId": "organ.supplier-foundry",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/tier-bench",
+          "scopePath": "supplier_foundry",
+          "workflowScope": "declared_only",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "Supplier Foundry asset pilot",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The exact-provider, semantic-equivalence, network-isolation, fallback, and rip-out transaction is the current Supplier Foundry gate."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organId": "organ.arc",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/axm-arc",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": ".github/workflows/apply-bounded-json.yml",
+                "aliases": [
+                  "Apply bounded JSON integration"
+                ],
+                "role": "bounded_repair_carrier",
+                "lifecycle": "superseded",
+                "required": false,
+                "basis": "The file declares itself a one-shot publication workflow that removes its temporary carriers; its historical failure is not a current Arc gate."
+              },
+              {
+                "matchName": "Arc product parity",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The current static Arc product must remain reproducible and internally coherent."
+              },
+              {
+                "matchName": "Arc supply-chain evidence",
+                "role": "release_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "Current release products require exact supply-chain evidence."
+              },
+              {
+                "matchName": "Creator recovery kit",
+                "role": "release_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "Creator recovery and reconstructability are current release obligations."
+              },
+              {
+                "matchName": "Gate 7A clean-room cartridge",
+                "role": "release_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "Clean-room cartridge acceptance is a current release boundary."
+              },
+              {
+                "matchName": "Import and canonicalization hardening",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "Bounded import and canonicalization are current engine law."
+              },
+              {
+                "matchName": "Persistence custody",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "Portable-run and save custody are current engine obligations."
+              },
+              {
+                "matchName": "test",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The ordinary Arc suite is the baseline source gate."
+              },
+              {
+                "matchName": "deploy",
+                "role": "publication_job",
+                "lifecycle": "current",
+                "required": false,
+                "basis": "Publication is visible but does not substitute for engine and custody gates."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organId": "organ.world",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/axm-world",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "test",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The ordinary World source suite is the baseline receiver gate."
+              },
+              {
+                "matchName": "Supply-chain evidence",
+                "role": "release_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "World release products require exact provenance and dependency evidence."
+              },
+              {
+                "matchName": "Asset release custody",
+                "role": "release_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "Governed runtime assets require current release custody."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "organId": "organ.tools",
+      "repositories": [
+        {
+          "fullName": "BigBirdReturns/axm-tools",
+          "workflowPolicy": {
+            "declarations": [
+              {
+                "matchName": "Acceptance page",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The established browser acceptance surface is a current repository gate."
+              },
+              {
+                "matchName": "Organ evolution surface",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The anatomy, observation, and decision workbench has its own current browser and source gate."
+              },
+              {
+                "matchName": "Organ evolution observe + deploy",
+                "role": "scheduled_observer",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The live census must continue to compile, validate, and publish bounded observations."
+              },
+              {
+                "matchName": "AXM Readiness check",
+                "role": "permanent_gate",
+                "lifecycle": "current",
+                "required": true,
+                "basis": "The existing readiness contract remains a current tool gate."
+              },
+              {
+                "matchName": "PTA tracker fetch + deploy",
+                "role": "publication_job",
+                "lifecycle": "current",
+                "required": false,
+                "basis": "The PTA tool's data publication is an advisory sibling lane, not the authority for every Tools surface."
+              },
+              {
+                "matchName": "pages build and deployment",
+                "role": "publication_job",
+                "lifecycle": "historical",
+                "required": false,
+                "basis": "The platform-generated historical Pages record remains visible without becoming a current workbench gate."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

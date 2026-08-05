@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-27T23:48:08.351900Z",
+  "generated": "2026-08-05T14:54:53.675890Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -17,19 +17,19 @@
       "source": "Holly Avenue News",
       "scope": "school",
       "ok": true,
-      "kept": 1
+      "kept": 2
     },
     {
       "source": "LAist Education",
       "scope": "state",
       "ok": true,
-      "kept": 2
+      "kept": 1
     },
     {
       "source": "CA Dept of Education",
       "scope": "state",
-      "ok": false,
-      "error": "not well-formed (invalid token): line 25, column 2398"
+      "ok": true,
+      "kept": 0
     },
     {
       "source": "Google News",
@@ -45,6 +45,67 @@
     }
   ],
   "items": [
+    {
+      "id": "1dc82993997a",
+      "source": "LAist Education",
+      "title": "Newly-released letters show LAUSD moved to fire Carvalho before he resigned",
+      "summary": "The Los Angeles Unified School District Board planned to vote on firing former Superintendent Alberto Carvalho for cause before he resigned in June.",
+      "link": "https://laist.com/news/education/letters-show-lausd-moved-to-fire-carvalho-before-resignation-as-superintendent",
+      "published": "Tue, 04 Aug 2026 18:53:41 GMT",
+      "priority": "normal",
+      "scope": "state",
+      "first_seen": "2026-08-05",
+      "bills": []
+    },
+    {
+      "id": "ausd-mtg-2026-08-25",
+      "source": "AUSD Board of Education",
+      "title": "AUSD board meeting \u2014 Tuesday, August 25 at 7:00 p.m.",
+      "summary": "Regular Board of Education meeting, Arcadia Education Center Board Room (unless the schedule notes otherwise). Agenda posts on Simbli the Friday before \u2014 worth a skim for anything parents will ask about.",
+      "link": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
+      "published": "2026-08-25",
+      "priority": "hot",
+      "scope": "district",
+      "first_seen": "2026-08-04",
+      "bills": []
+    },
+    {
+      "id": "5a5c760999b4",
+      "source": "Holly Avenue News",
+      "title": "Dolphin Day Registration - Save the Date",
+      "summary": "Dolphin Day Registration: Thursday, August 13, 2026.",
+      "link": "http://ha.ausd.net/apps/news/article/1776595",
+      "published": "Sat, 01 Aug 2026 15:40:00 -0700",
+      "priority": "normal",
+      "scope": "school",
+      "school": "ha",
+      "first_seen": "2026-08-02",
+      "bills": []
+    },
+    {
+      "id": "5e9d981a35d9",
+      "source": "New York Post",
+      "title": "California public school district ranked in top 10 in America \u2014 and another just misses out",
+      "summary": "",
+      "link": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPV055Ri01N1RTQ3hjVjBvZG1mN25Hd21Ib1FTMV9NYXU2Q0xvc0p2Y3VBWGp3WTF3ZTMwV0tablVDeDFSNm1tN0ptSGNJN1I1akd3R3FtOVV4ZUNseW1TSS1uVUpocW1BeTdvRHpYa19HNFVORGc0bTR4QkdlZXVDam9reFpycTZtWDF1dy1GWkhzaEdSNUxlRXZJUGU1eHBGLTg3T1hZVHRsLXl2?oc=5",
+      "published": "Tue, 21 Apr 2026 07:00:00 GMT",
+      "priority": "normal",
+      "scope": "state",
+      "first_seen": "2026-08-02",
+      "bills": []
+    },
+    {
+      "id": "341c54fdc170",
+      "source": "JNS.org",
+      "title": "Federal judge dismisses lawsuit challenging California law addressing Jew-hatred in K-12 schools",
+      "summary": "",
+      "link": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQaEN6cWROS3FrRGhZTnNOSDRvUzFfRDU4RkRRX1pzUE1ScHh3YTZjUWVZOFU5ZzJYU2h2U3ljNDh0R1FveFBEMWNheV82Tkl6dU1KMFdkbnJXQnp1cUlIUEZFTkFyNE8xckJqMXN1T0libjI4NHJ1c2xBSVJiNFhndVplM0hMSXJzOS1VTFduczI3RUFKVFBucGhhRE5tbVpJNER4UUd5bXNVWTNiR1RTZWo4Nlo0UG1rME9yZGtuY2VVOVVUT2lOaUJR?oc=5",
+      "published": "Thu, 30 Jul 2026 05:08:06 GMT",
+      "priority": "normal",
+      "scope": "state",
+      "first_seen": "2026-07-30",
+      "bills": []
+    },
     {
       "id": "92aef775a2ec",
       "source": "Holly Avenue News",
@@ -184,7 +245,7 @@
       "title": "UPDATE: California law ensures humans, not AI, are teaching K-12 students",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNaS1qMExCVGpFNGx6dm1FZWF4aHBjeEw3VWhmUUVTTldlc2ZUYk9jM0R2cnBTNU4zallQT1pCc1Q4RHVOU0swQjFPQnE4QlNiRnp6amZLRUZtczVGTWVWbElIMnZVR280RjZFRl9jRXlFSHA5Y2s3MmR0VHVzcUR2NlZrMVFUNmd6WEY4dzZNRjd6LTBrRnA1RHZXdGxiOF81TGNaS2VR?oc=5",
-      "published": "Tue, 14 Jul 2026 22:52:06 GMT",
+      "published": "Tue, 14 Jul 2026 07:00:00 GMT",
       "priority": "normal",
       "scope": "state",
       "first_seen": "2026-07-15",

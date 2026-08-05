@@ -10,7 +10,9 @@ a year and still be working when you come back.
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
+| [`polybolos/`](polybolos/) | Stable source-bound evidence contract for denied communications: records the requested handoff as complete, preserves the bounded fifteen-decision scenario as a permanent pass, accepts later evidence locally, and offers optional versioned qualification plans without retrospective scoring | [one-file evidence tool](https://bigbirdreturns.github.io/axm-tools/polybolos/) — direct standalone page, sanitized public cartridge, explicit private-source opt-in |
 | [`acceptance.html`](acceptance.html) | OSW-ready physical-availability and evidence challenge: runs synthetic inventory, maintenance, and due-in surfaces locally, then accepts ordinary sponsor exports without transmitting them | [standalone demonstration](https://bigbirdreturns.github.io/axm-tools/acceptance.html) — one HTML file, zero network requests |
+| [`organ-evolution/`](organ-evolution/) | Evaluate organ anatomy and candidate evolutions against function, authority, evidence, actors, migration, stress, and succession without a backend | [static workbench](https://bigbirdreturns.github.io/axm-tools/organ-evolution/) |
 | [`pta-tracker/`](pta-tracker/) | District-first legislation watch for an Arcadia USD K-6 PTA: nightly fetch, relevance filter, one-click monthly board report | [static page](https://bigbirdreturns.github.io/axm-tools/pta-tracker/) + nightly Action |
 
 ## Reference areas (not tools)

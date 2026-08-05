@@ -1,0 +1,11 @@
+interface_id,from_role,to_role,object,required_receipt,timeout_or_gate,failure_state
+IF-01,Evidence Cell,Inspection Team,managed-access objective,"scope, provenance, question, protected-information boundary",scenario-specific,unresolved anomaly
+IF-02,Inspection Team,Technical Findings Panel,inspection packet,"access log, chain of custody, exceptions, laboratory result",before adverse clock,insufficient basis
+IF-03,Evidence Cell,Technical Findings Panel,evidence packet,"source provenance, confidence, limitations, competing explanations",before adverse clock,insufficient basis
+IF-04,Technical Findings Panel,Rollback Secretariat,graded finding,"finding class, confidence, dissent, cure-relevant facts",immediate after finding,no rollback offer
+IF-05,Technical Findings Panel,Response Council,graded finding,"finding class, confidence, legal trigger, dissent",before coercive advantage,no authorized response
+IF-06,Rollback Secretariat,Inspection Team,cure plan,"declared actions, material custody, facility change, monitoring plan",objective schedule,cure unverified
+IF-07,Inspection Team,Rollback Secretariat,cure verification,"inspection record, exceptions, completion state",before restoration due,restoration blocked
+IF-08,Rollback Secretariat,Review Chamber,restoration receipt,"cure condition, restoration action, actual effect time",95 percent on time,credibility degradation
+IF-09,All roles,Gate Authority,portfolio receipt,"current margin, load, N-1, holdouts, restoration, uncertainty",recertification interval,HOLD
+IF-10,Review Chamber,All roles,audit finding,"role overreach, provenance defect, appeal, correction",before next gate,gate invalidated

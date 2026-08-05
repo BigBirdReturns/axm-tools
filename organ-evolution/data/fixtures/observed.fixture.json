@@ -1,0 +1,16 @@
+{
+  "format": "axm-organ-local-observations/1",
+  "observations": [
+    {
+      "id": "observation.blood.local",
+      "organId": "organ.bloodstream",
+      "observedAt": "2026-07-27T22:00:00Z",
+      "kind": "operator",
+      "state": "observed",
+      "claim": "The local job ledger remained reconstructable after a clean restart.",
+      "source": "operator restart receipt",
+      "limits": "One workstation and one ledger only.",
+      "evidenceRefs": ["local://bloodstream/restart-001"]
+    }
+  ]
+}
