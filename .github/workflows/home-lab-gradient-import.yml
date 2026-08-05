@@ -23,23 +23,22 @@ jobs:
           ref: agent/home-lab-capability-gradient
           fetch-depth: 0
 
-      - name: Wait until the complete bounded payload is present
+      - name: Confirm the complete bounded payload is present
         id: ready
         shell: bash
         run: |
-          count=$(find .import/home-lab-gradient -maxdepth 1 -type f -name 'chunk-*' 2>/dev/null | wc -l)
-          if [[ "$count" = "11" ]]; then
+          count=$(find .import/home-lab-gradient -maxdepth 1 -type f 2>/dev/null | wc -l)
+          if [[ "$count" = "14" ]]; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
           else
             echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "transport incomplete: chunks=$count"
+            echo "transport incomplete: files=$count"
+            exit 1
           fi
 
       - name: Verify and materialize the exact source tree
         if: steps.ready.outputs.ready == 'true'
         shell: bash
-        env:
-          EXPECTED_ARCHIVE_SHA256: b05448653e21852a42e9f4d25e056c15396bc2c966a18cb6fa78ffa7e07b5cf9
         run: |
           python - <<'PY'
           import base64
@@ -47,22 +46,25 @@ jobs:
           from pathlib import Path
           import zipfile
 
-          expected = {
-              'chunk-00': '4ccf233d26a8e11d5df8e474c718327605a6c2a9c4c4bbf91850930b65132fad',
-              'chunk-01': 'f75d96b257e80cddd56d49e30ba4726a95b8e193978ee2a6ff1fbcfa7f8866eb',
-              'chunk-02': '80ab64cf15036bec67d41919a8566618bf1da93cf4e5b449c8bc8ae73244a84c',
-              'chunk-03': 'd26ea46711a30730a2bce5623c2008a7ab92221459ed6de5c8eade6bf0540092',
-              'chunk-04': '2dda54ea8c3749bc033b84c2f381d7cde3a07ca64fcac5b94709ecd518e6414b',
-              'chunk-05': 'f48b841a3f8ed640101bd40ae41439ad050b2188de098d10f9f23426f283bcc7',
-              'chunk-06': '663005ec9988cceed7e8ac21538c5b7a414c9d4970cdf5890c71fcd6ba34dd7c',
-              'chunk-07': 'fa98357672076b45d9770b21601952b5c73ca945994692ff261105d98816e3bd',
-              'chunk-08': '8de73456f856d53d711ebc958b549b9fbf944a9e1c94556aa2905f89ddcdaa7f',
-              'chunk-09': '3726eb8f47d2604b1f6f6e4f1bdeaee421c2eca3f92aee7c2c4fba3d0e49d6b3',
-              'chunk-10': '03f8e1478bdd1baff9c2eb2e29d7d964dd838157992b0d5fcd328e16aab3fa0f',
-          }
+          expected = [
+              ('chunk-00', '4ccf233d26a8e11d5df8e474c718327605a6c2a9c4c4bbf91850930b65132fad'),
+              ('chunk-01', 'f75d96b257e80cddd56d49e30ba4726a95b8e193978ee2a6ff1fbcfa7f8866eb'),
+              ('chunk-02', '80ab64cf15036bec67d41919a8566618bf1da93cf4e5b449c8bc8ae73244a84c'),
+              ('chunk-03', 'd26ea46711a30730a2bce5623c2008a7ab92221459ed6de5c8eade6bf0540092'),
+              ('chunk-04', '2dda54ea8c3749bc033b84c2f381d7cde3a07ca64fcac5b94709ecd518e6414b'),
+              ('chunk-05', 'f48b841a3f8ed640101bd40ae41439ad050b2188de098d10f9f23426f283bcc7'),
+              ('chunk-06', '663005ec9988cceed7e8ac21538c5b7a414c9d4970cdf5890c71fcd6ba34dd7c'),
+              ('chunk-07', 'fa98357672076b45d9770b21601952b5c73ca945994692ff261105d98816e3bd'),
+              ('part-08a', 'b6a9430c0793f389a589b9da371ca9679edea9a6ad71e210fe17d34a40afb3f4'),
+              ('part-08b', '886ee91f7be5c11a69bcbb99874f3bfba4f3cb368dfd59cb683bb370209367c4'),
+              ('part-09a', '513c16d99ce39740ea91faced57e1a6e5bf7fb6a4cf9bb5abe1b0d16ea93d02a'),
+              ('part-09b', 'fda9e1978cecd2ca728f2a85c77e6ec5fbd20f4dcd86965f62ff9cdd211ad888'),
+              ('part-10a', 'fd35631b1cbc4bb8f47fb31890279bffea7c2524f93ba4a0e35cdc56bfee3b1a'),
+              ('part-10b', 'c54296d1223f1e87333ada2fe801f52fd97454fa93ff34715e0f47c4ea6c320f'),
+          ]
           folder = Path('.import/home-lab-gradient')
           parts = []
-          for name, digest in expected.items():
+          for name, digest in expected:
               data = (folder / name).read_bytes()
               if name == 'chunk-01' and hashlib.sha256(data).hexdigest() != digest:
                   old = b'j0Z2fZJ3Uo'
@@ -97,7 +99,7 @@ jobs:
               zf.extractall(root)
           PY
 
-      - name: Replace transport with the materialized module
+      - name: Replace transport with the qualified module
         if: steps.ready.outputs.ready == 'true'
         shell: bash
         run: |
