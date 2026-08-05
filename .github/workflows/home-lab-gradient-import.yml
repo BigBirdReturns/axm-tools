@@ -27,12 +27,13 @@ jobs:
         id: ready
         shell: bash
         run: |
-          if [[ -f .import/home-lab-gradient/chunk-00 && \
-                -f .import/home-lab-gradient/chunk-01 && \
-                -f .import/home-lab-gradient/chunk-02 ]]; then
+          count=$(find .import/home-lab-gradient -maxdepth 1 -type f -name 'chunk-*' 2>/dev/null | wc -l)
+          bytes=$(cat .import/home-lab-gradient/chunk-* 2>/dev/null | wc -c)
+          if [[ "$count" = "11" && "$bytes" = "109024" ]]; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
           else
             echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "transport incomplete: chunks=$count bytes=$bytes"
           fi
 
       - name: Verify and materialize the exact source tree
