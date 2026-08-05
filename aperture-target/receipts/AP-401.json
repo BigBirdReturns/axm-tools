@@ -1,0 +1,55 @@
+{
+  "accepted_gates": [],
+  "aperture_gate_accepted": false,
+  "authority": {
+    "answer_plan": "external_verified_input",
+    "command_intent": "coach_output_only",
+    "delivery_receipt": "transport_only",
+    "intent_expiry": "coach_state_only",
+    "playback_observation": "external_player_input",
+    "player_success": "none",
+    "story_position": "none",
+    "timed_position": "external_verified_input"
+  },
+  "carrier_authority": "transport_and_qualification_only",
+  "carrier_repository": "BigBirdReturns/axm-tools",
+  "format": "axm-aperture-program-transaction/1",
+  "hosted_repository_accepted": false,
+  "outputs": [
+    "clients/shared/coach/",
+    "tests/ui/coach/",
+    "receipts/AP-401.json"
+  ],
+  "predecessors": {
+    "AP-003_donor": "AXM Manual 1.1.0 donor receipt",
+    "AP-400_world_merge": "951837fc082a1f4ebfb217d8b276a51b36edae10"
+  },
+  "refusals": [
+    "manual_phase_constants",
+    "ui_owned_story_position",
+    "command_delivery_as_playback_success",
+    "pending_command_as_observed_pause",
+    "cross_session_command_reuse",
+    "contradictory_player_observation",
+    "package_substitution",
+    "viewer_substitution",
+    "unknown_fields",
+    "hidden_transport",
+    "local_clock",
+    "client_persistence"
+  ],
+  "requirements": [
+    "FR-013",
+    "FR-015",
+    "FR-043",
+    "NFR-011",
+    "NFR-030"
+  ],
+  "source_files": 9,
+  "source_manifest_sha256": "91bf3ce0a359076504db7c14b306e3e11ac3f29c6ef60cbb493b78e7f6510cc5",
+  "status": "source_candidate",
+  "target_repository": "BigBirdReturns/axm-aperture",
+  "tests_passed": 17,
+  "title": "Extract Coach synchronization as a reusable viewer component",
+  "transaction": "AP-401"
+}

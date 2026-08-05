@@ -1,0 +1,86 @@
+name: TEMP AXM Aperture AP-401 Coach target
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/aperture-ap401-coach-target.yml"
+      - ".github/scripts/aperture-ap401-*.sh"
+      - ".gitattributes"
+      - "aperture-target/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aperture-ap401-coach-target-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  AP400_WORLD_MERGE: 951837fc082a1f4ebfb217d8b276a51b36edae10
+  TARGET_REPOSITORY: BigBirdReturns/axm-aperture
+  TARGET_MANIFEST_SHA256: 91bf3ce0a359076504db7c14b306e3e11ac3f29c6ef60cbb493b78e7f6510cc5
+  TARGET_RECEIPT_SHA256: 5c110578746a881837711f7545c772a9f4befb8f426d3ca50055065fdb89a6de
+
+jobs:
+  qualify:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-ap401-coach-target-v1'
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact temporary candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+      - name: Verify and qualify reusable Coach target
+        shell: bash
+        run: bash .github/scripts/aperture-ap401-qualify.sh
+
+  package:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-ap401-coach-target-v1'
+    needs:
+      - qualify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact qualified candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+      - name: Construct and cold-verify checksum-bound target package
+        shell: bash
+        env:
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: bash .github/scripts/aperture-ap401-package.sh
+      - name: Upload checksum-bound AP-401 target
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axm-aperture-ap401-coach-target-v1
+          path: ${{ runner.temp }}/ap401-package/out/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7

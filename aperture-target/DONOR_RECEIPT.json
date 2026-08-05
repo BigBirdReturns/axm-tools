@@ -1,0 +1,50 @@
+{
+  "carrier_authority": "transport_and_qualification_only",
+  "donor": {
+    "authority": "qualified_behavioral_donor_only",
+    "bounded_clips": 20,
+    "embedded_player_script_sha256": "bc18dc52878a5907c0feb966f4c7b62d5c49b36267ae0ad9a9d2aa62384747f9",
+    "mutations_killed": 20,
+    "mutations_survived": 0,
+    "name": "AXM Manual Function Tutorial Coach",
+    "ordered_operations": 20,
+    "phase_diagrams": 60,
+    "retained_clip_seconds": 85.95,
+    "source_evidence_frames": 60,
+    "source_tests_passed": 62,
+    "source_video_sha256": "e9b723ae56b692ca0c9cff41753931db2532c1704e0529d25df4123b7622494d",
+    "version": "1.1.0"
+  },
+  "evidence": [
+    {
+      "name": "standalone.html",
+      "sha256": "cec1e58a9d9c639725ad6fbaf40d2b83debb328529ac233c5503f7366abfe083"
+    },
+    {
+      "name": "QA_REPORT_V1.1.0.md",
+      "sha256": "b6f0fa867432b95b3b88b7b5b14787a83ee4c4f57bf01758ae8acc24edf1bb67"
+    },
+    {
+      "name": "mutation-test.json",
+      "sha256": "c402f5bdb7e0e0a86f7119e82acb5cb731b4af21b140bc78c0050eecec5622a7"
+    }
+  ],
+  "format": "axm-aperture-donor-receipt/1",
+  "grammar_extracted": [
+    "bounded_playback",
+    "decisive_frame",
+    "explanation",
+    "diagram",
+    "scrub",
+    "frame_step",
+    "speed",
+    "automatic_hold",
+    "semantic_rail",
+    "pause_seek_reconnect_reconciliation"
+  ],
+  "implementation_method": "clean generic reducer reimplementation",
+  "manual_dom_or_player_code_copied": false,
+  "manual_specific_phase_semantics_copied": false,
+  "target_authority": "BigBirdReturns/axm-aperture",
+  "transaction": "AP-401"
+}

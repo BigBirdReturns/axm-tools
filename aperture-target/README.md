@@ -1,0 +1,11 @@
+# AP-401 reusable Coach target
+
+This directory is the exact target tree for `AP-401 · Extract Coach synchronization as a reusable viewer component`. It is carried temporarily by `BigBirdReturns/axm-tools` because `BigBirdReturns/axm-aperture` does not yet exist. Nothing in this carrier may merge into Tools main or acquire product or G3 authority.
+
+The implementation is a clean generic reducer over two externally authoritative records: one verified timed position plus answer plan, and one observed playback snapshot. Semantic cues are authored data. The reducer does not contain Manual’s named phase grammar. It emits deterministic playback intents for play, pause, seek, frame step, rate, semantic jump, and decisive-cue hold, but it does not update observed playback until a new observation arrives. A delivered command receipt remains transport evidence and cannot become playback success.
+
+The projection keeps package, viewer, position, answer-plan, fact, cue, frame, diagram, observation, intent, expiry, and delivery identities visible. An automatic hold request remains motion until an external observation confirms pause. Commands from a replaced player session expire visibly and cannot enter the new session. A late delivery may settle an expired intent without reviving it. Disconnect is stale rather than successful, contradictory player fields fail closed, and only a new valid external observation can clear a refusal.
+
+The validated program, reducer state, and projected view are deeply immutable. The component owns no transport, media element, playback clock, persistence store, story position, Exposure Ledger, Knowledge Ledger, answer plan, provider identity, or command-success authority. Package, viewer, position, duration, answer-plan, cue-order, delivery, unknown-field, and unsupported-state substitutions fail closed.
+
+The donor receipt binds the qualified AXM Manual 1.1.0 behavior without copying its DOM or player implementation. The source qualification contains seventeen deterministic contracts and an exact nine-file source manifest. The target can be extracted at repository root under `clients/shared/coach`, `tests/ui/coach`, and `receipts/AP-401.json` after the dedicated Aperture repository exists.
