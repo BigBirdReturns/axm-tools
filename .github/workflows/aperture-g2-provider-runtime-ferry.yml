@@ -46,79 +46,34 @@ jobs:
           work="$RUNNER_TEMP/axm-aperture-g2-ferry/work"
           mpv_root="$work/mpv-root"
 
-          # libpulse resolves libpulsecommon through an absolute runtime path
-          # that top-level ldd traversal does not enumerate. Preserve the
-          # package directory and add its transported locations to the explicit
-          # portable loader search path before resealing.
+          # libpulse loads libpulsecommon through a runtime directory that the
+          # top-level ELF dependency walk does not enumerate. Preserve that
+          # directory and make both transported PulseAudio locations explicit
+          # in the portable loader wrapper.
           if [ -d /usr/lib/x86_64-linux-gnu/pulseaudio ]; then
             mkdir -p "$mpv_root/usr/lib/x86_64-linux-gnu"
             cp -a /usr/lib/x86_64-linux-gnu/pulseaudio \
               "$mpv_root/usr/lib/x86_64-linux-gnu/"
           fi
-
-          python - "$mpv_root/mpv-portable" <<'PY'
-          import pathlib
-          import sys
-
-          path = pathlib.Path(sys.argv[1])
-          source = path.read_text(encoding="utf-8")
-          old = '''  "$ROOT/usr/lib/x86_64-linux-gnu" \\
-  "$ROOT/usr/local/lib"; do
-'''
-          new = '''  "$ROOT/usr/lib/x86_64-linux-gnu" \\
-  "$ROOT/lib/x86_64-linux-gnu/pulseaudio" \\
-  "$ROOT/usr/lib/x86_64-linux-gnu/pulseaudio" \\
-  "$ROOT/usr/local/lib"; do
-'''
-          if old not in source:
-              raise SystemExit("portable wrapper search-path seam changed")
-          path.write_text(source.replace(old, new), encoding="utf-8")
-          path.chmod(0o755)
-          PY
-
+          python aperture-g2-ferry/patch-mpv-wrapper.py \
+            "$mpv_root/mpv-portable"
           "$mpv_root/mpv-portable" --version > "$out/mpv/version.txt"
 
-          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner \
+          tar --sort=name --mtime='UTC 1970-01-01' \
+            --owner=0 --group=0 --numeric-owner \
             -C "$work" -cf - mpv-root \
             | gzip -n -9 > "$out/mpv/mpv-linux-x64-portable.tar.gz"
-
-          python - "$out" <<'PY'
-          import hashlib
-          import json
-          import pathlib
-          import sys
-
-          out = pathlib.Path(sys.argv[1])
-          receipt_path = out / "provider-runtime-ferry.json"
-          receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-
-          def sha(path: pathlib.Path) -> str:
-              h = hashlib.sha256()
-              with path.open("rb") as handle:
-                  for block in iter(lambda: handle.read(1024 * 1024), b""):
-                      h.update(block)
-              return h.hexdigest()
-
-          bundle = out / "mpv" / "mpv-linux-x64-portable.tar.gz"
-          receipt["mpv"]["bundle_sha256"] = sha(bundle)
-          receipt["mpv"]["portable_wrapper_sha256"] = sha(out.parent / "work" / "mpv-root" / "mpv-portable")
-          receipt.pop("receipt_sha256", None)
-          core = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
-          receipt["receipt_sha256"] = hashlib.sha256(core).hexdigest()
-          receipt_path.write_text(
-              json.dumps(receipt, indent=2, sort_keys=True) + "\n",
-              encoding="utf-8",
-          )
-          PY
+          python aperture-g2-ferry/reseal-mpv-receipt.py \
+            "$out" "$mpv_root"
 
           rm -f "$out/SHA256SUMS" "$out/SHA512SUMS" \
             "$out/verification.json" "$out/verification.json.sha256"
           (
             cd "$out"
-            find . -type f ! -name SHA256SUMS ! -name SHA512SUMS -printf '%P\0' \
-              | sort -z | xargs -0 sha256sum > SHA256SUMS
-            find . -type f ! -name SHA256SUMS ! -name SHA512SUMS -printf '%P\0' \
-              | sort -z | xargs -0 sha512sum > SHA512SUMS
+            find . -type f ! -name SHA256SUMS ! -name SHA512SUMS \
+              -printf '%P\0' | sort -z | xargs -0 sha256sum > SHA256SUMS
+            find . -type f ! -name SHA256SUMS ! -name SHA512SUMS \
+              -printf '%P\0' | sort -z | xargs -0 sha512sum > SHA512SUMS
             python verify-ferry.py . > verification.json
             sha256sum verification.json > verification.json.sha256
             sha256sum -c verification.json.sha256
