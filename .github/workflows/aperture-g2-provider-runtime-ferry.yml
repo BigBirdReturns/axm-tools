@@ -38,7 +38,15 @@ jobs:
 
       - name: Build and self-verify ferry
         shell: bash
-        run: bash aperture-g2-ferry/build-ferry.sh
+        run: |
+          set -euo pipefail
+          bash aperture-g2-ferry/build-ferry.sh
+          out="$RUNNER_TEMP/axm-aperture-g2-ferry/out"
+          (
+            cd "$out"
+            sha256sum verification.json > verification.json.sha256
+            sha256sum -c verification.json.sha256
+          )
 
       - name: Upload checksum-bound provider runtime
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
