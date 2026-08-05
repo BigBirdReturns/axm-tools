@@ -1,0 +1,139 @@
+name: TEMP AXM Aperture G2 Arc Node closure
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/aperture-g2-arc-node-ferry.yml
+      - aperture-g2-arc-node/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aperture-g2-arc-node-ferry-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ferry:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-g2-arc-node-ferry-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    env:
+      ARC_REPOSITORY: BigBirdReturns/axm-arc
+      ARC_FEATURE: a94fcf69898c7d5ceb40b733f0ca5e6a42794623
+      ARC_LANDED: c8b78629217b9ba7237c1ecfff47cdc0e28cbf69
+
+    steps:
+      - name: Check out temporary transport source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+
+      - name: Reconstruct and qualify exact landed Arc
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 022
+          root="$RUNNER_TEMP/aperture-g2-arc-node"
+          repo="$root/axm-arc"
+          out="$root/out"
+          rm -rf "$root"
+          mkdir -p "$repo" "$out"
+
+          git init -q "$repo"
+          git -C "$repo" remote add origin "https://github.com/$ARC_REPOSITORY.git"
+          git -C "$repo" fetch --no-tags --depth=1 origin "$ARC_LANDED"
+          git -C "$repo" fetch --no-tags origin "$ARC_FEATURE"
+          git -C "$repo" checkout -q --detach "$ARC_LANDED"
+          test "$(git -C "$repo" rev-parse HEAD)" = "$ARC_LANDED"
+          git -C "$repo" merge-base --is-ancestor "$ARC_FEATURE" "$ARC_LANDED"
+          test -z "$(git -C "$repo" status --porcelain)"
+
+          cd "$repo"
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run typecheck > "$out/typecheck.log" 2>&1
+          npx vitest run \
+            tests/canonical-story/digest.test.ts \
+            tests/canonical-story/timed-media.test.ts \
+            > "$out/focused-tests.log" 2>&1
+
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner \
+            -C "$repo" -cf - node_modules \
+            | gzip -n -9 > "$out/arc-node-modules-linux-x64.tar.gz"
+          cp package.json package-lock.json "$out/"
+
+          python - "$repo" "$out" <<'PY'
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import subprocess
+          import sys
+
+          repo = pathlib.Path(sys.argv[1])
+          out = pathlib.Path(sys.argv[2])
+
+          def sha(path: pathlib.Path) -> str:
+              h = hashlib.sha256()
+              with path.open('rb') as handle:
+                  for block in iter(lambda: handle.read(1024 * 1024), b''):
+                      h.update(block)
+              return h.hexdigest()
+
+          module_files = sum(1 for path in (repo / 'node_modules').rglob('*') if path.is_file())
+          receipt = {
+              'format': 'axm-aperture-g2-arc-node-ferry/1',
+              'authority': 'transport_only',
+              'accepted_gates': [],
+              'repository': os.environ['ARC_REPOSITORY'],
+              'feature_commit': os.environ['ARC_FEATURE'],
+              'landed_commit': os.environ['ARC_LANDED'],
+              'feature_is_ancestor_of_landed': True,
+              'node_version': subprocess.check_output(['node', '--version'], text=True).strip(),
+              'npm_version': subprocess.check_output(['npm', '--version'], text=True).strip(),
+              'package_lock_sha256': sha(out / 'package-lock.json'),
+              'package_json_sha256': sha(out / 'package.json'),
+              'node_modules_archive': 'arc-node-modules-linux-x64.tar.gz',
+              'node_modules_archive_sha256': sha(out / 'arc-node-modules-linux-x64.tar.gz'),
+              'node_modules_file_count': module_files,
+              'typecheck_log_sha256': sha(out / 'typecheck.log'),
+              'focused_tests_log_sha256': sha(out / 'focused-tests.log'),
+              'runner_os': os.environ.get('RUNNER_OS'),
+              'runner_arch': os.environ.get('RUNNER_ARCH'),
+              'workflow_sha': os.environ.get('GITHUB_SHA'),
+          }
+          core = json.dumps(receipt, sort_keys=True, separators=(',', ':')).encode()
+          receipt['receipt_sha256'] = hashlib.sha256(core).hexdigest()
+          (out / 'arc-node-ferry.json').write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+          (
+            cd "$out"
+            find . -type f ! -name SHA256SUMS -printf '%P\0' \
+              | sort -z | xargs -0 sha256sum > SHA256SUMS
+            sha256sum -c SHA256SUMS
+          )
+
+      - name: Upload checksum-bound Arc dependency closure
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axm-aperture-g2-arc-node-closure-v1
+          path: ${{ runner.temp }}/aperture-g2-arc-node/out/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
