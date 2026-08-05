@@ -1,0 +1,76 @@
+name: One-shot home lab capability gradient import
+
+on:
+  push:
+    branches: [agent/home-lab-capability-gradient]
+    paths:
+      - ".import/home-lab-gradient/**"
+      - ".github/workflows/home-lab-gradient-import.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: home-lab-gradient-import
+  cancel-in-progress: true
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/home-lab-capability-gradient
+          fetch-depth: 0
+
+      - name: Wait until the complete bounded payload is present
+        id: ready
+        shell: bash
+        run: |
+          if [[ -f .import/home-lab-gradient/chunk-00 && \
+                -f .import/home-lab-gradient/chunk-01 && \
+                -f .import/home-lab-gradient/chunk-02 ]]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify and materialize the exact source tree
+        if: steps.ready.outputs.ready == 'true'
+        shell: bash
+        env:
+          EXPECTED_SHA256: b05448653e21852a42e9f4d25e056c15396bc2c966a18cb6fa78ffa7e07b5cf9
+        run: |
+          cat .import/home-lab-gradient/chunk-* > /tmp/home-lab-gradient.b64
+          base64 --decode /tmp/home-lab-gradient.b64 > /tmp/home-lab-gradient.zip
+          echo "$EXPECTED_SHA256  /tmp/home-lab-gradient.zip" | sha256sum --check --strict
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+
+          archive = Path('/tmp/home-lab-gradient.zip')
+          root = Path('.').resolve()
+          with zipfile.ZipFile(archive) as zf:
+              for member in zf.infolist():
+                  target = (root / member.filename).resolve()
+                  try:
+                      target.relative_to(root)
+                  except ValueError as exc:
+                      raise SystemExit(f'archive path escapes repository: {member.filename}') from exc
+              zf.extractall(root)
+          PY
+
+      - name: Replace transport with the materialized module
+        if: steps.ready.outputs.ready == 'true'
+        shell: bash
+        run: |
+          rm -rf .import/home-lab-gradient
+          rm -f .github/workflows/home-lab-gradient-import.yml
+          python home-lab-gradient/scripts/lab.py build --now 2026-08-05T00:00:00Z
+          python -m unittest discover -s home-lab-gradient/tests -v
+          python home-lab-gradient/scripts/lab.py validate
+          git config user.name "home-lab-gradient-import-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "home-lab-gradient: add capability planner"
+          git push origin HEAD:agent/home-lab-capability-gradient
