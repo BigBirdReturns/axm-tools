@@ -53,97 +53,27 @@ providers = json.loads(pathlib.Path(sys.argv[1]).read_text())
 work = pathlib.Path(sys.argv[2])
 out = pathlib.Path(sys.argv[3])
 
-
 def run(*args: str, cwd: pathlib.Path | None = None) -> None:
     subprocess.run(args, cwd=cwd, check=True)
-
 
 for provider in providers:
     name = provider["name"]
     bare = work / f"{name}.git"
     run("git", "init", "--bare", str(bare))
-    run(
-        "git",
-        "-C",
-        str(bare),
-        "remote",
-        "add",
-        "origin",
-        f"https://github.com/{provider['repository']}.git",
-    )
-    run(
-        "git",
-        "-C",
-        str(bare),
-        "fetch",
-        "--no-tags",
-        "origin",
-        "refs/heads/main:refs/heads/upstream-main",
-    )
-    run(
-        "git",
-        "-C",
-        str(bare),
-        "fetch",
-        "--no-tags",
-        "origin",
-        f"refs/pull/{provider['pr']}/head:refs/heads/upstream-feature",
-    )
+    run("git", "-C", str(bare), "remote", "add", "origin", f"https://github.com/{provider['repository']}.git")
+    run("git", "-C", str(bare), "fetch", "--no-tags", "origin", f"refs/heads/main:refs/heads/upstream-main")
+    run("git", "-C", str(bare), "fetch", "--no-tags", "origin", f"refs/pull/{provider['pr']}/head:refs/heads/upstream-feature")
     for role in ("base", "feature", "landed"):
         run("git", "-C", str(bare), "cat-file", "-e", f"{provider[role]}^{{commit}}")
-    run(
-        "git",
-        "-C",
-        str(bare),
-        "merge-base",
-        "--is-ancestor",
-        provider["base"],
-        provider["feature"],
-    )
-    run(
-        "git",
-        "-C",
-        str(bare),
-        "merge-base",
-        "--is-ancestor",
-        provider["base"],
-        provider["landed"],
-    )
-    run(
-        "git",
-        "-C",
-        str(bare),
-        "merge-base",
-        "--is-ancestor",
-        provider["feature"],
-        provider["landed"],
-    )
-    run(
-        "git",
-        "-C",
-        str(bare),
-        "merge-base",
-        "--is-ancestor",
-        provider["landed"],
-        "refs/heads/upstream-main",
-    )
+    run("git", "-C", str(bare), "merge-base", "--is-ancestor", provider["base"], provider["feature"])
+    run("git", "-C", str(bare), "merge-base", "--is-ancestor", provider["base"], provider["landed"])
+    run("git", "-C", str(bare), "merge-base", "--is-ancestor", provider["feature"], provider["landed"])
+    run("git", "-C", str(bare), "merge-base", "--is-ancestor", provider["landed"], "refs/heads/upstream-main")
     for role in ("base", "feature", "landed"):
-        run(
-            "git",
-            "-C",
-            str(bare),
-            "update-ref",
-            f"refs/heads/aperture-g2/{role}",
-            provider[role],
-        )
+        run("git", "-C", str(bare), "update-ref", f"refs/heads/aperture-g2/{role}", provider[role])
     bundle = out / f"{name}-g2-provider.bundle"
     run(
-        "git",
-        "-C",
-        str(bare),
-        "bundle",
-        "create",
-        str(bundle),
+        "git", "-C", str(bare), "bundle", "create", str(bundle),
         "refs/heads/aperture-g2/base",
         "refs/heads/aperture-g2/feature",
         "refs/heads/aperture-g2/landed",
@@ -159,7 +89,7 @@ pytest-cov>=6,<7
 blake3>=0.4,<2
 PyNaCl>=1.5,<2
 click>=8,<9
-dilithium-py>=0.5,<1
+dilithium-py==1.4.0
 duckdb>=1,<2
 cryptography>=41,<50
 setuptools>=68
@@ -179,37 +109,15 @@ python -m venv "$WORK/wheelcheck"
 "$WORK/wheelcheck/bin/python" - <<'PY' > "$OUT/wheelhouse/import-smoke.json"
 import importlib.metadata as md
 import json
-
-mods = [
-    "jsonschema",
-    "referencing",
-    "pytest",
-    "blake3",
-    "nacl",
-    "click",
-    "dilithium_py",
-    "duckdb",
-    "cryptography",
-]
+mods = ["jsonschema", "referencing", "pytest", "blake3", "nacl", "click", "dilithium_py", "duckdb", "cryptography"]
 for name in mods:
     __import__(name)
-packages = [
-    "jsonschema",
-    "referencing",
-    "pytest",
-    "blake3",
-    "PyNaCl",
-    "click",
-    "dilithium-py",
-    "duckdb",
-    "cryptography",
-]
+packages = ["jsonschema", "referencing", "pytest", "blake3", "PyNaCl", "click", "dilithium-py", "duckdb", "cryptography"]
 print(json.dumps({name: md.version(name) for name in packages}, indent=2, sort_keys=True))
 PY
 
 sudo apt-get update -qq
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-  mpv ffmpeg ca-certificates
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends mpv ffmpeg ca-certificates
 
 MPV_ROOT="$WORK/mpv-root"
 mkdir -p "$MPV_ROOT"
@@ -282,8 +190,7 @@ if [ -z "$loader" ]; then
   echo "portable MPV loader is missing" >&2
   exit 126
 fi
-exec "$loader" --library-path "$library_path" \
-  "$ROOT/usr/bin/mpv" --no-config --load-scripts=no "$@"
+exec "$loader" --library-path "$library_path" "$ROOT/usr/bin/mpv" --no-config --load-scripts=no "$@"
 WRAP
 chmod +x "$MPV_ROOT/mpv-portable"
 
@@ -348,12 +255,10 @@ PY
 wait "$MPV_PID"
 
 "$MPV_ROOT/mpv-portable" --version > "$OUT/mpv/version.txt"
-dpkg-query -W -f='${Package}\t${Version}\n' mpv libmpv2 ffmpeg \
-  > "$OUT/mpv/debian-packages.txt" || true
+dpkg-query -W -f='${Package}\t${Version}\n' mpv libmpv2 ffmpeg > "$OUT/mpv/debian-packages.txt" || true
 
 tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner \
-  -C "$WORK" -cf - mpv-root \
-  | gzip -n -9 > "$OUT/mpv/mpv-linux-x64-portable.tar.gz"
+  -C "$WORK" -cf - mpv-root | gzip -n -9 > "$OUT/mpv/mpv-linux-x64-portable.tar.gz"
 
 cp "${GITHUB_WORKSPACE}/aperture-g2-ferry/verify-ferry.py" "$OUT/verify-ferry.py"
 cp "${GITHUB_WORKSPACE}/aperture-g2-ferry/README.md" "$OUT/README.md"
@@ -372,14 +277,12 @@ import sys
 providers = json.loads(pathlib.Path(sys.argv[1]).read_text())
 out = pathlib.Path(sys.argv[2])
 
-
 def sha(path: pathlib.Path, algorithm: str = "sha256") -> str:
     h = hashlib.new(algorithm)
     with path.open("rb") as handle:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             h.update(block)
     return h.hexdigest()
-
 
 for provider in providers:
     bundle = out / "repos" / f"{provider['name']}-g2-provider.bundle"
@@ -415,17 +318,11 @@ receipt = {
         "sha": os.environ.get("GITHUB_SHA"),
         "ref": os.environ.get("GITHUB_REF"),
     },
-    "control_question": (
-        "Can Aperture independently reconstruct every transported prerequisite "
-        "while the ferry remains incapable of accepting G2?"
-    ),
+    "control_question": "Can Aperture independently reconstruct every transported prerequisite while the ferry remains incapable of accepting G2?",
 }
 core = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
 receipt["receipt_sha256"] = hashlib.sha256(core).hexdigest()
-(out / "provider-runtime-ferry.json").write_text(
-    json.dumps(receipt, indent=2, sort_keys=True) + "\n",
-    encoding="utf-8",
-)
+(out / "provider-runtime-ferry.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 PY
 
 (
@@ -439,7 +336,7 @@ PY
 )
 
 python "$OUT/verify-ferry.py" "$OUT" > "$OUT/verification.json"
-# verification.json is produced after the checksum denominator is fixed. Bind
+# verification.json was produced after the checksum denominator was fixed. Bind
 # it separately without introducing a self-referential checksum manifest.
 sha256sum "$OUT/verification.json" > "$OUT/verification.json.sha256"
 
