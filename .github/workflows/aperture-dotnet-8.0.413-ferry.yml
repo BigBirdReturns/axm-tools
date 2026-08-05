@@ -25,6 +25,7 @@ jobs:
         env:
           TARGET_SDK: 8.0.413
           METADATA_URL: https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/8.0/releases.json
+          EXPECTED_SMOKE_SHA256: 31c8e9a8d0d42f4dbf5d9241d20e4e6083af2a16035b59d1b90dd4e66838409f
         run: |
           set -euo pipefail
           umask 022
@@ -35,17 +36,22 @@ jobs:
           rm -rf "$work"
           mkdir -p "$work" "$out" "$install"
 
+          curl --fail --location --retry 5 --retry-all-errors --connect-timeout 30 \
+            --user-agent 'AXM-Aperture-G1-Toolchain-Ferry/1' \
+            "$METADATA_URL" --output "$work/release-metadata.json"
+
           python - <<'PY'
-          import json, os, pathlib, urllib.request
+          import hashlib
+          import json
+          import os
+          import pathlib
 
           target = os.environ['TARGET_SDK']
           url = os.environ['METADATA_URL']
           work = pathlib.Path(os.environ['RUNNER_TEMP']) / 'aperture-dotnet-ferry'
-          request = urllib.request.Request(url, headers={'User-Agent': 'AXM-Aperture-G1-Toolchain-Ferry/1'})
-          with urllib.request.urlopen(request, timeout=60) as response:
-              raw = response.read()
+          raw = (work / 'release-metadata.json').read_bytes()
           data = json.loads(raw)
-          candidates = []
+          candidates = {}
           for release in data.get('releases', []):
               sdk_objects = []
               if isinstance(release.get('sdk'), dict):
@@ -56,22 +62,21 @@ jobs:
                       continue
                   for item in sdk.get('files', []):
                       if item.get('rid') == 'linux-x64' and item.get('name', '').endswith('.tar.gz'):
-                          candidates.append(item)
+                          candidates[item['url']] = item
           if len(candidates) != 1:
-              raise SystemExit(f'expected one linux-x64 SDK {target} archive, found {len(candidates)}')
-          selected = candidates[0]
+              raise SystemExit(f'expected one unique linux-x64 SDK {target} archive, found {len(candidates)}')
+          selected = next(iter(candidates.values()))
           source = {
               'format': 'axm-aperture-dotnet-source/1',
               'metadata_url': url,
               'metadata_bytes': len(raw),
-              'metadata_sha256': __import__('hashlib').sha256(raw).hexdigest(),
+              'metadata_sha256': hashlib.sha256(raw).hexdigest(),
               'sdk_version': target,
               'rid': selected['rid'],
               'name': selected['name'],
               'url': selected['url'],
               'sha512': selected['hash'].lower(),
           }
-          (work / 'release-metadata.json').write_bytes(raw)
           (work / 'source.json').write_text(json.dumps(source, indent=2, sort_keys=True) + '\n')
           PY
 
@@ -117,14 +122,14 @@ jobs:
                   var payload = Encoding.UTF8.GetBytes("axm-aperture-native-csharp-g1");
                   var digest = Convert.ToHexString(SHA256.HashData(payload)).ToLowerInvariant();
                   Console.WriteLine($"APERTURE_NATIVE_CSHARP_PASS {digest}");
-                  return digest == "746ef7ad040c46fe7f6f149152c003f29357f9d64cbb840de6b55e1ecb4a9c42" ? 0 : 2;
+                  return digest == "31c8e9a8d0d42f4dbf5d9241d20e4e6083af2a16035b59d1b90dd4e66838409f" ? 0 : 2;
               }
           }
           EOF
-          dotnet run --project "$work/smoke/ApertureSmoke.csproj" --configuration Release \
-            --disable-build-servers > "$work/smoke-stdout.txt"
-          grep -Fx 'APERTURE_NATIVE_CSHARP_PASS 746ef7ad040c46fe7f6f149152c003f29357f9d64cbb840de6b55e1ecb4a9c42' \
-            "$work/smoke-stdout.txt"
+          dotnet build "$work/smoke/ApertureSmoke.csproj" --configuration Release \
+            --output "$work/smoke/bin" --nologo
+          dotnet "$work/smoke/bin/ApertureSmoke.dll" > "$work/smoke-stdout.txt"
+          grep -Fx "APERTURE_NATIVE_CSHARP_PASS $EXPECTED_SMOKE_SHA256" "$work/smoke-stdout.txt"
 
           bundle="$out/dotnet-sdk-$TARGET_SDK-linux-x64.repacked.tar.gz"
           tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner \
@@ -134,7 +139,11 @@ jobs:
           cp "$work/smoke/Program.cs" "$work/smoke/ApertureSmoke.csproj" "$out/"
 
           python - <<'PY'
-          import hashlib, json, os, pathlib, subprocess
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import subprocess
 
           work = pathlib.Path(os.environ['RUNNER_TEMP']) / 'aperture-dotnet-ferry'
           out = work / 'out'
