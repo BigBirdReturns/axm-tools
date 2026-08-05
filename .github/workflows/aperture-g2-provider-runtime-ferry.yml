@@ -41,9 +41,63 @@ jobs:
         run: |
           set -euo pipefail
           bash aperture-g2-ferry/build-ferry.sh
+
           out="$RUNNER_TEMP/axm-aperture-g2-ferry/out"
+          work="$RUNNER_TEMP/axm-aperture-g2-ferry/work"
+          mpv_root="$work/mpv-root"
+
+          # libpulse resolves libpulsecommon through an origin-relative runtime
+          # path that top-level ldd traversal does not enumerate. Preserve the
+          # complete package directory before resealing the relocatable closure.
+          if [ -d /usr/lib/x86_64-linux-gnu/pulseaudio ]; then
+            mkdir -p "$mpv_root/usr/lib/x86_64-linux-gnu"
+            cp -a /usr/lib/x86_64-linux-gnu/pulseaudio \
+              "$mpv_root/usr/lib/x86_64-linux-gnu/"
+          fi
+
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner \
+            -C "$work" -cf - mpv-root \
+            | gzip -n -9 > "$out/mpv/mpv-linux-x64-portable.tar.gz"
+
+          "$mpv_root/mpv-portable" --version > "$out/mpv/version.txt"
+
+          python - "$out" <<'PY'
+          import hashlib
+          import json
+          import pathlib
+          import sys
+
+          out = pathlib.Path(sys.argv[1])
+          receipt_path = out / "provider-runtime-ferry.json"
+          receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+
+          def sha(path: pathlib.Path) -> str:
+              h = hashlib.sha256()
+              with path.open("rb") as handle:
+                  for block in iter(lambda: handle.read(1024 * 1024), b""):
+                      h.update(block)
+              return h.hexdigest()
+
+          bundle = out / "mpv" / "mpv-linux-x64-portable.tar.gz"
+          receipt["mpv"]["bundle_sha256"] = sha(bundle)
+          receipt.pop("receipt_sha256", None)
+          core = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
+          receipt["receipt_sha256"] = hashlib.sha256(core).hexdigest()
+          receipt_path.write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+          rm -f "$out/SHA256SUMS" "$out/SHA512SUMS" \
+            "$out/verification.json" "$out/verification.json.sha256"
           (
             cd "$out"
+            find . -type f ! -name SHA256SUMS ! -name SHA512SUMS -printf '%P\0' \
+              | sort -z | xargs -0 sha256sum > SHA256SUMS
+            find . -type f ! -name SHA256SUMS ! -name SHA512SUMS -printf '%P\0' \
+              | sort -z | xargs -0 sha512sum > SHA512SUMS
+            python verify-ferry.py . > verification.json
             sha256sum verification.json > verification.json.sha256
             sha256sum -c verification.json.sha256
           )
