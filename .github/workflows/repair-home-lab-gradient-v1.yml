@@ -1,0 +1,264 @@
+name: repair-home-lab-gradient-v1
+
+on:
+  push:
+    branches: [agent/home-lab-capability-gradient]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/home-lab-capability-gradient
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Repair BOM-free collection and disabled-with-reason custody
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_exact(path: Path, old: str, new: str) -> None:
+              text = path.read_text(encoding="utf-8")
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"{path}: expected one replacement target, found {count}")
+              path.write_bytes(text.replace(old, new).encode("utf-8"))
+
+          collector = Path("home-lab-gradient/scripts/collect-windows.ps1")
+          replace_exact(
+              collector,
+              '''    $runtimeRows += [ordered]@{
+                  name = $name
+                  present = [bool]$command
+                  path = if ($command) { $command.Source } else { $null }
+              }
+          ''',
+              '''    $present = [bool]$command
+              $runtimeRows += [ordered]@{
+                  name = $name
+                  present = $present
+                  path = if ($present) { $command.Source } else { $null }
+                  disabled = (-not $present)
+                  disabled_reason = if ($present) { $null } else { "command not found in the current process PATH" }
+              }
+          ''',
+          )
+          replace_exact(
+              collector,
+              '$body | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath $destination -Encoding UTF8\n',
+              '$json = $body | ConvertTo-Json -Depth 16\n$utf8NoBom = New-Object System.Text.UTF8Encoding($false)\n[IO.File]::WriteAllText($destination, $json + "`n", $utf8NoBom)\n',
+          )
+
+          lab = Path("home-lab-gradient/scripts/lab.py")
+          replace_exact(
+              lab,
+              '''def qualify_estate(
+              *,
+              observations: Sequence[Path],
+              state_dir: Path,
+              generated_at: str,
+              ingest: bool,
+          ) -> tuple[Path, dict[str, Any]]:
+          ''',
+              '''def disabled_with_reason_failures(
+              observation: Mapping[str, Any], host_id: str
+          ) -> list[str]:
+              runtime = observation.get("runtime")
+              if not isinstance(runtime, list):
+                  return [f"{host_id}: runtime inventory missing"]
+              failures: list[str] = []
+              seen: set[str] = set()
+              for index, raw in enumerate(runtime):
+                  if not isinstance(raw, Mapping):
+                      failures.append(f"{host_id}: runtime[{index}] is not an object")
+                      continue
+                  name = str(raw.get("name") or "").strip()
+                  label = name or f"runtime[{index}]"
+                  if not name:
+                      failures.append(f"{host_id}: runtime[{index}] name missing")
+                  elif name in seen:
+                      failures.append(f"{host_id}: duplicate runtime identity: {name}")
+                  else:
+                      seen.add(name)
+                  present = raw.get("present")
+                  disabled = raw.get("disabled")
+                  reason = raw.get("disabled_reason")
+                  path = raw.get("path")
+                  if present is True:
+                      if disabled is not False:
+                          failures.append(f"{host_id}: {label} is present but not explicitly enabled")
+                      if not isinstance(path, str) or not path.strip():
+                          failures.append(f"{host_id}: {label} is present without an executable path")
+                      if reason not in {None, ""}:
+                          failures.append(f"{host_id}: {label} is present but carries a disabled reason")
+                  elif present is False:
+                      if disabled is not True:
+                          failures.append(f"{host_id}: {label} is absent but not explicitly disabled")
+                      if not isinstance(reason, str) or not reason.strip():
+                          failures.append(f"{host_id}: {label} is disabled without a reason")
+                      if path is not None:
+                          failures.append(f"{host_id}: {label} is disabled but still declares a path")
+                  else:
+                      failures.append(f"{host_id}: {label} present must be boolean")
+              return failures
+
+
+          def qualify_estate(
+              *,
+              observations: Sequence[Path],
+              state_dir: Path,
+              generated_at: str,
+              ingest: bool,
+          ) -> tuple[Path, dict[str, Any]]:
+          ''',
+          )
+          replace_exact(
+              lab,
+              '''    host_rows: list[dict[str, Any]] = []
+              inventory_failures: list[str] = []
+              device_failures: list[str] = []
+          ''',
+              '''    host_rows: list[dict[str, Any]] = []
+              inventory_failures: list[str] = []
+              disabled_reason_failures: list[str] = []
+              device_failures: list[str] = []
+          ''',
+          )
+          replace_exact(
+              lab,
+              '''        system = observation.get("system", {})
+              cpu = observation.get("cpu", [])
+          ''',
+              '''        disabled_reason_failures.extend(
+                  disabled_with_reason_failures(observation, host_id)
+              )
+              system = observation.get("system", {})
+              cpu = observation.get("cpu", [])
+          ''',
+          )
+          replace_exact(
+              lab,
+              '''            "host_inventory": inventory_failures,
+                  "device_identity": device_failures,
+          ''',
+              '''            "host_inventory": inventory_failures,
+                  "disabled_with_reason": disabled_reason_failures,
+                  "device_identity": device_failures,
+          ''',
+          )
+          replace_exact(
+              lab,
+              '''    host_inventory_ok = not failures and not inventory_failures and len(loaded) == len(expected_hosts)
+          ''',
+              '''    host_inventory_ok = (
+                  not failures
+                  and not inventory_failures
+                  and not disabled_reason_failures
+                  and len(loaded) == len(expected_hosts)
+              )
+          ''',
+          )
+          replace_exact(
+              lab,
+              '''        {
+                  "id": "six-accelerator-domains-explicit",
+          ''',
+              '''        {
+                  "id": "disabled-components-carry-reasons",
+                  "pass": not disabled_reason_failures,
+                  "detail": disabled_reason_failures or "every absent runtime is explicitly disabled with a reason",
+              },
+              {
+                  "id": "six-accelerator-domains-explicit",
+          ''',
+          )
+
+          tests = Path("home-lab-gradient/tests/test_lab.py")
+          replace_exact(
+              tests,
+              '''        "network": {"adapters": [{"name": "Ethernet", "link_speed": "1 Gbps"}]},
+              "clock": {"stopwatch_frequency_hz": 10000000, "samples": []},
+          ''',
+              '''        "network": {"adapters": [{"name": "Ethernet", "link_speed": "1 Gbps"}]},
+              "runtime": [
+                  {
+                      "name": "python",
+                      "present": True,
+                      "path": "C:\\\\Python\\\\python.exe",
+                      "disabled": False,
+                      "disabled_reason": None,
+                  },
+                  {
+                      "name": "docker",
+                      "present": False,
+                      "path": None,
+                      "disabled": True,
+                      "disabled_reason": "command not found in the current process PATH",
+                  },
+              ],
+              "clock": {"stopwatch_frequency_hz": 10000000, "samples": []},
+          ''',
+          )
+          replace_exact(
+              tests,
+              '''    def test_blocked_experiment_cannot_open_run(self):
+          ''',
+              '''    def test_disabled_runtime_without_reason_blocks_census(self):
+                  with tempfile.TemporaryDirectory() as raw:
+                      base = Path(raw)
+                      state = base / "state"
+                      files = []
+                      for host_id, gpu_uuid in (("control-host", "GPU-4060"), ("heavy-host-a", "GPU-3090-A"), ("heavy-host-b", "GPU-3090-B")):
+                          item = observation(host_id, gpu_uuid)
+                          if host_id == "heavy-host-a":
+                              item["runtime"][1]["disabled_reason"] = None
+                          path = base / f"{host_id}.json"
+                          path.write_text(json.dumps(item, indent=2) + "\\n", encoding="utf-8")
+                          files.append(path)
+                      _, receipt = qualify_estate(
+                          observations=files,
+                          state_dir=state,
+                          generated_at="2026-08-05T01:30:00Z",
+                          ingest=False,
+                      )
+                      check = next(
+                          item for item in receipt["checks"]
+                          if item["id"] == "disabled-components-carry-reasons"
+                      )
+                      self.assertFalse(check["pass"])
+                      self.assertNotEqual(receipt["status"], "PASS")
+
+              def test_collector_uses_bom_free_utf8(self):
+                  source = (SCRIPTS / "collect-windows.ps1").read_text(encoding="utf-8")
+                  self.assertIn("System.Text.UTF8Encoding($false)", source)
+                  self.assertIn("[IO.File]::WriteAllText", source)
+                  self.assertNotIn("Set-Content -LiteralPath $destination -Encoding UTF8", source)
+
+              def test_blocked_experiment_cannot_open_run(self):
+          ''',
+          )
+          PY
+
+      - name: Exercise repaired laws
+        run: |
+          python -m py_compile home-lab-gradient/scripts/lab.py home-lab-gradient/tests/test_lab.py
+          python home-lab-gradient/tests/test_lab.py
+          python home-lab-gradient/scripts/lab.py validate-source
+          git diff --check
+
+      - name: Commit repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add home-lab-gradient/scripts/collect-windows.ps1 home-lab-gradient/scripts/lab.py home-lab-gradient/tests/test_lab.py
+          git commit -m "Repair host census byte and disabled-state custody"
+          git push origin HEAD:agent/home-lab-capability-gradient
