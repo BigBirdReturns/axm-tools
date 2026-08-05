@@ -459,6 +459,54 @@ def classify_adapter(adapter: Mapping[str, Any]) -> str:
     return "unclassified"
 
 
+
+def disabled_with_reason_failures(
+    observation: Mapping[str, Any], host_id: str
+) -> list[str]:
+    runtime = observation.get("runtime")
+    if not isinstance(runtime, list):
+        return [f"{host_id}: runtime inventory missing"]
+    failures: list[str] = []
+    seen: set[str] = set()
+    required = {"python", "git", "ollama", "docker", "wsl", "nvidia-smi"}
+    for index, raw in enumerate(runtime):
+        if not isinstance(raw, Mapping):
+            failures.append(f"{host_id}: runtime[{index}] is not an object")
+            continue
+        name = str(raw.get("name") or "").strip()
+        label = name or f"runtime[{index}]"
+        if not name:
+            failures.append(f"{host_id}: runtime[{index}] name missing")
+        elif name in seen:
+            failures.append(f"{host_id}: duplicate runtime identity: {name}")
+        else:
+            seen.add(name)
+        present = raw.get("present")
+        disabled = raw.get("disabled")
+        reason = raw.get("disabled_reason")
+        executable = raw.get("path")
+        if present is True:
+            if disabled is not False:
+                failures.append(f"{host_id}: {label} is present but not explicitly enabled")
+            if not isinstance(executable, str) or not executable.strip():
+                failures.append(f"{host_id}: {label} is present without an executable path")
+            if reason is not None and reason != "":
+                failures.append(f"{host_id}: {label} is present but carries a disabled reason")
+        elif present is False:
+            if disabled is not True:
+                failures.append(f"{host_id}: {label} is absent but not explicitly disabled")
+            if not isinstance(reason, str) or not reason.strip():
+                failures.append(f"{host_id}: {label} is disabled without a reason")
+            if executable is not None:
+                failures.append(f"{host_id}: {label} is disabled but still declares a path")
+        else:
+            failures.append(f"{host_id}: {label} present must be boolean")
+    missing = sorted(required - seen)
+    if missing:
+        failures.append(f"{host_id}: runtime identities missing: {', '.join(missing)}")
+    return failures
+
+
 def qualify_estate(
     *,
     observations: Sequence[Path],
@@ -508,6 +556,7 @@ def qualify_estate(
 
     host_rows: list[dict[str, Any]] = []
     inventory_failures: list[str] = []
+    disabled_reason_failures: list[str] = []
     device_failures: list[str] = []
     resolved_domains = 0
     expected_domains = 0
@@ -520,6 +569,9 @@ def qualify_estate(
             inventory_failures.append(f"{host_id}: observation missing")
             device_failures.append(f"{host_id}: accelerator observation missing")
             continue
+        disabled_reason_failures.extend(
+            disabled_with_reason_failures(observation, host_id)
+        )
         system = observation.get("system", {})
         cpu = observation.get("cpu", [])
         memory = observation.get("memory", {})
@@ -566,6 +618,7 @@ def qualify_estate(
         "unresolved": {
             "general": failures,
             "host_inventory": inventory_failures,
+            "disabled_with_reason": disabled_reason_failures,
             "device_identity": device_failures,
         },
         "claim_boundary": "This aggregate records read-only host observations and explicit identity resolution. It does not admit workers, measure path cost, prove clock synchronization, or infer missing accelerator roles.",
@@ -574,7 +627,12 @@ def qualify_estate(
     aggregate_path = run_dir / "estate-observation.json"
     write_json(aggregate_path, aggregate)
 
-    host_inventory_ok = not failures and not inventory_failures and len(loaded) == len(expected_hosts)
+    host_inventory_ok = (
+        not failures
+        and not inventory_failures
+        and not disabled_reason_failures
+        and len(loaded) == len(expected_hosts)
+    )
     device_identity_ok = host_inventory_ok and not device_failures and resolved_domains == expected_domains
     checks = [
         {
@@ -586,6 +644,11 @@ def qualify_estate(
             "id": "stable-host-inventory",
             "pass": host_inventory_ok,
             "detail": inventory_failures or "CPU, RAM, OS, disk, and host identity fields are present",
+        },
+        {
+            "id": "disabled-components-carry-reasons",
+            "pass": not disabled_reason_failures,
+            "detail": disabled_reason_failures or "every absent runtime is explicitly disabled with a reason",
         },
         {
             "id": "six-accelerator-domains-explicit",

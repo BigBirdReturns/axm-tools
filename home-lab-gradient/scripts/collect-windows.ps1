@@ -163,10 +163,13 @@ if (Get-Command Get-NetAdapter -ErrorAction SilentlyContinue) {
 $runtimeRows = @()
 foreach ($name in @("python", "git", "ollama", "docker", "wsl", "nvidia-smi")) {
     $command = Get-Command $name -ErrorAction SilentlyContinue
+    $present = [bool]$command
     $runtimeRows += [ordered]@{
         name = $name
-        present = [bool]$command
-        path = if ($command) { $command.Source } else { $null }
+        present = $present
+        path = if ($present) { $command.Source } else { $null }
+        disabled = (-not $present)
+        disabled_reason = if ($present) { $null } else { "command not found in the current process PATH" }
     }
 }
 
@@ -242,7 +245,9 @@ $parent = [IO.Path]::GetDirectoryName($destination)
 if ($parent -and -not [IO.Directory]::Exists($parent)) {
     [IO.Directory]::CreateDirectory($parent) | Out-Null
 }
-$body | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath $destination -Encoding UTF8
+$json = $body | ConvertTo-Json -Depth 16
+$utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+[IO.File]::WriteAllText($destination, $json + "`n", $utf8NoBom)
 
 [ordered]@{
     ok = $true
