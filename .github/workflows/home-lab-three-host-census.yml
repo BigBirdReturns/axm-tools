@@ -3,6 +3,9 @@ name: home-lab-three-host-census
 on:
   push:
     branches: [agent/home-lab-capability-gradient]
+  pull_request:
+    branches: [main]
+    types: [synchronize, reopened]
   workflow_dispatch:
 
 permissions:
