@@ -1,0 +1,88 @@
+name: TEMP AXM Aperture AP-403 second-screen target
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/aperture-ap403-second-screen-target.yml"
+      - ".github/scripts/aperture-ap403-*.sh"
+      - ".gitattributes"
+      - "aperture-carrier/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aperture-ap403-second-screen-target-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  TARGET_REPOSITORY: BigBirdReturns/axm-aperture
+  SOURCE_ARCHIVE_SHA256: 8b0324f09311833ea5cf4aabcc731f3e601d3478514703e8c95276a78be87a2c
+  TARGET_LEDGER_SHA256: 13299491caf212d0015e606dc9d3becbcca4cf95cb9df2b3b8dbc4043444ef30
+  TARGET_MANIFEST_SHA256: f9c80ef4aa0e83ddff953b16872e2d4fbc806009e5f01de81b2c571438419f1d
+  TARGET_RECEIPT_SHA256: f8a2d76497567606598cae8ff7e79e2157e6880f4d053673698ad6ab5cda3698
+  PREDECESSOR_RECEIPT_SHA256: a2cb1f3753ed6b2d50772e8f36a0d7ffa7580792b31b9d1f6d1a57b856644497
+
+jobs:
+  qualify:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-ap403-second-screen-target-v1'
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact temporary candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+      - name: Reconstruct and qualify paired second-screen target
+        shell: bash
+        run: bash .github/scripts/aperture-ap403-qualify.sh
+
+  package:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-ap403-second-screen-target-v1'
+    needs:
+      - qualify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact qualified candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+      - name: Rebuild and cold-verify checksum-bound target package
+        shell: bash
+        env:
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: bash .github/scripts/aperture-ap403-package.sh
+      - name: Upload checksum-bound AP-403 target
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axm-aperture-ap403-second-screen-target-v1
+          path: ${{ runner.temp }}/ap403-package/out/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
