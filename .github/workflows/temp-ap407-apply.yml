@@ -1,0 +1,98 @@
+name: TEMP apply AP-407 direct-source carrier
+
+on:
+  push:
+    branches:
+      - agent/aperture-ap407-provenance-target-v1
+    paths:
+      - ".ap407-carrier/**"
+      - ".github/workflows/temp-ap407-apply.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".ap407-carrier/**"
+      - ".github/workflows/temp-ap407-apply.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: temp-ap407-apply
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    if: >-
+      github.event_name == 'push' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       github.head_ref == 'agent/aperture-ap407-provenance-target-v1')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact temporary carrier
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+          check-latest: false
+      - name: Verify archive and publish non-workflow source
+        shell: bash
+        env:
+          EXPECTED_BASE64_SHA256: df1f3422ac3d4e0a6deb1eb020f12638763c57430be4ee261e555dfc9d774995
+          EXPECTED_ARCHIVE_SHA256: 1c5757deead74b04453ffbb983dd79811173d972c5d7ac7122d0a55a7b9d9094
+          EXPECTED_PATHS_SHA256: e7d13edaae0fac4687c3f3c32c5781e914c5bcf74d2251e91a5aa1d8df935154
+          TARGET_LEDGER_SHA256: 938930ea3dc902304a4ae66f8d93695c1977d7e0e9b022511e9d92fc16c78dfd
+          TARGET_MANIFEST_SHA256: a7ba3dde346674c03d4f83aec620f4d941cf44413fe284d871fb116c70294565
+          TARGET_RECEIPT_SHA256: 2999d7b10cc2eff0e02f4819ec5ede9ac5eb2c6136d8c4c9cdd21cfb3b67b5db
+          PREDECESSOR_RECEIPT_SHA256: be4863a91a5db54a2c8c5853777569d136b4162ce47c58e7f205c64d46f1d833
+        run: |
+          set -euo pipefail
+          if [[ ! -e .ap407-carrier/payload.b64.part00 ]]; then
+            echo 'AP-407 carrier already applied; no source mutation required.'
+            exit 0
+          fi
+
+          work="$RUNNER_TEMP/ap407-apply"
+          rm -rf "$work"
+          mkdir -p "$work/extracted"
+          cat .ap407-carrier/payload.b64.part?? > "$work/carrier.tar.gz.b64"
+          observed_base64="$(sha256sum "$work/carrier.tar.gz.b64" | cut -d' ' -f1)"
+          printf 'Observed AP-407 carrier base64 SHA-256: %s\n' "$observed_base64"
+          test "$observed_base64" = "$EXPECTED_BASE64_SHA256"
+          base64 --decode "$work/carrier.tar.gz.b64" > "$work/carrier.tar.gz"
+          observed_archive="$(sha256sum "$work/carrier.tar.gz" | cut -d' ' -f1)"
+          printf 'Observed AP-407 carrier SHA-256: %s\n' "$observed_archive"
+          test "$observed_archive" = "$EXPECTED_ARCHIVE_SHA256"
+          tar -xzf "$work/carrier.tar.gz" -C "$work/extracted"
+
+          (cd "$work/extracted/carrier" && find . -type f -printf '%P\n' | LC_ALL=C sort) > "$work/observed-paths.txt"
+          observed_paths_sha="$(sha256sum "$work/observed-paths.txt" | cut -d' ' -f1)"
+          printf 'Observed AP-407 path ledger SHA-256: %s\n' "$observed_paths_sha"
+          test "$observed_paths_sha" = "$EXPECTED_PATHS_SHA256"
+          test "$(wc -l < "$work/observed-paths.txt")" -eq 18
+
+          grep -v '^\.github/workflows/aperture-ap407-provenance-target\.yml$' "$work/observed-paths.txt" > "$work/apply-paths.txt"
+          rm -rf .ap407-carrier
+          while IFS= read -r path; do
+            mkdir -p "$(dirname "$path")"
+            cp "$work/extracted/carrier/$path" "$path"
+          done < "$work/apply-paths.txt"
+
+          bash .github/scripts/aperture-ap407-qualify.sh
+
+          git config user.name 'AXM Aperture AP-407 applicator'
+          git config user.email 'aperture-ap407@users.noreply.github.com'
+          git add -A -- .ap407-carrier .gitattributes .github/scripts aperture-carrier
+          git diff --cached --check
+          if git diff --cached --name-only | grep -q '^\.github/workflows/'; then
+            echo 'Actions token attempted to mutate a workflow path' >&2
+            exit 1
+          fi
+          git commit -m 'Stage AP-407 direct source for connector sealing'
+          git push origin HEAD:agent/aperture-ap407-provenance-target-v1
