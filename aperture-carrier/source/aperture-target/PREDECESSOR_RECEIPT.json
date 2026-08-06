@@ -1,0 +1,40 @@
+{
+  "authority": "predecessor_identity_only",
+  "format": "axm-aperture-ap406-predecessor-receipt/1",
+  "g2": {
+    "accepted_gates": [
+      "G0",
+      "G1",
+      "G2"
+    ],
+    "evidence_commit": "52ea910ccb0842a0beef5d42df65db4e3a24ee65",
+    "issue_ledger_sha256": "a05819ae3f2b9644cd44e56cfe0013bca7caa344250237a3529964d2fd31fcbd",
+    "publication_status": "local_candidate_unpushed"
+  },
+  "predecessors": {
+    "AP-107": {
+      "issue_record_sha256": "e4d0f2f3c737e6f9beaa4574b242e6e2785344a924881aba26b106f5ab8be06e",
+      "issue_receipt_file_sha256": "0a05d1235fe558ed5097e2b7a328c4a5c97dbffc1ded21868cd95f44dc9b2dc3",
+      "knowledge_event_schema_sha256": "539f6418e375a7ac459b125771eee41ed84659348ab71fdf7108892ef915d608",
+      "knowledge_policy_schema_sha256": "8b881f01d980b6f864d8dd0d81a9f531a4d1a5c4c14450f9f47456aea14a9bb7",
+      "knowledge_projection_schema_sha256": "7549a2fe0f072a339acc1bc47d36c7dfbd43550f9de8c1f4bf55397ca63fd9b1",
+      "knowledge_vectors_sha256": "4f89bee9b5ecebabbea58a158b65dd7414429ff12ece1579a683f15801ad7633"
+    },
+    "AP-209": {
+      "issue_record_sha256": "a162364e6dfb7c37f272c61cff592ebff900af8b5302b69813c1ca01da6f43f0",
+      "issue_receipt_file_sha256": "0cad60ec7a298bf1b35550a92923e52c39df8890a13d82a4b0053c50ad3a200b",
+      "knowledge_reducer_source_sha256": "a061353e782e1f4d8ca2301839a272af3377fa2b1104bed35180f7d9134d03b2"
+    },
+    "AP-404": {
+      "artifact_id": 8956380741,
+      "artifact_outer_sha256": "f60b42c23f383cee44d79c0588d5ae0044c1e0844383e8b1680439358edd506b",
+      "canonical_transaction_accepted": false,
+      "carrier_head": "fab935e294e9d9f13b9a12cd7064c0da1e35690b",
+      "source_archive_sha256": "c258e77fcf79ca38642d65556293d128428e5d51a29d3c351b0eca51cf26ed87",
+      "target_receipt_sha256": "b0b570c4dbfaf49f5d448dac3d62e4d025d0fa3cbcf41e3558ab5c2fd9a8d0ca"
+    }
+  },
+  "target_repository": "BigBirdReturns/axm-aperture",
+  "target_repository_present": false,
+  "transaction": "AP-406"
+}

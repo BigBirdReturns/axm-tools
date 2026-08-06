@@ -1,0 +1,87 @@
+name: TEMP AXM Aperture AP-406 spoiler controls target v2
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".gitattributes"
+      - ".github/scripts/aperture-ap406-qualify-v2.sh"
+      - ".github/scripts/aperture-ap406-package-v2.sh"
+      - ".github/workflows/aperture-ap406-spoiler-controls-target-v2.yml"
+      - "aperture-carrier/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aperture-ap406-spoilers-v2-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  TARGET_REPOSITORY: BigBirdReturns/axm-aperture
+  SOURCE_ARCHIVE_SHA256: 7bd7ac776974a57bf471b76f85a5e378a73590f76b7ef796b0dd2d742e9683db
+  TARGET_LEDGER_SHA256: 8c4ef68a11022e35740c11646d05d66d0ccd701200a4a5050620a866c06f9129
+  TARGET_MANIFEST_SHA256: 70673e1390d1c3255837af4ae9f5fb3f3aa34429755668bf37cbe93b5a25a4a2
+  TARGET_RECEIPT_SHA256: 167be8d1bcd31dcda740d93f0eef2e09ceec2e5f94044286024ef803ab296acd
+  PREDECESSOR_RECEIPT_SHA256: 4d8d84fa945734d49d5c2700da4b9889f3e03d12c480dedc7f76f846822adbfa
+
+jobs:
+  qualify:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-ap406-spoiler-controls-target-v1'
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - name: Check out exact temporary candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+          check-latest: false
+      - name: Qualify spoiler and knowledge controls target
+        shell: bash
+        run: bash .github/scripts/aperture-ap406-qualify-v2.sh
+
+  package:
+    needs: qualify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    steps:
+      - name: Check out exact qualified candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+          check-latest: false
+      - name: Rebuild and cold-verify checksum-bound spoiler package
+        shell: bash
+        run: bash .github/scripts/aperture-ap406-package-v2.sh
+      - name: Upload checksum-bound AP-406 target
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axm-aperture-ap406-spoiler-controls-target-v2
+          path: ${{ runner.temp }}/aperture-ap406-v2-package/out/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7

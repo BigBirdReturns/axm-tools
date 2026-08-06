@@ -1,0 +1,65 @@
+{
+  "accepted_gates": [],
+  "aperture_gate_accepted": false,
+  "authority": {
+    "correction": "viewer_attributed_event_intent_only",
+    "knowledge_application": "external_daemon_observation_only",
+    "knowledge_history": "read_only_external_projection",
+    "policy_application": "external_daemon_observation_only",
+    "spoiler_policy": "viewer_policy_intent_only",
+    "story": "external_story_package_authority",
+    "transport": "none"
+  },
+  "canonical_ap406_accepted": false,
+  "canonical_g3_accepted": false,
+  "carrier_authority": "transport_and_qualification_only",
+  "format": "axm-aperture-program-transaction/1",
+  "hosted_repository_accepted": false,
+  "issue_record_sha256": "25ef4c4f5eedce5138553ea70cdd38e19dfa445b239817645016240caa1817bf",
+  "outputs": [
+    "clients/shared/spoilers/",
+    "tests/ui/spoiler-controls/",
+    "receipts/AP-406.json"
+  ],
+  "predecessors": {
+    "AP_107": {
+      "issue_receipt_file_sha256": "0a05d1235fe558ed5097e2b7a328c4a5c97dbffc1ded21868cd95f44dc9b2dc3",
+      "knowledge_policy_schema_sha256": "8b881f01d980b6f864d8dd0d81a9f531a4d1a5c4c14450f9f47456aea14a9bb7"
+    },
+    "AP_209": {
+      "issue_receipt_file_sha256": "0cad60ec7a298bf1b35550a92923e52c39df8890a13d82a4b0053c50ad3a200b",
+      "knowledge_reducer_source_sha256": "a061353e782e1f4d8ca2301839a272af3377fa2b1104bed35180f7d9134d03b2"
+    },
+    "AP_404": {
+      "artifact_id": 8956380741,
+      "canonical_transaction_accepted": false,
+      "source_archive_sha256": "c258e77fcf79ca38642d65556293d128428e5d51a29d3c351b0eca51cf26ed87"
+    }
+  },
+  "publication_status": "source_candidate_unmerged",
+  "refusals": [
+    "modal_spoiler_coercion",
+    "hidden_effective_spoiler_scope",
+    "destructive_history_erase",
+    "model_inference_as_confirmed_knowledge",
+    "client_applied_knowledge_event",
+    "client_applied_policy_change",
+    "scene_exposure_as_comprehension",
+    "cross_viewer_history_leakage",
+    "package_or_viewer_substitution",
+    "local_clock_or_persistence",
+    "transport_provider_model_or_playback_authority"
+  ],
+  "requirements": [
+    "FR-010",
+    "FR-011",
+    "FR-012",
+    "FR-026",
+    "NFR-021"
+  ],
+  "status": "source_candidate",
+  "target_repository": "BigBirdReturns/axm-aperture",
+  "target_repository_present": false,
+  "title": "Implement spoiler and knowledge controls",
+  "transaction": "AP-406"
+}
