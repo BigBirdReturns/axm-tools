@@ -1,0 +1,49 @@
+name: TEMP export AP-403 carrier bytes
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/temp-ap403-carrier-export.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       github.head_ref == 'agent/aperture-ap403-second-screen-target-v1')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out exact branch head
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Inventory exact carrier bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          find aperture-carrier -type f -printf '%P\n' | LC_ALL=C sort > AP403_CARRIER_PATHS.txt
+          sha256sum aperture-carrier/source-archive/part-*.b64 > AP403_SHARD_SHA256SUMS
+          sha256sum aperture-carrier/AP-403.json aperture-carrier/PREDECESSOR_RECEIPT.json aperture-carrier/SOURCE_ARCHIVE.sha256 aperture-carrier/TARGET_SHA256SUMS > AP403_CARRIER_SHA256SUMS
+          git rev-parse HEAD > AP403_CARRIER_HEAD.txt
+      - name: Upload exact AP-403 carrier
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ap403-carrier-exact-bytes
+          path: |
+            aperture-carrier/
+            AP403_CARRIER_PATHS.txt
+            AP403_SHARD_SHA256SUMS
+            AP403_CARRIER_SHA256SUMS
+            AP403_CARRIER_HEAD.txt
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 1
