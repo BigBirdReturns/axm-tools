@@ -1,0 +1,7 @@
+# AP-405 in-story selection source candidate
+
+This source candidate presents externally admitted AP-211 selection receipts for `bridge`, `drop`, `stay`, and `barely_seen`. The complete candidate denominator, seven signed integer score terms, stable tie-break order, duration, canonical interval, and policy reasons remain inspectable. The client does not run the scheduler, insert candidates, suppress candidates, use engagement features, or let a model choose the authority result.
+
+The viewer may inspect, decline, or explicitly activate the selected candidate. Exact seek produces a request intent only when package, work, continuity, viewer, anchor, session, provider mapping, and exact seek capability remain current. Autoplay is always false. A delivery receipt proves transport only. Successful actuation requires a separately validated AP-212 observation. When exact seek is unavailable, the client emits a provider timestamp fallback when mapping is verified and a canonical timestamp fallback otherwise. Fallback is presentation-only.
+
+The candidate owns no scheduler, player, adapter, provider call, coordinate click, transport, credential, model score, engagement metric, local clock, timer, persistence store, story, Exposure Ledger, Knowledge Ledger, package, publication, or gate authority. It is transport and qualification evidence for the absent `BigBirdReturns/axm-aperture` repository and does not accept canonical AP-405 or G3.

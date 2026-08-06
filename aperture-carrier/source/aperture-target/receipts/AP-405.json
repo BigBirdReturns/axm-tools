@@ -1,0 +1,76 @@
+{
+  "accepted_gates": [],
+  "aperture_gate_accepted": false,
+  "authority": {
+    "actuation_observation": "external_ap212_observation_only",
+    "client": "read_only_projection_and_request_intent",
+    "provider_mapping": "external_verified_projection_only",
+    "scheduler": "external_ap211_selection_receipt_only",
+    "transport": "delivery_receipt_only"
+  },
+  "canonical_ap405_accepted": false,
+  "canonical_g3_accepted": false,
+  "canonical_native_client_accepted": false,
+  "carrier_authority": "transport_and_qualification_only",
+  "format": "axm-aperture-program-transaction/1",
+  "hosted_repository_accepted": false,
+  "issue_record_sha256": "d9aaa8fb5082c03bdd5622ad38d96c4485ac89e0630a300db6b3f415e9c5bd2a",
+  "outputs": [
+    "clients/shared/selections/",
+    "tests/ui/selection-transactions/",
+    "receipts/AP-405.json"
+  ],
+  "predecessors": {
+    "AP_211": {
+      "issue_receipt_sha256": "ea8fabb8918f126b0391ebc3fec7a5734860c1c1df71b09c5a39779cc09297f0",
+      "source_sha256": "16da16df2f017794e92f9081b930742f6bad820f47ede754aeb0691e6999a423"
+    },
+    "AP_212": {
+      "actuation_source_sha256": "4cb81f9f0c3ab15c2718a6bb698527175e043f663054f00f0bf4a417c9564352",
+      "issue_receipt_sha256": "a3f7de18b71fac5bf3838562fe3f1309bcebd81aa365dca1a0e5d6ba82c31290",
+      "mpv_source_sha256": "9a26a41393315eec3d41203e777b7596136e22496abb9247595891bb9170435c"
+    },
+    "AP_402": {
+      "artifact_id": 8950448870,
+      "canonical_transaction_accepted": false,
+      "source_archive_sha256": "603354d146c39aeb0d519440873a1cf47e91098f30b96ecd9cfadb7a11bd1602"
+    },
+    "AP_403": {
+      "artifact_id": 8954499976,
+      "canonical_transaction_accepted": false,
+      "source_archive_sha256": "a9dfa728c246b641881659781ca5688e82107925fd8bdd7faa961753b14a3ce9"
+    }
+  },
+  "publication_status": "source_candidate_unmerged",
+  "refusals": [
+    "cross_work_or_cross_continuity_selection",
+    "incomplete_candidate_denominator",
+    "hidden_candidate_or_score_term",
+    "model_or_engagement_scoring",
+    "equal_rank_substitution",
+    "autoplay",
+    "implicit_actuation",
+    "coordinate_click",
+    "stale_anchor_or_session_seek",
+    "delivery_receipt_as_actuation_observation",
+    "timestamp_fallback_as_player_control",
+    "late_delivery_request_revival",
+    "transport_provider_story_or_ledger_authority",
+    "local_clock_or_persistence"
+  ],
+  "requirements": [
+    "FR-016",
+    "FR-017",
+    "FR-018",
+    "FR-019",
+    "FR-020",
+    "FR-021",
+    "NFR-020",
+    "NFR-021"
+  ],
+  "status": "source_candidate",
+  "target_repository": "BigBirdReturns/axm-aperture",
+  "target_repository_present": false,
+  "title": "Implement bridge, drop, stay, and barely-seen transactions",
+  "transaction": "AP-405"
+}

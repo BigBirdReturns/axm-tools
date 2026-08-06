@@ -1,0 +1,54 @@
+{
+  "AP_211": {
+    "authority": "qualified_local_g2_scheduler",
+    "evidence_commit": "52ea910ccb0842a0beef5d42df65db4e3a24ee65",
+    "evidence_tree": "a61d8830e435048373769463061715d4f09464ae",
+    "issue_record_sha256": "1c35010e1101765618c0a1babd95d8a06863ec4d3eadbab1a2457ebd60e3630d",
+    "issue_receipt_sha256": "ea8fabb8918f126b0391ebc3fec7a5734860c1c1df71b09c5a39779cc09297f0",
+    "source_path": "src/axm_aperture/scheduler.py",
+    "source_sha256": "16da16df2f017794e92f9081b930742f6bad820f47ede754aeb0691e6999a423",
+    "test_path": "tests/runtime/test_story_query_scheduler.py",
+    "test_sha256": "2bfee1adeb8dc7891c65f45e6f0ffcc101f41aaff3c8606007e6e43e643c91e6"
+  },
+  "AP_212": {
+    "authority": "qualified_local_g2_actuation_observation",
+    "evidence_commit": "52ea910ccb0842a0beef5d42df65db4e3a24ee65",
+    "evidence_tree": "a61d8830e435048373769463061715d4f09464ae",
+    "issue_record_sha256": "2f5c18e07901f7e9569baa69564f27f7185733a171d7f5007e1acc2a370f6374",
+    "issue_receipt_sha256": "a3f7de18b71fac5bf3838562fe3f1309bcebd81aa365dca1a0e5d6ba82c31290",
+    "actuation_source_path": "src/axm_aperture/actuation.py",
+    "actuation_source_sha256": "4cb81f9f0c3ab15c2718a6bb698527175e043f663054f00f0bf4a417c9564352",
+    "mpv_source_path": "src/axm_aperture/adapters/mpv.py",
+    "mpv_source_sha256": "9a26a41393315eec3d41203e777b7596136e22496abb9247595891bb9170435c"
+  },
+  "AP_402": {
+    "artifact_id": 8950448870,
+    "artifact_outer_sha256": "5366bfb6492c4fd085b05e20be903b444121d7762dbee1df475e3928f76512c1",
+    "authority": "closed_unmerged_desktop_overlay_source_candidate",
+    "canonical_transaction_accepted": false,
+    "carrier_head": "a35f35f69f611e78d0eb0cd9aa6c28aba5d09d69",
+    "carrier_receipt_sha256": "81a1a8bf325564f257e37b02427ba13249fb1b1cb04c7db53e892a5d6a80567d",
+    "source_archive_sha256": "603354d146c39aeb0d519440873a1cf47e91098f30b96ecd9cfadb7a11bd1602",
+    "source_manifest_sha256": "3ccadb8c8c803c889217f5af5fd12d8c0a4fc814a01000434ccf58678cd7b44f",
+    "target_receipt_sha256": "e482aee07714153c6a40172d123e15c9876c7c83e908ed4911d2fcb4d2bad2d9"
+  },
+  "AP_403": {
+    "artifact_id": 8954499976,
+    "artifact_outer_sha256": "17b86782a9d0d3f7640c651c748f318936bbed700d5a19a0241d498bc14f412a",
+    "authority": "closed_unmerged_second_screen_source_candidate",
+    "canonical_transaction_accepted": false,
+    "carrier_head": "9acdc1c924afa742ecf8eae1f15dc2cb3cb1047f",
+    "carrier_receipt_sha256": "8242184f46120ecdc1b8e00b343c4509e459a9868472d93c02a49ac57657d868",
+    "source_archive_sha256": "a9dfa728c246b641881659781ca5688e82107925fd8bdd7faa961753b14a3ce9",
+    "source_manifest_sha256": "df2b2e495c156a91ff5ccceb29e4441676ea9c8c8846e807ca7a7f4e10ba74e3",
+    "target_receipt_sha256": "2b355fa2d5e5585b5345b1778c694157efb67aea089a4d4612b0dce356f5b107"
+  },
+  "ap405_issue_record_sha256": "d9aaa8fb5082c03bdd5622ad38d96c4485ac89e0630a300db6b3f415e9c5bd2a",
+  "format": "axm-aperture-ap405-predecessor-receipt/1",
+  "g2_gate_receipt_id": "g2gatereceipt1_1944b149f53678bef9b9c3b11eebe376c0f9b35b988ab109397963ef3a84ee14",
+  "g2_issue_ledger_sha256": "a05819ae3f2b9644cd44e56cfe0013bca7caa344250237a3529964d2fd31fcbd",
+  "hosted_repository_accepted": false,
+  "target_repository": "BigBirdReturns/axm-aperture",
+  "target_repository_present": false,
+  "transaction": "AP-405"
+}

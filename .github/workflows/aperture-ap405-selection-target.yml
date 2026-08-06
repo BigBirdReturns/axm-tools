@@ -1,0 +1,87 @@
+name: TEMP AXM Aperture AP-405 selection target
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".gitattributes"
+      - ".github/scripts/aperture-ap405-qualify.sh"
+      - ".github/scripts/aperture-ap405-package.sh"
+      - ".github/workflows/aperture-ap405-selection-target.yml"
+      - "aperture-carrier/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aperture-ap405-selection-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  TARGET_REPOSITORY: BigBirdReturns/axm-aperture
+  SOURCE_ARCHIVE_SHA256: c3c1040eae003d989d51764c3fcc7ccff9739757e6316c013b80b8f4bdc29e00
+  TARGET_LEDGER_SHA256: 920c426695323733ce37348776772cdaac32b4452a261d42e8daea49f119d5a8
+  TARGET_MANIFEST_SHA256: 3b68d66a173fa9e1a3468d4ab413190b0876dcaebc9757516fd622bd620cfce2
+  TARGET_RECEIPT_SHA256: b455435bd15da01581fcde04a52fc5e24cfb0d2b2270b657e5d79658baffb8e7
+  PREDECESSOR_RECEIPT_SHA256: 4a25b4becb360a7480d50ff82e17c205bc66db8731ca0b3b811cbd232272cbda
+
+jobs:
+  qualify:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-ap405-selection-target-v1'
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact temporary candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+          check-latest: false
+      - name: Qualify in-story selection target
+        shell: bash
+        run: bash .github/scripts/aperture-ap405-qualify.sh
+
+  package:
+    needs: qualify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    steps:
+      - name: Check out exact qualified candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+          check-latest: false
+      - name: Rebuild and cold-verify checksum-bound selection package
+        shell: bash
+        run: bash .github/scripts/aperture-ap405-package.sh
+      - name: Upload checksum-bound AP-405 target
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axm-aperture-ap405-selection-transactions-target-v1
+          path: ${{ runner.temp }}/aperture-ap405-package/out/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
