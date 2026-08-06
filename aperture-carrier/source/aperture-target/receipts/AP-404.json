@@ -1,0 +1,74 @@
+{
+  "accepted_gates": [],
+  "aperture_gate_accepted": false,
+  "authority": {
+    "answer_plan": "external_ap210_observation_only",
+    "knowledge_effect": "external_projection_unapplied",
+    "model_realization": "external_ap215_validated_observation_only",
+    "query_execution": "none",
+    "structured_rendering": "plan_bound_projection_only",
+    "transport": "none"
+  },
+  "canonical_ap404_accepted": false,
+  "canonical_g3_accepted": false,
+  "carrier_authority": "transport_and_qualification_only",
+  "format": "axm-aperture-program-transaction/1",
+  "hosted_repository_accepted": false,
+  "issue_record_sha256": "a0fad2dc3f723e4001c814867bd1a3e3216a4b24001b74ccfdd41c559e87943a",
+  "outputs": [
+    "clients/shared/queries/",
+    "tests/ui/query-transactions/",
+    "receipts/AP-404.json"
+  ],
+  "predecessors": {
+    "AP_210": {
+      "issue_receipt_sha256": "3188324f334e2f79b77455e22dddd2db06730592b6d2ef3e79e4e74d0efc1c64",
+      "source_sha256": "d59fad158ee4309dcca2876cacec4da4d38ebea6d9fe9479f946993b7664839c"
+    },
+    "AP_215": {
+      "issue_receipt_sha256": "720ae9703b4afac04a2bbcea3a74460ee37c167aca93f874d236664593e1bfb6",
+      "source_sha256": "048799573de77d9d58f33bc2b1b52a221005b5445b538e33c3fd908bc77fe756"
+    },
+    "AP_402": {
+      "artifact_id": 8950448870,
+      "canonical_transaction_accepted": false,
+      "source_archive_sha256": "603354d146c39aeb0d519440873a1cf47e91098f30b96ecd9cfadb7a11bd1602"
+    },
+    "AP_403": {
+      "artifact_id": 8954499976,
+      "canonical_transaction_accepted": false,
+      "source_archive_sha256": "a9dfa728c246b641881659781ca5688e82107925fd8bdd7faa961753b14a3ce9"
+    }
+  },
+  "publication_status": "source_candidate_unmerged",
+  "refusals": [
+    "generic_chatbot_answer_after_planner_refusal",
+    "free_form_plan_widening",
+    "hidden_spoiler_expansion",
+    "withheld_fact_identity_disclosure",
+    "model_selected_fact",
+    "model_added_fact",
+    "model_changed_fact_order",
+    "client_applied_knowledge_event",
+    "query_request_as_answer_observation",
+    "delivery_receipt_as_answer_observation",
+    "stale_context_reuse",
+    "package_viewer_or_anchor_substitution",
+    "transport_or_provider_authority",
+    "local_clock_or_persistence"
+  ],
+  "requirements": [
+    "FR-013",
+    "FR-014",
+    "FR-015",
+    "FR-022",
+    "FR-023",
+    "NFR-019",
+    "NFR-021"
+  ],
+  "status": "source_candidate",
+  "target_repository": "BigBirdReturns/axm-aperture",
+  "target_repository_present": false,
+  "title": "Implement core context and question transactions",
+  "transaction": "AP-404"
+}

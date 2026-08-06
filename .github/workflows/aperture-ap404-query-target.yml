@@ -1,0 +1,87 @@
+name: TEMP AXM Aperture AP-404 query transactions target
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".gitattributes"
+      - ".github/scripts/aperture-ap404-qualify.sh"
+      - ".github/scripts/aperture-ap404-package.sh"
+      - ".github/workflows/aperture-ap404-query-target.yml"
+      - "aperture-carrier/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aperture-ap404-query-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  TARGET_REPOSITORY: BigBirdReturns/axm-aperture
+  SOURCE_ARCHIVE_SHA256: c258e77fcf79ca38642d65556293d128428e5d51a29d3c351b0eca51cf26ed87
+  TARGET_LEDGER_SHA256: 807ffc678cda0ed1509f000be7b81b1abddc9a97136df1b8f6dc1de0f9bae898
+  TARGET_MANIFEST_SHA256: 3182c337abb05fd3e15403d28163d48a1c27f8a9cb01e14f21fe023a091dccbe
+  TARGET_RECEIPT_SHA256: b0b570c4dbfaf49f5d448dac3d62e4d025d0fa3cbcf41e3558ab5c2fd9a8d0ca
+  PREDECESSOR_RECEIPT_SHA256: 76e3291b80c3f24de56c5bc52e702eac8008aaf95a974380815070ed461e5d70
+
+jobs:
+  qualify:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aperture-ap404-query-target-v1'
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact temporary candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+          check-latest: false
+      - name: Qualify core context and question transactions
+        shell: bash
+        run: bash .github/scripts/aperture-ap404-qualify.sh
+
+  package:
+    needs: qualify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      CANDIDATE_SHA: ${{ github.event.pull_request.head.sha }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    steps:
+      - name: Check out exact qualified candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          show-progress: false
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+          check-latest: false
+      - name: Rebuild and cold-verify checksum-bound query package
+        shell: bash
+        run: bash .github/scripts/aperture-ap404-package.sh
+      - name: Upload checksum-bound AP-404 target
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axm-aperture-ap404-query-transactions-target-v1
+          path: ${{ runner.temp }}/aperture-ap404-package/out/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
