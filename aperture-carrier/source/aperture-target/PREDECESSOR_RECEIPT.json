@@ -1,0 +1,59 @@
+{
+  "ap213": {
+    "api_policy_sha256": "bc52ce6faa3383340ee6e5ba19147ac6417225e351530a5336c4d6b4fe8130c0",
+    "canonical_transaction_accepted_here": false,
+    "g2_issue_receipt_id": "e932562396135c184693238e5793ba49c2f8b7deeebc077e8acb2ea3b987148f",
+    "program_record_sha256": "232b7243661bb3590bcb61a0eed8793a22d96723164cbcef0f5b6691e92ea92c",
+    "publication_status": "local_candidate_unpushed",
+    "standing": "qualified_local_g2_external_input"
+  },
+  "ap214": {
+    "canonical_transaction_accepted_here": false,
+    "g2_issue_receipt_id": "113c974c5988bedfac74a3815801bd49acd4b200ef8196a3b3d3bd1f9f23346f",
+    "profiles_source_sha256": "ca37d5fa59448b8ae0acc475bc3c3602de81c682b0339ad1e8b93d487b482ad9",
+    "program_record_sha256": "728d855c4fb6de63f0a17eabc6c06eeb7ce0f3404ebb9ba3a77a1c9a0b8c621a",
+    "publication_status": "local_candidate_unpushed",
+    "standing": "qualified_local_g2_external_input"
+  },
+  "ap219": {
+    "canonical_transaction_accepted": false,
+    "pairing_projection_authority": "external_only",
+    "program_record_sha256": "3d8fcba2d1c0aa381628fd3b7e01ab9db53d0b21bca064a2790c44d6769cb398",
+    "status": "planned_unexecuted",
+    "target_gate": "G4"
+  },
+  "ap401": {
+    "artifact_id": 8946278614,
+    "artifact_outer_sha256": "96a1dda34a5c309913f576d249f0a2ebc6550e85af7908e2e3205d44b8b6d93a",
+    "canonical_transaction_accepted_here": false,
+    "carrier_head": "ae82c3ee6dbb0a1045b622c495b15d548b106be2",
+    "carrier_receipt_sha256": "d2465451080f8d9a91b28653bd7cd1bf8a91f77ff3fdf95f15c9f987a2e01d36",
+    "program_record_sha256": "de24f85cefc3aad7b3acf3426cc07f9269569c82b9e18148e2202d63d2cf8a38",
+    "source_archive_sha256": "e0731e753c45a93f6d12fbca223a75c7e34dbde1822fb4b1e4638afb8247d67e",
+    "source_manifest_sha256": "91bf3ce0a359076504db7c14b306e3e11ac3f29c6ef60cbb493b78e7f6510cc5",
+    "target_receipt_sha256": "5c110578746a881837711f7545c772a9f4befb8f426d3ca50055065fdb89a6de"
+  },
+  "carrier_authority": "transport_and_qualification_only",
+  "format": "axm-aperture-ap403-predecessor-receipt/2",
+  "g2_local_authority": {
+    "accepted_gates": [
+      "G0",
+      "G1",
+      "G2"
+    ],
+    "gate_receipt_id": "g2gatereceipt1_1944b149f53678bef9b9c3b11eebe376c0f9b35b988ab109397963ef3a84ee14",
+    "hosted_repository_accepted": false,
+    "issue_ledger_sha256": "a05819ae3f2b9644cd44e56cfe0013bca7caa344250237a3529964d2fd31fcbd",
+    "publication_status": "local_candidate_unpushed",
+    "source_archive_sha256": "e0889da9ac9aa7e0325b59b206383c8d67a82eb1fe286706119f8997321fba85"
+  },
+  "superseded_carrier": {
+    "head": "557f692fbd56da2a0951a112c7308b2f28af6d02",
+    "pull_request": 58,
+    "standing": "damaged_transport_never_merge"
+  },
+  "target_issue_record_sha256": "0f7cc5bc645fc6931f202fc5e30c466d97dd54d0233d2cc4fb4f82c4679d0abb",
+  "target_repository": "BigBirdReturns/axm-aperture",
+  "target_repository_present": false,
+  "transaction": "AP-403"
+}
