@@ -1,0 +1,253 @@
+name: TEMP AP-410 Kit v2 branch-push qualification
+
+on:
+  push:
+    branches:
+      - agent/aperture-g3-observation-kit-v2-push-v2
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+concurrency:
+  group: aperture-g3-observation-kit-v2-push-v2
+  cancel-in-progress: false
+
+env:
+  SOURCE_SHA256: 71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74
+  SOURCE_BYTES: "90028"
+  KIT_ID: g3observationkit2_6a0784236b71e0c78d22a6087aa837764eadddee17cc58e9522e909358eda9a1
+  QUALIFICATION_ID: g3observationqualification2_14f759a2212a9119e6d9f0ae81e0e7f9a5937ceddcbe1e2b00864e51380bd4ec
+  BLOCKED_PROGRESS_ID: uiprogress2_6073d7e2855ec35fece231f86e0cc0aa94ed9499d1b7a44d7fdbd5d1f2837cf2
+
+jobs:
+  source:
+    name: ${{ matrix.label }} source and refusal law
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            label: Ubuntu 24.04
+          - os: windows-2025
+            label: Windows 2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - name: Check out exact carrier head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up Node 22.16.0
+        uses: actions/setup-node@1e60f620b9541dca151540d0c4e4342dc1a0c293
+        with:
+          node-version: 22.16.0
+
+      - name: Recover and qualify the exact source
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          chmod +x .github/scripts/aperture-g3-observation-kit-v2-*.sh
+          archive="$RUNNER_TEMP/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz"
+          root="$RUNNER_TEMP/aperture-kit-v2-${{ matrix.os }}"
+          .github/scripts/aperture-g3-observation-kit-v2-fetch.sh "$archive"
+          test "$(wc -c < "$archive" | tr -d ' ')" = "$SOURCE_BYTES"
+          test "$(sha256sum "$archive" | cut -d' ' -f1)" = "$SOURCE_SHA256"
+          .github/scripts/aperture-g3-observation-kit-v2-qualify.sh "$archive" "$root"
+
+      - name: Upload operating-system receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: aperture-kit-v2-${{ matrix.os }}
+          path: ${{ runner.temp }}/aperture-kit-v2-${{ matrix.os }}/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+
+  custody:
+    name: Two-root custody and downloaded replay
+    needs: source
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact carrier head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up Node 22.16.0
+        uses: actions/setup-node@1e60f620b9541dca151540d0c4e4342dc1a0c293
+        with:
+          node-version: 22.16.0
+
+      - name: Qualify two clean roots
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          chmod +x .github/scripts/aperture-g3-observation-kit-v2-*.sh
+          archive="$RUNNER_TEMP/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz"
+          .github/scripts/aperture-g3-observation-kit-v2-fetch.sh "$archive"
+          .github/scripts/aperture-g3-observation-kit-v2-qualify.sh "$archive" "$RUNNER_TEMP/cold-a"
+          .github/scripts/aperture-g3-observation-kit-v2-qualify.sh "$archive" "$RUNNER_TEMP/cold-b"
+          cmp "$RUNNER_TEMP/cold-a/blocked-progress.json" "$RUNNER_TEMP/cold-b/blocked-progress.json"
+          cmp "$RUNNER_TEMP/cold-a/qualification.env" "$RUNNER_TEMP/cold-b/qualification.env"
+
+      - name: Seal carrier artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/carrier-artifact"
+          mkdir -p "$out/cold-a" "$out/cold-b"
+          cp "$RUNNER_TEMP/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz" "$out/"
+          for root in cold-a cold-b; do
+            cp "$RUNNER_TEMP/$root/blocked-progress.json" "$out/$root/"
+            cp "$RUNNER_TEMP/$root/qualification.env" "$out/$root/"
+            cp -r "$RUNNER_TEMP/$root/logs" "$out/$root/"
+          done
+          python - "$out" <<'PY'
+          import hashlib, json, os, pathlib, sys
+          out = pathlib.Path(sys.argv[1])
+          archive = out / 'AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz'
+          def digest(path):
+              h = hashlib.sha256()
+              with path.open('rb') as handle:
+                  for block in iter(lambda: handle.read(1024 * 1024), b''):
+                      h.update(block)
+              return h.hexdigest()
+          receipt = {
+              'format': 'axm-aperture-g3-observation-kit-v2-carrier-receipt/3',
+              'repository': os.environ['GITHUB_REPOSITORY'],
+              'candidate_sha': os.environ['GITHUB_SHA'],
+              'workflow_run': os.environ['GITHUB_RUN_ID'],
+              'source_archive': {
+                  'name': archive.name,
+                  'bytes': archive.stat().st_size,
+                  'sha256': digest(archive),
+              },
+              'kit_id': os.environ['KIT_ID'],
+              'qualification_id': os.environ['QUALIFICATION_ID'],
+              'blocked_progress_id': os.environ['BLOCKED_PROGRESS_ID'],
+              'node_version': '22.16.0',
+              'source_contracts_per_execution': 49,
+              'hosted_operating_systems': ['ubuntu-24.04', 'windows-2025'],
+              'cold_roots': 2,
+              'downloaded_replays': 1,
+              'accepted_gates': [],
+              'canonical_ap410_accepted': False,
+              'canonical_g3_accepted': False,
+              'runtime_binding_present': False,
+              'observed_platform_interactions': 0,
+              'observed_platform_visuals': 0,
+              'manual_reader_groups_passed': 0,
+              'carrier_authority': 'transport_and_qualification_only',
+              'publication_status': 'source_candidate_unmerged',
+              'status': 'PASS',
+          }
+          core = json.dumps(receipt, sort_keys=True, separators=(',', ':')).encode()
+          receipt['receipt_sha256'] = hashlib.sha256(core).hexdigest()
+          (out / 'CARRIER_RECEIPT.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
+          PY
+          (cd "$out" && find . -type f ! -name SHA256SUMS -print0 | LC_ALL=C sort -z | xargs -0 sha256sum > SHA256SUMS && sha256sum -c SHA256SUMS)
+
+      - name: Upload carrier artifact
+        id: upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axm-aperture-g3-observation-kit-v2
+          path: ${{ runner.temp }}/carrier-artifact/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+
+      - name: Download artifact through Actions custody
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: axm-aperture-g3-observation-kit-v2
+          path: ${{ runner.temp }}/downloaded
+
+      - name: Replay downloaded artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          downloaded="$RUNNER_TEMP/downloaded"
+          (cd "$downloaded" && sha256sum -c SHA256SUMS)
+          .github/scripts/aperture-g3-observation-kit-v2-qualify.sh \
+            "$downloaded/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz" \
+            "$RUNNER_TEMP/downloaded-replay"
+          cmp "$downloaded/cold-a/blocked-progress.json" "$RUNNER_TEMP/downloaded-replay/blocked-progress.json"
+
+      - name: Post terminal witness to issue 71
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact-id }}
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+          ARTIFACT_DIGEST: ${{ steps.upload.outputs.artifact-digest }}
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/downloaded/CARRIER_RECEIPT.json" <<'PY'
+          import json, os, pathlib, urllib.request
+          receipt = json.loads(pathlib.Path(__import__('sys').argv[1]).read_text())
+          token = os.environ['GH_TOKEN']
+          repo = os.environ['GITHUB_REPOSITORY']
+          run_id = os.environ['GITHUB_RUN_ID']
+          def api(method, path, payload=None):
+              data = None if payload is None else json.dumps(payload).encode()
+              req = urllib.request.Request(
+                  f'https://api.github.com/repos/{repo}{path}',
+                  data=data,
+                  method=method,
+                  headers={
+                      'Authorization': f'Bearer {token}',
+                      'Accept': 'application/vnd.github+json',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'AXM-Aperture-Kit-V2-Push/1',
+                      'Content-Type': 'application/json',
+                  },
+              )
+              with urllib.request.urlopen(req, timeout=60) as response:
+                  raw = response.read()
+              return None if not raw else json.loads(raw)
+          jobs = api('GET', f'/actions/runs/{run_id}/jobs?per_page=100')['jobs']
+          lines = [
+              '## KIT_V2_PUSH_TERMINAL_RECEIPT', '',
+              'The branch-push carrier completed the exact hosted and custody denominator without relying on pull-request workflow approval.', '',
+              '```text',
+              f"candidate head        {receipt['candidate_sha']}",
+              f"workflow run          {run_id}",
+              f"artifact ID           {os.environ['ARTIFACT_ID']}",
+              f"artifact digest       {os.environ['ARTIFACT_DIGEST']}",
+              f"source SHA-256        {receipt['source_archive']['sha256']}",
+              f"source bytes          {receipt['source_archive']['bytes']}",
+              f"carrier receipt       {receipt['receipt_sha256']}",
+              f"kit                   {receipt['kit_id']}",
+              f"qualification         {receipt['qualification_id']}",
+              f"blocked progress      {receipt['blocked_progress_id']}",
+              'contracts per run     49',
+              'hosted systems        Ubuntu 24.04, Windows 2025',
+              'cold roots            2 plus downloaded replay',
+              'runtime binding       absent',
+              'physical evidence     0 interactions, 0 visuals, 0 reader groups',
+              'accepted gates        []',
+              'canonical AP-410      false',
+              'canonical G3          false',
+              'merge standing        NEVER MERGE',
+              '```', '', 'Completed jobs:'
+          ]
+          for job in jobs:
+              lines.append(f"- `{job['name']}`: job `{job['id']}`, conclusion `{job.get('conclusion')}`, attempt `{job.get('run_attempt')}`")
+          lines += ['', f"Artifact: {os.environ['ARTIFACT_URL']}", '',
+                    'Evidence tier: exact Git-blob custody, unchanged source archive, hosted Linux and Windows execution, two cold roots, checksums, and downloaded replay. This is source portability only. Runtime binding, physical passage, canonical AP-410, G3, publication, and merge authority remain absent.']
+          api('POST', '/issues/71/comments', {'body': '\n'.join(lines)})
+          PY
