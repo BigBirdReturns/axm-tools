@@ -1,0 +1,125 @@
+name: TEMP apply AP-410 observation-kit v2 archive
+
+on:
+  push:
+    branches:
+      - agent/aperture-g3-observation-kit-v2-ferry
+    paths:
+      - ".github/workflows/temp-aperture-g3-observation-kit-v2-apply.yml"
+      - "aperture-carrier/CANDIDATE_BLOBS.txt"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aperture-g3-observation-kit-v2-apply
+  cancel-in-progress: false
+
+env:
+  RETAINED_BASE: bf5e88867d62aa41071b659e227430b5dd4c4cad
+  EXPECTED_SHA256: 71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74
+  EXPECTED_BYTES: "90028"
+  FINAL_BRANCH: agent/aperture-g3-observation-kit-v2-ferry
+
+jobs:
+  apply:
+    if: github.repository == 'BigBirdReturns/axm-tools'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out carrier history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.FINAL_BRANCH }}
+          fetch-depth: 0
+          show-progress: false
+
+      - name: Recover exact Git blob, squash carrier, and self-remove
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/aperture-kit-v2-apply"
+          rm -rf "$work"
+          mkdir -p "$work/candidates" aperture-carrier
+
+          python - "$work/candidates" <<'PY'
+          import base64
+          import json
+          import os
+          import pathlib
+          import urllib.request
+
+          out = pathlib.Path(__import__('sys').argv[1])
+          repo = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_TOKEN']
+          shas = [
+              line.strip()
+              for line in pathlib.Path('aperture-carrier/CANDIDATE_BLOBS.txt').read_text().splitlines()
+              if line.strip()
+          ]
+          if len(shas) != 5 or len(set(shas)) != 5:
+              raise SystemExit('candidate blob ledger must contain five unique SHAs')
+          for index, sha in enumerate(shas):
+              request = urllib.request.Request(
+                  f'https://api.github.com/repos/{repo}/git/blobs/{sha}',
+                  headers={
+                      'Authorization': f'Bearer {token}',
+                      'Accept': 'application/vnd.github+json',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'AXM-Aperture-Kit-V2-Applicator/1',
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  data = json.load(response)
+              if data.get('sha') != sha or data.get('encoding') != 'base64':
+                  raise SystemExit(f'unexpected Git blob response for {sha}')
+              raw = base64.b64decode(data['content'], validate=False)
+              (out / f'candidate-{index:02d}-{sha}.bin').write_bytes(raw)
+          PY
+
+          matches=()
+          while IFS= read -r -d '' candidate; do
+            digest="$(sha256sum "$candidate" | cut -d' ' -f1)"
+            bytes="$(wc -c < "$candidate" | tr -d '[:space:]')"
+            printf '%s %s %s\n' "$digest" "$bytes" "$candidate"
+            if [[ "$digest" == "$EXPECTED_SHA256" && "$bytes" == "$EXPECTED_BYTES" ]]; then
+              matches+=("$candidate")
+            fi
+          done < <(find "$work/candidates" -type f -print0 | LC_ALL=C sort -z)
+
+          [[ ${#matches[@]} -eq 1 ]]
+          cp "${matches[0]}" aperture-carrier/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz
+          sha256sum -c aperture-carrier/SOURCE_SHA256
+          [[ "$(wc -c < aperture-carrier/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz | tr -d '[:space:]')" == "$EXPECTED_BYTES" ]]
+          tar -tzf aperture-carrier/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz >/dev/null
+
+          rm -f aperture-carrier/CANDIDATE_BLOBS.txt
+          rm -f .github/workflows/temp-aperture-g3-observation-kit-v2-apply.yml
+          rm -f TEMP_PROBE*.txt
+
+          git config user.name 'AXM Aperture kit-v2 applicator'
+          git config user.email 'aperture-kit-v2@users.noreply.github.com'
+          git reset --mixed "$RETAINED_BASE"
+          git add \
+            .github/scripts/aperture-g3-observation-kit-v2-qualify.sh \
+            .github/workflows/aperture-g3-observation-kit-v2.yml \
+            aperture-carrier/README.md \
+            aperture-carrier/SOURCE_SHA256 \
+            aperture-carrier/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz
+          git diff --cached --check
+
+          cat > "$work/expected-paths.txt" <<'PATHS'
+          .github/scripts/aperture-g3-observation-kit-v2-qualify.sh
+          .github/workflows/aperture-g3-observation-kit-v2.yml
+          aperture-carrier/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz
+          aperture-carrier/README.md
+          aperture-carrier/SOURCE_SHA256
+          PATHS
+          git diff --cached --name-only | LC_ALL=C sort > "$work/observed-paths.txt"
+          LC_ALL=C sort "$work/expected-paths.txt" -o "$work/expected-paths.txt"
+          cmp "$work/expected-paths.txt" "$work/observed-paths.txt"
+
+          git commit -m 'TEMP qualify AP-410 runtime-binding observation kit v2'
+          git push --force origin HEAD:"$FINAL_BRANCH"
