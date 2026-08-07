@@ -1,0 +1,344 @@
+name: TEMP AP-410 runtime-bound hosted qualification
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/aperture-runtime-bound-hosted-v1.yml"
+      - ".aperture-runtime-bound/**"
+      - "aperture-runtime-bound/HOSTED_QUALIFICATION.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aperture-runtime-bound-hosted-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  ARCHIVE_PATH: .aperture-runtime-bound/AXM-Aperture-G3-Platform-Observation-Kit-v2-Bound-Runtime-v1.tar.gz
+  EXPECTED_ARCHIVE_SHA256: 1ae273879f788637ff760d47ad699e45957388a5a43c48636d08e0b2163a3974
+  EXPECTED_ARCHIVE_BYTES: "296112"
+  EXPECTED_BASE64_SHA256: bef05c483607a91321168abb88ae6a8108ed8c974a5ec015ee0916986721cabd
+  EXPECTED_BINDING_ID: runtimebinding1_b96a789bb78015291728ed6c7e87555f86855eb4c844f452f2d3666524747bb2
+  EXPECTED_QUALIFICATION_ID: runtimeboundqualification1_b26c8b646637449105a454edf9a6a13de43450484020e821216fce53cf01f9a9
+  EXPECTED_RELEASE_ID: runtimeboundrelease1_76f9b2df7068b04bb447d214c314a4a9e8e58b24f82b718be11cac291f7b57e4
+  EXPECTED_PACKAGE_DIGEST: 072e3fac96a38c3fd494788d6a1f0ee109d81b6f284c7611e07c2a82545b1155
+  EXPECTED_RUNTIME_COMMIT: 5d76e64125e2c0c74ef8a563a9ceddc58eb3627e
+  EXPECTED_KEYBOARD_WORK_ORDER_SHA256: 8ae8f718fc6926d471df0b6cbf9657d94e58cac625525b30a44fb71184b31700
+  EXPECTED_CONTROLLER_WORK_ORDER_SHA256: fa122f9ec7b44403372f7eca85de21f337f140add381dd521e0ed1c47e3ccd02
+
+jobs:
+  qualify:
+    name: Qualify ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact carrier
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up exact Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.16.0
+
+      - name: Reconstruct exact archive from checksum-bound carrier shards
+        shell: python
+        run: |
+          import base64, hashlib, os, pathlib
+          carrier = pathlib.Path('.aperture-runtime-bound')
+          expected = {
+              'payload.b64.part00': '0d77ca876b301e7731d2beb4217f5cf1f12ea44037e81d6a6dcb1faccd3fd4a0',
+              'payload.b64.part01': '82b61e5fc10901a75eec29c5e7538ab019e3a936d157d1e328f07ada80defd7c',
+              'payload.b64.part02': '6afa415d93f9df78e44c2c2ee81b389564a26bd3925fb82ec12c7d6bdf85bd71',
+              'payload.b64.part03': '89ea86f9035a605d2b306c5fcd8c1845091e627e3588b16c58e422fb94db23b6',
+              'payload.b64.part04': '1ec3cf0e9a19c325677880374a44a5744355a903cc7d3275a1dd392291fcc9b6',
+              'payload.b64.part05': 'a2b747c9fcf6091b656dd59c91a9530821c8046694fc00e98ad130ef5980791a',
+              'payload.b64.part06': '014ce10858c3fdec17f6dd18743a124d9e3ade22766ad93b3efda8127f28ddab',
+              'payload.b64.part07': '14282d06d6b0b4ca8d9ec0b92f94e49dcb37614d6b2e1eb24c14feb92051b6c3',
+              'payload.b64.part08': '41424751753940b3cb096daf2ccd7162d8037b6148fdc3b0caf23fa72c4f4f53',
+          }
+          observed_names = sorted(path.name for path in carrier.glob('payload.b64.part*'))
+          if observed_names != sorted(expected):
+              raise SystemExit(f'carrier shard set mismatch: {observed_names}')
+          chunks = []
+          for name in sorted(expected):
+              data = (carrier / name).read_bytes()
+              observed = hashlib.sha256(data).hexdigest()
+              if observed != expected[name]:
+                  raise SystemExit(f'carrier shard mismatch {name}: {observed}')
+              chunks.append(data)
+          encoded = b''.join(chunks)
+          if hashlib.sha256(encoded).hexdigest() != os.environ['EXPECTED_BASE64_SHA256']:
+              raise SystemExit('carrier base64 digest mismatch')
+          raw = base64.b64decode(encoded, validate=True)
+          target = pathlib.Path(os.environ['ARCHIVE_PATH'])
+          target.parent.mkdir(parents=True, exist_ok=True)
+          target.write_bytes(raw)
+
+      - name: Verify archive identity and extract exact bytes
+        shell: python
+        run: |
+          import hashlib, os, pathlib, tarfile
+          archive = pathlib.Path(os.environ["ARCHIVE_PATH"])
+          data = archive.read_bytes()
+          observed = hashlib.sha256(data).hexdigest()
+          if observed != os.environ["EXPECTED_ARCHIVE_SHA256"]:
+              raise SystemExit(f"archive digest mismatch: {observed}")
+          if len(data) != int(os.environ["EXPECTED_ARCHIVE_BYTES"]):
+              raise SystemExit(f"archive size mismatch: {len(data)}")
+          target = pathlib.Path(os.environ["RUNNER_TEMP"]) / "aperture-runtime-bound"
+          target.mkdir(parents=True, exist_ok=True)
+          with tarfile.open(archive, "r:gz") as tf:
+              tf.extractall(target)
+          print(target)
+
+      - name: Execute exact bound denominator twice
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/aperture-runtime-bound"
+          cd "$root"
+          node scripts/verify-bound-release.mjs > "$RUNNER_TEMP/verification-1.json"
+          node scripts/verify-bound-release.mjs > "$RUNNER_TEMP/verification-2.json"
+          cmp "$RUNNER_TEMP/verification-1.json" "$RUNNER_TEMP/verification-2.json"
+
+      - name: Verify receipts, work orders, and zero evidence standing
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ["RUNNER_TEMP"]) / "aperture-runtime-bound"
+          verification = json.loads((pathlib.Path(os.environ["RUNNER_TEMP"]) / "verification-1.json").read_text())
+          binding = json.loads((root / "qualification/RUNTIME_BINDING.json").read_text())
+          qualification = json.loads((root / "qualification/BOUND_QUALIFICATION.json").read_text())
+          release = json.loads((root / "qualification/BOUND_RELEASE.json").read_text())
+          progress = json.loads((root / "qualification/BOUND_PROGRESS.json").read_text())
+          expected = os.environ
+          assert verification["bindingId"] == expected["EXPECTED_BINDING_ID"]
+          assert verification["packageDigest"] == expected["EXPECTED_PACKAGE_DIGEST"]
+          assert verification["runtimeClientCommit"] == expected["EXPECTED_RUNTIME_COMMIT"]
+          assert verification["surfaces"] == 9 and verification["matrixCells"] == 108
+          assert verification["sourceContractsPassed"] == 49
+          assert verification["runtimeContractsPassed"] == 7
+          assert qualification["qualificationId"] == expected["EXPECTED_QUALIFICATION_ID"]
+          def canonical(value):
+              if value is None or isinstance(value, (str, int, float, bool)):
+                  return json.dumps(value, separators=(",", ":"))
+              if isinstance(value, list):
+                  return "[" + ",".join(canonical(item) for item in value) + "]"
+              return "{" + ",".join(json.dumps(key) + ":" + canonical(value[key]) for key in sorted(value)) + "}"
+          qualification_core = {key: value for key, value in qualification.items() if key != "qualificationId"}
+          qualification_identity = "runtimeboundqualification1_" + hashlib.sha256(canonical(qualification_core).encode()).hexdigest()
+          assert qualification_identity == expected["EXPECTED_QUALIFICATION_ID"]
+          assert qualification["repeatedIdentically"] is True
+          assert qualification["executions"] == 2
+          for key in ("bindingId", "packageDigest", "runtimeClientCommit", "surfaces", "matrixCells", "sourceContractsPassed", "runtimeContractsPassed", "observedInteractions", "observedVisuals", "observedReaderGroups", "canonicalAp410Accepted", "canonicalG3Accepted", "hostedRepositoryAccepted", "authority"):
+              assert qualification["verification"][key] == verification[key]
+          assert qualification["verification"]["sourceManifestFiles"] == verification["sourceManifestFiles"]
+          assert qualification["verification"]["runtimeManifestFiles"] == verification["runtimeManifestFiles"]
+          assert qualification["verification"]["packageManifestFiles"] == 71
+          assert verification["packageManifestFiles"] == 73
+          assert release["releaseId"] == expected["EXPECTED_RELEASE_ID"]
+          assert binding["bindingId"] == expected["EXPECTED_BINDING_ID"]
+          assert binding["packageDigest"] == expected["EXPECTED_PACKAGE_DIGEST"]
+          assert len(binding["surfaces"]) == 9
+          for surface in binding["surfaces"]:
+              assert surface["runtimeClientCommit"] == expected["EXPECTED_RUNTIME_COMMIT"]
+              assert surface["authority"] == "runtime_surface_binding_only"
+          def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
+          assert sha(root / "work-orders/desktop_keyboard.json") == expected["EXPECTED_KEYBOARD_WORK_ORDER_SHA256"]
+          assert sha(root / "work-orders/desktop_controller.json") == expected["EXPECTED_CONTROLLER_WORK_ORDER_SHA256"]
+          for work in ("desktop_keyboard", "desktop_controller"):
+              row = json.loads((root / f"work-orders/{work}.json").read_text())
+              assert row["bindingId"] == expected["EXPECTED_BINDING_ID"]
+              assert row["packageDigest"] == expected["EXPECTED_PACKAGE_DIGEST"]
+              assert row["cellCount"] == 9
+              assert all(cell["authority"] == "runtime_observation_plan_only" for cell in row["cells"])
+          for row in (verification, qualification, release, progress):
+              assert row.get("canonicalAp410Accepted") is False
+              assert row.get("canonicalG3Accepted") is False
+              assert row.get("hostedRepositoryAccepted") is False
+          assert progress["observedInteractions"] == 0
+          assert progress["observedVisuals"] == 0
+          assert progress["observedReaderGroups"] == 0
+
+      - name: Build hosted operating-system receipt
+        if: always()
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib, platform
+          temp = pathlib.Path(os.environ["RUNNER_TEMP"])
+          root = temp / "aperture-runtime-bound"
+          verification_path = temp / "verification-1.json"
+          verification = json.loads(verification_path.read_text()) if verification_path.exists() else None
+          receipt = {
+              "format": "axm-aperture-runtime-bound-hosted-os-receipt/1",
+              "workflow_repository": os.environ.get("GITHUB_REPOSITORY"),
+              "workflow_sha": os.environ.get("GITHUB_SHA"),
+              "workflow_ref": os.environ.get("GITHUB_REF"),
+              "runner_os": os.environ.get("RUNNER_OS"),
+              "runner_arch": os.environ.get("RUNNER_ARCH"),
+              "platform": platform.platform(),
+              "node_version": os.popen("node --version").read().strip(),
+              "archive_sha256": os.environ["EXPECTED_ARCHIVE_SHA256"],
+              "archive_bytes": int(os.environ["EXPECTED_ARCHIVE_BYTES"]),
+              "binding_id": os.environ["EXPECTED_BINDING_ID"],
+              "qualification_id": os.environ["EXPECTED_QUALIFICATION_ID"],
+              "release_id": os.environ["EXPECTED_RELEASE_ID"],
+              "package_digest": os.environ["EXPECTED_PACKAGE_DIGEST"],
+              "runtime_client_commit": os.environ["EXPECTED_RUNTIME_COMMIT"],
+              "verification": verification,
+              "observed_interactions": 0,
+              "observed_visuals": 0,
+              "observed_reader_groups": 0,
+              "canonical_ap410_accepted": False,
+              "canonical_g3_accepted": False,
+              "hosted_repository_accepted": False,
+              "authority": "temporary_hosted_os_qualification_only",
+          }
+          core = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
+          receipt["receipt_sha256"] = hashlib.sha256(core).hexdigest()
+          out = pathlib.Path("hosted-receipt")
+          out.mkdir(exist_ok=True)
+          (out / "HOSTED_OS_RECEIPT.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+          if verification_path.exists():
+              (out / "VERIFICATION.json").write_bytes(verification_path.read_bytes())
+          for rel in ("qualification/RUNTIME_BINDING.json", "qualification/BOUND_QUALIFICATION.json", "qualification/BOUND_RELEASE.json", "qualification/BOUND_PROGRESS.json", "work-orders/desktop_keyboard.json", "work-orders/desktop_controller.json"):
+              source = root / rel
+              if source.exists():
+                  target = out / pathlib.Path(rel).name
+                  target.write_bytes(source.read_bytes())
+          lines = []
+          for path in sorted(out.iterdir()):
+              if path.name == "SHA256SUMS": continue
+              lines.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}")
+          (out / "SHA256SUMS").write_text("\n".join(lines) + "\n")
+
+      - name: Upload exact operating-system receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aperture-runtime-bound-${{ matrix.os }}
+          path: hosted-receipt/
+          if-no-files-found: error
+          retention-days: 30
+
+  cold-replay:
+    name: Cold replay exact archive twice
+    needs: qualify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact carrier
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up exact Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.16.0
+
+      - name: Reconstruct exact archive from checksum-bound carrier shards
+        shell: python
+        run: |
+          import base64, hashlib, os, pathlib
+          carrier = pathlib.Path('.aperture-runtime-bound')
+          expected = {
+              'payload.b64.part00': '0d77ca876b301e7731d2beb4217f5cf1f12ea44037e81d6a6dcb1faccd3fd4a0',
+              'payload.b64.part01': '82b61e5fc10901a75eec29c5e7538ab019e3a936d157d1e328f07ada80defd7c',
+              'payload.b64.part02': '6afa415d93f9df78e44c2c2ee81b389564a26bd3925fb82ec12c7d6bdf85bd71',
+              'payload.b64.part03': '89ea86f9035a605d2b306c5fcd8c1845091e627e3588b16c58e422fb94db23b6',
+              'payload.b64.part04': '1ec3cf0e9a19c325677880374a44a5744355a903cc7d3275a1dd392291fcc9b6',
+              'payload.b64.part05': 'a2b747c9fcf6091b656dd59c91a9530821c8046694fc00e98ad130ef5980791a',
+              'payload.b64.part06': '014ce10858c3fdec17f6dd18743a124d9e3ade22766ad93b3efda8127f28ddab',
+              'payload.b64.part07': '14282d06d6b0b4ca8d9ec0b92f94e49dcb37614d6b2e1eb24c14feb92051b6c3',
+              'payload.b64.part08': '41424751753940b3cb096daf2ccd7162d8037b6148fdc3b0caf23fa72c4f4f53',
+          }
+          encoded = b''.join((carrier / name).read_bytes() for name in sorted(expected))
+          for name in sorted(expected):
+              if hashlib.sha256((carrier / name).read_bytes()).hexdigest() != expected[name]:
+                  raise SystemExit(f'carrier shard mismatch: {name}')
+          if hashlib.sha256(encoded).hexdigest() != os.environ['EXPECTED_BASE64_SHA256']:
+              raise SystemExit('carrier base64 digest mismatch')
+          raw = base64.b64decode(encoded, validate=True)
+          target = pathlib.Path(os.environ['ARCHIVE_PATH'])
+          target.parent.mkdir(parents=True, exist_ok=True)
+          target.write_bytes(raw)
+
+      - name: Reconstruct and compare two clean roots
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, os, pathlib, tarfile
+          archive = pathlib.Path(os.environ['ARCHIVE_PATH'])
+          if hashlib.sha256(archive.read_bytes()).hexdigest() != os.environ['EXPECTED_ARCHIVE_SHA256']:
+              raise SystemExit('archive digest mismatch')
+          for name in ('cold-a', 'cold-b'):
+              root = pathlib.Path(os.environ['RUNNER_TEMP']) / name
+              root.mkdir(parents=True, exist_ok=True)
+              with tarfile.open(archive, 'r:gz') as tf: tf.extractall(root)
+          PY
+          for root in "$RUNNER_TEMP/cold-a" "$RUNNER_TEMP/cold-b"; do
+            (cd "$root" && node scripts/verify-bound-release.mjs > VERIFICATION.json)
+            (cd "$root" && find . -type f ! -name TREE.sha256 -printf '%P\0' | LC_ALL=C sort -z | xargs -0 sha256sum > TREE.sha256)
+          done
+          cmp "$RUNNER_TEMP/cold-a/VERIFICATION.json" "$RUNNER_TEMP/cold-b/VERIFICATION.json"
+          cmp "$RUNNER_TEMP/cold-a/TREE.sha256" "$RUNNER_TEMP/cold-b/TREE.sha256"
+
+      - name: Build cold-replay receipt
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib
+          a = pathlib.Path(os.environ['RUNNER_TEMP']) / 'cold-a'
+          verification = json.loads((a / 'VERIFICATION.json').read_text())
+          tree = (a / 'TREE.sha256').read_bytes()
+          receipt = {
+              'format': 'axm-aperture-runtime-bound-hosted-cold-replay/1',
+              'workflow_sha': os.environ.get('GITHUB_SHA'),
+              'archive_sha256': os.environ['EXPECTED_ARCHIVE_SHA256'],
+              'binding_id': os.environ['EXPECTED_BINDING_ID'],
+              'qualification_id': os.environ['EXPECTED_QUALIFICATION_ID'],
+              'release_id': os.environ['EXPECTED_RELEASE_ID'],
+              'package_digest': os.environ['EXPECTED_PACKAGE_DIGEST'],
+              'reconstructions': 2,
+              'tree_sha256': hashlib.sha256(tree).hexdigest(),
+              'verification': verification,
+              'observed_interactions': 0,
+              'observed_visuals': 0,
+              'observed_reader_groups': 0,
+              'canonical_ap410_accepted': False,
+              'canonical_g3_accepted': False,
+              'hosted_repository_accepted': False,
+              'authority': 'temporary_hosted_cold_replay_only',
+          }
+          core = json.dumps(receipt, sort_keys=True, separators=(',', ':')).encode()
+          receipt['receipt_sha256'] = hashlib.sha256(core).hexdigest()
+          out = pathlib.Path('cold-replay-receipt')
+          out.mkdir(exist_ok=True)
+          (out / 'COLD_REPLAY.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
+          (out / 'TREE.sha256').write_bytes(tree)
+          (out / 'VERIFICATION.json').write_text(json.dumps(verification, indent=2, sort_keys=True) + '\n')
+
+      - name: Upload cold-replay receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: aperture-runtime-bound-cold-replay
+          path: cold-replay-receipt/
+          if-no-files-found: error
+          retention-days: 30
