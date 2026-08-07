@@ -5,3 +5,5 @@ This branch is a temporary, never-merge execution carrier for the exact source a
 Each job retrieves five recently created repository Git blobs through the authenticated Git Data API, decodes their base64 payloads, and admits exactly one blob whose byte count and SHA-256 match the frozen source archive. The source is not regenerated, patched, or promoted into Tools product history.
 
 The workflow must reproduce 49 contracts, package verification, the exact kit and qualification identities, absence of `RUNTIME_BINDING.json`, and the unique progress object that carries both `uiprogress2_6073d7e2855ec35fece231f86e0cc0aa94ed9499d1b7a44d7fdbd5d1f2837cf2` and `runtime_binding_missing`. A green run proves transport and source portability only. It cannot accept AP-410, G3, a hosted repository, publication, or any gate.
+
+Execution trigger: trusted branch-push replay v3.
