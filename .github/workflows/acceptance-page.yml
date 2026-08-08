@@ -124,7 +124,7 @@ jobs:
           show-progress: false
 
       - name: Set up exact Node 22.16.0
-        uses: actions/setup-node@1e60f620b9541dca151540d0c4e4342dc1a0c293
+        uses: actions/setup-node@v4
         with:
           node-version: 22.16.0
 
@@ -172,7 +172,7 @@ jobs:
           show-progress: false
 
       - name: Set up exact Node 22.16.0
-        uses: actions/setup-node@1e60f620b9541dca151540d0c4e4342dc1a0c293
+        uses: actions/setup-node@v4
         with:
           node-version: 22.16.0
 
