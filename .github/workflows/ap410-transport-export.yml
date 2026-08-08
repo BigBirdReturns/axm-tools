@@ -1,0 +1,59 @@
+name: TEMP AP-410 transport export
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  export:
+    if: contains(github.event.head_commit.message, '[AP410-TRANSPORT-EXPORT]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact original transport head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 265ffaa90a20a028559a18fa6c1c25f579dfd58b
+          fetch-depth: 1
+          show-progress: false
+      - name: Record immutable inventory
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "265ffaa90a20a028559a18fa6c1c25f579dfd58b"
+          find aperture-kit-v2-dispatch-data -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum > aperture-kit-v2-dispatch-data/EXPORT_SHA256SUMS
+      - name: Upload exact original transport
+        id: upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ap410-kit-v2-original-transport-${{ github.run_id }}-${{ github.run_attempt }}
+          path: aperture-kit-v2-dispatch-data/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+      - name: Post bounded export witness
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.upload.outputs.artifact-id }}
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+          ARTIFACT_DIGEST: ${{ steps.upload.outputs.artifact-digest }}
+        run: |
+          cat >"$RUNNER_TEMP/export.md" <<EOF
+          ## KIT_V2_ORIGINAL_TRANSPORT_EXPORTED_FOR_ADJUDICATION
+
+          The exact original unmerged dispatch object was exported through Actions custody after both hosted systems refused its aggregate reconstruction. This witness creates no source passage or acceptance claim.
+
+          \`\`\`text
+          workflow run       $GITHUB_RUN_ID
+          workflow attempt   $GITHUB_RUN_ATTEMPT
+          transport head     265ffaa90a20a028559a18fa6c1c25f579dfd58b
+          artifact ID        $ARTIFACT_ID
+          artifact digest    $ARTIFACT_DIGEST
+          \`\`\`
+
+          Artifact: $ARTIFACT_URL
+          EOF
+          gh api "repos/$GITHUB_REPOSITORY/issues/71/comments" -f body="$(cat "$RUNNER_TEMP/export.md")"
