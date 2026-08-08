@@ -1,0 +1,54 @@
+{
+  "authority": {
+    "accepted_gates": [],
+    "canonical_ap410_accepted": false,
+    "canonical_g3_accepted": false,
+    "classification": "git_blob_source_transport_only",
+    "hosted_repository_accepted": false,
+    "manual_reader_groups_passed": 0,
+    "observed_platform_interactions": 0,
+    "observed_platform_visuals": 0,
+    "runtime_binding_present": false
+  },
+  "branch": "agent/aperture-g3-observation-kit-v2-dispatch-data-v1",
+  "format": "axm-aperture-g3-observation-kit-v2-git-blob-dispatch/1",
+  "parts": [
+    {
+      "git_blob_sha1": "0ef22fdd6495443374046f2176fc70c464782d25",
+      "path": "parts/part-0000.bin"
+    },
+    {
+      "git_blob_sha1": "07718e5710a67a1a5338044e1883c52e609f2493",
+      "path": "parts/part-0001.bin"
+    },
+    {
+      "git_blob_sha1": "af1c2f3f21d34720e1f73a70e27ac743afeb3cd3",
+      "path": "parts/part-0002.bin"
+    },
+    {
+      "git_blob_sha1": "f2416ecd09029da5e66a4faa3e852718d4618d39",
+      "path": "parts/part-0003.bin"
+    },
+    {
+      "git_blob_sha1": "7bb076e3afd7e9820a7e61d28eb309108ca7fb17",
+      "path": "parts/part-0004.bin"
+    }
+  ],
+  "retained_parent": "bf5e88867d62aa41071b659e227430b5dd4c4cad",
+  "source_archive": {
+    "bytes": 90028,
+    "name": "AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz",
+    "sha256": "71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74"
+  },
+  "source_authority": {
+    "blocked_progress_id": "uiprogress2_6073d7e2855ec35fece231f86e0cc0aa94ed9499d1b7a44d7fdbd5d1f2837cf2",
+    "contracts_per_execution": 49,
+    "embedded_git_commit": "5b3e47a1b8af956db44c12713f58b24bcd7a8a7f",
+    "kit_id": "g3observationkit2_6a0784236b71e0c78d22a6087aa837764eadddee17cc58e9522e909358eda9a1",
+    "package_manifest_sha256": "87218d601ff0d4f7d577d6c5bf476b2dbd073a7176d192cba24f3745c28030b7",
+    "qualification_id": "g3observationqualification2_14f759a2212a9119e6d9f0ae81e0e7f9a5937ceddcbe1e2b00864e51380bd4ec",
+    "source_manifest_sha256": "014a5d9f0dc8803484333c7deb7dadc89f38f96667c69d8fc72699923f3ae6ca",
+    "source_matrix_canonical_sha256": "aef281d81fae08bf350e700948405f98d49a770442a323189b16c9b9f005f657",
+    "ui_matrix_file_sha256": "effa2851e327b834bb233822b885fc3b17de7c234155404cf03d5ded572af675"
+  }
+}
