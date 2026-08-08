@@ -1,0 +1,299 @@
+name: AP-410 Kit v2 hosted portability
+
+on:
+  workflow_dispatch:
+  issue_comment:
+    types: [created]
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+concurrency:
+  group: aperture-ap410-kit-v2-hosted
+  cancel-in-progress: false
+
+env:
+  SOURCE_PATH: qualification-inputs/ap410-kit-v2/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz
+  SOURCE_SHA256: 71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74
+  SOURCE_BYTES: "90028"
+  KIT_ID: g3observationkit2_6a0784236b71e0c78d22a6087aa837764eadddee17cc58e9522e909358eda9a1
+  QUALIFICATION_ID: g3observationqualification2_14f759a2212a9119e6d9f0ae81e0e7f9a5937ceddcbe1e2b00864e51380bd4ec
+  BLOCKED_PROGRESS_ID: uiprogress2_6073d7e2855ec35fece231f86e0cc0aa94ed9499d1b7a44d7fdbd5d1f2837cf2
+
+jobs:
+  authorize:
+    name: Authorize exact AP-410 qualification request
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.number == 71 &&
+       github.event.comment.user.login == 'BigBirdReturns' &&
+       github.event.comment.body == '/qualify-ap410-kit-v2')
+    runs-on: ubuntu-24.04
+    outputs:
+      authority-sha: ${{ steps.authority.outputs.sha }}
+    steps:
+      - name: Bind default-branch workflow authority
+        id: authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'sha=%s\n' "$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+          printf '%s\n' \
+            "event=$GITHUB_EVENT_NAME" \
+            "actor=$GITHUB_ACTOR" \
+            "authority_sha=$GITHUB_SHA"
+
+  source:
+    name: ${{ matrix.label }} source and refusal law
+    needs: authorize
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            label: Ubuntu 24.04
+          - os: windows-2025
+            label: Windows 2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - name: Check out exact default-branch authority
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.authorize.outputs.authority-sha }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up Node 22.16.0
+        uses: actions/setup-node@1e60f620b9541dca151540d0c4e4342dc1a0c293
+        with:
+          node-version: 22.16.0
+
+      - name: Qualify exact source candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x .github/scripts/aperture-ap410-kit-v2-qualify.sh
+          test "$(sha256sum "$SOURCE_PATH" | cut -d' ' -f1)" = "$SOURCE_SHA256"
+          test "$(wc -c < "$SOURCE_PATH" | tr -d '[:space:]')" = "$SOURCE_BYTES"
+          .github/scripts/aperture-ap410-kit-v2-qualify.sh \
+            "$SOURCE_PATH" \
+            "$RUNNER_TEMP/aperture-kit-v2-${{ matrix.os }}"
+
+      - name: Upload operating-system receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: aperture-kit-v2-${{ matrix.os }}
+          path: ${{ runner.temp }}/aperture-kit-v2-${{ matrix.os }}/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+
+  custody:
+    name: Two-root custody and downloaded replay
+    needs: [authorize, source]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      artifact-url: ${{ steps.upload.outputs.artifact-url }}
+      artifact-digest: ${{ steps.upload.outputs.artifact-digest }}
+      receipt-sha256: ${{ steps.seal.outputs.receipt-sha256 }}
+    steps:
+      - name: Check out exact default-branch authority
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.authorize.outputs.authority-sha }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up Node 22.16.0
+        uses: actions/setup-node@1e60f620b9541dca151540d0c4e4342dc1a0c293
+        with:
+          node-version: 22.16.0
+
+      - name: Qualify two clean roots
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x .github/scripts/aperture-ap410-kit-v2-qualify.sh
+          .github/scripts/aperture-ap410-kit-v2-qualify.sh "$SOURCE_PATH" "$RUNNER_TEMP/cold-a"
+          .github/scripts/aperture-ap410-kit-v2-qualify.sh "$SOURCE_PATH" "$RUNNER_TEMP/cold-b"
+          cmp "$RUNNER_TEMP/cold-a/blocked-progress.json" "$RUNNER_TEMP/cold-b/blocked-progress.json"
+          cmp "$RUNNER_TEMP/cold-a/qualification.env" "$RUNNER_TEMP/cold-b/qualification.env"
+          cmp "$RUNNER_TEMP/cold-a/source-matrix.sha256" "$RUNNER_TEMP/cold-b/source-matrix.sha256"
+
+      - name: Seal checksum-bound carrier artifact
+        id: seal
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/carrier-artifact"
+          mkdir -p "$out/cold-a" "$out/cold-b"
+          cp "$SOURCE_PATH" "$out/"
+          for root in cold-a cold-b; do
+            cp "$RUNNER_TEMP/$root/blocked-progress.json" "$out/$root/"
+            cp "$RUNNER_TEMP/$root/qualification.env" "$out/$root/"
+            cp "$RUNNER_TEMP/$root/source-matrix.sha256" "$out/$root/"
+            cp -r "$RUNNER_TEMP/$root/logs" "$out/$root/"
+          done
+          python - "$out" "${{ needs.authorize.outputs.authority-sha }}" <<'PY'
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import sys
+
+          out = pathlib.Path(sys.argv[1])
+          authority_sha = sys.argv[2]
+          archive = out / 'AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz'
+          def digest(path):
+              h = hashlib.sha256()
+              with path.open('rb') as handle:
+                  for block in iter(lambda: handle.read(1024 * 1024), b''):
+                      h.update(block)
+              return h.hexdigest()
+          receipt = {
+              'format': 'axm-aperture-g3-observation-kit-v2-hosted-receipt/1',
+              'repository': os.environ['GITHUB_REPOSITORY'],
+              'workflow_authority_sha': authority_sha,
+              'workflow_run': os.environ['GITHUB_RUN_ID'],
+              'source_archive': {
+                  'name': archive.name,
+                  'bytes': archive.stat().st_size,
+                  'sha256': digest(archive),
+              },
+              'kit_id': os.environ['KIT_ID'],
+              'qualification_id': os.environ['QUALIFICATION_ID'],
+              'blocked_progress_id': os.environ['BLOCKED_PROGRESS_ID'],
+              'node_version': '22.16.0',
+              'source_contracts_per_execution': 49,
+              'hosted_operating_systems': ['ubuntu-24.04', 'windows-2025'],
+              'cold_roots': 2,
+              'downloaded_replays': 1,
+              'accepted_gates': [],
+              'canonical_ap410_accepted': False,
+              'canonical_g3_accepted': False,
+              'runtime_binding_present': False,
+              'observed_platform_interactions': 0,
+              'observed_platform_visuals': 0,
+              'manual_reader_groups_passed': 0,
+              'authority': 'hosted_source_portability_only',
+              'status': 'PASS',
+          }
+          core = json.dumps(receipt, sort_keys=True, separators=(',', ':')).encode()
+          receipt['receipt_sha256'] = hashlib.sha256(core).hexdigest()
+          (out / 'HOSTED_RECEIPT.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
+          print(receipt['receipt_sha256'])
+          PY
+          receipt_sha="$(python -c 'import json; print(json.load(open("'"$out"'/HOSTED_RECEIPT.json"))["receipt_sha256"])')"
+          printf 'receipt-sha256=%s\n' "$receipt_sha" >> "$GITHUB_OUTPUT"
+          (cd "$out" && find . -type f ! -name SHA256SUMS -print0 | LC_ALL=C sort -z | xargs -0 sha256sum > SHA256SUMS && sha256sum -c SHA256SUMS)
+
+      - name: Upload hosted source receipt
+        id: upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: axm-aperture-g3-observation-kit-v2-hosted
+          path: ${{ runner.temp }}/carrier-artifact/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+
+      - name: Download artifact through Actions custody
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: axm-aperture-g3-observation-kit-v2-hosted
+          path: ${{ runner.temp }}/downloaded
+
+      - name: Replay downloaded artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          downloaded="$RUNNER_TEMP/downloaded"
+          (cd "$downloaded" && sha256sum -c SHA256SUMS)
+          .github/scripts/aperture-ap410-kit-v2-qualify.sh \
+            "$downloaded/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz" \
+            "$RUNNER_TEMP/downloaded-replay"
+          cmp "$downloaded/cold-a/blocked-progress.json" "$RUNNER_TEMP/downloaded-replay/blocked-progress.json"
+          cmp "$downloaded/cold-a/source-matrix.sha256" "$RUNNER_TEMP/downloaded-replay/source-matrix.sha256"
+
+  terminal:
+    name: Publish terminal hosted-source witness
+    needs: [authorize, source, custody]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Post exact receipt and close Tools issue 71
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTHORITY_SHA: ${{ needs.authorize.outputs.authority-sha }}
+          ARTIFACT_ID: ${{ needs.custody.outputs.artifact-id }}
+          ARTIFACT_URL: ${{ needs.custody.outputs.artifact-url }}
+          ARTIFACT_DIGEST: ${{ needs.custody.outputs.artifact-digest }}
+          RECEIPT_SHA256: ${{ needs.custody.outputs.receipt-sha256 }}
+        run: |
+          set -euo pipefail
+          python <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          token = os.environ['GH_TOKEN']
+          repo = os.environ['GITHUB_REPOSITORY']
+          run_id = os.environ['GITHUB_RUN_ID']
+          def api(method, path, payload=None):
+              data = None if payload is None else json.dumps(payload).encode()
+              request = urllib.request.Request(
+                  f'https://api.github.com/repos/{repo}{path}',
+                  data=data,
+                  method=method,
+                  headers={
+                      'Authorization': f'Bearer {token}',
+                      'Accept': 'application/vnd.github+json',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'AXM-Aperture-Kit-V2-Hosted/1',
+                      'Content-Type': 'application/json',
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  raw = response.read()
+              return None if not raw else json.loads(raw)
+          body = f'''## KIT_V2_HOSTED_TERMINAL_RECEIPT
+
+          The permanent default-branch workflow completed the exact AP-410 Kit v2 hosted portability denominator.
+
+          ```text
+          workflow authority   {os.environ['AUTHORITY_SHA']}
+          workflow run         {run_id}
+          artifact ID          {os.environ['ARTIFACT_ID']}
+          artifact digest      {os.environ['ARTIFACT_DIGEST']}
+          hosted receipt       {os.environ['RECEIPT_SHA256']}
+          source SHA-256       {os.environ['SOURCE_SHA256']}
+          source bytes         {os.environ['SOURCE_BYTES']}
+          kit                  {os.environ['KIT_ID']}
+          qualification        {os.environ['QUALIFICATION_ID']}
+          blocked progress     {os.environ['BLOCKED_PROGRESS_ID']}
+          contracts per run    49
+          hosted systems       Ubuntu 24.04, Windows 2025
+          cold roots           2 plus downloaded replay
+          runtime binding      absent
+          physical evidence    0 interactions, 0 visuals, 0 reader groups
+          accepted gates       []
+          canonical AP-410     false
+          canonical G3         false
+          authority            hosted_source_portability_only
+          ```
+
+          Artifact: {os.environ['ARTIFACT_URL']}
+
+          Evidence tier: exact default-branch workflow authority, immutable source input, hosted Linux and Windows execution, two cold roots, checksum-bound artifact custody, and downloaded replay. Runtime admission, physical passage, canonical AP-410, G3, and publication remain separate.
+
+          Can this issue close at the source-portability boundary while every runtime, physical, canonical, and programme authority remains held?'''
+          api('POST', '/issues/71/comments', {'body': body})
+          api('PATCH', '/issues/71', {'state': 'closed', 'state_reason': 'completed'})
+          PY
