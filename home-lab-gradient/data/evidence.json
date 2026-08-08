@@ -1,0 +1,54 @@
+{
+  "schema": "axm-community-lab/evidence-ledger@1",
+  "as_of": "2026-08-05",
+  "records": [
+    {
+      "id": "operator-declared-estate-shape",
+      "tier": "declared",
+      "status": "current",
+      "source": "user statement in planning session",
+      "supports": [],
+      "facts": {
+        "cpu_pools": 3,
+        "ram_pools": 3,
+        "igpu_count": 3,
+        "dgpus": [
+          "RTX 4060",
+          "RTX 3090",
+          "RTX 3090"
+        ]
+      },
+      "boundary": "Counts and model names are declared; host identities, topology, drivers, attachments, clocks, and path costs remain unmeasured."
+    },
+    {
+      "id": "prior-4060-local-model-observation",
+      "tier": "observed",
+      "status": "prior",
+      "source": "existing estate observation",
+      "supports": [],
+      "facts": {
+        "route": "control-host/RTX-4060",
+        "model": "qwen3.5:9b-q4_K_M",
+        "result": "local execution observed"
+      },
+      "boundary": "This observation identifies a promising first function but does not satisfy the frozen function contract or worker baseline capabilities."
+    },
+    {
+      "id": "prior-receipt-and-cartridge-practice",
+      "tier": "observed",
+      "status": "prior",
+      "source": "existing AXM estate artifacts",
+      "supports": [],
+      "facts": {
+        "concepts": [
+          "cartridge identity",
+          "digest-bound receipts",
+          "replay",
+          "refusal"
+        ]
+      },
+      "boundary": "Prior practice supplies donor patterns. This module still requires a function-specific qualified receipt binding before scheduling claims advance."
+    }
+  ],
+  "claim_boundary": "Evidence records support only the capabilities named in supports. Narrative relevance never silently promotes a capability."
+}

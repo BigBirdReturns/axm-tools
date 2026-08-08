@@ -1,0 +1,142 @@
+{
+  "schema": "axm-community-lab/estate@1",
+  "estate_id": "<local-estate>",
+  "label": "Local heterogeneous compute estate",
+  "as_of": "2026-08-05",
+  "authority": "operator-declared seed; measurements pending",
+  "claim_boundary": "This descriptor records declared inventory and known identities. Null or unmeasured fields remain explicit and no device is operationally admitted by presence alone.",
+  "summary": {
+    "cpu_pools": 3,
+    "ram_pools": 3,
+    "igpu_count": 3,
+    "dgpu_count": 3,
+    "dgpus": [
+      "NVIDIA GeForce RTX 4060",
+      "NVIDIA GeForce RTX 3090",
+      "NVIDIA GeForce RTX 3090"
+    ],
+    "drive_topology": "multiple local drives; exact locality and path costs unmeasured"
+  },
+  "hosts": [
+    {
+      "id": "control-host",
+      "label": "13500T control and resident utility host",
+      "role": [
+        "estate-control",
+        "resident-utility",
+        "storage-head"
+      ],
+      "cpu": {
+        "model": "Intel Core i5-13500T",
+        "identity_status": "declared"
+      },
+      "ram": {
+        "gib": 32,
+        "type": "DDR5",
+        "identity_status": "declared"
+      },
+      "igpu": {
+        "model": "Intel integrated graphics",
+        "identity_status": "declared"
+      },
+      "dgpus": [
+        {
+          "model": "NVIDIA GeForce RTX 4060",
+          "vram_gib": 8,
+          "uuid": null,
+          "attachment": "unmeasured"
+        }
+      ],
+      "storage": [
+        {
+          "kind": "HDD",
+          "count": 3,
+          "capacity_each_tb": 10,
+          "role": "durable estate storage",
+          "path_identity": "unmeasured"
+        }
+      ],
+      "network": {
+        "links": [],
+        "status": "unmeasured"
+      }
+    },
+    {
+      "id": "heavy-host-a",
+      "label": "RTX 3090 worker A host",
+      "role": [
+        "heavy-worker",
+        "alternate-route"
+      ],
+      "cpu": {
+        "model": null,
+        "identity_status": "pending observation"
+      },
+      "ram": {
+        "gib": null,
+        "type": null,
+        "identity_status": "pending observation"
+      },
+      "igpu": {
+        "model": null,
+        "identity_status": "operator-declared present"
+      },
+      "dgpus": [
+        {
+          "model": "NVIDIA GeForce RTX 3090",
+          "vram_gib": 24,
+          "uuid": null,
+          "attachment": "unmeasured"
+        }
+      ],
+      "storage": [],
+      "network": {
+        "links": [],
+        "status": "unmeasured"
+      }
+    },
+    {
+      "id": "heavy-host-b",
+      "label": "RTX 3090 worker B host",
+      "role": [
+        "heavy-worker",
+        "alternate-route"
+      ],
+      "cpu": {
+        "model": null,
+        "identity_status": "pending observation"
+      },
+      "ram": {
+        "gib": null,
+        "type": null,
+        "identity_status": "pending observation"
+      },
+      "igpu": {
+        "model": null,
+        "identity_status": "operator-declared present"
+      },
+      "dgpus": [
+        {
+          "model": "NVIDIA GeForce RTX 3090",
+          "vram_gib": 24,
+          "uuid": null,
+          "attachment": "unmeasured"
+        }
+      ],
+      "storage": [],
+      "network": {
+        "links": [],
+        "status": "unmeasured"
+      }
+    }
+  ],
+  "known_runtime_facts": [
+    {
+      "id": "rtx4060-qwen-local",
+      "host": "control-host",
+      "fact": "Local Qwen3.5 9B Q4_K_M execution has previously been observed on the RTX 4060.",
+      "tier": "observed",
+      "qualification_scope": "prior estate observation; not requalified by this module"
+    }
+  ]
+}
