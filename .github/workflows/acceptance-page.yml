@@ -16,8 +16,8 @@ permissions:
   issues: write
 
 env:
-  AP410_DATA_BRANCH: agent/aperture-g3-observation-kit-v2-dispatch-data-v1
-  AP410_DATA_HEAD: 265ffaa90a20a028559a18fa6c1c25f579dfd58b
+  AP410_DATA_BRANCH: agent/aperture-g3-observation-kit-v2-dispatch-data-v1-overlap-recovery
+  AP410_DATA_HEAD: be1de4dcfa68e58107d5d2dfe2307b71125dfa1b
   AP410_DATA_ROOT: aperture-kit-v2-dispatch-data
   AP410_SOURCE_SHA256: 71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74
   AP410_SOURCE_BYTES: "90028"
