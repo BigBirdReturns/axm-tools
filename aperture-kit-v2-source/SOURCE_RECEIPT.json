@@ -1,16 +1,22 @@
 {
-  "receipt_id": "ap410kitsourcecustody1_2ed1e06d8128bec7512fa2439b5dc57806abc73d898b19e409431e713fccbdc9",
-  "format": "axm-aperture-kit-v2-source-custody/1",
+  "receipt_id": "ap410kitsourcecustody2_f1dd528c5b6c3858157ea629d96174b6f7ca612eb4feb1e084a21d7e1dbd26a6",
+  "format": "axm-aperture-kit-v2-source-custody/2",
   "repository": "BigBirdReturns/axm-tools",
   "authority": "evidence_ref_only_never_merge",
-  "source": {
+  "encoded_source": {
+    "name": "AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz.b64",
+    "bytes": 120040,
+    "sha256": "237b9d98dafed780c35fbfa5b1d8a0b20e3c724556f2473bc14dc9d60c59a313",
+    "git_blob_sha": "8165dc9288938ad0bc55b2ef13df7f9f99c5027d",
+    "encoding": "base64"
+  },
+  "decoded_source": {
     "name": "AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz",
     "bytes": 90028,
-    "sha256": "71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74",
-    "git_blob_sha": "8165dc9288938ad0bc55b2ef13df7f9f99c5027d"
+    "sha256": "71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74"
   },
   "kit_id": "g3observationkit2_6a0784236b71e0c78d22a6087aa837764eadddee17cc58e9522e909358eda9a1",
-  "qualification_id": "g3observationqualification2_14f759a2212a9119e6d9f0ae81e0e7f9a5937ceddcbe1e2b00864e51380bd4ec",
+  "qualification_id": "g3observationqualification2_14f759a2212a911e6d9f0ae81e0e7f9a5937ceddcbe1e2b00864e51380bd4ec",
   "blocked_progress_id": "uiprogress2_6073d7e2855ec35fece231f86e0cc0aa94ed9499d1b7a44d7fdbd5d1f2837cf2",
   "runtime_binding_present": false,
   "observed_interactions": 0,
