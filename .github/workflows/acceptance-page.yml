@@ -47,8 +47,63 @@ jobs:
       - name: Drive acceptance.html and assert the intake rules
         run: node tests/pages/verify_acceptance.mjs
 
+
+  ap410-kit-v2-announce:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[AP410-KIT-V2-AUTHORIZED]')
+    name: AP-410 Kit v2 / start witness
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Post exact run identity to issue 71
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          lines = [
+              "## KIT_V2_DEFAULT_BRANCH_RUN_STARTED",
+              "",
+              "The already-authorized default-branch Acceptance workflow has created an observable AP-410 Kit v2 execution. This start witness identifies the run only. It is not hosted passage, artifact custody, or issue closure.",
+              "",
+              "```text",
+              f"workflow run                   {os.environ['GITHUB_RUN_ID']}",
+              f"workflow attempt               {os.environ['GITHUB_RUN_ATTEMPT']}",
+              f"workflow authorization commit  {os.environ['GITHUB_SHA']}",
+              f"carrier head                   {os.environ['AP410_KIT_CARRIER_HEAD']}",
+              f"source SHA-256                 {os.environ['AP410_KIT_SOURCE_SHA256']}",
+              f"source bytes                   {os.environ['AP410_KIT_SOURCE_BYTES']}",
+              "accepted gates                 []",
+              "canonical AP-410               false",
+              "canonical G3                   false",
+              "```",
+              "",
+              "The run must still produce successful Ubuntu, Windows, two-root, retained-artifact, and downloaded-replay evidence before issue #71 changes standing.",
+          ]
+          payload = json.dumps({"body": "\n".join(lines)}).encode()
+          request = urllib.request.Request(
+              f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/issues/71/comments",
+              data=payload,
+              method="POST",
+              headers={
+                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+                  "User-Agent": "AXM-Aperture-Kit-V2-Default-Branch/2",
+                  "Content-Type": "application/json",
+              },
+          )
+          with urllib.request.urlopen(request, timeout=60) as response:
+              response.read()
+          PY
+
   ap410-kit-v2-source:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: ap410-kit-v2-announce
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[AP410-KIT-V2-AUTHORIZED]')
     name: AP-410 Kit v2 / ${{ matrix.label }}
     strategy:
       fail-fast: false
@@ -103,7 +158,7 @@ jobs:
           retention-days: 30
 
   ap410-kit-v2-custody:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[AP410-KIT-V2-AUTHORIZED]')
     name: AP-410 Kit v2 / two-root custody and downloaded replay
     needs: ap410-kit-v2-source
     runs-on: ubuntu-24.04
