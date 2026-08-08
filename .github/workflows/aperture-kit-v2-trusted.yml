@@ -1,0 +1,345 @@
+name: AP-410 Kit v2 trusted hosted qualification
+
+on:
+  workflow_dispatch:
+  issue_comment:
+    types:
+      - created
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+concurrency:
+  group: aperture-kit-v2-trusted-hosted
+  cancel-in-progress: false
+
+env:
+  SOURCE_EVIDENCE_COMMIT: 54a13c6212e18b3a191448ff28452d0f9cf1b6c0
+  SOURCE_ENVELOPE: aperture-kit-v2-source/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz.b64
+  SOURCE_ENVELOPE_SHA256: 237b9d98dafed780c35fbfa5b1d8a0b20e3c724556f2473bc14dc9d60c59a313
+  SOURCE_ARCHIVE_SHA256: 71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74
+  SOURCE_CUSTODY_RECEIPT: ap410kitsourcecustody2_f1dd528c5b6c3858157ea629d96174b6f7ca612eb4feb1e084a21d7e1dbd26a6
+  ISSUE_NUMBER: "71"
+  COMMAND: /qualify-ap410-kit-v2
+
+jobs:
+  authorize:
+    name: Authorize exact qualification request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      approved: ${{ steps.authorize.outputs.approved }}
+    steps:
+      - name: Require workflow dispatch or exact owner issue command
+        id: authorize
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ISSUE: ${{ github.event.issue.number }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENT_ACTOR: ${{ github.event.comment.user.login }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          approved=false
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            approved=true
+          elif [[ "$EVENT_NAME" == "issue_comment" \
+               && "$EVENT_ISSUE" == "$ISSUE_NUMBER" \
+               && "$COMMENT_BODY" == "$COMMAND" \
+               && "$COMMENT_ACTOR" == "$REPOSITORY_OWNER" ]]; then
+            approved=true
+          fi
+          printf 'approved=%s\n' "$approved" >> "$GITHUB_OUTPUT"
+          test "$approved" = true
+
+  source-matrix:
+    name: ${{ matrix.os }} source refusal and 49 contracts
+    needs: authorize
+    if: needs.authorize.outputs.approved == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - name: Check out trusted qualifier from default branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Check out exact never-merge source evidence ref
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ env.SOURCE_EVIDENCE_COMMIT }}
+          path: source-evidence
+          sparse-checkout: aperture-kit-v2-source
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Set up Node 22.16.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.16.0"
+
+      - name: Execute exact source denominator
+        shell: bash
+        run: |
+          set -euo pipefail
+          python .github/scripts/aperture-kit-v2-trusted.py matrix \
+            --source-envelope "source-evidence/$SOURCE_ENVELOPE" \
+            --work "$RUNNER_TEMP/ap410-kit-v2-${{ matrix.os }}" \
+            --result "$RUNNER_TEMP/ap410-kit-v2-${{ matrix.os }}.json"
+
+      - name: Upload operating-system receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: ap410-kit-v2-${{ matrix.os }}
+          path: ${{ runner.temp }}/ap410-kit-v2-${{ matrix.os }}.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+
+  cold-reconstruction:
+    name: Deterministic source and two clean replays
+    needs: authorize
+    if: needs.authorize.outputs.approved == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+      artifact_digest: ${{ steps.upload.outputs.artifact-digest }}
+      artifact_url: ${{ steps.upload.outputs.artifact-url }}
+      receipt_id: ${{ steps.receipt.outputs.receipt_id }}
+    steps:
+      - name: Check out trusted qualifier from default branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Check out exact never-merge source evidence ref
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ env.SOURCE_EVIDENCE_COMMIT }}
+          path: source-evidence
+          sparse-checkout: aperture-kit-v2-source
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Set up Node 22.16.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.16.0"
+
+      - name: Reconstruct twice and issue source-only receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python .github/scripts/aperture-kit-v2-trusted.py cold \
+            --source-envelope "source-evidence/$SOURCE_ENVELOPE" \
+            --work "$RUNNER_TEMP/ap410-kit-v2-cold" \
+            --artifact "$RUNNER_TEMP/ap410-kit-v2-artifact"
+
+      - name: Export receipt identity
+        id: receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+          from pathlib import Path
+          receipt = json.loads((Path(os.environ['RUNNER_TEMP']) / 'ap410-kit-v2-artifact/HOSTED_SOURCE_RECEIPT.json').read_text())
+          print(f"receipt_id={receipt['receipt_id']}")
+          PY
+
+      - name: Upload exact source and cold receipt
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: axm-aperture-g3-platform-observation-kit-v2-hosted
+          path: ${{ runner.temp }}/ap410-kit-v2-artifact/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+
+  downloaded-artifact-replay:
+    name: Independently replay downloaded artifact
+    needs:
+      - authorize
+      - source-matrix
+      - cold-reconstruction
+    if: needs.authorize.outputs.approved == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out trusted qualifier from default branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Set up Node 22.16.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.16.0"
+
+      - name: Download retained source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: axm-aperture-g3-platform-observation-kit-v2-hosted
+          path: ${{ runner.temp }}/downloaded
+
+      - name: Verify custody and replay source denominator
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/downloaded"
+          sha256sum -c SHA256SUMS
+          cd "$GITHUB_WORKSPACE"
+          python .github/scripts/aperture-kit-v2-trusted.py replay \
+            --archive "$RUNNER_TEMP/downloaded/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz" \
+            --work "$RUNNER_TEMP/ap410-kit-v2-replay" \
+            --result "$RUNNER_TEMP/ap410-kit-v2-replay.json"
+
+      - name: Upload independent replay receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: ap410-kit-v2-downloaded-replay
+          path: ${{ runner.temp }}/ap410-kit-v2-replay.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+
+  terminal-witness:
+    name: Post terminal hosted receipt and close source-portability issue
+    needs:
+      - authorize
+      - source-matrix
+      - cold-reconstruction
+      - downloaded-artifact-replay
+    if: needs.authorize.outputs.approved == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Download source receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: axm-aperture-g3-platform-observation-kit-v2-hosted
+          path: terminal/source
+
+      - name: Download replay receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: ap410-kit-v2-downloaded-replay
+          path: terminal/replay
+
+      - name: Post exact terminal witness
+        uses: actions/github-script@v7
+        env:
+          SOURCE_RECEIPT_PATH: terminal/source/HOSTED_SOURCE_RECEIPT.json
+          REPLAY_RECEIPT_PATH: terminal/replay/ap410-kit-v2-replay.json
+          COLD_ARTIFACT_ID: ${{ needs.cold-reconstruction.outputs.artifact_id }}
+          COLD_ARTIFACT_DIGEST: ${{ needs.cold-reconstruction.outputs.artifact_digest }}
+          COLD_ARTIFACT_URL: ${{ needs.cold-reconstruction.outputs.artifact_url }}
+          SOURCE_RECEIPT_ID: ${{ needs.cold-reconstruction.outputs.receipt_id }}
+        with:
+          script: |
+            const fs = require('fs');
+            const crypto = require('crypto');
+            const source = JSON.parse(fs.readFileSync(process.env.SOURCE_RECEIPT_PATH, 'utf8'));
+            const replay = JSON.parse(fs.readFileSync(process.env.REPLAY_RECEIPT_PATH, 'utf8'));
+            const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId,
+              per_page: 100,
+            });
+            const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId,
+              per_page: 100,
+            });
+            const canonical = (value) => {
+              if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
+              if (value && typeof value === 'object') {
+                return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}`;
+              }
+              return JSON.stringify(value);
+            };
+            const core = {
+              format: 'axm-aperture-kit-v2-hosted-terminal-witness/1',
+              repository: `${context.repo.owner}/${context.repo.repo}`,
+              workflowRunId: context.runId,
+              workflowRunAttempt: Number(process.env.GITHUB_RUN_ATTEMPT),
+              trustedHead: context.sha,
+              sourceEvidenceCommit: process.env.SOURCE_EVIDENCE_COMMIT,
+              sourceCustodyReceipt: process.env.SOURCE_CUSTODY_RECEIPT,
+              hostedSourceReceipt: source.receipt_id,
+              downloadedReplayTree: replay.source_tree_sha256,
+              jobs: jobs.map((job) => ({name: job.name, id: job.id, conclusion: job.conclusion})).sort((a, b) => a.id - b.id),
+              artifacts: artifacts.map((artifact) => ({name: artifact.name, id: artifact.id, size: artifact.size_in_bytes, digest: artifact.digest || null})).sort((a, b) => a.id - b.id),
+              sourceArchiveSha256: process.env.SOURCE_ARCHIVE_SHA256,
+              sourceEnvelopeSha256: process.env.SOURCE_ENVELOPE_SHA256,
+              ubuntuPassed: jobs.some((job) => job.name.includes('ubuntu-24.04') && job.conclusion === 'success'),
+              windowsPassed: jobs.some((job) => job.name.includes('windows-2025') && job.conclusion === 'success'),
+              coldReplayPassed: jobs.some((job) => job.name === 'Deterministic source and two clean replays' && job.conclusion === 'success'),
+              downloadedReplayPassed: jobs.some((job) => job.name === 'Independently replay downloaded artifact' && job.conclusion === 'success'),
+              runtimeBindingPresent: false,
+              observedInteractions: 0,
+              observedVisuals: 0,
+              observedReaderGroups: 0,
+              canonicalAp410Accepted: false,
+              canonicalG3Accepted: false,
+              acceptedGates: [],
+              authority: 'hosted_source_portability_only',
+            };
+            if (!core.ubuntuPassed || !core.windowsPassed || !core.coldReplayPassed || !core.downloadedReplayPassed) {
+              core.blockers = ['terminal_job_accounting_incomplete'];
+              throw new Error(JSON.stringify(core, null, 2));
+            }
+            const witnessId = `ap410kithostedwitness1_${crypto.createHash('sha256').update(canonical(core)).digest('hex')}`;
+            const jobLines = core.jobs.map((job) => `- \`${job.name}\`: job \`${job.id}\`, \`${job.conclusion}\``).join('\n');
+            const artifactLines = core.artifacts.map((artifact) => `- \`${artifact.name}\`: artifact \`${artifact.id}\`, ${artifact.size} bytes, \`${artifact.digest || 'digest unavailable'}\``).join('\n');
+            const body = `## Terminal hosted portability receipt\n\nThe trusted default-branch workflow executed the unchanged AP-410 Kit v2 source denominator on Ubuntu 24.04 and Windows 2025, reconstructed the source twice in clean roots, retained checksum-bound custody, and independently replayed the downloaded artifact.\n\n\`\`\`text\nwitness                 ${witnessId}\ntrusted head             ${context.sha}\nsource evidence commit   ${process.env.SOURCE_EVIDENCE_COMMIT}\nsource custody receipt   ${process.env.SOURCE_CUSTODY_RECEIPT}\nhosted source receipt    ${source.receipt_id}\nsource archive SHA-256   ${process.env.SOURCE_ARCHIVE_SHA256}\nsource envelope SHA-256  ${process.env.SOURCE_ENVELOPE_SHA256}\ncontracts per execution  49\nruntime binding          absent\nobserved interactions    0\nobserved visuals         0\nobserved reader groups   0\ncanonical AP-410         false\ncanonical G3             false\naccepted gates           []\n\`\`\`\n\n### Jobs\n\n${jobLines}\n\n### Artifacts\n\n${artifactLines}\n\nThis receipt closes only source portability. Runtime v2, Windows process admission, physical keyboard and controller observations, manual reader groups, canonical AP-410, G3, publication, and hosted repository acceptance remain separate.\n\nCan every later programme claim continue to distinguish hosted source portability from runtime, physical, and canonical authority?`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: Number(process.env.ISSUE_NUMBER),
+              body,
+            });
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: Number(process.env.ISSUE_NUMBER),
+              state: 'closed',
+              state_reason: 'completed',
+            });
