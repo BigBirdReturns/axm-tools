@@ -1,0 +1,49 @@
+)],
+        data_root,
+        work / "logs" / "dispatch-verification.log",
+    )
+    if archive.stat().st_size != EXPECTED_SOURCE_BYTES or digest(archive) != EXPECTED_SOURCE_SHA:
+        refuse("reconstructed source identity drift")
+
+    with tarfile.open(archive, "r:gz") as tf:
+        tf.extractall(work / "extract", filter="data")
+    roots = [path for path in (work / "extract").iterdir() if path.is_dir()]
+    if len(roots) != 1:
+        refuse("expected one extracted source root")
+    source_root = roots[0]
+    (work / "source-root.txt").write_text(str(source_root) + "\n", encoding="utf-8")
+
+    node_version = run(["node", "--version"], source_root, work / "logs" / "node-version.log").strip()
+    if node_version != EXPECTED_NODE:
+        refuse(f"node version mismatch: {node_version}")
+    (work / "node-version.txt").write_text(node_version + "\n", encoding="utf-8")
+
+    inventory = []
+    for path in sorted(p for p in source_root.rglob("*") if p.is_file()):
+        inventory.append(f"{digest(path)}  {path.relative_to(source_root).as_posix()}")
+    (work / "source-inventory.sha256").write_text("\n".join(inventory) + "\n", encoding="utf-8")
+
+    tests = sorted(str(path.relative_to(source_root)) for path in (source_root / "tests").glob("*.test.mjs"))
+    contract_output = run(["node", "--test", *tests], source_root, work / "logs" / "contracts.log")
+    if "# tests 49" not in contract_output or "# pass 49" not in contract_output or "# fail 0" not in contract_output:
+        refuse("49-contract denominator not reproduced")
+
+    verify_output = run(["node", "scripts/verify-package.mjs"], source_root, work / "logs" / "verify-package.log")
+    if "PACKAGE_VERIFIED" not in verify_output:
+        refuse("package verification marker absent")
+
+    progress_output = run(["node", "scripts/compile-progress.mjs"], source_root, work / "logs" / "compile-progress.log").strip()
+    try:
+        progress = json.loads(progress_output.splitlines()[-1])
+    except Exception as exc:
+        refuse(f"compile-progress output is not JSON: {exc}")
+    required = {
+        "progressId": EXPECTED_PROGRESS_ID,
+        "runtimeBindingVerified": False,
+        "observedInteractions": 0,
+        "observedVisuals": 0,
+        "observedReaderGroups": 0,
+        "status": "BLOCKED",
+        "sourceCompilerAccepted": False,
+        "canonicalAp410Accepted": False,
+        "canonicalG3Accepte
