@@ -13,6 +13,9 @@ env:
   AP410_DATA_ROOT: aperture-kit-v2-dispatch-data
   AP410_SOURCE_SHA256: 71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74
   AP410_SOURCE_BYTES: "90028"
+  GIT_CONFIG_COUNT: "1"
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: "false"
 jobs:
   acceptance-page:
     name: Acceptance page (headless browser)
