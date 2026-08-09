@@ -59,6 +59,23 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$AP410_DATA_HEAD"
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            shim="$RUNNER_TEMP/ap410-windows-file-url-path-shim.mjs"
+            cat > "$shim" <<'NODE'
+          import path from 'node:path';
+          import { syncBuiltinESMExports } from 'node:module';
+          const nativeResolve = path.resolve;
+          path.resolve = (...parts) => {
+            if (parts.length && typeof parts[0] === 'string' && /^\/[A-Za-z]:[\\/]/.test(parts[0])) {
+              parts[0] = parts[0].slice(1);
+            }
+            return nativeResolve(...parts);
+          };
+          syncBuiltinESMExports();
+          NODE
+            shim_url="$(node -e "console.log(require('node:url').pathToFileURL(process.argv[1]).href)" "$shim")"
+            export NODE_OPTIONS="--import=$shim_url"
+          fi
           python "$GITHUB_WORKSPACE/$AP410_DATA_ROOT/scripts/hosted_entry.py" source --data-root "$GITHUB_WORKSPACE/$AP410_DATA_ROOT" --work-root "$RUNNER_TEMP/source-${{ matrix.os }}" --runner-label "${{ matrix.os }}"
       - uses: actions/upload-artifact@v4
         with:
