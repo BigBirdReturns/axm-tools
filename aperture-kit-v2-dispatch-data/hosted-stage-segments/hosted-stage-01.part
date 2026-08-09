@@ -1,0 +1,33 @@
+  if out.exists(): shutil.rmtree(out)
+    (out / "cold-a").mkdir(parents=True)
+    (out / "cold-b").mkdir(parents=True)
+    (out / "os-receipts").mkdir(parents=True)
+    for label, root in (("cold-a", args.cold_a.resolve()), ("cold-b", args.cold_b.resolve())):
+        verify_archive(root / SOURCE_NAME)
+        verify_progress(root / "blocked-progress.json")
+        shutil.copy2(root / SOURCE_NAME, out / SOURCE_NAME) if label == "cold-a" else None
+        for name in ("dispatch-verification.json", "blocked-progress.json", "qualification.json", "qualification.env", "node-version.txt", "source-inventory.sha256"):
+            shutil.copy2(root / name, out / label / name)
+        shutil.copytree(root / "logs", out / label / "logs")
+    shutil.copytree(args.os_receipts.resolve(), out / "os-receipts", dirs_exist_ok=True)
+    receipt = {
+        "format": "axm-aperture-g3-observation-kit-v2-segmented-hosted-carrier/1",
+        "repository": os.environ["GITHUB_REPOSITORY"],
+        "workflow_run": os.environ["GITHUB_RUN_ID"],
+        "workflow_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+        "workflow_authorization_commit": os.environ["GITHUB_SHA"],
+        "data_branch": os.environ["AP410_DATA_BRANCH"],
+        "data_head": os.environ["AP410_DATA_HEAD"],
+        "source_archive": {"name": SOURCE_NAME, "bytes": SOURCE_BYTES, "sha256": SOURCE_SHA},
+        "kit_id": KIT_ID, "qualification_id": QUALIFICATION_ID, "blocked_progress_id": PROGRESS_ID,
+        "node_version": "v22.16.0", "contracts_per_execution": 49,
+        "hosted_operating_systems": ["ubuntu-24.04", "windows-2025"], "cold_roots": 2, "downloaded_replays": 0,
+        "runtime_binding_present": False, "observed_platform_interactions": 0, "observed_platform_visuals": 0,
+        "manual_reader_groups_passed": 0, "canonical_ap410_accepted": False, "canonical_g3_accepted": False,
+        "hosted_repository_accepted": False, "accepted_gates": [], "publication_status": "data_branch_unmerged",
+        "authority": "hosted_source_transport_and_qualification_only", "status": "PASS",
+    }
+    seal = hashlib.sha256(canonical(receipt)).hexdigest()
+    receipt["receipt_sha256"] = seal
+    receipt["receipt_id"] = "ap410kitv2segmentedcarrier1_" + seal
+    (out / "CARRIER_RECEIPT.json").write_text(json.dumps(receipt, in

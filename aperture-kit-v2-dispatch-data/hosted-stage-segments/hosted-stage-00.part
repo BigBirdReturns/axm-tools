@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+import argparse, hashlib, json, os, pathlib, shutil, subprocess, tarfile
+
+SOURCE_NAME = "AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz"
+SOURCE_SHA = "71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74"
+SOURCE_BYTES = 90028
+PROGRESS_ID = "uiprogress2_6073d7e2855ec35fece231f86e0cc0aa94ed9499d1b7a44d7fdbd5d1f2837cf2"
+KIT_ID = "g3observationkit2_6a0784236b71e0c78d22a6087aa837764eadddee17cc58e9522e909358eda9a1"
+QUALIFICATION_ID = "g3observationqualification2_14f759a2212a9119e6d9f0ae81e0e7f9a5937ceddcbe1e2b00864e51380bd4ec"
+
+def sha(path: pathlib.Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            h.update(block)
+    return h.hexdigest()
+
+def canonical(value: object) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+
+def refuse(message: str) -> None:
+    raise SystemExit(f"REFUSED: {message}")
+
+def verify_archive(path: pathlib.Path) -> None:
+    if not path.is_file() or path.stat().st_size != SOURCE_BYTES or sha(path) != SOURCE_SHA:
+        refuse("source archive identity mismatch")
+
+def verify_progress(path: pathlib.Path) -> dict:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    required = {
+        "progressId": PROGRESS_ID,
+        "status": "BLOCKED",
+        "reasonCodes": ["runtime_binding_missing"],
+        "observedInteractions": 0,
+        "observedVisuals": 0,
+        "observedReaderGroups": 0,
+        "runtimeBindingVerified": False,
+        "canonicalAp410Accepted": False,
+        "canonicalG3Accepted": False,
+        "hostedRepositoryAccepted": False,
+        "waivers": [],
+    }
+    for key, expected in required.items():
+        if value.get(key) != expected:
+            refuse(f"progress drift at {key}: {value.get(key)!r}")
+    return value
+
+def checksum_tree(root: pathlib.Path) -> None:
+    rows = []
+    for path in sorted(p for p in root.rglob("*") if p.is_file() and p.name != "SHA256SUMS"):
+        rows.append(f"{sha(path)}  {path.relative_to(root).as_posix()}")
+    (root / "SHA256SUMS").write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+def seal_carrier(args: argparse.Namespace) -> None:
+    out = args.output.resolve()
+  
