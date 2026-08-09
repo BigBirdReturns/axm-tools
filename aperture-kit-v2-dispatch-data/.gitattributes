@@ -1,0 +1,5 @@
+# Exact transport payloads must retain repository bytes on every hosted OS.
+chunks/*.b64 -text
+chunks/*.segment-* -text
+runtime-segments/*.part -text
+hosted-stage-segments/*.part -text
