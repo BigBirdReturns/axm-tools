@@ -1,0 +1,39 @@
+dent=2, sort_keys=True) + "\n", encoding="utf-8")
+    checksum_tree(out)
+    print(receipt["receipt_id"])
+
+def replay(args: argparse.Namespace) -> None:
+    downloaded, out = args.downloaded.resolve(), args.output.resolve()
+    if out.exists(): shutil.rmtree(out)
+    (out / "logs").mkdir(parents=True)
+    ledger = downloaded / "SHA256SUMS"
+    if not ledger.is_file(): refuse("downloaded checksum ledger missing")
+    for raw in ledger.read_text(encoding="utf-8").splitlines():
+        if not raw.strip(): continue
+        expected, rel = raw.split("  ", 1)
+        target = downloaded / rel
+        if not target.is_file() or sha(target) != expected: refuse(f"downloaded checksum mismatch: {rel}")
+    archive = downloaded / SOURCE_NAME
+    verify_archive(archive)
+    extract = out / "extract"
+    extract.mkdir()
+    with tarfile.open(archive, "r:gz") as tf: tf.extractall(extract, filter="data")
+    roots = [p for p in extract.iterdir() if p.is_dir()]
+    if len(roots) != 1: refuse("downloaded source root not unique")
+    source = roots[0]
+    tests = sorted(str(p.relative_to(source)) for p in (source / "tests").glob("*.test.mjs"))
+    commands = [
+        (["node", "--test", *tests], "contracts.log"),
+        (["node", "scripts/verify-package.mjs"], "verify-package.log"),
+        (["node", "scripts/compile-progress.mjs"], "compile-progress.log"),
+    ]
+    for command, name in commands:
+        result = subprocess.run(command, cwd=source, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        (out / "logs" / name).write_text(result.stdout, encoding="utf-8")
+        if result.returncode: refuse(f"downloaded replay command failed: {' '.join(command)}")
+    contracts = (out / "logs/contracts.log").read_text(encoding="utf-8")
+    if "# tests 49" not in contracts or "# pass 49" not in contracts or "# fail 0" not in contracts: refuse("downloaded 49-contract replay failed")
+    if "PACKAGE_VERIFIED" not in (out / "logs/verify-package.log").read_text(encoding="utf-8"): refuse("downloaded package verification failed")
+    lines = (out / "logs/compile-progress.log").read_text(encoding="utf-8").splitlines()
+    progress = json.loads(lines[-1])
+    (out / "blocked-progress.json").write_text(json.dumps(progress, sort_keys=True, separators=(",", ":")) + "\n", encodi

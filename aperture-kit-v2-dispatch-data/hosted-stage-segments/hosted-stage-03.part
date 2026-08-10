@@ -1,0 +1,31 @@
+ng="utf-8")
+    verify_progress(out / "blocked-progress.json")
+    carrier = json.loads((downloaded / "CARRIER_RECEIPT.json").read_text(encoding="utf-8"))
+    receipt = {
+        "format": "axm-aperture-g3-observation-kit-v2-segmented-downloaded-replay/1",
+        "repository": os.environ["GITHUB_REPOSITORY"], "workflow_run": os.environ["GITHUB_RUN_ID"],
+        "workflow_attempt": os.environ["GITHUB_RUN_ATTEMPT"], "workflow_authorization_commit": os.environ["GITHUB_SHA"],
+        "data_branch": os.environ["AP410_DATA_BRANCH"], "data_head": os.environ["AP410_DATA_HEAD"],
+        "carrier_receipt": carrier["receipt_id"], "source_archive_sha256": SOURCE_SHA, "source_archive_bytes": SOURCE_BYTES,
+        "contracts": 49, "package_verification": "PASS", "downloaded_replays": 1,
+        "runtime_binding_present": False, "canonical_ap410_accepted": False, "canonical_g3_accepted": False,
+        "hosted_repository_accepted": False, "accepted_gates": [], "authority": "downloaded_source_replay_only", "status": "PASS",
+    }
+    seal = hashlib.sha256(canonical(receipt)).hexdigest()
+    receipt["receipt_sha256"] = seal
+    receipt["receipt_id"] = "ap410kitv2segmentedreplay1_" + seal
+    (out / "DOWNLOADED_REPLAY_RECEIPT.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    checksum_tree(out)
+    print(receipt["receipt_id"])
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    sub = parser.add_subparsers(dest="command", required=True)
+    seal = sub.add_parser("seal-carrier")
+    seal.add_argument("--cold-a", type=pathlib.Path, required=True); seal.add_argument("--cold-b", type=pathlib.Path, required=True)
+    seal.add_argument("--os-receipts", type=pathlib.Path, required=True); seal.add_argument("--output", type=pathlib.Path, required=True)
+    replay_p = sub.add_parser("replay")
+    replay_p.add_argument("--downloaded", type=pathlib.Path, required=True); replay_p.add_argument("--output", type=pathlib.Path, required=True)
+    args = parser.parse_args()
+    seal_carrier(args) if args.command == "seal-carrier" else replay(args)
+if __name__ == "__main__": main()

@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+"""Execute the exact AP-410 Kit v2 source qualification denominator."""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import pathlib
+import shutil
+import subprocess
+import sys
+import tarfile
+from typing import Any
+
+EXPECTED_SOURCE_SHA = "71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74"
+EXPECTED_SOURCE_BYTES = 90028
+EXPECTED_NODE = "v22.16.0"
+EXPECTED_PROGRESS_ID = "uiprogress2_6073d7e2855ec35fece231f86e0cc0aa94ed9499d1b7a44d7fdbd5d1f2837cf2"
+EXPECTED_KIT_ID = "g3observationkit2_6a0784236b71e0c78d22a6087aa837764eadddee17cc58e9522e909358eda9a1"
+EXPECTED_QUALIFICATION_ID = "g3observationqualification2_14f759a2212a9119e6d9f0ae81e0e7f9a5937ceddcbe1e2b00864e51380bd4ec"
+
+def digest(path: pathlib.Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            h.update(block)
+    return h.hexdigest()
+
+def refuse(message: str) -> None:
+    raise SystemExit(f"REFUSED: {message}")
+
+def run(command: list[str], cwd: pathlib.Path, log: pathlib.Path) -> str:
+    result = subprocess.run(command, cwd=cwd, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    log.parent.mkdir(parents=True, exist_ok=True)
+    log.write_text(result.stdout, encoding="utf-8")
+    if result.returncode != 0:
+        sys.stdout.write(result.stdout)
+        refuse(f"command failed ({result.returncode}): {' '.join(command)}")
+    return result.stdout
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data-root", type=pathlib.Path, default=pathlib.Path(__file__).resolve().parents[1])
+    parser.add_argument("--work-root", type=pathlib.Path, required=True)
+    parser.add_argument("--runner-label", default=os.environ.get("RUNNER_OS", "local"))
+    args = parser.parse_args()
+
+    data_root = args.data_root.resolve()
+    work = args.work_root.resolve()
+    if work.exists():
+        shutil.rmtree(work)
+    (work / "extract").mkdir(parents=True)
+    (work / "logs").mkdir(parents=True)
+    archive = work / "AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz"
+    verification = work / "dispatch-verification.json"
+
+    run(
+        [sys.executable, str(data_root / "scripts" / "verify_dispatch_data.py"),
+         "--data-root", str(data_root), "--output", str(archive), "--receipt", str(verification

@@ -1,0 +1,52 @@
+d": False,
+        "hostedRepositoryAccepted": False,
+        "waivers": [],
+    }
+    for key, expected in required.items():
+        if progress.get(key) != expected:
+            refuse(f"progress field drift at {key}: {progress.get(key)!r}")
+    if progress.get("reasonCodes") != ["runtime_binding_missing"]:
+        refuse("runtime_binding_missing is not the sole reason code")
+
+    blocked_text = json.dumps(progress, sort_keys=True, separators=(",", ":")) + "\n"
+    (work / "blocked-progress.json").write_text(blocked_text, encoding="utf-8")
+    qualification = {
+        "format": "axm-aperture-g3-observation-kit-v2-hosted-qualification/1",
+        "runner_label": args.runner_label,
+        "source_archive": {"bytes": archive.stat().st_size, "sha256": digest(archive)},
+        "kit_id": EXPECTED_KIT_ID,
+        "qualification_id": EXPECTED_QUALIFICATION_ID,
+        "blocked_progress_id": EXPECTED_PROGRESS_ID,
+        "node_version": node_version,
+        "contracts": {"passed": 49, "failed": 0},
+        "package_verified": True,
+        "runtime_binding_present": False,
+        "observed_platform_interactions": 0,
+        "observed_platform_visuals": 0,
+        "manual_reader_groups_passed": 0,
+        "canonical_ap410_accepted": False,
+        "canonical_g3_accepted": False,
+        "hosted_repository_accepted": False,
+        "accepted_gates": [],
+        "status": "PASS",
+    }
+    core = json.dumps(qualification, sort_keys=True, separators=(",", ":")).encode()
+    qualification["qualification_receipt_sha256"] = hashlib.sha256(core).hexdigest()
+    (work / "qualification.json").write_text(json.dumps(qualification, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (work / "qualification.env").write_text(
+        "\n".join([
+            f"archive_sha256={digest(archive)}",
+            f"archive_bytes={archive.stat().st_size}",
+            f"kit={EXPECTED_KIT_ID}",
+            f"qualification={EXPECTED_QUALIFICATION_ID}",
+            f"blocked_progress={EXPECTED_PROGRESS_ID}",
+            "contracts=49",
+            "status=PASS",
+            f"runner_label={args.runner_label}",
+        ]) + "\n",
+        encoding="utf-8",
+    )
+    print(json.dumps(qualification, sort_keys=True))
+
+if __name__ == "__main__":
+    main()
