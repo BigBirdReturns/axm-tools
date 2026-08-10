@@ -1,0 +1,98 @@
+{
+  "authority": {
+    "canonical_ap410_accepted": false,
+    "canonical_g3_accepted": false,
+    "classification": "transport_and_hosted_source_qualification_only",
+    "gate_advancement": [],
+    "merge_allowed": false,
+    "observed_interactions": 0,
+    "observed_reader_groups": 0,
+    "observed_visuals": 0,
+    "runtime_binding_present": false
+  },
+  "branch": "agent/aperture-g3-observation-kit-v2-dispatch-data-v2",
+  "chunks": [
+    {
+      "base64_characters": 15008,
+      "bytes": 15009,
+      "order": 0,
+      "path": "chunks/part-00.b64",
+      "sha256": "1541536dc36b91941630b8b6fdbf0ba790be3158909e1c73cc1f799937ad26f7"
+    },
+    {
+      "base64_characters": 15008,
+      "bytes": 15009,
+      "order": 1,
+      "path": "chunks/part-01.b64",
+      "sha256": "680cc63427f11494f2dcd786155e027eb75eaab311a9cdf6c673d30e73099909"
+    },
+    {
+      "base64_characters": 15008,
+      "bytes": 15009,
+      "order": 2,
+      "path": "chunks/part-02.b64",
+      "sha256": "2b3c784f3681f77ad63b1130a04fda2f0f02d28f6e1a4c360d625613581af44b"
+    },
+    {
+      "base64_characters": 15008,
+      "bytes": 15009,
+      "order": 3,
+      "path": "chunks/part-03.b64",
+      "sha256": "750a049e54777b016d06d55ae0dd33bc42fe5dd3af82f1cd9697cba3d4008889"
+    },
+    {
+      "base64_characters": 15008,
+      "bytes": 15009,
+      "order": 4,
+      "path": "chunks/part-04.b64",
+      "sha256": "6d0f5e325a7c1c91887fa889cc479c805655b49b653eac8e9ac65c61b82d4cb7"
+    },
+    {
+      "base64_characters": 15008,
+      "bytes": 15009,
+      "order": 5,
+      "path": "chunks/part-05.b64",
+      "sha256": "458072437ae89b721f589ae6c77cb1f7d35a36f157979df1782033ead5bd1fe4"
+    },
+    {
+      "base64_characters": 15008,
+      "bytes": 15009,
+      "order": 6,
+      "path": "chunks/part-06.b64",
+      "sha256": "c342f8484402a0320db710fc74cbd8da148373ae986e9e4375ecee0ffc0b6722"
+    },
+    {
+      "base64_characters": 14984,
+      "bytes": 14985,
+      "order": 7,
+      "path": "chunks/part-07.b64",
+      "sha256": "4685b0be18365a02118e71855c776a1e2c0e8fd45a0b6dd8dcfaf7323461fbee"
+    }
+  ],
+  "denominator": {
+    "cold_roots": 2,
+    "contracts": 49,
+    "downloaded_replays": 1,
+    "node": "22.16.0",
+    "operating_systems": [
+      "ubuntu-24.04",
+      "windows-2025"
+    ]
+  },
+  "directory": "aperture-kit-v2-dispatch-data",
+  "format": "axm-aperture-g3-observation-kit-v2-dispatch-data/1",
+  "identities": {
+    "blocked_progress": "uiprogress2_6073d7e2855ec35fece231f86e0cc0aa94ed9499d1b7a44d7fdbd5d1f2837cf2",
+    "kit": "g3observationkit2_6a0784236b71e0c78d22a6087aa837764eadddee17cc58e9522e909358eda9a1",
+    "package_manifest_sha256": "87218d601ff0d4f7d577d6c5bf476b2dbd073a7176d192cba24f3745c28030b7",
+    "qualification": "g3observationqualification2_14f759a2212a9119e6d9f0ae81e0e7f9a5937ceddcbe1e2b00864e51380bd4ec",
+    "source_manifest_sha256": "014a5d9f0dc8803484333c7deb7dadc89f38f96667c69d8fc72699923f3ae6ca",
+    "source_matrix_sha256": "aef281d81fae08bf350e700948405f98d49a770442a323189b16c9b9f005f657"
+  },
+  "manifest_sha256": "9407983131a9326c07b90b443d2a7349e911254904e90bb0799d0a005a3ea704",
+  "source": {
+    "bytes": 90028,
+    "name": "AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz",
+    "sha256": "71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74"
+  }
+}
