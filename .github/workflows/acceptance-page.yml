@@ -1,64 +1,171 @@
-# AP-410 Kit v2 hosted source portability. The data branch remains unmerged and grants no runtime, physical, canonical, repository, or gate authority.
+# Normalized one-commit successor to Authenticated Dispatch Operator v4.
+# The transport branch is exactly one commit over retained Tools base
+# bf5e88867d62aa41071b659e227430b5dd4c4cad, and its complete 14-file tree is
+# exact at 7a4876642295fcdb30f5b2219c167d97053f9151. This identity rebind changes
+# no source byte, contract, refusal, or authority ceiling.
+#
+# Regression harness for acceptance.html and the bounded AP-410 Kit v2 hosted qualification.
+#
+# The AP-410 jobs execute only from a user-authenticated main-branch commit
+# carrying [AP410-KIT-V2-AUTHORIZED]. They consume one exact-tree, one-commit data branch,
+# retain Ubuntu and Windows receipts, redownload the final artifact, replay the
+# full source denominator, and post a witness without accepting AP-410 or G3.
+
 name: Acceptance page
+
 on:
   push:
   pull_request:
+
 permissions:
   actions: read
   contents: read
   issues: write
+
 env:
-  AP410_DATA_BRANCH: agent/aperture-g3-observation-kit-v2-dispatch-data-v5-segmented
-  AP410_DATA_HEAD: 9342476fe6ef501b9d3776e738d0822f1c474a4b
+  AP410_KIT_SOURCE_SHA256: 71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74
+  AP410_KIT_SOURCE_BYTES: "90028"
+  AP410_KIT_ID: g3observationkit2_6a0784236b71e0c78d22a6087aa837764eadddee17cc58e9522e909358eda9a1
+  AP410_KIT_QUALIFICATION_ID: g3observationqualification2_14f759a2212a9119e6d9f0ae81e0e7f9a5937ceddcbe1e2b00864e51380bd4ec
+  AP410_KIT_BLOCKED_PROGRESS_ID: uiprogress2_6073d7e2855ec35fece231f86e0cc0aa94ed9499d1b7a44d7fdbd5d1f2837cf2
+  AP410_KIT_CARRIER_HEAD: f0925bda2e4eeedd6dfd83c8a7adf1af8ffa54a6
+  AP410_DATA_BRANCH: agent/aperture-g3-observation-kit-v2-dispatch-data-v6-normalized-one-commit
+  AP410_DATA_HEAD: ddee7f2fd5d1b2d164473f74883f0c37b0e35e36
+  AP410_DATA_PARENT: bf5e88867d62aa41071b659e227430b5dd4c4cad
+  AP410_DATA_TREE: 7a4876642295fcdb30f5b2219c167d97053f9151
   AP410_DATA_ROOT: aperture-kit-v2-dispatch-data
-  AP410_SOURCE_SHA256: 71f4a03b50138c4f37e1fc5bce16a211f1e72f06ad5338700db1f5eaaf19bf74
-  AP410_SOURCE_BYTES: "90028"
   GIT_CONFIG_COUNT: "1"
   GIT_CONFIG_KEY_0: core.autocrlf
   GIT_CONFIG_VALUE_0: "false"
+
 jobs:
   acceptance-page:
     name: Acceptance page (headless browser)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
-        with: {node-version: "22"}
-      - run: npm install --no-save playwright@1 && npx playwright install --with-deps chromium && node tests/pages/verify_acceptance.mjs
-  ap410-announce:
+        with:
+          node-version: "22"
+
+      - name: Install Playwright + Chromium
+        run: |
+          npm install --no-save playwright@1 >/tmp/acceptance-npm-install.log 2>&1
+          npx playwright install --with-deps chromium >/tmp/acceptance-browser-install.log 2>&1
+
+      - name: Drive acceptance.html and assert the intake rules
+        run: node tests/pages/verify_acceptance.mjs
+
+  ap410-kit-v2-announce:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[AP410-KIT-V2-AUTHORIZED]')
     name: AP-410 Kit v2 / start witness
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - env: {GH_TOKEN: "${{ github.token }}"}
+      - name: Post exact run identity to issue 71
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          body="## KIT_V2_SEGMENTED_HOSTED_RUN_STARTED
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
 
-          Run \`$GITHUB_RUN_ID\`, attempt \`$GITHUB_RUN_ATTEMPT\`, authorization commit \`$GITHUB_SHA\`, data head \`$AP410_DATA_HEAD\`. This is an execution coordinate only. Accepted gates remain \`[]\`; canonical AP-410 and G3 remain false."
-          gh api "repos/$GITHUB_REPOSITORY/issues/71/comments" -f body="$body"
-  ap410-source:
-    needs: ap410-announce
+          lines = [
+              "## KIT_V2_AUTHENTICATED_HOSTED_RUN_STARTED",
+              "",
+              "A user-authenticated commit to the already active default-branch workflow created this AP-410 Kit v2 run. This entry identifies the run and exact transport coordinates only. It is not hosted passage, runtime binding, physical evidence, AP-410 acceptance, G3 acceptance, or issue closure.",
+              "",
+              "```text",
+              f"workflow run                   {os.environ['GITHUB_RUN_ID']}",
+              f"workflow attempt               {os.environ['GITHUB_RUN_ATTEMPT']}",
+              f"workflow authorization commit  {os.environ['GITHUB_SHA']}",
+              f"data branch                    {os.environ['AP410_DATA_BRANCH']}",
+              f"data head                      {os.environ['AP410_DATA_HEAD']}",
+              f"data parent                    {os.environ['AP410_DATA_PARENT']}",
+              f"data tree                      {os.environ['AP410_DATA_TREE']}",
+              "commits over parent            1",
+              f"qualifier carrier head         {os.environ['AP410_KIT_CARRIER_HEAD']}",
+              f"source SHA-256                 {os.environ['AP410_KIT_SOURCE_SHA256']}",
+              f"source bytes                   {os.environ['AP410_KIT_SOURCE_BYTES']}",
+              "accepted gates                 []",
+              "canonical AP-410               false",
+              "canonical G3                   false",
+              "```",
+              "",
+              "The run must still return successful Ubuntu, Windows, two-root, retained-artifact, and independently downloaded replay evidence before issue #71 changes standing.",
+          ]
+          payload = json.dumps({"body": "\n".join(lines)}).encode()
+          request = urllib.request.Request(
+              f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/issues/71/comments",
+              data=payload,
+              method="POST",
+              headers={
+                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+                  "User-Agent": "AXM-Aperture-Kit-V2-Normalized/1",
+                  "Content-Type": "application/json",
+              },
+          )
+          with urllib.request.urlopen(request, timeout=60) as response:
+              response.read()
+          PY
+
+  ap410-kit-v2-source:
+    needs: ap410-kit-v2-announce
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[AP410-KIT-V2-AUTHORIZED]')
     name: AP-410 Kit v2 / ${{ matrix.label }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - {os: ubuntu-24.04, label: Ubuntu 24.04 source and refusal law}
-          - {os: windows-2025, label: Windows 2025 source and refusal law}
+          - os: ubuntu-24.04
+            label: Ubuntu 24.04 source and refusal law
+          - os: windows-2025
+            label: Windows 2025 source and refusal law
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-        with: {ref: "${{ env.AP410_DATA_HEAD }}", fetch-depth: 1, show-progress: false}
-      - uses: actions/setup-python@v5
-        with: {python-version: "3.12"}
-      - uses: actions/setup-node@v4
-        with: {node-version: 22.16.0}
-      - shell: bash
+      - name: Check out exact qualifier carrier head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.AP410_KIT_CARRIER_HEAD }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up exact Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+
+      - name: Fetch normalized one-commit data branch, reconstruct, and qualify
+        shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "$AP410_DATA_HEAD"
+          git fetch --no-tags --depth=1 origin "+refs/heads/$AP410_DATA_BRANCH:refs/remotes/origin/ap410-data"
+          observed_head="$(git rev-parse refs/remotes/origin/ap410-data)"
+          test "$observed_head" = "$AP410_DATA_HEAD"
+          test "$(git show -s --format=%P "$observed_head")" = "$AP410_DATA_PARENT"
+          test "$(git show -s --format=%T "$observed_head")" = "$AP410_DATA_TREE"
+          data_parent="$RUNNER_TEMP/ap410-data-${{ matrix.os }}"
+          rm -rf "$data_parent"
+          mkdir -p "$data_parent"
+          git archive refs/remotes/origin/ap410-data "$AP410_DATA_ROOT" | tar -xf - -C "$data_parent"
+          data_root="$data_parent/$AP410_DATA_ROOT"
+          archive="$RUNNER_TEMP/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz"
+          root="$RUNNER_TEMP/aperture-kit-v2-${{ matrix.os }}"
+          python "$data_root/verify_dispatch_data.py" --root "$data_root" --output "$archive"
+          test "$(wc -c < "$archive" | tr -d '[:space:]')" = "$AP410_KIT_SOURCE_BYTES"
+          test "$(sha256sum "$archive" | cut -d' ' -f1)" = "$AP410_KIT_SOURCE_SHA256"
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             shim="$RUNNER_TEMP/ap410-windows-file-url-path-shim.mjs"
             cat > "$shim" <<'NODE'
@@ -76,79 +183,462 @@ jobs:
             shim_url="$(node -e "console.log(require('node:url').pathToFileURL(process.argv[1]).href)" "$shim")"
             export NODE_OPTIONS="--import=$shim_url"
           fi
-          python "$GITHUB_WORKSPACE/$AP410_DATA_ROOT/scripts/hosted_entry.py" source --data-root "$GITHUB_WORKSPACE/$AP410_DATA_ROOT" --work-root "$RUNNER_TEMP/source-${{ matrix.os }}" --runner-label "${{ matrix.os }}"
-      - uses: actions/upload-artifact@v4
+          chmod +x .github/scripts/aperture-g3-observation-kit-v2-qualify.sh
+          .github/scripts/aperture-g3-observation-kit-v2-qualify.sh "$archive" "$root"
+          printf '%s\n' \
+            "workflow_authorization_commit=$GITHUB_SHA" \
+            "data_branch=$AP410_DATA_BRANCH" \
+            "data_head=$AP410_DATA_HEAD" \
+            "data_parent=$AP410_DATA_PARENT" \
+            "data_tree=$AP410_DATA_TREE" \
+            "qualifier_carrier_head=$AP410_KIT_CARRIER_HEAD" \
+            "runner_os=${{ matrix.os }}" \
+            >> "$root/qualification.env"
+
+      - name: Upload operating-system receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: ap410-kit-v2-${{ matrix.os }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/source-${{ matrix.os }}/
+          path: ${{ runner.temp }}/aperture-kit-v2-${{ matrix.os }}/
           if-no-files-found: error
           compression-level: 0
           retention-days: 30
-  ap410-custody:
-    needs: ap410-source
+
+  ap410-kit-v2-custody:
+    needs: ap410-kit-v2-source
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[AP410-KIT-V2-AUTHORIZED]')
     name: AP-410 Kit v2 / two-root custody
     runs-on: ubuntu-24.04
     timeout-minutes: 35
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+      artifact_url: ${{ steps.upload.outputs.artifact-url }}
+      artifact_digest: ${{ steps.upload.outputs.artifact-digest }}
+      receipt_id: ${{ steps.seal.outputs.receipt_id }}
     steps:
-      - uses: actions/checkout@v4
-        with: {ref: "${{ env.AP410_DATA_HEAD }}", fetch-depth: 1, show-progress: false}
-      - uses: actions/setup-python@v5
-        with: {python-version: "3.12"}
-      - uses: actions/setup-node@v4
-        with: {node-version: 22.16.0}
-      - uses: actions/download-artifact@v4
+      - name: Check out exact qualifier carrier head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.AP410_KIT_CARRIER_HEAD }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up exact Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+
+      - name: Reconstruct exact source and qualify two clean roots
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin "+refs/heads/$AP410_DATA_BRANCH:refs/remotes/origin/ap410-data"
+          observed_head="$(git rev-parse refs/remotes/origin/ap410-data)"
+          test "$observed_head" = "$AP410_DATA_HEAD"
+          test "$(git show -s --format=%P "$observed_head")" = "$AP410_DATA_PARENT"
+          test "$(git show -s --format=%T "$observed_head")" = "$AP410_DATA_TREE"
+          data_parent="$RUNNER_TEMP/ap410-data-custody"
+          rm -rf "$data_parent"
+          mkdir -p "$data_parent"
+          git archive refs/remotes/origin/ap410-data "$AP410_DATA_ROOT" | tar -xf - -C "$data_parent"
+          data_root="$data_parent/$AP410_DATA_ROOT"
+          archive="$RUNNER_TEMP/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz"
+          python "$data_root/verify_dispatch_data.py" --root "$data_root" --output "$archive"
+          test "$(wc -c < "$archive" | tr -d '[:space:]')" = "$AP410_KIT_SOURCE_BYTES"
+          test "$(sha256sum "$archive" | cut -d' ' -f1)" = "$AP410_KIT_SOURCE_SHA256"
+          chmod +x .github/scripts/aperture-g3-observation-kit-v2-qualify.sh
+          .github/scripts/aperture-g3-observation-kit-v2-qualify.sh "$archive" "$RUNNER_TEMP/cold-a"
+          .github/scripts/aperture-g3-observation-kit-v2-qualify.sh "$archive" "$RUNNER_TEMP/cold-b"
+          cmp "$RUNNER_TEMP/cold-a/blocked-progress.json" "$RUNNER_TEMP/cold-b/blocked-progress.json"
+          cmp "$RUNNER_TEMP/cold-a/qualification.env" "$RUNNER_TEMP/cold-b/qualification.env"
+
+      - name: Download Ubuntu and Windows receipts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           pattern: ap410-kit-v2-*-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/os-receipts
           merge-multiple: false
-      - shell: bash
+
+      - name: Seal retained carrier artifact
+        id: seal
+        shell: bash
         run: |
           set -euo pipefail
-          python "$GITHUB_WORKSPACE/$AP410_DATA_ROOT/scripts/hosted_entry.py" custody --data-root "$GITHUB_WORKSPACE/$AP410_DATA_ROOT" --temp-root "$RUNNER_TEMP/custody" --os-receipts "$RUNNER_TEMP/os-receipts" --output "$RUNNER_TEMP/carrier"
-      - uses: actions/upload-artifact@v4
+          out="$RUNNER_TEMP/carrier-artifact"
+          rm -rf "$out"
+          mkdir -p "$out/cold-a" "$out/cold-b" "$out/os-receipts"
+          cp "$RUNNER_TEMP/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz" "$out/"
+          cp -r "$RUNNER_TEMP/os-receipts/." "$out/os-receipts/"
+          for root in cold-a cold-b; do
+            cp "$RUNNER_TEMP/$root/blocked-progress.json" "$out/$root/"
+            cp "$RUNNER_TEMP/$root/qualification.env" "$out/$root/"
+            cp "$RUNNER_TEMP/$root/archive.sha256" "$out/$root/"
+            cp "$RUNNER_TEMP/$root/node-version.txt" "$out/$root/"
+            cp "$RUNNER_TEMP/$root/source-inventory.sha256" "$out/$root/"
+            cp -r "$RUNNER_TEMP/$root/logs" "$out/$root/"
+          done
+          python - "$out" "$GITHUB_OUTPUT" <<'PY'
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import sys
+
+          out = pathlib.Path(sys.argv[1])
+          github_output = pathlib.Path(sys.argv[2])
+          archive = out / "AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz"
+
+          def digest(path):
+              h = hashlib.sha256()
+              with path.open("rb") as handle:
+                  for block in iter(lambda: handle.read(1024 * 1024), b""):
+                      h.update(block)
+              return h.hexdigest()
+
+          receipt = {
+              "format": "axm-aperture-g3-observation-kit-v2-hosted-carrier-receipt/1",
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "workflow_authorization_commit": os.environ["GITHUB_SHA"],
+              "workflow_run": os.environ["GITHUB_RUN_ID"],
+              "workflow_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "data_branch": os.environ["AP410_DATA_BRANCH"],
+              "data_head": os.environ["AP410_DATA_HEAD"],
+              "data_parent": os.environ["AP410_DATA_PARENT"],
+              "data_tree": os.environ["AP410_DATA_TREE"],
+              "carrier_commits_over_parent": 1,
+              "qualifier_carrier_head": os.environ["AP410_KIT_CARRIER_HEAD"],
+              "source_archive": {
+                  "name": archive.name,
+                  "bytes": archive.stat().st_size,
+                  "sha256": digest(archive),
+              },
+              "kit_id": os.environ["AP410_KIT_ID"],
+              "qualification_id": os.environ["AP410_KIT_QUALIFICATION_ID"],
+              "blocked_progress_id": os.environ["AP410_KIT_BLOCKED_PROGRESS_ID"],
+              "node_version": "22.16.0",
+              "source_contracts_per_execution": 49,
+              "hosted_operating_systems": ["ubuntu-24.04", "windows-2025"],
+              "cold_roots": 2,
+              "downloaded_replays": 0,
+              "accepted_gates": [],
+              "canonical_ap410_accepted": False,
+              "canonical_g3_accepted": False,
+              "hosted_repository_accepted": False,
+              "runtime_binding_present": False,
+              "observed_platform_interactions": 0,
+              "observed_platform_visuals": 0,
+              "manual_reader_groups_passed": 0,
+              "carrier_authority": "hosted_source_transport_and_qualification_only",
+              "publication_status": "data_branch_unmerged",
+              "status": "PASS",
+          }
+          core = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
+          receipt_sha = hashlib.sha256(core).hexdigest()
+          receipt["receipt_sha256"] = receipt_sha
+          receipt["receipt_id"] = f"ap410kitv2hostedcarrier1_{receipt_sha}"
+          (out / "CARRIER_RECEIPT.json").write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          with github_output.open("a", encoding="utf-8") as handle:
+              handle.write(f"receipt_id={receipt['receipt_id']}\n")
+          PY
+          (
+            cd "$out"
+            find . -type f ! -name SHA256SUMS -print0 \
+              | LC_ALL=C sort -z \
+              | xargs -0 sha256sum > SHA256SUMS
+            sha256sum -c SHA256SUMS
+          )
+
+      - name: Upload retained carrier artifact
+        id: upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: ap410-kit-v2-final-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/carrier/
+          path: ${{ runner.temp }}/carrier-artifact/
           if-no-files-found: error
           compression-level: 0
           retention-days: 30
-  ap410-witness:
-    needs: ap410-custody
+
+  ap410-kit-v2-witness:
+    needs: ap410-kit-v2-custody
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[AP410-KIT-V2-AUTHORIZED]')
     name: AP-410 Kit v2 / downloaded independent replay
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-        with: {ref: "${{ env.AP410_DATA_HEAD }}", fetch-depth: 1, show-progress: false}
-      - uses: actions/setup-python@v5
-        with: {python-version: "3.12"}
-      - uses: actions/setup-node@v4
-        with: {node-version: 22.16.0}
-      - uses: actions/download-artifact@v4
+      - name: Check out exact qualifier carrier head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.AP410_KIT_CARRIER_HEAD }}
+          fetch-depth: 1
+          show-progress: false
+
+      - name: Set up exact Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up exact Node 22.16.0
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+
+      - name: Download retained carrier artifact through Actions custody
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: ap410-kit-v2-final-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/downloaded
-      - shell: bash
+
+      - name: Verify and replay downloaded artifact
+        id: replay
+        shell: bash
         run: |
           set -euo pipefail
-          python "$GITHUB_WORKSPACE/$AP410_DATA_ROOT/scripts/hosted_entry.py" witness --data-root "$GITHUB_WORKSPACE/$AP410_DATA_ROOT" --downloaded "$RUNNER_TEMP/downloaded" --output "$RUNNER_TEMP/witness"
-      - id: upload
-        uses: actions/upload-artifact@v4
+          downloaded="$RUNNER_TEMP/downloaded"
+          witness="$RUNNER_TEMP/witness"
+          replay_out="$witness/downloaded-replay"
+          mkdir -p "$replay_out/logs"
+          (cd "$downloaded" && sha256sum -c SHA256SUMS) | tee "$witness/final-artifact-sha256.log"
+          chmod +x .github/scripts/aperture-g3-observation-kit-v2-qualify.sh
+          .github/scripts/aperture-g3-observation-kit-v2-qualify.sh \
+            "$downloaded/AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz" \
+            "$RUNNER_TEMP/downloaded-replay"
+          cmp "$downloaded/cold-a/blocked-progress.json" "$RUNNER_TEMP/downloaded-replay/blocked-progress.json"
+          cp "$downloaded/CARRIER_RECEIPT.json" "$witness/"
+          for name in blocked-progress.json qualification.env archive.sha256 node-version.txt source-inventory.sha256; do
+            cp "$RUNNER_TEMP/downloaded-replay/$name" "$replay_out/"
+          done
+          cp "$RUNNER_TEMP/downloaded-replay/logs/contracts.log" "$replay_out/logs/"
+          cp "$RUNNER_TEMP/downloaded-replay/logs/verify-package.log" "$replay_out/logs/"
+          cp "$RUNNER_TEMP/downloaded-replay/logs/compile-progress.log" "$replay_out/logs/"
+          python - "$downloaded" "$RUNNER_TEMP/downloaded-replay" "$witness" "$GITHUB_OUTPUT" <<'PY'
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import sys
+          import urllib.request
+
+          downloaded = pathlib.Path(sys.argv[1])
+          replay = pathlib.Path(sys.argv[2])
+          witness = pathlib.Path(sys.argv[3])
+          github_output = pathlib.Path(sys.argv[4])
+
+          def digest(path):
+              h = hashlib.sha256()
+              with path.open("rb") as handle:
+                  for block in iter(lambda: handle.read(1024 * 1024), b""):
+                      h.update(block)
+              return h.hexdigest()
+
+          token = os.environ["GH_TOKEN"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+          run_request = urllib.request.Request(
+              f"https://api.github.com/repos/{repo}/actions/runs/{run_id}",
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+                  "User-Agent": "AXM-Aperture-Kit-V2-Witness/3",
+              },
+          )
+          with urllib.request.urlopen(run_request, timeout=60) as response:
+              raw_run = json.load(response)
+          run_record = {
+              key: raw_run.get(key)
+              for key in ("id", "run_attempt", "status", "conclusion", "event", "head_branch", "head_sha", "name", "path", "created_at", "updated_at")
+          }
+          run_record["head_commit_message"] = (raw_run.get("head_commit") or {}).get("message", "")
+          (witness / "RUN.json").write_text(json.dumps(run_record, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+          request = urllib.request.Request(
+              f"https://api.github.com/repos/{repo}/actions/runs/{run_id}/jobs?per_page=100",
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+                  "User-Agent": "AXM-Aperture-Kit-V2-Witness/3",
+              },
+          )
+          with urllib.request.urlopen(request, timeout=60) as response:
+              jobs_payload = json.load(response)
+          jobs = [
+              {
+                  "id": item["id"],
+                  "name": item["name"],
+                  "status": item["status"],
+                  "conclusion": item.get("conclusion"),
+              }
+              for item in jobs_payload.get("jobs", [])
+              if item["name"] == "Acceptance page (headless browser)" or item["name"].startswith("AP-410 Kit v2 /")
+          ]
+          jobs.sort(key=lambda item: item["name"])
+          (witness / "JOBS.json").write_text(json.dumps(jobs, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+          archive = downloaded / "AXM-Aperture-G3-Platform-Observation-Kit-v2.tar.gz"
+          carrier = json.loads((downloaded / "CARRIER_RECEIPT.json").read_text(encoding="utf-8"))
+          replay_receipt = {
+              "format": "axm-aperture-g3-observation-kit-v2-downloaded-replay-receipt/1",
+              "repository": repo,
+              "workflow_run": run_id,
+              "workflow_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "workflow_authorization_commit": os.environ["GITHUB_SHA"],
+              "data_branch": os.environ["AP410_DATA_BRANCH"],
+              "data_head": os.environ["AP410_DATA_HEAD"],
+              "data_parent": os.environ["AP410_DATA_PARENT"],
+              "data_tree": os.environ["AP410_DATA_TREE"],
+              "carrier_commits_over_parent": 1,
+              "carrier_receipt": carrier["receipt_id"],
+              "source_archive_sha256": digest(archive),
+              "source_archive_bytes": archive.stat().st_size,
+              "blocked_progress_sha256": digest(replay / "blocked-progress.json"),
+              "qualification_env_sha256": digest(replay / "qualification.env"),
+              "archive_sha256_file_sha256": digest(replay / "archive.sha256"),
+              "node_version_file_sha256": digest(replay / "node-version.txt"),
+              "source_inventory_sha256": digest(replay / "source-inventory.sha256"),
+              "contracts_log_sha256": digest(replay / "logs/contracts.log"),
+              "verify_package_log_sha256": digest(replay / "logs/verify-package.log"),
+              "compile_progress_log_sha256": digest(replay / "logs/compile-progress.log"),
+              "final_artifact_sha256_log_sha256": digest(witness / "final-artifact-sha256.log"),
+              "contracts": 49,
+              "package_verification": "PASS",
+              "downloaded_replays": 1,
+              "downloaded_replay_outputs_retained": True,
+              "downloaded_replay_logs_retained": True,
+              "final_artifact_checksum_verified": True,
+              "runtime_binding_present": False,
+              "canonical_ap410_accepted": False,
+              "canonical_g3_accepted": False,
+              "hosted_repository_accepted": False,
+              "accepted_gates": [],
+              "status": "PASS",
+              "authority": "downloaded_source_replay_only",
+          }
+          core = json.dumps(replay_receipt, sort_keys=True, separators=(",", ":")).encode()
+          receipt_sha = hashlib.sha256(core).hexdigest()
+          replay_receipt["receipt_sha256"] = receipt_sha
+          replay_receipt["receipt_id"] = f"ap410kitv2downloadedreplay1_{receipt_sha}"
+          (witness / "DOWNLOADED_REPLAY_RECEIPT.json").write_text(
+              json.dumps(replay_receipt, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          with github_output.open("a", encoding="utf-8") as handle:
+              handle.write(f"replay_receipt_id={replay_receipt['receipt_id']}\n")
+          PY
+          (
+            cd "$witness"
+            find . -type f ! -name SHA256SUMS -print0 \
+              | LC_ALL=C sort -z \
+              | xargs -0 sha256sum > SHA256SUMS
+            sha256sum -c SHA256SUMS
+          )
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Upload independent witness artifact
+        id: witness_upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: ap410-kit-v2-independent-witness-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/witness/
           if-no-files-found: error
           compression-level: 0
           retention-days: 30
-          include-hidden-files: true
-      - env:
-          GH_TOKEN: ${{ github.token }}
-          ARTIFACT_ID: ${{ steps.upload.outputs.artifact-id }}
-          ARTIFACT_DIGEST: ${{ steps.upload.outputs.artifact-digest }}
-        run: |
-          body="## KIT_V2_SEGMENTED_HOSTED_RUN_READY_FOR_DISPOSITION
 
-          Run \`$GITHUB_RUN_ID\` reached downloaded replay. Witness artifact \`$ARTIFACT_ID\`, digest \`$ARTIFACT_DIGEST\`. Issue #71 remains open pending separate read-only disposition."
-          gh api "repos/$GITHUB_REPOSITORY/issues/71/comments" -f body="$body"
+      - name: Post run, jobs, artifact, and downloaded replay witness to issue 71
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CARRIER_ARTIFACT_ID: ${{ needs.ap410-kit-v2-custody.outputs.artifact_id }}
+          CARRIER_ARTIFACT_URL: ${{ needs.ap410-kit-v2-custody.outputs.artifact_url }}
+          CARRIER_ARTIFACT_DIGEST: ${{ needs.ap410-kit-v2-custody.outputs.artifact_digest }}
+          CARRIER_RECEIPT_ID: ${{ needs.ap410-kit-v2-custody.outputs.receipt_id }}
+          WITNESS_ARTIFACT_ID: ${{ steps.witness_upload.outputs.artifact-id }}
+          WITNESS_ARTIFACT_URL: ${{ steps.witness_upload.outputs.artifact-url }}
+          WITNESS_ARTIFACT_DIGEST: ${{ steps.witness_upload.outputs.artifact-digest }}
+          REPLAY_RECEIPT_ID: ${{ steps.replay.outputs.replay_receipt_id }}
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/witness/JOBS.json" <<'PY'
+          import json
+          import os
+          import pathlib
+          import urllib.request
+
+          jobs = json.loads(pathlib.Path(__import__("sys").argv[1]).read_text(encoding="utf-8"))
+          job_lines = [
+              f"{item['name']} | job_id={item['id']} | status={item['status']} | conclusion={item['conclusion']}"
+              for item in jobs
+          ]
+          lines = [
+              "## KIT_V2_AUTHENTICATED_HOSTED_RUN_READY_FOR_INDEPENDENT_DISPOSITION",
+              "",
+              "The normalized exact-tree, one-commit transport branch was consumed by the user-authenticated default-branch workflow. Ubuntu 24.04, Windows 2025, two clean custody roots, the retained Actions artifact, and a checksum-bound independently downloaded replay with retained outputs and logs completed without widening runtime or programme authority.",
+              "",
+              "```text",
+              f"workflow run                   {os.environ['GITHUB_RUN_ID']}",
+              f"workflow attempt               {os.environ['GITHUB_RUN_ATTEMPT']}",
+              f"workflow authorization commit  {os.environ['GITHUB_SHA']}",
+              f"data branch                    {os.environ['AP410_DATA_BRANCH']}",
+              f"data head                      {os.environ['AP410_DATA_HEAD']}",
+              f"data parent                    {os.environ['AP410_DATA_PARENT']}",
+              f"data tree                      {os.environ['AP410_DATA_TREE']}",
+              "commits over parent            1",
+              f"qualifier carrier head         {os.environ['AP410_KIT_CARRIER_HEAD']}",
+              f"source SHA-256                 {os.environ['AP410_KIT_SOURCE_SHA256']}",
+              f"source bytes                   {os.environ['AP410_KIT_SOURCE_BYTES']}",
+              f"carrier receipt                {os.environ['CARRIER_RECEIPT_ID']}",
+              f"downloaded replay receipt      {os.environ['REPLAY_RECEIPT_ID']}",
+              f"carrier artifact ID            {os.environ['CARRIER_ARTIFACT_ID']}",
+              f"carrier artifact digest        {os.environ['CARRIER_ARTIFACT_DIGEST']}",
+              f"witness artifact ID            {os.environ['WITNESS_ARTIFACT_ID']}",
+              f"witness artifact digest        {os.environ['WITNESS_ARTIFACT_DIGEST']}",
+              "contracts per execution        49",
+              "hosted systems                 Ubuntu 24.04, Windows 2025",
+              "cold roots                     2",
+              "downloaded replays             1",
+              "runtime binding                absent",
+              "physical evidence              0 interactions, 0 visuals, 0 reader groups",
+              "accepted gates                 []",
+              "canonical AP-410               false",
+              "canonical G3                   false",
+              "hosted repository accepted     false",
+              "```",
+              "",
+              "Job ledger:",
+              "",
+              "```text",
+              *job_lines,
+              "```",
+              "",
+              f"Retained carrier artifact: {os.environ['CARRIER_ARTIFACT_URL']}",
+              f"Independent witness artifact: {os.environ['WITNESS_ARTIFACT_URL']}",
+              "",
+              "Evidence tier: GitHub-hosted Ubuntu and Windows source qualification, two clean roots, retained Actions custody, independent redownload, and full 49-contract replay; venue: Tools issue #71 and the named workflow run; target: source portability only; upside: the Actions-admission hold is replaced by inspectable hosted evidence; downside: no runtime package or physical observation is created; failure mode: closing the issue without independently checking the jobs, artifact digests, receipt seals, and unmerged branch standing.",
+              "",
+              "Can an independent disposition seat verify the run jobs and both retained artifacts, confirm the transport branch remains unmerged and its tree remains exact, and close only the hosted source-portability transaction without advancing AP-410 or G3?",
+          ]
+          payload = json.dumps({"body": "\n".join(lines)}).encode()
+          request = urllib.request.Request(
+              f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/issues/71/comments",
+              data=payload,
+              method="POST",
+              headers={
+                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+                  "User-Agent": "AXM-Aperture-Kit-V2-Witness/3",
+                  "Content-Type": "application/json",
+              },
+          )
+          with urllib.request.urlopen(request, timeout=60) as response:
+              response.read()
+          PY
