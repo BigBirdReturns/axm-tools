@@ -1,0 +1,36 @@
+name: home-lab-runner-discovery
+
+on:
+  pull_request:
+    branches: [main]
+    types: [synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/home-lab-capability-gradient
+      - name: Collect bounded discovery observation
+        shell: powershell
+        run: |
+          $out = Join-Path $env:RUNNER_TEMP "runner-discovery.json"
+          & .\home-lab-gradient\scripts\collect-windows.ps1 `
+            -HostId "runner-discovery" `
+            -OutFile $out
+          $bytes = [IO.File]::ReadAllBytes($out)
+          if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+            throw "collector emitted a UTF-8 BOM"
+          }
+          $observation = Get-Content -LiteralPath $out -Raw | ConvertFrom-Json
+          Write-Host ("RUNNER_DISCOVERY computer={0} nvidia={1}" -f $observation.system.computer_name, $observation.graphics.nvidia.Count)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: home-lab-runner-discovery
+          path: ${{ runner.temp }}/runner-discovery.json
+          if-no-files-found: error

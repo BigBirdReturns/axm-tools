@@ -1,0 +1,39 @@
+name: Home lab capability gradient validate
+
+on:
+  pull_request:
+    paths:
+      - "home-lab-gradient/**"
+      - ".github/workflows/home-lab-gradient-validate.yml"
+      - "README.md"
+      - "index.html"
+  push:
+    branches: [main]
+    paths:
+      - "home-lab-gradient/**"
+      - ".github/workflows/home-lab-gradient-validate.yml"
+      - "README.md"
+      - "index.html"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rebuild deterministic plan and page
+        run: python home-lab-gradient/scripts/lab.py build --now 2026-08-05T00:00:00Z
+
+      - name: Run source tests
+        run: python -m unittest discover -s home-lab-gradient/tests -v
+
+      - name: Validate static contract
+        run: python home-lab-gradient/scripts/lab.py validate

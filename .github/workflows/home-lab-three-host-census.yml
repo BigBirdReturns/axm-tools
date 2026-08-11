@@ -1,0 +1,41 @@
+name: home-lab-three-host-census
+
+on:
+  push:
+    branches: [agent/home-lab-capability-gradient]
+  pull_request:
+    branches: [main]
+    types: [synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  observe:
+    strategy:
+      fail-fast: false
+      matrix:
+        host_id: [control-host, heavy-host-a, heavy-host-b]
+    runs-on: [self-hosted, Windows, X64, "${{ matrix.host_id }}"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/home-lab-capability-gradient
+      - name: Collect bounded host observation
+        shell: powershell
+        run: |
+          $out = Join-Path $env:RUNNER_TEMP "${{ matrix.host_id }}.json"
+          & .\home-lab-gradient\scripts\collect-windows.ps1 `
+            -HostId "${{ matrix.host_id }}" `
+            -OutFile $out
+          $bytes = [IO.File]::ReadAllBytes($out)
+          if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+            throw "collector emitted a UTF-8 BOM"
+          }
+          Get-Content -LiteralPath $out -Raw | ConvertFrom-Json | Out-Null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: home-lab-observation-${{ matrix.host_id }}
+          path: ${{ runner.temp }}/${{ matrix.host_id }}.json
+          if-no-files-found: error
