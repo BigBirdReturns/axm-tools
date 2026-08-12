@@ -126,8 +126,36 @@ with serve_root() as origin, sync_playwright() as p:
 
     page.set_viewport_size({"width": 390, "height": 844})
     page.reload(wait_until="domcontentloaded")
-    overflow = page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
-    check("mobile view has no horizontal overflow", not overflow)
+    mobile = page.evaluate(
+        """() => {
+          const root = document.documentElement;
+          const clientWidth = root.clientWidth;
+          const offenders = [...document.querySelectorAll('*')]
+            .map((element) => {
+              const rect = element.getBoundingClientRect();
+              return {
+                tag: element.tagName,
+                id: element.id || '',
+                className: typeof element.className === 'string' ? element.className.slice(0, 100) : '',
+                left: Math.round(rect.left * 10) / 10,
+                right: Math.round(rect.right * 10) / 10,
+                width: Math.round(rect.width * 10) / 10,
+                scrollWidth: element.scrollWidth,
+                clientWidth: element.clientWidth,
+                text: (element.textContent || '').trim().replace(/\\s+/g, ' ').slice(0, 100),
+              };
+            })
+            .filter((item) => item.right > clientWidth + 0.5 || item.left < -0.5)
+            .slice(0, 12);
+          return {
+            scrollWidth: root.scrollWidth,
+            clientWidth,
+            bodyScrollWidth: document.body.scrollWidth,
+            offenders,
+          };
+        }"""
+    )
+    check("mobile view has no horizontal overflow", mobile["scrollWidth"] <= mobile["clientWidth"], json.dumps(mobile))
     check("Help remains visible on mobile", page.locator("#helpButton").is_visible())
 
     check("zero outbound network requests", len(external_requests) == 0, json.dumps(external_requests))
