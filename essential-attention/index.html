@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-<title>Essential Attention v1.0.2 · FAB Runtime</title>
+<title>Essential Attention v1.0.3 · FAB Runtime</title>
 <style>
 :root{
   --paper:#f3f0e8;--paper-2:#ebe6da;--ink:#162019;--muted:#5f6a62;--line:#cbc4b7;
@@ -76,13 +76,13 @@ p{margin:.45rem 0}.hero>p{max-width:970px;font-size:1.08rem;color:#344039}
 .state.held,.state.blocked{background:var(--amber-soft);color:var(--amber)}
 .state.mentioned,.state.open{background:var(--violet-soft);color:var(--violet)}
 .state.declined,.state.stopped{background:var(--red-soft);color:var(--red)}
-.meta{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 12px}.meta span{font-size:.75rem;background:var(--panel-2);border:1px solid #ddd5c7;border-radius:999px;padding:.28rem .48rem;color:var(--muted)}
-.muted{color:var(--muted)}.fine{font-size:.79rem;color:var(--muted)}
+.meta{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 12px}.meta span{font-size:.75rem;background:var(--panel-2);border:1px solid #ddd5c7;border-radius:999px;padding:.28rem .48rem;color:var(--muted);overflow-wrap:anywhere;word-break:break-word;max-width:100%}
+.muted{color:var(--muted)}.fine{font-size:.79rem;color:var(--muted);overflow-wrap:anywhere;word-break:break-word}
 .toolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:14px 0}.toolbar input[type="search"]{flex:1;min-width:230px}.toolbar .grow{flex:1}
 .offer-list{display:grid;gap:10px}.offer-row{display:grid;grid-template-columns:minmax(170px,1.1fr) minmax(120px,.65fr) minmax(120px,.55fr) minmax(250px,1.65fr);gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 15px;cursor:pointer}.offer-row:hover{border-color:#8fa092}.offer-row strong{display:block}.offer-row p{margin:0;color:var(--muted);font-size:.84rem}.offer-row[aria-current="true"]{border-color:var(--green);box-shadow:0 0 0 3px rgba(31,87,61,.09)}
 .details{margin-top:15px}.details-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.detail{padding:12px;background:var(--panel-2);border:1px solid #ddd6c8;border-radius:12px}.detail b{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:4px}
 .decision-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.decision-card{display:flex;flex-direction:column;gap:10px}.decision-card .controls{margin-top:auto}.controls{display:flex;gap:7px;flex-wrap:wrap}.controls button.active{background:var(--green);color:#fff;border-color:var(--green)}
-.receipt-list,.draft-list,.queue-list{display:grid;gap:9px}.receipt,.draft,.queue-item{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px}.receipt-head,.draft-head,.queue-head{display:flex;justify-content:space-between;gap:12px;align-items:start}.receipt code,.draft code{font-size:.74rem;color:var(--muted)}
+.receipt-list,.draft-list,.queue-list{display:grid;gap:9px;min-width:0}.receipt,.draft,.queue-item{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px;min-width:0}.receipt-head,.draft-head,.queue-head{display:flex;justify-content:space-between;gap:12px;align-items:start;min-width:0}.receipt-head>div,.draft-head>div,.queue-head>div{min-width:0}.receipt code,.draft code{font-size:.74rem;color:var(--muted)}
 .role-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}.role-table th,.role-table td{padding:12px 13px;text-align:left;vertical-align:top;border-bottom:1px solid #ddd6c9}.role-table th{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);background:var(--panel-2)}.role-table tr:last-child td{border-bottom:0}
 .split{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(290px,.75fr);gap:16px}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.form-grid .full{grid-column:1/-1}.field label{display:block;font-weight:800;font-size:.8rem;margin-bottom:4px}.field input,.field select{width:100%}
@@ -90,11 +90,27 @@ p{margin:.45rem 0}.hero>p{max-width:970px;font-size:1.08rem;color:#344039}
 .source-table{display:grid;gap:10px}.source-card{display:grid;grid-template-columns:minmax(170px,.8fr) minmax(220px,1.4fr) minmax(160px,.7fr);gap:14px;align-items:start}.source-card .support{color:var(--muted)}
 .progress{height:10px;border-radius:999px;background:#e0ddd4;overflow:hidden}.progress>i{display:block;height:100%;background:var(--green);width:0;transition:width .25s ease}
 .empty{padding:25px;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--muted);background:rgba(255,255,255,.36)}
+.plain-lead{max-width:980px;font-size:1.12rem;color:#334039}
+.start-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.start-summary{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:16px;align-items:start}
+.start-inventory{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.inventory-card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px;min-width:0}
+.inventory-card .receipt-head{margin-bottom:6px}.inventory-card p{color:var(--muted);font-size:.88rem}
+.journey{display:grid;gap:10px;counter-reset:journey}
+.journey-step{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:14px}
+.journey-step::before{counter-increment:journey;content:counter(journey);width:34px;height:34px;border-radius:999px;display:grid;place-items:center;background:var(--green);color:#fff;font-weight:900}
+.journey-step p{margin:2px 0 0;color:var(--muted);font-size:.88rem}
+.glossary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0}
+.glossary>div{background:var(--panel-2);border:1px solid #ddd6c8;border-radius:12px;padding:12px}
+.glossary dt{font-weight:900}.glossary dd{margin:3px 0 0;color:var(--muted)}
+.tour-bar{position:sticky;top:61px;z-index:19;margin:0;padding:12px 24px;background:#fff8e9;border-bottom:1px solid #d8c79d;box-shadow:0 8px 24px rgba(49,42,24,.08);display:flex;justify-content:space-between;gap:18px;align-items:center}
+.tour-bar[hidden]{display:none}.tour-copy{min-width:0}.tour-copy strong{display:block;font-size:.98rem}.tour-copy p{margin:2px 0 0;color:#5d5541;font-size:.86rem}.tour-controls{display:flex;gap:7px;flex-wrap:wrap;flex:0 0 auto}
+.help-dialog{max-width:900px;width:min(94vw,900px)}.help-dialog .dialog-body{max-height:76vh}.help-intro{font-size:1.05rem;color:#344039}.help-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}.help-actions{display:flex;gap:8px;flex-wrap:wrap;padding:15px 18px;border-top:1px solid var(--line);background:var(--panel-2)}
 dialog{border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.25);max-width:760px;width:min(92vw,760px);padding:0;background:var(--panel)}dialog::backdrop{background:rgba(13,25,18,.55)}.dialog-head{display:flex;justify-content:space-between;align-items:center;padding:15px 18px;border-bottom:1px solid var(--line)}.dialog-body{padding:18px;max-height:70vh;overflow:auto}
 .toast{position:fixed;right:18px;bottom:18px;z-index:999;max-width:min(420px,calc(100vw - 36px));padding:12px 15px;border-radius:12px;background:#15291d;color:#fff;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:none}
 footer{margin-top:42px;border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:.78rem}
 @media (max-width:1080px){.app{grid-template-columns:230px minmax(0,1fr)}.grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}.offer-row{grid-template-columns:1fr 120px 110px}.offer-row .offer-summary{grid-column:1/-1}.split{grid-template-columns:1fr}.grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:760px){.app{display:block}.rail{position:relative;height:auto;padding:14px;gap:11px}.boundary,.rail-footer{display:none}.seat-nav{display:flex;overflow:auto;padding-bottom:3px}.seat-nav button{min-width:max-content;grid-template-columns:26px 1fr;padding:.58rem .65rem}.topbar{position:sticky;padding:10px 12px}.topbar .pill:nth-child(n+2){display:none}.content{padding:20px 14px 60px}.hero{padding:25px 20px;border-radius:20px}.grid.two,.grid.three,.grid.four,.decision-grid,.details-grid,.form-grid{grid-template-columns:1fr}.offer-row{grid-template-columns:1fr}.offer-row .offer-summary{grid-column:auto}.source-card{grid-template-columns:1fr}.section-head{display:block}.top-actions button:not(.primary){display:none}}
+@media (max-width:760px){.app{display:block}.rail{position:relative;height:auto;padding:14px;gap:11px}.boundary,.rail-footer{display:none}.seat-nav{display:flex;overflow:auto;padding-bottom:3px}.seat-nav button{min-width:max-content;grid-template-columns:26px 1fr;padding:.58rem .65rem}.topbar{position:sticky;padding:10px 12px}.topbar .pill:nth-child(n+2){display:none}.content{padding:20px 14px 60px}.hero{padding:25px 20px;border-radius:20px}.grid.two,.grid.three,.grid.four,.decision-grid,.details-grid,.form-grid{grid-template-columns:1fr}.offer-row{grid-template-columns:1fr}.offer-row .offer-summary{grid-column:auto}.source-card{grid-template-columns:1fr}.section-head{display:block}.start-summary,.start-inventory,.glossary{grid-template-columns:1fr}.journey-step{grid-template-columns:38px minmax(0,1fr)}.journey-step button{grid-column:2}.tour-bar{position:relative;top:auto;padding:11px 14px;align-items:flex-start;display:block}.tour-controls{margin-top:9px}.top-actions #importPacketButton{display:none}}
 @media print{.rail,.topbar,.skip,.toast,button,.toolbar,.file-drop{display:none!important}.app{display:block}.view{display:block!important}.content{padding:0}.card,.hero{box-shadow:none;break-inside:avoid}}
 </style>
 </head>
@@ -102,17 +118,18 @@ footer{margin-top:42px;border-top:1px solid var(--line);padding-top:16px;color:v
 <a class="skip" href="#main">Skip to main content</a>
 <div class="app">
   <aside class="rail" aria-label="Runtime navigation">
-    <div class="brand"><div class="mark">EA</div><div><strong>Essential Attention</strong><small>v1.0.2 · FAB loaded</small></div></div>
+    <div class="brand"><div class="mark">EA</div><div><strong>Essential Attention</strong><small>v1.0.3 · FAB loaded</small></div></div>
     <div class="boundary">Local-first administrative runtime. Internal work can complete through contained functional seats. Email, calendar, payment, publication, and representation remain outside the effect boundary.</div>
     <nav class="seat-nav">
-      <button data-view="overview" aria-selected="true"><span>01</span>Overview</button>
-      <button data-view="register" aria-selected="false"><span>02</span>Offer register</button>
-      <button data-view="executive" aria-selected="false"><span>03</span>Mila / Executive</button>
+      <button data-view="start" aria-selected="true"><span>00</span>Start here</button>
+      <button data-view="overview" aria-selected="false"><span>01</span>Case overview</button>
+      <button data-view="register" aria-selected="false"><span>02</span>Case register</button>
+      <button data-view="executive" aria-selected="false"><span>03</span>Decisions</button>
       <button data-view="fab" aria-selected="false"><span>04</span>FAB review</button>
-      <button data-view="runtime" aria-selected="false"><span>05</span>Contained runtime</button>
-      <button data-view="successor" aria-selected="false"><span>06</span>Successor</button>
+      <button data-view="runtime" aria-selected="false"><span>05</span>Internal run</button>
+      <button data-view="successor" aria-selected="false"><span>06</span>Handoff test</button>
       <button data-view="sources" aria-selected="false"><span>07</span>Sources</button>
-      <button data-view="ledger" aria-selected="false"><span>08</span>Ledger</button>
+      <button data-view="ledger" aria-selected="false"><span>08</span>Activity &amp; export</button>
     </nav>
     <div class="rail-spacer"></div>
     <div class="rail-footer">Default cartridge<br><code>mw-ea-n0-fab-offers-001</code><br><br>Public-safe summaries are embedded. Private source bytes never leave this browser.</div>
@@ -126,18 +143,69 @@ footer{margin-top:42px;border-top:1px solid var(--line);padding-top:16px;color:v
         <span class="pill"><i></i>Zero participant records</span>
       </div>
       <div class="topbar-group top-actions">
+        <button id="helpButton">Help</button>
         <button id="importPacketButton">Import packet</button>
         <button id="exportPacketButton" class="primary">Export packet</button>
         <input id="packetInput" type="file" accept="application/json,.json" hidden>
       </div>
     </header>
 
+    <section class="tour-bar" id="tourBar" hidden aria-live="polite">
+      <div class="tour-copy"><div class="eyebrow" id="tourCounter">Guided tour</div><strong id="tourTitle"></strong><p id="tourBody"></p></div>
+      <div class="tour-controls"><button class="small" id="tourBackButton">Back</button><button class="small primary" id="tourNextButton">Next</button><button class="small" id="tourExitButton">Exit tour</button></div>
+    </section>
+
     <div class="content">
-      <section class="view active" id="view-overview">
+      <section class="view active" id="view-start">
         <div class="hero">
-          <div class="eyebrow">FAB Offer Register and Executive Review</div>
-          <h1>Move the aftermath without making any person the runtime.</h1>
-          <p>The FAB cartridge is loaded by default. The page preserves source force, compiles role-specific attention, executes every safe internal step through contained seats, and stops only when a proposed act would bind the external world.</p>
+          <div class="eyebrow">Start here · FAB Meeting #1 aftermath</div>
+          <h1>This is the working case file for what the first FAB meeting created.</h1>
+          <p class="plain-lead">It contains seven things worth preserving or resolving, five decisions that may deserve bounded executive attention, the source basis for each, and a local record of what this browser does with them. It does not contact anyone or assign anybody work.</p>
+          <div class="start-actions"><button class="primary" id="startTourButton">Take the guided tour</button><button data-go="register">Open the seven case objects</button><button data-go="overview" class="ghost">Skip to the overview</button></div>
+          <div class="notice"><strong>Plain-language boundary.</strong> You can inspect the case, record local draft dispositions, test the internal roles, attach source receipts, and export a handoff packet. Nothing here sends, schedules, pays, publishes, appoints, accepts, or represents on anyone's behalf.</div>
+        </div>
+
+        <section class="section">
+          <div class="section-head"><div><div class="eyebrow">What is already here</div><h2>One loaded case, not an empty platform</h2></div><p>The public page opens with a sanitized reconstruction of the FAB aftermath. Private source files are optional and remain local to your browser.</p></div>
+          <div class="grid four" id="startMetrics"></div>
+        </section>
+
+        <section class="section start-summary">
+          <div>
+            <div class="section-head"><div><div class="eyebrow">Contents</div><h2>The seven case objects</h2></div><p>Each object is one event, offer, unresolved possibility, or system commitment that must retain its actual evidentiary force.</p></div>
+            <div class="start-inventory" id="startInventory"></div>
+          </div>
+          <aside class="card">
+            <div class="eyebrow">The central question</div>
+            <h3>What can the system move safely without turning a person into the clerk?</h3>
+            <p>The page separates internal administrative work from external authority. It can preserve evidence, classify meaning, prepare decisions, test execution, and produce receipts. It stops at the exact act that would change the outside world.</p>
+            <div class="meta"><span>7 objects</span><span>5 decisions</span><span>7 functional seats</span><span>0 external effects</span></div>
+          </aside>
+        </section>
+
+        <section class="section">
+          <div class="section-head"><div><div class="eyebrow">Six-minute route</div><h2>Use it in this order</h2></div><p>You do not need to understand the architecture before using the case.</p></div>
+          <div class="journey">
+            <article class="journey-step"><div><strong>Read the case register</strong><p>Open the seven rows and see what happened, what the evidence supports, who holds authority, and what remains safe to do.</p></div><button class="small" data-go="register">Open register</button></article>
+            <article class="journey-step"><div><strong>Review the five decisions</strong><p>These are the only questions currently elevated for bounded executive attention. Clicking a disposition creates a local draft receipt only.</p></div><button class="small" data-go="executive">Open decisions</button></article>
+            <article class="journey-step"><div><strong>Run the internal roles</strong><p>Exercise source custody, interpretation, relationship preservation, attention routing, execution preparation, verification, and continuity without finding seven people.</p></div><button class="small" data-go="runtime">Open internal run</button></article>
+            <article class="journey-step"><div><strong>Test the handoff</strong><p>Use the successor packet to verify that another occupant can reconstruct the case from durable records rather than hidden memory.</p></div><button class="small" data-go="successor">Open handoff test</button></article>
+            <article class="journey-step"><div><strong>Attach private evidence only when useful</strong><p>Hash files locally to create source receipts. The page stores metadata and digest, not the source bytes, and sends no request.</p></div><button class="small" data-go="sources">Open sources</button></article>
+            <article class="journey-step"><div><strong>Export the packet</strong><p>The Activity &amp; export view contains the append-only local receipts and the portable handoff controls.</p></div><button class="small" data-go="ledger">Open export view</button></article>
+          </div>
+        </section>
+
+        <section class="section grid two">
+          <article class="card"><div class="eyebrow">How to read the vocabulary</div><h3>Five words are enough</h3><dl class="glossary"><div><dt>Object</dt><dd>One thing the case must preserve, resolve, monitor, or prepare.</dd></div><div><dt>State</dt><dd>What the available evidence currently supports, such as mentioned, offered, accepted, held, or completed.</dd></div><div><dt>Seat</dt><dd>A function the system must perform. It is a job description, not a named person.</dd></div><div><dt>Receipt</dt><dd>A local, timestamped record of an interpretation, disposition, test, source hash, or export.</dd></div><div><dt>External effect</dt><dd>An act that changes the real world, such as sending, scheduling, paying, publishing, accepting, or representing.</dd></div></dl></article>
+          <article class="card"><div class="eyebrow">What this release proves</div><h3>The browser can carry the administrative continuity</h3><p>It can keep the source-linked aftermath coherent, show the right projection to each function, run the contained checks, and export a cold-start handoff. It cannot manufacture missing evidence, consent, or external authority.</p><div class="success"><strong>Recommended first action.</strong> Take the guided tour, then inspect the seven case objects before recording any disposition.</div><button class="primary" id="startTourButtonBottom">Start guided tour</button></article>
+        </section>
+      </section>
+
+      <section class="view" id="view-overview">
+        <div class="hero">
+          <div class="eyebrow">Case overview · FAB Offer Register and Executive Review</div>
+          <h1>The case is loaded. This view shows what can move now.</h1>
+          <p>Seven case objects and five bounded decisions have already been reconstructed. Use the register to inspect them, the internal run to exercise the administrative roles, and Activity &amp; export to preserve the resulting handoff.</p>
           <div class="notice"><strong>Operating boundary.</strong> This page sends no email, changes no calendar, spends no money, publishes no claim, and represents no person. It can classify, route, draft, verify, replay, and export durable receipts entirely in the browser.</div>
         </div>
 
@@ -258,23 +326,41 @@ footer{margin-top:42px;border-top:1px solid var(--line);padding-top:16px;color:v
         <section class="section"><div class="draft-list" id="ledgerList"></div></section>
       </section>
 
-      <footer>Essential Attention v1.0.2 · One-file GitHub Pages runtime · Built for <code>mw-ea-n0-fab-offers-001</code> · Public-safe embedded cartridge · Private sources remain local · No external-effect adapter exists.</footer>
+      <footer>Essential Attention v1.0.3 · One-file GitHub Pages runtime · Built for <code>mw-ea-n0-fab-offers-001</code> · <a href="https://github.com/BigBirdReturns/axm-tools/blob/main/essential-attention/README.md" target="_blank" rel="noreferrer">README</a> · Public-safe embedded cartridge · Private sources remain local · No external-effect adapter exists.</footer>
     </div>
   </main>
 </div>
+
+
+<dialog class="help-dialog" id="helpDialog" aria-labelledby="helpDialogTitle">
+  <div class="dialog-head"><div><div class="eyebrow">Orientation</div><h3 id="helpDialogTitle">What did I just open?</h3></div><button id="closeHelpButton" aria-label="Close help">Close</button></div>
+  <div class="dialog-body">
+    <p class="help-intro"><strong>Essential Attention is the working case file for the aftermath of FAB Meeting #1.</strong> It turns scattered events, offers, open questions, and decisions into a source-linked register that can be inspected, tested, and handed off without emailing anyone or turning a named person into the runtime.</p>
+    <div class="help-columns">
+      <article class="card"><div class="eyebrow">What it contains</div><h3>Loaded on arrival</h3><p>Seven case objects, five bounded executive decisions, five public-safe source summaries, seven functional seats, a successor packet, an effect firewall, and an append-only local ledger.</p></article>
+      <article class="card"><div class="eyebrow">What it does</div><h3>Inside this browser</h3><p>Inspect evidence and current state, record local draft dispositions, run contained role checks, hash private files locally, test a cold handoff, and export the complete portable packet.</p></article>
+      <article class="card"><div class="eyebrow">What it cannot do</div><h3>Outside effects</h3><p>It cannot send email, schedule meetings, spend money, publish claims, accept offers, appoint people, or represent an organization. Those effects require real authority outside this page.</p></article>
+      <article class="card"><div class="eyebrow">Where your work lives</div><h3>Local custody</h3><p>Drafts, source hashes, run receipts, and replay receipts stay in this browser until you export a packet. The public page contains only the sanitized embedded cartridge.</p></article>
+    </div>
+    <h3>Recommended route</h3>
+    <ol><li>Open <strong>Case register</strong> and read the seven objects.</li><li>Open <strong>Decisions</strong> to see the five questions elevated for attention.</li><li>Run <strong>Internal run</strong> to exercise the seven functional seats.</li><li>Use <strong>Sources</strong> only when you have private evidence worth binding.</li><li>Use <strong>Activity &amp; export</strong> to carry the case elsewhere.</li></ol>
+    <div class="notice"><strong>Nothing is assigned by opening this page.</strong> Names in the cartridge identify source actors or familiar interface aliases. The operating primitives are functions, needs, evidence, authority, and receipts.</div>
+  </div>
+  <div class="help-actions"><button class="primary" id="helpStartTourButton">Start guided tour</button><button id="helpOpenStartButton">Open Start here</button><a href="https://github.com/BigBirdReturns/axm-tools/blob/main/essential-attention/README.md" target="_blank" rel="noreferrer">Full README and view guide</a><button id="helpCloseBottomButton">Close and explore</button></div>
+</dialog>
 
 <dialog id="detailDialog" aria-labelledby="detailDialogTitle"><div class="dialog-head"><h3 id="detailDialogTitle">Record detail</h3><button id="closeDialogButton" aria-label="Close dialog">Close</button></div><div class="dialog-body" id="detailDialogBody"></div></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 'use strict';
-const BUILD = Object.freeze({version:'1.0.2',built_at:'2026-08-12T20:15:01Z',host:'axm-tools/essential-attention',network:'none'});
+const BUILD = Object.freeze({version:'1.0.3',built_at:'2026-08-12T22:31:51Z',host:'axm-tools/essential-attention',network:'none'});
 
 const FAB_CARTRIDGE = Object.freeze({
   schema:'essential-attention/cartridge@2',
   cartridge_id:'mw-ea-n0-fab-offers-001',
   title:'Essential Attention: FAB Offer Register and Executive Review',
-  version:'1.0.2',
+  version:'1.0.3',
   goal:{
     desired:'Preserve the source-grounded aftermath of FAB Meeting #1, return clerical continuity, route only bounded executive attention, and permit safe internal progress without assigning work or authority by inference.',
     protected:['source fidelity','relationship integrity','executive autonomy','bounded FAB participation','continuity','purpose limitation'],
@@ -317,10 +403,21 @@ const FAB_CARTRIDGE = Object.freeze({
   successor:{replay_id:'EA-REPLAY-N0-002',object:'mw-ea-n0-fab-offers-001',authority:'Contained seats hold internal processing authority only. Real organizational authorities retain external effects.',unresolved:'Literal records for unnamed Meeting #1 offers and any later external effect authority receipts.',next:'Run source custody, interpretation, attention routing, execution preparation, verification, and export. Hold only the specific external effect.',fallback:'Export the packet and resume in another authorized browser or offline copy.'}
 });
 
-const DEFAULT_STATE = () => ({schema:'essential-attention/local-state@2',active_cartridge:null,ledger:[],source_receipts:[],seat_runs:[],preferences:{view:'overview'},created_at:new Date().toISOString(),updated_at:new Date().toISOString()});
+const DEFAULT_STATE = () => ({schema:'essential-attention/local-state@2',active_cartridge:null,ledger:[],source_receipts:[],seat_runs:[],preferences:{view:'start',onboarding_seen:false,tour_active:false,tour_step:0},created_at:new Date().toISOString(),updated_at:new Date().toISOString()});
 let cartridge = FAB_CARTRIDGE;
 let state = DEFAULT_STATE();
 let selectedOfferId = FAB_CARTRIDGE.offers[0].offer_id;
+
+
+const TOUR_STEPS = Object.freeze([
+  {view:'start',title:'Orient to the loaded case',body:'This is one populated FAB aftermath case. Read what it contains and what the browser can and cannot do.'},
+  {view:'register',title:'Inspect the seven case objects',body:'Click any row. Read the literal event or offer, current evidentiary state, actual authority, safe next state, fallback, and source receipts.'},
+  {view:'executive',title:'See the five bounded decisions',body:'These are the only questions elevated for executive attention. A button records a local draft disposition. It performs no external act.'},
+  {view:'runtime',title:'Exercise the seven functional seats',body:'Run all contained seats to test source custody, interpretation, relationship integrity, attention routing, execution preparation, verification, and continuity.'},
+  {view:'successor',title:'Test the cold handoff',body:'Use only the durable successor packet to identify the object, authority boundary, unresolved branch, and next safe internal action. A passing replay exposes missing private memory.'},
+  {view:'sources',title:'Bind private evidence only when useful',body:'Selected files are hashed locally. The page stores source metadata and SHA-256 receipts, never uploads the bytes, and never infers unsupported meaning.'},
+  {view:'ledger',title:'Export the durable handoff',body:'The local ledger records every draft, run, source receipt, replay, firewall result, and export. Export the packet to move the case to another browser or successor.'}
+]);
 
 const $ = (selector,root=document) => root.querySelector(selector);
 const $$ = (selector,root=document) => Array.from(root.querySelectorAll(selector));
@@ -331,7 +428,7 @@ const prettyDate = value => {try{return new Intl.DateTimeFormat(undefined,{dateS
 const canonical = value => JSON.stringify(value,Object.keys(value).sort());
 
 function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2600)}
-async function sha256Bytes(bytes){const digest=await crypto.subtle.digest('SHA-256',bytes);return [...new Uint8Array(digest)].map(v=>v.toString(16).padStart(2,'0')).join('')}
+async function sha256Bytes(bytes){if(!globalThis.crypto?.subtle)throw new Error('Secure-context SHA-256 is unavailable. Use the hosted HTTPS page or a browser that enables Web Crypto for local files.');const digest=await crypto.subtle.digest('SHA-256',bytes);return [...new Uint8Array(digest)].map(v=>v.toString(16).padStart(2,'0')).join('')}
 async function sha256Text(text){return sha256Bytes(new TextEncoder().encode(text))}
 function download(name,text,type='application/json'){const blob=new Blob([text],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function downloadJSON(name,value){download(name,JSON.stringify(value,null,2)+'\n')}
@@ -363,6 +460,18 @@ function activeOffers(){return Array.isArray(cartridge.offers)?cartridge.offers:
 function decisionDraft(decisionId){return [...state.ledger].reverse().find(x=>x.kind==='executive-disposition'&&x.object_id===decisionId)}
 function stateCounts(){return activeOffers().reduce((acc,o)=>(acc[o.current_state]=(acc[o.current_state]||0)+1,acc),{})}
 function latestRun(){return state.seat_runs.at(-1)||null}
+
+function renderStart(){
+  const metrics=[
+    [activeOffers().length,'Case objects'],
+    [cartridge.decisions.length,'Bounded decisions'],
+    [cartridge.sources.length,'Public source summaries'],
+    [0,'External actions taken']
+  ];
+  $('#startMetrics').innerHTML=metrics.map(([n,label])=>`<article class="card metric"><b>${esc(n)}</b><span>${esc(label)}</span></article>`).join('');
+  $('#startInventory').innerHTML=activeOffers().map(o=>`<article class="inventory-card"><div class="receipt-head"><div><strong>${esc(o.title)}</strong><br><code>${esc(o.offer_id)}</code></div><span class="state ${esc(o.current_state)}">${esc(o.current_state)}</span></div><p>${esc(o.need)}</p><button class="small" data-start-offer="${esc(o.offer_id)}">Open record</button></article>`).join('');
+  $$('[data-start-offer]').forEach(button=>button.addEventListener('click',()=>{selectedOfferId=button.dataset.startOffer;showView('register');renderRegister()}));
+}
 
 function renderOverview(){
   const counts=stateCounts();
@@ -462,9 +571,23 @@ function renderLedger(){
 
 function renderReceipt(r){const summary=Object.entries(r.payload||{}).slice(0,5).map(([k,v])=>`<span>${esc(k)}: ${esc(Array.isArray(v)?v.join(', '):typeof v==='object'?JSON.stringify(v):v)}</span>`).join('');return `<article class="receipt"><div class="receipt-head"><div><strong>${esc(r.kind)}</strong><br><code>${esc(r.receipt_id)}</code></div><span class="state ready">internal</span></div><p class="fine">${esc(r.seat||'local')} · ${esc(r.object_id||'')} · ${prettyDate(r.created_at)}</p><div class="meta">${summary}</div></article>`}
 
-function renderAll(){renderOverview();renderRegister();renderExecutive();renderFab();renderRuntime();renderSuccessor();renderSources();renderLedger();$('#runtimeStatus').textContent=latestRun()?'Internal runtime exercised':'Internal runtime ready'}
+function renderTour(){
+  const bar=$('#tourBar');const active=Boolean(state.preferences?.tour_active);bar.hidden=!active;if(!active)return;
+  const index=Math.max(0,Math.min(Number(state.preferences.tour_step)||0,TOUR_STEPS.length-1));const step=TOUR_STEPS[index];
+  $('#tourCounter').textContent=`Guided tour · ${index+1} of ${TOUR_STEPS.length}`;$('#tourTitle').textContent=step.title;$('#tourBody').textContent=step.body;
+  $('#tourBackButton').disabled=index===0;$('#tourNextButton').textContent=index===TOUR_STEPS.length-1?'Finish tour':'Next';
+}
 
-function showView(view){$$('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${view}`));$$('.seat-nav button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.view===view)));state.preferences.view=view;storage.set('state',state);window.scrollTo({top:0,behavior:'smooth'})}
+async function markOnboardingSeen(){state.preferences.onboarding_seen=true;await storage.set('state',state)}
+function openHelp(){if(!$('#helpDialog').open)$('#helpDialog').showModal()}
+async function closeHelp(){if($('#helpDialog').open)$('#helpDialog').close();await markOnboardingSeen()}
+async function startTour(){if($('#helpDialog').open)$('#helpDialog').close();state.preferences.onboarding_seen=true;state.preferences.tour_active=true;state.preferences.tour_step=0;await storage.set('state',state);showView(TOUR_STEPS[0].view);renderTour()}
+async function moveTour(delta){const current=Number(state.preferences.tour_step)||0;if(delta>0&&current>=TOUR_STEPS.length-1){await endTour();return}state.preferences.tour_step=Math.max(0,Math.min(current+delta,TOUR_STEPS.length-1));await storage.set('state',state);const step=TOUR_STEPS[state.preferences.tour_step];showView(step.view);renderTour()}
+async function endTour(){state.preferences.tour_active=false;state.preferences.tour_step=0;state.preferences.onboarding_seen=true;await storage.set('state',state);renderTour();toast('Guided tour complete. The case remains local until you export it.')}
+
+function renderAll(){renderStart();renderOverview();renderRegister();renderExecutive();renderFab();renderRuntime();renderSuccessor();renderSources();renderLedger();renderTour();$('#runtimeStatus').textContent=latestRun()?'Internal runtime exercised':'Internal runtime ready'}
+
+function showView(view){if(!document.getElementById(`view-${view}`))view='start';$$('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${view}`));$$('.seat-nav button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.view===view)));state.preferences.view=view;storage.set('state',state);window.scrollTo({top:0,behavior:'smooth'});renderTour()}
 
 async function exportPacket(){
   const packet={schema:'essential-attention/portable-packet@2',generated_at:now(),build:BUILD,cartridge,state:{...state,active_cartridge:state.active_cartridge},integrity:{algorithm:'sha256',scope:'canonical cartridge plus local state excluding integrity'}};packet.integrity.sha256=await sha256Text(JSON.stringify({cartridge:packet.cartridge,state:packet.state}));downloadJSON(`essential-attention-${cartridge.cartridge_id}-${Date.now()}.json`,packet);await appendLedger('portable-export','continuity-steward',cartridge.cartridge_id,{sha256:packet.integrity.sha256,receipt_count:allLedgerRows().length});toast('Portable packet exported.')
@@ -476,16 +599,21 @@ async function importPacket(file){const text=await file.text();const value=JSON.
   const imported=value.state;state.ledger=Array.isArray(imported.ledger)?imported.ledger:state.ledger;state.source_receipts=Array.isArray(imported.source_receipts)?imported.source_receipts:state.source_receipts;state.seat_runs=Array.isArray(imported.seat_runs)?imported.seat_runs:state.seat_runs;
 }selectedOfferId=cartridge.offers[0]?.offer_id||'';await appendLedger('packet-import','source-custodian',cartridge.cartridge_id,{filename:file.name,cartridge_version:cartridge.version||'unknown'});await storage.set('state',state);renderAll();toast(`Loaded ${cartridge.title||cartridge.cartridge_id}.`)}
 
-async function hashSelectedSources(){const files=[...$('#sourceFiles').files];if(!files.length){toast('Choose at least one source file.');return}const purpose=$('#sourcePurpose').value;const note=$('#sourceNote').value.trim();$('#hashStatus').textContent=`Hashing ${files.length} file(s)…`;for(const file of files){const bytes=await file.arrayBuffer();const digest=await sha256Bytes(bytes);if(!state.source_receipts.some(x=>x.sha256===digest)){state.source_receipts.push({receipt_id:id('easrc'),schema:'essential-attention/local-source-receipt@2',name:file.name,size:file.size,type:file.type,last_modified:file.lastModified,sha256:digest,purpose,note,imported_at:now(),bytes_retained:false,network_transmitted:false})}}await storage.set('state',state);$('#hashStatus').textContent=`${files.length} file(s) hashed locally.`;$('#sourceFiles').value='';renderAll();toast('Local source receipts created. No file bytes were transmitted.')}
+async function hashSelectedSources(){const files=[...$('#sourceFiles').files];if(!files.length){toast('Choose at least one source file.');return}const purpose=$('#sourcePurpose').value;const note=$('#sourceNote').value.trim();$('#hashStatus').textContent=`Hashing ${files.length} file(s)…`;try{for(const file of files){const bytes=await file.arrayBuffer();const digest=await sha256Bytes(bytes);if(!state.source_receipts.some(x=>x.sha256===digest)){state.source_receipts.push({receipt_id:id('easrc'),schema:'essential-attention/local-source-receipt@2',name:file.name,size:file.size,type:file.type,last_modified:file.lastModified,sha256:digest,purpose,note,imported_at:now(),bytes_retained:false,network_transmitted:false})}}await storage.set('state',state);$('#hashStatus').textContent=`${files.length} file(s) hashed locally.`;$('#sourceFiles').value='';renderAll();toast('Local source receipts created. No file bytes were transmitted.')}catch(err){console.error(err);$('#hashStatus').textContent=`Source intake unavailable: ${err.message}`;toast('Source intake could not create a digest. No file bytes were transmitted.')}}
 
 function firewallTest(){const result={evaluation_id:id('eafw'),requested_effect:'issue Meeting #2 invitation',evidence:'packet can be prepared from current records',authority:'real scheduling authority receipt absent',purpose:'FAB administration compatible',consequence:'material but reversible',conflict:'contained runtime cannot represent the organization',continuity:'sufficient',decision:'external effect blocked',safe_internal_actions:['compile date options','compile evidence agenda','prepare invitation draft','preserve availability and expiry','export effect packet']};appendLedger('effect-firewall','verifier',cartridge.cartridge_id,result);$('#firewallResult').innerHTML=`<div class="warning"><strong>${esc(result.decision)}.</strong> ${esc(result.safe_internal_actions.join('; '))}.</div>`;toast('Firewall held the external act and returned safe internal work.')}
 
 function scoreReplay(values){const s=cartridge.successor;const normalized=v=>v.toLowerCase().replace(/[^a-z0-9]+/g,' ');const checks=[normalized(values.object).includes(normalized(s.object)),/contained|internal|organization|external/.test(normalized(values.authority)),/offer|source|meeting|authority|literal/.test(normalized(values.open)),/source|compile|run|prepare|export|classif|route|verify/.test(normalized(values.next))];return {checks,passed:checks.filter(Boolean).length,total:checks.length}}
 
-async function clearState(){if(!confirm('Clear all local drafts, source receipts, seat runs, and imported cartridges from this browser? The embedded FAB cartridge remains available.'))return;await storage.clear();state=DEFAULT_STATE();cartridge=FAB_CARTRIDGE;selectedOfferId=cartridge.offers[0].offer_id;renderAll();showView('overview');toast('Local state cleared. Embedded FAB cartridge restored.')}
+async function clearState(){if(!confirm('Clear all local drafts, source receipts, seat runs, and imported cartridges from this browser? The embedded FAB cartridge remains available.'))return;await storage.clear();state=DEFAULT_STATE();cartridge=FAB_CARTRIDGE;selectedOfferId=cartridge.offers[0].offer_id;renderAll();showView('start');openHelp();toast('Local state cleared. Embedded FAB cartridge restored.')}
 
 function bind(){
   $$('.seat-nav button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+  $$('[data-go]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.go)));
+  $('#helpButton').addEventListener('click',openHelp);$('#closeHelpButton').addEventListener('click',closeHelp);$('#helpCloseBottomButton').addEventListener('click',closeHelp);$('#helpOpenStartButton').addEventListener('click',async()=>{await closeHelp();showView('start')});
+  $('#startTourButton').addEventListener('click',startTour);$('#startTourButtonBottom').addEventListener('click',startTour);$('#helpStartTourButton').addEventListener('click',startTour);
+  $('#tourBackButton').addEventListener('click',()=>moveTour(-1));$('#tourNextButton').addEventListener('click',()=>moveTour(1));$('#tourExitButton').addEventListener('click',endTour);
+  $('#helpDialog').addEventListener('cancel',e=>{e.preventDefault();closeHelp()});
   $('#registerSearch').addEventListener('input',renderRegister);$('#stateFilter').addEventListener('change',renderRegister);$('#clearRegisterFilters').addEventListener('click',()=>{$('#registerSearch').value='';$('#stateFilter').value='all';renderRegister()});
   $('#closeDialogButton').addEventListener('click',()=>$('#detailDialog').close());
   $('#runOverviewButton').addEventListener('click',()=>{const r=runContainedSeats();renderAll();toast(`${r.passed}/${r.total} contained seats passed.`)});
@@ -495,15 +623,15 @@ function bind(){
   $('#fabForm').addEventListener('submit',async e=>{e.preventDefault();const note=$('#fabNote').value.trim();if(!note)return;await appendLedger('fab-advisory','relationship-steward',cartridge.fab_review.review_id,{disposition:$('#fabDisposition').value,note,occupant_label:$('#fabAlias').value.trim()||'unassigned functional seat',authority:'advisory only'});e.target.reset();toast('Bounded FAB advisory receipt recorded.')} );
   $('#successorForm').addEventListener('submit',async e=>{e.preventDefault();const values={object:$('#replayObject').value,authority:$('#replayAuthority').value,open:$('#replayOpen').value,next:$('#replayNext').value};const result=scoreReplay(values);await appendLedger('successor-replay','continuity-steward',cartridge.successor.replay_id,{...values,passed:result.passed,total:result.total});$('#replayResult').innerHTML=`<div class="${result.passed===result.total?'success':'warning'}"><strong>${result.passed}/${result.total} replay fields grounded.</strong> ${result.passed===result.total?'Cold replay passed from the durable packet.':'Review the packet and make the authority, open branch, and safe next action explicit.'}</div>`;toast(`Cold replay: ${result.passed}/${result.total}.`)});
   $('#hashSourcesButton').addEventListener('click',hashSelectedSources);$('#exportSourcesButton').addEventListener('click',()=>downloadJSON(`ea-source-receipts-${Date.now()}.json`,{schema:'essential-attention/source-receipt-export@2',generated_at:now(),cartridge_id:cartridge.cartridge_id,receipts:state.source_receipts}));
-  $('#exportPacketButton').addEventListener('click',exportPacket);$('#exportLedgerButton').addEventListener('click',()=>downloadJSON(`ea-ledger-${Date.now()}.json`,{schema:'essential-attention/ledger-export@2',generated_at:now(),cartridge_id:cartridge.cartridge_id,ledger:allLedgerRows()}));
+  $('#exportPacketButton').addEventListener('click',()=>exportPacket().catch(err=>{console.error(err);toast(`Export unavailable: ${err.message}`)}));$('#exportLedgerButton').addEventListener('click',()=>downloadJSON(`ea-ledger-${Date.now()}.json`,{schema:'essential-attention/ledger-export@2',generated_at:now(),cartridge_id:cartridge.cartridge_id,ledger:allLedgerRows()}));
   $('#importPacketButton').addEventListener('click',()=>$('#packetInput').click());$('#packetInput').addEventListener('change',async()=>{const file=$('#packetInput').files[0];if(!file)return;try{await importPacket(file)}catch(err){console.error(err);toast(`Import refused: ${err.message}`)}finally{$('#packetInput').value=''}});
   $('#downloadAppButton').addEventListener('click',()=>download('essential-attention-standalone.html','<!doctype html>\n'+document.documentElement.outerHTML,'text/html'));
   $('#clearStateButton').addEventListener('click',clearState);
 }
 
 async function boot(){
-  const saved=await storage.get('state');if(saved&&typeof saved==='object'){state={...DEFAULT_STATE(),...saved,ledger:Array.isArray(saved.ledger)?saved.ledger:[],source_receipts:Array.isArray(saved.source_receipts)?saved.source_receipts:[],seat_runs:Array.isArray(saved.seat_runs)?saved.seat_runs:[],preferences:{view:'overview',...(saved.preferences||{})}};if(saved.active_cartridge){try{validateImportedCartridge(saved.active_cartridge);cartridge=saved.active_cartridge}catch{cartridge=FAB_CARTRIDGE}}}
-  selectedOfferId=cartridge.offers[0]?.offer_id||'';bind();renderAll();showView(state.preferences.view||'overview');
+  const saved=await storage.get('state');if(saved&&typeof saved==='object'){state={...DEFAULT_STATE(),...saved,ledger:Array.isArray(saved.ledger)?saved.ledger:[],source_receipts:Array.isArray(saved.source_receipts)?saved.source_receipts:[],seat_runs:Array.isArray(saved.seat_runs)?saved.seat_runs:[],preferences:{view:'start',onboarding_seen:false,tour_active:false,tour_step:0,...(saved.preferences||{})}};if(saved.active_cartridge){try{validateImportedCartridge(saved.active_cartridge);cartridge=saved.active_cartridge}catch{cartridge=FAB_CARTRIDGE}}}
+  selectedOfferId=cartridge.offers[0]?.offer_id||'';bind();renderAll();showView(state.preferences.view||'start');if(state.preferences.tour_active){const step=TOUR_STEPS[Math.max(0,Math.min(Number(state.preferences.tour_step)||0,TOUR_STEPS.length-1))];showView(step.view)}else if(!state.preferences.onboarding_seen){openHelp()}
 }
 boot().catch(err=>{console.error(err);document.body.innerHTML=`<main style="padding:2rem"><h1>Essential Attention could not start</h1><pre>${esc(err.stack||err.message)}</pre></main>`});
 </script>
