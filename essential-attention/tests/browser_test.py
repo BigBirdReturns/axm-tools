@@ -107,6 +107,7 @@ with serve_root() as origin, sync_playwright() as p:
 
     check("tour reaches final step", "7 OF 7" in page.locator("#tourCounter").inner_text())
     page.click("#tourNextButton")
+    page.wait_for_selector("#tourBar", state="hidden")
     check("tour exits cleanly", page.locator("#tourBar").is_hidden())
 
     with page.expect_download() as download_info:
