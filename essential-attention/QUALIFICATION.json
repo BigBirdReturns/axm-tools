@@ -1,0 +1,24 @@
+{
+  "schema": "essential-attention/pages-qualification@1",
+  "release": "1.0.2",
+  "artifact": "essential-attention/index.html",
+  "repaired_from_malformed_wrapper": true,
+  "sha256": "45cd7a8768ef260b3aeae1dfafc63e2cbe70da588ec90db7eb09cf6a7b895a52",
+  "bytes": 71665,
+  "checks": {
+    "doctype": true,
+    "plain_no_atob": true,
+    "plain_no_decompression_loader": true,
+    "one_inline_script": true,
+    "one_inline_style": true,
+    "no_external_stylesheet": true,
+    "network_connect_none": true,
+    "register_objects_7": true,
+    "executive_decisions_5": true,
+    "contained_roles_7": true,
+    "effect_firewall": true,
+    "successor_replay": true
+  },
+  "operator_surface": "plain standalone HTML",
+  "external_effect_adapters": 0
+}
