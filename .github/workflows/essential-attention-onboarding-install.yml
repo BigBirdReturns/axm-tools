@@ -36,7 +36,9 @@ jobs:
           echo "d45aa1aa21a585db952f92891c2e871f3815ce3421dda911b4b7a4254f8769f9  /tmp/ea-onboarding.tar.gz" | sha256sum -c -
           tar -xzf /tmp/ea-onboarding.tar.gz -C .
           rm -rf .github/ea-onboarding-payload
-          rm -f .github/workflows/essential-attention-onboarding-install.yml
+          # Workflow files are written separately by the connected GitHub app,
+          # because the Actions token cannot create or remove workflow files.
+          rm -f .github/workflows/essential-attention-check.yml
 
       - name: Verify the one-file contract
         run: |
@@ -47,7 +49,7 @@ jobs:
         run: |
           git config user.name "essential-attention-onboarding-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A -- essential-attention README.md index.html .github/workflows/essential-attention-check.yml .github/ea-onboarding-payload .github/workflows/essential-attention-onboarding-install.yml
+          git add -A -- essential-attention README.md index.html .github/ea-onboarding-payload
           git diff --cached --check
           git commit -m "essential-attention: add guided first-use floor"
           git push origin HEAD:agent/essential-attention-onboarding
