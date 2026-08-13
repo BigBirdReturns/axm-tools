@@ -29,7 +29,7 @@ jobs:
 
       - name: Build the AXM Case Ledger from frozen estate donors
         run: |
-          cat .github/ea-case-ledger-payload/build.part* > /tmp/build_case_ledger.py
+          cat .github/ea-case-ledger-payload/build2.part* > /tmp/build_case_ledger.py
           python /tmp/build_case_ledger.py
           python essential-attention/tests/public_contract_test.py
           node --check /tmp/essential-attention-inline.js
