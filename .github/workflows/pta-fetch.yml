@@ -1,0 +1,248 @@
+name: PTA tracker fetch + deploy
+
+# One workflow does both jobs on purpose. The nightly data commit is pushed
+# with the built-in GITHUB_TOKEN, and such pushes never trigger other
+# workflows (GitHub's anti-recursion rule) — so a standalone on:push Pages
+# workflow would deploy on human merges but silently skip every nightly
+# refresh. Deploying right here, in the same run that fetched the data,
+# keeps the site and the repo atomic and needs no push event at all.
+
+on:
+  schedule:
+    # 12:30 UTC = 4:30/5:30 AM Pacific, before anyone checks the page
+    - cron: "30 12 * * *"
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+# one Pages deployment at a time; queue rather than cancel so a merge and
+# the nightly run can't clobber each other
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  fetch-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch and filter feeds
+        run: python pta-tracker/scripts/fetch.py
+
+      # Regenerates pta-tracker/<slug>/index.html for every school in
+      # data/schools.json (published or not - build_schools.py's own docstring
+      # covers why) so each nightly refresh ships all six front doors, not
+      # just the Holly Avenue default. Runs after the fetch (so a school page
+      # never ships stale relative to today's items.json) and before the
+      # Pages artifact is captured below.
+      #
+      # continue-on-error for the same reason the gap-issue step below has it,
+      # and more urgently: schools.json is hand-maintained ("a new campus is
+      # added by editing it"), so one malformed edit makes this script exit 1 -
+      # and a failed step skips every remaining step in the job, which would
+      # mean no items.json commit and no Pages deploy. The feed refresh is the
+      # district's actual service; a page generator must never be able to cost
+      # everyone their data. The `|| { echo ::error:: ; exit 1; }` keeps the
+      # failure loud (a red annotation on the run, and outcome != success for
+      # the commit gate below) while the job carries on with the last good
+      # per-school pages still on disk and in the artifact.
+      - name: Build per-school pages
+        id: build_schools
+        continue-on-error: true
+        run: |
+          python pta-tracker/scripts/build_schools.py || {
+            echo "::error title=Per-school pages not rebuilt::build_schools.py failed - check pta-tracker/data/schools.json. The data refresh and Pages deploy continued; per-school pages stay at the last good build."
+            exit 1
+          }
+
+      # fetch.py writes data/gaps.json every run - it flags missing human
+      # work (an uncovered hot item, an expired card, stale curation), never
+      # parent-facing prose. One issue, edited in place, is how that reaches
+      # a human without recreating the alarm fatigue of a per-item alert:
+      # this step is the only thing that turns "batched" into "someone got
+      # pinged." continue-on-error keeps a flaky `gh` call from taking down
+      # the data refresh and Pages deploy that matter far more than the issue.
+      - name: Sync gap-tracking issue
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          gaps = json.loads(
+              Path("pta-tracker/data/gaps.json").read_text(encoding="utf-8")
+          )
+          items = gaps.get("gaps", [])
+
+          lines = [
+              f"Checked `{gaps.get('checked', '')}` — "
+              f"{gaps.get('reviewed', 0)} feed items reviewed, "
+              f"{len(items)} gap(s) found.",
+              "",
+              "Machine-maintained by `pta-fetch.yml` from `data/gaps.json`. "
+              "It flags missing human work on the parent page and never "
+              "proposes parent-facing prose - a human still writes any "
+              "sentence that goes on the site. One issue total, edited in "
+              "place each run; it closes itself when the count reaches zero.",
+              "",
+          ]
+          for g in items:
+              lines.append(f"### {g.get('kind', '?')}: {g.get('title', '')}")
+              lines.append(f"- ref: `{g.get('ref', '')}`")
+              if g.get("source_url"):
+                  date = g.get("source_date", "")
+                  lines.append(f"- source: {g['source_url']} ({date})")
+              if g.get("why"):
+                  lines.append(f"- why: {g['why']}")
+              if g.get("evidence"):
+                  lines.append(f"- evidence: > {g['evidence']}")
+              lines.append("")
+
+          Path("/tmp/gap-issue-body.md").write_text(
+              "\n".join(lines), encoding="utf-8"
+          )
+          Path("/tmp/gap-count.txt").write_text(str(len(items)), encoding="utf-8")
+          PY
+
+          gh label create tracker-gap --color FBCA04 \
+            --description "Auto-managed: missing parent-card coverage or stale curation" \
+            || true
+
+          # search both states so a gap reopening after "closed" reuses the
+          # same issue instead of spawning a second one under the label.
+          # `// empty` matters: .[0] on a no-match list is `null`, and
+          # string-interpolating null yields the literal text "null", which
+          # bash's -n treats as non-empty - that would misroute every
+          # zero-issue run into an edit-nonexistent-issue failure.
+          existing=$(gh issue list --label tracker-gap --state all \
+            --json number,state --jq '.[0] // empty | "\(.number) \(.state)"' || true)
+          number=$(echo "$existing" | cut -d' ' -f1)
+          state=$(echo "$existing" | cut -d' ' -f2)
+          count=$(cat /tmp/gap-count.txt)
+
+          if [ "$count" = "0" ]; then
+            if [ -n "$number" ] && [ "$state" = "OPEN" ]; then
+              gh issue close "$number" \
+                --comment "All district hot items are covered, and no cards or curation are past due, as of this run." \
+                || echo "::warning::could not close gap issue #$number"
+            fi
+            # no issue, or already closed: zero gaps is a no-op, on purpose
+          else
+            if [ -n "$number" ]; then
+              if [ "$state" = "CLOSED" ]; then
+                gh issue reopen "$number" || echo "::warning::could not reopen gap issue #$number"
+              fi
+              gh issue edit "$number" --body-file /tmp/gap-issue-body.md \
+                || echo "::warning::could not update gap issue #$number"
+            else
+              gh issue create --title "PTA tracker: parent-page gaps" \
+                --label tracker-gap --body-file /tmp/gap-issue-body.md \
+                || echo "::warning::could not create gap issue"
+            fi
+          fi
+
+      - name: Commit updated data
+        env:
+          SCHOOLS_BUILT: ${{ steps.build_schools.outcome }}
+        run: |
+          git config user.name "pta-tracker-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add pta-tracker/data/items.json
+          # build_schools.py just rewrote pta-tracker/<slug>/ for every school
+          # in schools.json and swept away any slug no longer listed there -
+          # stage that whole result (additions and removals alike) so the
+          # per-school pages a viewer gets are always what this run built,
+          # not a stale artifact-only copy that never made it into history.
+          # The exclusions keep this from re-scanning data/ (handled by the
+          # line above, plus archive.json/gaps.json which are deliberately
+          # not committed) or scripts/ (source, never build output).
+          #
+          # Gated on the build's own outcome because continue-on-error lets a
+          # failed build reach this step: staging a half-written or swept-away
+          # tree would turn "tonight's page build broke" into "the committed
+          # pages are broken too." Nothing staged means the last good build
+          # stays live and only the data refresh lands.
+          if [ "$SCHOOLS_BUILT" = "success" ]; then
+            git add -A -- pta-tracker ':!pta-tracker/data' ':!pta-tracker/scripts'
+          else
+            echo "::warning::per-school pages not staged: build_schools.py did not succeed this run"
+          fi
+          if git diff --cached --quiet; then
+            echo "No new items."
+          else
+            git commit -m "pta-tracker: nightly data refresh"
+            git push
+          fi
+
+      - name: Build AXM Readiness offline launcher
+        run: python acceptance-assets/build_offline.py
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      # the whole repo root is the site: / is the tool directory,
+      # /pta-tracker/ is the tracker — same layout for every future tool.
+      # The artifact name carries the attempt number because artifacts
+      # survive job re-runs: with the default fixed name, re-running a
+      # failed deploy finds its own attempt's upload AND the previous
+      # attempt's, and deploy-pages refuses to pick between two artifacts
+      # named "github-pages".
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+          name: github-pages-attempt-${{ github.run_attempt }}
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-attempt-${{ github.run_attempt }}
+
+      # A successful deploy writes a tiny receipt back to main. The push uses
+      # GITHUB_TOKEN and therefore does not recursively trigger this workflow.
+      # This gives maintainers a durable answer to "what artifact is live?"
+      # without trusting the Pages UI or a CDN cache.
+      - name: Record successful Pages deployment
+        env:
+          PAGE_URL: ${{ steps.deploy.outputs.page_url }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          receipt = {
+              "deployed_at": datetime.now(timezone.utc).isoformat(),
+              "source_sha": os.environ["GITHUB_SHA"],
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "page_url": os.environ.get("PAGE_URL", ""),
+              "axm_readiness_release": "readiness-equipment-evidence/1.0",
+          }
+          Path(".github/pages-deployment.json").write_text(
+              json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
+          )
+          PY
+          git config user.name "pages-deploy-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add .github/pages-deployment.json
+          git commit -m "pages: record successful deployment" || exit 0
+          git push

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="AXM Readiness is a zero-install browser demonstration that tests whether ordinary equipment, inventory, maintenance, and due-in records support a claim of physical availability.">
+<meta name="axm-release" content="readiness-equipment-evidence/1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>AXM Readiness — Equipment Evidence</title>
+<link rel="stylesheet" href="acceptance-assets/app.css">
+</head>
+<body>
+<noscript><div class="noscript">AXM Readiness requires JavaScript to analyze local files. No data is transmitted; analysis runs in this browser.</div></noscript>
+<div class="app" id="app">
+  <aside class="side" aria-label="AXM Readiness navigation">
+    <div class="brand"><div class="brandrow"><span class="brandmark" aria-hidden="true"></span><div class="brandtext"><div class="brandname">AXM Readiness</div><div class="brandsub">EQUIPMENT EVIDENCE</div></div></div></div>
+    <nav class="nav" id="nav">
+      <button class="navbtn" data-tab="finding" aria-current="page"><span class="navicon">◎</span><span class="navlabel">Finding</span><span class="navbadge" id="badge-finding" hidden></span></button>
+      <button class="navbtn" data-tab="surfaces"><span class="navicon">▦</span><span class="navlabel">Surfaces</span><span class="navbadge" id="badge-surfaces" hidden></span></button>
+      <button class="navbtn" data-tab="evidence"><span class="navicon">❒</span><span class="navlabel">Evidence</span></button>
+      <button class="navbtn" data-tab="asks"><span class="navicon">➜</span><span class="navlabel">Asks</span></button>
+      <button class="navbtn" data-tab="data"><span class="navicon">⬆</span><span class="navlabel">Data</span></button>
+      <button class="navbtn" data-tab="about"><span class="navicon">ⓘ</span><span class="navlabel">About</span></button>
+    </nav>
+    <div class="sidefoot">Offline · one file · no account.<br>Files are hashed in this browser; nothing leaves this machine.<br><br>Public page: dummy or de-identified data only.</div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div><div class="topbar-title" id="tabTitle">Finding</div><div class="topbar-sub" id="tabSub">physical availability tested against the record</div></div>
+      <div class="topactions">
+        <div class="sourcechip" id="sourceChip"><span>Worked example</span></div>
+        <button class="iconbtn" id="themeBtn" type="button" aria-label="Toggle light and dark theme" title="Toggle theme">☾</button>
+        <button class="primarybtn" id="goDataBtn" type="button"><span class="loadlabel">Load data</span><span aria-hidden="true"> ⬆</span></button>
+      </div>
+    </header>
+    <div class="mainpad">
+      <section class="panel" id="panel-finding" data-panel="finding">
+        <div class="hero-card">
+          <div class="hero-body">
+            <div class="hero-kicker" id="heroKicker">Loading worked example…</div>
+            <div class="hero-row">
+              <div style="min-width:260px;flex:1"><div class="hero-verdict" id="heroVerdict">Analyzing surfaces</div><div class="hero-subject" id="heroSubject">Five local dummy surfaces will be joined in this browser.</div></div>
+              <div class="meter" id="meter" hidden><div class="meter-number"><span id="meterAvail">0</span><span>/</span><span id="meterTotal">0</span></div><div class="meter-label">Issuable</div></div>
+            </div>
+            <div id="meterDetail" hidden><div class="meter-track"><div class="meter-bar" id="meterBar" style="width:2%"></div></div><div class="meter-note" id="meterNote"></div><div class="metrics" id="metrics"></div></div>
+          </div>
+        </div>
+        <div id="findingView"></div>
+      </section>
+
+      <section class="panel" id="panel-surfaces" data-panel="surfaces" hidden>
+        <div id="summaryView"></div>
+        <div class="tablewrap" id="surfaceTable"></div>
+        <div class="section-label">Per-surface detail</div>
+        <div id="detailsView"></div>
+      </section>
+
+      <section class="panel" id="panel-evidence" data-panel="evidence" hidden>
+        <p class="intro">Every clause in a finding cites the exact surface it came from. Each pointer includes the source file, row or record, and SHA-256 computed in this browser. Hashes and file bytes are never transmitted.</p>
+        <div class="tablewrap" id="evidenceView"></div>
+      </section>
+
+      <section class="panel" id="panel-asks" data-panel="asks" hidden>
+        <p class="intro">A failure is an evidentiary boundary and the next ask. These requests are generated from the gaps in the loaded surfaces: the smallest additions that would let AXM produce a stronger finding.</p>
+        <ol class="asks" id="asksView"></ol>
+      </section>
+
+      <section class="panel" id="panel-data" data-panel="data" hidden>
+        <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose operational files or drag them here">
+          <div class="uploadmark" aria-hidden="true">⬆</div>
+          <div class="drop-title">Drop your stock balance, work-order, due-in, report, or evidence files</div>
+          <div class="drop-sub">xlsx · csv · json · txt/log · pdf · screenshots · office documents — imperfect exports are expected</div>
+          <div class="btnrow"><button class="primarybtn" id="chooseBtn" type="button">Choose files</button><button class="ghostbtn" id="restoreBtn" type="button">Restore the worked example</button></div>
+          <input id="fileInput" type="file" multiple class="sr-only" accept=".xlsx,.xlsm,.csv,.tsv,.json,.jsonl,.txt,.md,.log,.pdf,.docx,.pptx,.rtf,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tiff,.svg,.xml,.yaml,.yml,.html,.htm,.eml,.parquet,.sqlite,.db,.zip">
+        </div>
+        <div class="filelist" id="fileList" hidden><div class="filehead">Loaded surfaces</div><div id="fileRows"></div></div>
+        <div class="statusmsg" id="statusMsg" hidden role="status"></div>
+        <div class="actionrow"><button class="primarybtn" id="analyzeBtn" type="button" disabled>Analyze surfaces</button><button class="ghostbtn" id="clearBtn" type="button">Clear</button><button class="ghostbtn" id="exportJsonBtn" type="button" disabled>Export JSON</button><button class="ghostbtn" id="exportHtmlBtn" type="button" disabled>Export HTML report</button><a class="ghostbtn" id="offlineLink" href="AXM_Readiness_Offline.html" download>Download offline copy</a></div>
+        <p class="intro" style="margin-top:20px"><b>Operational boundary:</b> this public page is for dummy or de-identified data. For CUI or controlled operational data, download the single-file launcher and run it only inside an authorized environment.</p>
+      </section>
+
+      <section class="panel" id="panel-about" data-panel="about" hidden>
+        <div class="aboutgrid">
+          <article class="aboutcard boundary"><h3>Honesty boundary</h3><p>This tool is the intake acceptance harness. It does not mint Genesis shards or sign anything. Surfaces that pass here are candidates for custody, not truth. Promotion into sealing and detached verification happens in the AXM kernel after intake.</p><p>A missing field does not kill the analysis. It lowers the evidence tier or becomes a declared gap. Human review routes attention; it does not convert weak evidence into strong evidence.</p></article>
+          <article class="aboutcard"><h3>What it computes</h3><p>The browser hashes the supplied bytes, maps familiar field names including Air Force vocabulary such as NIIN, JCN, tail number, AWP/NMCS, and EDD, joins blocked work to the required part, and separates administrative <b>on-hand</b> from <b>serviceable-and-unallocated</b> stock.</p><p>Where the recorded state and the physically supportable state diverge, the divergence is the finding.</p></article>
+          <article class="aboutcard"><h3>Where it sits</h3><p>AXM is the governance layer between recorded state and consequential action: the part that checks whether a premise is physically supportable before planning speed magnifies the error. Accepted surfaces can move into custody, sealing, detached verification, query, and replay without changing the source system.</p><p><a href="https://github.com/BigBirdReturns/axm-tools" target="_blank" rel="noopener noreferrer">Inspect the repository and test harness →</a></p></article>
+          <article class="aboutcard"><h3>Deployment posture</h3><p>One static HTML file. No account, backend, database, API key, or automatic network request. The same file can be served from GitHub Pages, emailed as a launcher, copied to removable media, or hosted inside an approved enclave.</p></article>
+        </div>
+      </section>
+      <footer class="footer">AXM Readiness · equipment evidence · intake acceptance, not adjudication · release readiness-equipment-evidence/1.0</footer>
+    </div>
+  </main>
+</div>
+<script src="acceptance-assets/app-0.js" defer></script>
+<script src="acceptance-assets/app-1.js" defer></script>
+<script src="acceptance-assets/app-2.js" defer></script>
+<script src="acceptance-assets/app-3.js" defer></script>
+<script src="acceptance-assets/app-4.js" defer></script>
+<script src="acceptance-assets/app-5.js" defer></script>
+</body>
+</html>
