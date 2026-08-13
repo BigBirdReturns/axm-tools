@@ -1,0 +1,33 @@
+name: Manzanita Works estate front door
+
+on:
+  pull_request:
+    paths:
+      - "manzanita/**"
+      - ".github/workflows/manzanita-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "manzanita/**"
+      - ".github/workflows/manzanita-check.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify public contract
+        run: python manzanita/tests/public_contract_test.py
+      - name: Install browser harness
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Drive every scale and boundary
+        run: python manzanita/tests/browser_test.py
