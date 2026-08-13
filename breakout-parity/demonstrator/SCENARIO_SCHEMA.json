@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/breakout-parity/BP-SCENARIO-1.0.schema.json",
+  "title": "Breakout Parity Synthetic Scenario",
+  "type": "object",
+  "required": ["id", "title", "description", "capacity", "n1", "threats", "injects", "reference"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^BP-[A-Z0-9-]+$"},
+    "title": {"type": "string"},
+    "description": {"type": "string"},
+    "maxMonth": {"type": "integer", "minimum": 1},
+    "physicalLatency": {"type": "number", "minimum": 0},
+    "signalRedundancy": {"type": "number", "minimum": 0},
+    "capacity": {
+      "type": "object",
+      "required": ["analysis", "inspection", "lab", "adjudication", "services", "response", "restoration"],
+      "additionalProperties": {"type": "number", "minimum": 0}
+    },
+    "n1": {
+      "type": "object",
+      "required": ["month", "resource", "duration"],
+      "properties": {
+        "month": {"type": "integer", "minimum": 0},
+        "resource": {"enum": ["analysis", "inspection", "lab", "adjudication", "services", "response", "restoration"]},
+        "duration": {"type": "integer", "minimum": 1}
+      }
+    },
+    "threats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "lineage", "label", "actual", "strategy", "covered", "arrival", "clock", "visibility", "ambiguity", "systemic", "initialConfidence"],
+        "properties": {
+          "actual": {"enum": ["real", "decoy", "holdout"]},
+          "strategy": {"enum": ["hedger", "sprinter", "hider", "sheltered", "network", "recurrent", "decoy"]},
+          "covered": {"type": "boolean"},
+          "arrival": {"type": "integer"},
+          "clock": {"type": "number", "minimum": 1},
+          "visibility": {"type": "number", "minimum": 0, "maximum": 1},
+          "ambiguity": {"type": "number", "minimum": 0, "maximum": 1},
+          "systemic": {"type": "number", "minimum": 0, "maximum": 1},
+          "initialConfidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "hidden": {"type": "boolean"}
+        }
+      }
+    },
+    "injects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["month", "title", "text"],
+        "properties": {
+          "month": {"type": "integer", "minimum": 0},
+          "title": {"type": "string"},
+          "text": {"type": "string"}
+        }
+      }
+    },
+    "reference": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {"enum": ["facilitator", "evidence", "inspection", "findings", "rollback", "response", "review"]},
+          {"type": ["string", "null"]},
+          {"type": "string"}
+        ],
+        "minItems": 3,
+        "maxItems": 3
+      }
+    }
+  }
+}

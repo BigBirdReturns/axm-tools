@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCG Lockups — reusable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scg.tokens.css">
+<style>
+  /* Reusable SCG lockups. Mark = scg-pixel-mark.js (frozen). Governed by ../SCG_MARK_CONSTITUTION.md. */
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--scg-void);color:var(--scg-bone);font-family:var(--scg-mono);padding:48px;display:flex;flex-direction:column;gap:40px;}
+  .lab{font-family:var(--scg-mono);font-size:10px;letter-spacing:.2em;color:var(--scg-olive);text-transform:uppercase;margin-bottom:14px;}
+  .card{border:1px solid #232219;background:#0F0E0B;padding:32px;}
+  .name{font-family:var(--scg-sans);font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--scg-bone);}
+  .sub{font-family:var(--scg-mono);font-size:10px;letter-spacing:.2em;color:var(--scg-olive);text-transform:uppercase;margin-top:10px;line-height:1.9;}
+  /* horizontal lockup */
+  .lock-h{display:flex;align-items:center;gap:28px;}
+  .lock-h .name{font-size:24px;line-height:1.45;}
+  /* stacked lockup */
+  .lock-s{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;}
+  .lock-s .name{font-size:15px;}
+  /* on-bone header (print/light) */
+  .on-bone{background:var(--scg-bone);color:var(--scg-void);display:flex;align-items:center;gap:18px;padding:22px 26px;}
+  .on-bone .name{color:var(--scg-void);font-size:14px;}
+  svg{display:block;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="lab">Horizontal lockup</div>
+    <div class="lock-h">
+      <span id="lockH"></span>
+      <div><div class="name">Sandhu<br>Consulting<br>Group</div><div class="sub">Constraint Analysis · Execution Provenance</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="lab">Stacked lockup</div>
+    <div class="lock-s"><span id="lockS"></span><div class="name">Sandhu Consulting Group</div></div>
+  </div>
+
+  <div class="card" style="background:var(--scg-bone);">
+    <div class="lab" style="color:#6b6a5e;">Document header — mark inverts, bloom stays void-dark</div>
+    <div class="on-bone"><span id="lockDoc"></span><div class="name">Sandhu Consulting Group</div></div>
+  </div>
+
+<script src="scg-pixel-mark.js"></script>
+<script>
+  SCGPX.mount('lockH', 10);
+  SCGPX.mount('lockS', 7);
+  /* on bone: dark bloom, olive stays (constitution §5.2 palette swap) */
+  SCGPX.mount('lockDoc', 4, { colors: { W: '#0D0C09', o: '#7C7F57' } });
+</script>
+</body>
+</html>
