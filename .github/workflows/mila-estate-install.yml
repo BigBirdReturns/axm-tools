@@ -34,7 +34,7 @@ jobs:
           while IFS= read -r payload; do
             sed -E 's/^MILA_PAYLOAD_CHUNK_[^=]+=//' "$payload" >> /tmp/mila-estate-front-door.tar.gz.b64
           done < <(find .github/mila-estate-payload -type f -name 'chunk*' | sort)
-          test "$(wc -c < /tmp/mila-estate-front-door.tar.gz.b64)" = "42108"
+          test "$(wc -c < /tmp/mila-estate-front-door.tar.gz.b64)" = "42109"
           base64 -d /tmp/mila-estate-front-door.tar.gz.b64 > /tmp/mila-estate-front-door.tar.gz
           echo "6622c465173954f7a83d8b07bf22a2e54f6a4e22c9e3e976546f96b55d4bdeef  /tmp/mila-estate-front-door.tar.gz" | sha256sum -c -
           tar -xzf /tmp/mila-estate-front-door.tar.gz -C .
