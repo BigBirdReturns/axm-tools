@@ -1,13 +1,13 @@
 {
   "schema": "essential-attention/pages-qualification@2",
-  "release": "1.0.3",
+  "release": "1.0.4",
   "artifact": "essential-attention/index.html",
-  "sha256": "d01006e0e31d2bc31ee9793e66c62292e82499cf6d9c59ac7724a82ffb9c8c43",
-  "bytes": 90063,
-  "readme_bytes": 10844,
+  "sha256": "738bf474a6d70b946754bac006c7499127d8ab7b329d0b6cec48523e214c300f",
+  "bytes": 305500,
+  "readme_bytes": 11879,
   "checks": {
     "doctype": true,
-    "release_1_0_3": true,
+    "release_1_0_4": true,
     "plain_no_atob": true,
     "plain_no_decompression_loader": true,
     "one_inline_script": true,
@@ -24,8 +24,12 @@
     "successor_replay": true,
     "readme_present": true,
     "readme_first_use": true,
+    "case_ledger_flavor": true,
+    "case_topology": true,
+    "embedded_house_fonts": true,
+    "frozen_palette": true,
     "readme_contents": true
   },
-  "operator_surface": "plain standalone HTML with first-run orientation",
+  "operator_surface": "AXM Case Ledger with first-run orientation",
   "external_effect_adapters": 0
 }

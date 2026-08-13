@@ -1,6 +1,6 @@
 # Essential Attention: FAB Offer Register and Executive Review
 
-Essential Attention is a local-first administrative case runtime. This release opens with one populated cartridge, `mw-ea-n0-fab-offers-001`, which reconstructs the aftermath of the first Futures Advisory Board meeting as a source-linked set of events, offers, open questions, decisions, and continuity obligations.
+Essential Attention is a local-first administrative case runtime. Version 1.0.4 opens with one populated cartridge, `mw-ea-n0-fab-offers-001`, which reconstructs the aftermath of the first Futures Advisory Board meeting as a source-linked set of events, offers, open questions, decisions, and continuity obligations.
 
 The page is not a generic dashboard and it is not a task assignment system. It is the working case file for one bounded administrative object. It keeps the available evidence, the current interpretation of each item, the authority actually held, the next safe internal action, and the external effect still withheld in one portable browser surface.
 
@@ -11,6 +11,20 @@ The hosted application is available at:
 `https://bigbirdreturns.github.io/axm-tools/essential-attention/`
 
 The committed `index.html` is also the offline application. It contains the interface, the public-safe FAB cartridge, the contained role logic, local persistence, import and export, and the qualification boundary in one file.
+
+## Visual floor
+
+Essential Attention uses the **Case Ledger** flavor registered for AXM properties. It is a Cream Editorial administrative dossier carried inside a Dark Ecosystem custody spine. The reusable visual law is:
+
+- exact SCG 16×18 practice-derivative pixel mark, never redrawn or smoothed;
+- frozen SCG bone `#ECE7D8`, olive `#7C7F57`, void `#0D0C09`, and ember `#C24B2C`;
+- ember only for blocked or adverse findings;
+- Barlow Condensed for display, IBM Plex Sans for running interface text, IBM Plex Mono for evidence, and Lora for explanatory narrative;
+- dark custody and instrument surfaces surrounding a paper case file;
+- case maps, rules, docket rows, evidence wells, state stamps, and case numbers instead of generic SaaS cards and decorative pills;
+- FAB supplies the case vocabulary and records, while the Case Ledger shell remains reusable by later cartridges.
+
+The font subsets and mark coordinates are embedded from the estate's frozen identity artifacts. The page makes no font or asset request at runtime.
 
 ## What loads when the page opens
 

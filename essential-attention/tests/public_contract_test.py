@@ -25,7 +25,7 @@ required_roles = [
 
 checks = {
     "doctype": source.lstrip().lower().startswith("<!doctype html>"),
-    "release_1_0_3": "Essential Attention v1.0.3" in source and "version:'1.0.3'" in source,
+    "release_1_0_4": "Essential Attention v1.0.4" in source and "version:'1.0.4'" in source,
     "plain_no_atob": "atob(" not in source,
     "plain_no_decompression_loader": "DecompressionStream" not in source,
     "one_inline_script": source.count("<script>") == 1 and "<script src=" not in source,
@@ -42,6 +42,10 @@ checks = {
     "successor_replay": "Cold replay passed" in source,
     "readme_present": README.exists() and len(readme) > 5000,
     "readme_first_use": "## First use" in readme and "Take the guided tour" in readme,
+    "case_ledger_flavor": "FAB Case Ledger" in source and "pixel-dandelion" in source,
+    "case_topology": "case-map-shell" in source and "function-spine" in source,
+    "embedded_house_fonts": all(token in source for token in ["Barlow Condensed", "IBM Plex Mono", "IBM Plex Sans", "Lora"]) and "font-src data:" in source,
+    "frozen_palette": all(token in source for token in ["#0D0C09", "#ECE7D8", "#7C7F57", "#C24B2C"]),
     "readme_contents": "The default FAB cartridge contains seven case objects" in readme,
 }
 
@@ -57,13 +61,13 @@ Path("/tmp/essential-attention-inline.js").write_text(script.group(1), encoding=
 digest = hashlib.sha256(HTML.read_bytes()).hexdigest()
 receipt = {
     "schema": "essential-attention/pages-qualification@2",
-    "release": "1.0.3",
+    "release": "1.0.4",
     "artifact": "essential-attention/index.html",
     "sha256": digest,
     "bytes": HTML.stat().st_size,
     "readme_bytes": README.stat().st_size,
     "checks": checks,
-    "operator_surface": "plain standalone HTML with first-run orientation",
+    "operator_surface": "AXM Case Ledger with first-run orientation",
     "external_effect_adapters": 0,
 }
 QUALIFICATION.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
