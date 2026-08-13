@@ -1,6 +1,6 @@
-# Essential Attention v1.1.0: FAB Operating Cockpit
+# Essential Attention v1.2.0: FAB Operating Desk
 
-Essential Attention is a local-first administrative case runtime. Version 1.0.4 opens with one populated cartridge, `mw-ea-n0-fab-offers-001`, which reconstructs the aftermath of the first Futures Advisory Board meeting as a source-linked set of events, offers, open questions, decisions, and continuity obligations.
+Essential Attention is a local-first administrative case runtime. Version 1.2.0 opens with one populated cartridge, `mw-ea-n0-fab-offers-001`, which reconstructs the aftermath of the first Futures Advisory Board meeting as a source-linked set of events, offers, open questions, decisions, and continuity obligations.
 
 The page is not a generic dashboard and it is not a task assignment system. It is the working case file for one bounded administrative object. It keeps the available evidence, the current interpretation of each item, the authority actually held, the next safe internal action, and the external effect still withheld in one portable browser surface.
 
@@ -73,32 +73,29 @@ A real authority is required only when a specific action crosses the external-ef
 
 ## First use
 
-A first-time browser opens an orientation dialog. The same explanation is always available through the **Help** button and the **Start here** view.
+A first-time browser opens one compact orientation dialog. The same explanation and optional five-step tour remain available through **About & tour**.
 
 The recommended route is:
 
-1. Open **Case register** and inspect all seven objects. For each object, read the literal event or offer, current state, authority, scope, next safe state, fallback, and source receipts.
-2. Open **Decisions** and inspect the five bounded questions. A disposition button creates a local draft receipt only. It does not perform the external act described by the decision.
-3. Open **Internal run** and select **Run all contained seats**. The run tests whether the internal administrative functions can complete without locating seven people.
-4. Open **Handoff test** and use the displayed successor packet to answer the four replay fields. A passing replay shows that the current case can be reconstructed from durable records.
-5. Open **Sources** only when a private file is relevant. The browser reads the file locally, computes a SHA-256 digest, and stores source metadata. The file bytes are not transmitted or retained by the page.
-6. Open **Activity & export** and export the portable packet. The exported packet is the durable handoff for another browser, offline copy, or successor.
+1. Begin on **Today** and open the single recommended action. Only three other safe moves remain visible behind it.
+2. Open **Records** and inspect the seven case files. Each record starts with what happened, current state, next safe step, authority boundary, and bounded scope.
+3. Open **Decisions** and inspect the five bounded questions. A disposition button creates a local draft receipt only. It does not perform the external act described by the decision.
+4. Open **Evidence** only when a private file is relevant. The browser reads the file locally, computes a SHA-256 digest, and stores source metadata. The file bytes are not transmitted or retained by the page.
+5. Open **Handoff**, run the seven-function contained check, pass the cold continuity replay, and export the portable packet. The exported packet is the durable handoff for another browser, offline copy, or successor.
 
-The **Take the guided tour** control performs this route one view at a time and explains what to look for at each step.
+The optional **90-second tour** performs this route one view at a time and explains what to look for at each step.
 
 ## View guide
 
 | View | Purpose | Typical action |
 |---|---|---|
-| Start here | Explain what the loaded case is, what it contains, and what the application can safely do | Take the guided tour |
-| Case overview | Show current counts, safe internal progress, and the external-effect boundary | Run a contained pass |
-| Case register | Inspect the seven canonical case objects | Open a full record |
+| Today | Present one recommended action, three secondary safe moves, recent records, and the held-effect boundary | Open the best next action |
+| Records | Search and inspect the seven canonical case objects | Open a full record |
 | Decisions | Review the five bounded executive questions | Record a local draft disposition |
-| FAB review | Return one bounded advisory response to the stated falsification question | Record an advisory receipt |
-| Internal run | Exercise the seven functional seats and the effect firewall | Run all contained seats |
-| Handoff test | Verify that a fresh occupant can reconstruct the case from durable records | Evaluate cold replay |
-| Sources | Inspect public-safe source summaries and hash private files locally | Create local source receipts |
-| Activity & export | Inspect local receipts, export the ledger or packet, download the offline app, or clear local state | Export packet |
+| Evidence | Inspect public-safe source summaries and hash private files locally | Create local source receipts |
+| Handoff | Exercise the seven functions, verify cold continuity, and carry the case elsewhere | Export the portable packet |
+
+The bounded FAB review, detailed function run, effect firewall, replay form, activity history, import, offline download, guidance, and reset controls remain available under **Handoff → Advanced tools**.
 
 ## Vocabulary
 
@@ -116,7 +113,7 @@ The **Take the guided tour** control performs this route one view at a time and 
 
 ## Data custody and persistence
 
-The application is served from a public GitHub Pages origin, but the committed page contains only the public-safe cartridge. Any private file selected in **Sources** is read locally by the browser. The page computes its digest and stores only the receipt metadata. It does not make a network request and it does not retain the source bytes.
+The application is served from a public GitHub Pages origin, but the committed page contains only the public-safe cartridge. Any private file selected in **Evidence** is read locally by the browser. The page computes its digest and stores only the receipt metadata. It does not make a network request and it does not retain the source bytes.
 
 Local state is stored in IndexedDB when available, with a localStorage fallback. State is scoped to the browser profile and the hosted origin. It does not automatically synchronize across devices or browser profiles.
 
@@ -138,9 +135,9 @@ A later cartridge can replace the FAB vocabulary and case data while retaining t
 
 ## Qualification
 
-`QUALIFICATION.json` records the static qualification of the committed standalone page. The public contract test verifies the orientation surface, help dialog, guided tour, seven case objects, five decisions, seven contained roles, source boundary, effect firewall, successor replay, one-file structure, and absence of the earlier compressed loader.
+`QUALIFICATION.json` records the static qualification of the committed standalone page. The public contract test verifies the five-place desk, compact orientation, guided tour, record summary and tabs, seven case objects, five decisions, seven contained roles, source boundary, effect firewall, successor replay, one-file structure, responsive and motion hooks, and absence of the earlier compressed loader.
 
-The browser harness verifies the first-run help experience, guided-view transitions, contained-seat run, external-effect block, successor replay, local persistence, mobile overflow, and absence of network requests outside the local test origin.
+The browser harness verifies the first-run orientation, five-step tour, record and decision flows, local hashing, contained-function run, external-effect block, successor replay, export, local persistence, mobile overflow, reduced-motion behavior, and absence of network requests outside the local test origin.
 
 ## What can rot
 
@@ -148,6 +145,26 @@ Browser support for IndexedDB, Web Crypto, file input, Blob downloads, the `<dia
 
 A failure must remain visible. The application must never silently upload a source, infer authority, promote the force of an offer, claim an external action occurred, or discard a local receipt because a browser feature is unavailable.
 
+
+## v1.2.0 operating desk
+
+Version 1.2.0 collapses the primary experience into five ordinary places:
+
+| Place | Operator action |
+|---|---|
+| **Today** | Open the single best next action and see only three other things that can move safely |
+| **Records** | Search and open the seven source-bound case files |
+| **Decisions** | Review the five bounded questions and save local drafts |
+| **Evidence** | Read public summaries or hash private files locally |
+| **Handoff** | Run the internal check, test continuity, and export the portable packet |
+
+The role selector, setup wall, process board, and dashboard-style readiness and activity regions no longer compete for attention on arrival. Today now carries one best action, a compact four-condition status line, recent records, three secondary safe moves, and an explicit statement of which outside effects remain held.
+
+A record opens on a conventional **Summary**: what happened, current state, next safe step, authority boundary, and bounded scope. **Evidence & authority** and **Activity** provide the constitutional and historical depth only when the operator asks for it.
+
+The deeper machinery remains under **Handoff → Advanced tools**: the contained seven-function run, effect firewall, bounded FAB advisory, cold replay form, activity history, packet import, offline download, legacy guidance, and local reset. This is progressive disclosure, not removal. All external-effect adapters remain absent.
+
+Motion is deliberately quiet: short view and dialog entrances, small lift feedback on actionable surfaces, smooth in-page routing, and a complete `prefers-reduced-motion` override. The desktop and mobile layouts preserve the same hierarchy without page-level horizontal overflow.
 
 ## v1.1.0 operating cockpit
 

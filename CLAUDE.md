@@ -70,6 +70,10 @@ and `first_seen` stamps are permanent once committed.
 - **One dead feed is silent by design** (run stays green; the page's
   per-source health line is the tell). All feeds dead = exit nonzero so
   GitHub emails the owner.
+- **Essential Attention release query strings do not select an artifact**
+  (verified 2026-08-12). `?v=1.2.0` still served the committed v1.1.0 page
+  while `main` contained v1.1.0. Treat the deployed title and SHA-256 as
+  authority after Pages publishes; never infer the live release from the URL.
 
 ## identity/ (reference area, not a tool — verified July 2026)
 
