@@ -1,4 +1,4 @@
-# Essential Attention: FAB Offer Register and Executive Review
+# Essential Attention v1.1.0: FAB Operating Cockpit
 
 Essential Attention is a local-first administrative case runtime. Version 1.0.4 opens with one populated cartridge, `mw-ea-n0-fab-offers-001`, which reconstructs the aftermath of the first Futures Advisory Board meeting as a source-linked set of events, offers, open questions, decisions, and continuity obligations.
 
@@ -147,3 +147,21 @@ The browser harness verifies the first-run help experience, guided-view transiti
 Browser support for IndexedDB, Web Crypto, file input, Blob downloads, the `<dialog>` element, and the current Content Security Policy behavior can change. GitHub Pages or the repository deployment workflow can also change.
 
 A failure must remain visible. The application must never silently upload a source, infer authority, promote the force of an offer, claim an external action occurred, or discard a local receipt because a browser feature is unavailable.
+
+
+## v1.1.0 operating cockpit
+
+The v1.1.0 surface borrows the workflow habits of mature enterprise systems while preserving Essential Attention's source-bound ontology. It adds a six-step setup assistant, persistent Guidance Center, role-aware Operations home, attention assistant, readiness drilldowns, quick actions, saved register views, list and process-board modes, guided record paths with key fields and stage-specific guidance, related-record panels, record activity timelines, explicit decision review progress, and a recent-activity home surface.
+
+These components do not introduce performance KPIs, sales stages, human assignment, or live integrations. Readiness blocks state what the current evidence permits. The assistant routes only bounded administrative work. The process board is a projection over the same canonical records. Record paths describe source, force, attention, authority, safe preparation, verification, and continuity. Every saved decision remains a local draft, and every external effect remains blocked without an effect-specific authority receipt.
+
+### Operating loop
+
+1. Complete Guided setup.
+2. Select a functional seat on Operations home.
+3. Work the Attention assistant from the highest-consequence safe item.
+4. Inspect all seven guided case records in list or process-board mode.
+5. Review all five bounded decisions and save local drafts only when useful.
+6. Run and verify the seven contained functions.
+7. Pass the cold continuity replay.
+8. Export the portable packet.
