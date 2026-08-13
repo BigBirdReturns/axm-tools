@@ -92,14 +92,16 @@ if not script:
     raise SystemExit("inline runtime script missing")
 (Path(tempfile.gettempdir()) / "essential-attention-inline.js").write_text(script.group(1), encoding="utf-8")
 
-digest = hashlib.sha256(HTML.read_bytes()).hexdigest()
+artifact_bytes = source.encode("utf-8")
+readme_bytes = readme.encode("utf-8")
+digest = hashlib.sha256(artifact_bytes).hexdigest()
 receipt = {
     "schema": "essential-attention/pages-qualification@4",
     "release": "1.2.0",
     "artifact": "essential-attention/index.html",
     "sha256": digest,
-    "bytes": HTML.stat().st_size,
-    "readme_bytes": README.stat().st_size,
+    "bytes": len(artifact_bytes),
+    "readme_bytes": len(readme_bytes),
     "checks": checks,
     "operator_surface": "AXM Operating Desk with Today, Records, Decisions, Evidence, Handoff, and progressive advanced tools",
     "external_effect_adapters": 0,
