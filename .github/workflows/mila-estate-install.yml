@@ -1,0 +1,63 @@
+name: Install Mila estate front door
+
+on:
+  push:
+    branches:
+      - agent/mila-estate-front-door
+    paths:
+      - .github/workflows/mila-estate-install.yml
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Restore the reviewed Mila estate package
+        shell: bash
+        run: |
+          : > /tmp/mila-estate-front-door.tar.gz.b64
+          while IFS= read -r payload; do
+            sed -E 's/^MILA_PAYLOAD_CHUNK_[^=]+=//' "$payload" >> /tmp/mila-estate-front-door.tar.gz.b64
+          done < <(find .github/mila-estate-payload -type f -name 'chunk*' | sort)
+          base64 -d /tmp/mila-estate-front-door.tar.gz.b64 > /tmp/mila-estate-front-door.tar.gz
+          echo "6622c465173954f7a83d8b07bf22a2e54f6a4e22c9e3e976546f96b55d4bdeef  /tmp/mila-estate-front-door.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/mila-estate-front-door.tar.gz -C .
+
+      - name: Verify the static contract
+        run: |
+          python mila/tests/public_contract_test.py
+          node --check /tmp/mila-inline.js
+          git diff --exit-code -- mila/QUALIFICATION.json
+
+      - name: Drive the complete household-to-region journey
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+          python mila/tests/browser_test.py
+
+      - name: Commit the qualified front door
+        shell: bash
+        run: |
+          rm -rf .github/mila-estate-payload
+          rm -f .github/workflows/mila-estate-install.yml
+          git config user.name "mila-estate-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A -- mila README.md index.html .github/workflows/mila-site-check.yml .github/mila-estate-payload .github/workflows/mila-estate-install.yml
+          git diff --cached --check
+          git commit -m "mila: install household-to-region estate front door"
+          git push origin HEAD:agent/mila-estate-front-door
