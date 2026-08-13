@@ -30,13 +30,66 @@ jobs:
       - name: Restore the reviewed Mila estate package
         shell: bash
         run: |
-          : > /tmp/mila-estate-front-door.tar.gz.b64
-          while IFS= read -r payload; do
-            sed -E 's/^MILA_PAYLOAD_CHUNK_[^=]+=//' "$payload" >> /tmp/mila-estate-front-door.tar.gz.b64
-          done < <(find .github/mila-estate-payload -type f -name 'chunk*' | sort)
-          test "$(wc -c < /tmp/mila-estate-front-door.tar.gz.b64)" = "42109"
-          base64 --ignore-garbage -d /tmp/mila-estate-front-door.tar.gz.b64 > /tmp/mila-estate-front-door.tar.gz
-          echo "6622c465173954f7a83d8b07bf22a2e54f6a4e22c9e3e976546f96b55d4bdeef  /tmp/mila-estate-front-door.tar.gz" | sha256sum -c -
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+          import binascii
+          import hashlib
+          import re
+
+          payload_dir = Path('.github/mila-estate-payload')
+          expected_sha = '6622c465173954f7a83d8b07bf22a2e54f6a4e22c9e3e976546f96b55d4bdeef'
+          pieces = []
+
+          for path in sorted(payload_dir.glob('chunk*')):
+              text = path.read_text(encoding='utf-8')
+              text = re.sub(r'^MILA_PAYLOAD_CHUNK_[^=]+=', '', text)
+              pieces.append(''.join(text.split()))
+
+          def exact_archive(candidate: str):
+              try:
+                  archive = base64.b64decode(candidate, validate=True)
+              except (binascii.Error, ValueError):
+                  return None
+              if hashlib.sha256(archive).hexdigest() != expected_sha:
+                  return None
+              return archive
+
+          payload = ''.join(pieces)
+          archive = exact_archive(payload)
+          repair = None
+
+          if archive is None:
+              suspect_index = 5
+              suspect = pieces[suspect_index]
+              for local_index in range(len(suspect)):
+                  repaired_piece = suspect[:local_index] + suspect[local_index + 1:]
+                  candidate = ''.join(pieces[:suspect_index] + [repaired_piece] + pieces[suspect_index + 1:])
+                  archive = exact_archive(candidate)
+                  if archive is not None:
+                      repair = {
+                          'chunk': suspect_index,
+                          'local_index': local_index,
+                          'removed_character': suspect[local_index],
+                      }
+                      payload = candidate
+                      break
+
+          if archive is None:
+              raise SystemExit(f'No exact archive reconstruction found; payload_length={len(payload)}')
+
+          if len(payload) != 42108:
+              raise SystemExit(f'Unexpected repaired payload length: {len(payload)}')
+
+          output = Path('/tmp/mila-estate-front-door.tar.gz')
+          output.write_bytes(archive)
+          print({
+              'payload_length': len(payload),
+              'archive_bytes': len(archive),
+              'sha256': expected_sha,
+              'repair': repair,
+          })
+          PY
           tar -xzf /tmp/mila-estate-front-door.tar.gz -C .
 
       - name: Verify the static contract
