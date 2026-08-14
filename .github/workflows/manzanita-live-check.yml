@@ -1,6 +1,11 @@
 name: Manzanita Works live Pages gate
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "manzanita/**"
+      - ".github/workflows/manzanita-live-check.yml"
   workflow_run:
     workflows: ["PTA tracker fetch + deploy"]
     types: [completed]
@@ -12,6 +17,7 @@ permissions:
 jobs:
   live:
     if: >-
+      github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
@@ -24,7 +30,7 @@ jobs:
         run: |
           python -m pip install --disable-pip-version-check playwright==1.57.0
           python -m playwright install --with-deps chromium
-      - name: Wait for CDN and drive the public endpoint
+      - name: Wait for Pages and drive the public endpoint
         env:
           MANZANITA_URL: https://bigbirdreturns.github.io/axm-tools/manzanita/?v=${{ github.event.workflow_run.head_sha || github.sha }}
         run: |
