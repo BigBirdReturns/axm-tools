@@ -45,11 +45,17 @@ jobs:
           from pathlib import Path
           path = Path("manzanita/tests/browser_test.py")
           text = path.read_text(encoding="utf-8")
-          old = 'assert "No backend · no external-effect adapters" in body_text'
-          new = 'assert "no backend · no external-effect adapters" in body_text.lower()'
-          if old not in text:
-              raise SystemExit("expected browser assertion not found")
-          path.write_text(text.replace(old, new), encoding="utf-8")
+          replacements = {
+              'assert "No backend · no external-effect adapters" in body_text':
+                  'assert "no backend · no external-effect adapters" in body_text.lower()',
+              "    page.add_init_script(f\"localStorage.setItem('manzanita-theme', '{theme}')\")\n    response = page.goto(TARGET_URL, wait_until=\"networkidle\", timeout=60_000)\n    assert response is not None and response.status == 200, response.status if response else None\n":
+                  "    response = page.goto(TARGET_URL, wait_until=\"networkidle\", timeout=60_000)\n    assert response is not None and response.status == 200, response.status if response else None\n    page.evaluate(\"theme => localStorage.setItem('manzanita-theme', theme)\", theme)\n    response = page.reload(wait_until=\"networkidle\")\n    assert response is not None and response.status == 200, response.status if response else None\n",
+          }
+          for old, new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f"expected browser-test fragment not found: {old[:80]}")
+              text = text.replace(old, new)
+          path.write_text(text, encoding="utf-8")
           PY
 
       - name: Verify static contract
