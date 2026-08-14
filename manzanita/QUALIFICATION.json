@@ -1,24 +1,44 @@
 {
-  "schema": "manzanita-works/pages-qualification@2",
-  "release": "1.1.2",
+  "schema": "manzanita-works/pages-qualification@4",
+  "release": "1.4.0",
+  "visual_system": "signal-sheet",
   "entrypoint": "manzanita/index.html",
+  "themes": [
+    "light",
+    "dark"
+  ],
   "files": {
     "index.html": {
-      "bytes": 5871,
-      "sha256": "5e6f11a4ab0e68fcfa15534d523548e196bce42a854a23f1646bd66efcef8da8"
+      "bytes": 19023,
+      "sha256": "c8a521ac84cdaba2e9fa6bbeec984feeb1e9f95a57bdcd116302dab62fbdf7cd"
     },
     "style.css": {
-      "bytes": 5721,
-      "sha256": "060249be5c706bbbd251cd8956a3d6d85c549faf819743297df41c0205e8eafd"
+      "bytes": 18807,
+      "sha256": "cc3dfd99aa10ac4116b979e0e1e8d5a479e70d3c023cbf58d1b82036cd2a2100"
     },
     "app.js": {
-      "bytes": 16739,
-      "sha256": "8f68a729f747164b31e0fe0b338ed7baaa9064a2dfe479880fc06625aa37c05d"
+      "bytes": 24204,
+      "sha256": "59e09813f33c8533e9d10a784afa76d862075fcbb5cc8a234f476663bc16c512"
+    },
+    "theme-init.js": {
+      "bytes": 290,
+      "sha256": "29a2acecd398fba04540e115c8c87a070de1bbf1cf18a3768ca79de494bef1da"
+    },
+    "README.md": {
+      "bytes": 3341,
+      "sha256": "d964e0c9717ee2757c82f0ababe74ef54c48595cff2a3c24237042578cd2c214"
+    },
+    "VISUAL_CONSTITUTION.md": {
+      "bytes": 2752,
+      "sha256": "f54dce9d2f61adff25f2e2e6f1ab182746bbc08f1918e918264d78e55ace901a"
     }
   },
   "scales": 7,
   "overlays": 8,
   "functional_views": 5,
-  "embedded_photos": 4,
-  "external_effect_adapters": 0
+  "instruments": 6,
+  "visual_medium": "estate-owned responsive SVG",
+  "external_visual_dependencies": 0,
+  "external_effect_adapters": 0,
+  "authority_boundary": "illustration and modeled context do not become survey, inspection, enforcement, coverage, or work authority"
 }
