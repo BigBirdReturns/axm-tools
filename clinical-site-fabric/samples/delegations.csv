@@ -1,0 +1,5 @@
+delegation_id,role_id,protocol_id,action,valid_from,valid_to,status
+DEL-CRC-VISIT-001,CRC,A-101,visit.record,2026-08-01T00:00:00-07:00,2026-12-31T23:59:59-08:00,active
+DEL-CRC-SPECIMEN-002,CRC,A-101,specimen.release,2026-08-01T00:00:00-07:00,2026-08-14T23:59:59-07:00,expired
+DEL-LAB-A202-003,LAB,A-202,specimen.release,2026-07-01T00:00:00-07:00,2026-12-31T23:59:59-08:00,active
+DEL-PI-GLP1-004,PI,B-301,exit.disposition,2026-06-01T00:00:00-07:00,,active

@@ -1,0 +1,5 @@
+protocol_id,sponsor_id,title,version,effective_from,effective_to,stage,risk_class,requirements
+A-101,SP-A,First-in-human oncology dose-escalation study,1.0,2026-08-01T00:00:00-07:00,2026-08-14T23:59:59-07:00,active treatment,high,baseline chemistry|pre-dose vitals|4-hour observation
+A-101,SP-A,First-in-human oncology dose-escalation study,2.0,2026-08-15T00:00:00-07:00,,active treatment,high,baseline chemistry|pre-dose vitals|12-lead ECG before infusion|repeat chemistry within 24 hours|4-hour observation
+A-202,SP-A,Single-arm oncology study supporting accelerated approval,3.1,2026-07-01T00:00:00-07:00,,screening and enrollment,high,central pathology confirmation|baseline imaging|biomarker specimen|eligibility review
+B-301,SP-B,GLP-1 discontinuation and metabolic-continuity study,1.2,2026-06-01T00:00:00-07:00,,maintenance and exit planning,moderate,weight trend|dose history|satiety assessment|lean-mass evidence or proxy|resistance-training record|neuropsychiatric screen|clinician disposition

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Local, de-identified multi-protocol clinical research site operations workbench with source custody, sponsor isolation, authority gates, GLP-1 exit review, and portable export.">
+<title>Clinical Site Fabric · AXM Tools</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="app">
+<aside class="rail">
+  <div class="brand"><strong>Clinical Site Fabric</strong><small>v0.2.0 · local file workbench</small></div>
+  <div class="boundary">DE-IDENTIFIED OR SYNTHETIC FILES ONLY · NO HIPAA OR GXP VALIDATION · NO SOURCE-SYSTEM WRITEBACK · NO CLINICAL AUTHORITY</div>
+  <nav class="nav" aria-label="Clinical Site Fabric views">
+    <button data-view="import" aria-selected="true">Import</button>
+    <button data-view="site">Site desk</button>
+    <button data-view="protocols">Protocols</button>
+    <button data-view="authority">Authority</button>
+    <button data-view="projections">Projections</button>
+    <button data-view="glp1">GLP-1 exit</button>
+    <button data-view="audit">Audit & export</button>
+  </nav>
+  <footer>All parsing occurs in this browser session.<br>Original bytes are not uploaded or persisted in browser storage.<br>Unsupported files receive a hash receipt only.</footer>
+</aside>
+<main class="main" id="main">
+<header class="topbar"><div class="pills"><span class="pill danger">Clinical use prohibited</span><span class="pill">Local-only import</span><span class="pill">Sponsor-isolated</span><span class="pill">Portable export</span></div><div class="actions"><button class="button" id="clearAllTop">Clear session</button><button class="button primary" id="exportTop">Export packet</button></div></header>
+<div class="content">
+<section class="view active" id="view-import">
+  <div class="hero"><div class="eyebrow">Site-level evidence intake</div><h1>Bring the files the site actually has.</h1><p class="lead">Drop de-identified CSV, JSON, NDJSON, Markdown certificate reports, PDFs, spreadsheets, or other source artifacts. Structured files are normalized into a portable site model. Unsupported files are still hashed and retained in the source manifest without pretending they were understood.</p><div class="notice"><strong>Boundary.</strong> This public static tool is not a HIPAA environment, validated clinical system, EDC, CTMS, EHR, eTMF, or safety database. Use synthetic or properly de-identified exports only.</div></div>
+  <div class="two" style="margin-top:16px"><div><div class="drop" id="dropZone"><h2>Drop files here</h2><p>CSV · JSON · NDJSON · Markdown · any sealed source artifact</p><input id="fileInput" type="file" multiple aria-label="Choose clinical site files"><p class="small">Structured inputs stay in memory. Original file bytes are discarded after hashing and parsing.</p></div><div class="toolbar"><button class="action primary" id="loadSample">Load complete synthetic sample pack</button><button class="action" id="clearAll">Clear session</button></div></div><div class="card"><h2>Downloadable sample exports</h2><p class="small">These are the exact files loaded by the synthetic pack. Edit them, then drag them back into the tool.</p><div id="sampleLinks" class="queue"></div></div></div>
+  <h2>Import manifest</h2><div id="manifestTable" class="table-wrap"></div>
+  <div id="pendingArea"></div>
+  <h2>Accepted object contracts</h2><div class="schema-list" id="schemaList"></div>
+</section>
+
+<section class="view" id="view-site">
+  <div class="hero"><div class="eyebrow">Operational source layer</div><h1>The site creates the evidentiary facts.</h1><p class="lead">The desk reconstructs protocol versions, active participants, visit bindings, source events, clocks, physical resources, and cross-protocol collisions. EHR, EDC, CRO, and sponsor views remain downstream projections.</p></div>
+  <div class="metrics" id="metrics"></div><div class="two"><div><h2>Current obligations and findings</h2><div class="queue" id="siteQueue"></div></div><div><h2>Resource collisions</h2><div id="collisionTable" class="table-wrap"></div><h2>Source events</h2><div id="eventTable" class="table-wrap"></div></div></div>
+</section>
+
+<section class="view" id="view-protocols">
+  <div class="eyebrow">Versioned operating law</div><h1>Protocol versions govern work at the moment it occurs.</h1><div id="protocolGrid" class="grid"></div><h2>Visit bindings</h2><div id="visitTable" class="table-wrap"></div><h2>Lineage findings</h2><div id="lineageFindings"></div>
+</section>
+
+<section class="view" id="view-authority">
+  <div class="hero"><div class="eyebrow">Action gate</div><h1>A clean row cannot revive an expired delegation.</h1><p class="lead">Test an internal action against role, protocol, action name, time, and the imported delegation record. The tool may prepare a result. It cannot create authority or transmit an external effect.</p></div>
+  <div class="two" style="margin-top:16px"><div class="card"><h2>Attempt an action</h2><div class="map-grid"><label>Role<select id="gateRole"><option>CRC</option><option>LAB</option><option>PI</option></select></label><label>Protocol<select id="gateProtocol"></select></label><label>Action<select id="gateAction"><option value="visit.record">visit.record</option><option value="specimen.release">specimen.release</option><option value="exit.disposition">exit.disposition</option><option value="safety.report.prepare">safety.report.prepare</option></select></label><label>At time<input id="gateTime" type="text" value="2026-08-15T09:00:00-07:00"></label></div><button class="action primary" id="runGate">Evaluate authority</button><div id="gateResult" class="notice" hidden></div></div><div><h2>Delegations</h2><div id="delegationTable" class="table-wrap"></div></div></div>
+</section>
+
+<section class="view" id="view-projections">
+  <div class="hero"><div class="eyebrow">Permission-separated faces</div><h1>One site view does not require sponsor cross-disclosure.</h1><p class="lead">Choose a seat. Foreign-sponsor records are excluded from the projection data structure, not merely hidden by CSS. The site face sees shared operational conflicts without receiving another sponsor's narrative.</p></div>
+  <div class="toolbar"><label>Seat<select id="projectionSeat"><option value="SITE">Site operations</option><option value="SP-A">Sponsor A monitor</option><option value="SP-B">Sponsor B monitor</option><option value="AUDITOR">Independent auditor</option></select></label><button class="action" id="runLeak">Run leakage challenge</button></div><div id="projectionResult"></div><div id="leakResult" class="notice" hidden></div>
+</section>
+
+<section class="view" id="view-glp1">
+  <div class="hero"><div class="eyebrow">Discontinuation under constraint</div><h1>Stopping pressure is not readiness.</h1><p class="lead">MEC-6 records remain evidence and workflow objects. Missing evidence stays missing, self-report stays self-report, and a model certificate stays attached to the model. Nothing in this browser may emit <code>safe_to_stop</code>.</p></div>
+  <div class="two" style="margin-top:16px"><div><h2>Participant assessment</h2><div class="toolbar"><label>Participant<select id="mecParticipant"></select></label></div><div class="card" id="mecCard"></div></div><div><h2>GSK / formal-proof attack surface</h2><div class="queue" id="gskChecks"></div><h2>Attached model certificates</h2><div id="certificateList"></div></div></div>
+</section>
+
+<section class="view" id="view-audit">
+  <div class="hero"><div class="eyebrow">Portable custody</div><h1>Can another implementation reconstruct the site?</h1><p class="lead">Run the admission cells, inspect conflicts and receipts, export the normalized packet, then re-import it. The packet contains customer-owned objects and source hashes, not original file bytes and not a hidden runtime.</p></div>
+  <div class="toolbar"><button class="action primary" id="runProof">Run admission cells</button><button class="action" id="exportPacket">Export portable JSON</button><button class="action" id="exportNormalized">Export normalized tables</button><span id="packetDigest" class="mono small"></span></div><div id="proofSummary" class="notice info">Admission cells not run.</div><div id="proofGrid" class="proof-grid"></div><h2>Conflicts and integrity findings</h2><div id="integrityTable" class="table-wrap"></div><h2>Session receipts</h2><div id="ledger" class="ledger"></div>
+</section>
+</div>
+</main>
+</div>
+<dialog id="detailDialog"><header><strong id="dialogTitle">Detail</strong><button id="closeDialog" class="button">Close</button></header><div class="body" id="dialogBody"></div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="sample-data.js"></script>
+<script src="app-core.js"></script>
+<script src="app-ui.js"></script>
+</body>
+</html>

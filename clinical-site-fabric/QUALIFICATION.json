@@ -1,0 +1,90 @@
+{
+  "boundary": "Static and synthetic mechanism evidence only; no clinical, HIPAA, Part 11, GxP, EHR, EDC, or sponsor validation.",
+  "browser_selftest": "Run ?selftest=1; body[data-selftest=pass] requires 12/12 cells.",
+  "errors": [],
+  "expected_resource_collisions": 1,
+  "files": {
+    "README.md": {
+      "bytes": 5883,
+      "sha256": "d678326bb94e8091c7330ab9e06500f7ba6abace9a19858d2e14401e6df8615b"
+    },
+    "app-core.js": {
+      "bytes": 15384,
+      "sha256": "695abe834b1c00d996cdf53a3ce6ba1ebf137eb3eb43dbeef3d9a54497ad7cfa"
+    },
+    "app-ui.js": {
+      "bytes": 28516,
+      "sha256": "49972a60fe440b86715bb3999a99f039da1a2fdc4c97c94a2e566392c4d7fc33"
+    },
+    "index.html": {
+      "bytes": 8973,
+      "sha256": "39db4d98d09198232035347ba46252295eb60a8e0a15f7674e692dca1ede8c1b"
+    },
+    "sample-data.js": {
+      "bytes": 10564,
+      "sha256": "b70d1757581a125a31a298842923b2be149762e8ec94a2e597ed916ca3807f76"
+    },
+    "samples/README.md": {
+      "bytes": 463,
+      "sha256": "412438472acd45d1eb867b31b3c219a6c763849db28a606d8fe980a0809e7e96"
+    },
+    "samples/bookings.csv": {
+      "bytes": 357,
+      "sha256": "155e2bddf710b3420f583bb316b8771a58c41f1055154b61e431117cbaa740e4"
+    },
+    "samples/delegations.csv": {
+      "bytes": 460,
+      "sha256": "2966e661c9d0f53695b1e86125386fe05e9e4f24bd6a2f8f8490ba4f14ba888b"
+    },
+    "samples/mec6_assessments.csv": {
+      "bytes": 1100,
+      "sha256": "71645f8940cf0b255983b75d0f0503e2b59bc66a021dc2488777219c6b2633d6"
+    },
+    "samples/participants.csv": {
+      "bytes": 435,
+      "sha256": "f4e234c909d26f3148dd8ad93a602cadb85fb8f06cc17592c5557f030112da3b"
+    },
+    "samples/protocols.csv": {
+      "bytes": 1010,
+      "sha256": "dd86a89cb9e4ebf4ba28494c27c5f0eecfefb8166ec4b81611d2c31378c2d46c"
+    },
+    "samples/resources.csv": {
+      "bytes": 224,
+      "sha256": "03223caafd654ec46cb9c323bfbdb532d9c7fc03e0f422c4d8a322c8f8555518"
+    },
+    "samples/source_events.csv": {
+      "bytes": 1381,
+      "sha256": "1d153b8e1398891110f7a6d160cc9e3cadd575c882e9a94d0203a89b9796dbf1"
+    },
+    "samples/synthetic_exposure_certificate.report.md": {
+      "bytes": 1518,
+      "sha256": "b40aa469d7fd67006ca9526baf07ec06f7bd4351b98fcd9ee9e6fbedb9fe3031"
+    },
+    "samples/visits.csv": {
+      "bytes": 470,
+      "sha256": "f1d54dd09cac6013de21ec673029829246c79e1c17549b2393a47c029c4db0b8"
+    },
+    "styles.css": {
+      "bytes": 7860,
+      "sha256": "ea89e85324d11d9cd3f06636e580b4fa28e2a57bc1749d92c9643a7e23d8caa4"
+    },
+    "tests/validate.py": {
+      "bytes": 5332,
+      "sha256": "5a730871ddac04f086b44ee744b330b5a605d5efa7dff855b5239ececdaa6d5d"
+    }
+  },
+  "fixture_counts": {
+    "bookings.csv": 3,
+    "delegations.csv": 4,
+    "mec6_assessments.csv": 6,
+    "participants.csv": 6,
+    "protocols.csv": 4,
+    "resources.csv": 5,
+    "source_events.csv": 6,
+    "visits.csv": 5
+  },
+  "release": "0.2.0",
+  "schema": "clinical-site-fabric/qualification@1",
+  "static_checks": 20,
+  "status": "PASS"
+}

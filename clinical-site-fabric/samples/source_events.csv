@@ -1,0 +1,7 @@
+event_id,event_type,protocol_id,participant_id,protocol_version,occurred_at,due_at,source_identity,visibility,resource_id,narrative
+EV-A101-AMEND2,protocol.amendment,A-101,,2.0,2026-08-14T14:00:00-07:00,,protocol-A101-amendment-2,PI|CRC|MON-A|AUDITOR,,Synthetic Amendment 2 becomes effective for future work.
+EV-A101-SAE,safety.sae_followup,A-101,A101-S01,1.0,2026-08-14T15:30:00-07:00,2026-08-15T12:00:00-07:00,site-source-SAE-001,PI|CRC|MON-A|AUDITOR,,Synthetic serious adverse event follow-up clock.
+EV-A202-KIT,supply.missing_lab_kit,A-202,A202-S01,3.1,2026-08-14T16:00:00-07:00,2026-08-15T09:00:00-07:00,site-inventory-KIT-A202-BIO,PI|CRC|MON-A|AUDITOR,KIT-A202-BIO,Required biomarker kit not physically present.
+EV-SITE-COLLISION,site.resource_collision,,,,2026-08-14T16:15:00-07:00,2026-08-15T08:00:00-07:00,site-schedule-CRC-ALPHA,PI|CRC|AUDITOR,CRC-ALPHA,Two protocols require the same coordinator block.
+EV-B301-COVERAGE,access.coverage_termination,B-301,B301-S02,1.2,2026-08-14T17:00:00-07:00,2026-08-16T13:00:00-07:00,payer-notice-B301-S02,PI|CRC|MON-B|AUDITOR,,Coverage ends; external stopping pressure is recorded separately from clinical readiness.
+EV-B301-PHQ2,assessment.phq2_positive,B-301,B301-S02,1.2,2026-08-14T17:30:00-07:00,2026-08-16T13:00:00-07:00,site-assessment-PHQ2,PI|CRC|MON-B|AUDITOR,,Positive synthetic screen requires human clinical review.
