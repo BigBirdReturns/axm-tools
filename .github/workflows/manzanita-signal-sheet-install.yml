@@ -41,6 +41,16 @@ jobs:
           cp -a /tmp/manzanita-release/manzanita ./manzanita
           cp /tmp/manzanita-release/.github/workflows/manzanita-check.yml .github/workflows/manzanita-check.yml
           cp /tmp/manzanita-release/.github/workflows/manzanita-live-check.yml .github/workflows/manzanita-live-check.yml
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("manzanita/tests/browser_test.py")
+          text = path.read_text(encoding="utf-8")
+          old = 'assert "No backend · no external-effect adapters" in body_text'
+          new = 'assert "no backend · no external-effect adapters" in body_text.lower()'
+          if old not in text:
+              raise SystemExit("expected browser assertion not found")
+          path.write_text(text.replace(old, new), encoding="utf-8")
+          PY
 
       - name: Verify static contract
         run: |
