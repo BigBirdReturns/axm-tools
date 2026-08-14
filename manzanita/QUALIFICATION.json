@@ -1,0 +1,24 @@
+{
+  "schema": "manzanita-works/pages-qualification@2",
+  "release": "1.1.2",
+  "entrypoint": "manzanita/index.html",
+  "files": {
+    "index.html": {
+      "bytes": 5871,
+      "sha256": "5e6f11a4ab0e68fcfa15534d523548e196bce42a854a23f1646bd66efcef8da8"
+    },
+    "style.css": {
+      "bytes": 5721,
+      "sha256": "060249be5c706bbbd251cd8956a3d6d85c549faf819743297df41c0205e8eafd"
+    },
+    "app.js": {
+      "bytes": 16739,
+      "sha256": "8f68a729f747164b31e0fe0b338ed7baaa9064a2dfe479880fc06625aa37c05d"
+    }
+  },
+  "scales": 7,
+  "overlays": 8,
+  "functional_views": 5,
+  "embedded_photos": 4,
+  "external_effect_adapters": 0
+}
