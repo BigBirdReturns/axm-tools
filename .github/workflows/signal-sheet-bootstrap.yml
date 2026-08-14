@@ -33,7 +33,7 @@ jobs:
           set -euo pipefail
           cat .github/import-signal-sheet/part-* > /tmp/axm-signal-sheet-v13.tar.gz.b64
           base64 --decode /tmp/axm-signal-sheet-v13.tar.gz.b64 > /tmp/axm-signal-sheet-v13.tar.gz
-          echo "8af52d2b84de5ecdf163f92b5c3848f455516772ecf888f3f6d0d5c0c5560331  /tmp/axm-signal-sheet-v13.tar.gz" | sha256sum --check --strict
+          echo "1a038a9fdbc7dacbd7aebbbc7fdf0ca30a19e1f640928d149abbd888a81bbf4e  /tmp/axm-signal-sheet-v13.tar.gz" | sha256sum --check --strict
           rm -rf clinical-site-fabric
           tar -xzf /tmp/axm-signal-sheet-v13.tar.gz -C .
       - name: Validate tool and house-style binding
