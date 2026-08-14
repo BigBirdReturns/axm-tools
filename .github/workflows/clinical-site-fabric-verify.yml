@@ -1,0 +1,32 @@
+name: clinical-site-fabric-verify
+
+on:
+  pull_request:
+    paths:
+      - "clinical-site-fabric/**"
+      - "README.md"
+      - "index.html"
+      - ".github/workflows/clinical-site-fabric-verify.yml"
+  push:
+    branches: [main]
+    paths:
+      - "clinical-site-fabric/**"
+      - "README.md"
+      - "index.html"
+      - ".github/workflows/clinical-site-fabric-verify.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: node --check clinical-site-fabric/app-core.js
+      - run: node --check clinical-site-fabric/app-ui.js
+      - run: python clinical-site-fabric/tests/validate.py
+      - run: git diff --exit-code -- clinical-site-fabric/QUALIFICATION.json
