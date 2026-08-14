@@ -1,1 +1,298 @@
-const A={"household":"data:image/webp;base64,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","property":"data:image/webp;base64,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","street":"data:image/webp;base64,UklGRgQJAABXRUJQVlA4IPgIAAAwTACdASpAAbQAP6HA1F66P7+tr3fcE/A0CWVtPDBZhgpwxpDaQevF/3ND8X/1vGf5iFR/O+Qn7fS4R8aTvu+gBEHaL5i8fSTqSCAQmZOJmWXnWTX1x+G89m6xLQSpPBglfZcJOuoT2VKsYPfURJVp0YSLBRkKHWrb6uJEYKMn7CyWApbmEqpQ75Ja2b3hvcrTPDmA7zxLMrIaZnIRj0swQeXoHWK3Vrt39KyddNOGk1J8Z4RSVZpxZMCCyCfuzvpMM+BDq06QI1TIOpOAOKrel8AFIoK93RBOXuNnjHUP2vLt24JEwZTlKN9vsSXNeDq/+c70sd5igssIEsO29TE2ypx1c37kP6p1aLy+m3K2524/Fux2lZiSnMPmVTCaWWWXQXLGpvcp9ZluutLjaxcuXdfOPwj/1AfF7QsPKS5M/CGaJ6XdVYntmmqXYiDF2k2UHBMWhobB7ShA9KM2lOuMWyudc8TFr7pG6Z4COai40Hb3IDRtukKBzoEEBhUki08Q/RbQt9VvVt/kteuW3ajQrpRiv8gn/Fdw3o8Y1SHD/ExuE0PoCbg98S87iRo9Bxrh/tOET5RVdIiKvumn5hSbSFDttr5FKp9yRFavo2a2fp2oSVebp5vY2EsdAcgq64Iph3Pzdxc6HY8Za0lIluiQsthcg1B/y1BzvvuJt4pkGgdMVUjBqonjZ2PEnJRWBDPKqobC90XoN3MFL8XFS2wySlVHsqWAGDChhWd4vaQDdEJBnYVMiF9pt8Yrs+LQGlTeFNPPX2qTefQK5INP7k666qmW5z0diQAbOt4LhM0uGP45o4wngZ5MbGAA/uslEmMiVp0YZ0rjfZRQxJXMUC73TBV7ws5hgNs/MMp2xpcQicMfOApw9l1IiDuBIGKnFTQA3Xtfd7UkL7eO/SU9oHTcWXBYBgGviJiekdJEh99aUk8nztFexdhPteVQ7KTYjo2QDc/lfJcjvWFskH/buV7bzyi+GvlXkj2CplGmS9CBPFU2d7hXz70w16wihkd+xboGoEIylCDzQpB0C1I9KjByLqOPmy0S5oYgSuJBvo4UG3mx/AtCkilDfsSRONzbe+hOj29WJitO7SBuXXkB7fSUz/BlL7MMIdGXsKYD1OzEcmwj6Qn4LB0yjhW5mU5T+CXM6Wggyy/pKUnfcxi1Sgc+MnO8q7btMJZmcEJ5F5Tw1FzAWO/CbQxiyF9nlHaS6eeJPinE5rIY89JQJkQQks4son2Ep3Km7w2PTF3mOi8i+HJoVqdo17BUeOCjWMFX/yvU369vSZNI+GlAImWwCVqP1DWtFsJI+X3jIsrK2JYId233nj6EcV3Z69G9gmae3P0cloLzThAn+02lHy0u1jd6jEig2w0Cv0yN9QGOOxBz27TbTJiilphiSORvIce9jrSjMOCqDmOYfwzKsvFnzw1XZrucTrE4IcztrCC8RJrV6nauhjUpGxz6qm5tlwkCNUjkZZQ8c/rlQwWHUBs17HlV9nQKUPKNkHRO7Gh12jdseG7CY2K0sYqlKx/q9NhxVPEvGBZ7yrbNfFegQr6e//zNpSodoBcKcBxjnkLwGZGJlY/JA1sFiIIccp76WPlBTB2Ao3mpzaifjdRz0JyVIJmB/6aozJ9bozTkr5nTye8yWsPIv6EXUQH+0mirXMwFSwneqq+P9Jxs0FZpFqRlel/a7Rmpwa7FBnjPpBqK6RldFzpJXIRq6TuevB6PUJog6/+QRQrBA2zTEkLmiLi4bDqzRIqjLkKkXzW3AVpl4lLo4UtkM4s2JjKUcODeVIyQIDSPkmzgIx1fMiy4HCycnIorsA97ZJMfN6/B1SyVoWpwjdBd6F3ZsEErujFgSwnQZzJsleVUrMA5zVhVg7bdVIhZS/Roy1f7iTymEQswzCuN8GuGt794tFHdNR6SljsLfAEEOjHqvYTlgJ7GPsRk54h4KYGF8ISAcMN8H1ZdztqbXEOqoa1QX5SV02Vt2x8Lk5zH2ja0OgIQiiWk/TcO+inSLQjbt/X4Xxhur9yY9ZvOR1alYhwOITs521mP2uB6R+GF9AdMtzdp+pyZp+xkEBe3ExSqBLW2zYE7Opb4IXXnZ6TYj/f85kEdOpsTAZ19Pve5nvHAKJeEzqGCo4NAzL2T9KFFu6f1bLDNDGM0GLBQPqOHlteQxUvgoykPe8AOkWgZ9vcJ34v8EorkjUrxkWEouvhhssqWQzLIhc/6Jvnf16gLYTTYeCj/rU91cngWzsoVSgmNUnjfApJYrww4XfbO6UpBtEOecTqi/43QMQ8yPF2dR0eKV12wHs5KzS98sMxuP/g4YawwjjQCkc3RXc35LaGBclC5K4bjgt3+ci8cLvUzToyv3GygW0H3FGiAfRdvohNgzFZfpSvsRNtlcmXPdXpm4UEkgYj37yETJFxghQysFjAy06EwvVexuBJvV1rb3Ixwv3Nt600PxIYApHivzhcfzbBsinPWZm8mAM9xz07O+PLKqsad996BYxGoaOW/cZ8N3Lsqi8UJrX3oOF/DK2sDjOqwCTLe68nEc7u1bKB7gT4TaY3fAB/jQugQ6LpZQYP4HnMGeox/ftckuYzfliYG/k9RNHMLodvwDXg/R6geoM4qBxAM7ZT7Peo+pPh5ThQD20QFwuxuDMDC4tiYZSqinx6rjcV0erz2Iu5IfSUVQZVY/RBIQjhS43J5jUHMiyIWcnBwGJKSLS6n3HXm/ZtKkL1gH48EJrtnx4/hOI95DN2YShq/3uNX2AcgUUAAPq2uyqKLj3alAjayc++QzCPffSkB0vbfhx5btk+vZnwF0R1pCXN3ziOyhwsSx9tN/48pqs344lSfvARefcOTVKE98dXYQb5Ow/wyF5QTCBAaGYiEIFC36ophb40C58ve4rBybTjz4YhGM+H27+rj9KSUIJNMNouQy0IX66lsZo1kT5RmrgHBAVm9hddv9HtMTlGj+fQ8WMweH9u7Me4WwP+oZFMsg7cInwmbvNV8xtzK/kA2+LYJSqD5tipCQs0eFAFEO+xxGcGV3ANgTrs1vZ/Y/kQS8dquGLfucM2TAKHUnFaFOgAA","region":"data:image/webp;base64,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"};const scales=[['Plant','household','Fresh catnip is the origin object.','Use, care, pets, water, and repeatable household value.','Keep the plant alive and record what the household actually uses.','The household controls the plant, care, and interpretation.'],['Household','household','The yard is a lived habitat, not an empty parcel.','Meals, play, pets, shade, water, access, maintenance, and attention.','Map actual use before proposing a redesign.','Household consent and capacity remain first-class.'],['Property','property','One record carries multiple conditions without collapsing them into a score.','Roof, canopy, infiltration, access, maintenance, fuel transition, and work edges.','Attach evidence to the exact surface or condition.','Ownership, tenancy, access, and public rules remain distinct.'],['Street','street','Street Glide reads the real borders that work must follow.','Curb, canopy, sidewalk, driveway, parcel, utility, and inhabited street context.','Snap the claim to the visible edge, then preserve uncertainty.','Observation does not create enforcement or entry authority.'],['Neighborhood','region','Several properties share heat, access, tools, labor, and downstream effects.','Shared capacity, trusted relays, nurseries, crews, evacuation, and mutual aid.','Route assistance where conditions and capacity meet.','Community context cannot erase household agency.'],['Region','region','The Regional Observatory widens context without ranking households.','Heat, wildfire, air, water, roads, supply, programs, and public resources.','Use context to prioritize verification and assistance.','Regional signals are not automatic punitive determinations.'],['Stewardship','property','The record survives the current operator and the current season.','Receipts, monitoring, open branches, purpose limits, and the next safe action.','Verify the outcome and export a replayable handoff.','External effects require real authority; continuity does not.']];const overlays=[['habitat','Habitat'],['shade','Shade + heat'],['water','Water'],['fire','Fire'],['air','Air'],['access','Access'],['labor','Labor + tools'],['authority','Authority + programs']];const roles=[['Resident','Needs lived use, burden, consent, options, and recourse.'],['Nursery / grower','Needs demand, viable species, propagation, timing, and delivery.'],['Crew / steward','Needs scope, access, dependencies, tools, acceptance criteria, and safe limits.'],['Planner / program','Needs regional context, affected interests, authority, resources, and purpose controls.'],['Successor','Needs sources, rationale, current state, open branches, held effects, and the next safe action.']];let si=1,ri=0;hero.style.backgroundImage=`url(${A.household})`;function renderScale(){const s=scales[si];visual.style.backgroundImage=`url(${A[s[1]]})`;visualTitle.textContent=s[0];scaleTitle.textContent=s[0];scaleBody.textContent=s[2];scaleNeed.textContent=s[3];scaleNext.textContent=s[4];scaleAuthority.textContent=s[5];document.querySelectorAll('[data-scale]').forEach((b,i)=>b.setAttribute('aria-pressed',i===si))}function renderRole(){roleTitle.textContent=roles[ri][0];roleBody.textContent=roles[ri][1];document.querySelectorAll('[data-role]').forEach((b,i)=>b.setAttribute('aria-pressed',i===ri))}scales.forEach((s,i)=>{let b=document.createElement('button');b.textContent=s[0];b.dataset.scale=i;b.onclick=()=>{si=i;renderScale()};scaleRail.append(b)});overlays.forEach(([id,label])=>{let b=document.createElement('button');b.textContent=label;b.dataset.overlayButton=id;b.setAttribute('aria-pressed','false');b.onclick=()=>{let on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);document.querySelector(`[data-layer="${id}"]`).classList.toggle('on',on)};overlayRail.append(b)});roles.forEach((r,i)=>{let b=document.createElement('button');b.textContent=r[0];b.dataset.role=i;b.onclick=()=>{ri=i;renderRole()};roleRail.append(b)});renderScale();renderRole();
+(() => {
+  'use strict';
+
+  const scales = [
+    {
+      id:'plant', label:'Plant', kicker:'Origin object', code:'MW-PL-001', title:'One useful plant reveals the operating system.',
+      body:'Fresh catnip joins household value, animal use, water, light, space, cost, care cadence, and memory in one small object.',
+      need:'A repeatable growing method that fits the household’s real attention and space.',
+      next:'Preserve the use case and test the smallest complete care loop.',
+      authority:'The household decides whether the object belongs in its life.',
+      caption:'The origin is deliberately small. The system begins where value is immediate and observable.',
+      sceneClass:'Illustrative reference', sceneClaim:'Generated origin plate · household utility', scene:scenePlant
+    },
+    {
+      id:'household', label:'Household', kicker:'Lived system', code:'MW-PL-002', title:'The yard is an inhabited operating environment.',
+      body:'The place is used by people and animals for rest, movement, food, sensory relief, work, water, shade, and routine care.',
+      need:'A view that begins with lived use and burden rather than ornamental category.',
+      next:'Map the routines and conditions the place must support before proposing change.',
+      authority:'Observation cannot override household consent or invent household capacity.',
+      caption:'Household Habitat keeps meals, play, pets, plants, shade, water, access, tools, maintenance, and caregiver attention in the same record.',
+      sceneClass:'Illustrative reference', sceneClaim:'Generated household plate · no surveyed geometry', scene:sceneHousehold
+    },
+    {
+      id:'property', label:'Property', kicker:'Visible twin', code:'MW-PL-003', title:'Overlapping conditions stay independently inspectable.',
+      body:'Shade, water, access, fuel, habitat, labor, structures, and authority occupy the same physical place without becoming one score.',
+      need:'A source-bound property twin whose surfaces and uncertainties remain visible.',
+      next:'Attach each claim to a visible edge or bounded zone and retain what is unknown.',
+      authority:'A visual interpretation is not a survey, inspection, entry right, or work authorization.',
+      caption:'The property twin carries the same place into a plan view so dependencies and natural borders can be inspected together.',
+      sceneClass:'Modeled context', sceneClaim:'Reference geometry · not a legal parcel map', scene:sceneProperty
+    },
+    {
+      id:'street', label:'Street', kicker:'Street Glide', code:'MW-PL-004', title:'The public edge is read through natural borders.',
+      body:'Curb, canopy, roof, sidewalk, driveway, utility, parcel, and work edges divide responsibility while the street remains one inhabited scene.',
+      need:'Registration that follows the visible landscape instead of floating geometry.',
+      next:'Read the edge, retain uncertainty, then distinguish household, neighbor, and public responsibilities.',
+      authority:'A street observation creates no access, enforcement, ownership, or maintenance authority.',
+      caption:'Street Glide snaps analytical lines to the curb, canopy, roof, sidewalk, driveway, utility, and work edge.',
+      sceneClass:'Operating illustration', sceneClaim:'Natural-border registration · illustrative street', scene:sceneStreet
+    },
+    {
+      id:'neighborhood', label:'Neighborhood', kicker:'Shared capacity', code:'MW-PL-005', title:'Linked conditions meet unequal capacity.',
+      body:'Adjacent households share heat, canopy, water, access, smoke, tools, nurseries, trusted relays, and labor without becoming interchangeable units.',
+      need:'Coordination that offers resources before adding obligations.',
+      next:'Route the specific capacity gap to the function able to help.',
+      authority:'Neighborhood context cannot be converted into a household verdict or reputation score.',
+      caption:'The neighborhood plate reveals shared effects and shared capacity while retaining household boundaries.',
+      sceneClass:'Modeled context', sceneClaim:'Illustrative block · assistance routing only', scene:sceneNeighborhood
+    },
+    {
+      id:'region', label:'Region', kicker:'Regional Observatory', code:'MW-PL-006', title:'Wide context remains separate from local determination.',
+      body:'Heat, air, wildfire, water, access, supply, labor, terrain, and public programs shape many places differently and change over time.',
+      need:'A context layer that keeps signal, verified finding, capacity, and completed mitigation separate.',
+      next:'Use regional context to prioritize assistance and evidence collection.',
+      authority:'No automatic insurance denial, unrelated scoring, or punitive reuse.',
+      caption:'The Regional Observatory widens the record without manufacturing parcel certainty from broad signals.',
+      sceneClass:'Modeled context', sceneClaim:'Regional relationships · no parcel determination', scene:sceneRegion
+    },
+    {
+      id:'stewardship', label:'Stewardship', kicker:'Continuity', code:'MW-PL-007', title:'The work survives a change of hands.',
+      body:'Evidence, rationale, authority, safe preparation, verification, held effects, and unresolved branches remain reconstructable after a role changes.',
+      need:'Receipts, bounded decisions, and a cold successor path.',
+      next:'Verify the result and export a trustworthy handoff.',
+      authority:'External effects require real authority. Internal preparation does not require finding a person.',
+      caption:'Manzanita Works and Essential Attention preserve why the condition mattered, what authority existed, what work occurred, and what remains safe.',
+      sceneClass:'Operating receipt', sceneClaim:'Governed handoff · external effects held', scene:sceneStewardship
+    }
+  ];
+
+  const overlays = [
+    {id:'habitat', label:'Habitat', cls:'overlay-habitat'},
+    {id:'shade', label:'Shade + heat', cls:'overlay-shade'},
+    {id:'water', label:'Water', cls:'overlay-water'},
+    {id:'fire', label:'Fire', cls:'overlay-fire'},
+    {id:'air', label:'Air', cls:'overlay-air'},
+    {id:'access', label:'Access', cls:'overlay-access'},
+    {id:'labor', label:'Labor + tools', cls:'overlay-labor'},
+    {id:'authority', label:'Authority + programs', cls:'overlay-authority'}
+  ];
+
+  const roles = [
+    {id:'resident', code:'R-01', label:'Resident', body:'What supports daily life and what burden arrives with the work.', need:'Needs: use, consent, cost, care load, recourse.'},
+    {id:'nursery', code:'R-02', label:'Nursery or grower', body:'What can be propagated, supplied, maintained, and replaced locally.', need:'Needs: demand, plant fit, timing, logistics, proof of survival.'},
+    {id:'crew', code:'R-03', label:'Crew or steward', body:'What work is authorized, accessible, safe, and verifiable.', need:'Needs: scope, access, tools, dependencies, acceptance criteria.'},
+    {id:'planner', code:'R-04', label:'Planner or program', body:'Where shared conditions justify resources without inventing parcel certainty.', need:'Needs: context, eligibility, purpose limits, affected interests.'},
+    {id:'successor', code:'R-05', label:'Successor', body:'Why the current state exists and what remains safe to continue.', need:'Needs: sources, rationale, authority, receipts, open branches.'}
+  ];
+
+  const $ = (selector) => document.querySelector(selector);
+  const state = {scale:1, role:0, overlays:new Set(['habitat','shade'])};
+
+  function esc(text){ return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function label(x,y,title,detail,anchor='start'){
+    return `<text x="${x}" y="${y}" text-anchor="${anchor}" class="scene-label">${esc(title)}</text>${detail ? `<text x="${x}" y="${y+17}" text-anchor="${anchor}" class="scene-micro">${esc(detail)}</text>`:''}`;
+  }
+
+  function scenePlant(){
+    return `
+      <g data-scene="plant">
+        <path d="M0 455H920" class="scene-ink"/>
+        <rect x="315" y="244" width="290" height="208" class="scene-base"/>
+        <path d="M295 244h330l-38 208H333Z" class="scene-muted"/>
+        <path d="M350 244c30-55 64-93 110-132M414 244c4-82 21-135 58-188M488 244c22-74 54-120 97-157M548 244c-6-62-1-105 19-145" class="scene-ink"/>
+        <path d="M345 175c35-24 68-22 97 5-30 31-61 34-97-5Zm77-72c31-30 66-33 105-8-21 37-55 43-105 8Zm79 61c31-31 70-33 112-7-26 40-64 42-112 7Zm33-86c29-25 60-26 91-2-25 31-54 31-91 2Z" class="scene-olive"/>
+        <g transform="translate(610 374)"><path d="M0 35c3-22 18-34 40-31l9-19 12 20c22 8 30 25 24 48-16 13-51 13-78 2-5-6-7-12-7-20Zm82 13c25 3 40-8 48-31" class="svg-cat"/><circle cx="33" cy="24" r="2.5" class="svg-eye"/></g>
+        <path d="M332 452 205 495H80" class="scene-signal" marker-end="url(#arrow)"/>
+        ${label(78,484,'HOUSEHOLD USE','CAT · SCENT · PLAY')}
+        <path d="M472 96V45H685" class="scene-signal"/>
+        ${label(690,44,'CARE LOOP','LIGHT · WATER · RETURN')}
+        <text x="63" y="96" class="scene-number">01</text>${label(63,127,'ORIGIN OBJECT','UTILITY BEFORE PREMIUM')}
+      </g>`;
+  }
+
+  function sceneHousehold(){
+    return `
+      <g data-scene="household">
+        <path d="M0 456c180-30 333-9 470-46s276-24 450-55v205H0Z" class="scene-muted"/>
+        <path d="M170 257 382 128 657 272v216H170Z" class="scene-base"/>
+        <path d="M148 275 380 106 686 279" class="scene-ink"/>
+        <rect x="222" y="309" width="112" height="179" class="scene-muted"/>
+        <rect x="422" y="296" width="155" height="110" class="scene-base"/>
+        <path d="M435 311h130M435 339h130M435 367h130M477 296v110M522 296v110" class="scene-thin"/>
+        <path d="M78 96c92-70 181-42 235 16 76-66 188-53 232 17 80-35 175 6 190 77-85 39-153 52-231 37-55 45-145 45-214 1-98 34-203 5-248-53 0-42 13-72 36-95Z" class="scene-olive"/>
+        <path d="M337 223c-13 91-12 176 0 275M332 279c-57 27-92 66-118 114M339 313c58 29 92 65 122 111" class="scene-ink scene-stroke-15"/>
+        <ellipse cx="722" cy="344" rx="58" ry="17" class="scene-base"/><rect x="664" y="344" width="116" height="135" class="scene-muted"/><path d="M669 367h106M669 391h106M669 415h106M669 439h106" class="scene-thin"/>
+        <path d="M77 463c78-52 153-55 226-5-68 42-147 46-226 5Zm351 17c64-56 137-62 213-10-63 44-134 48-213 10Z" class="scene-base"/>
+        <g transform="translate(518 441)"><path d="M0 35c3-22 18-34 40-31l9-19 12 20c22 8 30 25 24 48-16 13-51 13-78 2-5-6-7-12-7-20Zm82 13c25 3 40-8 48-31" class="svg-cat"/><circle cx="33" cy="24" r="2.5" class="svg-eye"/></g>
+        <path d="M60 528H856" class="scene-thin"/>
+        ${label(70,516,'LIVED SYSTEM','USE · SHADE · WATER · CARE')}
+        ${label(849,516,'NO SINGLE SCORE','CONDITIONS REMAIN SEPARATE','end')}
+      </g>`;
+  }
+
+  function sceneProperty(){
+    return `
+      <g data-scene="property">
+        <path d="M108 64H792V494H108Z" class="scene-base"/>
+        <path d="M108 64 792 494M792 64 108 494" class="scene-thin"/>
+        <path d="M175 128H575V377H175Z" class="scene-muted"/>
+        <path d="M217 165H519V337H217Z" class="scene-base"/>
+        <rect x="264" y="208" width="88" height="129" class="scene-muted"/>
+        <rect x="400" y="199" width="82" height="63" class="scene-base"/>
+        <circle cx="646" cy="151" r="91" class="scene-olive"/>
+        <circle cx="658" cy="384" r="58" class="scene-base"/>
+        <path d="M646 242v152M575 292h126" class="scene-ink"/>
+        <path d="M131 429H769" class="scene-signal"/>
+        <path d="M158 81v395M593 81v395" class="scene-thin" stroke-dasharray="7 7"/>
+        <path d="M135 452c180-39 358-9 630-34" class="scene-water"/>
+        <path d="M170 106c68 27 119 25 182-7M418 105c47 23 92 21 143-6" class="scene-olive"/>
+        <text x="127" y="94" class="scene-number">03</text>
+        ${label(127,124,'VISIBLE TWIN','ZONES · EDGES · DEPENDENCIES')}
+        ${label(731,472,'REFERENCE ONLY','NOT A SURVEY','end')}
+        <path d="M644 151 823 94" class="scene-signal"/>${label(828,92,'CANOPY EDGE','VISIBLE · UNCERTAIN')}
+        <path d="M658 384 826 365" class="scene-water"/>${label(831,364,'WATER STORE','CAPACITY OPEN')}
+      </g>`;
+  }
+
+  function sceneStreet(){
+    return `
+      <g data-scene="street">
+        <path d="M0 410H920V560H0Z" class="scene-muted"/>
+        <path d="M0 444H920M0 493H920" class="scene-ink"/>
+        <path d="M82 410V354H830V410" class="scene-thin"/>
+        <path d="M132 354 302 229 505 352V410H132Z" class="scene-base"/>
+        <path d="M111 366 300 207 528 358" class="scene-ink"/>
+        <path d="M570 312h170v98H570Z" class="scene-base"/>
+        <path d="M548 320 651 244 765 322" class="scene-ink"/>
+        <path d="M54 188c80-64 166-43 217 6 67-59 169-53 216 12 74-36 166 4 177 71-76 35-137 49-211 35-58 42-145 41-203 0-95 31-191 6-231-47 0-32 12-57 35-77Z" class="scene-olive"/>
+        <path d="M266 303v107" class="scene-ink scene-stroke-13"/>
+        <path d="M0 443c181-17 312-8 459-19s299-3 461-15" class="scene-signal"/>
+        <path d="M81 354c190-18 294-20 443 0" class="scene-signal"/>
+        <path d="M520 353c102 9 198 10 310 1" class="scene-violet"/>
+        <path d="M85 410c154-2 286 0 427 0" class="scene-water"/>
+        <path d="M120 492 184 441 263 492M575 492l73-49 84 49" class="scene-thin"/>
+        <text x="45" y="83" class="scene-number">04</text>${label(45,114,'NATURAL BORDER REGISTRATION','CURB · CANOPY · ROOF · WALK · UTILITY')}
+        ${label(70,432,'CURB EDGE','PUBLIC EDGE')}${label(773,338,'UTILITY / WORK EDGE','AUTHORITY SEPARATE','end')}
+      </g>`;
+  }
+
+  function sceneNeighborhood(){
+    const parcels=[];
+    for(let r=0;r<2;r++) for(let c=0;c<4;c++){
+      const x=72+c*195,y=126+r*174;
+      parcels.push(`<rect x="${x}" y="${y}" width="164" height="145" class="scene-base"/><path d="M${x+18} ${y+88} ${x+78} ${y+42} ${x+145} ${y+91}v38H${x+18}Z" class="scene-thin"/><circle cx="${x+42+(c%2)*78}" cy="${y+48}" r="25" class="scene-olive"/>`);
+    }
+    return `
+      <g data-scene="neighborhood">
+        ${parcels.join('')}
+        <path d="M50 290H870M50 465H870" class="scene-ink"/>
+        <path d="M120 90H790" class="scene-air"/>
+        <path d="M92 488c214-55 445-32 730-2" class="scene-water"/>
+        <circle cx="158" cy="302" r="10" class="scene-signal-fill"/><circle cx="458" cy="302" r="10" class="scene-signal-fill"/><circle cx="755" cy="302" r="10" class="scene-signal-fill"/>
+        <path d="M158 302H458H755" class="scene-signal" marker-end="url(#arrow)"/>
+        <path d="M458 302V88" class="scene-violet"/>
+        ${label(458,72,'NURSERY · TOOLS · TRUSTED RELAY','SHARED CAPACITY','middle')}
+        <text x="43" y="67" class="scene-number">05</text>${label(43,98,'NEIGHBORHOOD','LINKED CONDITIONS · UNEQUAL CAPACITY')}
+      </g>`;
+  }
+
+  function sceneRegion(){
+    return `
+      <g data-scene="region">
+        <path d="M0 112c128-73 240-34 329 13 112-103 250-80 345 5 92-56 170-33 246 17V0H0Z" class="scene-muted"/>
+        <path d="M0 112c128-73 240-34 329 13 112-103 250-80 345 5 92-56 170-33 246 17M0 169c126-60 251-25 347 23 111-83 235-69 329 5 90-43 172-24 244 20M0 228c126-44 251-15 351 28 110-64 231-55 327 7 89-32 171-17 242 23" class="scene-ink"/>
+        <path d="M0 354c154-56 303-22 456 4s296 42 464-20" class="scene-water"/>
+        <path d="M35 300c162-50 338-21 485-42s267-14 365 16" class="scene-air"/>
+        <path d="M170 95 282 445M434 100 522 462M704 106 652 469" class="scene-thin"/>
+        <g class="region-nodes">
+          <circle cx="185" cy="323" r="13" class="scene-signal-fill"/><circle cx="342" cy="285" r="11" class="scene-olive"/><circle cx="507" cy="345" r="13" class="scene-signal-fill"/><circle cx="695" cy="303" r="11" class="scene-olive"/><circle cx="802" cy="389" r="13" class="scene-signal-fill"/>
+          <path d="M185 323 342 285 507 345 695 303 802 389" class="scene-signal"/>
+        </g>
+        <path d="M90 478H840" class="scene-ink"/><path d="M90 478v31M260 478v31M430 478v31M600 478v31M770 478v31" class="scene-ink"/>
+        ${label(90,532,'HEAT')}${label(260,532,'AIR')}${label(430,532,'FIRE')}${label(600,532,'SUPPLY')}${label(770,532,'PROGRAMS')}
+        <text x="42" y="66" class="scene-number">06</text>${label(42,97,'REGIONAL OBSERVATORY','CONTEXT WIDENS · CLAIM FORCE DOES NOT')}
+      </g>`;
+  }
+
+  function sceneStewardship(){
+    const nodes=[['SOURCE','RETAIN'],['MEANING','CLASSIFY'],['ATTENTION','ROUTE'],['AUTHORITY','BOUND'],['WORK','PREPARE'],['OUTCOME','VERIFY'],['HANDOFF','PRESERVE']];
+    return `
+      <g data-scene="stewardship">
+        <path d="M70 278H850" class="scene-ink" marker-end="url(#arrow)"/>
+        ${nodes.map((n,i)=>{const x=80+i*124;return `<g transform="translate(${x} 205)"><rect width="104" height="145" class="scene-base"/><text x="12" y="26" class="scene-number">0${i+1}</text><text x="12" y="82" class="scene-label">${n[0]}</text><text x="12" y="102" class="scene-micro">${n[1]}</text>${i===3?'<path d="M12 119h80" class="scene-signal"/>':''}</g>`}).join('')}
+        <path d="M144 163V91H350M514 163V91H727" class="scene-thin"/>
+        ${label(355,89,'ORIGINAL EVIDENCE','SOURCE FORCE RETAINED')}${label(733,89,'EXTERNAL EFFECT','HELD UNTIL AUTHORIZED')}
+        <path d="M70 402H850" class="scene-thin"/><text x="70" y="439" class="scene-label">COLD SUCCESSOR TEST</text><text x="850" y="439" text-anchor="end" class="scene-label">PORTABLE PACKET</text>
+        <text x="42" y="66" class="scene-number">07</text>${label(42,97,'CONTINUITY','THE RECORD SURVIVES THE ROLE')}
+      </g>`;
+  }
+
+  const overlayGeometry = {
+    plant:{habitat:['ellipse',460,180,190,90],shade:['path','M280 95c160-65 302-42 390 31'],water:['path','M250 448c170-56 305-38 442-6'],fire:['rect',296,226,326,229],air:['path','M130 130c190-40 392-41 650 4'],access:['path','M94 482H824'],labor:['rect',700,320,120,136],authority:['rect',284,213,350,250]},
+    household:{habitat:['ellipse',360,185,286,128],shade:['path','M56 116c210-86 426-57 690 64'],water:['path','M82 488c215-54 433-35 700-10'],fire:['rect',142,104,651,397],air:['path','M57 92c233-47 479-36 768 33'],access:['path','M60 514H847'],labor:['rect',430,415,240,95],authority:['rect',157,117,649,384]},
+    property:{habitat:['ellipse',650,160,112,112],shade:['ellipse',650,160,155,132],water:['path','M125 460c214-47 423-23 652-38'],fire:['rect',105,61,690,438],air:['path','M132 112c183-49 403-30 640 10'],access:['path','M125 430H770'],labor:['rect',570,315,175,150],authority:['rect',105,61,690,438]},
+    street:{habitat:['path','M42 205c175-90 373-61 646 49'],shade:['path','M30 242c214-56 427-34 665 31'],water:['path','M80 410c172-11 314-5 444 0'],fire:['rect',104,196,682,226],air:['path','M52 126c201-44 475-35 794 34'],access:['path','M0 444H920'],labor:['rect',533,302,272,117],authority:['path','M81 354H831']},
+    neighborhood:{habitat:['path','M72 128c218-55 441-48 750 3'],shade:['path','M58 179c240-35 489-31 806 11'],water:['path','M92 488c214-55 445-32 730-2'],fire:['rect',53,119,814,355],air:['path','M120 90H790'],access:['path','M50 290H870'],labor:['path','M158 302H755'],authority:['rect',52,119,815,355]},
+    region:{habitat:['path','M43 250c181-79 382-60 598-21s184 12 235 0'],shade:['path','M0 228c126-44 251-15 351 28 110-64 231-55 327 7 89-32 171-17 242 23'],water:['path','M0 354c154-56 303-22 456 4s296 42 464-20'],fire:['path','M117 142 240 450M420 118 535 469M713 133 650 468'],air:['path','M35 300c162-50 338-21 485-42s267-14 365 16'],access:['path','M90 478H840'],labor:['path','M185 323 342 285 507 345 695 303 802 389'],authority:['rect',74,78,780,400]},
+    stewardship:{habitat:['rect',63,188,798,180],shade:['path','M70 386H850'],water:['path','M68 414H851'],fire:['rect',428,192,112,168],air:['path','M70 156H850'],access:['path','M70 278H850'],labor:['rect',550,188,238,180],authority:['rect',426,187,116,177]}
+  };
+
+  function overlaySvg(scaleId, item, index){
+    const g=(overlayGeometry[scaleId]||overlayGeometry.household)[item.id];
+    if(!g) return '';
+    const cls=`overlay-shape ${item.cls}`;
+    let shape='';
+    if(g[0]==='ellipse') shape=`<ellipse cx="${g[1]}" cy="${g[2]}" rx="${g[3]}" ry="${g[4]}" class="${cls}"/>`;
+    if(g[0]==='rect') shape=`<rect x="${g[1]}" y="${g[2]}" width="${g[3]}" height="${g[4]}" class="${cls}"/>`;
+    if(g[0]==='path') shape=`<path d="${g[1]}" class="${cls}"/>`;
+    const y=24+index*24;
+    return `<g data-overlay="${item.id}">${shape}<rect x="700" y="${y-13}" width="190" height="19" class="svg-panel"/><text x="710" y="${y}" class="overlay-label" fill="currentColor">${esc(item.label)}</text></g>`;
+  }
+
+  function buildControls(){
+    $('#scaleRail').innerHTML=scales.map((s,i)=>`<button type="button" data-scale="${i}" aria-pressed="${i===state.scale}">${esc(s.label)}</button>`).join('');
+    $('#overlayRail').innerHTML=overlays.map(o=>`<button type="button" data-overlay-button="${o.id}" aria-pressed="${state.overlays.has(o.id)}">${esc(o.label)}</button>`).join('');
+    $('#roleRail').innerHTML=roles.map((r,i)=>`<button type="button" data-role="${i}" aria-pressed="${i===state.role}">${esc(r.label)}</button>`).join('');
+  }
+
+  function renderScale(){
+    const s=scales[state.scale];
+    document.querySelectorAll('[data-scale]').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===state.scale)));
+    $('#visualKicker').textContent=s.kicker; $('#visualCode').textContent=s.code;
+    $('#visualTitle').textContent=s.label; $('#visualDescription').textContent=s.caption;
+    $('#scaleTitle').textContent=s.title; $('#scaleBody').textContent=s.body; $('#scaleNeed').textContent=s.need; $('#scaleNext').textContent=s.next; $('#scaleAuthority').textContent=s.authority;
+    $('#sceneCaption').textContent=s.caption; $('#sceneClass').textContent=s.sceneClass; $('#sceneClaim').textContent=s.sceneClaim;
+    $('#scaleScene').innerHTML=s.scene();
+    renderOverlays();
+  }
+
+  function renderOverlays(){
+    const s=scales[state.scale];
+    const active=overlays.filter(o=>state.overlays.has(o.id));
+    $('#overlayScene').innerHTML=active.map((o,i)=>overlaySvg(s.id,o,i)).join('');
+    document.querySelectorAll('[data-overlay-button]').forEach(b=>b.setAttribute('aria-pressed',String(state.overlays.has(b.dataset.overlayButton))));
+  }
+
+  function renderRole(){
+    const r=roles[state.role];
+    document.querySelectorAll('[data-role]').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===state.role)));
+    $('#roleCode').textContent=r.code; $('#roleTitle').textContent=r.label; $('#roleBody').textContent=r.body; $('#roleNeed').textContent=r.need;
+  }
+
+  function updateThemeControl(){
+    const dark=document.documentElement.dataset.theme==='dark';
+    $('#themeToggle').setAttribute('aria-pressed',String(dark));
+    $('#themeToggle').setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');
+    $('#themeLabel').textContent=dark?'Light':'Dark';
+    document.querySelector('meta[name="theme-color"]').setAttribute('content',dark?'#11110f':'#f4f0e8');
+  }
+
+  buildControls(); renderScale(); renderRole(); updateThemeControl();
+
+  $('#scaleRail').addEventListener('click',e=>{const b=e.target.closest('[data-scale]');if(!b)return;state.scale=Number(b.dataset.scale);state.overlays=new Set(state.scale<2?['habitat','shade']:state.scale<4?['access','water']:state.scale<6?['fire','labor']:['authority','access']);renderScale();});
+  $('#overlayRail').addEventListener('click',e=>{const b=e.target.closest('[data-overlay-button]');if(!b)return;const id=b.dataset.overlayButton;state.overlays.has(id)?state.overlays.delete(id):state.overlays.add(id);renderOverlays();});
+  $('#roleRail').addEventListener('click',e=>{const b=e.target.closest('[data-role]');if(!b)return;state.role=Number(b.dataset.role);renderRole();});
+  $('#nextScale').addEventListener('click',()=>{state.scale=(state.scale+1)%scales.length;renderScale();$('#place').scrollIntoView({block:'start'});});
+  $('#themeToggle').addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;localStorage.setItem('manzanita-theme',next);updateThemeControl();});
+})();
