@@ -1,0 +1,59 @@
+name: clinical-site-fabric-robust-bootstrap
+
+on:
+  push:
+    branches:
+      - feature/clinical-site-fabric-real-file-intake
+    paths:
+      - ".github/import-csf-robust/bootstrap.ready"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/clinical-site-fabric-real-file-intake
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Playwright and Chromium
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.*
+          python -m playwright install --with-deps chromium
+      - name: Reconstruct reviewed overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .github/import-csf-robust/part-* > /tmp/clinical-site-fabric-robust.tar.gz.b64
+          base64 --decode /tmp/clinical-site-fabric-robust.tar.gz.b64 > /tmp/clinical-site-fabric-robust.tar.gz
+          echo "4032549c5dc6925ee96b74c4ec701cd2f73bcb2240ad45be9be492ce80a45c53  /tmp/clinical-site-fabric-robust.tar.gz" | sha256sum --check --strict
+          rm -rf clinical-site-fabric
+          tar -xzf /tmp/clinical-site-fabric-robust.tar.gz -C .
+      - name: Validate reconstructed tool
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check clinical-site-fabric/app.mjs
+          node --check clinical-site-fabric/core.mjs
+          node --check clinical-site-fabric/ingest.mjs
+          node --check clinical-site-fabric/sample.mjs
+          node --test clinical-site-fabric/tests/core.test.mjs
+          python clinical-site-fabric/tests/browser_test.py
+          python clinical-site-fabric/scripts/validate.py --write
+          git diff --check
+      - name: Commit reconstructed tool
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "clinical-site-fabric-bootstrap"
+          git config user.email "actions@users.noreply.github.com"
+          git add README.md index.html .github/workflows/clinical-site-fabric-verify.yml clinical-site-fabric
+          git commit -m "clinical-site-fabric: qualify heterogeneous real-file intake"
+          git push origin HEAD:feature/clinical-site-fabric-real-file-intake
