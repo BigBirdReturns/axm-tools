@@ -1,4 +1,4 @@
-name: Manzanita Works v1.1.2 contract
+name: Manzanita Works v1.4.0 Signal Sheet contract
 
 on:
   push:
@@ -31,13 +31,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Verify exact release bytes and public boundary
+      - name: Verify exact release and visual constitution
         run: python manzanita/tests/public_contract_test.py
       - name: Parse the runtime
-        run: node --check manzanita/app.js
+        run: |
+          node --check manzanita/app.js
+          node --check manzanita/theme-init.js
       - name: Install Playwright and Chromium
         run: |
           python -m pip install --disable-pip-version-check playwright==1.57.0
           python -m playwright install --with-deps chromium
-      - name: Drive desktop and mobile contract
+      - name: Drive light, dark, desktop, and mobile contracts
+        env:
+          MANZANITA_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-screens
         run: python manzanita/tests/browser_test.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-signal-sheet-v1.4.0-screens
+          path: ${{ runner.temp }}/manzanita-screens
+          if-no-files-found: error
+          retention-days: 30
