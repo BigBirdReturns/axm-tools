@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Restore exact Signal Sheet release
+      - name: Restore and harden exact Signal Sheet release
         shell: bash
         run: |
           cat .github/manzanita-signal-sheet-payload/chunk* > /tmp/manzanita.b64
@@ -41,21 +41,81 @@ jobs:
           cp -a /tmp/manzanita-release/manzanita ./manzanita
           cp /tmp/manzanita-release/.github/workflows/manzanita-check.yml .github/workflows/manzanita-check.yml
           cp /tmp/manzanita-release/.github/workflows/manzanita-live-check.yml .github/workflows/manzanita-live-check.yml
+
           python - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
           from pathlib import Path
-          path = Path("manzanita/tests/browser_test.py")
-          text = path.read_text(encoding="utf-8")
-          replacements = {
+
+          root = Path("manzanita")
+
+          app_path = root / "app.js"
+          app = app_path.read_text(encoding="utf-8")
+          app_replacements = {
+              'class="scene-ink" style="stroke-width:15"': 'class="scene-ink scene-stroke-15"',
+              'class="scene-ink" style="stroke-width:13"': 'class="scene-ink scene-stroke-13"',
+          }
+          for old, new in app_replacements.items():
+              if old not in app:
+                  raise SystemExit(f"expected app fragment not found: {old}")
+              app = app.replace(old, new)
+          if 'style="' in app:
+              raise SystemExit("inline style remains in app.js")
+          app_path.write_text(app, encoding="utf-8")
+
+          css_path = root / "style.css"
+          css = css_path.read_text(encoding="utf-8")
+          stroke_law = ".scene-stroke-15{stroke-width:15}.scene-stroke-13{stroke-width:13}\n"
+          if stroke_law.strip() not in css:
+              marker = "\n@media (max-width:1100px){"
+              if marker not in css:
+                  raise SystemExit("CSS media marker not found")
+              css = css.replace(marker, "\n" + stroke_law + marker, 1)
+          css_path.write_text(css, encoding="utf-8")
+
+          index_path = root / "index.html"
+          html = index_path.read_text(encoding="utf-8")
+          favicon = "  <link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f4f0e8'/%3E%3Cpath d='M6 26 26 6M9 7h5v5H9zm9 9h5v5h-5z' fill='none' stroke='%23ff4b1f' stroke-width='2'/%3E%3C/svg%3E\">\n"
+          if 'rel="icon"' not in html:
+              marker = '  <meta http-equiv="Content-Security-Policy"'
+              if marker not in html:
+                  raise SystemExit("CSP marker not found")
+              html = html.replace(marker, favicon + marker, 1)
+          index_path.write_text(html, encoding="utf-8")
+
+          browser_path = root / "tests" / "browser_test.py"
+          browser = browser_path.read_text(encoding="utf-8")
+          browser_replacements = {
               'assert "No backend · no external-effect adapters" in body_text':
                   'assert "no backend · no external-effect adapters" in body_text.lower()',
               "    page.add_init_script(f\"localStorage.setItem('manzanita-theme', '{theme}')\")\n    response = page.goto(TARGET_URL, wait_until=\"networkidle\", timeout=60_000)\n    assert response is not None and response.status == 200, response.status if response else None\n":
                   "    response = page.goto(TARGET_URL, wait_until=\"networkidle\", timeout=60_000)\n    assert response is not None and response.status == 200, response.status if response else None\n    page.evaluate(\"theme => localStorage.setItem('manzanita-theme', theme)\", theme)\n    response = page.reload(wait_until=\"networkidle\")\n    assert response is not None and response.status == 200, response.status if response else None\n",
           }
-          for old, new in replacements.items():
-              if old not in text:
+          for old, new in browser_replacements.items():
+              if old not in browser:
                   raise SystemExit(f"expected browser-test fragment not found: {old[:80]}")
-              text = text.replace(old, new)
-          path.write_text(text, encoding="utf-8")
+              browser = browser.replace(old, new)
+          browser_path.write_text(browser, encoding="utf-8")
+
+          contract_path = root / "tests" / "public_contract_test.py"
+          contract = contract_path.read_text(encoding="utf-8")
+          contract_marker = "assert 'themeToggle' in html\n"
+          contract_addition = "assert 'rel=\"icon\"' in html\nassert 'style=\"' not in js\nassert '.scene-stroke-15' in css and '.scene-stroke-13' in css\n"
+          if contract_addition not in contract:
+              if contract_marker not in contract:
+                  raise SystemExit("contract insertion marker not found")
+              contract = contract.replace(contract_marker, contract_marker + contract_addition, 1)
+          contract_path.write_text(contract, encoding="utf-8")
+
+          receipt_path = root / "QUALIFICATION.json"
+          receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+          for name, row in receipt["files"].items():
+              data = (root / name).read_bytes()
+              row["bytes"] = len(data)
+              row["sha256"] = hashlib.sha256(data).hexdigest()
+          receipt_path.write_text(json.dumps(receipt, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
           PY
 
       - name: Verify static contract
