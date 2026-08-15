@@ -1,0 +1,54 @@
+{
+  "schema": "axm-tools/manzanita-99-execution-state@1",
+  "as_of": "2026-08-15T21:30:00Z",
+  "baseline_task_count": 497,
+  "baseline_priority_counts": {
+    "P0": 318,
+    "P1": 168,
+    "P2": 11
+  },
+  "closed_tasks": [
+    {
+      "id": "JDB99-000",
+      "state": "closed",
+      "evidence": [
+        "programs/manzanita-99/README.md",
+        "programs/manzanita-99/SCORECARD.json",
+        "pull/92"
+      ],
+      "closure": "The internal benchmark, no-affiliation statement, accountable seat, score law, and hard release gates were admitted to main through the validated program PR."
+    },
+    {
+      "id": "JDB99-003",
+      "state": "closed",
+      "evidence": [
+        "programs/manzanita-99/MASTER_BACKLOG.json.gz.b64",
+        "pull/89",
+        "pull/92"
+      ],
+      "closure": "The 361-asset register was absorbed into the canonical 497-task backlog and PR #89 was closed as superseded."
+    }
+  ],
+  "remaining_task_count": 495,
+  "remaining_priority_counts": {
+    "P0": 316,
+    "P1": 168,
+    "P2": 11
+  },
+  "next_admissible_queue": [
+    "JDB99-001",
+    "JDB99-002",
+    "JDB99-027",
+    "JDB99-004",
+    "JDB99-005",
+    "JDB99-006",
+    "JDB99-007",
+    "JDB99-008",
+    "JDB99-009",
+    "JDB99-010",
+    "JDB99-011",
+    "JDB99-018",
+    "JDB99-020"
+  ],
+  "qualification_boundary": "This state closes program-control tasks only. No Manzanita product release, estate surface, or score dimension is thereby qualified."
+}
