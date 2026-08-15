@@ -1,0 +1,46 @@
+name: Manzanita 99 program
+
+on:
+  push:
+    branches:
+      - program/manzanita-99-design-rigor
+    paths:
+      - "programs/manzanita-99/**"
+      - ".github/workflows/manzanita-99-program.yml"
+  pull_request:
+    paths:
+      - "programs/manzanita-99/**"
+      - ".github/workflows/manzanita-99-program.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate complete design program
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Expand and validate the 497-task register
+        run: python programs/manzanita-99/validate_program.py
+
+      - name: Retain expanded task views
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-99-program-${{ github.sha }}
+          path: |
+            programs/manzanita-99/README.md
+            programs/manzanita-99/BACKLOG_FORMAT.md
+            programs/manzanita-99/AMENDMENTS.json
+            programs/manzanita-99/SCORECARD.json
+            programs/manzanita-99/MASTER_BACKLOG.json
+            programs/manzanita-99/MASTER_BACKLOG.csv
+          if-no-files-found: error
+          retention-days: 90

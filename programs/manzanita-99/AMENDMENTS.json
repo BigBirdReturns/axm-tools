@@ -1,0 +1,18 @@
+{
+  "schema": "axm-tools/manzanita-99-amendments@1",
+  "reason": "Refinement is the majority design activity. A small terminal polish allowance is insufficient for the stated benchmark.",
+  "task_overrides": {
+    "JDB99-030": {
+      "title": "Budget the majority of design time for refinement and reserve at least the final 30 percent after architecture freeze",
+      "deliverable": "A protected refinement program that begins during prototyping and reserves at least the final 30 percent after architecture freeze for optical spacing, motion timing, content compression, state consistency, crop, source labeling, edge cases, and real-device defects.",
+      "acceptance": "The schedule shows refinement as the majority design activity; the final protected window begins only after architecture is stable; no new feature displaces polish; all visible defects are closed or explicitly held outside release.",
+      "evidence_required": [
+        "iteration ledger",
+        "polish backlog",
+        "before/after comparisons",
+        "defect burndown",
+        "final review receipts"
+      ]
+    }
+  }
+}
