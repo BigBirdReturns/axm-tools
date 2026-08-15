@@ -45,8 +45,16 @@ def main() -> int:
             assert image.width >= 1200 and image.height >= 900, (source_id, image.size)
             assert image.format == "PNG", (source_id, image.format)
 
-    optional_statuses = {"ok", "empty", "failed", "skipped_missing_credential"}
-    for source_id in ("google_street_view", "mapillary", "kartaview", "panoramax", "airnow", "firms"):
+    optional_statuses = {"ok", "empty", "degraded", "failed", "skipped_missing_credential"}
+    for source_id in (
+        "google_street_view",
+        "mapillary",
+        "kartaview_coverage",
+        "kartaview",
+        "panoramax",
+        "airnow",
+        "firms",
+    ):
         assert source_id in by_id, source_id
         assert by_id[source_id]["status"] in optional_statuses, (source_id, by_id[source_id]["status"])
 
@@ -68,6 +76,7 @@ def main() -> int:
         "receipt_count": len(entries),
         "successful_sources": sorted(entry["source_id"] for entry in entries if entry["status"] == "ok"),
         "empty_sources": sorted(entry["source_id"] for entry in entries if entry["status"] == "empty"),
+        "degraded_sources": sorted(entry["source_id"] for entry in entries if entry["status"] == "degraded"),
         "optional_failures": sorted(entry["source_id"] for entry in entries if entry["status"] == "failed"),
         "missing_credentials": sorted(entry["source_id"] for entry in entries if entry["status"] == "skipped_missing_credential"),
         "result": "PASS",
