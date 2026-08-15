@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axm.tools/schemas/manzanita/source-envelope.schema.json",
+  "title": "Manzanita source envelope",
+  "type": "object",
+  "required": ["source_id", "retrieval_id", "retrieved_at", "status", "request", "payload", "rights", "claim_scope"],
+  "properties": {
+    "source_id": {"type": "string", "minLength": 1},
+    "retrieval_id": {"type": "string", "minLength": 1},
+    "retrieved_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["ok", "empty", "degraded", "failed", "skipped_missing_credential"]},
+    "request": {
+      "type": "object",
+      "required": ["method", "url"],
+      "properties": {
+        "method": {"enum": ["GET", "POST"]},
+        "url": {"type": "string"},
+        "parameters": {"type": "object"},
+        "body_sha256": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "http_status": {"type": ["integer", "null"]},
+        "content_type": {"type": ["string", "null"]},
+        "etag": {"type": ["string", "null"]},
+        "last_modified": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "payload": {
+      "type": "object",
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": {"type": ["string", "null"]},
+        "bytes": {"type": "integer", "minimum": 0},
+        "sha256": {"type": ["string", "null"]},
+        "media_type": {"type": ["string", "null"]}
+      }
+    },
+    "rights": {
+      "type": "object",
+      "required": ["source_attribution", "storage_policy"],
+      "properties": {
+        "source_attribution": {"type": "string"},
+        "license": {"type": ["string", "null"]},
+        "storage_policy": {"type": "string"}
+      }
+    },
+    "claim_scope": {"type": "string", "minLength": 1},
+    "freshness": {
+      "type": "object",
+      "properties": {
+        "max_age_seconds": {"type": ["integer", "null"]},
+        "source_time": {"type": ["string", "null"]}
+      }
+    },
+    "error": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}
