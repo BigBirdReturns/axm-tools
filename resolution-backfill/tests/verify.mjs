@@ -101,8 +101,8 @@ try {
       assert(await page.locator("details.surface-record").count() === 5, `${viewport.name}: critical filter should show five surfaces`);
       await page.locator('button[data-filter="all"]').click();
 
-      await page.locator("#searchInput").fill("manzanita");
-      assert(await page.locator("details.surface-record").count() === 1, `${viewport.name}: search should isolate Manzanita`);
+      await page.locator("#searchInput").fill("registered place identity");
+      assert(await page.locator("details.surface-record").count() === 1, `${viewport.name}: unique evidence phrase should isolate one surface`);
       await page.locator("#searchInput").fill("");
 
       const firstRecord = page.locator("details.surface-record").first();
@@ -156,7 +156,7 @@ try {
       "inventory load",
       "ten governed surface records",
       "critical filter",
-      "search",
+      "full-text search",
       "record expansion",
       "twelve-gate detail",
       "asset queue",
