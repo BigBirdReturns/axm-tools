@@ -12,7 +12,12 @@ from scripts.core import Acquisition  # noqa: E402
 
 
 def load_registry() -> dict:
-    return json.loads((ROOT / "config" / "source-registry.json").read_text(encoding="utf-8"))
+    source_by_id: dict[str, dict] = {}
+    for path in sorted((ROOT / "config").glob("source-registry*.json")):
+        document = json.loads(path.read_text(encoding="utf-8"))
+        for source in document.get("sources", []):
+            source_by_id[source["id"]] = source
+    return {"sources": list(source_by_id.values())}
 
 
 def test_place_config() -> None:
@@ -27,6 +32,7 @@ def test_source_registry() -> None:
     registry = load_registry()
     ids = [source["id"] for source in registry["sources"]]
     assert len(ids) == len(set(ids))
+    by_id = {source["id"]: source for source in registry["sources"]}
     for source in registry["sources"]:
         assert source["name"]
         assert source["attribution"]
@@ -45,6 +51,8 @@ def test_source_registry() -> None:
         "osm_overpass",
     ):
         assert required in ids
+    assert "CA_Perimeters_NIFC_FIRIS_public_view" in by_id["calfire_incidents"]["base_url"]
+    assert "complete incident list" in by_id["calfire_incidents"]["claim_scope"]
 
 
 def test_every_acquisition_source_id_is_registered() -> None:
