@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bigbirdreturns.github.io/axm-tools/resolution-backfill/contracts/surface.schema.json",
+  "title": "AXM resolution backfill surface record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "class",
+    "paths",
+    "current_claim",
+    "claim_evidence",
+    "resolution_status",
+    "evidence_tier",
+    "actors",
+    "mechanism",
+    "gates",
+    "findings",
+    "assets_required",
+    "next_gate"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paths": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "current_claim": {
+      "type": "string",
+      "minLength": 20
+    },
+    "claim_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "resolution_status": {
+      "enum": [
+        "reopened",
+        "remediation_in_progress",
+        "qualified",
+        "retired"
+      ]
+    },
+    "evidence_tier": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actors": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "mechanism": {
+      "type": "string",
+      "minLength": 20
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_classification",
+        "actors_authority",
+        "source_custody",
+        "mechanism_fidelity",
+        "live_data_failure_states",
+        "interaction_semantics",
+        "visual_typography",
+        "responsive_accessibility",
+        "negative_stress_offline",
+        "continuity_export_succession",
+        "provenance_rights_privacy",
+        "qualification_receipts"
+      ],
+      "properties": {
+        "object_classification": { "$ref": "#/$defs/gate" },
+        "actors_authority": { "$ref": "#/$defs/gate" },
+        "source_custody": { "$ref": "#/$defs/gate" },
+        "mechanism_fidelity": { "$ref": "#/$defs/gate" },
+        "live_data_failure_states": { "$ref": "#/$defs/gate" },
+        "interaction_semantics": { "$ref": "#/$defs/gate" },
+        "visual_typography": { "$ref": "#/$defs/gate" },
+        "responsive_accessibility": { "$ref": "#/$defs/gate" },
+        "negative_stress_offline": { "$ref": "#/$defs/gate" },
+        "continuity_export_succession": { "$ref": "#/$defs/gate" },
+        "provenance_rights_privacy": { "$ref": "#/$defs/gate" },
+        "qualification_receipts": { "$ref": "#/$defs/gate" }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "severity",
+          "title",
+          "mechanism",
+          "evidence",
+          "acceptance"
+        ],
+        "properties": {
+          "severity": {
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 10
+          },
+          "mechanism": {
+            "type": "string",
+            "minLength": 20
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "acceptance": {
+            "type": "string",
+            "minLength": 20
+          }
+        }
+      }
+    },
+    "assets_required": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "next_gate": {
+      "type": "string",
+      "minLength": 20
+    }
+  },
+  "$defs": {
+    "gate": {
+      "enum": [
+        "pass",
+        "partial",
+        "fail",
+        "unknown",
+        "not_applicable"
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bigbirdreturns.github.io/axm-tools/resolution-backfill/contracts/inventory.schema.json",
+  "title": "AXM resolution backfill inventory manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "generated_at",
+    "base_ref",
+    "base_sha",
+    "policy",
+    "surface_files"
+  ],
+  "properties": {
+    "schema": {
+      "const": "axm-tools/resolution-backfill-inventory@1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "base_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "policy": {
+      "type": "object"
+    },
+    "donors": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "surface_files": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^surfaces/[a-z0-9-]+\\.json$"
+      }
+    }
+  }
+}

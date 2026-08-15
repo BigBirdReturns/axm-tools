@@ -1,0 +1,59 @@
+name: Resolution backfill audit
+
+on:
+  push:
+    branches:
+      - audit/resolution-backfill-v1
+    paths:
+      - "resolution-backfill/**"
+      - ".github/workflows/resolution-backfill-audit.yml"
+  pull_request:
+    paths:
+      - "resolution-backfill/**"
+      - ".github/workflows/resolution-backfill-audit.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Estate ledger and browser playtest
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile and qualify the reopening ledger
+        run: |
+          rm -rf resolution-backfill/out
+          python resolution-backfill/scripts/audit.py \
+            --root . \
+            --out resolution-backfill/out
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright@1 >/tmp/resolution-backfill-npm.log 2>&1
+          npx playwright install --with-deps chromium >/tmp/resolution-backfill-browser.log 2>&1
+
+      - name: Playtest the governed audit interface
+        run: node resolution-backfill/tests/verify.mjs
+
+      - name: Upload audit receipts and visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resolution-backfill-${{ github.sha }}
+          path: resolution-backfill/out
+          if-no-files-found: warn
+          retention-days: 90

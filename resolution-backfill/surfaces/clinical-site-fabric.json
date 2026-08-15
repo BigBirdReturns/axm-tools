@@ -1,0 +1,81 @@
+{
+  "id": "clinical-site-fabric",
+  "class": "standalone_tool",
+  "paths": [
+    "clinical-site-fabric"
+  ],
+  "current_claim": "A local multi-protocol clinical-site workbench that reconstructs protocol lineage, authority, sponsor-separated views, exit evidence, and provider-loss packets from de-identified exports.",
+  "claim_evidence": [
+    "clinical-site-fabric/README.md",
+    "clinical-site-fabric/QUALIFICATION.json",
+    "clinical-site-fabric/tests/validate.py"
+  ],
+  "resolution_status": "reopened",
+  "evidence_tier": "synthetic_static_and_browser_mechanism",
+  "actors": [
+    "site coordinator",
+    "principal investigator",
+    "delegated clinician",
+    "sponsor",
+    "monitor",
+    "participant",
+    "provider-loss successor"
+  ],
+  "mechanism": "Local adapters normalize structured exports into protocol, delegation, visit, assessment, booking, resource, and source-event objects while holding clinical and regulatory claims outside the product boundary.",
+  "gates": {
+    "object_classification": "partial",
+    "actors_authority": "partial",
+    "source_custody": "partial",
+    "mechanism_fidelity": "partial",
+    "live_data_failure_states": "not_applicable",
+    "interaction_semantics": "partial",
+    "visual_typography": "fail",
+    "responsive_accessibility": "unknown",
+    "negative_stress_offline": "partial",
+    "continuity_export_succession": "partial",
+    "provenance_rights_privacy": "partial",
+    "qualification_receipts": "partial"
+  },
+  "findings": [
+    {
+      "severity": "critical",
+      "title": "The current PASS is explicitly synthetic and cannot be allowed to read as clinical or regulatory validation.",
+      "mechanism": "A 12-cell browser self-test and static fixture checks verify internal mechanics, while actual EDC, CTMS, laboratory, delegation, and provider-loss exports remain untested.",
+      "evidence": [
+        "clinical-site-fabric/QUALIFICATION.json",
+        "clinical-site-fabric/sample-data.js",
+        "clinical-site-fabric/samples"
+      ],
+      "acceptance": "Retain the boundary prominently and qualify a de-identified representative corpus with exact source receipts, field mappings, parser dispositions, and known omissions."
+    },
+    {
+      "severity": "high",
+      "title": "Sponsor-separated and authority-aware views need seat-specific operational playtests.",
+      "mechanism": "Changing a view must alter evidence aperture, authority, next safe action, acceptance criteria, and export, rather than only filtering or relabeling the same records.",
+      "evidence": [
+        "clinical-site-fabric/app-ui.js",
+        "clinical-site-fabric/README.md"
+      ],
+      "acceptance": "Run the same case from coordinator, PI, sponsor, monitor, and successor seats and verify materially different lawful actions over one canonical record."
+    },
+    {
+      "severity": "high",
+      "title": "Privacy, corrupt-import, duplicate-identity, and partial-provider-loss failures need retained browser evidence.",
+      "mechanism": "A static local tool can still misjoin participants, overstate lineage, or expose sensitive fields when inputs are incomplete or contradictory.",
+      "evidence": [
+        "clinical-site-fabric/app-core.js",
+        "clinical-site-fabric/tests/validate.py"
+      ],
+      "acceptance": "Add negative fixtures, PII rejection and redaction tests, conflict-preserving joins, and cold-successor replay."
+    }
+  ],
+  "assets_required": [
+    "de-identified representative export corpus",
+    "field-mapping and provenance registry",
+    "seat-specific case fixtures",
+    "PII and malformed-input test corpus",
+    "provider-loss and cold-successor packet",
+    "visual, accessibility, and mobile goldens"
+  ],
+  "next_gate": "Qualify one complete de-identified case across every seat and failure boundary without expanding the clinical claim."
+}

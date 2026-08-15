@@ -1,0 +1,84 @@
+{
+  "id": "polybolos",
+  "class": "source_bound_evidence_tool",
+  "paths": [
+    "polybolos",
+    ".github/workflows/polybolos-contract.yml"
+  ],
+  "current_claim": "A static local-first evidence surface preserving a completed handoff, bounded scenario result, source identities, conflicts, and prospective qualification plans without retrospective regrading.",
+  "claim_evidence": [
+    "polybolos/README.md",
+    "polybolos/CONSTITUTION.md",
+    "polybolos/VALIDATION.md",
+    "polybolos/RELEASE_NOTES_2.0.0.md",
+    "polybolos/tests"
+  ],
+  "resolution_status": "reopened",
+  "evidence_tier": "content_addressed_public_cartridge_with_private_source_recognition",
+  "actors": [
+    "producer",
+    "recipient",
+    "source custodian",
+    "scenario operator",
+    "qualification sponsor",
+    "validator",
+    "successor"
+  ],
+  "mechanism": "The application separates transaction completion, bounded test result, source force, conflict, and prospective plan while recognizing known private source identities locally and preserving public and private export boundaries.",
+  "gates": {
+    "object_classification": "pass",
+    "actors_authority": "partial",
+    "source_custody": "partial",
+    "mechanism_fidelity": "partial",
+    "live_data_failure_states": "not_applicable",
+    "interaction_semantics": "partial",
+    "visual_typography": "fail",
+    "responsive_accessibility": "unknown",
+    "negative_stress_offline": "partial",
+    "continuity_export_succession": "partial",
+    "provenance_rights_privacy": "partial",
+    "qualification_receipts": "partial"
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "title": "The known private source pair is recognized by hash without an independently replayable private qualification package.",
+      "mechanism": "The public release can identify the exact private inputs and reconstruct their cartridge locally, but a successor without those authorized bytes cannot independently exercise the complete recognition and reconstruction path.",
+      "evidence": [
+        "polybolos/README.md",
+        "polybolos/index.html"
+      ],
+      "acceptance": "Retain an authorized private replay receipt or a cryptographic synthetic twin that exercises the identical recognition, parsing, conflict, and export mechanisms without publishing private content."
+    },
+    {
+      "severity": "high",
+      "title": "Unsupported formats are admitted, but the intake boundary lacks a hostile and malformed file corpus.",
+      "mechanism": "Office, PDF, image, archive, HTML, and binary objects may remain source-bound while oversized files, duplicate identities, deceptive extensions, nested archives, parser faults, and active content still threaten custody and usability.",
+      "evidence": [
+        "polybolos/README.md",
+        "polybolos/VALIDATION.md"
+      ],
+      "acceptance": "Exercise malformed documents, archives, inert HTML, oversized files, duplicates, misleading extensions, unsupported binaries, and resource ceilings with retained refusal receipts."
+    },
+    {
+      "severity": "medium",
+      "title": "The constitutional evidence is stronger than the visual, role, and successor qualification.",
+      "mechanism": "A content-addressed one-file application can preserve its law while compact layouts, keyboard order, touch behavior, visual hierarchy, public-private export cues, or role-specific use regress.",
+      "evidence": [
+        "polybolos/CONSTITUTION.md",
+        "polybolos/tests",
+        "polybolos/index.html"
+      ],
+      "acceptance": "Add role walkthroughs, desktop and mobile goldens, keyboard and touch evidence, and cold-successor replay for public and authorized private bundles."
+    }
+  ],
+  "assets_required": [
+    "authorized replay receipt or cryptographic synthetic twin",
+    "hostile and malformed source corpus",
+    "parser and resource-limit receipts",
+    "role-specific workflow fixtures",
+    "visual, typography, and accessibility goldens",
+    "public and private successor replay packages"
+  ],
+  "next_gate": "Prove exact intake and reconstruction under hostile files and a cold successor without changing the earlier receipt."
+}

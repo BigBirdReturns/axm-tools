@@ -1,0 +1,80 @@
+{
+  "id": "essential-attention",
+  "class": "standalone_tool",
+  "paths": [
+    "essential-attention"
+  ],
+  "current_claim": "A local-first FAB operating desk carrying one bounded administrative case through records, decisions, evidence, contained functions, effect firewall, and portable handoff.",
+  "claim_evidence": [
+    "essential-attention/README.md",
+    "essential-attention/QUALIFICATION.json",
+    "essential-attention/index.html"
+  ],
+  "resolution_status": "reopened",
+  "evidence_tier": "embedded_public_cartridge_and_browser_mechanism",
+  "actors": [
+    "FAB sponsor",
+    "executive reviewer",
+    "source custodian",
+    "relationship steward",
+    "decision authority",
+    "operator",
+    "successor"
+  ],
+  "mechanism": "A single-file local runtime combines public-safe case objects, local source hashing, draft dispositions, contained role checks, external-effect refusal, and exportable state.",
+  "gates": {
+    "object_classification": "partial",
+    "actors_authority": "partial",
+    "source_custody": "partial",
+    "mechanism_fidelity": "partial",
+    "live_data_failure_states": "not_applicable",
+    "interaction_semantics": "partial",
+    "visual_typography": "partial",
+    "responsive_accessibility": "partial",
+    "negative_stress_offline": "partial",
+    "continuity_export_succession": "partial",
+    "provenance_rights_privacy": "partial",
+    "qualification_receipts": "partial"
+  },
+  "findings": [
+    {
+      "severity": "critical",
+      "title": "The public cartridge reconstructs a real administrative aftermath without a complete immutable source registry in the release.",
+      "mechanism": "Source summaries and local hashing preserve a boundary, but the seven objects, five decisions, actor aliases, force states, and accepted offers are not all bound to source identities and extraction receipts visible to a successor.",
+      "evidence": [
+        "essential-attention/README.md",
+        "essential-attention/index.html"
+      ],
+      "acceptance": "Every object, force transition, decision dependency, and actor alias resolves to a source receipt or an explicit unresolved state."
+    },
+    {
+      "severity": "high",
+      "title": "The seven contained seats are not yet proven as materially different operating apertures.",
+      "mechanism": "A role check can pass while each seat receives the same data, same next step, same authority, and same export under different labels.",
+      "evidence": [
+        "essential-attention/QUALIFICATION.json",
+        "essential-attention/README.md"
+      ],
+      "acceptance": "Playtest every seat against the same case and verify distinct evidence needs, lawful actions, refusal conditions, and handoff outputs."
+    },
+    {
+      "severity": "high",
+      "title": "The qualification is a boolean feature inventory rather than a retained perceptual and operational evidence package.",
+      "mechanism": "Flags such as responsive_floor, motion_polish, embedded_house_fonts, and case_ledger_flavor can be true while kerning, hierarchy, compact-width behavior, help, or interaction semantics regress.",
+      "evidence": [
+        "essential-attention/QUALIFICATION.json"
+      ],
+      "acceptance": "Add visual goldens, typography metrics, keyboard and touch traces, corrupted-import and storage-loss cases, separate-browser successor replay, and export rehydration receipts."
+    }
+  ],
+  "assets_required": [
+    "complete FAB source registry",
+    "actor and alias resolution ledger",
+    "force-transition receipts",
+    "seven seat-specific replay fixtures",
+    "external-effect negative campaign",
+    "visual and typography goldens",
+    "separate-browser successor replay package"
+  ],
+  "next_gate": "Reconstruct the cartridge from source receipts, then replay it from every seat."
+}

@@ -1,0 +1,80 @@
+{
+  "id": "acceptance",
+  "class": "standalone_tool",
+  "paths": [
+    "acceptance.html",
+    "acceptance-assets",
+    "tests/pages/verify_acceptance.mjs",
+    ".github/workflows/acceptance-page.yml"
+  ],
+  "current_claim": "An OSW-ready physical-availability and evidence challenge that accepts sponsor exports locally and makes zero network requests.",
+  "claim_evidence": [
+    "acceptance.html",
+    "acceptance-assets/README.md",
+    "tests/pages/verify_acceptance.mjs"
+  ],
+  "resolution_status": "reopened",
+  "evidence_tier": "synthetic_browser_mechanism",
+  "actors": [
+    "buyer",
+    "sponsor",
+    "maintainer",
+    "operator",
+    "evidence custodian",
+    "successor reviewer"
+  ],
+  "mechanism": "A local static page ingests synthetic or sponsor-supplied exports and applies evidence and physical-availability challenge rules.",
+  "gates": {
+    "object_classification": "partial",
+    "actors_authority": "fail",
+    "source_custody": "partial",
+    "mechanism_fidelity": "partial",
+    "live_data_failure_states": "not_applicable",
+    "interaction_semantics": "partial",
+    "visual_typography": "fail",
+    "responsive_accessibility": "unknown",
+    "negative_stress_offline": "partial",
+    "continuity_export_succession": "partial",
+    "provenance_rights_privacy": "partial",
+    "qualification_receipts": "partial"
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "title": "The demonstrated evidence chain is still primarily synthetic.",
+      "mechanism": "The page proves local parsing and challenge behavior, but does not yet carry a representative, source-receipted corpus of ugly sponsor exports and incompatible field semantics.",
+      "evidence": [
+        "acceptance.html",
+        "acceptance-assets/app-*.js"
+      ],
+      "acceptance": "Qualify multiple representative export families, preserve exact source hashes and parser dispositions, and retain malformed, contradictory, and unsupported examples."
+    },
+    {
+      "severity": "high",
+      "title": "The actor and authority model is implicit.",
+      "mechanism": "The interface can classify evidence without an explicit matrix separating buyer observation, sponsor assertion, maintenance authority, acceptance authority, and operational custody.",
+      "evidence": [
+        "acceptance.html"
+      ],
+      "acceptance": "Every finding identifies the actor, evidence source, decision authority, held external effect, and acceptance criterion."
+    },
+    {
+      "severity": "medium",
+      "title": "The browser proof does not establish a visual or interaction constitution.",
+      "mechanism": "Functional checks can pass while typography, compact-width behavior, keyboard order, help, and failure-state legibility degrade.",
+      "evidence": [
+        "tests/pages/verify_acceptance.mjs"
+      ],
+      "acceptance": "Add desktop and mobile light and dark goldens, typography fit tests, keyboard and touch playtests, and explicit import-failure screens."
+    }
+  ],
+  "assets_required": [
+    "representative sponsor export corpus",
+    "source and parser receipt schema",
+    "actor-authority matrix",
+    "malformed and contradictory input fixtures",
+    "visual constitution and goldens",
+    "cold-successor export and replay packet"
+  ],
+  "next_gate": "Replace synthetic sufficiency with a source-receipted multi-format intake campaign."
+}

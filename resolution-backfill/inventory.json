@@ -1,0 +1,38 @@
+{
+  "schema": "axm-tools/resolution-backfill-inventory@1",
+  "generated_at": "2026-08-15T19:34:13Z",
+  "base_ref": "main",
+  "base_sha": "56f5828621b39ffeafc44a36d307ecfd8de6265a",
+  "policy": {
+    "legacy_completion_claims_are_provisional": true,
+    "qualified_requires_all_mandatory_gates_pass": true,
+    "role_control_must_change_operating_aperture": true,
+    "visual_claims_require_retained_goldens": true,
+    "live_claims_require_source_receipts": true,
+    "missing_or_blocked_sources_must_be_visible": true,
+    "generated_media_cannot_replace_available_source_evidence": true,
+    "no_named_human_required_for_internal_role_playtest": true
+  },
+  "donors": [
+    {
+      "id": "manzanita-v1.6-source-foundation",
+      "status": "draft_pr",
+      "reference": "BigBirdReturns/axm-tools#90",
+      "head_sha": "416abd404a01e3dafa0a78520ef0f754e843ea77",
+      "qualified_workflow_run": 31903077053,
+      "use": "source-envelope, provider-state, failure-preservation, asset-custody, and live-acquisition donor"
+    }
+  ],
+  "surface_files": [
+    "surfaces/repository-shell.json",
+    "surfaces/acceptance.json",
+    "surfaces/breakout-parity.json",
+    "surfaces/clinical-site-fabric.json",
+    "surfaces/essential-attention.json",
+    "surfaces/identity.json",
+    "surfaces/manzanita.json",
+    "surfaces/organ-evolution.json",
+    "surfaces/polybolos.json",
+    "surfaces/pta-tracker.json"
+  ]
+}

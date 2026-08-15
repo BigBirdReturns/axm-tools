@@ -1,0 +1,83 @@
+{
+  "id": "manzanita",
+  "class": "public_tool_and_experience",
+  "paths": [
+    "manzanita"
+  ],
+  "current_claim": "A seven-scale, eight-overlay, five-role Manzanita Works experience connecting household habitat, Street Glide, regional context, assistance, and Essential Attention.",
+  "claim_evidence": [
+    "manzanita/README.md",
+    "manzanita/QUALIFICATION.json",
+    "manzanita/VISUAL_CONSTITUTION.md",
+    "manzanita/index.html"
+  ],
+  "resolution_status": "remediation_in_progress",
+  "evidence_tier": "rejected_browser_playtest_plus_successor_source_foundation",
+  "actors": [
+    "resident",
+    "nursery or grower",
+    "crew or steward",
+    "planner or program operator",
+    "successor",
+    "data provider",
+    "decision authority"
+  ],
+  "mechanism": "A governed place record is supposed to change aperture across plant, household, property, street, neighborhood, region, and stewardship while retaining registered sources, overlays, roles, authority, and handoff.",
+  "gates": {
+    "object_classification": "partial",
+    "actors_authority": "fail",
+    "source_custody": "fail",
+    "mechanism_fidelity": "fail",
+    "live_data_failure_states": "fail",
+    "interaction_semantics": "fail",
+    "visual_typography": "fail",
+    "responsive_accessibility": "fail",
+    "negative_stress_offline": "partial",
+    "continuity_export_succession": "partial",
+    "provenance_rights_privacy": "partial",
+    "qualification_receipts": "fail"
+  },
+  "findings": [
+    {
+      "severity": "critical",
+      "title": "The current production experience substitutes one authored illustration and crop changes for genuinely different scale apertures.",
+      "mechanism": "Labels, camera transforms, and callouts change while the underlying record, evidence, geometry, and safe action do not.",
+      "evidence": [
+        "manzanita/app.js",
+        "rejected v1.5.0 playtest evidence"
+      ],
+      "acceptance": "Each scale must reveal different source-bound objects, geometry, recency, uncertainty, lawful action, and handoff while retaining one registered place identity."
+    },
+    {
+      "severity": "critical",
+      "title": "The overlays are not registered to the transformed scene and the roles are primarily copy switches.",
+      "mechanism": "Image transforms and SVG overlays can drift apart; role controls can change prose without changing evidence aperture, authority, acceptance, or export.",
+      "evidence": [
+        "manzanita/app.js",
+        "rejected v1.5.0 playtest evidence"
+      ],
+      "acceptance": "Image, camera, overlays, and world coordinates move as one object; every role produces a distinct operational projection over the same canonical record."
+    },
+    {
+      "severity": "critical",
+      "title": "The production qualification encodes counts and static media rules rather than live source custody and visual fidelity.",
+      "mechanism": "Seven scales, eight overlays, five roles, and an estate-owned SVG can all exist while the site contains simplified imagery, clipped compact views, hidden navigation, stale data, or fabricated context.",
+      "evidence": [
+        "manzanita/QUALIFICATION.json",
+        "manzanita/VISUAL_CONSTITUTION.md"
+      ],
+      "acceptance": "Consume the qualified source foundation from draft PR #90, retain detailed visual standards, add registered street imagery and real live-data states, and rerun full-seat playtests."
+    }
+  ],
+  "assets_required": [
+    "qualified place core and source registry from PR #90",
+    "real street imagery provider resolver and scene registration",
+    "distinct assets for all seven scale apertures",
+    "source, geometry, reading, action, and legend for all eight overlays",
+    "five seat-specific evidence and authority projections",
+    "detailed visual plates and typography goldens",
+    "compact-width, keyboard, touch, outage, stale-data, and low-bandwidth captures",
+    "Essential Attention handoff receipts"
+  ],
+  "next_gate": "Merge no public successor until one source-backed place survives every scale, overlay, role, viewport, and source outage."
+}
