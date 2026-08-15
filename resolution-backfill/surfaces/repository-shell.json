@@ -1,0 +1,84 @@
+{
+  "id": "repository-shell",
+  "class": "estate_shell",
+  "paths": [
+    "README.md",
+    "CONTINUITY.md",
+    "index.html",
+    "PROJECT_ESTATE.json",
+    ".github/workflows"
+  ],
+  "current_claim": "The repository is a self-describing, publishable, zero-maintenance toolbox with an honest catalogue and durable handoff.",
+  "claim_evidence": [
+    "README.md",
+    "CONTINUITY.md",
+    "index.html",
+    "PROJECT_ESTATE.json"
+  ],
+  "resolution_status": "reopened",
+  "evidence_tier": "direct_repository_inspection",
+  "actors": [
+    "estate owner",
+    "maintainer",
+    "successor maintainer",
+    "workflow runtime",
+    "site visitor"
+  ],
+  "mechanism": "Repository conventions, root catalogue, continuity law, project-estate paths, and per-tool workflows jointly define what exists and how it survives.",
+  "gates": {
+    "object_classification": "partial",
+    "actors_authority": "partial",
+    "source_custody": "partial",
+    "mechanism_fidelity": "partial",
+    "live_data_failure_states": "partial",
+    "interaction_semantics": "partial",
+    "visual_typography": "fail",
+    "responsive_accessibility": "unknown",
+    "negative_stress_offline": "partial",
+    "continuity_export_succession": "partial",
+    "provenance_rights_privacy": "partial",
+    "qualification_receipts": "fail"
+  },
+  "findings": [
+    {
+      "severity": "critical",
+      "title": "The estate map and the production tree are not held to one current machine-readable inventory.",
+      "mechanism": "README and CONTINUITY are manually maintained prose snapshots while additional top-level products and qualifications can appear without a corresponding estate-level release record.",
+      "evidence": [
+        "README.md",
+        "CONTINUITY.md",
+        "git tree at main"
+      ],
+      "acceptance": "One generated estate inventory enumerates every production surface, owner class, current head, qualification state, live-data dependencies, and unresolved backfill gate."
+    },
+    {
+      "severity": "high",
+      "title": "Repository-wide design and interaction quality has no common acceptance floor.",
+      "mechanism": "Each tool can pass its own structural tests while typography, responsive behavior, role semantics, and visual fidelity regress independently.",
+      "evidence": [
+        "tool-specific QUALIFICATION.json files",
+        "root page verifiers"
+      ],
+      "acceptance": "Every public surface supplies visual goldens, typography metrics, interaction-delta tests, compact-width evidence, keyboard and touch coverage, and an explicit failure-state capture."
+    },
+    {
+      "severity": "high",
+      "title": "The original zero-key invariant conflicts with the newly accepted live-provider architecture.",
+      "mechanism": "CONTINUITY prohibits keys and revocable services, while the current Manzanita successor deliberately supports optional Google, Mapillary, AirNow, and FIRMS adapters with explicit no-key fallbacks.",
+      "evidence": [
+        "CONTINUITY.md",
+        "draft PR #90"
+      ],
+      "acceptance": "Record a constitutional amendment that permits bounded optional adapters only when billing, credential, storage, fallback, and source-custody behavior are explicit and a zero-key mode remains operational."
+    }
+  ],
+  "assets_required": [
+    "machine-readable estate inventory",
+    "repository-wide resolution schema",
+    "cross-surface design and interaction law",
+    "current production-head and workflow receipt",
+    "root catalogue visual and accessibility goldens",
+    "constitutional amendment for optional live adapters"
+  ],
+  "next_gate": "Publish the estate inventory and make every prior completion claim subordinate to its backfill record."
+}
