@@ -1,0 +1,125 @@
+{
+  "schema": "axm-tools/manzanita-99-scorecard@1",
+  "benchmark": {
+    "name": "99-point multidisciplinary design rigor bar",
+    "no_affiliation": "This internal benchmark does not claim endorsement, review, or affiliation by Jen Darhy Bucci, Anduril, or Active Theory."
+  },
+  "release_rule": {
+    "weighted_score_minimum": 99,
+    "dimension_floor": 95,
+    "p0_open_allowed": 0,
+    "critical_defects_allowed": 0,
+    "high_defects_allowed": 0,
+    "unknown_applicable_gates_allowed": 0,
+    "required_campaigns": [
+      "public endpoint",
+      "cold successor",
+      "desktop",
+      "laptop",
+      "tablet",
+      "mobile",
+      "compact 320px",
+      "light",
+      "dark",
+      "keyboard",
+      "touch",
+      "screen reader",
+      "200 percent zoom",
+      "reduced motion",
+      "poor network",
+      "intermittent network",
+      "offline or explicit unavailable mode",
+      "stale data",
+      "provider outage",
+      "public/private projection",
+      "export/reimport",
+      "rollback"
+    ]
+  },
+  "dimensions": [
+    {
+      "id": "distinctive_identity",
+      "name": "Distinctive identity and memorability",
+      "weight": 10,
+      "target": 99,
+      "proof": "A sharp outsider can identify Manzanita from an unlabeled crop, motion fragment, control, data plate, or printout without confusing it with another AXM surface or a generic dashboard."
+    },
+    {
+      "id": "human_mission_clarity",
+      "name": "Human and mission clarity",
+      "weight": 10,
+      "target": 99,
+      "proof": "Every state makes the actor, purpose, source, authority, next safe action, and prohibited consequence legible without requiring a manual."
+    },
+    {
+      "id": "system_coherence",
+      "name": "Cross-disciplinary system coherence",
+      "weight": 9,
+      "target": 99,
+      "proof": "Brand, product, imagery, mapping, illustration, motion, copy, data, export, and handoff use one recognizable grammar without becoming repetitive."
+    },
+    {
+      "id": "typography",
+      "name": "Typography and optical finish",
+      "weight": 9,
+      "target": 99,
+      "proof": "Display, editorial, label, data, and compact-width type all pass optical fit, pair spacing, break, rhythm, contrast, zoom, and fallback tests."
+    },
+    {
+      "id": "visual_material_language",
+      "name": "Visual and material language",
+      "weight": 8,
+      "target": 99,
+      "proof": "Images, maps, plates, diagrams, textures, lines, icons, and states have intentional hierarchy, source class, and production quality at every scale."
+    },
+    {
+      "id": "interaction_semantics",
+      "name": "Interaction semantics",
+      "weight": 10,
+      "target": 99,
+      "proof": "Every control changes the underlying operating aperture or state and never substitutes a label change for a functional change."
+    },
+    {
+      "id": "motion_temporality",
+      "name": "Motion and temporal continuity",
+      "weight": 7,
+      "target": 99,
+      "proof": "Motion explains scale, source change, registration, state transition, or handoff; reduced motion preserves all meaning."
+    },
+    {
+      "id": "live_data_custody",
+      "name": "Live data, source custody, and degradation",
+      "weight": 10,
+      "target": 99,
+      "proof": "Every live or derived claim exposes source, time, transform, uncertainty, rights, cache rule, health, and failure state."
+    },
+    {
+      "id": "responsive_accessibility",
+      "name": "Responsive and accessible operation",
+      "weight": 8,
+      "target": 99,
+      "proof": "Desktop, laptop, tablet, mobile, compact, keyboard, touch, screen reader, 200 percent zoom, and reduced motion preserve the same hierarchy and actions."
+    },
+    {
+      "id": "performance_resilience",
+      "name": "Performance and resilience",
+      "weight": 7,
+      "target": 99,
+      "proof": "The product meets defined budgets on realistic devices and remains useful under slow, intermittent, offline, stale, and provider-outage conditions."
+    },
+    {
+      "id": "fit_finish",
+      "name": "Fit, finish, and perceptual QA",
+      "weight": 8,
+      "target": 99,
+      "proof": "No visible clipping, loose spacing, weak crop, underdrawn state, generic placeholder, accidental default, or unresolved edge survives release review."
+    },
+    {
+      "id": "continuity_governance",
+      "name": "Continuity, privacy, and release governance",
+      "weight": 4,
+      "target": 99,
+      "proof": "Public and private projections, rights, purpose limits, exports, rollback, receipts, and cold-successor replay are complete and independently verifiable."
+    }
+  ]
+}
