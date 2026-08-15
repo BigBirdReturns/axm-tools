@@ -1,0 +1,26 @@
+{
+  "schema": "manzanita-works/place-config@1",
+  "place_id": "mw-public-demo-arboretum-001",
+  "label": "Los Angeles County Arboretum public demonstration place",
+  "place_class": "public_institution_testbed",
+  "address": "301 North Baldwin Avenue, Arcadia, California 91007",
+  "center": {
+    "latitude": 34.14325,
+    "longitude": -118.05501,
+    "source": "public place geocoding cross-check",
+    "precision": "demonstration anchor, not survey control"
+  },
+  "privacy": {
+    "public_safe": true,
+    "contains_private_household_data": false,
+    "exact_private_address_allowed": false,
+    "household_reference_mode": "illustrative only"
+  },
+  "areas": {
+    "street_radius_m": 1200,
+    "property_bbox_wgs84": [-118.0625, 34.1370, -118.0470, 34.1505],
+    "neighborhood_bbox_wgs84": [-118.0800, 34.1250, -118.0300, 34.1700],
+    "regional_bbox_wgs84": [-118.3500, 33.9500, -117.7000, 34.5000]
+  },
+  "operating_note": "This public place exercises the live source, attribution, geometry, freshness, and outage machinery. It does not stand in for a private household or authorize claims about one."
+}
