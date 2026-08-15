@@ -6,14 +6,15 @@ The rejected v1.5.0 playtest proved that visual continuity without source contin
 
 ```bash
 python -m pip install requests beautifulsoup4 pillow jsonschema pytest
-python manzanita-next/scripts/acquire_foundation.py \
-  --place manzanita-next/config/place-demo.json \
-  --registry manzanita-next/config/source-registry.json \
-  --out manzanita-next/out
-python manzanita-next/scripts/validate_foundation.py \
-  --root manzanita-next/out \
-  --source-schema manzanita-next/contracts/source-envelope.schema.json
-pytest -q manzanita-next/tests
+cd manzanita-next
+python -m scripts.acquire_foundation \
+  --place config/place-demo.json \
+  --registry config/source-registry.json \
+  --out out
+python scripts/validate_foundation.py \
+  --root out \
+  --source-schema contracts/source-envelope.schema.json
+pytest -q tests
 ```
 
 Optional credentials may be supplied as environment variables:
