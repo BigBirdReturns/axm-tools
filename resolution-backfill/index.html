@@ -15,16 +15,15 @@
   <style>
     :root {
       --paper: #f4f0e8;
-      --paper-deep: #e8e1d4;
+      --paper-deep: #e7dfd1;
       --ink: #11110f;
-      --muted: #6b675f;
-      --quiet: #8e887d;
-      --line: #c9c1b4;
-      --line-strong: #8b8478;
+      --muted: #6a665e;
+      --quiet: #8b857a;
+      --line: #c9c0b3;
+      --line-strong: #817a70;
       --signal: #ff4b1f;
       --olive: #6e7750;
       --pass: #176645;
-      --shadow: rgba(17, 17, 15, .08);
       --measure: 1560px;
       --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
       --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -42,10 +41,10 @@
       --signal: #ff5733;
       --olive: #a9b387;
       --pass: #6fc69d;
-      --shadow: rgba(0, 0, 0, .28);
     }
 
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { width: 100%; max-width: 100%; }
 
     html {
       background: var(--paper);
@@ -81,8 +80,9 @@
       top: 0;
       z-index: 20;
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
       align-items: center;
+      gap: 16px;
       min-height: 58px;
       padding: 0 24px;
       border-bottom: 1px solid var(--line);
@@ -109,14 +109,20 @@
       text-transform: uppercase;
     }
 
-    .brand { justify-self: start; text-decoration: none; }
-    .brand-mark { color: var(--signal); margin-right: .55rem; }
-    .header-title { justify-self: center; color: var(--muted); }
+    .brand {
+      justify-self: start;
+      min-width: 0;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand-mark { color: var(--signal); margin-right: .5rem; }
+    .header-title { justify-self: center; min-width: 0; color: var(--muted); }
 
     .theme-button {
       justify-self: end;
       min-width: 92px;
-      min-height: 36px;
+      min-height: 38px;
       border: 1px solid var(--line-strong);
       border-radius: 0;
       background: transparent;
@@ -124,24 +130,34 @@
       cursor: pointer;
     }
 
-    main { overflow: clip; }
+    .hero,
+    .metric-band,
+    .ledger-shell,
+    footer {
+      width: min(100%, var(--measure));
+      margin-inline: auto;
+    }
 
     .hero {
-      max-width: var(--measure);
-      margin: 0 auto;
       padding: clamp(60px, 8vw, 124px) 32px clamp(56px, 7vw, 104px);
-      border-left: 1px solid var(--line);
-      border-right: 1px solid var(--line);
+      border-inline: 1px solid var(--line);
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(300px, .6fr);
+      grid-template-columns: minmax(0, 1.4fr) minmax(280px, .6fr);
       gap: clamp(44px, 7vw, 112px);
       align-items: end;
     }
 
-    .eyebrow { color: var(--signal); margin: 0 0 28px; }
+    .hero-grid > *,
+    .ledger-head > *,
+    .surface-summary > *,
+    .surface-state > *,
+    .surface-body-grid > *,
+    .control-bar > * { min-width: 0; }
+
+    .eyebrow { margin: 0 0 28px; color: var(--signal); overflow-wrap: anywhere; }
 
     .hero-title {
       margin: 0;
@@ -149,11 +165,8 @@
       font-family: var(--display);
       font-size: clamp(3.25rem, 9.5vw, 9.5rem);
       font-weight: 900;
-      font-stretch: condensed;
-      font-kerning: normal;
       letter-spacing: -.068em;
       line-height: .805;
-      text-wrap: balance;
     }
 
     .hero-title span { display: block; white-space: nowrap; }
@@ -180,15 +193,9 @@
       letter-spacing: -.018em;
     }
 
-    .hero-rule p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.5;
-    }
+    .hero-rule p { margin: 0; color: var(--muted); line-height: 1.5; }
 
     .metric-band {
-      max-width: var(--measure);
-      margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       border: 1px solid var(--line);
@@ -196,6 +203,7 @@
     }
 
     .metric {
+      min-width: 0;
       min-height: 156px;
       padding: 24px 28px;
       border-right: 1px solid var(--line);
@@ -203,6 +211,7 @@
     }
 
     .metric:last-child { border-right: 0; }
+
     .metric-value {
       display: block;
       margin-top: 28px;
@@ -212,20 +221,19 @@
       line-height: .8;
       letter-spacing: -.065em;
     }
+
     .metric[data-kind="critical"] .metric-value,
     .metric[data-kind="failed"] .metric-value { color: var(--signal); }
     .metric[data-kind="qualified"] .metric-value { color: var(--pass); }
 
     .ledger-shell {
-      max-width: var(--measure);
-      margin: 0 auto;
       border: 1px solid var(--line);
       background: var(--paper);
     }
 
     .ledger-head {
       display: grid;
-      grid-template-columns: minmax(240px, 1fr) minmax(380px, 2fr);
+      grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr);
       gap: 56px;
       padding: clamp(42px, 6vw, 82px) 32px 38px;
       border-bottom: 1px solid var(--line);
@@ -251,7 +259,7 @@
 
     .control-bar {
       display: grid;
-      grid-template-columns: minmax(240px, .8fr) minmax(0, 2fr);
+      grid-template-columns: minmax(220px, .8fr) minmax(0, 2fr);
       gap: 18px;
       padding: 18px 24px;
       border-bottom: 1px solid var(--line);
@@ -260,7 +268,7 @@
 
     .search-input {
       width: 100%;
-      min-height: 42px;
+      min-height: 44px;
       padding: 0 12px;
       border: 1px solid var(--line-strong);
       border-radius: 0;
@@ -273,10 +281,12 @@
       flex-wrap: wrap;
       gap: 8px;
       justify-content: flex-end;
+      min-width: 0;
     }
 
     .filter-button {
-      min-height: 42px;
+      min-width: 0;
+      min-height: 44px;
       padding: 0 14px;
       border: 1px solid var(--line-strong);
       border-radius: 0;
@@ -292,16 +302,17 @@
     }
 
     .results-line {
-      min-height: 42px;
+      min-height: 46px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 18px;
-      padding: 0 24px;
+      padding: 8px 24px;
       border-bottom: 1px solid var(--line);
       color: var(--muted);
     }
 
+    .results-line > * { min-width: 0; overflow-wrap: anywhere; }
     .surface-list { min-height: 260px; }
 
     .surface-record {
@@ -315,7 +326,7 @@
 
     .surface-summary {
       display: grid;
-      grid-template-columns: minmax(190px, .65fr) minmax(0, 1.7fr) minmax(220px, .55fr);
+      grid-template-columns: minmax(180px, .65fr) minmax(0, 1.7fr) minmax(190px, .55fr);
       gap: 32px;
       align-items: center;
       min-height: 154px;
@@ -333,6 +344,7 @@
       line-height: .92;
       letter-spacing: -.05em;
       text-transform: uppercase;
+      overflow-wrap: anywhere;
     }
 
     .surface-claim {
@@ -341,18 +353,24 @@
       font-size: 1.03rem;
       line-height: 1.52;
       color: var(--muted);
+      overflow-wrap: anywhere;
     }
 
     details[open] .surface-claim { color: color-mix(in srgb, var(--paper) 72%, transparent); }
 
     .surface-state {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px 18px;
       align-items: center;
     }
 
-    .status { color: var(--signal); }
+    .status {
+      color: var(--signal);
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
     .status.remediation_in_progress { color: var(--olive); }
     .status.qualified { color: var(--pass); }
 
@@ -372,7 +390,9 @@
     .state-counts {
       grid-column: 1 / -1;
       color: var(--muted);
+      overflow-wrap: anywhere;
     }
+
     details[open] .state-counts { color: color-mix(in srgb, var(--paper) 60%, transparent); }
 
     .surface-body {
@@ -382,15 +402,13 @@
 
     .surface-body-grid {
       display: grid;
-      grid-template-columns: minmax(240px, .72fr) minmax(0, 1.5fr);
-      gap: 0;
-      border-left: 1px solid var(--line);
-      border-right: 1px solid var(--line);
+      grid-template-columns: minmax(220px, .72fr) minmax(0, 1.5fr);
+      border-inline: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
     }
 
     .record-spine,
-    .record-content { padding: 30px; }
+    .record-content { min-width: 0; padding: 30px; }
     .record-spine { border-right: 1px solid var(--line); }
 
     .spine-block + .spine-block {
@@ -399,20 +417,31 @@
       border-top: 1px solid var(--line);
     }
 
-    .spine-block p { margin: 10px 0 0; line-height: 1.5; color: var(--muted); }
+    .spine-block p {
+      margin: 10px 0 0;
+      line-height: 1.5;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+
     .actor-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
     .actor {
+      max-width: 100%;
       padding: 6px 8px;
       border: 1px solid var(--line-strong);
-      font-size: .84rem;
       background: var(--paper);
+      font-size: .84rem;
+      overflow-wrap: anywhere;
     }
 
     .evidence-link {
       display: inline-block;
+      max-width: 100%;
       margin-top: 12px;
       text-decoration-thickness: 1px;
       text-underline-offset: 4px;
+      overflow-wrap: anywhere;
     }
 
     .section-label {
@@ -423,6 +452,7 @@
       letter-spacing: .11em;
       text-transform: uppercase;
       color: var(--quiet);
+      overflow-wrap: anywhere;
     }
 
     .gate-grid {
@@ -433,12 +463,16 @@
     }
 
     .gate {
+      min-width: 0;
       min-height: 92px;
       padding: 14px;
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       background: var(--paper);
     }
+
+    .gate-name,
+    .gate-value { overflow-wrap: anywhere; word-break: break-word; }
 
     .gate-value {
       display: block;
@@ -467,10 +501,11 @@
       border-bottom: 1px solid var(--line);
     }
 
-    .finding-severity { color: var(--olive); }
+    .finding > * { min-width: 0; }
+    .finding-severity { color: var(--olive); overflow-wrap: anywhere; }
     .finding[data-severity="critical"] .finding-severity { color: var(--signal); }
-    .finding h4 { margin: 0; font-size: 1.22rem; letter-spacing: -.02em; }
-    .finding p { margin: 10px 0 0; line-height: 1.55; color: var(--muted); }
+    .finding h4 { margin: 0; font-size: 1.22rem; letter-spacing: -.02em; overflow-wrap: anywhere; }
+    .finding p { margin: 10px 0 0; line-height: 1.55; color: var(--muted); overflow-wrap: anywhere; }
     .finding .acceptance { color: var(--ink); }
 
     .asset-queue {
@@ -482,7 +517,6 @@
     .asset-queue ol {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0;
       margin: 0;
       padding: 0;
       list-style: none;
@@ -492,16 +526,18 @@
     }
 
     .asset-queue li {
-      counter-increment: assets;
+      min-width: 0;
       min-height: 86px;
       padding: 16px;
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       background: var(--paper);
       line-height: 1.4;
+      overflow-wrap: anywhere;
     }
 
     .asset-queue li::before {
+      counter-increment: assets;
       content: counter(assets, decimal-leading-zero);
       display: block;
       margin-bottom: 12px;
@@ -517,27 +553,27 @@
       background: var(--paper);
       font-size: 1.12rem;
       line-height: 1.5;
+      overflow-wrap: anywhere;
     }
 
     .empty-state,
-    .error-state {
-      padding: 70px 30px;
-      text-align: center;
-      color: var(--muted);
-    }
+    .error-state { padding: 70px 30px; text-align: center; color: var(--muted); }
     .error-state { color: var(--signal); }
 
     footer {
-      max-width: var(--measure);
-      margin: 0 auto;
       padding: 34px 32px 54px;
-      border-left: 1px solid var(--line);
-      border-right: 1px solid var(--line);
+      border-inline: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       color: var(--muted);
     }
 
-    .footer-line { line-height: 1.8; }
+    .footer-line {
+      max-width: 100%;
+      line-height: 1.8;
+      letter-spacing: .045em;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
 
     @media (max-width: 1040px) {
       .hero-grid,
@@ -545,25 +581,30 @@
       .surface-body-grid { grid-template-columns: 1fr; }
       .hero-grid { align-items: start; }
       .record-spine { border-right: 0; border-bottom: 1px solid var(--line); }
-      .surface-summary { grid-template-columns: minmax(170px, .65fr) minmax(0, 1.3fr); }
-      .surface-state { grid-column: 1 / -1; grid-template-columns: 1fr auto; }
+      .surface-summary { grid-template-columns: minmax(160px, .65fr) minmax(0, 1.3fr); }
+      .surface-state { grid-column: 1 / -1; }
       .gate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 720px) {
-      .site-header { grid-template-columns: 1fr auto; padding: 0 14px; }
+      .site-header {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        padding-inline: 14px;
+      }
       .header-title { display: none; }
-      .hero { padding-left: 18px; padding-right: 18px; }
-      .hero-title { font-size: clamp(3.15rem, 16.3vw, 5.7rem); letter-spacing: -.072em; }
+      .brand { font-size: .68rem; letter-spacing: .06em; }
+      .hero { padding: 56px 18px 52px; }
+      .hero-title { font-size: clamp(3.05rem, 16vw, 5.6rem); letter-spacing: -.072em; }
       .hero-copy { font-size: 1rem; }
       .metric-band { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .metric { min-height: 124px; border-bottom: 1px solid var(--line); }
-      .metric:nth-child(2) { border-right: 0; }
+      .metric { min-height: 124px; padding: 20px 16px; border-bottom: 1px solid var(--line); }
+      .metric:nth-child(2n) { border-right: 0; }
       .metric-value { margin-top: 20px; }
       .ledger-head { gap: 28px; padding: 48px 18px 30px; }
       .control-bar { grid-template-columns: 1fr; padding: 14px; }
       .filters { justify-content: flex-start; }
-      .filter-button { flex: 1 1 auto; min-width: 112px; }
+      .filter-button { flex: 1 1 124px; padding-inline: 10px; }
       .results-line { align-items: flex-start; flex-direction: column; padding: 12px 16px; }
       .surface-summary { grid-template-columns: 1fr; gap: 20px; padding: 24px 18px; }
       .surface-state { grid-column: auto; }
@@ -572,15 +613,21 @@
       .gate-grid { grid-template-columns: 1fr; }
       .finding { grid-template-columns: 1fr; gap: 10px; }
       .asset-queue ol { grid-template-columns: 1fr; }
-      footer { padding-left: 18px; padding-right: 18px; }
+      footer { padding: 28px 18px 44px; }
     }
 
     @media (max-width: 360px) {
-      .brand { font-size: .65rem; letter-spacing: .065em; }
-      .theme-button { min-width: 74px; padding: 0 8px; }
-      .hero-title { font-size: clamp(2.85rem, 15.9vw, 3.65rem); }
-      .metric { padding: 18px 14px; }
-      .filter-button { min-width: 96px; padding: 0 9px; font-size: .64rem; }
+      .site-header { padding-inline: 12px; }
+      .brand { font-size: .62rem; letter-spacing: .04em; }
+      .theme-button { min-width: 72px; padding-inline: 7px; }
+      .hero { padding-inline: 16px; }
+      .hero-title { font-size: clamp(2.78rem, 15.75vw, 3.55rem); }
+      .metric { padding: 18px 12px; }
+      .metric-label { letter-spacing: .055em; }
+      .filter-button { flex-basis: 112px; font-size: .64rem; letter-spacing: .06em; }
+      .surface-body { padding-inline: 8px; }
+      .record-spine, .record-content { padding-inline: 14px; }
+      .footer-line { font-size: .64rem; letter-spacing: .025em; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -591,7 +638,7 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="#top"><span class="brand-mark">↗</span>AXM Resolution Backfill</a>
+    <a class="brand" href="#top"><span class="brand-mark">↗</span>AXM BACKFILL</a>
     <div class="header-title micro">Estate-wide release audit</div>
     <button class="theme-button" id="themeToggle" type="button" aria-label="Switch color theme">Theme</button>
   </header>
@@ -724,8 +771,7 @@
     }
 
     function matches(surface) {
-      const queryMatch = !state.query || searchText(surface).includes(state.query);
-      if (!queryMatch) return false;
+      if (state.query && !searchText(surface).includes(state.query)) return false;
       if (state.filter === "all") return true;
       if (state.filter === "critical") return criticalCount(surface) > 0;
       return ["fail", "unknown", "partial"].includes(surface.gates[state.filter]);
@@ -767,34 +813,16 @@
         <div class="surface-body">
           <div class="surface-body-grid">
             <aside class="record-spine">
-              <div class="spine-block">
-                <div class="micro">Evidence tier</div>
-                <p>${escapeHtml(surface.evidence_tier.replaceAll("_", " "))}</p>
-              </div>
-              <div class="spine-block">
-                <div class="micro">Operating mechanism</div>
-                <p>${escapeHtml(surface.mechanism)}</p>
-              </div>
-              <div class="spine-block">
-                <div class="micro">Functional actors</div>
-                <div class="actor-list">${surface.actors.map(actor => `<span class="actor">${escapeHtml(actor)}</span>`).join("")}</div>
-              </div>
-              <div class="spine-block">
-                <div class="micro">Current surface</div>
-                <a class="evidence-link" href="${escapeHtml(link)}">Open existing object ↗</a>
-              </div>
+              <div class="spine-block"><div class="micro">Evidence tier</div><p>${escapeHtml(surface.evidence_tier.replaceAll("_", " "))}</p></div>
+              <div class="spine-block"><div class="micro">Operating mechanism</div><p>${escapeHtml(surface.mechanism)}</p></div>
+              <div class="spine-block"><div class="micro">Functional actors</div><div class="actor-list">${surface.actors.map(actor => `<span class="actor">${escapeHtml(actor)}</span>`).join("")}</div></div>
+              <div class="spine-block"><div class="micro">Current surface</div><a class="evidence-link" href="${escapeHtml(link)}">Open existing object ↗</a></div>
             </aside>
             <div class="record-content">
               <h4 class="section-label">Twelve release gates</h4>
               <div class="gate-grid">${Object.entries(surface.gates).map(([name, value]) => renderGate(name, value)).join("")}</div>
-              <div class="finding-ledger">
-                <h4 class="section-label" style="margin-top:28px">Findings and acceptance conditions</h4>
-                ${surface.findings.map(renderFinding).join("")}
-              </div>
-              <div class="asset-queue">
-                <h4 class="section-label">Asset queue</h4>
-                <ol>${surface.assets_required.map(asset => `<li>${escapeHtml(asset)}</li>`).join("")}</ol>
-              </div>
+              <div class="finding-ledger"><h4 class="section-label" style="margin-top:28px">Findings and acceptance conditions</h4>${surface.findings.map(renderFinding).join("")}</div>
+              <div class="asset-queue"><h4 class="section-label">Asset queue</h4><ol>${surface.assets_required.map(asset => `<li>${escapeHtml(asset)}</li>`).join("")}</ol></div>
               <div class="next-gate"><span class="micro">Next admissible gate</span><br>${escapeHtml(surface.next_gate)}</div>
             </div>
           </div>
@@ -810,9 +838,7 @@
         return failed || a.id.localeCompare(b.id);
       });
       resultCount.textContent = `${filtered.length} of ${state.surfaces.length} surfaces shown`;
-      list.innerHTML = filtered.length
-        ? filtered.map(renderSurface).join("")
-        : `<div class="empty-state">No surface matches the current evidence aperture.</div>`;
+      list.innerHTML = filtered.length ? filtered.map(renderSurface).join("") : `<div class="empty-state">No surface matches the current evidence aperture.</div>`;
     }
 
     async function loadInventory() {
@@ -833,7 +859,9 @@
         document.getElementById("criticalCount").textContent = String(critical).padStart(2, "0");
         document.getElementById("failedCount").textContent = String(failed).padStart(2, "0");
         document.getElementById("qualifiedCount").textContent = String(qualified).padStart(2, "0");
-        document.getElementById("footerLine").textContent = `Baseline ${manifest.base_sha} · ${surfaces.length} governed records · donor ${manifest.donors?.[0]?.head_sha || "none"}`;
+        const baseline = `${manifest.base_sha.slice(0, 12)}…`;
+        const donor = manifest.donors?.[0]?.head_sha ? `${manifest.donors[0].head_sha.slice(0, 12)}…` : "none";
+        document.getElementById("footerLine").textContent = `Baseline ${baseline} · ${surfaces.length} governed records · donor ${donor}`;
         document.body.dataset.ready = "true";
         render();
       } catch (error) {
