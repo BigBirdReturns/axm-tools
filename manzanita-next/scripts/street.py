@@ -2,23 +2,129 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 from typing import Any
 
 from .core import Acquisition
 
 
+def _slippy_tile(latitude: float, longitude: float, zoom: int) -> tuple[int, int]:
+    latitude = max(min(latitude, 85.05112878), -85.05112878)
+    n = 2**zoom
+    x = int((longitude + 180.0) / 360.0 * n)
+    latitude_radians = math.radians(latitude)
+    y = int((1.0 - math.asinh(math.tan(latitude_radians)) / math.pi) / 2.0 * n)
+    return x, y
+
+
+def _coverage_coordinate_count(document: Any) -> int:
+    if not isinstance(document, dict):
+        return 0
+    geometry = document.get("geometry") if document.get("type") == "Feature" else document
+    if isinstance(document.get("features"), list):
+        return sum(_coverage_coordinate_count(feature) for feature in document["features"])
+    coordinates = geometry.get("coordinates") if isinstance(geometry, dict) else None
+
+    def count(value: Any) -> int:
+        if not isinstance(value, list):
+            return 0
+        if len(value) >= 2 and all(isinstance(item, (int, float)) for item in value[:2]):
+            return 1
+        return sum(count(item) for item in value)
+
+    return count(coordinates)
+
+
 def acquire_kartaview(acq: Acquisition, place: dict[str, Any]) -> None:
-    acq.fetch_json(
-        "kartaview",
-        "https://api.openstreetcam.org/2.0/photo/",
-        {
-            "lat": place["center"]["latitude"],
-            "lng": place["center"]["longitude"],
-            "radius": place["areas"]["street_radius_m"],
-        },
-        required=False,
-    )
+    """Acquire KartaView coverage first, then nearby photo metadata using its documented map query."""
+    latitude = float(place["center"]["latitude"])
+    longitude = float(place["center"]["longitude"])
+    zoom = 15
+    tile_x, tile_y = _slippy_tile(latitude, longitude, zoom)
+    coverage_url = f"https://api.openstreetcam.org/2.0/sequence/tiles/{tile_x}/{tile_y}/{zoom}.geojson"
+    coverage_count = 0
+    try:
+        coverage_response = acq.request("GET", coverage_url, headers={"Accept": "application/geo+json, application/json"})
+        coverage_response.raise_for_status()
+        coverage_document = coverage_response.json()
+        coverage_count = _coverage_coordinate_count(coverage_document)
+        acq.record(
+            "kartaview_coverage",
+            "ok" if coverage_count else "empty",
+            "GET",
+            coverage_response.url,
+            json.dumps(coverage_document, indent=2).encode(),
+            ".geojson",
+            coverage_response,
+            {"tile_x": tile_x, "tile_y": tile_y, "zoom": zoom},
+            media_type="application/geo+json",
+        )
+    except Exception as exc:  # noqa: BLE001
+        acq.record(
+            "kartaview_coverage",
+            "failed",
+            "GET",
+            coverage_url,
+            None,
+            ".geojson",
+            parameters={"tile_x": tile_x, "tile_y": tile_y, "zoom": zoom},
+            error=str(exc),
+        )
+
+    photo_url = "https://api.openstreetcam.org/2.0/photo/"
+    photo_params = {
+        "lat": latitude,
+        "lng": longitude,
+        "zoomLevel": zoom,
+        "join": "sequence",
+        "orderBy": "id",
+        "orderDirection": "desc",
+    }
+    try:
+        photo_response = acq.request("GET", photo_url, params=photo_params, headers={"Accept": "application/json"})
+        raw_payload = photo_response.content
+        try:
+            photo_document = photo_response.json()
+            normalized_payload = json.dumps(photo_document, indent=2).encode()
+        except ValueError:
+            photo_document = None
+            normalized_payload = raw_payload
+
+        if photo_response.ok:
+            result = photo_document.get("result") if isinstance(photo_document, dict) else None
+            photos = result.get("data") if isinstance(result, dict) else None
+            status = "ok" if isinstance(photos, list) and photos else "empty"
+            error = None
+        else:
+            status = "degraded"
+            error = (
+                f"KartaView nearby-photo endpoint returned HTTP {photo_response.status_code}; "
+                f"coverage coordinate count was {coverage_count}. The exact provider response is retained."
+            )
+        acq.record(
+            "kartaview",
+            status,
+            "GET",
+            photo_response.url,
+            normalized_payload,
+            ".json",
+            photo_response,
+            photo_params,
+            error=error,
+            media_type="application/json",
+        )
+    except Exception as exc:  # noqa: BLE001
+        acq.record(
+            "kartaview",
+            "degraded",
+            "GET",
+            photo_url,
+            None,
+            ".json",
+            parameters=photo_params,
+            error=f"KartaView nearby-photo retrieval failed after coverage probe: {exc}",
+        )
 
 
 def acquire_panoramax(acq: Acquisition, place: dict[str, Any]) -> None:
