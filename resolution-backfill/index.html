@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>AXM Resolution Backfill</title>
+  <script>
+    (() => {
+      const saved = localStorage.getItem("axm-resolution-theme");
+      const preferred = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.dataset.theme = saved || preferred;
+    })();
+  </script>
+  <style>
+    :root {
+      --paper: #f4f0e8;
+      --paper-deep: #e8e1d4;
+      --ink: #11110f;
+      --muted: #6b675f;
+      --quiet: #8e887d;
+      --line: #c9c1b4;
+      --line-strong: #8b8478;
+      --signal: #ff4b1f;
+      --olive: #6e7750;
+      --pass: #176645;
+      --shadow: rgba(17, 17, 15, .08);
+      --measure: 1560px;
+      --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --display: "Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    html[data-theme="dark"] {
+      --paper: #11110f;
+      --paper-deep: #1b1a17;
+      --ink: #f1ede2;
+      --muted: #aaa397;
+      --quiet: #817b70;
+      --line: #3b3933;
+      --line-strong: #716b61;
+      --signal: #ff5733;
+      --olive: #a9b387;
+      --pass: #6fc69d;
+      --shadow: rgba(0, 0, 0, .28);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      background: var(--paper);
+      color: var(--ink);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 280px;
+      background:
+        linear-gradient(90deg, transparent calc(100% - 1px), color-mix(in srgb, var(--line) 42%, transparent) 0) 0 0 / 72px 100%,
+        var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-kerning: normal;
+      font-optical-sizing: auto;
+      font-feature-settings: "kern" 1, "liga" 1;
+      text-rendering: optimizeLegibility;
+    }
+
+    button, input, summary { font: inherit; }
+    button, summary { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+
+    :focus-visible {
+      outline: 3px solid var(--signal);
+      outline-offset: 3px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      min-height: 58px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--line);
+      background: color-mix(in srgb, var(--paper) 94%, transparent);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand,
+    .eyebrow,
+    .micro,
+    .status,
+    .gate-name,
+    .finding-severity,
+    .filter-button,
+    .theme-button,
+    .metric-label,
+    .record-index,
+    .evidence-link,
+    .footer-line {
+      font-family: var(--mono);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .095em;
+      text-transform: uppercase;
+    }
+
+    .brand { justify-self: start; text-decoration: none; }
+    .brand-mark { color: var(--signal); margin-right: .55rem; }
+    .header-title { justify-self: center; color: var(--muted); }
+
+    .theme-button {
+      justify-self: end;
+      min-width: 92px;
+      min-height: 36px;
+      border: 1px solid var(--line-strong);
+      border-radius: 0;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    main { overflow: clip; }
+
+    .hero {
+      max-width: var(--measure);
+      margin: 0 auto;
+      padding: clamp(60px, 8vw, 124px) 32px clamp(56px, 7vw, 104px);
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(300px, .6fr);
+      gap: clamp(44px, 7vw, 112px);
+      align-items: end;
+    }
+
+    .eyebrow { color: var(--signal); margin: 0 0 28px; }
+
+    .hero-title {
+      margin: 0;
+      max-width: 11ch;
+      font-family: var(--display);
+      font-size: clamp(3.25rem, 9.5vw, 9.5rem);
+      font-weight: 900;
+      font-stretch: condensed;
+      font-kerning: normal;
+      letter-spacing: -.068em;
+      line-height: .805;
+      text-wrap: balance;
+    }
+
+    .hero-title span { display: block; white-space: nowrap; }
+    .hero-title .signal-word { color: var(--signal); }
+
+    .hero-copy {
+      max-width: 48rem;
+      margin: 34px 0 0;
+      font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+      line-height: 1.48;
+      color: var(--muted);
+    }
+
+    .hero-rule {
+      margin: 0 0 28px;
+      padding: 0 0 28px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .hero-rule strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+      letter-spacing: -.018em;
+    }
+
+    .hero-rule p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .metric-band {
+      max-width: var(--measure);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      border-bottom: 0;
+    }
+
+    .metric {
+      min-height: 156px;
+      padding: 24px 28px;
+      border-right: 1px solid var(--line);
+      background: color-mix(in srgb, var(--paper-deep) 52%, transparent);
+    }
+
+    .metric:last-child { border-right: 0; }
+    .metric-value {
+      display: block;
+      margin-top: 28px;
+      font-family: var(--display);
+      font-size: clamp(2.7rem, 5vw, 5.6rem);
+      font-weight: 900;
+      line-height: .8;
+      letter-spacing: -.065em;
+    }
+    .metric[data-kind="critical"] .metric-value,
+    .metric[data-kind="failed"] .metric-value { color: var(--signal); }
+    .metric[data-kind="qualified"] .metric-value { color: var(--pass); }
+
+    .ledger-shell {
+      max-width: var(--measure);
+      margin: 0 auto;
+      border: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .ledger-head {
+      display: grid;
+      grid-template-columns: minmax(240px, 1fr) minmax(380px, 2fr);
+      gap: 56px;
+      padding: clamp(42px, 6vw, 82px) 32px 38px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .ledger-head h2 {
+      margin: 0;
+      max-width: 9ch;
+      font-family: var(--display);
+      font-size: clamp(2.7rem, 5.5vw, 6rem);
+      line-height: .88;
+      letter-spacing: -.06em;
+    }
+
+    .ledger-intro {
+      align-self: end;
+      max-width: 54rem;
+      margin: 0;
+      font-size: 1.08rem;
+      line-height: 1.58;
+      color: var(--muted);
+    }
+
+    .control-bar {
+      display: grid;
+      grid-template-columns: minmax(240px, .8fr) minmax(0, 2fr);
+      gap: 18px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--line);
+      background: var(--paper-deep);
+    }
+
+    .search-input {
+      width: 100%;
+      min-height: 42px;
+      padding: 0 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: 0;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .filter-button {
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--line-strong);
+      border-radius: 0;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .filter-button[aria-pressed="true"] {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .results-line {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .surface-list { min-height: 260px; }
+
+    .surface-record {
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .surface-record:last-child { border-bottom: 0; }
+    .surface-record summary { list-style: none; cursor: pointer; }
+    .surface-record summary::-webkit-details-marker { display: none; }
+
+    .surface-summary {
+      display: grid;
+      grid-template-columns: minmax(190px, .65fr) minmax(0, 1.7fr) minmax(220px, .55fr);
+      gap: 32px;
+      align-items: center;
+      min-height: 154px;
+      padding: 24px 30px;
+      transition: background 140ms ease;
+    }
+
+    .surface-summary:hover { background: color-mix(in srgb, var(--paper-deep) 68%, transparent); }
+    details[open] > .surface-summary { background: var(--ink); color: var(--paper); }
+
+    .surface-name {
+      margin: 8px 0 0;
+      font-family: var(--display);
+      font-size: clamp(1.7rem, 3vw, 3.45rem);
+      line-height: .92;
+      letter-spacing: -.05em;
+      text-transform: uppercase;
+    }
+
+    .surface-claim {
+      margin: 0;
+      max-width: 58rem;
+      font-size: 1.03rem;
+      line-height: 1.52;
+      color: var(--muted);
+    }
+
+    details[open] .surface-claim { color: color-mix(in srgb, var(--paper) 72%, transparent); }
+
+    .surface-state {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px 18px;
+      align-items: center;
+    }
+
+    .status { color: var(--signal); }
+    .status.remediation_in_progress { color: var(--olive); }
+    .status.qualified { color: var(--pass); }
+
+    .expand-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid currentColor;
+      font-family: var(--mono);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    details[open] .expand-mark { transform: rotate(45deg); }
+
+    .state-counts {
+      grid-column: 1 / -1;
+      color: var(--muted);
+    }
+    details[open] .state-counts { color: color-mix(in srgb, var(--paper) 60%, transparent); }
+
+    .surface-body {
+      padding: 0 30px 50px;
+      background: var(--paper-deep);
+    }
+
+    .surface-body-grid {
+      display: grid;
+      grid-template-columns: minmax(240px, .72fr) minmax(0, 1.5fr);
+      gap: 0;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .record-spine,
+    .record-content { padding: 30px; }
+    .record-spine { border-right: 1px solid var(--line); }
+
+    .spine-block + .spine-block {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .spine-block p { margin: 10px 0 0; line-height: 1.5; color: var(--muted); }
+    .actor-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .actor {
+      padding: 6px 8px;
+      border: 1px solid var(--line-strong);
+      font-size: .84rem;
+      background: var(--paper);
+    }
+
+    .evidence-link {
+      display: inline-block;
+      margin-top: 12px;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    .section-label {
+      margin: 0 0 18px;
+      font-family: var(--mono);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      color: var(--quiet);
+    }
+
+    .gate-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .gate {
+      min-height: 92px;
+      padding: 14px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .gate-value {
+      display: block;
+      margin-top: 20px;
+      font-family: var(--display);
+      font-size: 1.35rem;
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+    }
+
+    .gate[data-state="fail"] .gate-value,
+    .gate[data-state="unknown"] .gate-value { color: var(--signal); }
+    .gate[data-state="pass"] .gate-value { color: var(--pass); }
+    .gate[data-state="partial"] .gate-value { color: var(--olive); }
+
+    .finding-ledger {
+      margin-top: 34px;
+      border-top: 1px solid var(--line-strong);
+    }
+
+    .finding {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .finding-severity { color: var(--olive); }
+    .finding[data-severity="critical"] .finding-severity { color: var(--signal); }
+    .finding h4 { margin: 0; font-size: 1.22rem; letter-spacing: -.02em; }
+    .finding p { margin: 10px 0 0; line-height: 1.55; color: var(--muted); }
+    .finding .acceptance { color: var(--ink); }
+
+    .asset-queue {
+      margin-top: 36px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line-strong);
+    }
+
+    .asset-queue ol {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: assets;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .asset-queue li {
+      counter-increment: assets;
+      min-height: 86px;
+      padding: 16px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+      line-height: 1.4;
+    }
+
+    .asset-queue li::before {
+      content: counter(assets, decimal-leading-zero);
+      display: block;
+      margin-bottom: 12px;
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--signal);
+    }
+
+    .next-gate {
+      margin-top: 34px;
+      padding: 24px;
+      border-left: 4px solid var(--signal);
+      background: var(--paper);
+      font-size: 1.12rem;
+      line-height: 1.5;
+    }
+
+    .empty-state,
+    .error-state {
+      padding: 70px 30px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .error-state { color: var(--signal); }
+
+    footer {
+      max-width: var(--measure);
+      margin: 0 auto;
+      padding: 34px 32px 54px;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .footer-line { line-height: 1.8; }
+
+    @media (max-width: 1040px) {
+      .hero-grid,
+      .ledger-head,
+      .surface-body-grid { grid-template-columns: 1fr; }
+      .hero-grid { align-items: start; }
+      .record-spine { border-right: 0; border-bottom: 1px solid var(--line); }
+      .surface-summary { grid-template-columns: minmax(170px, .65fr) minmax(0, 1.3fr); }
+      .surface-state { grid-column: 1 / -1; grid-template-columns: 1fr auto; }
+      .gate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .site-header { grid-template-columns: 1fr auto; padding: 0 14px; }
+      .header-title { display: none; }
+      .hero { padding-left: 18px; padding-right: 18px; }
+      .hero-title { font-size: clamp(3.15rem, 16.3vw, 5.7rem); letter-spacing: -.072em; }
+      .hero-copy { font-size: 1rem; }
+      .metric-band { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metric { min-height: 124px; border-bottom: 1px solid var(--line); }
+      .metric:nth-child(2) { border-right: 0; }
+      .metric-value { margin-top: 20px; }
+      .ledger-head { gap: 28px; padding: 48px 18px 30px; }
+      .control-bar { grid-template-columns: 1fr; padding: 14px; }
+      .filters { justify-content: flex-start; }
+      .filter-button { flex: 1 1 auto; min-width: 112px; }
+      .results-line { align-items: flex-start; flex-direction: column; padding: 12px 16px; }
+      .surface-summary { grid-template-columns: 1fr; gap: 20px; padding: 24px 18px; }
+      .surface-state { grid-column: auto; }
+      .surface-body { padding: 0 12px 34px; }
+      .record-spine, .record-content { padding: 22px 18px; }
+      .gate-grid { grid-template-columns: 1fr; }
+      .finding { grid-template-columns: 1fr; gap: 10px; }
+      .asset-queue ol { grid-template-columns: 1fr; }
+      footer { padding-left: 18px; padding-right: 18px; }
+    }
+
+    @media (max-width: 360px) {
+      .brand { font-size: .65rem; letter-spacing: .065em; }
+      .theme-button { min-width: 74px; padding: 0 8px; }
+      .hero-title { font-size: clamp(2.85rem, 15.9vw, 3.65rem); }
+      .metric { padding: 18px 14px; }
+      .filter-button { min-width: 96px; padding: 0 9px; font-size: .64rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top"><span class="brand-mark">↗</span>AXM Resolution Backfill</a>
+    <div class="header-title micro">Estate-wide release audit</div>
+    <button class="theme-button" id="themeToggle" type="button" aria-label="Switch color theme">Theme</button>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Prior completion claims reopened · evidence before confidence</p>
+          <h1 class="hero-title" id="heroTitle"><span>REOPEN</span><span class="signal-word">THE PASS.</span></h1>
+          <p class="hero-copy">Every production surface now carries the burden previously applied only after Manzanita failed under real use. Existing work remains evidence. Existing PASS labels no longer establish whole-product completion.</p>
+        </div>
+        <div>
+          <div class="hero-rule">
+            <strong>The object is the whole experience.</strong>
+            <p>Source custody, role behavior, visual authority, responsive use, failure, handoff, and successor reconstruction are one release question.</p>
+          </div>
+          <div class="hero-rule">
+            <strong>No named human is a test dependency.</strong>
+            <p>Each functional seat is exercised through its information needs, lawful controls, refusal conditions, acceptance criteria, and handoff obligations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="metric-band" aria-label="Backfill summary">
+      <div class="metric"><span class="metric-label">Surfaces</span><strong class="metric-value" id="surfaceCount">00</strong></div>
+      <div class="metric" data-kind="critical"><span class="metric-label">Critical findings</span><strong class="metric-value" id="criticalCount">00</strong></div>
+      <div class="metric" data-kind="failed"><span class="metric-label">Failed gates</span><strong class="metric-value" id="failedCount">00</strong></div>
+      <div class="metric" data-kind="qualified"><span class="metric-label">Qualified</span><strong class="metric-value" id="qualifiedCount">00</strong></div>
+    </section>
+
+    <section class="ledger-shell" aria-labelledby="ledgerTitle">
+      <div class="ledger-head">
+        <h2 id="ledgerTitle">THE ESTATE LEDGER.</h2>
+        <p class="ledger-intro">The ledger names the current claim, functional actors, operating mechanism, missing evidence, required assets, and next admissible gate for every public surface. A clean audit means the estate stopped lying to itself about what “done” proved.</p>
+      </div>
+
+      <div class="control-bar" aria-label="Ledger controls">
+        <label>
+          <span class="micro">Search the estate</span>
+          <input class="search-input" id="searchInput" type="search" placeholder="Surface, actor, finding, asset, gate" autocomplete="off">
+        </label>
+        <div class="filters" role="group" aria-label="Filter audit records">
+          <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-button" type="button" data-filter="critical" aria-pressed="false">Critical</button>
+          <button class="filter-button" type="button" data-filter="source_custody" aria-pressed="false">Source custody</button>
+          <button class="filter-button" type="button" data-filter="interaction_semantics" aria-pressed="false">Interaction</button>
+          <button class="filter-button" type="button" data-filter="visual_typography" aria-pressed="false">Visual</button>
+        </div>
+      </div>
+
+      <div class="results-line" aria-live="polite">
+        <span id="resultCount">Loading inventory…</span>
+        <span class="micro">PASS here qualifies the ledger, never the unfinished product</span>
+      </div>
+      <div class="surface-list" id="surfaceList"><div class="empty-state">Loading governed records…</div></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-line" id="footerLine">Resolution law and evidence receipts loading.</div>
+  </footer>
+
+  <script>
+    const gateLabels = {
+      object_classification: "Object",
+      actors_authority: "Actors + authority",
+      source_custody: "Source custody",
+      mechanism_fidelity: "Mechanism",
+      live_data_failure_states: "Live + failure",
+      interaction_semantics: "Interaction",
+      visual_typography: "Visual + type",
+      responsive_accessibility: "Responsive + access",
+      negative_stress_offline: "Negative + offline",
+      continuity_export_succession: "Continuity",
+      provenance_rights_privacy: "Rights + privacy",
+      qualification_receipts: "Qualification"
+    };
+
+    const surfaceLinks = {
+      "repository-shell": "../",
+      acceptance: "../acceptance.html",
+      "breakout-parity": "../breakout-parity/",
+      "clinical-site-fabric": "../clinical-site-fabric/",
+      "essential-attention": "../essential-attention/",
+      identity: "../identity/",
+      manzanita: "../manzanita/",
+      "organ-evolution": "../organ-evolution/",
+      polybolos: "../polybolos/",
+      "pta-tracker": "../pta-tracker/"
+    };
+
+    const state = { surfaces: [], filter: "all", query: "" };
+    const list = document.getElementById("surfaceList");
+    const resultCount = document.getElementById("resultCount");
+    const themeToggle = document.getElementById("themeToggle");
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function count(surface, value) {
+      return Object.values(surface.gates).filter(item => item === value).length;
+    }
+
+    function criticalCount(surface) {
+      return surface.findings.filter(finding => finding.severity === "critical").length;
+    }
+
+    function searchText(surface) {
+      return [
+        surface.id,
+        surface.class,
+        surface.current_claim,
+        surface.mechanism,
+        surface.evidence_tier,
+        surface.next_gate,
+        ...surface.actors,
+        ...surface.assets_required,
+        ...surface.findings.flatMap(finding => [finding.title, finding.mechanism, finding.acceptance, ...finding.evidence]),
+        ...Object.keys(surface.gates),
+        ...Object.values(surface.gates)
+      ].join(" ").toLowerCase();
+    }
+
+    function matches(surface) {
+      const queryMatch = !state.query || searchText(surface).includes(state.query);
+      if (!queryMatch) return false;
+      if (state.filter === "all") return true;
+      if (state.filter === "critical") return criticalCount(surface) > 0;
+      return ["fail", "unknown", "partial"].includes(surface.gates[state.filter]);
+    }
+
+    function renderGate(name, value) {
+      return `<div class="gate" data-state="${escapeHtml(value)}"><span class="gate-name">${escapeHtml(gateLabels[name] || name)}</span><strong class="gate-value">${escapeHtml(value.replaceAll("_", " "))}</strong></div>`;
+    }
+
+    function renderFinding(finding) {
+      return `<article class="finding" data-severity="${escapeHtml(finding.severity)}">
+        <div class="finding-severity">${escapeHtml(finding.severity)}</div>
+        <div>
+          <h4>${escapeHtml(finding.title)}</h4>
+          <p>${escapeHtml(finding.mechanism)}</p>
+          <p class="acceptance"><strong>Acceptance:</strong> ${escapeHtml(finding.acceptance)}</p>
+        </div>
+      </article>`;
+    }
+
+    function renderSurface(surface, index) {
+      const fail = count(surface, "fail");
+      const partial = count(surface, "partial");
+      const unknown = count(surface, "unknown");
+      const link = surfaceLinks[surface.id] || "#";
+      return `<details class="surface-record" data-surface="${escapeHtml(surface.id)}">
+        <summary class="surface-summary">
+          <div>
+            <span class="record-index">${String(index + 1).padStart(2, "0")} · ${escapeHtml(surface.class.replaceAll("_", " "))}</span>
+            <h3 class="surface-name">${escapeHtml(surface.id.replaceAll("-", " "))}</h3>
+          </div>
+          <p class="surface-claim">${escapeHtml(surface.current_claim)}</p>
+          <div class="surface-state">
+            <span class="status ${escapeHtml(surface.resolution_status)}">${escapeHtml(surface.resolution_status.replaceAll("_", " "))}</span>
+            <span class="expand-mark" aria-hidden="true">+</span>
+            <span class="state-counts micro">${fail} fail · ${partial} partial · ${unknown} unknown</span>
+          </div>
+        </summary>
+        <div class="surface-body">
+          <div class="surface-body-grid">
+            <aside class="record-spine">
+              <div class="spine-block">
+                <div class="micro">Evidence tier</div>
+                <p>${escapeHtml(surface.evidence_tier.replaceAll("_", " "))}</p>
+              </div>
+              <div class="spine-block">
+                <div class="micro">Operating mechanism</div>
+                <p>${escapeHtml(surface.mechanism)}</p>
+              </div>
+              <div class="spine-block">
+                <div class="micro">Functional actors</div>
+                <div class="actor-list">${surface.actors.map(actor => `<span class="actor">${escapeHtml(actor)}</span>`).join("")}</div>
+              </div>
+              <div class="spine-block">
+                <div class="micro">Current surface</div>
+                <a class="evidence-link" href="${escapeHtml(link)}">Open existing object ↗</a>
+              </div>
+            </aside>
+            <div class="record-content">
+              <h4 class="section-label">Twelve release gates</h4>
+              <div class="gate-grid">${Object.entries(surface.gates).map(([name, value]) => renderGate(name, value)).join("")}</div>
+              <div class="finding-ledger">
+                <h4 class="section-label" style="margin-top:28px">Findings and acceptance conditions</h4>
+                ${surface.findings.map(renderFinding).join("")}
+              </div>
+              <div class="asset-queue">
+                <h4 class="section-label">Asset queue</h4>
+                <ol>${surface.assets_required.map(asset => `<li>${escapeHtml(asset)}</li>`).join("")}</ol>
+              </div>
+              <div class="next-gate"><span class="micro">Next admissible gate</span><br>${escapeHtml(surface.next_gate)}</div>
+            </div>
+          </div>
+        </div>
+      </details>`;
+    }
+
+    function render() {
+      const filtered = state.surfaces.filter(matches).sort((a, b) => {
+        const severity = criticalCount(b) - criticalCount(a);
+        if (severity) return severity;
+        const failed = count(b, "fail") - count(a, "fail");
+        return failed || a.id.localeCompare(b.id);
+      });
+      resultCount.textContent = `${filtered.length} of ${state.surfaces.length} surfaces shown`;
+      list.innerHTML = filtered.length
+        ? filtered.map(renderSurface).join("")
+        : `<div class="empty-state">No surface matches the current evidence aperture.</div>`;
+    }
+
+    async function loadInventory() {
+      try {
+        const manifestResponse = await fetch("inventory.json", { cache: "no-store" });
+        if (!manifestResponse.ok) throw new Error(`inventory ${manifestResponse.status}`);
+        const manifest = await manifestResponse.json();
+        const surfaces = await Promise.all(manifest.surface_files.map(async path => {
+          const response = await fetch(path, { cache: "no-store" });
+          if (!response.ok) throw new Error(`${path} ${response.status}`);
+          return response.json();
+        }));
+        state.surfaces = surfaces;
+        const critical = surfaces.reduce((sum, surface) => sum + criticalCount(surface), 0);
+        const failed = surfaces.reduce((sum, surface) => sum + count(surface, "fail"), 0);
+        const qualified = surfaces.filter(surface => surface.resolution_status === "qualified").length;
+        document.getElementById("surfaceCount").textContent = String(surfaces.length).padStart(2, "0");
+        document.getElementById("criticalCount").textContent = String(critical).padStart(2, "0");
+        document.getElementById("failedCount").textContent = String(failed).padStart(2, "0");
+        document.getElementById("qualifiedCount").textContent = String(qualified).padStart(2, "0");
+        document.getElementById("footerLine").textContent = `Baseline ${manifest.base_sha} · ${surfaces.length} governed records · donor ${manifest.donors?.[0]?.head_sha || "none"}`;
+        document.body.dataset.ready = "true";
+        render();
+      } catch (error) {
+        list.innerHTML = `<div class="error-state">The governed inventory did not load: ${escapeHtml(error.message)}</div>`;
+        resultCount.textContent = "Inventory unavailable";
+        document.body.dataset.ready = "error";
+      }
+    }
+
+    document.getElementById("searchInput").addEventListener("input", event => {
+      state.query = event.target.value.trim().toLowerCase();
+      render();
+    });
+
+    document.querySelectorAll("[data-filter]").forEach(button => {
+      button.addEventListener("click", () => {
+        state.filter = button.dataset.filter;
+        document.querySelectorAll("[data-filter]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+        render();
+      });
+    });
+
+    function updateThemeLabel() {
+      const next = document.documentElement.dataset.theme === "dark" ? "Light" : "Dark";
+      themeToggle.textContent = next;
+      themeToggle.setAttribute("aria-label", `Switch to ${next.toLowerCase()} theme`);
+    }
+
+    themeToggle.addEventListener("click", () => {
+      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem("axm-resolution-theme", next);
+      updateThemeLabel();
+    });
+
+    updateThemeLabel();
+    loadInventory();
+  </script>
+</body>
+</html>
