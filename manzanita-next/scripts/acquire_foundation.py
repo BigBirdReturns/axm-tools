@@ -7,11 +7,32 @@ import sys
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 from .core import Acquisition
 from .spatial import acquire_osm, acquire_usgs_imagery, acquire_usgs_water
 from .street import acquire_kartaview, acquire_keyed_sources, acquire_panoramax
 from .weather_fire import acquire_calfire, acquire_nws
+
+
+def load_registry(base_path: Path) -> dict[str, Any]:
+    """Load the base source registry and domain extensions, overriding by source ID."""
+    source_by_id: dict[str, dict[str, Any]] = {}
+    loaded_files: list[str] = []
+    candidates = sorted(base_path.parent.glob("source-registry*.json"))
+    if base_path not in candidates:
+        candidates.insert(0, base_path)
+    for path in candidates:
+        document = json.loads(path.read_text(encoding="utf-8"))
+        for source in document.get("sources", []):
+            source_by_id[source["id"]] = source
+        loaded_files.append(path.name)
+    return {
+        "schema": "manzanita-works/source-registry-resolved@1",
+        "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "loaded_files": loaded_files,
+        "sources": list(source_by_id.values()),
+    }
 
 
 def build_report(out_dir: Path, place: dict, manifest: list[dict]) -> None:
@@ -50,7 +71,7 @@ def main() -> int:
     args = parser.parse_args()
 
     place = json.loads(args.place.read_text(encoding="utf-8"))
-    registry = json.loads(args.registry.read_text(encoding="utf-8"))
+    registry = load_registry(args.registry)
     args.out.mkdir(parents=True, exist_ok=True)
     (args.out / "place.json").write_text(json.dumps(place, indent=2) + "\n", encoding="utf-8")
     (args.out / "source-registry.json").write_text(json.dumps(registry, indent=2) + "\n", encoding="utf-8")
