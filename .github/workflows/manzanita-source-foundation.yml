@@ -26,6 +26,8 @@ jobs:
       - name: Validate static contracts
         run: pytest -q manzanita-next/tests
       - name: Acquire real source assets
+        id: acquire
+        continue-on-error: true
         env:
           AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
           FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
@@ -40,14 +42,25 @@ jobs:
             --registry config/source-registry.json \
             --out out
       - name: Validate source receipts and payloads
+        id: validate
+        if: always()
         run: |
           python manzanita-next/scripts/validate_foundation.py \
             --root manzanita-next/out \
             --source-schema manzanita-next/contracts/source-envelope.schema.json
       - name: Upload source foundation
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: manzanita-v16-source-foundation-${{ github.sha }}
           path: manzanita-next/out
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
+      - name: Enforce acquisition result
+        if: always()
+        env:
+          ACQUIRE_OUTCOME: ${{ steps.acquire.outcome }}
+          VALIDATE_OUTCOME: ${{ steps.validate.outcome }}
+        run: |
+          test "$ACQUIRE_OUTCOME" = "success"
+          test "$VALIDATE_OUTCOME" = "success"
