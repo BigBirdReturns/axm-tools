@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "MASTER_BACKLOG.json.gz.b64"
+AMENDMENTS = ROOT / "AMENDMENTS.json"
 JSON_OUT = ROOT / "MASTER_BACKLOG.json"
 CSV_OUT = ROOT / "MASTER_BACKLOG.csv"
 
@@ -25,10 +26,29 @@ def scalar(value: object) -> str:
     return str(value)
 
 
+def apply_amendments(data: dict[str, object]) -> None:
+    if not AMENDMENTS.exists():
+        return
+    amendments = json.loads(AMENDMENTS.read_text(encoding="utf-8"))
+    overrides = amendments.get("task_overrides", {})
+    tasks = data.get("tasks", [])
+    by_id = {task.get("id"): task for task in tasks if isinstance(task, dict)}
+    missing = sorted(task_id for task_id in overrides if task_id not in by_id)
+    if missing:
+        raise SystemExit(f"Amendment targets are missing from the source register: {missing}")
+    for task_id, patch in overrides.items():
+        by_id[task_id].update(patch)
+    data["applied_amendments"] = {
+        "source": AMENDMENTS.name,
+        "task_ids": sorted(overrides),
+    }
+
+
 def main() -> None:
     encoded = SOURCE.read_text(encoding="utf-8").strip()
     raw = gzip.decompress(base64.b64decode(encoded, validate=True))
     data = json.loads(raw.decode("utf-8"))
+    apply_amendments(data)
 
     expected = data.get("summary", {}).get("tasks_total")
     tasks = data.get("tasks", [])
