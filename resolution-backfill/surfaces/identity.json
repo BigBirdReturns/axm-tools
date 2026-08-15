@@ -1,0 +1,80 @@
+{
+  "id": "identity",
+  "class": "frozen_reference_area",
+  "paths": [
+    "identity"
+  ],
+  "current_claim": "A frozen AXM and SCG identity system with canonical mark source, palettes, type rules, constitutions, and immutable releases.",
+  "claim_evidence": [
+    "identity/scg/SCG_MARK_CONSTITUTION.md",
+    "identity/scg/FREEZE_MANIFEST.md",
+    "identity/scg/releases",
+    "identity/index.html"
+  ],
+  "resolution_status": "reopened",
+  "evidence_tier": "frozen_source_and_release_manifest",
+  "actors": [
+    "identity owner",
+    "release ratifier",
+    "downstream product steward",
+    "renderer",
+    "public viewer",
+    "successor designer"
+  ],
+  "mechanism": "Canonical source and frozen release bundles govern mark geometry, palette, provenance, and legitimate downstream rendering.",
+  "gates": {
+    "object_classification": "pass",
+    "actors_authority": "partial",
+    "source_custody": "pass",
+    "mechanism_fidelity": "partial",
+    "live_data_failure_states": "not_applicable",
+    "interaction_semantics": "not_applicable",
+    "visual_typography": "partial",
+    "responsive_accessibility": "unknown",
+    "negative_stress_offline": "partial",
+    "continuity_export_succession": "pass",
+    "provenance_rights_privacy": "partial",
+    "qualification_receipts": "partial"
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "title": "The mark is governed, but downstream product use is not continuously audited against the canonical geometry and token law.",
+      "mechanism": "A tool may embed, redraw, recolor, smooth, or reposition the mark and still pass its own product tests.",
+      "evidence": [
+        "identity/scg/SCG_MARK_CONSTITUTION.md",
+        "multiple downstream standalone pages"
+      ],
+      "acceptance": "Inventory every downstream rendering, hash or reconstruct its coordinates, and fail on unauthorized geometry, palette, smoothing, or provenance drift."
+    },
+    {
+      "severity": "high",
+      "title": "Typography and interface grammar have outgrown the original mark-centered freeze.",
+      "mechanism": "Products now rely on Case Ledger, Signal Sheet, Cream Editorial, and dark analytical surfaces whose display fit, type sourcing, contrast, and responsive rules are not frozen with the same rigor.",
+      "evidence": [
+        "essential-attention/README.md",
+        "manzanita/VISUAL_CONSTITUTION.md"
+      ],
+      "acceptance": "Cut a governed AXM experience constitution covering type, spacing, hierarchy, modes, semantic signal colors, and allowed section families without editing frozen mark releases."
+    },
+    {
+      "severity": "medium",
+      "title": "Accessibility and monochrome reproduction evidence is not packaged as a release receipt.",
+      "mechanism": "Palette intent and source fidelity do not by themselves prove contrast, focus, reduced motion, print, or assistive-technology behavior.",
+      "evidence": [
+        "identity/index.html",
+        "identity/scg/releases"
+      ],
+      "acceptance": "Add contrast, monochrome, print, compact-width, focus, and screen-reader reference captures for each current identity flavor."
+    }
+  ],
+  "assets_required": [
+    "downstream mark-render inventory",
+    "coordinate and palette conformance tests",
+    "AXM experience constitution",
+    "font provenance and subset registry",
+    "accessibility and monochrome goldens",
+    "new frozen release for any corrected identity artifact"
+  ],
+  "next_gate": "Extend governance from the mark to the complete experience grammar without mutating frozen releases."
+}
