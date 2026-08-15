@@ -1,0 +1,79 @@
+{
+  "id": "breakout-parity",
+  "class": "reference_and_demonstrator",
+  "paths": [
+    "breakout-parity"
+  ],
+  "current_claim": "A released source-ledgered research and demonstrator package with claim genealogy, contradiction register, decision records, and checksums.",
+  "claim_evidence": [
+    "breakout-parity/RELEASE_RECORD.json",
+    "breakout-parity/SHA256SUMS.txt",
+    "breakout-parity/SOURCE_LEDGER_VERIFIED_2026-07-26.csv",
+    "breakout-parity/index.html"
+  ],
+  "resolution_status": "reopened",
+  "evidence_tier": "documented_release_package",
+  "actors": [
+    "research author",
+    "source custodian",
+    "model reviewer",
+    "demonstrator operator",
+    "public reader",
+    "successor researcher"
+  ],
+  "mechanism": "Claim, source, contradiction, model-revision, and decision records constrain a public demonstrator and its admissible statements.",
+  "gates": {
+    "object_classification": "pass",
+    "actors_authority": "partial",
+    "source_custody": "partial",
+    "mechanism_fidelity": "partial",
+    "live_data_failure_states": "unknown",
+    "interaction_semantics": "partial",
+    "visual_typography": "fail",
+    "responsive_accessibility": "unknown",
+    "negative_stress_offline": "partial",
+    "continuity_export_succession": "partial",
+    "provenance_rights_privacy": "partial",
+    "qualification_receipts": "partial"
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "title": "The release package has strong ledgers but no estate-standard replay receipt tying every public interaction to the exact claim row it renders.",
+      "mechanism": "CSV and JSON records can be internally disciplined while the demonstrator silently summarizes, filters, or labels them beyond the registered claim force.",
+      "evidence": [
+        "breakout-parity/CLAIM_LEDGER.csv",
+        "breakout-parity/index.html"
+      ],
+      "acceptance": "Browser playtests must trace every rendered claim, qualifier, contradiction, and decision to an immutable row and source receipt."
+    },
+    {
+      "severity": "high",
+      "title": "Source freshness and retrieval custody are frozen at a dated verification snapshot.",
+      "mechanism": "A verified 2026-07-26 ledger does not itself reveal later source mutation, link death, replacement, or licensing change.",
+      "evidence": [
+        "breakout-parity/SOURCE_LEDGER_VERIFIED_2026-07-26.csv"
+      ],
+      "acceptance": "Add a revalidation adapter that preserves old source states, records current availability, and never rewrites the frozen release."
+    },
+    {
+      "severity": "medium",
+      "title": "Design, compact-width, accessibility, and failure-state evidence are not release-class artifacts.",
+      "mechanism": "Checksums protect bytes, not perceptual hierarchy or usable interaction.",
+      "evidence": [
+        "breakout-parity/RELEASE_RECORD.json",
+        "breakout-parity/index.html"
+      ],
+      "acceptance": "Cut a successor demonstrator release with visual goldens, semantic navigation, keyboard and touch evidence, and explicit unsupported-source states."
+    }
+  ],
+  "assets_required": [
+    "claim-to-render trace map",
+    "source revalidation receipts",
+    "frozen-release versus current-source comparison",
+    "demonstrator interaction playtest",
+    "visual and accessibility goldens",
+    "successor research handoff"
+  ],
+  "next_gate": "Bind the demonstrator to the claim ledger at runtime and revalidate sources without mutating the frozen release."
+}
