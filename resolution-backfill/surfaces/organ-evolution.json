@@ -1,0 +1,86 @@
+{
+  "id": "organ-evolution",
+  "class": "live_observation_and_decision_tool",
+  "paths": [
+    "organ-evolution",
+    ".github/workflows/organ-evolution-check.yml",
+    ".github/workflows/organ-evolution-observe.yml"
+  ],
+  "current_claim": "A local estate-anatomy and evolution workbench combining live repository observations, explicit actors and authority, stress testing, decision circulation, migration, and succession.",
+  "claim_evidence": [
+    "organ-evolution/README.md",
+    "organ-evolution/scripts/validate.py",
+    "organ-evolution/scripts/test_observe.py",
+    "tests/pages/verify_organ_evolution.mjs",
+    "tests/pages/verify_organ_observations.mjs"
+  ],
+  "resolution_status": "reopened",
+  "evidence_tier": "live_repository_observation_plus_synthetic_regression",
+  "actors": [
+    "sponsor",
+    "validator",
+    "decider",
+    "maintainer",
+    "beneficiary",
+    "observer runtime",
+    "successor"
+  ],
+  "mechanism": "Machine observation and human-owned evaluation remain separate while organ anatomy, candidates, actors, evidence, stress, decision, migration, and succession are carried through one explicit record.",
+  "gates": {
+    "object_classification": "pass",
+    "actors_authority": "partial",
+    "source_custody": "partial",
+    "mechanism_fidelity": "partial",
+    "live_data_failure_states": "partial",
+    "interaction_semantics": "partial",
+    "visual_typography": "fail",
+    "responsive_accessibility": "unknown",
+    "negative_stress_offline": "partial",
+    "continuity_export_succession": "partial",
+    "provenance_rights_privacy": "partial",
+    "qualification_receipts": "partial"
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "title": "Repository observation is live, but the complete decision loop is still proved mainly through a worked estate.",
+      "mechanism": "The collector can observe real heads, workflows, pull requests, tags, and failure states while anatomy, candidate selection, authority decision, migration, and verification remain predominantly embedded examples.",
+      "evidence": [
+        "organ-evolution/README.md",
+        "organ-evolution/data/axm-estate.example.json",
+        "organ-evolution/data/observations.json"
+      ],
+      "acceptance": "Carry one real organ from observation through anatomy, candidate comparison, stress, authority decision, migration, verification, and cold-successor replay with exact receipts."
+    },
+    {
+      "severity": "high",
+      "title": "Actor-role overlap is modeled but not yet qualified through seat-specific operation.",
+      "mechanism": "The tool can display sponsor, validator, decider, maintainer, and beneficiary concentration without proving that each role receives different evidence, controls, refusal conditions, acceptance criteria, and handoff obligations.",
+      "evidence": [
+        "organ-evolution/WORKFLOW_ROLE_PROTOCOL.md",
+        "organ-evolution/views.js"
+      ],
+      "acceptance": "Play the same organ from every functional seat and verify distinct lawful actions, information needs, refusals, and successor outputs."
+    },
+    {
+      "severity": "medium",
+      "title": "The live observation product lacks a retained visual, compact-width, and low-connectivity qualification package.",
+      "mechanism": "Static and browser tests can confirm object presence while typography, dense comparison tables, stale-source warnings, keyboard order, touch behavior, and offline replay remain under-evidenced.",
+      "evidence": [
+        "organ-evolution/styles.css",
+        "tests/pages/verify_organ_evolution.mjs",
+        "tests/pages/verify_organ_observations.mjs"
+      ],
+      "acceptance": "Retain desktop and mobile goldens, keyboard and touch traces, stale and failed source captures, low-connectivity behavior, and a cold offline replay."
+    }
+  ],
+  "assets_required": [
+    "one real organ end-to-end case",
+    "role-specific replay fixtures",
+    "observation source receipts and rights metadata",
+    "stale, missing, contradictory, and provider-loss fixtures",
+    "visual, typography, and accessibility goldens",
+    "decision-to-migration successor packet"
+  ],
+  "next_gate": "Complete one real organ lifecycle from live observation to verified migration and successor reconstruction."
+}
