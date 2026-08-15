@@ -1,0 +1,88 @@
+{
+  "id": "pta-tracker",
+  "class": "live_public_information_tool",
+  "paths": [
+    "pta-tracker",
+    ".github/workflows/pta-fetch.yml"
+  ],
+  "current_claim": "A nightly district-first legislation tracker with source health, hostile-source observation seam, relevance filtering, gap detection, human-governed consequences, multi-school scope, and report generation.",
+  "claim_evidence": [
+    "pta-tracker/README.md",
+    "pta-tracker/scripts",
+    "pta-tracker/data",
+    ".github/workflows/pta-fetch.yml"
+  ],
+  "resolution_status": "reopened",
+  "evidence_tier": "live_public_sources_plus_human_curated_consequence",
+  "actors": [
+    "legislation officer",
+    "parent",
+    "school PTA",
+    "district",
+    "state source",
+    "on-device observer",
+    "successor curator"
+  ],
+  "mechanism": "Nightly collection, relevance scoring, statute resolution, visible source health, observed-source merging, gap detection, human-approved consequence templates, school scoping, and static publication convert live policy evidence into a parent-facing record.",
+  "gates": {
+    "object_classification": "pass",
+    "actors_authority": "partial",
+    "source_custody": "partial",
+    "mechanism_fidelity": "partial",
+    "live_data_failure_states": "partial",
+    "interaction_semantics": "partial",
+    "visual_typography": "fail",
+    "responsive_accessibility": "unknown",
+    "negative_stress_offline": "partial",
+    "continuity_export_succession": "partial",
+    "provenance_rights_privacy": "partial",
+    "qualification_receipts": "partial"
+  },
+  "findings": [
+    {
+      "severity": "critical",
+      "title": "Live items lack an estate-standard exact source and transformation receipt.",
+      "mechanism": "The tracker preserves URLs, source health, dates, scopes, and derived-card lineage, but does not consistently retain exact request identity, raw response hash, parser version, source time, rights, cache rule, and claim scope for every item and observed insertion.",
+      "evidence": [
+        "pta-tracker/README.md",
+        "pta-tracker/scripts/fetch.py",
+        "pta-tracker/data/items.json",
+        "pta-tracker/data/observed.json"
+      ],
+      "acceptance": "Wrap every automated and observed source in a source envelope preserving request or intake identity, content digest, transformation lineage, freshness, rights, claim scope, and failure state."
+    },
+    {
+      "severity": "high",
+      "title": "The human consequence boundary is strong but lacks a complete lifecycle replay.",
+      "mechanism": "Rules separately preserve source facts, relevance, gap detection, templates, scope, and human-authored consequence, yet no retained campaign follows one item through ingestion, law resolution, gap, curation, publication, expiry, archive, and successor takeover.",
+      "evidence": [
+        "pta-tracker/README.md",
+        "pta-tracker/data/parent.json",
+        "pta-tracker/data/derived.json",
+        "pta-tracker/data/gaps.json"
+      ],
+      "acceptance": "Replay one district item and one school-specific item through the full lifecycle, preserving every source, transformation, authority, publication, and retirement receipt."
+    },
+    {
+      "severity": "high",
+      "title": "The parent-facing page lacks a retained design, accessibility, compact-width, and low-bandwidth qualification package.",
+      "mechanism": "A live information feed can remain semantically correct while filters, freshness warnings, source drawers, report generation, touch targets, offline state, typography, or school identity become difficult to use or misread.",
+      "evidence": [
+        "pta-tracker/index.html",
+        "pta-tracker/sw.js",
+        "pta-tracker/manifest.json"
+      ],
+      "acceptance": "Retain mobile and desktop goldens, keyboard and screen-reader results, offline freshness and update states, source-detail views, report-generation traces, and low-bandwidth captures."
+    }
+  ],
+  "assets_required": [
+    "source registry and per-item source envelopes",
+    "parser and transformation lineage receipts",
+    "ScreenGhost or human-observation intake receipt contract",
+    "district and school-scope lifecycle fixtures",
+    "offline freshness and update assets",
+    "parent-facing visual, typography, and accessibility goldens",
+    "successor curator takeover packet"
+  ],
+  "next_gate": "Backfill source envelopes around the live feed, then replay one item through its complete public lifecycle."
+}
