@@ -27,6 +27,19 @@ async function waitForServer() {
   throw new Error("loopback server did not start");
 }
 
+async function loadReady(page) {
+  await page.goto(url, { waitUntil: "networkidle" });
+  await page.waitForSelector('body[data-ready="true"]');
+}
+
+async function selectTheme(page, theme) {
+  await page.evaluate(value => localStorage.setItem("axm-resolution-theme", value), theme);
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector('body[data-ready="true"]');
+  const active = await page.locator("html").getAttribute("data-theme");
+  assert(active === theme, `theme selection failed: expected ${theme}, found ${active}`);
+}
+
 fs.mkdirSync(output, { recursive: true });
 const server = spawn("python", ["-m", "http.server", String(port), "--bind", "127.0.0.1"], {
   cwd: root,
@@ -69,8 +82,7 @@ try {
         if (requestUrl.origin !== origin) externalRequests.push(request.url());
       });
 
-      await page.goto(url, { waitUntil: "networkidle" });
-      await page.waitForSelector('body[data-ready="true"]');
+      await loadReady(page);
 
       assert(await page.locator("details.surface-record").count() === 10, `${viewport.name}: expected ten surface records`);
       assert((await page.locator("#surfaceCount").textContent()) === "10", `${viewport.name}: surface metric is not 10`);
@@ -111,25 +123,28 @@ try {
       assert(await firstRecord.locator(".finding").count() >= 1, `${viewport.name}: opened record must expose findings`);
       assert(await firstRecord.locator(".asset-queue li").count() >= 1, `${viewport.name}: opened record must expose required assets`);
 
-      if (viewport.name === "desktop") {
-        const initialTheme = await page.locator("html").getAttribute("data-theme");
-        await page.locator("#themeToggle").click();
-        const changedTheme = await page.locator("html").getAttribute("data-theme");
-        assert(changedTheme !== initialTheme, "desktop: theme control did not change theme");
-        await page.reload({ waitUntil: "networkidle" });
-        await page.waitForSelector('body[data-ready="true"]');
-        assert((await page.locator("html").getAttribute("data-theme")) === changedTheme, "desktop: theme did not persist across reload");
-      }
-
       await page.keyboard.press("Tab");
       const focused = await page.evaluate(() => document.activeElement?.tagName || "");
       assert(Boolean(focused), `${viewport.name}: keyboard focus did not enter the page`);
 
-      await page.screenshot({
-        path: path.join(output, `${viewport.name}-full.png`),
-        fullPage: true,
-        animations: "disabled",
-      });
+      const themeScreenshots = [];
+      for (const theme of ["light", "dark"]) {
+        await selectTheme(page, theme);
+        const themedRecord = page.locator("details.surface-record").first();
+        await themedRecord.locator("summary").click();
+        assert(await themedRecord.locator(".gate").count() === 12, `${viewport.name}/${theme}: record detail did not survive theme reload`);
+        const screenshot = `${viewport.name}-${theme}-full.png`;
+        await page.screenshot({
+          path: path.join(output, screenshot),
+          fullPage: true,
+          animations: "disabled",
+        });
+        themeScreenshots.push(screenshot);
+      }
+
+      await page.reload({ waitUntil: "networkidle" });
+      await page.waitForSelector('body[data-ready="true"]');
+      assert((await page.locator("html").getAttribute("data-theme")) === "dark", `${viewport.name}: theme did not persist across reload`);
 
       results.push({
         viewport,
@@ -137,6 +152,8 @@ try {
         failedMetric,
         criticalMetric,
         horizontalOverflow: Math.max(overflow.document, overflow.body),
+        themes: ["light", "dark"],
+        screenshots: themeScreenshots,
         result: "PASS",
       });
     } finally {
@@ -160,7 +177,8 @@ try {
       "record expansion",
       "twelve-gate detail",
       "asset queue",
-      "light-dark persistence",
+      "light and dark goldens at every viewport",
+      "theme persistence",
       "keyboard entry",
       "document and element overflow",
       "reduced motion",
