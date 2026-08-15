@@ -34,10 +34,11 @@ jobs:
           USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
         run: |
           rm -rf manzanita-next/out
-          python manzanita-next/scripts/acquire_foundation.py \
-            --place manzanita-next/config/place-demo.json \
-            --registry manzanita-next/config/source-registry.json \
-            --out manzanita-next/out
+          cd manzanita-next
+          python -m scripts.acquire_foundation \
+            --place config/place-demo.json \
+            --registry config/source-registry.json \
+            --out out
       - name: Validate source receipts and payloads
         run: |
           python manzanita-next/scripts/validate_foundation.py \
