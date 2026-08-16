@@ -227,7 +227,7 @@
     elements.fieldTitle.textContent = `${view.title} public evidence aperture`;
     elements.fieldDesc.textContent = `${view.object}. Authored Forkline registration marks remain subordinate to the public source projection.`;
     elements.fieldGround.setAttribute("d", view.geometry.ground);
-    elements.fieldRegister.setAttribute("d", view.geometry.ground);
+    elements.fieldRegister.setAttribute("d", view.geometry.register);
     elements.fieldOverlay.setAttribute("d", view.geometry.overlay);
     elements.fieldOverlay.setAttribute("class", `overlay-field ${viewId}`);
     elements.fieldViewLabel.textContent = view.geometry.label;

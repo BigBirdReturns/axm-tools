@@ -827,7 +827,25 @@
 
   .state-empty {
     border-color: var(--uncertain);
-    background: repeating-linear-gradient(45deg, transparent 0 4px, var(--uncertain) 4px 6px);
+    background: transparent;
+  }
+
+  .state-empty::before,
+  .state-empty::after {
+    content: "";
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    height: 2px;
+    background: var(--uncertain);
+  }
+
+  .state-empty::before {
+    top: 4px;
+  }
+
+  .state-empty::after {
+    bottom: 4px;
   }
 
   .state-stale::after {
