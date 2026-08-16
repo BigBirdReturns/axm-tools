@@ -1,0 +1,336 @@
+name: Reconcile and admit Manzanita Street Glide kernel
+
+on:
+  push:
+    branches:
+      - agent/manzanita-street-glide-014
+    paths:
+      - ".github/workflows/manzanita-street-glide-reconcile-admit.yml"
+
+permissions:
+  actions: read
+  checks: read
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: manzanita-street-glide-admission
+  cancel-in-progress: false
+
+jobs:
+  reconcile-seal-qualify-admit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 58
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH_NAME: agent/manzanita-street-glide-014
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-street-glide-014
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Wait for the admitted dependency chain on production main
+        run: |
+          ready="false"
+          for attempt in $(seq 1 120); do
+            git fetch --no-tags origin main
+            if \
+              git cat-file -e origin/main:programs/manzanita-99/review-board/BOARD_CHARTER.json 2>/dev/null && \
+              git cat-file -e origin/main:programs/manzanita-99/review-board/validate_review_board.py 2>/dev/null && \
+              git cat-file -e origin/main:manzanita-next/design-system/CONSTITUTION.json 2>/dev/null && \
+              git cat-file -e origin/main:manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json 2>/dev/null && \
+              git cat-file -e origin/main:manzanita-next/public-demo/build_public_demo.py 2>/dev/null && \
+              git cat-file -e origin/main:manzanita-next/apertures/APERTURE_CONTRACT.json 2>/dev/null && \
+              git cat-file -e origin/main:manzanita-next/apertures/build_apertures.py 2>/dev/null && \
+              ! git cat-file -e origin/main:.github/workflows/manzanita-public-demo-reconcile-admit.yml 2>/dev/null && \
+              ! git cat-file -e origin/main:.github/workflows/manzanita-seven-apertures-reconcile-admit.yml 2>/dev/null
+            then
+              ready="true"
+              break
+            fi
+            echo "dependency chain not yet admitted on main; attempt=$attempt"
+            sleep 10
+          done
+          test "$ready" = "true"
+
+      - name: Reconcile the candidate with the admitted dependencies
+        run: |
+          git config user.name "manzanita-street-glide-admission"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --ff-only origin "$BRANCH_NAME"
+          git fetch --no-tags origin main
+          git merge --no-edit origin/main
+          rm -f \
+            .github/workflows/manzanita-public-demo-reconcile-admit.yml \
+            .github/workflows/manzanita-seven-apertures-reconcile-admit.yml
+          test -f manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json
+          test -f manzanita-next/public-demo/build_public_demo.py
+          test -f manzanita-next/apertures/APERTURE_CONTRACT.json
+          test -f manzanita-next/apertures/build_apertures.py
+          test -f manzanita-next/design-system/CONSTITUTION.json
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+          test -f programs/manzanita-99/review-board/validate_review_board.py
+
+      - name: Correct prohibited-input and portable-receipt defects
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          resolver_path = Path("manzanita-next/street-glide/resolve_scene.py")
+          resolver = resolver_path.read_text(encoding="utf-8")
+          old_candidates = '''    candidates = demo.get("scene_candidates", [])\n    require(isinstance(candidates, list), "Scene candidates must be a list")\n    source_rows = public_source_rows(public_data)\n'''
+          new_candidates = '''    candidates = demo.get("scene_candidates", [])\n    require(isinstance(candidates, list), "Scene candidates must be a list")\n    prohibited_scene_keys = recursive_keys(candidates) & PROHIBITED_KEYS\n    require(\n        not prohibited_scene_keys,\n        f"Scene candidates contain prohibited keys: {sorted(prohibited_scene_keys)}",\n    )\n    source_rows = public_source_rows(public_data)\n'''
+          if old_candidates in resolver:
+              resolver = resolver.replace(old_candidates, new_candidates, 1)
+          if "prohibited_scene_keys = recursive_keys(candidates)" not in resolver:
+              raise SystemExit("Raw scene-candidate privacy guard did not apply")
+          resolver_path.write_text(resolver, encoding="utf-8")
+
+          registration_path = Path("manzanita-next/street-glide/register_natural_border.py")
+          registration = registration_path.read_text(encoding="utf-8")
+          old_gate = '''    within_displacement = mean_displacement <= maximum_mean_displacement\n\n    receipt: dict[str, Any] = {\n'''
+          new_gate = '''    within_displacement = mean_displacement <= maximum_mean_displacement\n    try:\n        display_image_path = image_path.resolve().relative_to(Path.cwd().resolve()).as_posix()\n    except ValueError:\n        display_image_path = image_path.name\n\n    receipt: dict[str, Any] = {\n'''
+          if old_gate in registration:
+              registration = registration.replace(old_gate, new_gate, 1)
+          registration = registration.replace('            "path": image_path.as_posix(),', '            "path": display_image_path,')
+          if "display_image_path = image_path.resolve().relative_to" not in registration:
+              raise SystemExit("Portable image-receipt path did not apply")
+          if '"path": image_path.as_posix()' in registration:
+              raise SystemExit("Absolute-capable image path remains in the receipt")
+          registration_path.write_text(registration, encoding="utf-8")
+          PY
+
+      - name: Prove the reconciled candidate diff is bounded
+        run: |
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {
+              ".github/workflows/manzanita-street-glide.yml",
+              ".github/workflows/manzanita-street-glide-reconcile-admit.yml",
+          }
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/street-glide/")
+          ]
+          if invalid:
+              raise SystemExit(f"Street Glide candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("manzanita-next/street-glide/") for path in changed):
+              raise SystemExit("Candidate contains no Street Glide kernel object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+
+      - name: Install source, projection, and image dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            requests beautifulsoup4 pillow jsonschema pytest
+
+      - name: Prove deterministic code and synthetic kernel behavior
+        run: |
+          pytest -q manzanita-next/tests
+          python -m py_compile \
+            manzanita-next/public-demo/build_public_demo.py \
+            manzanita-next/apertures/build_apertures.py \
+            manzanita-next/street-glide/resolve_scene.py \
+            manzanita-next/street-glide/register_natural_border.py \
+            manzanita-next/street-glide/tests/test_street_glide.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m unittest discover \
+            -s manzanita-next/public-demo/tests \
+            -p "test_public_demo.py"
+          python -m unittest discover \
+            -s manzanita-next/apertures/tests \
+            -p "test_apertures.py"
+          python -m unittest discover \
+            -s manzanita-next/street-glide/tests \
+            -p "test_street_glide.py"
+
+      - name: Remove the temporary actuator and seal the kernel candidate
+        run: |
+          rm .github/workflows/manzanita-street-glide-reconcile-admit.yml
+          rm -rf \
+            manzanita-next/out \
+            manzanita-next/public-demo/out \
+            manzanita-next/apertures/out \
+            manzanita-next/street-glide/out
+          git add -A
+          git commit -m "Manzanita: seal the Street Glide kernel candidate"
+          echo "SEALED_HEAD_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Qualify the exact sealed head against a fresh source run
+        env:
+          AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPILLARY_ACCESS_TOKEN: ${{ secrets.MAPILLARY_ACCESS_TOKEN }}
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
+          REVIEW_HEAD_SHA: ${{ env.SEALED_HEAD_SHA }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$SEALED_HEAD_SHA"
+          test ! -e .github/workflows/manzanita-street-glide-reconcile-admit.yml
+          git diff --quiet origin/main...HEAD -- manzanita
+          rm -rf \
+            manzanita-next/out \
+            manzanita-next/public-demo/out \
+            manzanita-next/apertures/out \
+            manzanita-next/street-glide/out
+          cd manzanita-next
+          python -m scripts.acquire_foundation \
+            --place config/place-demo.json \
+            --registry config/source-registry.json \
+            --out out
+          cd ..
+          python manzanita-next/scripts/validate_foundation.py \
+            --root manzanita-next/out \
+            --source-schema manzanita-next/contracts/source-envelope.schema.json
+          python manzanita-next/public-demo/build_public_demo.py \
+            --repo-root . \
+            --acquisition-root manzanita-next/out \
+            --output manzanita-next/public-demo/out
+          python manzanita-next/apertures/build_apertures.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --output manzanita-next/apertures/out
+          python manzanita-next/street-glide/resolve_scene.py \
+            --contract manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json \
+            --public-data manzanita-next/public-demo/out/PUBLIC_DATA.json \
+            --scenes manzanita-next/street-glide/AUTHORED_REGISTRATION_DEMO.json \
+            --target-heading 0 \
+            --output manzanita-next/street-glide/out/SCENE_DECISION.json
+          python manzanita-next/street-glide/register_natural_border.py \
+            --contract manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json \
+            --demo manzanita-next/street-glide/AUTHORED_REGISTRATION_DEMO.json \
+            --image manzanita-next/public-demo/out/site/assets/base-imagery.png \
+            --output manzanita-next/street-glide/out/REGISTRATION_RECEIPT.json
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/street-glide/review/M99-RB-PKT-006.json \
+            --decision manzanita-next/street-glide/review/M99-RB-DEC-006.json \
+            --receipt manzanita-next/street-glide/out/BOARD_DECISION_RECEIPT.json
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          public_build = json.loads(Path("manzanita-next/public-demo/out/BUILD_RECEIPT.json").read_text())
+          aperture_build = json.loads(Path("manzanita-next/apertures/out/BUILD_RECEIPT.json").read_text())
+          scene = json.loads(Path("manzanita-next/street-glide/out/SCENE_DECISION.json").read_text())
+          registration = json.loads(Path("manzanita-next/street-glide/out/REGISTRATION_RECEIPT.json").read_text())
+          board = json.loads(Path("manzanita-next/street-glide/out/BOARD_DECISION_RECEIPT.json").read_text())
+
+          assert public_build["result"] == "PASS"
+          assert public_build["release_effect"] == "none"
+          assert public_build["constitutional_count_effect"] == "none"
+          assert aperture_build["result"] == "PASS"
+          assert aperture_build["bundle"]["aperture_count"] == 7
+          assert aperture_build["public_effect"] == "none"
+          assert aperture_build["constitutional_count_effect"] == "none"
+
+          assert scene["result"] == "PASS"
+          assert scene["selected_mode"] == "map_only"
+          assert scene["selected_provider"] == "map_only"
+          assert scene["selected_scene"] is None
+          assert len(scene["provider_attempts"]) == 5
+          assert len(scene["map_only_receipts"]) == 3
+          assert scene["public_effect"] == "none"
+          assert scene["constitutional_count_effect"] == "none"
+          assert len(scene["payload_sha256"]) == 64
+
+          assert registration["result"] == "PASS"
+          assert registration["admission_state"] in {"registration_proposal", "no_snap_proposal"}
+          assert registration["point_count"] == 6
+          assert len(registration["original_points"]) == 6
+          assert len(registration["proposed_points"]) == 6
+          assert len(registration["point_receipts"]) == 6
+          assert registration["within_displacement_gate"] is True
+          assert registration["method"]["normal_search_only"] is True
+          assert registration["method"]["feature_identity"] == "prohibited"
+          assert not Path(registration["image"]["path"]).is_absolute()
+          assert "not a curb" in registration["claim_boundary"].lower()
+          assert "physical identity" in registration["unknown"].lower()
+          assert registration["public_effect"] == "none"
+          assert registration["constitutional_count_effect"] == "none"
+          assert len(registration["payload_sha256"]) == 64
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-006"
+          assert board["decision_id"] == "M99-RB-DEC-006"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 7
+          PY
+
+      - name: Publish the sealed branch
+        run: |
+          rm -rf \
+            manzanita-next/out \
+            manzanita-next/public-demo/out \
+            manzanita-next/apertures/out \
+            manzanita-next/street-glide/out
+          test -z "$(git status --porcelain)"
+          git push origin HEAD:"$BRANCH_NAME"
+
+      - name: Wait for repository exact-head qualification
+        run: |
+          check_name="Resolve scenes and register natural borders"
+          success="false"
+          for attempt in $(seq 1 80); do
+            response="$(gh api \
+              -H "Accept: application/vnd.github+json" \
+              "repos/$GITHUB_REPOSITORY/commits/$SEALED_HEAD_SHA/check-runs?per_page=100")"
+            status="$(echo "$response" | jq -r --arg name "$check_name" '[.check_runs[] | select(.name == $name)] | last | .status // empty')"
+            conclusion="$(echo "$response" | jq -r --arg name "$check_name" '[.check_runs[] | select(.name == $name)] | last | .conclusion // empty')"
+            echo "attempt=$attempt status=$status conclusion=$conclusion"
+            if test "$status" = "completed" && test "$conclusion" = "success"; then
+              success="true"
+              break
+            fi
+            if test "$status" = "completed" && test -n "$conclusion" && test "$conclusion" != "success"; then
+              exit 1
+            fi
+            sleep 15
+          done
+          test "$success" = "true"
+
+      - name: Mark ready and merge only the qualified sealed head
+        run: |
+          PR_NUMBER="$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --head "$BRANCH_NAME" \
+            --base main \
+            --state open \
+            --json number \
+            --jq '.[0].number')"
+          test -n "$PR_NUMBER"
+          PR_URL="https://github.com/$GITHUB_REPOSITORY/pull/$PR_NUMBER"
+          if test "$(gh pr view "$PR_URL" --json isDraft --jq .isDraft)" = "true"; then
+            gh pr ready "$PR_URL"
+          fi
+          response="$(gh api \
+            --method PUT \
+            -H "Accept: application/vnd.github+json" \
+            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/merge" \
+            -f merge_method=merge \
+            -f sha="$SEALED_HEAD_SHA" \
+            -f commit_title="Merge Manzanita Street Glide kernel" \
+            -f commit_message="Admit the exact provider-resolution and image-gradient registration kernel for internal product work with map-only, physical-feature, interaction, field, provider, resilience, release, and constitutional-count holds preserved.")"
+          echo "$response" | jq -e '.merged == true'
