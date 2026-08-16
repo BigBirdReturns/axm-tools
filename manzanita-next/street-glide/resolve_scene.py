@@ -252,6 +252,11 @@ def resolve(
 
     candidates = demo.get("scene_candidates", [])
     require(isinstance(candidates, list), "Scene candidates must be a list")
+    prohibited_input = recursive_keys(candidates) & PROHIBITED_KEYS
+    require(
+        not prohibited_input,
+        f"Scene input contains prohibited keys: {sorted(prohibited_input)}",
+    )
     source_rows = public_source_rows(public_data)
     provider_attempts: list[dict[str, Any]] = []
     selected: dict[str, Any] | None = None
