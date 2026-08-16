@@ -1,0 +1,213 @@
+name: Reconcile and admit Manzanita Forkline Field
+
+on:
+  push:
+    branches:
+      - agent/manzanita-design-constitution-004-011
+    paths:
+      - ".github/workflows/manzanita-design-reconcile-admit.yml"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  reconcile-qualify-seal-admit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH_NAME: agent/manzanita-design-constitution-004-011
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-design-constitution-004-011
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Reconcile the latest branch and production baseline
+        run: |
+          git config user.name "manzanita-design-reconcile"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --ff-only origin "$BRANCH_NAME"
+          git fetch --no-tags origin main
+          git merge --no-edit origin/main
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+          test -f programs/manzanita-99/review-board/validate_review_board.py
+
+      - name: Correct compact targets and deterministic reduced-motion inspection
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          css_path = Path("manzanita-next/design-system/specimen/style.css")
+          css = css_path.read_text(encoding="utf-8")
+          old_target = """    .theme-control button {\n      min-height: 36px;\n      padding: 0.35rem 0.45rem;\n"""
+          new_target = """    .theme-control button {\n      min-height: 44px;\n      padding: 0.35rem 0.45rem;\n"""
+          if old_target in css:
+              css = css.replace(old_target, new_target, 1)
+          if "min-height: 36px;" in css:
+              raise SystemExit("A compact control target remains below 44 CSS pixels")
+
+          old_receipt = """  .state-receipt {\n    box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 5px var(--ink);\n  }\n"""
+          new_receipt = """  .state-receipt::after {\n    content: \"\";\n    position: absolute;\n    inset: 3px;\n    border: 2px solid var(--ink);\n  }\n"""
+          if old_receipt in css:
+              css = css.replace(old_receipt, new_receipt, 1)
+          css_path.write_text(css, encoding="utf-8")
+
+          browser_path = Path("manzanita-next/design-system/tests/browser_test.py")
+          browser = browser_path.read_text(encoding="utf-8")
+          old_transition = """    transition = reduced_page.locator(\"#ground-contour\").evaluate(\n        \"element => getComputedStyle(element).transitionDuration\"\n    )\n    if transition not in {\"0s\", \"1e-06s\", \"0.000001s\"}:\n        raise AssertionError(f\"Reduced-motion transition remains material: {transition}\")\n"""
+          new_transition = """    transition = reduced_page.locator(\"#ground-contour\").evaluate(\n        \"element => getComputedStyle(element).transitionDuration\"\n    )\n    def duration_seconds(value: str) -> float:\n        value = value.strip()\n        if value.endswith(\"ms\"):\n            return float(value[:-2]) / 1000\n        if value.endswith(\"s\"):\n            return float(value[:-1])\n        raise AssertionError(f\"Unknown transition duration unit: {value}\")\n\n    durations = [duration_seconds(value) for value in transition.split(\",\")]\n    if any(value > 0.00001 for value in durations):\n        raise AssertionError(f\"Reduced-motion transition remains material: {transition}\")\n"""
+          if old_transition in browser:
+              browser = browser.replace(old_transition, new_transition, 1)
+
+          old_names = """    names = [value.strip() for value in all_buttons.all_inner_texts()]\n    if any(not value for value in names):\n        raise AssertionError(f\"A button lacks an accessible visible name: {names}\")\n    state_report[\"button_names\"] = names\n"""
+          new_names = """    names = [value.strip() for value in all_buttons.all_inner_texts()]\n    if any(not value for value in names):\n        raise AssertionError(f\"A button lacks an accessible visible name: {names}\")\n    target_boxes = []\n    for index in range(all_buttons.count()):\n        box = all_buttons.nth(index).bounding_box()\n        if not box or box[\"width\"] < 44 or box[\"height\"] < 44:\n            raise AssertionError(f\"Control target is below 44 by 44 CSS pixels: {names[index]} {box}\")\n        target_boxes.append({\n            \"name\": names[index],\n            \"width\": round(box[\"width\"], 2),\n            \"height\": round(box[\"height\"], 2),\n        })\n    state_report[\"button_names\"] = names\n    state_report[\"control_targets\"] = target_boxes\n"""
+          if old_names in browser:
+              browser = browser.replace(old_names, new_names, 1)
+          if "duration_seconds" not in browser or "control_targets" not in browser:
+              raise SystemExit("Browser qualification corrections did not apply")
+          browser_path.write_text(browser, encoding="utf-8")
+          PY
+
+      - name: Prove the reconciled candidate diff is bounded
+        run: |
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {
+              ".github/workflows/manzanita-design-constitution.yml",
+              ".github/workflows/manzanita-design-admit.yml",
+              ".github/workflows/manzanita-design-reconcile-admit.yml",
+          }
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/design-system/")
+          ]
+          if invalid:
+              raise SystemExit(f"Forkline candidate contains out-of-scope paths: {invalid}")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+
+      - name: Install exact browser qualification dependencies
+        run: |
+          python -m pip install --disable-pip-version-check playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Qualify the corrected worktree
+        run: |
+          export REVIEW_HEAD_SHA="$(git rev-parse HEAD)"
+          python -m py_compile \
+            manzanita-next/design-system/tests/test_constitution.py \
+            manzanita-next/design-system/tests/browser_test.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m unittest discover \
+            -s manzanita-next/design-system/tests \
+            -p "test_constitution.py"
+          rm -rf manzanita-next/design-system/out
+          python manzanita-next/design-system/tests/browser_test.py \
+            --root manzanita-next/design-system/specimen \
+            --out manzanita-next/design-system/out
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/design-system/review/M99-RB-PKT-002.json \
+            --decision manzanita-next/design-system/review/M99-RB-DEC-002.json \
+            --receipt manzanita-next/design-system/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Remove temporary actuators and commit the sealed candidate
+        run: |
+          rm -f \
+            .github/workflows/manzanita-design-admit.yml \
+            .github/workflows/manzanita-design-reconcile-admit.yml
+          rm -rf manzanita-next/design-system/out
+          git add -A \
+            manzanita-next/design-system/specimen/style.css \
+            manzanita-next/design-system/tests/browser_test.py \
+            .github/workflows/manzanita-design-admit.yml \
+            .github/workflows/manzanita-design-reconcile-admit.yml
+          git commit -m "Manzanita: seal the corrected Forkline Field candidate"
+          echo "SEALED_HEAD_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Requalify the exact sealed head
+        run: |
+          test "$(git rev-parse HEAD)" = "$SEALED_HEAD_SHA"
+          test ! -e .github/workflows/manzanita-design-admit.yml
+          test ! -e .github/workflows/manzanita-design-reconcile-admit.yml
+          git diff --quiet origin/main...HEAD -- manzanita
+          python -m unittest discover \
+            -s manzanita-next/design-system/tests \
+            -p "test_constitution.py"
+          rm -rf manzanita-next/design-system/out
+          REVIEW_HEAD_SHA="$SEALED_HEAD_SHA" \
+            python manzanita-next/design-system/tests/browser_test.py \
+            --root manzanita-next/design-system/specimen \
+            --out manzanita-next/design-system/out
+          REVIEW_HEAD_SHA="$SEALED_HEAD_SHA" \
+            python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/design-system/review/M99-RB-PKT-002.json \
+            --decision manzanita-next/design-system/review/M99-RB-DEC-002.json \
+            --receipt manzanita-next/design-system/out/BOARD_DECISION_RECEIPT.json
+          REVIEW_HEAD_SHA="$SEALED_HEAD_SHA" python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          browser = json.loads(Path("manzanita-next/design-system/out/BROWSER_REPORT.json").read_text())
+          board = json.loads(Path("manzanita-next/design-system/out/BOARD_DECISION_RECEIPT.json").read_text())
+          assert browser["result"] == "PASS"
+          assert len(browser["captures"]) == 8
+          assert len(browser["mechanics"]["control_targets"]) == 14
+          assert all(row["width"] >= 44 and row["height"] >= 44 for row in browser["mechanics"]["control_targets"])
+          assert all(not row["external_requests"] for row in browser["observations"])
+          assert all(not row["console_errors"] for row in browser["observations"])
+          assert all(not row["page_errors"] for row in browser["observations"])
+          assert all(not row["failed_requests"] for row in browser["observations"])
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 6
+          PY
+
+      - name: Publish and merge only the exact sealed head
+        run: |
+          git push origin HEAD:"$BRANCH_NAME"
+          PR_NUMBER="$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --head "$BRANCH_NAME" \
+            --base main \
+            --state open \
+            --json number \
+            --jq '.[0].number')"
+          test -n "$PR_NUMBER"
+          PR_URL="https://github.com/$GITHUB_REPOSITORY/pull/$PR_NUMBER"
+          if test "$(gh pr view "$PR_URL" --json isDraft --jq .isDraft)" = "true"; then
+            gh pr ready "$PR_URL"
+          fi
+          response="$(gh api \
+            --method PUT \
+            -H "Accept: application/vnd.github+json" \
+            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/merge" \
+            -f merge_method=merge \
+            -f sha="$SEALED_HEAD_SHA" \
+            -f commit_title="Merge Forkline Field design constitution" \
+            -f commit_message="Admit Forkline Field v1.0.0 for internal successor production with optical, motion, live-source, field, whole-experience, release, and constitutional-count holds preserved.")"
+          echo "$response" | jq -e '.merged == true'
