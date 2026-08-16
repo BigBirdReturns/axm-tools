@@ -1,0 +1,70 @@
+name: Manzanita v1.6 source foundation
+
+on:
+  push:
+    branches:
+      - build/manzanita-v1.6-source-foundation
+    paths:
+      - "manzanita-next/**"
+      - ".github/workflows/manzanita-source-foundation.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/**"
+      - ".github/workflows/manzanita-source-foundation.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  acquire-and-qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install acquisition dependencies
+        run: python -m pip install --disable-pip-version-check requests beautifulsoup4 pillow jsonschema pytest
+      - name: Validate static contracts
+        run: pytest -q manzanita-next/tests
+      - name: Acquire real source assets
+        id: acquire
+        continue-on-error: true
+        env:
+          AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPILLARY_ACCESS_TOKEN: ${{ secrets.MAPILLARY_ACCESS_TOKEN }}
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
+        run: |
+          rm -rf manzanita-next/out
+          cd manzanita-next
+          python -m scripts.acquire_foundation \
+            --place config/place-demo.json \
+            --registry config/source-registry.json \
+            --out out
+      - name: Validate source receipts and payloads
+        id: validate
+        if: always()
+        run: |
+          python manzanita-next/scripts/validate_foundation.py \
+            --root manzanita-next/out \
+            --source-schema manzanita-next/contracts/source-envelope.schema.json
+      - name: Upload source foundation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v16-source-foundation-${{ github.sha }}
+          path: manzanita-next/out
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Enforce acquisition result
+        if: always()
+        env:
+          ACQUIRE_OUTCOME: ${{ steps.acquire.outcome }}
+          VALIDATE_OUTCOME: ${{ steps.validate.outcome }}
+        run: |
+          test "$ACQUIRE_OUTCOME" = "success"
+          test "$VALIDATE_OUTCOME" = "success"
