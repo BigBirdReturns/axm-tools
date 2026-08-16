@@ -1,0 +1,319 @@
+{
+  "schema": "axm-tools/manzanita-99-donor-register@1",
+  "task": "JDB99-001",
+  "state": "in_progress",
+  "recorded_on": "2026-08-16",
+  "owner_seat": "source custody and release continuity",
+  "authority": {
+    "may": [
+      "locate, copy, hash, classify, and admit donor artifacts",
+      "record rights, claim boundaries, failure states, and missing evidence",
+      "reject a donor whose identity, provenance, or integrity cannot be reproduced"
+    ],
+    "may_not": [
+      "promote a donor into the successor interface",
+      "treat a located artifact as archived",
+      "close JDB99-001 while any required custody gap remains open",
+      "alter the historical public Manzanita route during custody work"
+    ]
+  },
+  "qualification_boundary": "A passing custody validation proves only that the register, repo-resident hashes, route guard, and declared gaps are internally consistent. It does not close JDB99-001, qualify a Manzanita release, or transfer product authority.",
+  "hash_law": {
+    "content": "sha256",
+    "git_object_cross_check": "sha1(blob <bytes>\\0<content>)",
+    "ordering": "UTF-8 repository-relative POSIX path, ascending",
+    "manifest_encoding": "UTF-8 canonical JSON with sorted keys"
+  },
+  "required_classes": [
+    "public_release",
+    "source_foundation",
+    "legacy_register",
+    "program_control",
+    "visual_golden",
+    "playtest",
+    "failure_receipt",
+    "live_data_acquisition",
+    "deployment_receipt",
+    "asset_provenance",
+    "standalone_export"
+  ],
+  "archive_scopes": [
+    {
+      "id": "current-public-route",
+      "class": "public_release",
+      "path": "manzanita",
+      "required": true,
+      "exclude": []
+    },
+    {
+      "id": "program-control",
+      "class": "program_control",
+      "path": "programs/manzanita-99",
+      "required": true,
+      "exclude": [
+        "programs/manzanita-99/MASTER_BACKLOG.json",
+        "programs/manzanita-99/MASTER_BACKLOG.csv",
+        "programs/manzanita-99/custody/CUSTODY_MANIFEST.json",
+        "programs/manzanita-99/custody/__pycache__",
+        "programs/manzanita-99/custody/tests/__pycache__"
+      ]
+    },
+    {
+      "id": "current-deployment-receipt",
+      "class": "deployment_receipt",
+      "path": ".github/pages-deployment.json",
+      "required": true,
+      "exclude": []
+    },
+    {
+      "id": "historical-route-validation",
+      "class": "failure_receipt",
+      "path": ".github/workflows/manzanita-check.yml",
+      "required": true,
+      "exclude": []
+    },
+    {
+      "id": "historical-live-validation",
+      "class": "failure_receipt",
+      "path": ".github/workflows/manzanita-live-check.yml",
+      "required": true,
+      "exclude": []
+    }
+  ],
+  "public_route_guard": {
+    "path": "manzanita",
+    "release": "1.4.0",
+    "tree_sha": "846132be374b1e1da5a9444dc67da877bbb32224",
+    "source_commit_at_registration": "d5162868b6d9dc3b86a2d59c3b52eb9e626a0c10",
+    "files": {
+      "manzanita/QUALIFICATION.json": {
+        "git_blob_sha1": "a3cb3212c22a32b113929e079a331c5f9a9129dd"
+      },
+      "manzanita/README.md": {
+        "git_blob_sha1": "072639fef3188c3524dad0c8cb76255d5033e406",
+        "sha256": "d964e0c9717ee2757c82f0ababe74ef54c48595cff2a3c24237042578cd2c214"
+      },
+      "manzanita/VISUAL_CONSTITUTION.md": {
+        "git_blob_sha1": "23b3fa62fa8828e2725f6fcb6ec01865c8447d82",
+        "sha256": "f54dce9d2f61adff25f2e2e6f1ab182746bbc08f1918e918264d78e55ace901a"
+      },
+      "manzanita/app.js": {
+        "git_blob_sha1": "e6eaac1f737b9a7562cf72bd5787403015089a8f",
+        "sha256": "59e09813f33c8533e9d10a784afa76d862075fcbb5cc8a234f476663bc16c512"
+      },
+      "manzanita/index.html": {
+        "git_blob_sha1": "1bede6eaab2618d29b6e66860fcd4a2049f53ae0",
+        "sha256": "c8a521ac84cdaba2e9fa6bbeec984feeb1e9f95a57bdcd116302dab62fbdf7cd"
+      },
+      "manzanita/style.css": {
+        "git_blob_sha1": "1dd739faf9de442ee830c546870502437a87b453",
+        "sha256": "cc3dfd99aa10ac4116b979e0e1e8d5a479e70d3c023cbf58d1b82036cd2a2100"
+      },
+      "manzanita/tests/browser_test.py": {
+        "git_blob_sha1": "51eb4ec005fe638d1dbc62180baf7200a037ff71"
+      },
+      "manzanita/tests/public_contract_test.py": {
+        "git_blob_sha1": "a15dd83b7ed48993cea4db1fc8dd0cdbc20e9ff0"
+      },
+      "manzanita/theme-init.js": {
+        "git_blob_sha1": "18fc2f35742a15cc018b049702634934ee2ec2af",
+        "sha256": "29a2acecd398fba04540e115c8c87a070de1bbf1cf18a3768ca79de494bef1da"
+      }
+    },
+    "failure_message": "Any mismatch means custody work changed or failed to recover the historical public route. Stop integration and investigate before merging."
+  },
+  "donors": [
+    {
+      "id": "manzanita-public-1.4.0",
+      "class": "public_release",
+      "custody_state": "archived",
+      "location": "repository",
+      "archive_scope_ids": [
+        "current-public-route"
+      ],
+      "anchors": {
+        "release": "1.4.0",
+        "tree_sha": "846132be374b1e1da5a9444dc67da877bbb32224",
+        "qualification_blob": "a3cb3212c22a32b113929e079a331c5f9a9129dd"
+      },
+      "claim_boundary": "Historical public donor. Its own qualification receipt is preserved, but the 99-point program does not admit it as the successor or as whole-product qualified."
+    },
+    {
+      "id": "manzanita-source-foundation-pr90",
+      "class": "source_foundation",
+      "custody_state": "archived_private_external",
+      "location": "git history, retained receipt, and owner-only Google Drive archive",
+      "archive_scope_ids": [
+        "program-control"
+      ],
+      "anchors": {
+        "pull_request": 90,
+        "merge_base_before_rebase": "56f5828621b39ffeafc44a36d307ecfd8de6265a",
+        "qualified_head_before_rebase": "416abd404a01e3dafa0a78520ef0f754e843ea77",
+        "qualified_tree": "ad7d167c50a59cb6b313fd777b77ab4aa2a38c3b",
+        "qualified_workflow_run": "31903077053",
+        "qualified_artifact_file_count": 41,
+        "rebased_head": "3afcbe17a1c12217575aa247ab457038253491a6",
+        "rebased_onto": "d5162868b6d9dc3b86a2d59c3b52eb9e626a0c10",
+        "github_artifact_id": 9251615986,
+        "artifact_sha256": "c83cebc5a2c6266fa14f77db2758ec25d86cca86e69630a42ce08dcfafa99e9e",
+        "artifact_bytes": 8639908,
+        "artifact_entries": 41,
+        "artifact_receipt": "programs/manzanita-99/custody/SOURCE_FOUNDATION_ARTIFACT.json.gz.b64",
+        "private_archive_provider": "Google Drive",
+        "private_archive_shared": false,
+        "private_archive_folder_name": "Manzanita 99 Custody",
+        "private_archive_file_name": "manzanita-v16-source-foundation-416abd404a01e3dafa0a78520ef0f754e843ea77.zip",
+        "private_archive_receipt_name": "SOURCE_FOUNDATION_ARTIFACT_416abd404a01e3dafa0a78520ef0f754e843ea77.json"
+      },
+      "claim_boundary": "Qualified source-foundation donor only. The exact 41-file artifact is privately archived and verified, but the live acquisition claim remains bound to the preserved pre-rebase head and workflow run. The rebased head requires its own admitted checks, and the private archive still needs an independently controlled mirror for final cold-successor closure."
+    },
+    {
+      "id": "manzanita-legacy-asset-register-pr89",
+      "class": "legacy_register",
+      "custody_state": "archived",
+      "location": "git history plus canonical backlog",
+      "archive_scope_ids": [
+        "program-control"
+      ],
+      "anchors": {
+        "pull_request": 89,
+        "head_sha": "7c5d29d0e83b96d5b84c16ff4ba892b4e3213461",
+        "canonical_register": "programs/manzanita-99/MASTER_BACKLOG.json.gz.b64"
+      },
+      "claim_boundary": "Planning donor absorbed into the canonical backlog. It carries no product-completion claim."
+    },
+    {
+      "id": "manzanita-program-control-pr92-pr93",
+      "class": "program_control",
+      "custody_state": "archived",
+      "location": "repository and git history",
+      "archive_scope_ids": [
+        "program-control"
+      ],
+      "anchors": {
+        "benchmark_merge": "f4030a8667b7e598e80bf9b143b9049cf5814009",
+        "execution_state_merge": "8fdac7e496cdfde3939e78c133bbcd547a9ef1f6",
+        "pull_requests": [
+          92,
+          93
+        ]
+      },
+      "claim_boundary": "Constitution and execution overlay only. These records do not qualify a product surface."
+    },
+    {
+      "id": "current-pages-deployment-receipt",
+      "class": "deployment_receipt",
+      "custody_state": "archived",
+      "location": "repository",
+      "archive_scope_ids": [
+        "current-deployment-receipt"
+      ],
+      "anchors": {
+        "deployed_at": "2026-08-15T21:31:23.981220+00:00",
+        "source_sha": "8fdac7e496cdfde3939e78c133bbcd547a9ef1f6",
+        "run_id": "31909647898"
+      },
+      "claim_boundary": "Receipt for the repository Pages deployment, not proof that every route or release is qualified."
+    }
+  ],
+  "gaps": [
+    {
+      "id": "M99-CUSTODY-GAP-001",
+      "class": "public_release",
+      "state": "open",
+      "required_for_close": true,
+      "target": "Enumerate and retain every Manzanita release and failed build before 1.4.0 from git history and any surviving external package.",
+      "admission": "Each release has an immutable commit or package identity, complete file manifest, SHA-256 hashes, classification, and claim boundary.",
+      "failure_mode": "A visually or functionally important predecessor disappears behind the label 'old version'."
+    },
+    {
+      "id": "M99-CUSTODY-GAP-002",
+      "class": "source_foundation",
+      "state": "closed",
+      "required_for_close": true,
+      "target": "Download and ingest the 41-file artifact from workflow run 31903077053, including all 20 source receipts and retained payloads.",
+      "admission": "The ZIP bytes, expanded files, per-file SHA-256 hashes, source times, requests, rights fields, and artifact identity are retained outside expiring Actions storage.",
+      "failure_mode": "The qualified live-data claim survives only as prose after the Actions retention window expires.",
+      "closure": "GitHub artifact 9251615986 was downloaded before expiry. Its 8,639,908 bytes matched SHA-256 c83cebc5a2c6266fa14f77db2758ec25d86cca86e69630a42ce08dcfafa99e9e; all 41 ZIP entries, 20 source receipts, and declared payload hashes were verified; an owner-only Google Drive copy was written and read back.",
+      "evidence": [
+        "programs/manzanita-99/custody/SOURCE_FOUNDATION_ARTIFACT.json.gz.b64",
+        "private-archive/Manzanita 99 Custody/manzanita-v16-source-foundation-416abd404a01e3dafa0a78520ef0f754e843ea77.zip",
+        "private-archive/Manzanita 99 Custody/SOURCE_FOUNDATION_ARTIFACT_416abd404a01e3dafa0a78520ef0f754e843ea77.json",
+        "github-actions-artifact/9251615986"
+      ]
+    },
+    {
+      "id": "M99-CUSTODY-GAP-003",
+      "class": "visual_golden",
+      "state": "open",
+      "required_for_close": true,
+      "target": "Locate every approved and rejected Manzanita visual golden, including full-state desktop, mobile, compact, light, dark, and failure views.",
+      "admission": "Each image is tied to route, commit, viewport, theme, state, browser, capture method, and acceptance or rejection disposition.",
+      "failure_mode": "Later work can imitate a hero crop while losing the state that was actually approved or rejected."
+    },
+    {
+      "id": "M99-CUSTODY-GAP-004",
+      "class": "playtest",
+      "state": "open",
+      "required_for_close": true,
+      "target": "Recover playtest scripts, seat transcripts, observed failures, and disposition records for the v1.4 and rejected v1.5 sequences.",
+      "admission": "Every finding names the seat, scenario, build identity, observation, severity, disposition, and retained evidence.",
+      "failure_mode": "A later build repeats a known failure because only the summary survived."
+    },
+    {
+      "id": "M99-CUSTODY-GAP-005",
+      "class": "failure_receipt",
+      "state": "open",
+      "required_for_close": true,
+      "target": "Retain failed CI runs, deployment failures, rejected-release receipts, and no-coverage or provider-failure artifacts that materially changed the design.",
+      "admission": "Each failure has a stable run or file identity, logs or bounded extract, affected commit, classification, and resulting rule.",
+      "failure_mode": "Successful reruns erase the causal evidence for the rule that followed."
+    },
+    {
+      "id": "M99-CUSTODY-GAP-006",
+      "class": "live_data_acquisition",
+      "state": "open",
+      "required_for_close": true,
+      "target": "Retain every admitted live-data acquisition bundle beyond PR #90, including empty, stale, contradictory, missing-credential, rate-limited, and outage states.",
+      "admission": "Payloads and receipts preserve request, response class, source time, retrieval time, transform, attribution, rights, cache rule, uncertainty, and degradation state.",
+      "failure_mode": "Only the happy-path payload remains available for qualification."
+    },
+    {
+      "id": "M99-CUSTODY-GAP-007",
+      "class": "deployment_receipt",
+      "state": "open",
+      "required_for_close": true,
+      "target": "Backfill Manzanita-specific deployment receipts and exact public-byte identities for prior releases and failed deployments.",
+      "admission": "Every deployed or attempted release has source commit, artifact digest, endpoint, run identity, outcome, rollback target, and observed public hash.",
+      "failure_mode": "Repository state is mistaken for the bytes that actually reached the endpoint."
+    },
+    {
+      "id": "M99-CUSTODY-GAP-008",
+      "class": "asset_provenance",
+      "state": "open",
+      "required_for_close": true,
+      "target": "Locate original sourced, captured, authored, modeled, generated, and transformed visual assets with rights and claim receipts.",
+      "admission": "Each asset has original bytes or stable source, creator or provider, acquisition date, rights class, transforms, generated-state label where applicable, and permitted claims.",
+      "failure_mode": "A polished image becomes an unattributed orphan or is later mistaken for observed evidence."
+    },
+    {
+      "id": "M99-CUSTODY-GAP-009",
+      "class": "standalone_export",
+      "state": "open",
+      "required_for_close": true,
+      "target": "Locate standalone Manzanita HTML, ZIP, PDF, image, and handoff exports that existed outside the current repository tree.",
+      "admission": "Each export has complete bytes, SHA-256, production date, source build, purpose, recipient class, and supersession status.",
+      "failure_mode": "An externally circulated artifact cannot be reproduced or distinguished from the canonical route."
+    },
+    {
+      "id": "M99-CUSTODY-GAP-010",
+      "class": "source_foundation",
+      "state": "open",
+      "required_for_close": true,
+      "target": "Mirror the exact PR #90 source-foundation ZIP into the independently controlled local estate or a second durable archive.",
+      "admission": "The mirror retains the same 8,639,908 bytes and SHA-256 c83cebc5a2c6266fa14f77db2758ec25d86cca86e69630a42ce08dcfafa99e9e, has a documented recovery path, and is replayed by a cold successor.",
+      "failure_mode": "The only durable copy remains contingent on access to one Google account, so account loss defeats succession despite successful content hashing."
+    }
+  ]
+}

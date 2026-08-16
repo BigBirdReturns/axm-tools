@@ -3,7 +3,7 @@ name: Manzanita 99 program
 on:
   push:
     branches:
-      - program/manzanita-99-design-rigor
+      - main
     paths:
       - "programs/manzanita-99/**"
       - ".github/workflows/manzanita-99-program.yml"
@@ -31,16 +31,37 @@ jobs:
       - name: Expand and validate the 497-task register
         run: python programs/manzanita-99/validate_program.py
 
-      - name: Retain expanded task views
+      - name: Test donor custody machinery
+        run: >-
+          python -m unittest discover
+          -s programs/manzanita-99/custody/tests
+          -p "test_*.py"
+
+      - name: Build and validate the donor custody manifest
+        run: |
+          python programs/manzanita-99/custody/build_custody.py \
+            --repo-root . \
+            --output programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+          python programs/manzanita-99/custody/validate_custody.py \
+            --repo-root . \
+            --manifest programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+
+      - name: Retain expanded program and custody views
         uses: actions/upload-artifact@v4
         with:
           name: manzanita-99-program-${{ github.sha }}
           path: |
             programs/manzanita-99/README.md
+            programs/manzanita-99/STATUS.md
+            programs/manzanita-99/EXECUTION_STATE.json
             programs/manzanita-99/BACKLOG_FORMAT.md
             programs/manzanita-99/AMENDMENTS.json
             programs/manzanita-99/SCORECARD.json
             programs/manzanita-99/MASTER_BACKLOG.json
             programs/manzanita-99/MASTER_BACKLOG.csv
+            programs/manzanita-99/custody/README.md
+            programs/manzanita-99/custody/DONOR_REGISTER.json
+            programs/manzanita-99/custody/SOURCE_FOUNDATION_ARTIFACT.json.gz.b64
+            programs/manzanita-99/custody/CUSTODY_MANIFEST.json
           if-no-files-found: error
           retention-days: 90

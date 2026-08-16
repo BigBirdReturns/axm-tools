@@ -1,6 +1,6 @@
 {
   "schema": "axm-tools/manzanita-99-execution-state@1",
-  "as_of": "2026-08-15T21:30:00Z",
+  "as_of": "2026-08-16T02:41:47Z",
   "baseline_task_count": 497,
   "baseline_priority_counts": {
     "P0": 318,
@@ -29,6 +29,49 @@
       "closure": "The 361-asset register was absorbed into the canonical 497-task backlog and PR #89 was closed as superseded."
     }
   ],
+  "active_tasks": [
+    {
+      "id": "JDB99-001",
+      "state": "in_progress",
+      "evidence": [
+        "programs/manzanita-99/custody/README.md",
+        "programs/manzanita-99/custody/DONOR_REGISTER.json",
+        "programs/manzanita-99/custody/build_custody.py",
+        "programs/manzanita-99/custody/validate_custody.py",
+        "programs/manzanita-99/custody/SOURCE_FOUNDATION_ARTIFACT.json.gz.b64"
+      ],
+      "admitted": "Executable custody law, deterministic repo-resident hashing, current public-route guard, donor anchors, explicit close gaps, and the verified owner-only archive of the 41-file PR #90 source-foundation artifact.",
+      "remaining_gates": [
+        "prior releases and failed builds",
+        "independently controlled mirror of the PR #90 artifact",
+        "visual goldens",
+        "playtests",
+        "failure receipts",
+        "live-data degradation bundles",
+        "historical deployment receipts",
+        "asset-provenance records",
+        "standalone exports"
+      ],
+      "qualification_boundary": "A custody PASS validates retained evidence and the open-gap ledger. It does not close the task."
+    },
+    {
+      "id": "JDB99-002",
+      "state": "in_progress",
+      "evidence": [
+        "pull/90",
+        "commit/416abd404a01e3dafa0a78520ef0f754e843ea77",
+        "commit/3afcbe17a1c12217575aa247ab457038253491a6",
+        "workflow-run/31903077053",
+        "programs/manzanita-99/custody/SOURCE_FOUNDATION_ARTIFACT.json.gz.b64"
+      ],
+      "admitted": "PR #90 is rebased as one additive commit above the current main baseline and the historical public route is unchanged.",
+      "remaining_gates": [
+        "rebased checks pass",
+        "source foundation integrated without successor-interface promotion"
+      ],
+      "qualification_boundary": "The live acquisition claim remains attached to the pre-rebase head and workflow run until new evidence is admitted."
+    }
+  ],
   "remaining_task_count": 495,
   "remaining_priority_counts": {
     "P0": 316,
@@ -50,5 +93,5 @@
     "JDB99-018",
     "JDB99-020"
   ],
-  "qualification_boundary": "This state closes program-control tasks only. No Manzanita product release, estate surface, or score dimension is thereby qualified."
+  "qualification_boundary": "This state closes program-control tasks only. Active-task evidence does not qualify a Manzanita product release, estate surface, or score dimension."
 }
