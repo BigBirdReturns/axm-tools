@@ -53,6 +53,16 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def portable_path(path: Path) -> str:
+    """Return a stable non-absolute receipt path without inventing source custody."""
+    resolved = path.resolve()
+    try:
+        relative = resolved.relative_to(Path.cwd().resolve())
+    except ValueError:
+        relative = Path(path.name)
+    return relative.as_posix()
+
+
 def load_json(path: Path) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -252,7 +262,7 @@ def propose(
             else "displacement_hold"
         ),
         "image": {
-            "path": image_path.as_posix(),
+            "path": portable_path(image_path),
             "format": source_format,
             "width": width,
             "height": height,

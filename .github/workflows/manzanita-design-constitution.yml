@@ -1,0 +1,155 @@
+name: Manzanita Forkline Field design constitution
+
+on:
+  push:
+    branches:
+      - agent/manzanita-design-constitution-004-011
+    paths:
+      - "manzanita-next/design-system/**"
+      - ".github/workflows/manzanita-design-constitution.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/design-system/**"
+      - ".github/workflows/manzanita-design-constitution.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Qualify Forkline Field internal candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove the candidate diff is bounded
+        run: |
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {
+              ".github/workflows/manzanita-design-constitution.yml",
+          }
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/design-system/")
+          ]
+          if invalid:
+              raise SystemExit(f"Design-constitution candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("manzanita-next/design-system/") for path in changed):
+              raise SystemExit("Candidate contains no design-system object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+
+      - name: Install browser qualification dependencies
+        run: |
+          python -m pip install --disable-pip-version-check playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Validate the machine constitution and static specimen
+        run: |
+          python -m py_compile \
+            manzanita-next/design-system/tests/test_constitution.py \
+            manzanita-next/design-system/tests/browser_test.py
+          python -m json.tool manzanita-next/design-system/CONSTITUTION.json > /dev/null
+          python -m json.tool manzanita-next/design-system/review/M99-RB-PKT-002.json > /dev/null
+          python -m json.tool manzanita-next/design-system/review/M99-RB-DEC-002.json > /dev/null
+          python -m unittest discover \
+            -s manzanita-next/design-system/tests \
+            -p "test_constitution.py"
+
+      - name: Exercise all specimen states and retain full-state captures
+        run: |
+          rm -rf manzanita-next/design-system/out
+          python manzanita-next/design-system/tests/browser_test.py \
+            --root manzanita-next/design-system/specimen \
+            --out manzanita-next/design-system/out
+
+      - name: Run the contained multidisciplinary review
+        run: |
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+          test -f programs/manzanita-99/review-board/validate_review_board.py
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/design-system/review/M99-RB-PKT-002.json \
+            --decision manzanita-next/design-system/review/M99-RB-DEC-002.json \
+            --receipt manzanita-next/design-system/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Prove exact-head internal admission and retained holds
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          browser = json.loads(
+              Path("manzanita-next/design-system/out/BROWSER_REPORT.json")
+              .read_text(encoding="utf-8")
+          )
+          board = json.loads(
+              Path("manzanita-next/design-system/out/BOARD_DECISION_RECEIPT.json")
+              .read_text(encoding="utf-8")
+          )
+
+          assert browser["result"] == "PASS"
+          assert browser["source_class"] == "authored_demonstration_geometry"
+          assert len(browser["captures"]) == 8
+          assert len(browser["mechanics"]["apertures"]) == 4
+          assert len(browser["mechanics"]["overlays"]) == 4
+          assert len(browser["mechanics"]["actors"]) == 3
+          assert all(not row["console_errors"] for row in browser["observations"])
+          assert all(not row["page_errors"] for row in browser["observations"])
+          assert all(not row["external_requests"] for row in browser["observations"])
+          assert all(not row["failed_requests"] for row in browser["observations"])
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-002"
+          assert board["decision_id"] == "M99-RB-DEC-002"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 6
+          PY
+
+      - name: Retain the constitution, captures, reports, and board receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-forkline-field-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            manzanita-next/design-system/README.md
+            manzanita-next/design-system/CONSTITUTION.json
+            manzanita-next/design-system/specimen/index.html
+            manzanita-next/design-system/specimen/style.css
+            manzanita-next/design-system/specimen/app.js
+            manzanita-next/design-system/tests/test_constitution.py
+            manzanita-next/design-system/tests/browser_test.py
+            manzanita-next/design-system/review/M99-RB-PKT-002.json
+            manzanita-next/design-system/review/M99-RB-DEC-002.json
+            manzanita-next/design-system/out/*.png
+            manzanita-next/design-system/out/BROWSER_REPORT.json
+            manzanita-next/design-system/out/BOARD_DECISION_RECEIPT.json
+          if-no-files-found: error
+          retention-days: 90

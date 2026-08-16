@@ -74,21 +74,25 @@ PROHIBITED_PUBLIC_KEYS = {
 VIEW_GEOMETRY = {
     "place": {
         "ground": "M45 530 C128 476 189 452 274 397 C365 338 438 297 528 272 C620 247 700 277 790 249 C884 219 951 153 1042 129 C1097 114 1142 118 1170 94",
+        "register": "M92 575 C195 496 278 431 371 376 C469 319 565 296 659 269 C753 242 843 211 927 170 C1014 128 1091 111 1153 95",
         "overlay": "M170 526 C264 468 347 409 438 365 C523 324 608 299 695 290 C783 281 855 247 925 203 C983 167 1038 153 1084 166 C1068 235 1002 286 929 318 C841 357 751 364 661 395 C560 430 474 506 370 544 C292 572 218 561 170 526 Z",
         "label": "PUBLIC PLACE · SOURCE COVERAGE",
     },
     "weather": {
         "ground": "M30 551 C114 509 176 446 258 414 C353 377 421 309 513 279 C611 247 690 270 785 235 C884 199 957 132 1054 115 C1105 106 1143 113 1180 83",
+        "register": "M78 581 C168 499 247 438 342 389 C438 340 536 315 628 278 C723 240 814 208 901 166 C994 121 1082 103 1158 88",
         "overlay": "M292 507 C320 404 383 330 465 280 C555 225 642 190 735 190 C826 190 904 230 942 296 C975 354 946 421 883 459 C809 505 719 501 629 516 C510 536 394 570 292 507 Z",
         "label": "WEATHER · TIME AND ALERT STATE",
     },
     "water": {
         "ground": "M34 571 C128 528 214 492 296 446 C388 395 467 346 557 309 C658 268 744 250 833 208 C929 163 1018 132 1105 124 C1140 120 1165 112 1186 98",
+        "register": "M72 600 C164 547 254 502 341 450 C431 396 513 350 602 314 C694 276 771 233 852 190 C939 144 1025 126 1110 115",
         "overlay": "M82 577 C181 535 269 476 346 418 C430 355 511 324 594 294 C681 263 752 203 821 184 C884 166 938 192 948 238 C958 288 910 343 852 376 C783 415 701 427 625 467 C528 518 443 580 341 607 C243 633 139 624 82 577 Z",
         "label": "WATER · NEARBY MONITORING CONTEXT",
     },
     "fire": {
         "ground": "M20 566 C111 506 175 435 262 397 C352 357 416 287 506 242 C596 197 681 194 764 147 C852 97 932 59 1016 86 C1086 108 1135 94 1184 61",
+        "register": "M66 590 C157 508 237 440 331 387 C428 332 523 300 616 258 C711 215 794 155 880 120 C970 84 1054 82 1142 66",
         "overlay": "M533 515 C566 410 631 329 714 274 C801 217 875 141 961 118 C1031 99 1094 113 1122 159 C1153 211 1124 279 1063 327 C994 382 909 404 829 442 C727 490 631 554 533 515 Z",
         "label": "FIRE · ATTENTION, NOT ADVERSE SCORING",
     },
@@ -381,9 +385,19 @@ def public_source_row(
         or registry_row.get("claim_scope")
         or "Source scope requires review before a substantive claim"
     )
-    error = receipt.get("error") if state != "ok" else None
-    if isinstance(error, str) and len(error) > 240:
-        error = error[:237] + "..."
+    raw_error = receipt.get("error") if state != "ok" else None
+    public_errors = {
+        "empty": "The provider returned no qualifying item or coverage for this request.",
+        "stale": "The retained source exceeds its admitted freshness window.",
+        "skipped_missing_credential": "An approved provider credential is not configured; the request was not attempted.",
+        "rate_limited": "The provider deferred or refused the request under a rate or quota limit.",
+        "unavailable": "The provider, network, transform, or required artifact was unavailable.",
+        "terms_blocked": "Provider rights or redistribution terms prohibit inclusion in this public artifact.",
+        "unknown": "The retained receipt does not support a more specific public failure classification.",
+    }
+    error = public_errors.get(state) if state != "ok" else None
+    if raw_error and state == "unknown":
+        error = public_errors["unknown"]
     return {
         "id": source_id,
         "label": str(registry_row.get("label") or registry_row.get("name") or source_id.replace("_", " ").title()),

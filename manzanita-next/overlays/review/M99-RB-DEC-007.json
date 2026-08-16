@@ -1,0 +1,238 @@
+{
+  "schema": "axm-tools/manzanita-review-decision@1",
+  "decision_id": "M99-RB-DEC-007",
+  "packet_id": "M99-RB-PKT-007",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "reviewed_ref": {
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "external_review_claim": false,
+  "seat_reviews": [
+    {
+      "seat_id": "board_chair",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The packet identifies one bounded machine-architecture object, all twelve seats, the exact donor chain, and an internal-only requested authority.",
+        "Admission preserves partial interaction, visual, motion, accessibility, resilience, succession, release, and constitutional-count gates as explicit holds."
+      ],
+      "evidence_ids": ["E-OVERLAY-CONTRACT", "E-OVERLAY-BUILD", "E-OVERLAY-WORKFLOW", "E-BOARD-CHARTER"],
+      "uncertainty": "The candidate has not been exercised as an interactive or public overlay product.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "creative_direction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Eight distinct authored geometries and legend systems provide a bounded substrate for one Forkline overlay family without asserting that the shapes are observations.",
+        "Production composition, optical hierarchy, light and dark treatment, and full-state visual goldens remain outside this machine candidate."
+      ],
+      "evidence_ids": ["E-DESIGN-CONSTITUTION", "E-AUTHORED-OVERLAY-DEMO", "E-OVERLAY-CONTRACT", "E-OVERLAY-BUNDLE"],
+      "uncertainty": "No production overlay composition or visual comparison has been admitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "product_interaction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Each instrument changes evidence, geometry, state, legend, action, authority, acceptance, conflict, and handoff rather than only changing a label or color.",
+        "Toggling, ordering, comparison, persistence, undo, keyboard, touch, actor switching, and comprehension remain unimplemented interaction objects."
+      ],
+      "evidence_ids": ["E-OVERLAY-CONTRACT", "E-OVERLAY-BUILDER", "E-OVERLAY-TESTS", "E-OVERLAY-BUNDLE"],
+      "uncertainty": "No actor has operated these instruments through an interactive surface.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "information_design",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The bundle keeps source state, aperture evidence, Street Glide evidence, authored geometry, reading, uncertainty, action, authority, acceptance, handoff, conflict, and prohibited consequence separately legible.",
+        "Dense and compact information hierarchy remains a later whole-interface obligation."
+      ],
+      "evidence_ids": ["E-OVERLAY-CONTRACT", "E-PUBLIC-DATA", "E-APERTURE-BUNDLE", "E-SCENE-DECISION", "E-REGISTRATION-RECEIPT", "E-OVERLAY-BUNDLE"],
+      "uncertainty": "The machine records have not been tested for human comprehension under density or compact width.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "typography",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The contract supplies complete overlay names, readings, legends, states, actions, authorities, conflicts, and non-claims for later typographic composition.",
+        "Type fitting, fallback behavior, multilingual expansion, critical symbols, 200 percent zoom, and responsive recomposition remain open."
+      ],
+      "evidence_ids": ["E-DESIGN-CONSTITUTION", "E-OVERLAY-CONTRACT", "E-OVERLAY-BUNDLE"],
+      "uncertainty": "No production typography specimen for the eight-instrument density has been admitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "motion",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The architecture preserves overlay order, source time, state, common registration, conflict, and handoff fields needed for meaningful temporal behavior.",
+        "No overlay transition, comparison motion, source-aging behavior, interruption rule, or reduced-motion equivalent is submitted."
+      ],
+      "evidence_ids": ["E-DESIGN-CONSTITUTION", "E-PUBLIC-DATA", "E-OVERLAY-CONTRACT", "E-OVERLAY-BUNDLE"],
+      "uncertainty": "Temporal comprehension and reduced-motion parity remain untested.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "source_custody",
+      "disposition": "pass",
+      "findings": [
+        "Public sources, aperture references, Street Glide receipts, base-image identity, and authored overlay geometry remain separately classified, hashed, scoped, and prohibited from authority transfer.",
+        "Missing credentials, empty coverage, map-only operation, degraded sources, and authored demonstrations remain visible rather than being converted into zero or observation."
+      ],
+      "evidence_ids": ["E-PUBLIC-DATA", "E-PUBLIC-PROJECTION", "E-APERTURE-BUNDLE", "E-SCENE-DECISION", "E-REGISTRATION-RECEIPT", "E-AUTHORED-OVERLAY-DEMO", "E-OVERLAY-BUILDER", "E-OVERLAY-BUNDLE"],
+      "uncertainty": "Live provider terms, credentials, quotas, and future source changes remain operational holds.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "field_operations",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The contract states safe verification routes and explicitly withholds entry, inspection, traffic, pruning, labor, work, completion, and physical-feature authority.",
+        "No private place, lawful-access event, field observation, equipment condition, resident consent, crew procedure, or completion receipt is submitted."
+      ],
+      "evidence_ids": ["E-OVERLAY-CONTRACT", "E-AUTHORED-OVERLAY-DEMO", "E-SCENE-DECISION", "E-REGISTRATION-RECEIPT", "E-OVERLAY-BUNDLE"],
+      "uncertainty": "Field fitness and affected-actor acceptance remain wholly unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "accessibility",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Every overlay preserves textual names, source states, legend meanings, non-claims, uncertainty, actions, authority, acceptance, handoff, and conflicts without requiring color alone.",
+        "Keyboard, touch, screen-reader, zoom, compact, forced-color, reduced-motion, and assistive-technology operation remain future interface campaigns."
+      ],
+      "evidence_ids": ["E-DESIGN-CONSTITUTION", "E-OVERLAY-CONTRACT", "E-OVERLAY-BUNDLE"],
+      "uncertainty": "No interactive accessibility campaign is represented by these machine records.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "performance_resilience",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Deterministic local composition, mixed degraded states, explicit missing-source rows, symmetric conflict law, and byte-addressed outputs pass within the bounded builder.",
+        "Large geometry, concurrent layers, live refresh, slow and intermittent networks, caches, devices, observability, serving, export, and rollback remain unproved."
+      ],
+      "evidence_ids": ["E-OVERLAY-BUILDER", "E-OVERLAY-TESTS", "E-OVERLAY-BUILD", "E-OVERLAY-WORKFLOW"],
+      "uncertainty": "Runtime resource use and degraded-network behavior remain outside this candidate.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "security_privacy",
+      "disposition": "pass",
+      "findings": [
+        "The builder rejects private and credential fields, consumes only public-safe and explicitly authored donors, and preserves rights, purpose, adverse-action, and no-effect boundaries.",
+        "No household identity, precise private coordinate, provider secret, physical condition, assistance decision, eligibility result, punitive score, or external-effect adapter is admitted."
+      ],
+      "evidence_ids": ["E-PUBLIC-PROJECTION", "E-AUTHORED-OVERLAY-DEMO", "E-OVERLAY-CONTRACT", "E-OVERLAY-BUILDER", "E-OVERLAY-TESTS", "E-OVERLAY-BUNDLE"],
+      "uncertainty": "Private projection, credential operation, and independent security testing remain later controlled campaigns.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "continuity_release",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Exact donor and output hashes, deterministic tests, a complete conflict matrix, and the retained workflow support bounded replay by a cold successor.",
+        "Independent archive recovery, separate-team reconstruction, interactive export and reimport, public serving, deployed rollback, and canonical task-row reconciliation remain held."
+      ],
+      "evidence_ids": ["E-OVERLAY-README", "E-OVERLAY-BUILD", "E-OVERLAY-WORKFLOW", "E-BOARD-CHARTER"],
+      "uncertainty": "No public endpoint, rollback event, or independent successor campaign has occurred.",
+      "veto_ids": []
+    }
+  ],
+  "defects": [],
+  "vetoes": [],
+  "gate_disposition": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The admitted object is eight registered source-bounded machine instruments rather than private observations, an interactive surface, a field result, a decision system, or a public endpoint.",
+      "evidence_ids": ["E-OVERLAY-CONTRACT", "E-OVERLAY-README", "E-OVERLAY-BUNDLE"]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Composer, resident, steward, program operator, design integrator, release authority, and cold successor retain separate duties, actions, acceptance rules, handoffs, and prohibited effects.",
+      "evidence_ids": ["E-OVERLAY-CONTRACT", "E-OVERLAY-BUNDLE", "E-BOARD-CHARTER"]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The builder and tests operate identity, geometry, source, state, legend, conflict, privacy, and deterministic receipt laws rather than simulating eight labels or colors.",
+      "evidence_ids": ["E-OVERLAY-BUILDER", "E-OVERLAY-TESTS", "E-OVERLAY-BUNDLE", "E-OVERLAY-BUILD"]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Public sources, aperture references, Street Glide donors, base image, and authored overlay geometry remain separately classified, scoped, hashed, and prohibited from authority transfer.",
+      "evidence_ids": ["E-PUBLIC-DATA", "E-PUBLIC-PROJECTION", "E-APERTURE-BUNDLE", "E-SCENE-DECISION", "E-REGISTRATION-RECEIPT", "E-AUTHORED-OVERLAY-DEMO", "E-OVERLAY-BUNDLE"]
+    },
+    "interaction_semantics": {
+      "state": "partial",
+      "reason": "Eight independent machine instruments and conflict laws pass, while interactive toggles, comparison, ordering, persistence, undo, keyboard, touch, actor switching, and comprehension remain later objects.",
+      "evidence_ids": ["E-OVERLAY-CONTRACT", "E-OVERLAY-TESTS", "E-OVERLAY-BUNDLE"]
+    },
+    "visual_and_typographic_finish": {
+      "state": "partial",
+      "reason": "Normalized geometry and legend content are complete, while compositions, source and failure rails, line and symbol rendering, type fitting, light and dark, responsive states, and visual goldens remain open.",
+      "evidence_ids": ["E-DESIGN-CONSTITUTION", "E-AUTHORED-OVERLAY-DEMO", "E-OVERLAY-CONTRACT", "E-OVERLAY-BUNDLE"]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "Source times, state changes, common registration, overlay order, and conflict records are explicit, while transitions, source aging, comparison, conflict motion, interruption, and reduced motion remain unproved.",
+      "evidence_ids": ["E-PUBLIC-DATA", "E-OVERLAY-CONTRACT", "E-OVERLAY-BUNDLE"]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "Every instrument retains complete text, symbols, legends, states, actions, authority, and non-claims, while no interactive keyboard, touch, screen-reader, zoom, compact, forced-color, or reduced-motion surface is submitted.",
+      "evidence_ids": ["E-OVERLAY-CONTRACT", "E-OVERLAY-BUNDLE"]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "Deterministic local building and mixed degraded states pass, while live refresh, large geometry, layer composition, devices, networks, cache, concurrency, observability, serving, export, and rollback remain held.",
+      "evidence_ids": ["E-OVERLAY-BUILDER", "E-OVERLAY-TESTS", "E-OVERLAY-BUILD"]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "Only public-safe and explicitly authored non-private donors are accepted, private and credential fields are rejected, source rights persist, missing remains visible, and adverse scoring and external effects are prohibited.",
+      "evidence_ids": ["E-OVERLAY-CONTRACT", "E-AUTHORED-OVERLAY-DEMO", "E-PUBLIC-PROJECTION", "E-REGISTRATION-RECEIPT", "E-OVERLAY-BUILDER", "E-OVERLAY-TESTS", "E-OVERLAY-BUNDLE"]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Exact donor and output digests and deterministic tests support replay, while independent archive recovery, separate-team cold build, interactive export and reimport, public serving, and deployed rollback remain held.",
+      "evidence_ids": ["E-OVERLAY-README", "E-OVERLAY-BUILD", "E-OVERLAY-WORKFLOW"]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains donor, bundle, state, conflict, test, and board receipts while admission remains internal with no public or constitutional-count effect.",
+      "evidence_ids": ["E-OVERLAY-WORKFLOW", "E-OVERLAY-BUILD", "E-BOARD-CHARTER"]
+    }
+  },
+  "outcome": "admit_with_holds",
+  "admitted_claim": "The repository may admit the deterministic eight-instrument overlay architecture as an internal candidate whose source, aperture, Street Glide, authored geometry, state, legend, conflict, action, authority, acceptance, handoff, and prohibited-consequence records remain independently reproducible.",
+  "holds": [
+    "No interactive overlay surface, toggle system, comparison mode, ordering, persistence, undo, actor switch, or comprehension campaign is admitted.",
+    "No complete visual composition, source rail, failure rail, typographic fit, light and dark treatment, responsive authorship, or visual golden is admitted.",
+    "No production motion, temporal comparison, interruption, source-aging, conflict transition, or reduced-motion campaign is admitted.",
+    "No keyboard, touch, screen-reader, 200 percent zoom, compact-width, forced-color, or assistive-technology campaign is admitted.",
+    "No private household, affected resident, lawful-access, field observation, equipment, crew, work, completion, or acceptance evidence is admitted.",
+    "No live credential, provider quota, cost, latency, terms-change, outage, large-geometry, concurrent-layer, device, network, cache, observability, serving, export, or rollback campaign is admitted.",
+    "No real assistance need, offer, eligibility, award, insurance, enforcement, property, safety, evacuation, incident, remediation, execution, or completion decision is admitted.",
+    "No public endpoint, whole-product qualification, design score, independent external review, or canonical task-row and remembered-count effect is admitted."
+  ],
+  "release_effect": "internal_candidate_only",
+  "authority_receipt": {
+    "deciding_seat": "release_authority",
+    "decision_scope": "Admit only the exact machine-readable eight-overlay architecture and its retained internal qualification receipts for later controlled product integration.",
+    "prohibited_effects": [
+      "public deployment or serving",
+      "private household or resident record creation",
+      "physical feature, field condition, or safety determination",
+      "entry, inspection, traffic, pruning, labor, work, remediation, or completion authorization",
+      "assistance, eligibility, insurance, enforcement, property, evacuation, or other adverse decision",
+      "provider credential operation, purchase, contract, or spend",
+      "whole-product qualification, design-score award, external endorsement, or canonical task-count mutation"
+    ]
+  },
+  "qualification_boundary": "A passing decision proves only that the exact eight machine instruments, donor identities, authored geometries, source states, conflict law, tests, and internal review agree. It does not prove interaction, visual finish, field fitness, private use, provider operation, public release, whole-product quality, or an external effect.",
+  "control_question": "Can a cold successor reproduce all eight instruments over one exact place and base registration while preserving every source, authored geometry, state, legend, uncertainty, conflict, actor, action, authority, prohibited consequence, and handoff independently?"
+}
