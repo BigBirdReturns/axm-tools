@@ -1,0 +1,33 @@
+name: Kick Manzanita public-demo reconciliation
+
+on:
+  push:
+    branches:
+      - agent/manzanita-public-demo-018
+    paths:
+      - ".github/workflows/manzanita-public-demo-reconcile-kick.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  kick:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-public-demo-018
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Replace this one-shot trigger with a reconcile-workflow update
+        run: |
+          git config user.name "manzanita-public-demo-reconcile-kick"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --ff-only origin agent/manzanita-public-demo-018
+          rm .github/workflows/manzanita-public-demo-reconcile-kick.yml
+          printf '\n# Re-entered after Forkline Field admission.\n' >> .github/workflows/manzanita-public-demo-reconcile-admit.yml
+          git add .github/workflows/manzanita-public-demo-reconcile-kick.yml \
+            .github/workflows/manzanita-public-demo-reconcile-admit.yml
+          git commit -m "Manzanita: re-enter public-demo reconciliation after Forkline admission"
+          git push origin HEAD:agent/manzanita-public-demo-018
