@@ -443,6 +443,24 @@ class OverlayTests(unittest.TestCase):
         with self.assertRaisesRegex(builder.OverlayError, "image digest"):
             self.build()
 
+    def test_public_demo_release_effect_field_is_admitted(self) -> None:
+        receipt_path = self.public_demo / "BUILD_RECEIPT.json"
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        receipt.pop("public_effect")
+        receipt["release_effect"] = "none"
+        write_json(receipt_path, receipt)
+        result = self.build()
+        self.assertEqual(result["result"], "PASS")
+
+    def test_non_none_public_demo_release_effect_is_rejected(self) -> None:
+        receipt_path = self.public_demo / "BUILD_RECEIPT.json"
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        receipt.pop("public_effect")
+        receipt["release_effect"] = "public"
+        write_json(receipt_path, receipt)
+        with self.assertRaisesRegex(builder.OverlayError, "public effect"):
+            self.build()
+
     def test_build_is_deterministic_for_same_inputs(self) -> None:
         first_output = self.overlays / "out-first"
         second_output = self.overlays / "out-second"

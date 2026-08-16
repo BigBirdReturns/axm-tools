@@ -368,7 +368,10 @@ def build_bundle(
     require(scene.get("result") == "PASS", "Consumed Street Glide scene decision did not pass")
     require(registration.get("result") == "PASS", "Consumed Street Glide registration did not pass")
     for row in (contract["object"], public_build, aperture_build, scene, registration):
-        require(row.get("public_effect") == "none", "A consumed donor carries a public effect")
+        public_effect = row.get("public_effect")
+        if public_effect is None:
+            public_effect = row.get("release_effect")
+        require(public_effect == "none", "A consumed donor carries a public effect")
         require(row.get("constitutional_count_effect") == "none", "A consumed donor carries a constitutional count effect")
     require(public_data.get("place", {}).get("public_safe") is True, "Overlay composer requires a public-safe place")
     require(authored.get("public_safe") is True and authored.get("private_household") is False, "Authored overlay cartridge is not public-safe")
