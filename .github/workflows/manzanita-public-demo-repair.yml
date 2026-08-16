@@ -69,6 +69,7 @@ jobs:
           git add \
             .github/workflows/manzanita-public-demo-repair.yml \
             .github/scripts/manzanita-public-demo-repair.py \
+            manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json \
             manzanita-next/public-demo/build_public_demo.py \
             manzanita-next/public-demo/template/app.js \
             manzanita-next/public-demo/template/style.css \

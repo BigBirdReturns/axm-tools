@@ -71,6 +71,18 @@ if old_error in builder:
 require("public_errors = {" in builder, "Public error sanitization did not apply")
 builder_path.write_text(builder, encoding="utf-8")
 
+contract_path = Path("manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json")
+contract = contract_path.read_text(encoding="utf-8")
+contract = contract.replace(
+    "No coverage denial, premium setting, evacuation order, enforcement, property-risk score, or loss determination.",
+    "No insurance coverage denial, premium setting, evacuation order, enforcement, property-risk score, or loss determination.",
+)
+require(
+    "No insurance coverage denial" in contract,
+    "The fire consequence boundary must name insurance explicitly",
+)
+contract_path.write_text(contract, encoding="utf-8")
+
 app_path = Path("manzanita-next/public-demo/template/app.js")
 app = app_path.read_text(encoding="utf-8")
 app = app.replace(
@@ -155,6 +167,10 @@ browser_path.write_text(browser, encoding="utf-8")
 
 unit_path = Path("manzanita-next/public-demo/tests/test_public_demo.py")
 unit = unit_path.read_text(encoding="utf-8")
+unit = unit.replace(
+    '        self.assertEqual(public_data["place"]["latitude"], 34.1432)',
+    '        self.assertEqual(public_data["place"]["latitude"], 34.1433)',
+)
 anchor = """        self.assertNotIn("access_token", serialized)
         self.assertNotIn("https://public.example.invalid", serialized)
 """
@@ -167,6 +183,10 @@ replacement = """        self.assertNotIn("access_token", serialized)
 """
 if anchor in unit:
     unit = unit.replace(anchor, replacement, 1)
+require(
+    'latitude"], 34.1433' in unit,
+    "The public precision regression expectation did not update",
+)
 require(
     "airnow_api_key" in unit,
     "Credential-name regression assertions did not apply",
