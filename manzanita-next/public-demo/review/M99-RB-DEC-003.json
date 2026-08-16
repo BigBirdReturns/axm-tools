@@ -1,0 +1,467 @@
+{
+  "schema": "axm-tools/manzanita-review-decision@1",
+  "decision_id": "M99-RB-DEC-003",
+  "packet_id": "M99-RB-PKT-003",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "reviewed_ref": {
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "external_review_claim": false,
+  "seat_reviews": [
+    {
+      "seat_id": "board_chair",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The packet submits one generated public-safe read-only dossier, binds its source run, projection, build, browser, and board evidence, and requests internal prototype admission only.",
+        "The decision preserves separate source, privacy, field, resilience, release, and constitutional-count holds instead of converting source availability or visual finish into whole-product standing."
+      ],
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-DEMO-README",
+        "E-SOURCE-MANIFEST",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT",
+        "E-DEMO-WORKFLOW",
+        "E-BOARD-CHARTER"
+      ],
+      "uncertainty": "The exact pull-request head, current source acquisition, generated receipts, and workflow artifact must agree before this decision has operational standing.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "creative_direction",
+      "disposition": "pass",
+      "findings": [
+        "The generated dossier carries the Forkline Field identity through a terrain-following contour, source registration line, evidence nodes, authority cut, source rail, and consequence hierarchy without reducing the place to generic cards.",
+        "Provider imagery, authored registration marks, degraded source states, and dense evidence remain visually distinguishable in light, dark, desktop, mobile, compact, and print-oriented structures."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-DEMO-TEMPLATE",
+        "E-DEMO-STYLE",
+        "E-PUBLIC-DATA",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "uncertainty": "Independent recognition, live street imagery, real household media, and the full seven-aperture successor experience remain outside this dossier.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "product_interaction",
+      "disposition": "pass",
+      "findings": [
+        "Place, weather, water, and fire controls change geometry, source sets, readings, metrics, safe actions, authority, and prohibited consequences instead of relabeling one visual crop.",
+        "Visitor, steward, and program-operator controls change evidence, action, authority, acceptance, and handoff, while all controls remain read-only and expose no disguised external operation."
+      ],
+      "evidence_ids": [
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-TEST",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "uncertainty": "The dossier does not prove all production seats, write paths, undo, confirmation, external-effect custody, or Essential Attention and FAB round trips.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "information_design",
+      "disposition": "pass",
+      "findings": [
+        "The source rail, condition ledger, actor branch, degradation sheet, and projection receipt preserve place, source, time, transform, uncertainty, rights, health, authority, safe action, and prohibited consequence as separate fields.",
+        "Regional fire features, nearby water monitoring, public weather context, empty imagery coverage, and missing credentials are not relabeled as verified local conditions or collapsed into one score."
+      ],
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-PUBLIC-DATA",
+        "E-DEMO-TEMPLATE",
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "uncertainty": "Long live records, contradiction disposition, multilingual source names, appeal records, and resident-specific private projections require later information-design campaigns.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "typography",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Generated source names, times, metrics, claim boundaries, failures, and actor fields use the admitted display, editorial, operational, label, data, and compact roles without network-font dependency or ad hoc emphasis.",
+        "The four-width browser campaign retains readable hierarchy, source rails, degradation sheets, and control labels in equal light and dark content states without horizontal overflow."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-DEMO-TEMPLATE",
+        "E-DEMO-STYLE",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "uncertainty": "Pair-level optical review, 200 percent zoom, long real provider errors, multilingual glyph coverage, screen-reader phrasing, and print pagination remain held.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "motion",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Evidence-view changes preserve geometry, reading, source rail, authority, and prohibited consequence, while reduced-motion mode retains the same state change with effectively immediate transitions.",
+        "Theme changes alter semantic material only and do not hide source, failure, actor, or authority information."
+      ],
+      "evidence_ids": [
+        "E-DEMO-STYLE",
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-TEST",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "uncertainty": "Open-session source aging, acquisition refresh, interrupted transitions, real-time alert changes, handoff motion, and production motion goldens remain outside this artifact.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "source_custody",
+      "disposition": "pass",
+      "findings": [
+        "The build binds the exact source manifest, source registry, receipts, payload digests, source and retrieval times, rights, storage rules, copied public imagery, public projection, and output manifest.",
+        "Ok, empty, stale, missing-credential, rate-limited, unavailable, terms-blocked, and unknown states remain distinct, and provider imagery never inherits authority from authored Forkline registration marks."
+      ],
+      "evidence_ids": [
+        "E-SOURCE-REGISTRY",
+        "E-SOURCE-MANIFEST",
+        "E-PROJECTION-BUILDER",
+        "E-PUBLIC-DATA",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "uncertainty": "Commercial street, air-quality, and thermal-detection credentials and coverage may remain absent, and every later source run must earn its own projection and freshness receipt.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "field_operations",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Visitor, steward, and program-operator apertures distinguish public reading, bounded verification planning, and accountable assistance routing without asserting entry, inspection, labor, equipment, completion, or resident consent.",
+        "The fire aperture routes verified needs toward human review and assistance while expressly prohibiting insurance, evacuation, enforcement, parcel-risk, damage, and loss determinations."
+      ],
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-PUBLIC-DATA",
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "uncertainty": "No real resident, crew, site, hazard, equipment, labor, work acceptance, assistance delivery, or jurisdictional field playtest is admitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "accessibility",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The generated artifact uses native buttons and fieldsets, skip navigation, headings, image alternatives, source and failure reading order, visible focus, non-color source states, keyboard group navigation, and minimum forty-four-pixel targets.",
+        "Light, dark, compact, reduced-motion, forced-color, and print rules preserve source, action, authority, and failure content without horizontal overflow."
+      ],
+      "evidence_ids": [
+        "E-DEMO-TEMPLATE",
+        "E-DEMO-STYLE",
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-TEST",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "uncertainty": "A full screen-reader transcript, 200 percent zoom, touch-device playtest, automated accessibility scan, cognitive review, and multilingual expansion remain held.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "performance_resilience",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The generated site is self-contained, makes no external request, loads its public imagery, produces no recorded console, page, request, or overflow failure, and remains useful when source rows are degraded.",
+        "The acquisition, projection, build, and browser receipts expose source-run dependence rather than presenting the artifact as permanently live."
+      ],
+      "evidence_ids": [
+        "E-SOURCE-MANIFEST",
+        "E-PROJECTION-BUILDER",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-TEST",
+        "E-DEMO-BROWSER-REPORT",
+        "E-DEMO-WORKFLOW"
+      ],
+      "uncertainty": "Low-end devices, slow and intermittent networks during acquisition, provider outages, cache invalidation, observability, concurrent refresh, serving budgets, and deployed rollback remain held.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "security_privacy",
+      "disposition": "pass",
+      "findings": [
+        "The projection requires an explicitly public-safe place, rounds coordinates, rejects prohibited public fields, omits private classes, sanitizes provider failures, copies only admitted public media, and scans common high-confidence credential forms.",
+        "The visible purpose boundary prohibits insurance, property, resident, eligibility, enforcement, evacuation, inspection, work, safety, and other adverse decisions from the dossier."
+      ],
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-PUBLIC-PLACE-CONFIG",
+        "E-PROJECTION-BUILDER",
+        "E-DEMO-UNIT-TESTS",
+        "E-PROJECTION-RECEIPT",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "uncertainty": "A private household projection, consent model, retention schedule, authenticated gateway, provider credential operation, and public hosting threat review remain separate later objects.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "continuity_release",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The exact contract, public place config, source registry, design constitution, source run, receipts, generated site, projection, build manifest, tests, screenshots, and board decision form a reproducible internal handoff object.",
+        "The decision keeps release effect at internal candidate only, preserves the historical public route, and refuses canonical count mutation or external effect."
+      ],
+      "evidence_ids": [
+        "E-DEMO-README",
+        "E-SOURCE-MANIFEST",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT",
+        "E-DEMO-WORKFLOW",
+        "E-BOARD-CHARTER"
+      ],
+      "uncertainty": "An independently controlled archive, separate-team cold build, stable source replay, deployed endpoint, serving receipt, rollback, and public release campaign remain held.",
+      "veto_ids": []
+    }
+  ],
+  "defects": [
+    {
+      "id": "M99-RB-DEF-006",
+      "severity": "medium",
+      "title": "Commercial provider coverage remains incomplete",
+      "mechanism": "Commercial street imagery, air-quality, and thermal-detection sources may be absent because approved credentials, quotas, costs, or coverage are not configured for the exact acquisition run.",
+      "evidence_ids": [
+        "E-SOURCE-MANIFEST",
+        "E-PUBLIC-DATA",
+        "E-PROJECTION-RECEIPT",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "owner": "source_custody_and_provider_operations",
+      "acceptance": "Each optional commercial source has an approved credential owner, quota and cost ceiling, rights and storage policy, zero-key behavior, source-health receipt, and full healthy, empty, stale, limited, outage, and terms-blocked campaign.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-007",
+      "severity": "medium",
+      "title": "The dossier is bound to one acquisition run",
+      "mechanism": "Source freshness is evaluated at build time, while an open static artifact does not refresh, age, or supersede its source rows during a user session.",
+      "evidence_ids": [
+        "E-SOURCE-MANIFEST",
+        "E-PUBLIC-DATA",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT"
+      ],
+      "owner": "source_custody_and_performance_resilience",
+      "acceptance": "A later governed gateway and client state expose observation, retrieval, valid-through, stale, superseded, refresh, cache, and outage transitions without presenting the prior run as current.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-008",
+      "severity": "medium",
+      "title": "Field and affected-actor verification remain absent",
+      "mechanism": "Public remote context and authored registration cannot establish private site condition, resident intent, entry, hazard, equipment fit, labor scope, completed work, acceptance, or assistance outcome.",
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-PUBLIC-DATA",
+        "E-DEMO-BROWSER-REPORT"
+      ],
+      "owner": "field_operations_and_design_integrator",
+      "acceptance": "A later private or field packet records lawful access, consent, actors, equipment, hazards, first-party observations, work scope, completion evidence, affected-actor acceptance, refusal, appeal, and handoff.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-009",
+      "severity": "medium",
+      "title": "The generated artifact is not a public endpoint or whole product",
+      "mechanism": "A self-contained place dossier with four evidence apertures and three contained seats does not complete seven production apertures, eight live overlays, five functional seats, Essential Attention handoff, serving, operations, or exact public release proof.",
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-DEMO-README",
+        "E-DEMO-BROWSER-REPORT",
+        "E-DEMO-WORKFLOW"
+      ],
+      "owner": "design_integrator_and_release_authority",
+      "acceptance": "A later whole-product candidate consumes the dossier, closes every required production view and seat, passes live and degraded source campaigns, and earns exact public endpoint, deployment, rollback, and cold-successor receipts.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-010",
+      "severity": "medium",
+      "title": "Independent succession and deployed rollback are unproved",
+      "mechanism": "Repository-local reconstruction and workflow artifacts do not prove recovery from an independently controlled archive or rollback from a deployed public endpoint.",
+      "evidence_ids": [
+        "E-DEMO-README",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT",
+        "E-DEMO-WORKFLOW"
+      ],
+      "owner": "continuity_release",
+      "acceptance": "A cold successor restores inputs from an independent archive, rebuilds and compares all digests, deploys to a bounded candidate endpoint, verifies public bytes, and restores the prior endpoint through a retained rollback receipt.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-011",
+      "severity": "medium",
+      "title": "Canonical task-row reconciliation remains unavailable",
+      "mechanism": "The exact original row for JDB99-018 and its dependency graph remain unavailable because the constitutional source object was incomplete when merged.",
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-DEMO-README",
+        "E-BUILD-RECEIPT"
+      ],
+      "owner": "program_steward_and_release_authority",
+      "acceptance": "A governed successor register admits this exact packet, decision, receipts, dependencies, task standing, and count transition with explicit provenance and no invented original fields.",
+      "disposition": "accepted_hold"
+    }
+  ],
+  "vetoes": [],
+  "gate_disposition": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The reviewed object remains a generated public-safe read-only dossier candidate, not a public endpoint, live directive, field record, or whole product.",
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-DEMO-README",
+        "E-PUBLIC-DATA"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Source custody, projection, design, visitor, steward, program, release, and successor actors retain separate and bounded authority.",
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-PUBLIC-DATA",
+        "E-DEMO-BROWSER-REPORT",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The exact live source bundle, public projection, generated site, distinct evidence views, actor changes, failure sheets, and receipts operate the submitted contract.",
+      "evidence_ids": [
+        "E-SOURCE-MANIFEST",
+        "E-PROJECTION-BUILDER",
+        "E-PUBLIC-DATA",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Provider and authored objects, source states, times, rights, storage rules, copied media, payload digests, and claim scopes remain identifiable and do not transfer authority.",
+      "evidence_ids": [
+        "E-SOURCE-REGISTRY",
+        "E-SOURCE-MANIFEST",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "pass",
+      "reason": "Evidence and actor controls change geometry, sources, readings, metrics, safe actions, authority, acceptance, handoff, and prohibited consequence while preserving read-only scope.",
+      "evidence_ids": [
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-TEST",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "pass",
+      "reason": "The dossier applies Forkline Field, preserves provider and authored separation, and retains source, failure, action, and authority hierarchy in full-state light and dark captures across four widths.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-DEMO-TEMPLATE",
+        "E-DEMO-STYLE",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "View transitions and reduced-motion parity are operational while open-session aging, refresh, interruption, real-time changes, and production motion receipts remain held.",
+      "evidence_ids": [
+        "E-DEMO-STYLE",
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "pass",
+      "reason": "Native controls, keyboard operation, focus, non-color states, image alternatives, source and failure reading order, target size, reduced motion, and zero overflow pass across four viewports.",
+      "evidence_ids": [
+        "E-DEMO-TEMPLATE",
+        "E-DEMO-STYLE",
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-TEST",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "The static artifact is deterministic, self-contained, error-free, and useful with degraded sources, while live acquisition resilience, devices, networks, caches, observability, serving, and rollback remain held.",
+      "evidence_ids": [
+        "E-SOURCE-MANIFEST",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT",
+        "E-DEMO-WORKFLOW"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "Public-safe configuration, coordinate reduction, controlled projection, prohibited-key rejection, credential scan, media rights, failure sanitization, and visible purpose limits preserve privacy and adverse-action boundaries.",
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-PUBLIC-PLACE-CONFIG",
+        "E-PROJECTION-BUILDER",
+        "E-DEMO-UNIT-TESTS",
+        "E-PROJECTION-RECEIPT",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Exact inputs, build outputs, tests, screenshots, hashes, and rollback target support replay, while independent archive restoration, separate-team cold build, public serving, and deployed rollback remain held.",
+      "evidence_ids": [
+        "E-DEMO-README",
+        "E-SOURCE-MANIFEST",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT",
+        "E-DEMO-WORKFLOW"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains acquisition, projection, build, browser, screenshot, and board receipts while the decision grants internal candidate standing and no public or constitutional-count effect.",
+      "evidence_ids": [
+        "E-DEMO-WORKFLOW",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "outcome": "admit_with_holds",
+  "admitted_claim": "M99-PUBLIC-DEMO-001 may serve as the internal public-safe demonstration-place candidate for later Manzanita product work, bound to its exact source acquisition, public projection, Forkline Field constitution, source-state ledger, privacy boundary, and retained holds.",
+  "holds": [
+    "No historical or successor public Manzanita route is changed, served, deployed, or qualified by this decision.",
+    "Commercial street imagery, air-quality, and thermal-detection credentials, quotas, costs, rights, coverage, and degraded states remain under provider-operations control and may be absent from a run.",
+    "The static artifact is bound to one acquisition run and does not prove open-session refresh, current source health, permanent availability, or temporal continuity.",
+    "No private household condition, resident intent, lawful entry, field inspection, equipment fit, labor scope, completed work, acceptance, assistance award, or external effect is admitted.",
+    "Four evidence views and three contained seats do not complete seven production apertures, eight live overlays, five functional seats, Essential Attention handoff, whole-experience authorship, serving, public endpoint, rollback, or 99-point release proof.",
+    "Independent archive restoration, separate-team cold build, deployed candidate verification, and rollback remain open.",
+    "No canonical task-row closure or remembered 497-task count mutation is admitted until a governed successor register reconciles the exact receipts."
+  ],
+  "release_effect": "internal_candidate_only",
+  "authority_receipt": {
+    "deciding_seat": "release_authority",
+    "decision_scope": "Internal admission of one exact source-backed public-safe demonstration-place dossier candidate, with no deployment, field, adverse, whole-product, design-score, constitutional-count, or external-effect authority.",
+    "prohibited_effects": [
+      "historical or successor public-route change, serving, deployment, or publication",
+      "whole-product qualification, 99-point score, or public release",
+      "provider purchase, credential use, quota commitment, or external communication",
+      "household, field, assistance, insurance, enforcement, eligibility, evacuation, property, resident, safety, or other adverse decision",
+      "presentation of regional, nearby, authored, empty, missing, stale, or unavailable evidence as a verified local condition",
+      "constitutional task-count mutation"
+    ]
+  },
+  "qualification_boundary": "This decision admits the exact generated public-safe demonstration dossier for internal product work only. It is not external review, public deployment, live safety or field authority, completed work, adverse decision, whole-product qualification, a 99-point score, canonical task closure, or permission for an external effect.",
+  "control_question": "Can a cold successor rebuild the exact dossier, explain every source and omitted field, reproduce all healthy and degraded states, and preserve the no-deployment, no-field, no-adverse, and no-count holds while using it as an internal product donor?"
+}

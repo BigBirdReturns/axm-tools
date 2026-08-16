@@ -1,0 +1,233 @@
+{
+  "schema": "axm-tools/manzanita-public-demo-contract@1",
+  "contract_id": "M99-PUBLIC-DEMO-001",
+  "version": "1.0.0",
+  "state": "internal_candidate",
+  "task_reference": "JDB99-018",
+  "object": {
+    "classification": "public_safe_source_adaptive_place_dossier",
+    "place_config": "manzanita-next/config/place-demo.json",
+    "source_registry": "manzanita-next/config/source-registry.json",
+    "design_constitution": "manzanita-next/design-system/CONSTITUTION.json",
+    "accountable_actor": "design_integrator",
+    "source_actor": "source_custody",
+    "projection_actor": "public_projection_builder",
+    "decision_authority": "release_authority",
+    "public_effect": "none",
+    "constitutional_count_effect": "none",
+    "claim_boundary": "The artifact is a public-safe read-only demonstration candidate. It does not constitute a public deployment, live safety directive, survey, inspection, work order, completed remediation, assistance decision, adverse score, or canonical task-count transition."
+  },
+  "views": [
+    {
+      "id": "place",
+      "object": "Public place identity, rounded coordinates, public geometry, imagery, terrain, and source coverage",
+      "source_families": [
+        "usgs_imagery",
+        "usgs_3dep_hillshade",
+        "osm_overpass",
+        "kartaview_coverage",
+        "kartaview",
+        "panoramax",
+        "google_street_view",
+        "mapillary"
+      ],
+      "safe_action": "Inspect source coverage and request an authorized capture or source review when street evidence is unavailable.",
+      "authority": "Read-only public context; no parcel, survey, visibility, access, ownership, or completed-inspection authority.",
+      "prohibited_consequence": "No property valuation, insurance, enforcement, access, work, or safety determination."
+    },
+    {
+      "id": "weather",
+      "object": "National Weather Service point, forecast, hourly, station, observation, and alert state",
+      "source_families": [
+        "nws_points",
+        "nws_forecast",
+        "nws_forecast_hourly",
+        "nws_stations",
+        "nws_observation",
+        "nws_alerts",
+        "airnow"
+      ],
+      "safe_action": "Read the source time and active alert text, then follow the named official authority for any time-critical direction.",
+      "authority": "Public weather context only; no guarantee of current local conditions at the demonstration point.",
+      "prohibited_consequence": "No evacuation, closure, work, medical, or safety decision based only on this projection."
+    },
+    {
+      "id": "water",
+      "object": "USGS nearby monitoring-site availability and returned instantaneous values",
+      "source_families": [
+        "usgs_water_sites",
+        "usgs_water_iv"
+      ],
+      "safe_action": "Open the named USGS monitoring source and verify site, parameter, qualifier, and time before using the value.",
+      "authority": "Monitoring-location context only; no household, irrigation, plant, potable-water, drainage, or site-condition authority.",
+      "prohibited_consequence": "No watering instruction, infrastructure decision, contamination claim, or household water inference."
+    },
+    {
+      "id": "fire",
+      "object": "CAL FIRE/NIFC/FIRIS perimeter and NASA FIRMS acquisition state",
+      "source_families": [
+        "calfire_incidents",
+        "calfire_incidents_normalized",
+        "firms"
+      ],
+      "safe_action": "Read incident identity, source time, geometry scope, and official alert channels; route verified mitigation needs toward assistance rather than adverse scoring.",
+      "authority": "Public incident and thermal-detection context only; no parcel threat, evacuation, containment, damage, cause, or insurance authority.",
+      "prohibited_consequence": "No insurance coverage denial, premium setting, evacuation order, enforcement, property-risk score, or loss determination."
+    }
+  ],
+  "actors": [
+    {
+      "id": "visitor",
+      "evidence": "Public place identity, source status, source times, public summaries, and visible claim boundaries.",
+      "safe_action": "Read, compare, open the source receipt, and follow the named official authority where applicable.",
+      "authority": "May use the artifact as public context only.",
+      "acceptance": "The visitor can identify what is known, unknown, stale, unavailable, and prohibited without a manual.",
+      "handoff": "Route a source problem or accessibility defect to the program operator with the retained receipt."
+    },
+    {
+      "id": "steward",
+      "evidence": "Public context, source health, authored registration marks, field-verification requirements, and unresolved gaps.",
+      "safe_action": "Prepare a bounded verification plan and preserve site, equipment, safety, consent, and acceptance requirements before any work proposal.",
+      "authority": "May plan within granted site authority; may not infer inspection, entry, work, completion, or resident consent from public context.",
+      "acceptance": "Every proposed site action names the evidence still required, accountable actor, safety boundary, and completion receipt.",
+      "handoff": "Return a bounded offer or hold to the accountable site actor and route cross-jurisdiction issues to the program operator."
+    },
+    {
+      "id": "program_operator",
+      "evidence": "Provider health, public context, source gaps, assistance channels, field holds, and accountable decision authority.",
+      "safe_action": "Route verified needs to assistance, source repair, or accountable human review without producing one punitive place score.",
+      "authority": "May coordinate only within lawful program authority; may not make insurance, eligibility, enforcement, property, or resident decisions from this dossier.",
+      "acceptance": "Actor, source, offer, decision, authority, execution, refusal, appeal, and follow-through remain traceable.",
+      "handoff": "Return a public-safe offer, explicit hold, or source-repair request with the controlling receipt and next-review condition."
+    }
+  ],
+  "source_states": [
+    {
+      "id": "ok",
+      "meaning": "The registered request returned an admitted payload and receipt.",
+      "display_law": "Show source time, retrieval time, transform, rights, health, and claim scope."
+    },
+    {
+      "id": "empty",
+      "meaning": "The provider responded successfully but returned no qualifying item or coverage.",
+      "display_law": "Show honest empty coverage and never translate it into safe, zero, or no condition."
+    },
+    {
+      "id": "stale",
+      "meaning": "The retained evidence exceeds its admitted maximum age or valid-through condition.",
+      "display_law": "Keep the last evidence visible with a stale label, time, consequence, and refresh path."
+    },
+    {
+      "id": "skipped_missing_credential",
+      "meaning": "The outbound request was not attempted because no approved credential was configured.",
+      "display_law": "Name the missing provider operation and prohibit fixture or modeled substitution."
+    },
+    {
+      "id": "rate_limited",
+      "meaning": "The provider refused or delayed the request under a quota or rate limit.",
+      "display_law": "Show retry and cache rules without presenting prior evidence as current."
+    },
+    {
+      "id": "unavailable",
+      "meaning": "The provider, network, transform, or required artifact was unavailable.",
+      "display_law": "Show what remains known, what is unknown, safe fallback, and accountable next action."
+    },
+    {
+      "id": "terms_blocked",
+      "meaning": "Rights, storage, redistribution, or provider terms prohibit inclusion in the public artifact.",
+      "display_law": "Retain metadata and claim boundary without copying prohibited payload bytes."
+    },
+    {
+      "id": "unknown",
+      "meaning": "The acquisition state cannot be classified from the retained receipt.",
+      "display_law": "Hold the source and prohibit positive claims until an accountable review resolves it."
+    }
+  ],
+  "projection": {
+    "allowed_fields": [
+      "public place label",
+      "public place identifier",
+      "rounded public coordinates",
+      "public provider identity",
+      "public source and retrieval time",
+      "public payload summary",
+      "public imagery permitted by source terms",
+      "transform identity",
+      "uncertainty",
+      "source health",
+      "rights and attribution",
+      "claim boundary",
+      "safe action",
+      "authority",
+      "prohibited consequence",
+      "artifact and receipt digest"
+    ],
+    "prohibited_fields": [
+      "private household address",
+      "resident identity",
+      "private household record",
+      "secret or credential value",
+      "account identifier",
+      "precise private coordinate",
+      "unredacted first-party media",
+      "provider payload prohibited from redistribution",
+      "insurance, enforcement, eligibility, property, or resident score"
+    ],
+    "coordinate_precision_decimals": 4,
+    "secret_scan_required": true,
+    "public_safe_config_required": true,
+    "source_summary_inherits_no_additional_authority": true
+  },
+  "components": [
+    "forkline_place_header",
+    "public_field_plate",
+    "source_health_rail",
+    "view_aperture_control",
+    "actor_authority_branch",
+    "condition_ledger",
+    "degradation_sheet",
+    "projection_receipt"
+  ],
+  "qualification": {
+    "viewports": [
+      "1600x1000",
+      "1024x900",
+      "390x844",
+      "320x720"
+    ],
+    "themes": [
+      "auto",
+      "light",
+      "dark"
+    ],
+    "required_campaigns": [
+      "source-foundation acquisition and validation",
+      "public projection and secret scan",
+      "distinct view evidence and geometry",
+      "distinct actor evidence, action, authority, acceptance, and handoff",
+      "source state and failure preservation",
+      "keyboard and visible focus",
+      "light and dark content parity",
+      "reduced-motion parity",
+      "zero external requests from the built artifact",
+      "zero console, page, and failed-request errors",
+      "zero horizontal overflow",
+      "full-state screenshot receipts",
+      "contained multidisciplinary review",
+      "cold build replay"
+    ]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, or coverage triage",
+      "property valuation, resident scoring, eligibility ranking, or enforcement",
+      "evacuation, closure, inspection, work order, dispatch, or completed-work determination",
+      "medical, safety, contamination, irrigation, or household condition decision",
+      "presentation of statewide, regional, nearby, authored, missing, or stale evidence as a verified local condition"
+    ],
+    "required_human_control": "Any external action requires a separate lawful authority, named accountable human decision, source-specific evidence, affected-actor notice where applicable, acceptance and appeal paths, and an independently reviewable receipt."
+  },
+  "task_standing": "operational_candidate_public_safe_demo",
+  "admission_law": "The candidate is admissible only on an exact head that synchronizes the admitted source foundation and Forkline constitution, passes live acquisition and validation, emits a privacy-safe projection, passes static and browser campaigns, retains full-state captures and receipts, receives contained board admission with no open critical or high veto, and preserves no public or constitutional-count effect.",
+  "control_question": "Can a public visitor, steward, program operator, and cold successor each use the same source-backed place dossier while preserving source scope, failure, privacy, authority, and prohibited consequence without receiving a private record or a false local determination?"
+}

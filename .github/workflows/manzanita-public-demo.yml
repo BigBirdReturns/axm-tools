@@ -1,0 +1,224 @@
+name: Manzanita public-safe demonstration place
+
+on:
+  push:
+    branches:
+      - agent/manzanita-public-demo-018
+    paths:
+      - "manzanita-next/public-demo/**"
+      - ".github/workflows/manzanita-public-demo.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/public-demo/**"
+      - ".github/workflows/manzanita-public-demo.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Acquire, project, test, and review the public dossier
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove the candidate diff and dependency boundary
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {".github/workflows/manzanita-public-demo.yml"}
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/public-demo/")
+          ]
+          if invalid:
+              raise SystemExit(f"Public-demo candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("manzanita-next/public-demo/") for path in changed):
+              raise SystemExit("Candidate contains no public-demo object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+          test -f manzanita-next/design-system/CONSTITUTION.json
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+          test -f programs/manzanita-99/review-board/validate_review_board.py
+
+      - name: Install acquisition, projection, and browser dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            requests beautifulsoup4 pillow jsonschema pytest playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Validate source-foundation and public-demo static contracts
+        run: |
+          pytest -q manzanita-next/tests
+          python -m py_compile \
+            manzanita-next/public-demo/build_public_demo.py \
+            manzanita-next/public-demo/tests/test_public_demo.py \
+            manzanita-next/public-demo/tests/browser_test.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m json.tool manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json > /dev/null
+          python -m json.tool manzanita-next/public-demo/review/M99-RB-PKT-003.json > /dev/null
+          python -m json.tool manzanita-next/public-demo/review/M99-RB-DEC-003.json > /dev/null
+          python -m unittest discover \
+            -s manzanita-next/public-demo/tests \
+            -p "test_public_demo.py"
+
+      - name: Acquire the exact live source foundation
+        id: acquire
+        continue-on-error: true
+        env:
+          AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPILLARY_ACCESS_TOKEN: ${{ secrets.MAPILLARY_ACCESS_TOKEN }}
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
+        run: |
+          rm -rf manzanita-next/out
+          cd manzanita-next
+          python -m scripts.acquire_foundation \
+            --place config/place-demo.json \
+            --registry config/source-registry.json \
+            --out out
+
+      - name: Validate every source receipt and retained payload
+        id: validate_source
+        if: always()
+        run: |
+          python manzanita-next/scripts/validate_foundation.py \
+            --root manzanita-next/out \
+            --source-schema manzanita-next/contracts/source-envelope.schema.json
+
+      - name: Build the public-safe projection
+        if: always()
+        run: |
+          python manzanita-next/public-demo/build_public_demo.py \
+            --repo-root . \
+            --acquisition-root manzanita-next/out \
+            --output manzanita-next/public-demo/out
+
+      - name: Exercise views, seats, themes, failures, privacy, and compact operation
+        if: always()
+        run: |
+          python manzanita-next/public-demo/tests/browser_test.py \
+            --root manzanita-next/public-demo/out/site \
+            --out manzanita-next/public-demo/out/qualification
+
+      - name: Run the contained multidisciplinary review
+        if: always()
+        run: |
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/public-demo/review/M99-RB-PKT-003.json \
+            --decision manzanita-next/public-demo/review/M99-RB-DEC-003.json \
+            --receipt manzanita-next/public-demo/out/qualification/BOARD_DECISION_RECEIPT.json
+
+      - name: Prove the exact-head projection, browser, and board receipts
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          public_data = json.loads(Path("manzanita-next/public-demo/out/PUBLIC_DATA.json").read_text())
+          projection = json.loads(Path("manzanita-next/public-demo/out/PUBLIC_PROJECTION_RECEIPT.json").read_text())
+          build = json.loads(Path("manzanita-next/public-demo/out/BUILD_RECEIPT.json").read_text())
+          browser = json.loads(Path("manzanita-next/public-demo/out/qualification/BROWSER_REPORT.json").read_text())
+          board = json.loads(Path("manzanita-next/public-demo/out/qualification/BOARD_DECISION_RECEIPT.json").read_text())
+
+          assert public_data["schema"] == "axm-tools/manzanita-public-demo-data@1"
+          assert public_data["place"]["public_safe"] is True
+          assert public_data["place"]["coordinate_precision_decimals"] <= 4
+          assert set(public_data["views"]) == {"place", "weather", "water", "fire"}
+          assert set(public_data["actors"]) == {"visitor", "steward", "program_operator"}
+          assert len(public_data["sources"]) >= 20
+          assert all(row["state"] in {
+              "ok", "empty", "stale", "skipped_missing_credential",
+              "rate_limited", "unavailable", "terms_blocked", "unknown"
+          } for row in public_data["sources"])
+
+          assert projection["result"] == "PASS"
+          assert projection["public_safe_config"] is True
+          assert projection["prohibited_keys_found"] == []
+          assert projection["secret_scan"]["result"] == "PASS"
+          assert projection["secret_scan"]["high_confidence_findings"] == []
+
+          assert build["result"] == "PASS"
+          assert build["release_effect"] == "none"
+          assert build["constitutional_count_effect"] == "none"
+          assert build["site_manifest"]
+          assert build["site_manifest_sha256"]
+
+          assert browser["result"] == "PASS"
+          assert len(browser["captures"]) == 8
+          assert len(browser["mechanics"]["views"]) == 4
+          assert len(browser["mechanics"]["actors"]) == 3
+          assert len(browser["mechanics"]["control_targets"]) == 10
+          assert all(row["width"] >= 44 and row["height"] >= 44 for row in browser["mechanics"]["control_targets"])
+          assert all(not row["external_requests"] for row in browser["observations"])
+          assert all(not row["console_errors"] for row in browser["observations"])
+          assert all(not row["page_errors"] for row in browser["observations"])
+          assert all(not row["failed_requests"] for row in browser["observations"])
+          assert browser["release_effect"] == "none"
+          assert browser["constitutional_count_effect"] == "none"
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-003"
+          assert board["decision_id"] == "M99-RB-DEC-003"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 7
+          PY
+
+      - name: Retain source, projection, captures, and review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-public-demo-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            manzanita-next/out
+            manzanita-next/public-demo/README.md
+            manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json
+            manzanita-next/public-demo/build_public_demo.py
+            manzanita-next/public-demo/template
+            manzanita-next/public-demo/tests
+            manzanita-next/public-demo/review/M99-RB-PKT-003.json
+            manzanita-next/public-demo/review/M99-RB-DEC-003.json
+            manzanita-next/public-demo/out
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Enforce the acquisition and validation outcomes
+        if: always()
+        env:
+          ACQUIRE_OUTCOME: ${{ steps.acquire.outcome }}
+          VALIDATE_SOURCE_OUTCOME: ${{ steps.validate_source.outcome }}
+        run: |
+          test "$ACQUIRE_OUTCOME" = "success"
+          test "$VALIDATE_SOURCE_OUTCOME" = "success"

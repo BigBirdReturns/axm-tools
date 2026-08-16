@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en" data-theme="auto" data-resolved-theme="light" data-view="place" data-actor="visitor">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Public-safe Manzanita place demonstration with source, failure, authority, and privacy receipts.">
+  <title>Manzanita Public-Safe Place Demonstration</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="demo-data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#place-instrument">Skip to place instrument</a>
+
+  <header class="masthead">
+    <div class="identity-lockup">
+      <svg class="forkline-mark" viewBox="0 0 64 64" role="img" aria-labelledby="mark-title mark-desc">
+        <title id="mark-title">Manzanita Forkline Field mark</title>
+        <desc id="mark-desc">A source-bound ground contour branches toward three square evidence nodes.</desc>
+        <path class="mark-ground" d="M5 49 C15 48 21 42 27 34 C34 25 39 18 51 12"></path>
+        <path class="mark-branch" d="M25 36 C35 36 41 41 49 50"></path>
+        <path class="mark-branch" d="M32 27 C41 28 48 24 56 18"></path>
+        <rect class="mark-node" x="49" y="8" width="8" height="8"></rect>
+        <rect class="mark-node" x="47" y="47" width="8" height="8"></rect>
+        <rect class="mark-node authored" x="53" y="15" width="8" height="8"></rect>
+      </svg>
+      <div>
+        <p class="label">Manzanita · Public-safe demonstration candidate</p>
+        <p class="brand-name">Forkline Field</p>
+      </div>
+    </div>
+
+    <fieldset class="theme-control" aria-label="Theme">
+      <legend class="sr-only">Theme</legend>
+      <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
+      <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+    </fieldset>
+  </header>
+
+  <main>
+    <section class="opening" aria-labelledby="opening-title">
+      <div class="opening-copy">
+        <p class="label consequence-label">Public projection · Read-only · No adverse action</p>
+        <h1 id="opening-title"><span id="place-label">Public place</span>, with the source rail left on.</h1>
+        <p class="opening-deck">Public imagery, weather, water, fire, street coverage, and failure receipts stay separate. This dossier can route attention toward verification and assistance. It cannot turn missing or regional evidence into a local score, inspection, work order, or insurance consequence.</p>
+      </div>
+      <dl class="opening-ledger" aria-label="Public projection receipt summary">
+        <div>
+          <dt>Place ID</dt>
+          <dd id="place-id" class="data">Loading</dd>
+        </div>
+        <div>
+          <dt>Public coordinate</dt>
+          <dd id="place-coordinate" class="data">Loading</dd>
+        </div>
+        <div>
+          <dt>Source run</dt>
+          <dd id="source-run" class="data">Loading</dd>
+        </div>
+        <div>
+          <dt>Source states</dt>
+          <dd id="source-state-summary">Loading</dd>
+        </div>
+        <div>
+          <dt>Authority</dt>
+          <dd>Public context only. Release and external effects remain held.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section id="place-instrument" class="instrument" aria-labelledby="instrument-title">
+      <header class="section-head">
+        <div>
+          <p class="label">Source-adaptive place instrument</p>
+          <h2 id="instrument-title">One place. Four evidence apertures.</h2>
+        </div>
+        <p class="section-note">The base image retains its provider or unavailable state. Forkline contours are authored registration marks and remain visibly subordinate to source evidence.</p>
+      </header>
+
+      <div class="control-deck" aria-label="Place instrument controls">
+        <fieldset class="control-group view-controls">
+          <legend>Evidence aperture</legend>
+          <div role="group" aria-label="Evidence aperture choices">
+            <button type="button" data-view-choice="place" aria-pressed="true">Place</button>
+            <button type="button" data-view-choice="weather" aria-pressed="false">Weather</button>
+            <button type="button" data-view-choice="water" aria-pressed="false">Water</button>
+            <button type="button" data-view-choice="fire" aria-pressed="false">Fire</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="control-group actor-controls">
+          <legend>Operating seat</legend>
+          <div role="group" aria-label="Operating seat choices">
+            <button type="button" data-actor-choice="visitor" aria-pressed="true">Visitor</button>
+            <button type="button" data-actor-choice="steward" aria-pressed="false">Steward</button>
+            <button type="button" data-actor-choice="program_operator" aria-pressed="false">Program operator</button>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="field-layout">
+        <div class="field-frame" aria-labelledby="field-heading">
+          <div class="image-stage">
+            <img id="base-imagery" src="assets/base-imagery.png" alt="Loading public base image state">
+            <img id="hillshade-imagery" class="hillshade" src="assets/hillshade.png" alt="" aria-hidden="true">
+            <svg id="field-svg" viewBox="0 0 1200 700" role="img" aria-labelledby="field-title field-desc">
+              <title id="field-title">Public place source coverage view</title>
+              <desc id="field-desc">Authored registration marks over a public provider image or an explicitly unavailable-source plate.</desc>
+              <path id="field-ground" class="ground-contour" d="M45 530 C128 476 189 452 274 397 C365 338 438 297 528 272 C620 247 700 277 790 249 C884 219 951 153 1042 129 C1097 114 1142 118 1170 94"></path>
+              <path id="field-register" class="register-line" d="M92 575 C195 496 278 431 371 376 C469 319 565 296 659 269 C753 242 843 211 927 170 C1014 128 1091 111 1153 95"></path>
+              <path id="field-overlay" class="overlay-field place" d="M170 526 C264 468 347 409 438 365 C523 324 608 299 695 290 C783 281 855 247 925 203 C983 167 1038 153 1084 166 C1068 235 1002 286 929 318 C841 357 751 364 661 395 C560 430 474 506 370 544 C292 572 218 561 170 526 Z"></path>
+              <path class="actor-branch-line" d="M528 272 C579 324 612 370 647 430"></path>
+              <path class="actor-branch-line secondary" d="M612 370 C691 360 756 326 815 279"></path>
+              <path class="authority-cut" d="M632 407 l31 45"></path>
+              <rect class="evidence-node provider" x="516" y="260" width="24" height="24"></rect>
+              <rect class="evidence-node authored" x="802" y="266" width="24" height="24"></rect>
+              <path class="authored-stroke" d="M805 286 l18 -16"></path>
+              <rect class="evidence-node unknown" x="636" y="418" width="24" height="24"></rect>
+              <text id="field-view-label" class="svg-label" x="56" y="68">PUBLIC PLACE · SOURCE COVERAGE</text>
+              <text id="field-source-label" class="svg-data" x="56" y="98">source state loading</text>
+              <text id="field-authority-label" class="svg-label authority-label" x="682" y="475">READ-ONLY PUBLIC CONTEXT</text>
+            </svg>
+            <div class="image-state-band">
+              <span id="image-state-symbol" class="state-symbol state-unknown" aria-hidden="true"></span>
+              <span id="image-state-text">Loading image state</span>
+            </div>
+          </div>
+
+          <div class="field-caption" aria-live="polite">
+            <div>
+              <p class="label">Current reading</p>
+              <p id="view-reading" class="editorial">Loading public projection.</p>
+            </div>
+            <div>
+              <p class="label">Safe action</p>
+              <p id="view-safe-action" class="operational">Wait for the bounded source projection.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="source-rail" aria-labelledby="source-rail-title">
+          <h3 id="source-rail-title">Source rail</h3>
+          <dl id="source-rail-list">
+            <div>
+              <dt>Status</dt>
+              <dd>Loading source receipts</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+
+      <section class="condition-ledger" aria-labelledby="condition-title">
+        <header>
+          <p class="label">Condition ledger</p>
+          <h3 id="condition-title">Loading evidence aperture</h3>
+        </header>
+        <div id="metric-list" class="metric-list" aria-live="polite"></div>
+        <dl class="authority-ledger">
+          <div>
+            <dt>Authority</dt>
+            <dd id="view-authority">Loading</dd>
+          </div>
+          <div>
+            <dt>Prohibited consequence</dt>
+            <dd id="view-prohibited">Loading</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="actor-branch" aria-labelledby="actor-title" aria-live="polite">
+        <header>
+          <p class="label">Actor branch</p>
+          <h3 id="actor-title">Visitor aperture</h3>
+        </header>
+        <dl class="actor-ledger">
+          <div>
+            <dt>Evidence</dt>
+            <dd id="actor-evidence">Loading</dd>
+          </div>
+          <div>
+            <dt>Safe action</dt>
+            <dd id="actor-action">Loading</dd>
+          </div>
+          <div>
+            <dt>Authority</dt>
+            <dd id="actor-authority">Loading</dd>
+          </div>
+          <div>
+            <dt>Acceptance</dt>
+            <dd id="actor-acceptance">Loading</dd>
+          </div>
+          <div>
+            <dt>Handoff</dt>
+            <dd id="actor-handoff">Loading</dd>
+          </div>
+        </dl>
+      </section>
+    </section>
+
+    <section class="failure-section" aria-labelledby="failure-title">
+      <header class="section-head">
+        <div>
+          <p class="label failure-label">Degradation sheet</p>
+          <h2 id="failure-title">Absence remains evidence.</h2>
+        </div>
+        <p class="section-note">A successful response with no coverage, a missing credential, and an unavailable provider are different operational states. None means safe or zero.</p>
+      </header>
+      <div id="failure-list" class="failure-list" aria-live="polite"></div>
+    </section>
+
+    <section class="projection-section" aria-labelledby="projection-title">
+      <header class="section-head">
+        <div>
+          <p class="label">Projection receipt</p>
+          <h2 id="projection-title">What entered this artifact, and what did not.</h2>
+        </div>
+      </header>
+      <dl class="projection-ledger">
+        <div>
+          <dt>Projection</dt>
+          <dd>Public place label, rounded public coordinate, public source summaries, permitted public imagery, source and retrieval times, uncertainty, rights, health, and claim boundaries.</dd>
+        </div>
+        <div>
+          <dt>Omitted</dt>
+          <dd>Private household address, resident identity, private observation, secret, credential, account identifier, precise private coordinate, unredacted first-party media, and prohibited provider payload.</dd>
+        </div>
+        <div>
+          <dt>Adverse action</dt>
+          <dd id="adverse-boundary">No insurance, enforcement, eligibility, property, resident, safety, inspection, work, or other adverse decision.</dd>
+        </div>
+        <div>
+          <dt>Build receipt</dt>
+          <dd id="build-identity" class="data">Loading</dd>
+        </div>
+        <div>
+          <dt>Control question</dt>
+          <dd id="control-question">Loading</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer>
+    <p class="label">Manzanita public-safe demonstration candidate</p>
+    <p id="footer-boundary">This self-contained artifact is read-only, source-bounded, and not deployed as the historical public Manzanita route.</p>
+  </footer>
+</body>
+</html>
