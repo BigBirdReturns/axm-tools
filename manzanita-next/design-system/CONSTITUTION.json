@@ -342,21 +342,21 @@
     "classes": [
       {
         "id": "observed",
-        "required_label": "Observed",
+        "required_label": "Observed evidence",
         "required_custody": "Original bytes or stable source, capture identity, time, location scope, rights, and permitted claims.",
         "permitted_claim": "Only what the retained observation supports.",
         "prohibited_substitution": "Cannot be replaced by generated, modeled, or authored imagery."
       },
       {
         "id": "provider_rendered",
-        "required_label": "Provider",
+        "required_label": "Provider evidence",
         "required_custody": "Provider identity, item or panorama identity, source time, attribution, terms, storage rule, and render receipt.",
         "permitted_claim": "Provider-supplied imagery or layer within its terms and source scope.",
         "prohibited_substitution": "Cannot be cached, redistributed, or represented beyond provider terms."
       },
       {
         "id": "captured_first_party",
-        "required_label": "Captured",
+        "required_label": "First-party capture",
         "required_custody": "Original bytes, accountable capture actor, time, consent, privacy projection, rights, and transforms.",
         "permitted_claim": "First-party observation within the captured field and time.",
         "prohibited_substitution": "Cannot be generalized into inspection or property-wide truth without additional evidence."
@@ -370,7 +370,7 @@
       },
       {
         "id": "modeled",
-        "required_label": "Modeled",
+        "required_label": "Modeled context",
         "required_custody": "Model version, input identities, assumptions, transform, uncertainty, validation, and prohibited decisions.",
         "permitted_claim": "Bounded modeled estimate with visible uncertainty.",
         "prohibited_substitution": "Cannot replace observation or authorize adverse action."
@@ -384,7 +384,7 @@
       },
       {
         "id": "derived",
-        "required_label": "Derived",
+        "required_label": "Derived analysis",
         "required_custody": "Input identities, transform identity, output digest, uncertainty, and reversibility or regeneration path.",
         "permitted_claim": "The bounded analytical relation produced by the declared transform.",
         "prohibited_substitution": "Cannot inherit stronger authority than its inputs."
@@ -398,7 +398,7 @@
       },
       {
         "id": "redacted",
-        "required_label": "Redacted",
+        "required_label": "Redacted projection",
         "required_custody": "Original custody location, redaction method, accountable actor, reason, and public/private projection receipt.",
         "permitted_claim": "A privacy-preserving projection whose removed fields remain known to the authorized source record.",
         "prohibited_substitution": "Cannot imply that redacted detail never existed."

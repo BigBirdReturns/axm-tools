@@ -227,7 +227,7 @@ def exercise_state_mechanics(page: Page) -> dict[str, Any]:
             "overlay": overlay,
             "path": page.locator("#overlay-area").get_attribute("d") or "",
             "class": page.locator("#overlay-area").get_attribute("class") or "",
-            "label": page.locator("#overlay-label").inner_text(),
+            "label": (page.locator("#overlay-label").text_content() or "").strip(),
             "reading": page.locator("#overlay-reading").inner_text(),
         }
         if overlay not in row["class"]:
@@ -280,7 +280,22 @@ def exercise_state_mechanics(page: Page) -> dict[str, Any]:
     names = [value.strip() for value in all_buttons.all_inner_texts()]
     if any(not value for value in names):
         raise AssertionError(f"A button lacks an accessible visible name: {names}")
+    target_boxes = []
+    for index in range(all_buttons.count()):
+        box = all_buttons.nth(index).bounding_box()
+        if not box or box["width"] < 44 or box["height"] < 44:
+            raise AssertionError(
+                f"Control target is below 44 by 44 CSS pixels: {names[index]} {box}"
+            )
+        target_boxes.append(
+            {
+                "name": names[index],
+                "width": round(box["width"], 2),
+                "height": round(box["height"], 2),
+            }
+        )
     state_report["button_names"] = names
+    state_report["control_targets"] = target_boxes
     return state_report
 
 
@@ -367,7 +382,17 @@ def run_auto_and_reduced_motion_campaign(
     transition = reduced_page.locator("#ground-contour").evaluate(
         "element => getComputedStyle(element).transitionDuration"
     )
-    if transition not in {"0s", "1e-06s", "0.000001s"}:
+
+    def duration_seconds(value: str) -> float:
+        value = value.strip()
+        if value.endswith("ms"):
+            return float(value[:-2]) / 1000
+        if value.endswith("s"):
+            return float(value[:-1])
+        raise AssertionError(f"Unknown transition duration unit: {value}")
+
+    durations = [duration_seconds(value) for value in transition.split(",")]
+    if any(value > 0.00001 for value in durations):
         raise AssertionError(f"Reduced-motion transition remains material: {transition}")
     assert_no_overflow(reduced_page, "compact/reduced-motion")
     if any(reduced_observations.values()):

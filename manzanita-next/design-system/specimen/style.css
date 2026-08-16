@@ -892,8 +892,12 @@
     transform: rotate(-45deg);
   }
 
-  .state-receipt {
-    box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 5px var(--ink);
+  .state-receipt::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 2px solid var(--ink);
+    pointer-events: none;
   }
 
   html[data-overlay="heat"] {
@@ -1063,7 +1067,7 @@
     }
 
     .theme-control button {
-      min-height: 36px;
+      min-height: 44px;
       padding: 0.35rem 0.45rem;
       font-size: 0.72rem;
     }
