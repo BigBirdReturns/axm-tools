@@ -1,0 +1,221 @@
+{
+  "schema": "axm-tools/manzanita-seven-aperture-contract@1",
+  "contract_id": "M99-SEVEN-APERTURES-001",
+  "version": "1.0.0",
+  "state": "internal_candidate",
+  "task_reference": "JDB99-013",
+  "object": {
+    "classification": "seven_aperture_canonical_place_projection",
+    "canonical_place_source": "manzanita-next/public-demo/out/PUBLIC_DATA.json",
+    "public_projection_receipt": "manzanita-next/public-demo/out/PUBLIC_PROJECTION_RECEIPT.json",
+    "design_constitution": "manzanita-next/design-system/CONSTITUTION.json",
+    "authored_demo": "manzanita-next/apertures/AUTHORED_DEMO.json",
+    "accountable_actor": "design_integrator",
+    "decision_authority": "release_authority",
+    "public_effect": "none",
+    "constitutional_count_effect": "none",
+    "claim_boundary": "This contract governs one internal seven-aperture projection over a canonical public-safe demonstration place. It does not create a private household record, survey, inspection, work order, completed remediation, assistance decision, adverse score, public endpoint, whole-product qualification, or canonical task-count transition."
+  },
+  "common_law": {
+    "same_place_identity": "Every aperture retains the same canonical place_id, source_run_id, public projection receipt, and build lineage.",
+    "distinct_aperture": "Every aperture must change object class, evidence set, geometry identity, reading, safe action, authority, acceptance, and handoff. A crop, zoom, label, or paragraph-only switch fails.",
+    "source_authority": "A source or authored record carries only its own claim scope. Public, nearby, regional, authored, missing, stale, and unavailable evidence may not be promoted into a private or local finding.",
+    "geometry": "Each aperture has a retained authored or source-backed geometry identity. Unknown geometry remains open and may not be closed by invention.",
+    "failure": "Missing, empty, stale, rate-limited, unavailable, terms-blocked, and unknown evidence remains visible with what is known, what is unknown, safe fallback, and accountable next action.",
+    "privacy": "Public and private projections remain separate. This candidate accepts only the public-safe place dossier and the explicitly non-private authored demonstration cartridge.",
+    "authority": "No aperture may borrow authority from another aperture, source, actor, or visual treatment. External effects require a separate lawful and accountable decision object."
+  },
+  "apertures": [
+    {
+      "id": "plant",
+      "order": 1,
+      "object_class": "living_plant_and_care_record",
+      "geometry_id": "M99-APERTURE-PLANT-001",
+      "geometry_class": "authored_living_object_boundary",
+      "primary_actor": "resident",
+      "source_ids": [],
+      "authored_record_ids": [
+        "M99-AUTH-PLANT-CATNIP-001",
+        "M99-AUTH-PLANT-CARE-001"
+      ],
+      "reading": "The Plant aperture treats one living object as care, use, uncertainty, and evidence rather than as a generic product image or fabricated sensor state.",
+      "safe_action": "Observe the real plant through a touch check, visible condition, drainage, pet access, and care history before acting.",
+      "authority": "The resident may perform ordinary household care within actual household authority. No diagnosis, chemical treatment, sensor claim, or professional direction follows from the authored demonstration.",
+      "acceptance": "A real plant action is accepted only when the household actor records the observation, action, time, result, uncertainty, and next check.",
+      "handoff": "Escalate persistent uncertainty with first-party observations and care history to a qualified steward or horticultural source.",
+      "prohibited_consequence": "No diagnosis, plant-health score, mandatory watering instruction, purchase, field dispatch, or completed-care claim."
+    },
+    {
+      "id": "household",
+      "order": 2,
+      "object_class": "household_habitat_and_acceptance_envelope",
+      "geometry_id": "M99-APERTURE-HOUSEHOLD-001",
+      "geometry_class": "authored_public_safe_household_envelope",
+      "primary_actor": "resident",
+      "source_ids": [
+        "nws_observation",
+        "nws_forecast"
+      ],
+      "authored_record_ids": [
+        "M99-AUTH-HOUSEHOLD-HABITAT-001",
+        "M99-AUTH-HOUSEHOLD-ACCEPTANCE-001"
+      ],
+      "reading": "The Household aperture relates living objects, shade, drainage, storage, pets, tools, weather context, and resident acceptance without exposing a private address or resident identity.",
+      "safe_action": "Verify private household conditions and resident intent before proposing site access, equipment, labor, material change, or scheduling.",
+      "authority": "The resident controls household access and acceptance. Public weather context and an authored envelope provide no entry, inspection, work, or completion authority.",
+      "acceptance": "A household proposal is accepted only through an affected-actor receipt covering scope, timing, access, safety, completion evidence, refusal, and next review.",
+      "handoff": "Provide a bounded evidence package to the steward while withholding private fields from the public projection.",
+      "prohibited_consequence": "No private household inference, resident score, entry, inspection, labor dispatch, or completed-work claim."
+    },
+    {
+      "id": "property",
+      "order": 3,
+      "object_class": "public_property_context_and_terrain",
+      "geometry_id": "M99-APERTURE-PROPERTY-001",
+      "geometry_class": "public_context_extent_not_surveyed_parcel",
+      "primary_actor": "steward",
+      "source_ids": [
+        "usgs_imagery",
+        "usgs_3dep_hillshade",
+        "osm_overpass"
+      ],
+      "authored_record_ids": [],
+      "reading": "The Property aperture combines public imagery, terrain, and community geometry as context while preserving the absence of a surveyed parcel, roof inspection, utility record, or private site observation.",
+      "safe_action": "Use the public context to prepare questions and a lawful verification plan, then confirm boundary, access, structures, utilities, drainage, and hazards through authorized evidence.",
+      "authority": "The steward may plan bounded verification. Public imagery and map context do not establish ownership, parcel boundary, condition, access, code, utility, or work authority.",
+      "acceptance": "Property context is accepted for operational use only after source scope, date, geometry fit, site authorization, uncertainty, and required field verification are explicit.",
+      "handoff": "Return the verified or held property questions to the resident and route public-jurisdiction issues to the program operator.",
+      "prohibited_consequence": "No property valuation, surveyed boundary, inspection, code finding, insurance consequence, access authorization, or completed remediation."
+    },
+    {
+      "id": "street",
+      "order": 4,
+      "object_class": "street_corridor_and_source_coverage",
+      "geometry_id": "M99-APERTURE-STREET-001",
+      "geometry_class": "public_corridor_with_coverage_breaks",
+      "primary_actor": "steward",
+      "source_ids": [
+        "osm_overpass",
+        "google_street_view",
+        "mapillary",
+        "kartaview_coverage",
+        "kartaview",
+        "panoramax"
+      ],
+      "authored_record_ids": [],
+      "reading": "The Street aperture relates public corridor geometry, curb and canopy questions, access, drainage, and street-imagery coverage without filling a missing scene with generated evidence.",
+      "safe_action": "Inspect the source rail and request an authorized street or site capture where current direction, visibility, registration, or coverage is missing.",
+      "authority": "The steward may prepare a public-corridor verification plan. Provider imagery and map data do not authorize entry, traffic control, pruning, work, enforcement, or a private property finding.",
+      "acceptance": "A street reading is accepted only when provider, capture time, heading, coordinates, scene identity, attribution, registration error, coverage, and field-verification needs are retained.",
+      "handoff": "Route public-right-of-way questions and source gaps to the accountable program or jurisdiction seat with the exact coverage receipt.",
+      "prohibited_consequence": "No street inspection, access finding, work order, traffic or safety direction, property consequence, or fabricated street scene."
+    },
+    {
+      "id": "neighborhood",
+      "order": 5,
+      "object_class": "shared_neighborhood_context_and_resources",
+      "geometry_id": "M99-APERTURE-NEIGHBORHOOD-001",
+      "geometry_class": "public_shared_context_extent",
+      "primary_actor": "program_operator",
+      "source_ids": [
+        "osm_overpass",
+        "nws_observation",
+        "nws_forecast",
+        "nws_alerts",
+        "usgs_water_sites"
+      ],
+      "authored_record_ids": [],
+      "reading": "The Neighborhood aperture widens from one place to shared routes, shade, drainage, public resources, source health, and coordination questions without assigning responsibility or condition to a household.",
+      "safe_action": "Identify public resources and cross-place questions, then route them to accountable human coordination with source times and affected-actor boundaries.",
+      "authority": "The program operator may coordinate public information and assistance within lawful program authority. Neighborhood context does not create household, parcel, enforcement, eligibility, or funding authority.",
+      "acceptance": "A neighborhood coordination object is accepted only when participating actors, public source scope, jurisdiction, purpose, offer, refusal, appeal, and follow-through are explicit.",
+      "handoff": "Return household-specific matters to the resident or steward and route shared obligations to the named jurisdiction or program authority.",
+      "prohibited_consequence": "No neighborhood ranking, resident or parcel score, collective blame, eligibility decision, enforcement, or inferred household condition."
+    },
+    {
+      "id": "region",
+      "order": 6,
+      "object_class": "regional_conditions_resources_and_alerts",
+      "geometry_id": "M99-APERTURE-REGION-001",
+      "geometry_class": "public_regional_source_extents",
+      "primary_actor": "program_operator",
+      "source_ids": [
+        "nws_points",
+        "nws_forecast",
+        "nws_forecast_hourly",
+        "nws_observation",
+        "nws_alerts",
+        "calfire_incidents",
+        "calfire_incidents_normalized",
+        "firms",
+        "usgs_water_sites",
+        "usgs_water_iv",
+        "airnow"
+      ],
+      "authored_record_ids": [],
+      "reading": "The Region aperture keeps weather, air, water, incident perimeters, thermal detections, resources, and source failures separate while relating them for human planning and assistance.",
+      "safe_action": "Follow named official authorities for time-critical direction and route verified mitigation needs toward accountable assistance and review.",
+      "authority": "The program operator may coordinate within lawful regional authority. Regional evidence does not transfer to a parcel, household, insurance, eligibility, enforcement, evacuation, damage, or loss decision.",
+      "acceptance": "Regional context is accepted only when source, geometry, time, transform, uncertainty, jurisdiction, authority, conflict, degraded state, and safe-action route are explicit.",
+      "handoff": "Return local questions to the appropriate lower aperture and route regional coordination to the named human authority with retained source receipts.",
+      "prohibited_consequence": "No parcel-risk score, coverage denial, premium setting, evacuation order, enforcement, loss finding, damage determination, or local condition inferred from regional data alone."
+    },
+    {
+      "id": "stewardship",
+      "order": 7,
+      "object_class": "evidence_offer_decision_execution_and_follow_through",
+      "geometry_id": "M99-APERTURE-STEWARDSHIP-001",
+      "geometry_class": "authored_authority_and_handoff_graph",
+      "primary_actor": "program_operator",
+      "source_ids": [],
+      "authored_record_ids": [
+        "M99-AUTH-STEWARDSHIP-OFFER-001",
+        "M99-AUTH-STEWARDSHIP-HOTSPOT-001"
+      ],
+      "reading": "The Stewardship aperture relates evidence, source gaps, attention, offers, decisions, authority, execution, acceptance, appeal, and follow-through without collapsing the place into one score.",
+      "safe_action": "Create a bounded offer or hold that names evidence, authority, resources, purpose, affected actors, refusal, appeal, execution, completion evidence, and next review.",
+      "authority": "The program operator may coordinate only within a named lawful program. The authored workflow does not establish a real need, offer, eligibility, funding, decision, work, or acceptance.",
+      "acceptance": "A stewardship object is accepted only when the source evidence, accountable decision, affected-actor response, execution receipt, completion or hold, and follow-through remain independently reviewable.",
+      "handoff": "Return the accepted, refused, appealed, completed, or held object to every accountable lower aperture without changing its evidence or authority history.",
+      "prohibited_consequence": "No punitive score, insurance or enforcement action, fabricated offer, invented eligibility, unreviewed dispatch, or completed-remediation claim."
+    }
+  ],
+  "source_states": [
+    "ok",
+    "empty",
+    "stale",
+    "skipped_missing_credential",
+    "rate_limited",
+    "unavailable",
+    "terms_blocked",
+    "unknown",
+    "authored"
+  ],
+  "qualification": {
+    "required_campaigns": [
+      "one canonical place identity and source-run lineage across all seven apertures",
+      "seven distinct object classes and geometry identities",
+      "seven distinct evidence sets, readings, safe actions, authority statements, acceptance criteria, handoffs, and prohibited consequences",
+      "source and authored-record custody",
+      "public and private projection firewall",
+      "missing, empty, stale, limited, unavailable, terms-blocked, unknown, and authored-state preservation",
+      "dependency and source-reference validation",
+      "deterministic bundle and receipt digests",
+      "contained multidisciplinary review before product integration",
+      "cold-successor rebuild"
+    ]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, eligibility, funding, enforcement, inspection, or punitive action",
+      "evacuation, closure, field entry, dispatch, work order, completed remediation, or safety determination",
+      "presentation of authored, public, regional, nearby, empty, stale, missing, or unavailable evidence as a verified private or local condition",
+      "public deployment, whole-product qualification, 99-point score, or constitutional task-count mutation"
+    ],
+    "required_human_control": "Any external effect requires a separate source-backed object, lawful authority, named accountable human decision, affected-actor notice and consent where applicable, refusal and appeal paths, execution and acceptance receipts, and independent review."
+  },
+  "task_standing": "operational_candidate_seven_apertures",
+  "admission_law": "The candidate is admissible only when one exact public-demo build and authored cartridge produce seven complete, distinct, source-bounded aperture records; every dependency resolves; every degraded state remains visible; no private or adverse field enters the bundle; all deterministic and contained-review checks pass; and public and constitutional-count effects remain none.",
+  "control_question": "Can one canonical place widen from plant to stewardship through seven operationally different apertures without losing source identity, authorship, uncertainty, privacy, actor, authority, safe action, prohibited consequence, acceptance, or handoff?"
+}

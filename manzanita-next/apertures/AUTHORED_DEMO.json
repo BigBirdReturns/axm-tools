@@ -1,0 +1,94 @@
+{
+  "schema": "axm-tools/manzanita-authored-aperture-demo@1",
+  "cartridge_id": "M99-AUTHORED-APERTURE-DEMO-001",
+  "version": "1.0.0",
+  "state": "authored_demonstration",
+  "public_safe": true,
+  "private_household": false,
+  "authored_on": "2026-08-16",
+  "author_seat": "design_integrator",
+  "claim_boundary": "These records exist only to prove aperture mechanics. They are not observations, measurements, diagnoses, or resident records. This is not a private record, field receipt, completed work, offer, decision, eligibility determination, or public program state.",
+  "records": {
+    "plant": [
+      {
+        "id": "M99-AUTH-PLANT-CATNIP-001",
+        "class": "authored_living_object",
+        "label": "Fresh catnip bowl",
+        "state": "authored",
+        "authored_time": "2026-08-16",
+        "reading": "A small household plant can be tracked as a living object with pet access, touch checks, moisture, drainage, use, and care history.",
+        "uncertainty": "No real plant, sensor, diagnosis, moisture value, pet interaction, or care event is represented.",
+        "rights": "Estate-authored demonstration",
+        "claim_scope": "Design and interaction demonstration only"
+      },
+      {
+        "id": "M99-AUTH-PLANT-CARE-001",
+        "class": "authored_care_prompt",
+        "label": "Touch-check care branch",
+        "state": "authored",
+        "authored_time": "2026-08-16",
+        "reading": "The next action depends on a household touch check rather than a fabricated sensor value or generic watering schedule.",
+        "uncertainty": "The correct care action for any real plant remains unknown until an accountable person observes it.",
+        "rights": "Estate-authored demonstration",
+        "claim_scope": "Safe-action grammar demonstration only"
+      }
+    ],
+    "household": [
+      {
+        "id": "M99-AUTH-HOUSEHOLD-HABITAT-001",
+        "class": "authored_public_safe_household_envelope",
+        "label": "Household habitat envelope",
+        "state": "authored",
+        "authored_time": "2026-08-16",
+        "reading": "The household aperture relates plant access, shade, drainage, storage, pets, tools, and resident acceptance without exposing an address or resident identity.",
+        "uncertainty": "No real household layout, resident preference, hazard, consent, equipment, or work condition is represented.",
+        "rights": "Estate-authored demonstration",
+        "claim_scope": "Public-safe household interaction demonstration only"
+      },
+      {
+        "id": "M99-AUTH-HOUSEHOLD-ACCEPTANCE-001",
+        "class": "authored_acceptance_boundary",
+        "label": "Resident acceptance boundary",
+        "state": "authored",
+        "authored_time": "2026-08-16",
+        "reading": "A steward proposal remains a proposal until the affected household actor accepts the scope, timing, access, and completion evidence.",
+        "uncertainty": "No real resident has accepted or refused anything.",
+        "rights": "Estate-authored demonstration",
+        "claim_scope": "Authority and handoff demonstration only"
+      }
+    ],
+    "stewardship": [
+      {
+        "id": "M99-AUTH-STEWARDSHIP-OFFER-001",
+        "class": "authored_offer_record",
+        "label": "Bounded assistance offer",
+        "state": "authored",
+        "authored_time": "2026-08-16",
+        "reading": "A program offer names the need, evidence, authority, resources, limits, acceptance, refusal, appeal, execution, and follow-through instead of producing one punitive score.",
+        "uncertainty": "No real program, funding, eligibility, resident, offer, decision, or execution is represented.",
+        "rights": "Estate-authored demonstration",
+        "claim_scope": "Stewardship workflow demonstration only"
+      },
+      {
+        "id": "M99-AUTH-STEWARDSHIP-HOTSPOT-001",
+        "class": "authored_attention_record",
+        "label": "Assistance-oriented hotspot triage",
+        "state": "authored",
+        "authored_time": "2026-08-16",
+        "reading": "A hotspot can trigger verification and assistance routing while insurance, enforcement, property scoring, and adverse action remain prohibited.",
+        "uncertainty": "No real hotspot, parcel, incident, household, insurance status, or remediation need is represented.",
+        "rights": "Estate-authored demonstration",
+        "claim_scope": "Purpose-firewall demonstration only"
+      }
+    ]
+  },
+  "prohibited_uses": [
+    "presentation as observed or measured evidence",
+    "plant diagnosis or watering instruction for a real plant",
+    "private household record or resident preference",
+    "parcel, street, neighborhood, or regional condition determination",
+    "inspection, entry, work, completed-remediation, assistance, eligibility, insurance, enforcement, or other adverse action",
+    "public release or canonical task-count mutation"
+  ],
+  "control_question": "Can an operator distinguish every authored demonstration field from source-backed evidence and refuse to transfer its authority into a real household, field, program, or public decision?"
+}

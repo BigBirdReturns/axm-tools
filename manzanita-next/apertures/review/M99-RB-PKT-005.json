@@ -1,0 +1,281 @@
+{
+  "schema": "axm-tools/manzanita-review-packet@1",
+  "packet_id": "M99-RB-PKT-005",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "object": "M99-SEVEN-APERTURES-001, a deterministic seven-aperture operating projection over one canonical public-safe place and one explicitly authored non-private demonstration cartridge.",
+  "classification": "seven_aperture_canonical_place_projection_candidate",
+  "target_paths": [
+    "manzanita-next/apertures"
+  ],
+  "source_ref": {
+    "repository": "BigBirdReturns/axm-tools",
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "requested_decision": "admit_with_holds",
+  "requested_authority": "architecture_admission",
+  "public_effect": "internal_only",
+  "actors": [
+    "aperture_composer",
+    "design_integrator",
+    "resident",
+    "steward",
+    "program_operator",
+    "release_authority",
+    "cold_successor"
+  ],
+  "mechanism": "The aperture composer consumes the exact generated public-demo data, its public-projection and build receipts, the Forkline Field constitution, and a public-safe authored demonstration cartridge. It retains one place identity and one source-run lineage while generating Plant, Household, Property, Street, Neighborhood, Region, and Stewardship records whose object classes, evidence sets, geometry identities, readings, safe actions, authorities, acceptance criteria, handoffs, and prohibited consequences are all distinct. Missing registered sources become explicit unknown evidence; authored records remain authored; private and adverse keys are rejected; geometry duplication and place-identity drift are hard failures; and deterministic bundle and build digests preserve succession.",
+  "evidence": [
+    {
+      "id": "E-APERTURE-CONTRACT",
+      "type": "source",
+      "path": "manzanita-next/apertures/APERTURE_CONTRACT.json",
+      "claim": "Defines the canonical-place law, seven aperture objects, evidence sets, geometry identities, actors, actions, authority, acceptance, handoff, failure, privacy, and adverse-action boundary."
+    },
+    {
+      "id": "E-AUTHORED-APERTURE-DEMO",
+      "type": "source",
+      "path": "manzanita-next/apertures/AUTHORED_DEMO.json",
+      "claim": "Supplies six explicit public-safe authored records for Plant, Household, and Stewardship mechanics without presenting a private household, observation, measurement, offer, decision, or field result."
+    },
+    {
+      "id": "E-APERTURE-README",
+      "type": "source",
+      "path": "manzanita-next/apertures/README.md",
+      "claim": "Classifies the object, names actors and authority, explains the mechanism, defines operation, and preserves private, field, adverse, public, whole-product, and constitutional-count holds."
+    },
+    {
+      "id": "E-APERTURE-BUILDER",
+      "type": "test",
+      "path": "manzanita-next/apertures/build_apertures.py",
+      "claim": "Builds seven deterministic aperture records, preserves source and authored evidence classes, turns absent registered sources into explicit unknown rows, rejects private keys and identity drift, and hashes every object."
+    },
+    {
+      "id": "E-APERTURE-TESTS",
+      "type": "test",
+      "path": "manzanita-next/apertures/tests/test_apertures.py",
+      "claim": "Exercises distinct object, geometry, evidence, action, authority, acceptance, handoff, deterministic output, source and authored custody, missing-source behavior, private-field rejection, identity mismatch, and duplicate geometry refusal."
+    },
+    {
+      "id": "E-DESIGN-CONSTITUTION",
+      "type": "source",
+      "path": "manzanita-next/design-system/CONSTITUTION.json",
+      "claim": "Provides the admitted Forkline geometry, evidence classes, typography, materials, motion, content, component, and authority laws referenced by the aperture architecture."
+    },
+    {
+      "id": "E-PUBLIC-DATA",
+      "type": "receipt",
+      "path": "manzanita-next/public-demo/out/PUBLIC_DATA.json",
+      "claim": "Supplies the exact canonical public-safe place identity, source run, source rows, source states, rights, claim scopes, and no-effect boundary consumed by the aperture composer."
+    },
+    {
+      "id": "E-PUBLIC-PROJECTION-RECEIPT",
+      "type": "receipt",
+      "path": "manzanita-next/public-demo/out/PUBLIC_PROJECTION_RECEIPT.json",
+      "claim": "Proves the public-safe place configuration, coordinate precision, omitted classes, secret scan, copied-media custody, and public projection digest."
+    },
+    {
+      "id": "E-PUBLIC-DEMO-BUILD",
+      "type": "receipt",
+      "path": "manzanita-next/public-demo/out/BUILD_RECEIPT.json",
+      "claim": "Binds the source acquisition, public projection, generated site, design constitution, no-effect boundary, and public-demo digests consumed by the aperture build."
+    },
+    {
+      "id": "E-APERTURE-BUNDLE",
+      "type": "receipt",
+      "path": "manzanita-next/apertures/out/APERTURE_BUNDLE.json",
+      "claim": "Contains one place identity and source run across seven distinct aperture records with retained evidence, state, geometry, action, authority, acceptance, handoff, and prohibited consequence."
+    },
+    {
+      "id": "E-APERTURE-BUILD-RECEIPT",
+      "type": "receipt",
+      "path": "manzanita-next/apertures/out/BUILD_RECEIPT.json",
+      "claim": "Binds every input, bundle digest, aperture order, state count, evidence-state count, public-effect boundary, constitutional-count boundary, and control question."
+    },
+    {
+      "id": "E-APERTURE-WORKFLOW",
+      "type": "receipt",
+      "path": ".github/workflows/manzanita-seven-apertures.yml",
+      "claim": "Binds source acquisition, public projection, aperture tests and build, exact-head review, and artifact retention to the submitted candidate."
+    },
+    {
+      "id": "E-BOARD-CHARTER",
+      "type": "source",
+      "path": "programs/manzanita-99/review-board/BOARD_CHARTER.json",
+      "claim": "Defines the twelve contained functional seats, evidence minimums, veto law, decision states, and non-authority boundary used for this review."
+    }
+  ],
+  "claim_boundary": "This packet requests internal architecture admission for the seven-aperture bundle only. It does not request an interactive production surface, private household projection, provider operation, field entry, inspection, labor, completed work, assistance award, adverse decision, public deployment, whole-product qualification, 99-point score, or canonical task-count mutation.",
+  "gates": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is explicitly a seven-aperture canonical-place architecture candidate rather than a public endpoint, private record, field result, or whole product.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-README",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "The aperture composer, resident, steward, program operator, design integrator, release authority, and cold successor have separate operating and prohibited authorities.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-README",
+        "E-APERTURE-BUNDLE",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The builder and tests prove one place identity, seven distinct objects and geometries, distinct evidence and authority fields, explicit missing-source states, and deterministic receipts.",
+      "evidence_ids": [
+        "E-APERTURE-BUILDER",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUNDLE",
+        "E-APERTURE-BUILD-RECEIPT"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Public source rows and authored demonstration rows remain separately classified, hashed, attributed, scoped, and prohibited from transferring authority.",
+      "evidence_ids": [
+        "E-AUTHORED-APERTURE-DEMO",
+        "E-PUBLIC-DATA",
+        "E-PUBLIC-PROJECTION-RECEIPT",
+        "E-APERTURE-BUILDER",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "partial",
+      "reason": "The machine bundle proves seven distinct semantic apertures, while an interactive production control, keyboard and touch behavior, persistence, undo, and actor playtest remain later objects.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE",
+        "E-APERTURE-TESTS"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "partial",
+      "reason": "The aperture geometry identities conform to Forkline law, while full visual compositions, type fitting, imagery, source rails, legends, responsive states, and goldens remain later work.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "Parent-aperture order and source-run lineage are explicit, while scale transitions, source aging, interruption, reduced motion, handoff timing, and motion goldens remain unproved.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "The bundle retains semantic order and complete text fields, while no interactive responsive, keyboard, touch, screen-reader, zoom, forced-color, or reduced-motion surface is submitted.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "Deterministic local building and explicit degraded evidence pass, while live acquisition resilience, serving budgets, devices, networks, cache, observability, and rollback remain held.",
+      "evidence_ids": [
+        "E-PUBLIC-DEMO-BUILD",
+        "E-APERTURE-BUILDER",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUILD-RECEIPT"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "The composer accepts only a public-safe dossier and non-private authored cartridge, rejects prohibited keys, preserves source rights and claim scopes, and carries explicit adverse-action prohibitions.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-AUTHORED-APERTURE-DEMO",
+        "E-PUBLIC-PROJECTION-RECEIPT",
+        "E-APERTURE-BUILDER",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Exact inputs, output bundle, build receipt, source run, and deterministic tests support replay, while independent archive recovery, separate-team cold build, export reimport, and deployed rollback remain held.",
+      "evidence_ids": [
+        "E-APERTURE-README",
+        "E-PUBLIC-DEMO-BUILD",
+        "E-APERTURE-BUNDLE",
+        "E-APERTURE-BUILD-RECEIPT",
+        "E-APERTURE-WORKFLOW"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains public-demo, aperture-bundle, build, test, and board receipts while the request remains internal architecture admission with no public or constitutional-count effect.",
+      "evidence_ids": [
+        "E-APERTURE-WORKFLOW",
+        "E-APERTURE-BUILD-RECEIPT",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "seat_prompts": {
+    "board_chair": [
+      "Confirm exact evidence coverage, requested architecture authority, partial gates, holds, and the absence of a hidden interaction, field, public, whole-product, adverse, or constitutional-count claim."
+    ],
+    "creative_direction": [
+      "Determine whether the seven geometry identities can support one recognizable Forkline family without becoming seven arbitrary shapes or one contour relabeled seven times."
+    ],
+    "product_interaction": [
+      "Confirm the seven machine apertures change the complete operating object and identify every interaction, persistence, undo, and actor-control campaign still required before product admission."
+    ],
+    "information_design": [
+      "Confirm that source, authored evidence, state, reading, action, authority, acceptance, handoff, and prohibited consequence remain distinct across all seven apertures."
+    ],
+    "typography": [
+      "Review the length and hierarchy implications of aperture names, source rows, action, authority, acceptance, handoff, and prohibited-consequence copy for later responsive composition."
+    ],
+    "motion": [
+      "Review the parent-aperture and source-run continuity model and identify the scale, registration, source-change, interruption, handoff, and reduced-motion evidence still required."
+    ],
+    "source_custody": [
+      "Confirm every public source and authored record retains its exact class, state, time, digest, attribution, rights, storage, uncertainty, and claim scope without cross-aperture authority laundering."
+    ],
+    "field_operations": [
+      "Confirm resident, steward, and program-operator duties remain bounded and that private condition, lawful access, safety, equipment, labor, completion, assistance, and acceptance remain unproved."
+    ],
+    "accessibility": [
+      "Review semantic ordering and complete labels, then enumerate the interactive keyboard, touch, screen-reader, zoom, compact, forced-color, and reduced-motion campaigns still held."
+    ],
+    "performance_resilience": [
+      "Confirm deterministic building and degraded-state preservation while holding source acquisition, serving, device, network, cache, observability, export, and rollback claims."
+    ],
+    "security_privacy": [
+      "Confirm public-safe input, authored-state boundaries, prohibited-key rejection, source rights, purpose firewall, and the absence of private, credential, adverse, and external-effect data."
+    ],
+    "continuity_release": [
+      "Confirm exact input and output digests, replay commands, no public or count effect, and the later independent archive, interactive product, public endpoint, and rollback requirements."
+    ]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, eligibility, funding, enforcement, inspection, or punitive action",
+      "evacuation, closure, field entry, dispatch, work order, completed remediation, or safety determination",
+      "presentation of authored, public, regional, nearby, empty, stale, missing, or unavailable evidence as a verified private or local condition",
+      "public deployment, whole-product qualification, design score, or constitutional task-count mutation"
+    ],
+    "required_human_control": "Any external effect requires a separate source-backed object, lawful authority, named accountable human decision, affected-actor notice and consent where applicable, refusal and appeal paths, execution and acceptance receipts, and independent review."
+  },
+  "continuity": {
+    "recovery_path": "Restore the exact public-demo source run and receipts, rebuild the public dossier, verify its digests, load the Forkline constitution and authored cartridge, rebuild the aperture bundle, compare every aperture and input digest, and regenerate the contained review receipt.",
+    "rollback_target": "main before seven-aperture architecture admission; the public demo and historical public route remain separate donors",
+    "successor_test": "A cold successor must rebuild all seven records, explain every source and authored row, preserve each degraded state and authority boundary, and refuse to present architecture admission as an interactive product or public release."
+  },
+  "control_question": "Can a cold successor prove that all seven apertures are operationally different while they still belong to one place, one source lineage, one authority constitution, and one explicit set of privacy, field, adverse, and release holds?"
+}

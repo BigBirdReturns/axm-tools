@@ -1,0 +1,224 @@
+name: Manzanita seven genuine apertures
+
+on:
+  push:
+    branches:
+      - agent/manzanita-seven-apertures-013
+    paths:
+      - "manzanita-next/apertures/**"
+      - ".github/workflows/manzanita-seven-apertures.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/apertures/**"
+      - ".github/workflows/manzanita-seven-apertures.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Build and review seven source-bounded apertures
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove the candidate diff and dependency boundary
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {".github/workflows/manzanita-seven-apertures.yml"}
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/apertures/")
+          ]
+          if invalid:
+              raise SystemExit(f"Seven-aperture candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("manzanita-next/apertures/") for path in changed):
+              raise SystemExit("Candidate contains no aperture object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+          test -f manzanita-next/public-demo/build_public_demo.py
+          test -f manzanita-next/design-system/CONSTITUTION.json
+          test -f programs/manzanita-99/review-board/validate_review_board.py
+
+      - name: Install acquisition and projection dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            requests beautifulsoup4 pillow jsonschema pytest
+
+      - name: Validate source, public-demo, aperture, and review contracts
+        run: |
+          pytest -q manzanita-next/tests
+          python -m py_compile \
+            manzanita-next/public-demo/build_public_demo.py \
+            manzanita-next/apertures/build_apertures.py \
+            manzanita-next/apertures/tests/test_apertures.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m json.tool manzanita-next/apertures/APERTURE_CONTRACT.json > /dev/null
+          python -m json.tool manzanita-next/apertures/AUTHORED_DEMO.json > /dev/null
+          python -m json.tool manzanita-next/apertures/review/M99-RB-PKT-005.json > /dev/null
+          python -m json.tool manzanita-next/apertures/review/M99-RB-DEC-005.json > /dev/null
+          python -m unittest discover \
+            -s manzanita-next/public-demo/tests \
+            -p "test_public_demo.py"
+          python -m unittest discover \
+            -s manzanita-next/apertures/tests \
+            -p "test_apertures.py"
+
+      - name: Acquire the exact live source foundation
+        id: acquire
+        continue-on-error: true
+        env:
+          AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPILLARY_ACCESS_TOKEN: ${{ secrets.MAPILLARY_ACCESS_TOKEN }}
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
+        run: |
+          rm -rf manzanita-next/out
+          cd manzanita-next
+          python -m scripts.acquire_foundation \
+            --place config/place-demo.json \
+            --registry config/source-registry.json \
+            --out out
+
+      - name: Validate every source receipt and retained payload
+        id: validate_source
+        if: always()
+        run: |
+          python manzanita-next/scripts/validate_foundation.py \
+            --root manzanita-next/out \
+            --source-schema manzanita-next/contracts/source-envelope.schema.json
+
+      - name: Rebuild the exact public-safe demonstration donor
+        if: always()
+        run: |
+          python manzanita-next/public-demo/build_public_demo.py \
+            --repo-root . \
+            --acquisition-root manzanita-next/out \
+            --output manzanita-next/public-demo/out
+
+      - name: Build the seven-aperture bundle
+        if: always()
+        run: |
+          rm -rf manzanita-next/apertures/out
+          python manzanita-next/apertures/build_apertures.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --output manzanita-next/apertures/out
+
+      - name: Run the contained multidisciplinary review
+        if: always()
+        run: |
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/apertures/review/M99-RB-PKT-005.json \
+            --decision manzanita-next/apertures/review/M99-RB-DEC-005.json \
+            --receipt manzanita-next/apertures/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Prove the exact-head aperture and board receipts
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          public_build = json.loads(Path("manzanita-next/public-demo/out/BUILD_RECEIPT.json").read_text())
+          bundle = json.loads(Path("manzanita-next/apertures/out/APERTURE_BUNDLE.json").read_text())
+          build = json.loads(Path("manzanita-next/apertures/out/BUILD_RECEIPT.json").read_text())
+          board = json.loads(Path("manzanita-next/apertures/out/BOARD_DECISION_RECEIPT.json").read_text())
+
+          assert public_build["result"] == "PASS"
+          assert public_build["release_effect"] == "none"
+          assert public_build["constitutional_count_effect"] == "none"
+
+          assert bundle["schema"] == "axm-tools/manzanita-seven-aperture-bundle@1"
+          assert bundle["aperture_count"] == 7
+          assert bundle["aperture_order"] == [
+              "plant", "household", "property", "street",
+              "neighborhood", "region", "stewardship"
+          ]
+          assert len({row["place_id"] for row in bundle["apertures"]}) == 1
+          assert len({row["source_run_id"] for row in bundle["apertures"]}) == 1
+          for field in (
+              "object_class", "reading", "safe_action", "authority",
+              "acceptance", "handoff", "prohibited_consequence"
+          ):
+              assert len({row[field] for row in bundle["apertures"]}) == 7, field
+          assert len({row["geometry"]["id"] for row in bundle["apertures"]}) == 7
+          assert len({row["geometry"]["path"] for row in bundle["apertures"]}) == 7
+          assert all(row["evidence_count"] >= 2 for row in bundle["apertures"])
+          assert bundle["public_effect"] == "none"
+          assert bundle["constitutional_count_effect"] == "none"
+
+          assert build["result"] == "PASS"
+          assert build["bundle"]["aperture_count"] == 7
+          assert build["bundle"]["payload_sha256"] == bundle["payload_sha256"]
+          assert build["public_effect"] == "none"
+          assert build["constitutional_count_effect"] == "none"
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-005"
+          assert board["decision_id"] == "M99-RB-DEC-005"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 7
+          PY
+
+      - name: Retain source, public-demo, aperture, and board evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-seven-apertures-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            manzanita-next/out
+            manzanita-next/public-demo/out/PUBLIC_DATA.json
+            manzanita-next/public-demo/out/PUBLIC_PROJECTION_RECEIPT.json
+            manzanita-next/public-demo/out/BUILD_RECEIPT.json
+            manzanita-next/apertures/README.md
+            manzanita-next/apertures/APERTURE_CONTRACT.json
+            manzanita-next/apertures/AUTHORED_DEMO.json
+            manzanita-next/apertures/build_apertures.py
+            manzanita-next/apertures/tests/test_apertures.py
+            manzanita-next/apertures/review/M99-RB-PKT-005.json
+            manzanita-next/apertures/review/M99-RB-DEC-005.json
+            manzanita-next/apertures/out
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Enforce the acquisition and source-validation outcomes
+        if: always()
+        env:
+          ACQUIRE_OUTCOME: ${{ steps.acquire.outcome }}
+          VALIDATE_SOURCE_OUTCOME: ${{ steps.validate_source.outcome }}
+        run: |
+          test "$ACQUIRE_OUTCOME" = "success"
+          test "$VALIDATE_SOURCE_OUTCOME" = "success"

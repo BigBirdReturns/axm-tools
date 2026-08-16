@@ -1,0 +1,420 @@
+{
+  "schema": "axm-tools/manzanita-review-decision@1",
+  "decision_id": "M99-RB-DEC-005",
+  "packet_id": "M99-RB-PKT-005",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "reviewed_ref": {
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "external_review_claim": false,
+  "seat_reviews": [
+    {
+      "seat_id": "board_chair",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The packet submits one deterministic seven-aperture architecture over an exact public-demo build and an explicitly authored non-private cartridge, with no hidden public, field, adverse, interaction, or task-count claim.",
+        "Pass gates establish the machine object, custody, privacy, and exact-head receipt, while five partial gates remain visible and block any interpretation as a finished experience."
+      ],
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-README",
+        "E-APERTURE-BUNDLE",
+        "E-APERTURE-BUILD-RECEIPT",
+        "E-APERTURE-WORKFLOW",
+        "E-BOARD-CHARTER"
+      ],
+      "uncertainty": "The exact source run, public projection, aperture bundle, workflow head, and contained receipt must agree before this decision has standing.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "creative_direction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Plant through Stewardship retain seven distinct Forkline geometry identities while sharing one contour, branch, node, and authority-cut grammar.",
+        "The architecture prevents one image crop or arbitrary geometric shape from masquerading as seven scales by requiring unique object, evidence, geometry, action, authority, acceptance, and handoff fields."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE"
+      ],
+      "uncertainty": "No full compositions, imagery crops, legends, dense source rails, unlabeled recognition test, or visual goldens are admitted yet.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "product_interaction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The machine bundle proves that every aperture changes the complete operating object and that parent-aperture order and handoff are explicit.",
+        "No aperture contains a write, dispatch, inspection, completion, offer, decision, or external-effect control, so architecture admission cannot be mistaken for operating authority."
+      ],
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUILDER",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUNDLE"
+      ],
+      "uncertainty": "Interactive controls, persistence, undo, keyboard and touch behavior, actor switching, user comprehension, and Essential Attention handoff remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "information_design",
+      "disposition": "pass",
+      "findings": [
+        "Every aperture carries a distinct object, evidence set, geometry, reading, safe action, authority, acceptance, handoff, and prohibited consequence while retaining one place and source lineage.",
+        "Source evidence and authored demonstration records remain separately labeled, and absent registered sources become explicit unknown rows instead of disappearing or becoming zero."
+      ],
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-AUTHORED-APERTURE-DEMO",
+        "E-PUBLIC-DATA",
+        "E-APERTURE-BUILDER",
+        "E-APERTURE-BUNDLE"
+      ],
+      "uncertainty": "Responsive hierarchy, dense record compression, contradictions, source conflicts, long labels, multilingual copy, and appeal records require later surface evidence.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "typography",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The architecture exposes complete text roles for later display, editorial, operational, label, data, and compact treatment rather than hiding the hard copy behind placeholder names.",
+        "Long authority, acceptance, handoff, and prohibited-consequence fields are retained as first-class production inputs."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE"
+      ],
+      "uncertainty": "No pair-level optical fitting, line-break campaign, compact-width proof, 200 percent zoom, fallback glyph, print, or multilingual test is submitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "motion",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The ordered parent-aperture chain and stable source-run identity provide the minimum temporal and continuity substrate for scale transitions.",
+        "Geometry, evidence, authority, and handoff fields are available for later full and reduced-motion before-and-after receipts."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE"
+      ],
+      "uncertainty": "No transition choreography, interruption, reversal, source aging, registration motion, handoff timing, reduced-motion behavior, or motion golden is admitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "source_custody",
+      "disposition": "pass",
+      "findings": [
+        "Every consumed public source retains state, source and retrieval time, payload digest, attribution, rights, storage policy, claim scope, uncertainty, and receipt path.",
+        "Every authored record carries an authored state, record digest, estate attribution, demonstration-only claim scope, and prohibition against observation, private, field, offer, or adverse authority."
+      ],
+      "evidence_ids": [
+        "E-AUTHORED-APERTURE-DEMO",
+        "E-PUBLIC-DATA",
+        "E-PUBLIC-PROJECTION-RECEIPT",
+        "E-APERTURE-BUILDER",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUNDLE"
+      ],
+      "uncertainty": "Each later live source run, first-party record, private projection, and provider-rights change must earn a new aperture bundle and review receipt.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "field_operations",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Resident, steward, and program-operator authority changes with aperture and does not borrow entry, inspection, equipment, labor, work, completion, funding, or jurisdiction from public or authored evidence.",
+        "Property, Street, Region, and Stewardship explicitly prohibit the most likely field and adverse overclaims."
+      ],
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-AUTHORED-APERTURE-DEMO",
+        "E-APERTURE-BUNDLE"
+      ],
+      "uncertainty": "No real household, site, corridor, hazard, crew, equipment, labor, assistance, work receipt, acceptance, refusal, appeal, or jurisdictional playtest is admitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "accessibility",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The bundle preserves a stable seven-item semantic order and complete text alternatives for object, evidence, state, reading, action, authority, acceptance, handoff, and prohibited consequence.",
+        "No meaning is stored only in the geometry path or evidence-state code."
+      ],
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE",
+        "E-APERTURE-TESTS"
+      ],
+      "uncertainty": "No interactive keyboard, touch, screen-reader, target-size, focus, zoom, compact, forced-color, reduced-motion, or cognitive campaign is submitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "performance_resilience",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The same inputs produce byte-identical aperture bundles and build receipts, and missing registered sources remain useful unknown evidence instead of causing silent data loss.",
+        "Input and output digests preserve a replayable dependency chain from public-demo source run to aperture record."
+      ],
+      "evidence_ids": [
+        "E-PUBLIC-DEMO-BUILD",
+        "E-APERTURE-BUILDER",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUILD-RECEIPT"
+      ],
+      "uncertainty": "Live acquisition resilience, build budgets, serving performance, low-end devices, networks, caches, concurrency, observability, export, and rollback remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "security_privacy",
+      "disposition": "pass",
+      "findings": [
+        "The composer accepts only a public-safe dossier and an explicitly non-private authored cartridge, rejects prohibited public or credential keys, and carries rights, purpose, and adverse-action boundaries into the bundle.",
+        "Public, nearby, regional, authored, missing, stale, and unavailable evidence is expressly prohibited from becoming a verified private or local condition."
+      ],
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-AUTHORED-APERTURE-DEMO",
+        "E-PUBLIC-PROJECTION-RECEIPT",
+        "E-APERTURE-BUILDER",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUNDLE"
+      ],
+      "uncertainty": "Any later private household cartridge, authenticated gateway, credential operation, field record, external effect, or public hosting surface requires a separate privacy and threat review.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "continuity_release",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The contract, authored cartridge, exact public-demo inputs, aperture bundle, build receipt, tests, and workflow form a deterministic internal handoff object.",
+        "The decision keeps release effect at internal architecture only, preserves the historical public route, and refuses canonical task-count mutation."
+      ],
+      "evidence_ids": [
+        "E-APERTURE-README",
+        "E-PUBLIC-DEMO-BUILD",
+        "E-APERTURE-BUNDLE",
+        "E-APERTURE-BUILD-RECEIPT",
+        "E-APERTURE-WORKFLOW",
+        "E-BOARD-CHARTER"
+      ],
+      "uncertainty": "Independent archive restoration, separate-team cold build, interactive consumption, public serving, export and reimport, and deployed rollback remain held.",
+      "veto_ids": []
+    }
+  ],
+  "defects": [
+    {
+      "id": "M99-RB-DEF-012",
+      "severity": "medium",
+      "title": "Seven machine apertures are not an interactive experience",
+      "mechanism": "Distinct JSON records and geometry identities establish the operating architecture but do not prove controls, navigation, comprehension, persistence, undo, keyboard, touch, or actor behavior.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE",
+        "E-APERTURE-TESTS"
+      ],
+      "owner": "design_integrator_and_product_interaction",
+      "acceptance": "An exact interactive candidate exposes all seven apertures, changes every declared object and authority field, passes full-seat playtests, and retains interaction, accessibility, state, and failure receipts.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-013",
+      "severity": "medium",
+      "title": "Visual, typography, and motion production remain open",
+      "mechanism": "Forkline-compatible geometry and complete copy fields do not substitute for full compositions, imagery, legends, optical fitting, responsive states, motion, reduced motion, and visual goldens.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE"
+      ],
+      "owner": "creative_direction_typography_motion",
+      "acceptance": "Every aperture has full-state light, dark, desktop, mobile, compact, print, interaction, source, failure, and reduced-motion goldens that pass contained review without crop-only scale changes.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-014",
+      "severity": "medium",
+      "title": "Private, field, and affected-actor evidence remain absent",
+      "mechanism": "Public source context and authored demonstration records cannot establish private household condition, resident intent, lawful access, field safety, equipment fit, labor, work completion, assistance, acceptance, refusal, or appeal.",
+      "evidence_ids": [
+        "E-AUTHORED-APERTURE-DEMO",
+        "E-PUBLIC-PROJECTION-RECEIPT",
+        "E-APERTURE-BUNDLE"
+      ],
+      "owner": "field_operations_and_security_privacy",
+      "acceptance": "Separate governed private and field packets retain consent, lawful authority, first-party observations, hazards, equipment, labor, execution, completion, acceptance, refusal, appeal, and public/private projection receipts.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-015",
+      "severity": "medium",
+      "title": "Live source aging, serving, and rollback remain unproved",
+      "mechanism": "The aperture bundle is deterministic for one public-demo build but does not refresh, age, serve, observe, or roll back a deployed operating surface.",
+      "evidence_ids": [
+        "E-PUBLIC-DEMO-BUILD",
+        "E-APERTURE-BUILD-RECEIPT",
+        "E-APERTURE-WORKFLOW"
+      ],
+      "owner": "performance_resilience_and_continuity_release",
+      "acceptance": "A later product object proves source aging, refresh, outage, cache, serving budgets, observability, export, public bytes, rollback, and cold-successor replay on a bounded endpoint.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-016",
+      "severity": "medium",
+      "title": "Canonical task-row reconciliation remains unavailable",
+      "mechanism": "The exact original JDB99-013 row and dependency graph remain unavailable because the merged constitutional source object was incomplete.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-README",
+        "E-APERTURE-BUILD-RECEIPT"
+      ],
+      "owner": "program_steward_and_release_authority",
+      "acceptance": "A governed successor register admits the exact packet, decision, receipts, dependencies, task standing, and count transition with explicit provenance and no invented original fields.",
+      "disposition": "accepted_hold"
+    }
+  ],
+  "vetoes": [],
+  "gate_disposition": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The reviewed object remains a seven-aperture canonical-place architecture candidate, not an interactive product, private record, field result, or public endpoint.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-README",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Composer, resident, steward, program, design, release, and successor seats retain separate and bounded authority across the seven records.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The exact build and tests prove one place and source lineage, seven distinct objects and geometries, complete aperture semantics, explicit unknown sources, and deterministic receipts.",
+      "evidence_ids": [
+        "E-APERTURE-BUILDER",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUNDLE",
+        "E-APERTURE-BUILD-RECEIPT"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Public source and authored evidence rows remain separately classified, scoped, attributed, hashed, and prohibited from authority transfer.",
+      "evidence_ids": [
+        "E-AUTHORED-APERTURE-DEMO",
+        "E-PUBLIC-DATA",
+        "E-PUBLIC-PROJECTION-RECEIPT",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "partial",
+      "reason": "Seven distinct semantic apertures are proved in the machine object while interactive controls, persistence, undo, input modes, and playtests remain held.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "partial",
+      "reason": "Forkline geometry and complete copy fields are admitted while full compositions, imagery, type fitting, legends, responsive states, and visual goldens remain held.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "Ordered aperture and source-run continuity are explicit while transition, interruption, aging, registration, handoff, and reduced-motion behavior remain held.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "Semantic ordering and complete labels are present while no interactive responsive, keyboard, touch, screen-reader, zoom, forced-color, or reduced-motion campaign is submitted.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "Deterministic building and degraded-state preservation pass while acquisition, serving, devices, networks, caches, observability, export, and rollback remain held.",
+      "evidence_ids": [
+        "E-PUBLIC-DEMO-BUILD",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUILD-RECEIPT"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "Only public-safe and explicitly authored non-private inputs are accepted, prohibited keys are rejected, source rights persist, and private, field, adverse, and public claims remain blocked.",
+      "evidence_ids": [
+        "E-APERTURE-CONTRACT",
+        "E-AUTHORED-APERTURE-DEMO",
+        "E-PUBLIC-PROJECTION-RECEIPT",
+        "E-APERTURE-TESTS",
+        "E-APERTURE-BUNDLE"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Exact inputs, bundle, tests, and digests support replay while independent archive, separate-team cold build, interactive consumption, export reimport, serving, and deployed rollback remain held.",
+      "evidence_ids": [
+        "E-APERTURE-README",
+        "E-APERTURE-BUILD-RECEIPT",
+        "E-APERTURE-WORKFLOW"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow and contained decision bind internal architecture admission with no public, whole-product, external, or constitutional-count effect.",
+      "evidence_ids": [
+        "E-APERTURE-WORKFLOW",
+        "E-APERTURE-BUILD-RECEIPT",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "outcome": "admit_with_holds",
+  "admitted_claim": "M99-SEVEN-APERTURES-001 may govern later Manzanita interactive production as the internal canonical-place aperture architecture, bound to its exact public-demo build, authored cartridge, source and geometry custody, and retained holds.",
+  "holds": [
+    "No interactive seven-aperture product, public route, serving endpoint, or whole-product qualification is admitted by this machine architecture.",
+    "Full visual, typography, imagery, source-rail, legend, responsive, accessibility, motion, and reduced-motion production remains open.",
+    "No private household condition, resident intent, lawful entry, field inspection, equipment fit, labor, completed work, assistance, acceptance, refusal, appeal, or external effect is admitted.",
+    "The bundle is bound to one public-demo source run and does not prove refresh, current source health, permanent provider availability, serving, observability, export, or rollback.",
+    "Seven apertures do not complete eight live overlays, five functional seats, Essential Attention and FAB handoff, provider operations, whole-experience authorship, or public release.",
+    "Independent archive restoration, separate-team cold build, interactive consumption, public serving, and deployed rollback remain open.",
+    "No canonical task-row closure or remembered 497-task count mutation is admitted until a governed successor register reconciles the exact receipts."
+  ],
+  "release_effect": "internal_candidate_only",
+  "authority_receipt": {
+    "deciding_seat": "release_authority",
+    "decision_scope": "Internal admission of one exact seven-aperture canonical-place architecture for later interactive production, with no public, field, adverse, whole-product, design-score, constitutional-count, or external-effect authority.",
+    "prohibited_effects": [
+      "interactive product or public-route qualification",
+      "provider purchase, credential operation, public serving, or external communication",
+      "private household, field, assistance, insurance, enforcement, eligibility, property, resident, evacuation, safety, or other adverse decision",
+      "presentation of authored, public, regional, nearby, empty, stale, missing, or unavailable evidence as a verified private or local condition",
+      "99-point score or constitutional task-count mutation"
+    ]
+  },
+  "qualification_boundary": "This decision admits the deterministic seven-aperture architecture for internal production use only. It is not external review, an interactive experience, private or field fitness, public deployment, whole-product qualification, a 99-point score, canonical task closure, or permission for any external effect.",
+  "control_question": "Can a cold successor use this exact bundle to build an interactive seven-aperture experience without changing any source, authored-state, privacy, authority, field, adverse, release, or constitutional-count boundary?"
+}
