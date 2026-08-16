@@ -1,0 +1,99 @@
+name: Manzanita contained review board
+
+on:
+  push:
+    branches:
+      - agent/manzanita-review-board-027-v2
+    paths:
+      - "programs/manzanita-99/review-board/**"
+      - ".github/workflows/manzanita-review-board.yml"
+  pull_request:
+    paths:
+      - "programs/manzanita-99/review-board/**"
+      - ".github/workflows/manzanita-review-board.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate contained board activation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate static governance objects
+        run: |
+          python -m py_compile programs/manzanita-99/review-board/validate_review_board.py
+          python -m json.tool programs/manzanita-99/review-board/BOARD_CHARTER.json > /dev/null
+          python -m json.tool programs/manzanita-99/review-board/ACTIVATION_STATE.json > /dev/null
+          python -m json.tool programs/manzanita-99/review-board/review-packet.schema.json > /dev/null
+          python -m json.tool programs/manzanita-99/review-board/review-decision.schema.json > /dev/null
+          python -m json.tool programs/manzanita-99/review-board/cases/M99-RB-PKT-001.json > /dev/null
+          python -m json.tool programs/manzanita-99/review-board/cases/M99-RB-DEC-001.json > /dev/null
+
+      - name: Exercise adversarial review law
+        run: >-
+          python -m unittest discover
+          -s programs/manzanita-99/review-board/tests
+          -p "test_*.py"
+
+      - name: Build the exact-head board receipt
+        run: |
+          rm -rf programs/manzanita-99/review-board/out
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet programs/manzanita-99/review-board/cases/M99-RB-PKT-001.json \
+            --decision programs/manzanita-99/review-board/cases/M99-RB-DEC-001.json \
+            --receipt programs/manzanita-99/review-board/out/BOARD_ACTIVATION_RECEIPT.json
+
+      - name: Prove governance-only admission
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          receipt = json.loads(
+              Path("programs/manzanita-99/review-board/out/BOARD_ACTIVATION_RECEIPT.json")
+              .read_text(encoding="utf-8")
+          )
+          expected_head = os.environ["REVIEW_HEAD_SHA"]
+          assert re.fullmatch(r"[0-9a-f]{40}", expected_head)
+          assert receipt["result"] == "PASS"
+          assert receipt["board_status"] == "ACTIVE"
+          assert receipt["task_reference"] == "JDB99-027"
+          assert receipt["outcome"] == "admit_governance_only"
+          assert receipt["release_effect"] == "none"
+          assert receipt["constitutional_count_effect"] == "none"
+          assert receipt["seat_count"] == 12
+          assert receipt["open_vetoes"] == []
+          assert receipt["open_critical_or_high_defects"] == []
+          assert receipt["reviewed_head"] == expected_head
+          PY
+
+      - name: Retain charter, case, tests, and receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-review-board-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            programs/manzanita-99/review-board/README.md
+            programs/manzanita-99/review-board/BOARD_CHARTER.json
+            programs/manzanita-99/review-board/ACTIVATION_STATE.json
+            programs/manzanita-99/review-board/review-packet.schema.json
+            programs/manzanita-99/review-board/review-decision.schema.json
+            programs/manzanita-99/review-board/cases/M99-RB-PKT-001.json
+            programs/manzanita-99/review-board/cases/M99-RB-DEC-001.json
+            programs/manzanita-99/review-board/tests/test_review_board.py
+            programs/manzanita-99/review-board/out/BOARD_ACTIVATION_RECEIPT.json
+          if-no-files-found: error
+          retention-days: 90
