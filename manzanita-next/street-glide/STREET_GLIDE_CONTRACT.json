@@ -1,0 +1,214 @@
+{
+  "schema": "axm-tools/manzanita-street-glide-contract@1",
+  "contract_id": "M99-STREET-GLIDE-001",
+  "version": "1.0.0",
+  "state": "internal_candidate",
+  "task_reference": "JDB99-014",
+  "object": {
+    "classification": "provider_scene_resolver_and_natural_border_registration_kernel",
+    "public_data_source": "manzanita-next/public-demo/out/PUBLIC_DATA.json",
+    "provider_operations_source": "manzanita-next/provider-operations",
+    "authored_demo": "manzanita-next/street-glide/AUTHORED_REGISTRATION_DEMO.json",
+    "accountable_actor": "design_integrator",
+    "source_actor": "provider_resolver",
+    "registration_actor": "registration_operator",
+    "decision_authority": "release_authority",
+    "public_effect": "none",
+    "constitutional_count_effect": "none",
+    "claim_boundary": "This contract governs an internal scene decision and an image-edge registration proposal. It does not identify a physical feature, establish a surveyed or property boundary, authorize access or work, produce a safety or adverse decision, qualify an interactive product, deploy a public endpoint, or mutate a canonical task count."
+  },
+  "provider_order": [
+    {
+      "rank": 1,
+      "id": "google_street_view",
+      "mode": "live_render_only",
+      "credential_required": true,
+      "storage_rule": "Do not retain imagery bytes unless the exact provider terms and product path expressly permit it. Retain permitted metadata and render identifiers only.",
+      "attribution_required": true
+    },
+    {
+      "rank": 2,
+      "id": "mapillary",
+      "mode": "provider_item",
+      "credential_required": true,
+      "storage_rule": "Retain only provider-permitted metadata and imagery URLs or bytes under the exact API and item terms.",
+      "attribution_required": true
+    },
+    {
+      "rank": 3,
+      "id": "kartaview",
+      "mode": "provider_item",
+      "credential_required": false,
+      "storage_rule": "Retain provider-permitted item metadata and imagery with contributor attribution and returned item terms.",
+      "attribution_required": true
+    },
+    {
+      "rank": 4,
+      "id": "panoramax",
+      "mode": "federated_provider_item",
+      "credential_required": false,
+      "storage_rule": "Retain STAC and provider metadata, host identity, per-item rights, and only permitted imagery bytes.",
+      "attribution_required": true
+    },
+    {
+      "rank": 5,
+      "id": "owned_capture",
+      "mode": "authorized_first_party_media",
+      "credential_required": false,
+      "storage_rule": "Retain the original capture, consent and authority, device and lens metadata, capture time, coordinates, privacy review, transforms, and permitted projections.",
+      "attribution_required": true
+    },
+    {
+      "rank": 6,
+      "id": "map_only",
+      "mode": "degraded_fallback",
+      "credential_required": false,
+      "storage_rule": "Retain the public map, terrain, source, geometry, and provider-failure receipts that justify map-only operation.",
+      "attribution_required": true
+    }
+  ],
+  "scene_eligibility": {
+    "required_fields": [
+      "provider_id",
+      "source_state",
+      "scene_id",
+      "capture_time",
+      "latitude",
+      "longitude",
+      "heading_degrees",
+      "distance_meters",
+      "attribution",
+      "rights",
+      "storage_policy",
+      "claim_scope",
+      "render_or_payload_path"
+    ],
+    "eligible_source_states": [
+      "ok"
+    ],
+    "maximum_distance_meters": 120,
+    "maximum_scene_age_days": 3650,
+    "heading_tolerance_degrees": 95,
+    "rights_required": true,
+    "attribution_required": true,
+    "payload_or_render_path_required": true,
+    "generated_scene_prohibited": true,
+    "modeled_scene_prohibited_as_observation": true,
+    "selection_law": "Select the lowest provider rank whose scene satisfies every eligibility field and whose source, rights, render, capture, distance, heading, and health receipts remain admissible. Preserve every skipped-provider reason.",
+    "map_only_law": "When no scene qualifies, return map_only with the public base-map and terrain receipts, every provider failure reason, the unknown street-scene fields, a safe capture or source-review action, and no fabricated street image."
+  },
+  "scene_states": [
+    "selected",
+    "map_only",
+    "empty",
+    "stale",
+    "skipped_missing_credential",
+    "rate_limited",
+    "unavailable",
+    "terms_blocked",
+    "unknown",
+    "rejected_metadata",
+    "rejected_distance",
+    "rejected_heading",
+    "rejected_rights",
+    "rejected_generated"
+  ],
+  "registration": {
+    "classification": "authored_candidate_to_image_gradient_proposal",
+    "image_classes_allowed": [
+      "provider_scene",
+      "authorized_owned_capture",
+      "public_base_imagery_demonstration"
+    ],
+    "candidate_source_class": "authored_registration_candidate",
+    "output_source_class": "derived_image_edge_registration_proposal",
+    "default_search_radius_pixels": 18,
+    "maximum_search_radius_pixels": 48,
+    "minimum_gradient_strength": 0.08,
+    "maximum_mean_displacement_pixels": 24,
+    "minimum_points": 2,
+    "preserve_original_points": true,
+    "preserve_unsnapped_points": true,
+    "normal_search_only": true,
+    "deterministic_grayscale_gradient": true,
+    "feature_identity_prohibited": true,
+    "unknown_boundary_must_remain_open": true,
+    "admission_law": "A registration proposal is internally admissible only when the source image, authored candidate, parameters, gradient method, original and proposed points, displacement, edge strengths, no-snap points, image digest, and claim boundary are retained. The proposal does not identify the physical feature and requires accountable interpretation and field verification before operational use."
+  },
+  "outputs": {
+    "scene_decision": {
+      "schema": "axm-tools/manzanita-street-glide-scene-decision@1",
+      "required_fields": [
+        "result",
+        "place_id",
+        "source_run_id",
+        "selected_mode",
+        "selected_provider",
+        "selected_scene",
+        "provider_attempts",
+        "map_only_receipts",
+        "safe_action",
+        "authority",
+        "prohibited_consequence",
+        "claim_boundary",
+        "payload_sha256"
+      ]
+    },
+    "registration_receipt": {
+      "schema": "axm-tools/manzanita-natural-border-registration@1",
+      "required_fields": [
+        "result",
+        "image",
+        "candidate",
+        "method",
+        "original_points",
+        "proposed_points",
+        "point_receipts",
+        "mean_displacement_pixels",
+        "maximum_displacement_pixels",
+        "mean_gradient_strength",
+        "confidence_class",
+        "claim_boundary",
+        "payload_sha256"
+      ]
+    }
+  },
+  "field_and_interpretation_boundary": {
+    "known": "The source image, image digest, provider or image class, authored candidate line, local grayscale gradient field, bounded search, proposed points, displacement, and gradient strength.",
+    "unknown": "The physical identity, ownership, legal status, material condition, accessibility, safety, recency beyond source metadata, and field fitness of the edge.",
+    "safe_action": "Present the source image and original and proposed line to an accountable reviewer, retain any correction, and verify the physical feature and authority in the field before operational use.",
+    "authority": "The kernel may propose registration geometry. It cannot inspect, survey, authorize entry, direct work, establish a property or safety condition, or complete a field record.",
+    "prohibited_consequence": "No parcel, insurance, enforcement, access, pruning, hazard, traffic, work, completion, or adverse decision."
+  },
+  "qualification": {
+    "required_campaigns": [
+      "provider-order preservation",
+      "eligible scene selection",
+      "higher-rank failure and lower-rank fallback",
+      "empty, stale, missing-credential, limited, outage, terms, unknown, metadata, distance, heading, rights, and generated-scene rejection",
+      "map-only fallback with every skipped-provider reason",
+      "deterministic registration on synthetic known edges",
+      "normal-direction search and bounded displacement",
+      "no-snap preservation below the gradient floor",
+      "image, candidate, parameter, point, displacement, strength, and digest custody",
+      "source and authored boundary preservation",
+      "private and credential exclusion",
+      "contained multidisciplinary review",
+      "cold-successor replay"
+    ]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "property or surveyed boundary determination",
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "access, traffic, pruning, hazard, safety, inspection, enforcement, work, dispatch, or completed-remediation decision",
+      "presentation of an image gradient as a named physical feature without separate evidence and accountable review",
+      "presentation of generated, modeled, authored, missing, stale, or unavailable imagery as observed street evidence",
+      "public deployment, whole-product qualification, design score, or constitutional task-count mutation"
+    ],
+    "required_human_control": "Any later interpretation or external effect requires the original source and rights receipt, named accountable reviewer, physical-feature evidence, lawful authority, field verification where applicable, affected-actor notice and consent, acceptance or appeal path, and independent receipt."
+  },
+  "task_standing": "operational_candidate_scene_and_registration_kernel",
+  "admission_law": "The candidate is admissible only on an exact head whose provider resolver and registration kernel pass every declared source, failure, geometry, custody, privacy, field, adverse, and deterministic replay gate while public and constitutional-count effects remain none.",
+  "control_question": "Can a cold successor reproduce why one scene or map-only mode was selected and how every proposed point moved toward a source-image edge without converting an image gradient into a physical, legal, field, safety, or adverse claim?"
+}

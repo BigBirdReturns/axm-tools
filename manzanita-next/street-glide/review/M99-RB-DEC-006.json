@@ -1,0 +1,452 @@
+{
+  "schema": "axm-tools/manzanita-review-decision@1",
+  "decision_id": "M99-RB-DEC-006",
+  "packet_id": "M99-RB-PKT-006",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "reviewed_ref": {
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "external_review_claim": false,
+  "seat_reviews": [
+    {
+      "seat_id": "board_chair",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The packet submits an exact provider-order resolver and image-gradient registration kernel with internal authority only, and its machine outputs retain source, failure, rights, geometry, method, field, adverse, public, and count boundaries.",
+        "The decision admits the kernel while preserving interaction, visual, motion, accessibility, live-provider, field, serving, succession, and canonical-row holds."
+      ],
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-STREET-GLIDE-README",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT",
+        "E-STREET-GLIDE-WORKFLOW",
+        "E-BOARD-CHARTER"
+      ],
+      "uncertainty": "The exact live public-demo build, scene decision, image, registration receipt, tests, and reviewed head must agree before this decision has standing.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "creative_direction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The source image, authored seed, proposed line, no-snap state, provider attempts, and map-only mode provide a coherent Forkline substrate without presenting arbitrary geometry as observation.",
+        "The kernel preserves the source image and both original and proposed geometry, enabling later before-and-after visual receipts instead of hiding registration behind a final outline."
+      ],
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-REGISTRATION-DEMO",
+        "E-PUBLIC-BASE-IMAGE",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "uncertainty": "No complete Street Glide composition, scene treatment, source rail, legend, annotation system, light and dark states, or recognition test is submitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "product_interaction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Provider selection, provider rejection, map-only fallback, snap, no-snap, and displacement hold are distinct machine states rather than copy variants.",
+        "No scene navigation, source drawer, correction, acceptance, undo, comparison, input, handoff, or external-effect control is silently claimed."
+      ],
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-SCENE-RESOLVER",
+        "E-NATURAL-BORDER-KERNEL",
+        "E-STREET-GLIDE-TESTS",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "uncertainty": "Interactive source, correction, comparison, state persistence, keyboard, touch, resident, steward, planner, and cold-successor playtests remain open.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "information_design",
+      "disposition": "pass",
+      "findings": [
+        "Provider rank, source state, candidate count, rejection reason, scene identity, capture time, coordinates, heading, distance, rights, storage, claim scope, and map-only receipts remain separate.",
+        "Image, authored candidate, method, original and proposed points, displacement, gradient magnitude, alignment, no-snap reason, confidence, known, unknown, action, authority, and prohibited consequence remain separately inspectable."
+      ],
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT",
+        "E-STREET-GLIDE-TESTS"
+      ],
+      "uncertainty": "Dense scene lists, multiple headings, temporal comparisons, conflicting sources, human corrections, long provider terms, and responsive presentation remain open.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "typography",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The kernel exposes complete future copy and data roles for provider identity, capture metadata, rejection, rights, point receipts, confidence, action, authority, and non-claim.",
+        "No required source or failure field is compressed into an unlabeled icon or hidden machine code."
+      ],
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "uncertainty": "No optical fitting, long-label wrapping, data-table hierarchy, compact mode, 200 percent zoom, multilingual, print, or fallback-font campaign is submitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "motion",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Provider order, scene capture time, original and proposed lines, point displacement, and no-snap states create explicit before-and-after and temporal inputs for later motion.",
+        "The registration method does not require motion to carry substantive meaning."
+      ],
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "uncertainty": "No scene transition, scale registration, point correction, temporal comparison, interruption, reversal, handoff timing, or reduced-motion golden is admitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "source_custody",
+      "disposition": "pass",
+      "findings": [
+        "The provider order and every source failure remain visible, selected scene metadata retains rights and claim scope, and map-only mode retains map, imagery, terrain, and provider-attempt receipts.",
+        "The registration receipt binds the exact source image digest, authored seed digest, method parameters, original and proposed points, gradients, displacement, confidence, and physical-feature non-claim."
+      ],
+      "evidence_ids": [
+        "E-PUBLIC-DATA",
+        "E-PUBLIC-BASE-IMAGE",
+        "E-PUBLIC-DEMO-BUILD",
+        "E-REGISTRATION-DEMO",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "uncertainty": "Each later provider scene, render identifier, image byte, rights revision, owned capture, correction, and field interpretation requires its own retained receipt and review.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "field_operations",
+      "disposition": "pass",
+      "findings": [
+        "The registration receipt states that an image gradient does not identify a curb, property line, vegetation boundary, drainage feature, fuel break, access route, hazard, safety condition, or work limit.",
+        "The safe action requires accountable source review and physical verification before operational use, and no field authority is transferred to the kernel."
+      ],
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-REGISTRATION-DEMO",
+        "E-REGISTRATION-RECEIPT",
+        "E-STREET-GLIDE-TESTS"
+      ],
+      "uncertainty": "No real street scene, feature interpretation, lawful access, field capture, weather, traffic, crew, equipment, safety, work, completion, or acceptance playtest is admitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "accessibility",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The machine outputs preserve textual provider attempts, rejection reasons, original and proposed coordinates, point-level receipts, confidence, known, unknown, action, authority, and non-claim.",
+        "No meaning depends exclusively on an image, color, line placement, or confidence class."
+      ],
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "uncertainty": "No keyboard, touch, screen-reader, focus, target-size, zoom, compact, high-contrast, non-color, image-description, or reduced-motion surface is submitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "performance_resilience",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Provider decisions and registration receipts are deterministic for the same inputs, map-only mode remains useful under zero scene coverage, and a no-snap result is preserved instead of forcing geometry.",
+        "The bounded normal search caps the registration work and records every parameter and displacement gate."
+      ],
+      "evidence_ids": [
+        "E-SCENE-RESOLVER",
+        "E-NATURAL-BORDER-KERNEL",
+        "E-STREET-GLIDE-TESTS",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "uncertainty": "Live render latency, provider quota, large imagery, batch registration, devices, network, cache, concurrency, observability, serving, export, and rollback remain open.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "security_privacy",
+      "disposition": "pass",
+      "findings": [
+        "The resolver and kernel require a public-safe place and non-private authored seed, reject prohibited keys, preserve provider rights and storage, and prohibit generated or modeled media as observation.",
+        "Physical-feature, private, property, field, insurance, enforcement, safety, work, and other adverse uses remain explicitly outside the admitted claim."
+      ],
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-REGISTRATION-DEMO",
+        "E-PUBLIC-DATA",
+        "E-SCENE-RESOLVER",
+        "E-NATURAL-BORDER-KERNEL",
+        "E-STREET-GLIDE-TESTS"
+      ],
+      "uncertainty": "Authenticated provider operation, credential custody, live render terms, private scenes, owned captures, face and plate privacy, public hosting, and external effects require separate review.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "continuity_release",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The contract, public-demo source run, image, authored seed, resolver, kernel, tests, scene decision, registration receipt, and exact-head workflow form a reproducible internal handoff object.",
+        "The decision keeps release effect at internal candidate only, preserves the historical public route, and refuses product and constitutional-count authority."
+      ],
+      "evidence_ids": [
+        "E-STREET-GLIDE-README",
+        "E-PUBLIC-DEMO-BUILD",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT",
+        "E-STREET-GLIDE-WORKFLOW",
+        "E-BOARD-CHARTER"
+      ],
+      "uncertainty": "Independent archive restoration, live provider replay, interactive correction export, separate-team cold build, public serving, and deployed rollback remain held.",
+      "veto_ids": []
+    }
+  ],
+  "defects": [
+    {
+      "id": "M99-RB-DEF-017",
+      "severity": "medium",
+      "title": "The exact operating candidate remains map-only",
+      "mechanism": "The admitted authored demo supplies no provider scene metadata, so the live exact-head object proves provider-failure retention and map-only degradation rather than a current street scene.",
+      "evidence_ids": [
+        "E-REGISTRATION-DEMO",
+        "E-PUBLIC-DATA",
+        "E-SCENE-DECISION"
+      ],
+      "owner": "source_custody_and_provider_operations",
+      "acceptance": "An approved provider or owned-capture scene retains credential and quota authority, complete scene metadata, rights, render or payload path, capture time, direction, distance, privacy review, source health, and exact replay receipt.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-018",
+      "severity": "medium",
+      "title": "Image-edge registration does not identify a physical feature",
+      "mechanism": "A strong grayscale gradient and bounded point displacement can improve visual alignment while remaining agnostic to whether the edge is a curb, boundary, roof, vegetation, drainage, access, hazard, or work feature.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-REGISTRATION-DEMO",
+        "E-NATURAL-BORDER-KERNEL",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "owner": "registration_operator_and_field_operations",
+      "acceptance": "A named accountable reviewer ties the proposed line to a source-backed physical-feature interpretation, retains corrections and uncertainty, verifies lawful authority and field condition where required, and records acceptance or rejection.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-019",
+      "severity": "medium",
+      "title": "Interactive Street Glide production remains open",
+      "mechanism": "A resolver and registration receipt do not prove source drawers, scene navigation, comparison, correction, undo, actor apertures, overlays, responsive behavior, accessibility, motion, or visual finish.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "owner": "design_integrator_product_interaction_creative_direction",
+      "acceptance": "An exact interactive candidate operates provider and map-only scenes, source custody, registration correction, overlays, actor authority, failure, light and dark, responsive, accessibility, motion, and full-seat playtests with retained goldens.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-020",
+      "severity": "medium",
+      "title": "Live provider, device, serving, and rollback resilience remain unproved",
+      "mechanism": "Synthetic provider cases and a bounded local image kernel do not prove commercial render latency, quota, outages, rights changes, large imagery, devices, networks, caches, observability, public serving, or rollback.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-TESTS",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT",
+        "E-STREET-GLIDE-WORKFLOW"
+      ],
+      "owner": "performance_resilience_and_continuity_release",
+      "acceptance": "A later provider and product campaign proves live healthy and degraded scenes, quotas, costs, latency, large images, devices, networks, cache, observability, export, serving, exact public bytes, rollback, and cold-successor replay.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-021",
+      "severity": "medium",
+      "title": "Private, field, and adverse authority remain absent",
+      "mechanism": "A public map or provider scene and image-edge proposal cannot establish a private household condition, property or legal boundary, access, hazard, safety, inspection, pruning, traffic, work, completion, insurance, or enforcement decision.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-REGISTRATION-DEMO",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "owner": "field_operations_security_privacy_release_authority",
+      "acceptance": "Separate governed private and field objects retain lawful access, consent, source and feature interpretation, hazards, equipment, labor, execution, completion, acceptance, refusal, appeal, and purpose-limited decision receipts.",
+      "disposition": "accepted_hold"
+    },
+    {
+      "id": "M99-RB-DEF-022",
+      "severity": "medium",
+      "title": "Canonical task-row reconciliation remains unavailable",
+      "mechanism": "The exact original JDB99-014 row and dependency graph remain unavailable because the merged constitutional source object was incomplete.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-STREET-GLIDE-README",
+        "E-REGISTRATION-RECEIPT"
+      ],
+      "owner": "program_steward_and_release_authority",
+      "acceptance": "A governed successor register admits the exact packet, decision, receipts, dependencies, task standing, and count transition with explicit provenance and no invented original fields.",
+      "disposition": "accepted_hold"
+    }
+  ],
+  "vetoes": [],
+  "gate_disposition": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The reviewed object remains a scene resolver and image-gradient registration kernel, not a physical-feature finding, field record, interactive product, or public endpoint.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Resolver, registration, design, steward, release, and successor seats retain separate and bounded authority.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "Provider precedence, rejection, map-only fallback, bounded normal gradient search, no-snap preservation, displacement gates, and deterministic receipts operate in code and tests.",
+      "evidence_ids": [
+        "E-SCENE-RESOLVER",
+        "E-NATURAL-BORDER-KERNEL",
+        "E-STREET-GLIDE-TESTS",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Provider states and rights, public image, authored candidate, method, original and proposed geometry, gradients, displacement, no-snap evidence, and digests remain identifiable and do not transfer authority.",
+      "evidence_ids": [
+        "E-PUBLIC-DATA",
+        "E-PUBLIC-BASE-IMAGE",
+        "E-PUBLIC-DEMO-BUILD",
+        "E-REGISTRATION-DEMO",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "partial",
+      "reason": "Machine scene and registration states pass while source navigation, correction, comparison, undo, input modes, actors, and interactive playtests remain held.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-STREET-GLIDE-TESTS",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "partial",
+      "reason": "Source and geometry custody pass while complete composition, imagery treatment, source rail, legends, annotations, typography, responsive states, and visual goldens remain held.",
+      "evidence_ids": [
+        "E-PUBLIC-BASE-IMAGE",
+        "E-REGISTRATION-RECEIPT",
+        "E-STREET-GLIDE-CONTRACT"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "Provider rank, capture time, original and proposed geometry, and displacement are explicit while scene, correction, comparison, interruption, handoff, and reduced-motion behavior remain held.",
+      "evidence_ids": [
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "Complete machine text and point records exist while no responsive, keyboard, touch, screen-reader, zoom, high-contrast, image-description, or reduced-motion surface is submitted.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "Deterministic bounded processing and map-only and no-snap degradation pass while live providers, quotas, latency, large images, devices, networks, caches, observability, serving, export, and rollback remain held.",
+      "evidence_ids": [
+        "E-SCENE-RESOLVER",
+        "E-NATURAL-BORDER-KERNEL",
+        "E-STREET-GLIDE-TESTS",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "Public-safe and non-private inputs, prohibited-key rejection, provider rights and storage, generated-observation prohibition, and physical-feature, field, adverse, public, and count firewalls pass.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-CONTRACT",
+        "E-REGISTRATION-DEMO",
+        "E-PUBLIC-DATA",
+        "E-SCENE-RESOLVER",
+        "E-NATURAL-BORDER-KERNEL",
+        "E-STREET-GLIDE-TESTS"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Exact input, scene, image, candidate, method, point, and digest receipts support replay while independent archive, live provider replay, interactive correction export, public serving, and rollback remain held.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-README",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT",
+        "E-STREET-GLIDE-WORKFLOW"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow and decision bind internal kernel admission with no provider-operation, feature, field, public, product, adverse, or constitutional-count effect.",
+      "evidence_ids": [
+        "E-STREET-GLIDE-WORKFLOW",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "outcome": "admit_with_holds",
+  "admitted_claim": "M99-STREET-GLIDE-001 may govern later Street Glide provider selection and natural-border registration as an internal kernel, bound to its exact public-demo source run, provider attempts, image and rights custody, authored seed, method, point receipts, physical-feature non-claim, and retained holds.",
+  "holds": [
+    "The exact operating candidate remains map-only and does not establish current street-scene coverage or live provider operation.",
+    "An image-gradient registration proposal does not identify a curb, property line, roof edge, vegetation boundary, drainage feature, fuel break, access route, hazard, safety condition, or work limit.",
+    "No interactive Street Glide product, source drawer, scene navigation, correction, undo, comparison, actor aperture, overlay, responsive surface, accessibility campaign, motion system, or visual golden is admitted.",
+    "No private household condition, surveyed or legal boundary, lawful entry, field inspection, pruning, traffic, hazard, safety, work, completion, assistance, insurance, enforcement, or external effect is admitted.",
+    "Live provider credentials, quotas, costs, rights revisions, latency, outages, large imagery, devices, networks, cache, observability, serving, export, and rollback remain open.",
+    "Independent archive restoration, live provider replay, separate-team cold build, interactive correction replay, public serving, and deployed rollback remain open.",
+    "No canonical task-row closure or remembered 497-task count mutation is admitted until a governed successor register reconciles the exact receipts."
+  ],
+  "release_effect": "internal_candidate_only",
+  "authority_receipt": {
+    "deciding_seat": "release_authority",
+    "decision_scope": "Internal admission of one exact provider-resolution and image-gradient registration kernel for later product work, with no provider-operation, feature, field, adverse, whole-product, design-score, constitutional-count, or external-effect authority.",
+    "prohibited_effects": [
+      "live provider credential, quota, cost, purchase, serving, or external communication",
+      "physical-feature, surveyed, property, legal, access, hazard, safety, inspection, pruning, traffic, work, completion, or field determination",
+      "private household, insurance, enforcement, eligibility, evacuation, property, resident, or other adverse decision",
+      "presentation of generated, modeled, authored, missing, stale, or unavailable imagery as observed street evidence",
+      "interactive product, public deployment, 99-point score, or constitutional task-count mutation"
+    ]
+  },
+  "qualification_boundary": "This decision admits the deterministic provider and image-gradient registration kernel for internal production use only. It is not external review, a live provider or street scene, physical-feature interpretation, field fitness, interactive Street Glide, public deployment, whole-product qualification, a 99-point score, canonical task closure, or permission for an external effect.",
+  "control_question": "Can a cold successor use this exact kernel to select an admissible scene and improve image alignment while preserving every provider, rights, no-snap, physical-feature, field, adverse, public, product, and constitutional-count boundary?"
+}
