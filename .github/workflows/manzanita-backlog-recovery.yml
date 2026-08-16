@@ -40,6 +40,51 @@ jobs:
             --out recovery-out \
             --skip-deflate-scan
 
+      - name: Retain the exact damaged sources and decoded tail alignments
+        run: |
+          mkdir -p recovery-out/source
+          cp programs/manzanita-99/MASTER_BACKLOG.json.gz.b64 recovery-out/source/
+          cp programs/manzanita-99/MASTER_BACKLOG.json.bz2.b64.part01 recovery-out/source/
+          cp programs/manzanita-99/MASTER_BACKLOG.json.bz2.b64.part02 recovery-out/source/
+          cp programs/manzanita-99/README.md recovery-out/source/PROGRAM_README.md
+          cp programs/manzanita-99/SCORECARD.json recovery-out/source/
+          cp programs/manzanita-99/AMENDMENTS.json recovery-out/source/
+          git show refs/remotes/origin/pr-89-head:manzanita/ASSET_REGISTER_V1.md \
+            > recovery-out/source/ASSET_REGISTER_V1.md
+          python - <<'PY'
+          import base64
+          import hashlib
+          import json
+          from pathlib import Path
+
+          root = Path("recovery-out/source")
+          encoded = "".join((root / "MASTER_BACKLOG.json.gz.b64").read_text().split())
+          rows = []
+          for drop in range(4):
+              candidate = encoded[drop:]
+              padded = candidate + "=" * ((-len(candidate)) % 4)
+              row = {"drop": drop, "encoded_chars": len(candidate)}
+              try:
+                  payload = base64.b64decode(padded, validate=True)
+              except Exception as exc:
+                  row.update({"status": "error", "error": f"{type(exc).__name__}: {exc}"})
+              else:
+                  path = root / f"gzip-tail-drop-{drop}.bin"
+                  path.write_bytes(payload)
+                  row.update({
+                      "status": "decoded",
+                      "file": path.name,
+                      "bytes": len(payload),
+                      "sha256": hashlib.sha256(payload).hexdigest(),
+                      "starts_hex": payload[:24].hex(),
+                      "ends_hex": payload[-24:].hex(),
+                  })
+              rows.append(row)
+          (root / "gzip-tail-alignments.json").write_text(
+              json.dumps(rows, indent=2) + "\n", encoding="utf-8"
+          )
+          PY
+
       - name: Retain every recovered byte and diagnostic
         uses: actions/upload-artifact@v4
         with:
