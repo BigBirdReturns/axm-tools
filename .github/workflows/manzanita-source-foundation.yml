@@ -7,6 +7,10 @@ on:
     paths:
       - "manzanita-next/**"
       - ".github/workflows/manzanita-source-foundation.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/**"
+      - ".github/workflows/manzanita-source-foundation.yml"
   workflow_dispatch: {}
 
 permissions:
@@ -55,7 +59,7 @@ jobs:
           name: manzanita-v16-source-foundation-${{ github.sha }}
           path: manzanita-next/out
           if-no-files-found: warn
-          retention-days: 30
+          retention-days: 90
       - name: Enforce acquisition result
         if: always()
         env:
