@@ -1,0 +1,49 @@
+name: Manzanita backlog forensic recovery
+
+on:
+  push:
+    branches:
+      - agent/manzanita-backlog-recovery-095
+    paths:
+      - "programs/manzanita-99/recovery/**"
+      - ".github/workflows/manzanita-backlog-recovery.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  recover:
+    name: Recover exact backlog evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch preserved pull-request heads
+        run: |
+          git fetch --no-tags origin \
+            +refs/pull/89/head:refs/remotes/origin/pr-89-head \
+            +refs/pull/92/head:refs/remotes/origin/pr-92-head \
+            +refs/pull/94/head:refs/remotes/origin/pr-94-head
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run bounded forensic recovery
+        run: |
+          rm -rf recovery-out
+          python programs/manzanita-99/recovery/audit_backlog.py \
+            --out recovery-out \
+            --skip-deflate-scan
+
+      - name: Retain every recovered byte and diagnostic
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-backlog-recovery-${{ github.sha }}
+          path: recovery-out
+          if-no-files-found: error
+          retention-days: 90
