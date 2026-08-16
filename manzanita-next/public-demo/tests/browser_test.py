@@ -287,7 +287,23 @@ def exercise_controls(page: Page) -> dict[str, Any]:
 
 
 def exercise_projection(page: Page) -> dict[str, Any]:
-    runtime = page.evaluate("window.__MANZANITA_PUBLIC_DEMO_RUNTIME__")
+    runtime = page.evaluate(
+        """
+        () => {
+          const runtime = window.__MANZANITA_PUBLIC_DEMO_RUNTIME__;
+          return {
+            version: runtime.version,
+            sourceRunId: runtime.sourceRunId,
+            buildId: runtime.buildId,
+            views: runtime.views,
+            actors: runtime.actors,
+            themes: runtime.themes,
+            sourceStateCounts: runtime.sourceStateCounts,
+            state: runtime.getState(),
+          };
+        }
+        """
+    )
     data = page.evaluate("window.__MANZANITA_PUBLIC_DEMO__")
     if runtime["version"] != data["contract_version"]:
         raise AssertionError("Runtime and generated public-data contracts disagree")

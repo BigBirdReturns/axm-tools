@@ -1,0 +1,332 @@
+{
+  "schema": "axm-tools/manzanita-review-decision@1",
+  "decision_id": "M99-RB-DEC-001",
+  "packet_id": "M99-RB-PKT-001",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "reviewed_ref": {
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "external_review_claim": false,
+  "seat_reviews": [
+    {
+      "seat_id": "board_chair",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The packet covers all twelve functional seats, names release authority separately, preserves the no-external-review claim, and requests governance activation only.",
+        "The original constitutional task register remains unavailable, so activation cannot silently mutate canonical counts."
+      ],
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-PACKET-SCHEMA",
+        "E-DECISION-SCHEMA",
+        "E-ACTIVATION"
+      ],
+      "uncertainty": "Later packets may expose conflicts that require revised seat jurisdiction, but that possibility does not prevent bounded activation.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "creative_direction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Creative direction is retained as a distinct evidence aperture with veto jurisdiction over generic identity, decorative concealment, and generated media presented as observation.",
+        "No claim is made that this JSON and Markdown governance package constitutes the finished Manzanita visual language."
+      ],
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-README"
+      ],
+      "uncertainty": "The recognizable Manzanita form language remains a later design-constitution object and is not judged by this case.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "product_interaction",
+      "disposition": "pass",
+      "findings": [
+        "The mechanism changes governance state through explicit packet outcomes, defects, vetoes, holds, and release-effect fields rather than through label-only switches.",
+        "The activation object grants no end-user control or external-effect authority."
+      ],
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-PACKET-SCHEMA",
+        "E-DECISION-SCHEMA",
+        "E-VALIDATOR"
+      ],
+      "uncertainty": "Product interaction semantics remain untested until an interactive candidate is submitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "information_design",
+      "disposition": "pass",
+      "findings": [
+        "The packet and decision keep object, actors, mechanism, evidence, gate state, seat judgment, uncertainty, defect, veto, hold, authority, and control question in separate fields.",
+        "Missing or inapplicable evidence cannot be represented as a positive observation without an explicit reason."
+      ],
+      "evidence_ids": [
+        "E-PACKET-SCHEMA",
+        "E-DECISION-SCHEMA",
+        "E-VALIDATOR"
+      ],
+      "uncertainty": "Human-facing synthesis quality will require additional review when the board receives dense product packets.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "typography",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Typography is preserved as a mandatory later review discipline with explicit compact, zoom, fallback, symbol, and hierarchy evidence requirements.",
+        "This activation case correctly refuses to treat plain structured text as proof of finished typography."
+      ],
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-README"
+      ],
+      "uncertainty": "No pair-level, fallback, multilingual, compact-width, or zoom specimen is admitted by this case.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "motion",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Motion remains an explicit later review aperture with required operational meaning and reduced-motion equivalence.",
+        "The activation mechanism contains no motion and therefore makes no motion-quality claim."
+      ],
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-README"
+      ],
+      "uncertainty": "No timing, interruption, registration, transition, or reduced-motion evidence is admitted by this case.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "source_custody",
+      "disposition": "pass",
+      "findings": [
+        "Every material activation claim is tied to a repository path and the generated receipt will bind charter, packet, decision, target paths, evidence files, and validation head by digest.",
+        "The mechanism preserves the distinction between repository evidence, generated receipts, external review, and public release authority."
+      ],
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-VALIDATOR",
+        "E-TESTS",
+        "E-ACTIVATION"
+      ],
+      "uncertainty": "A future independent archive or signed release receipt may strengthen succession but is outside governance activation.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "field_operations",
+      "disposition": "pass",
+      "findings": [
+        "The charter expressly denies inspection, entry, work, safety, completion, and field-acceptance authority to the board.",
+        "Later field-bearing packets must supply site verification, equipment, safety, work evidence, and handoff acceptance."
+      ],
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-ACTIVATION"
+      ],
+      "uncertainty": "No field scenario or equipment state is admitted because the activation object has no field operation.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "accessibility",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The operating mechanism is available as structured JSON, Markdown, and command-line output without color-only, pointer-only, or motion-only dependence.",
+        "The charter preserves full keyboard, touch, screen-reader, zoom, reduced-motion, focus, contrast, and reading-order duties for later products."
+      ],
+      "evidence_ids": [
+        "E-PACKET-SCHEMA",
+        "E-DECISION-SCHEMA",
+        "E-README",
+        "E-CHARTER"
+      ],
+      "uncertainty": "A future human-facing board console would require its own accessibility campaign and cannot inherit this finding.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "performance_resilience",
+      "disposition": "pass",
+      "findings": [
+        "Validation is deterministic, repository-local, credential-free, and designed to fail with a nonzero exit when evidence, seats, gates, veto law, or authority boundaries drift.",
+        "The unit suite exercises the material negative paths required for cold replay."
+      ],
+      "evidence_ids": [
+        "E-VALIDATOR",
+        "E-TESTS",
+        "E-README"
+      ],
+      "uncertainty": "Workflow runtime and artifact retention are operational properties to be observed on the exact pull-request head.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "security_privacy",
+      "disposition": "pass",
+      "findings": [
+        "The package contains governance text and schemas only, requires no secret, and carries explicit prohibitions on private disclosure, purpose expansion, external communication, commercial commitment, and adverse action.",
+        "The review board cannot authorize collection or use merely because a later system makes it technically possible."
+      ],
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-ACTIVATION",
+        "E-PACKET-SCHEMA"
+      ],
+      "uncertainty": "Later packets with household, provider, or field evidence require a new data and purpose review.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "continuity_release",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "A cold successor receives the charter, schemas, case, validator, tests, commands, generated receipt, and explicit rollback and supersession boundary.",
+        "The decision binds governance activation to no release effect and refuses to change the public route or constitutional task count."
+      ],
+      "evidence_ids": [
+        "E-README",
+        "E-VALIDATOR",
+        "E-TESTS",
+        "E-ACTIVATION"
+      ],
+      "uncertainty": "The exact workflow receipt remains to be generated on the pull-request head and does not exist merely because the files are present.",
+      "veto_ids": []
+    }
+  ],
+  "defects": [
+    {
+      "id": "M99-RB-DEF-001",
+      "severity": "medium",
+      "title": "Constitutional task-count transition remains held",
+      "mechanism": "The original row-level 497-task register is unavailable, so the operating activation cannot be written back as a canonical JDB99-027 row closure or used to decrement remembered priority totals.",
+      "evidence_ids": [
+        "E-ACTIVATION",
+        "E-README"
+      ],
+      "owner": "release_authority",
+      "acceptance": "A governed successor register ingests the activation receipt with explicit provenance and reconciles the transition without presenting reconstruction as exact recovery.",
+      "disposition": "accepted_hold"
+    }
+  ],
+  "vetoes": [],
+  "gate_disposition": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The reviewed object remains a governance mechanism activation with no product or release claim.",
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-ACTIVATION"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "The board, design integrator, release authority, and cold successor have explicit and non-substitutable duties.",
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-README"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The schemas, validator, case, and negative tests implement the chartered packet, seat, veto, defect, hold, and decision mechanics.",
+      "evidence_ids": [
+        "E-PACKET-SCHEMA",
+        "E-DECISION-SCHEMA",
+        "E-VALIDATOR",
+        "E-TESTS"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Repository paths and generated digests retain the identity of every material governance object and evidence file.",
+      "evidence_ids": [
+        "E-VALIDATOR",
+        "E-ACTIVATION"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "not_applicable",
+      "reason": "No product interaction is part of this activation object and no interaction claim is admitted.",
+      "evidence_ids": [
+        "E-README"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "not_applicable",
+      "reason": "No visual product candidate is under review; later candidates retain full creative and typography duties.",
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-README"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "not_applicable",
+      "reason": "No motion-bearing object is under review and no motion claim is admitted.",
+      "evidence_ids": [
+        "E-CHARTER"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "pass",
+      "reason": "The mechanism is operable through structured text and preserves comprehensive accessibility duties for future interfaces.",
+      "evidence_ids": [
+        "E-PACKET-SCHEMA",
+        "E-DECISION-SCHEMA",
+        "E-README"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "pass",
+      "reason": "Deterministic local validation and negative tests preserve failure rather than converting it into a positive receipt.",
+      "evidence_ids": [
+        "E-VALIDATOR",
+        "E-TESTS"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "No private payload or secret is required and the purpose and adverse-action boundaries are explicit.",
+      "evidence_ids": [
+        "E-CHARTER",
+        "E-ACTIVATION"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "pass",
+      "reason": "Repository-local operation, generated receipts, rollback boundary, and cold-successor tests are defined.",
+      "evidence_ids": [
+        "E-README",
+        "E-VALIDATOR",
+        "E-TESTS"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The decision admits governance operation only and explicitly assigns no public, deployment, product, or constitutional-count effect.",
+      "evidence_ids": [
+        "E-ACTIVATION",
+        "E-VALIDATOR"
+      ]
+    }
+  },
+  "outcome": "admit_governance_only",
+  "admitted_claim": "The contained multidisciplinary review board may operate internally under charter version 1.0.0 and emit evidence-backed recommendations within a submitted packet's authority boundary.",
+  "holds": [
+    "No Manzanita product, design score, public route, deployment, or release candidate is qualified by this decision.",
+    "No external review, endorsement, communication, spending, inspection, field work, adverse action, or provider commitment is authorized.",
+    "No canonical JDB99-027 row closure or program-count decrement is admitted until a governed successor register reconciles this receipt."
+  ],
+  "release_effect": "none",
+  "authority_receipt": {
+    "deciding_seat": "release_authority",
+    "decision_scope": "Internal activation of the contained review mechanism and no broader product, public, constitutional, or external effect.",
+    "prohibited_effects": [
+      "public deployment or publication",
+      "external communication or commercial commitment",
+      "inspection, field work, enforcement, or adverse action",
+      "product qualification or design score",
+      "constitutional task-count mutation"
+    ]
+  },
+  "qualification_boundary": "This decision proves only that the board mechanism is complete enough to receive later evidence-backed packets. It is not external review, whole-product qualification, public release authority, deployment proof, or permission for an external effect.",
+  "control_question": "Can a cold successor reproduce this governance-only admission and every refusal path while keeping product, public, constitutional, and external-effect authority outside the board's reach?"
+}

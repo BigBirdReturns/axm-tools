@@ -353,7 +353,7 @@ class PublicDemoTests(unittest.TestCase):
         projection = json.loads((self.output / "PUBLIC_PROJECTION_RECEIPT.json").read_text(encoding="utf-8"))
         self.assertEqual(public_data["schema"], "axm-tools/manzanita-public-demo-data@1")
         self.assertEqual(public_data["place"]["id"], "mw-public-demo-test-001")
-        self.assertEqual(public_data["place"]["latitude"], 34.1432)
+        self.assertEqual(public_data["place"]["latitude"], 34.1433)
         self.assertEqual(public_data["place"]["longitude"], -118.055)
         self.assertEqual(public_data["place"]["coordinate_precision_decimals"], 4)
         self.assertTrue(public_data["place"]["public_safe"])
@@ -375,6 +375,10 @@ class PublicDemoTests(unittest.TestCase):
         self.assertNotIn("street_address", serialized)
         self.assertNotIn("api_key", serialized)
         self.assertNotIn("access_token", serialized)
+        self.assertNotIn("airnow_api_key", serialized)
+        self.assertNotIn("firms_map_key", serialized)
+        self.assertNotIn("google_maps_api_key", serialized)
+        self.assertNotIn("mapillary_access_token", serialized)
         self.assertNotIn("https://public.example.invalid", serialized)
 
     def test_builder_preserves_distinct_failure_states(self) -> None:
