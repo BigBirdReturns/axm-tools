@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axm.tools/schemas/manzanita/place-record.schema.json",
+  "title": "Manzanita governed place record",
+  "type": "object",
+  "required": ["place_id", "identity", "privacy", "geometry", "source_receipts", "scales", "updated_at"],
+  "properties": {
+    "place_id": {"type": "string"},
+    "identity": {
+      "type": "object",
+      "required": ["label", "place_class"],
+      "properties": {
+        "label": {"type": "string"},
+        "place_class": {"type": "string"},
+        "address": {"type": ["string", "null"]}
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "required": ["public_safe", "projection"],
+      "properties": {
+        "public_safe": {"type": "boolean"},
+        "projection": {"enum": ["public", "household", "operator", "restricted"]}
+      }
+    },
+    "geometry": {
+      "type": "object",
+      "required": ["center", "crs"],
+      "properties": {
+        "center": {
+          "type": "object",
+          "required": ["latitude", "longitude"],
+          "properties": {
+            "latitude": {"type": "number", "minimum": -90, "maximum": 90},
+            "longitude": {"type": "number", "minimum": -180, "maximum": 180}
+          }
+        },
+        "crs": {"const": "EPSG:4326"},
+        "bounds": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4}
+      }
+    },
+    "source_receipts": {"type": "array", "items": {"type": "string"}},
+    "scales": {
+      "type": "object",
+      "required": ["plant", "household", "property", "street", "neighborhood", "region", "stewardship"],
+      "additionalProperties": {"type": "object"}
+    },
+    "updated_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": true
+}

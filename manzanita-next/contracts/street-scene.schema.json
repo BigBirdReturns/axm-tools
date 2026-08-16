@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axm.tools/schemas/manzanita/street-scene.schema.json",
+  "title": "Street Glide registered scene",
+  "type": "object",
+  "required": ["scene_id", "provider", "capture", "camera", "registration", "rights", "claim_boundary"],
+  "properties": {
+    "scene_id": {"type": "string"},
+    "provider": {
+      "type": "object",
+      "required": ["id", "asset_reference", "attribution"],
+      "properties": {
+        "id": {"enum": ["google_street_view", "mapillary", "kartaview", "panoramax", "owned_capture", "map_only"]},
+        "asset_reference": {"type": ["string", "null"]},
+        "attribution": {"type": "string"}
+      }
+    },
+    "capture": {
+      "type": "object",
+      "required": ["position", "captured_at"],
+      "properties": {
+        "position": {
+          "type": "object",
+          "required": ["latitude", "longitude"],
+          "properties": {
+            "latitude": {"type": "number"},
+            "longitude": {"type": "number"}
+          }
+        },
+        "captured_at": {"type": ["string", "null"]},
+        "source_accuracy_m": {"type": ["number", "null"]}
+      }
+    },
+    "camera": {
+      "type": "object",
+      "required": ["heading_deg", "pitch_deg", "field_of_view_deg"],
+      "properties": {
+        "heading_deg": {"type": "number"},
+        "pitch_deg": {"type": "number"},
+        "field_of_view_deg": {"type": "number"}
+      }
+    },
+    "registration": {
+      "type": "object",
+      "required": ["coordinate_space", "anchors", "residual_error_px"],
+      "properties": {
+        "coordinate_space": {"enum": ["provider_view", "equirectangular", "image_pixel", "map"]},
+        "anchors": {"type": "array", "items": {"type": "object"}},
+        "residual_error_px": {"type": ["number", "null"]},
+        "visibility_masks": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "rights": {"type": "object"},
+    "claim_boundary": {"type": "string"}
+  },
+  "additionalProperties": true
+}
