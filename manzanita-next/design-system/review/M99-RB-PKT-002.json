@@ -1,0 +1,266 @@
+{
+  "schema": "axm-tools/manzanita-review-packet@1",
+  "packet_id": "M99-RB-PKT-002",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "object": "Forkline Field v1.0.0, the internal multidisciplinary design constitution and representative component specimen for the Manzanita successor.",
+  "classification": "design_constitution_and_representative_component_specimen",
+  "target_paths": [
+    "manzanita-next/design-system"
+  ],
+  "source_ref": {
+    "repository": "BigBirdReturns/axm-tools",
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "requested_decision": "admit_with_holds",
+  "requested_authority": "design_constitution_admission",
+  "public_effect": "internal_only",
+  "actors": [
+    "design_integrator",
+    "contained_discipline_seats",
+    "release_authority",
+    "successor_product_teams",
+    "cold_successor"
+  ],
+  "mechanism": "The constitution defines one recognizable geometry-bound form language, stable typography roles, equal semantic materials, evidence symbols, source and image classes, motion semantics, content laws, and representative components. The self-contained specimen proves that aperture controls change geometry and evidence, overlay controls change registered authored geometry, actor controls change evidence and authority, and light, dark, compact, keyboard, and reduced-motion modes preserve the same content and claim boundary.",
+  "evidence": [
+    {
+      "id": "E-CONSTITUTION",
+      "type": "source",
+      "path": "manzanita-next/design-system/CONSTITUTION.json",
+      "claim": "Defines the complete Forkline Field identity, form, type, materials, symbols, art direction, motion, content, components, specimen contract, and authority boundary."
+    },
+    {
+      "id": "E-DESIGN-README",
+      "type": "source",
+      "path": "manzanita-next/design-system/README.md",
+      "claim": "Classifies the object, names actors and authority, explains the mechanism, carries the public and constitutional holds, and defines operation and succession."
+    },
+    {
+      "id": "E-SPECIMEN-HTML",
+      "type": "golden",
+      "path": "manzanita-next/design-system/specimen/index.html",
+      "claim": "Provides the accessible self-contained representative composition, authored-data labels, source rail, actor branch, failure sheet, and handoff receipt."
+    },
+    {
+      "id": "E-SPECIMEN-CSS",
+      "type": "golden",
+      "path": "manzanita-next/design-system/specimen/style.css",
+      "claim": "Implements equal light and dark materials, typography roles, geometry-bound visual grammar, compact behavior, focus, reduced motion, forced colors, and print."
+    },
+    {
+      "id": "E-SPECIMEN-JS",
+      "type": "test",
+      "path": "manzanita-next/design-system/specimen/app.js",
+      "claim": "Implements actual aperture, overlay, actor, and theme state changes without network requests or unlabeled source substitution."
+    },
+    {
+      "id": "E-STATIC-TEST",
+      "type": "test",
+      "path": "manzanita-next/design-system/tests/test_constitution.py",
+      "claim": "Checks constitution completeness, geometry law, type and material parity, source classes, controls, self-containment, contrast, forbidden shortcuts, and task boundaries."
+    },
+    {
+      "id": "E-BROWSER-TEST",
+      "type": "test",
+      "path": "manzanita-next/design-system/tests/browser_test.py",
+      "claim": "Exercises four viewports, light and dark captures, first-visit Auto behavior, reduced motion, keyboard controls, geometry changes, actor semantics, source visibility, overflow, errors, and external requests."
+    },
+    {
+      "id": "E-BROWSER-REPORT",
+      "type": "receipt",
+      "path": "manzanita-next/design-system/out/BROWSER_REPORT.json",
+      "claim": "Retains the exact browser campaign, screenshot digests, state-mechanism results, errors, external-request results, and internal-candidate boundary."
+    },
+    {
+      "id": "E-QUALIFICATION-WORKFLOW",
+      "type": "receipt",
+      "path": ".github/workflows/manzanita-design-constitution.yml",
+      "claim": "Binds static, browser, contained-board, bounded-diff, and artifact-retention checks to the submitted pull-request head."
+    },
+    {
+      "id": "E-BOARD-CHARTER",
+      "type": "source",
+      "path": "programs/manzanita-99/review-board/BOARD_CHARTER.json",
+      "claim": "Defines the twelve contained discipline seats, evidence minimums, veto law, decision states, and non-authority boundary used for this review."
+    }
+  ],
+  "claim_boundary": "This packet requests internal admission of the design constitution and representative components only. It does not request qualification of the historical public route, the integrated source foundation as a product, seven production apertures, eight live overlays, five operating seats, provider operations, household or field action, a public endpoint, a design score, canonical task-count mutation, or any external effect.",
+  "gates": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is explicitly classified as an internal multidisciplinary design constitution and representative specimen rather than a product or release.",
+      "evidence_ids": [
+        "E-CONSTITUTION",
+        "E-DESIGN-README"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "The design integrator, separate review seats, release authority, successor product teams, and cold successor have explicit and bounded duties.",
+      "evidence_ids": [
+        "E-CONSTITUTION",
+        "E-DESIGN-README",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The machine constitution, specimen, controls, static tests, and browser campaign implement recognizable form, real state changes, source classes, authority, and failure semantics.",
+      "evidence_ids": [
+        "E-CONSTITUTION",
+        "E-SPECIMEN-HTML",
+        "E-SPECIMEN-CSS",
+        "E-SPECIMEN-JS",
+        "E-STATIC-TEST",
+        "E-BROWSER-REPORT"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Every specimen object is visibly classified as estate-authored demonstration geometry, repository paths are retained, and observed or provider claims are expressly prohibited.",
+      "evidence_ids": [
+        "E-CONSTITUTION",
+        "E-DESIGN-README",
+        "E-SPECIMEN-HTML",
+        "E-STATIC-TEST",
+        "E-BROWSER-REPORT"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "pass",
+      "reason": "Aperture controls change geometry, evidence reading, transform, coverage, uncertainty, and claim boundary; actor controls change evidence, action, authority, acceptance, and handoff.",
+      "evidence_ids": [
+        "E-SPECIMEN-JS",
+        "E-BROWSER-TEST",
+        "E-BROWSER-REPORT"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "pass",
+      "reason": "The specimen applies one recognizable Forkline grammar, explicit type roles, equal semantic light and dark materials, non-color evidence states, and full-state captures across four widths.",
+      "evidence_ids": [
+        "E-CONSTITUTION",
+        "E-SPECIMEN-HTML",
+        "E-SPECIMEN-CSS",
+        "E-STATIC-TEST",
+        "E-BROWSER-REPORT"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "State, scale, source, registration, and handoff motion semantics and reduced-motion equivalents are defined and tested, while production motion choreography and real temporal data remain later objects.",
+      "evidence_ids": [
+        "E-CONSTITUTION",
+        "E-SPECIMEN-CSS",
+        "E-SPECIMEN-JS",
+        "E-BROWSER-REPORT"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "pass",
+      "reason": "The browser campaign covers desktop, laptop, mobile, compact, keyboard group navigation, visible source rails, no horizontal overflow, dark and light parity, and reduced motion.",
+      "evidence_ids": [
+        "E-SPECIMEN-HTML",
+        "E-SPECIMEN-CSS",
+        "E-BROWSER-TEST",
+        "E-BROWSER-REPORT"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "The specimen is local, static, self-contained, network-independent, and tested for errors and failure copy, while production budgets, low-end devices, provider outages, and rollback remain outside this object.",
+      "evidence_ids": [
+        "E-SPECIMEN-HTML",
+        "E-SPECIMEN-CSS",
+        "E-SPECIMEN-JS",
+        "E-BROWSER-REPORT",
+        "E-QUALIFICATION-WORKFLOW"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "The specimen contains no private household payload, credential, provider media, or external request and visibly prohibits inspection, adverse action, public release, and unlabeled source substitution.",
+      "evidence_ids": [
+        "E-CONSTITUTION",
+        "E-SPECIMEN-HTML",
+        "E-SPECIMEN-JS",
+        "E-STATIC-TEST",
+        "E-BROWSER-REPORT"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Repository-local constitution, specimen, tests, commands, screenshots, and receipts support cold replay, while integration into production components and eventual rollback campaigns remain later work.",
+      "evidence_ids": [
+        "E-CONSTITUTION",
+        "E-DESIGN-README",
+        "E-STATIC-TEST",
+        "E-BROWSER-REPORT",
+        "E-QUALIFICATION-WORKFLOW"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains static, browser, board, screenshot, and digest evidence while the packet requests internal design-constitution authority and no public or constitutional-count effect.",
+      "evidence_ids": [
+        "E-QUALIFICATION-WORKFLOW",
+        "E-BROWSER-REPORT",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "seat_prompts": {
+    "board_chair": [
+      "Confirm exact evidence coverage, requested internal authority, partial gates, holds, bounded diff, and the absence of a hidden product, public, or constitutional-count claim."
+    ],
+    "creative_direction": [
+      "Determine whether Forkline Field is recognizable from an unlabeled fragment, whether its natural-border language follows the represented geometry, and whether the specimen avoids generic dashboard grammar."
+    ],
+    "product_interaction": [
+      "Confirm that aperture, overlay, actor, and theme controls change the declared operating state and never substitute labels or crops for a functional change."
+    ],
+    "information_design": [
+      "Confirm that actor, object, source, time, mechanism, uncertainty, authority, safe action, prohibited effect, and receipt remain legible across dense and compact states."
+    ],
+    "typography": [
+      "Review the declared display, editorial, operational, label, data, and compact roles for optical coherence, fallback behavior, zoom, and narrow-width survival."
+    ],
+    "motion": [
+      "Review whether state transitions carry scale, source, registration, or handoff meaning and whether reduced motion preserves identical before-and-after information."
+    ],
+    "source_custody": [
+      "Confirm that all specimen geometry is visibly authored, every source class has a claim and substitution boundary, and unavailable evidence cannot become a positive observation."
+    ],
+    "field_operations": [
+      "Confirm that resident, steward, and planner branches distinguish household care, bounded verification, and program coordination without claiming entry, inspection, work, or completion authority."
+    ],
+    "accessibility": [
+      "Review keyboard operation, visible focus, non-color state symbols, compact width, zoom-resilient structure, reduced motion, forced colors, and equivalent source and authority meaning."
+    ],
+    "performance_resilience": [
+      "Confirm self-contained operation, no external requests, zero console and page errors, no overflow, static failure utility, and explicit holds for production performance and provider resilience."
+    ],
+    "security_privacy": [
+      "Confirm the absence of private data and secrets, visible authored-state labels, purpose limits, adverse-action prohibition, and no external communication or provider commitment."
+    ],
+    "continuity_release": [
+      "Confirm that a cold successor can reproduce the constitution, browser campaign, screenshots, board decision, and rollback boundary without presenting internal admission as public release."
+    ]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, enforcement, inspection, eligibility, or punitive action",
+      "field entry, labor dispatch, provider purchase, external communication, or public release",
+      "presentation of authored or generated imagery as observed place evidence"
+    ],
+    "required_human_control": "Any later external effect requires a separate source-backed object, lawful authority, named accountable human decision, specific consent or program authority, and an independently reviewable receipt."
+  },
+  "continuity": {
+    "recovery_path": "Clone the exact branch or admitted commit, run the static and browser campaigns, rebuild the contained board receipt, and compare source, screenshot, state, and receipt digests.",
+    "rollback_target": "main before design-constitution admission",
+    "successor_test": "A cold successor must reproduce every full-state capture and refusal boundary, then use the constitution to author a new component without altering its source, authority, or evidence-class laws."
+  },
+  "control_question": "Can this design constitution govern later Manzanita production because its exact specimen proves recognizable authorship, operational state change, source custody, accessibility, and authority boundaries without borrowing standing from a public product or release?"
+}

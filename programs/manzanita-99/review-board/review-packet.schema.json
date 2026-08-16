@@ -1,0 +1,328 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bigbirdreturns.github.io/axm-tools/programs/manzanita-99/review-board/review-packet.schema.json",
+  "title": "Manzanita contained review packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "packet_id",
+    "board_id",
+    "object",
+    "classification",
+    "target_paths",
+    "source_ref",
+    "requested_decision",
+    "requested_authority",
+    "public_effect",
+    "actors",
+    "mechanism",
+    "evidence",
+    "claim_boundary",
+    "gates",
+    "seat_prompts",
+    "adverse_action_boundary",
+    "continuity",
+    "control_question"
+  ],
+  "properties": {
+    "schema": {
+      "const": "axm-tools/manzanita-review-packet@1"
+    },
+    "packet_id": {
+      "type": "string",
+      "pattern": "^M99-RB-PKT-[0-9]{3}$"
+    },
+    "board_id": {
+      "const": "M99-CONTAINED-REVIEW-BOARD"
+    },
+    "object": {
+      "type": "string",
+      "minLength": 20
+    },
+    "classification": {
+      "type": "string",
+      "minLength": 3
+    },
+    "target_paths": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "source_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "binding",
+        "ref"
+      ],
+      "properties": {
+        "repository": {
+          "const": "BigBirdReturns/axm-tools"
+        },
+        "binding": {
+          "enum": [
+            "exact_commit",
+            "validation_head"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "requested_decision": {
+      "enum": [
+        "admit",
+        "admit_with_holds",
+        "admit_governance_only",
+        "hold",
+        "reject",
+        "supersede"
+      ]
+    },
+    "requested_authority": {
+      "enum": [
+        "governance_activation_only",
+        "donor_admission",
+        "design_constitution_admission",
+        "prototype_admission",
+        "release_candidate_admission",
+        "public_release"
+      ]
+    },
+    "public_effect": {
+      "enum": [
+        "none",
+        "internal_only",
+        "public_read_only",
+        "external_effect"
+      ]
+    },
+    "actors": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 2
+      }
+    },
+    "mechanism": {
+      "type": "string",
+      "minLength": 40
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "type",
+          "path",
+          "claim"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]+$"
+          },
+          "type": {
+            "enum": [
+              "source",
+              "schema",
+              "test",
+              "receipt",
+              "decision",
+              "golden",
+              "playtest",
+              "failure"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "claim": {
+            "type": "string",
+            "minLength": 20
+          }
+        }
+      }
+    },
+    "claim_boundary": {
+      "type": "string",
+      "minLength": 40
+    },
+    "gates": {
+      "$ref": "#/$defs/gates"
+    },
+    "seat_prompts": {
+      "$ref": "#/$defs/seatPrompts"
+    },
+    "adverse_action_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prohibited_uses",
+        "required_human_control"
+      ],
+      "properties": {
+        "prohibited_uses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 10
+          }
+        },
+        "required_human_control": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "continuity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recovery_path",
+        "rollback_target",
+        "successor_test"
+      ],
+      "properties": {
+        "recovery_path": {
+          "type": "string",
+          "minLength": 20
+        },
+        "rollback_target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "successor_test": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "control_question": {
+      "type": "string",
+      "minLength": 30
+    }
+  },
+  "$defs": {
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "reason",
+        "evidence_ids"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "pass",
+            "partial",
+            "fail",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 15
+        },
+        "evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_classification",
+        "actors_and_authority",
+        "mechanism_fidelity",
+        "source_and_authorship_custody",
+        "interaction_semantics",
+        "visual_and_typographic_finish",
+        "motion_and_temporal_continuity",
+        "responsive_and_accessible_operation",
+        "performance_resilience_and_failure",
+        "security_privacy_rights_and_purpose",
+        "continuity_export_rollback_and_succession",
+        "qualification_receipts_and_public_effect"
+      ],
+      "properties": {
+        "object_classification": { "$ref": "#/$defs/gate" },
+        "actors_and_authority": { "$ref": "#/$defs/gate" },
+        "mechanism_fidelity": { "$ref": "#/$defs/gate" },
+        "source_and_authorship_custody": { "$ref": "#/$defs/gate" },
+        "interaction_semantics": { "$ref": "#/$defs/gate" },
+        "visual_and_typographic_finish": { "$ref": "#/$defs/gate" },
+        "motion_and_temporal_continuity": { "$ref": "#/$defs/gate" },
+        "responsive_and_accessible_operation": { "$ref": "#/$defs/gate" },
+        "performance_resilience_and_failure": { "$ref": "#/$defs/gate" },
+        "security_privacy_rights_and_purpose": { "$ref": "#/$defs/gate" },
+        "continuity_export_rollback_and_succession": { "$ref": "#/$defs/gate" },
+        "qualification_receipts_and_public_effect": { "$ref": "#/$defs/gate" }
+      }
+    },
+    "seatPrompts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "board_chair",
+        "creative_direction",
+        "product_interaction",
+        "information_design",
+        "typography",
+        "motion",
+        "source_custody",
+        "field_operations",
+        "accessibility",
+        "performance_resilience",
+        "security_privacy",
+        "continuity_release"
+      ],
+      "properties": {
+        "board_chair": { "$ref": "#/$defs/prompt" },
+        "creative_direction": { "$ref": "#/$defs/prompt" },
+        "product_interaction": { "$ref": "#/$defs/prompt" },
+        "information_design": { "$ref": "#/$defs/prompt" },
+        "typography": { "$ref": "#/$defs/prompt" },
+        "motion": { "$ref": "#/$defs/prompt" },
+        "source_custody": { "$ref": "#/$defs/prompt" },
+        "field_operations": { "$ref": "#/$defs/prompt" },
+        "accessibility": { "$ref": "#/$defs/prompt" },
+        "performance_resilience": { "$ref": "#/$defs/prompt" },
+        "security_privacy": { "$ref": "#/$defs/prompt" },
+        "continuity_release": { "$ref": "#/$defs/prompt" }
+      }
+    },
+    "prompt": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 15
+      }
+    }
+  }
+}
