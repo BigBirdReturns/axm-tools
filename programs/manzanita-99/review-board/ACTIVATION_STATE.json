@@ -1,0 +1,35 @@
+{
+  "schema": "axm-tools/manzanita-review-board-activation@1",
+  "task_reference": "JDB99-027",
+  "state": "operational_governance_only",
+  "recorded_on": "2026-08-16",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "operating_object": "A contained multidisciplinary review mechanism with twelve separate functional seats, explicit veto law, evidence-addressed packets, deterministic decisions, and a release-authority boundary.",
+  "actors": [
+    "design_integrator",
+    "board_chair",
+    "contained_discipline_seats",
+    "release_authority",
+    "cold_successor"
+  ],
+  "admitted_operation": [
+    "assemble one evidence-addressed review packet",
+    "exercise every applicable seat separately",
+    "record findings, defects, vetoes, holds, uncertainty, and gate states",
+    "emit a deterministic board receipt",
+    "recommend a bounded decision to release authority"
+  ],
+  "prohibited_claims": [
+    "external review or endorsement",
+    "whole-product qualification",
+    "public release or deployment authority",
+    "permission for contact, spending, inspection, enforcement, insurance action, or another external effect",
+    "repair or mutation of the damaged constitutional task register",
+    "automatic decrement of the remembered 497-task program total"
+  ],
+  "constitutional_boundary": "The operating fact is admissible even though the original row-level 497-task source is unavailable. It does not fabricate a canonical JDB99-027 row transition or alter remembered counts. A successor constitutional register may later ingest this receipt with explicit provenance.",
+  "closure_effect": "none_until_successor_register_admission",
+  "required_receipt": "programs/manzanita-99/review-board/out/BOARD_ACTIVATION_RECEIPT.json",
+  "control_question": "Can a cold successor operate the board and preserve every seat, veto, hold, and authority limit without treating governance activation as product qualification or a canonical task-count mutation?"
+}
