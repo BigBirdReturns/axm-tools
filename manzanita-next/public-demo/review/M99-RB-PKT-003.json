@@ -1,0 +1,325 @@
+{
+  "schema": "axm-tools/manzanita-review-packet@1",
+  "packet_id": "M99-RB-PKT-003",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "object": "M99-PUBLIC-DEMO-001, a generated public-safe source-adaptive place dossier for the configured public demonstration place.",
+  "classification": "public_safe_read_only_place_dossier_candidate",
+  "target_paths": [
+    "manzanita-next/public-demo"
+  ],
+  "source_ref": {
+    "repository": "BigBirdReturns/axm-tools",
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "requested_decision": "admit_with_holds",
+  "requested_authority": "prototype_admission",
+  "public_effect": "internal_only",
+  "actors": [
+    "source_custody",
+    "public_projection_builder",
+    "design_integrator",
+    "visitor",
+    "steward",
+    "program_operator",
+    "release_authority",
+    "cold_successor"
+  ],
+  "mechanism": "The live source-foundation acquisition generates provider payloads and receipts for one explicitly public-safe place. The projection builder consumes only the public place configuration, source registry, acquisition bundle, and admitted Forkline Field design constitution; reduces coordinates to public precision; copies only permitted public imagery; summarizes source payloads without transferring authority; preserves empty, stale, missing-credential, rate-limited, unavailable, terms-blocked, and unknown states; scans the output for high-confidence credentials and prohibited public fields; and emits a self-contained read-only site with four evidence apertures, three actor apertures, source rail, degradation sheets, projection receipt, build receipt, and full-state browser evidence.",
+  "evidence": [
+    {
+      "id": "E-DEMO-CONTRACT",
+      "type": "source",
+      "path": "manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json",
+      "claim": "Defines the public-safe object, four evidence apertures, three operating seats, source-state law, projection boundary, qualification campaign, and adverse-action prohibition."
+    },
+    {
+      "id": "E-DEMO-README",
+      "type": "source",
+      "path": "manzanita-next/public-demo/README.md",
+      "claim": "Classifies the artifact, names actors and authority, explains the projection mechanism, defines operation, and preserves public, field, adverse, and constitutional-count holds."
+    },
+    {
+      "id": "E-PUBLIC-PLACE-CONFIG",
+      "type": "source",
+      "path": "manzanita-next/config/place-demo.json",
+      "claim": "Supplies the explicitly public-safe demonstration place identity and source query geometry."
+    },
+    {
+      "id": "E-SOURCE-REGISTRY",
+      "type": "source",
+      "path": "manzanita-next/config/source-registry.json",
+      "claim": "Defines source identity, request, attribution, rights, storage, cache, claim, and credential behavior for the source-foundation acquisition."
+    },
+    {
+      "id": "E-DESIGN-CONSTITUTION",
+      "type": "source",
+      "path": "manzanita-next/design-system/CONSTITUTION.json",
+      "claim": "Provides the admitted Forkline Field identity, semantic materials, typography, source classes, failure law, interaction semantics, and authority boundaries used by the generated dossier."
+    },
+    {
+      "id": "E-PROJECTION-BUILDER",
+      "type": "test",
+      "path": "manzanita-next/public-demo/build_public_demo.py",
+      "claim": "Builds the public projection, normalizes source states, rounds public coordinates, strips unnecessary fields, copies or labels imagery, generates semantic tokens, scans for credentials, and hashes every output."
+    },
+    {
+      "id": "E-DEMO-TEMPLATE",
+      "type": "golden",
+      "path": "manzanita-next/public-demo/template/index.html",
+      "claim": "Provides the accessible read-only place instrument, source rail, evidence and actor controls, degradation sheet, and visible projection receipt."
+    },
+    {
+      "id": "E-DEMO-STYLE",
+      "type": "golden",
+      "path": "manzanita-next/public-demo/template/style.css",
+      "claim": "Applies Forkline geometry, generated semantic tokens, equal light and dark hierarchy, non-color source states, compact operation, visible focus, reduced motion, forced colors, and print."
+    },
+    {
+      "id": "E-DEMO-RUNTIME",
+      "type": "test",
+      "path": "manzanita-next/public-demo/template/app.js",
+      "claim": "Operates evidence views, actor apertures, source rails, failures, themes, and public projection receipts without external network requests or external actions."
+    },
+    {
+      "id": "E-DEMO-UNIT-TESTS",
+      "type": "test",
+      "path": "manzanita-next/public-demo/tests/test_public_demo.py",
+      "claim": "Exercises deterministic projection, public-coordinate precision, prohibited-field removal, source-state preservation, media custody, secret detection, path safety, staleness, and non-public-place refusal."
+    },
+    {
+      "id": "E-DEMO-BROWSER-TEST",
+      "type": "test",
+      "path": "manzanita-next/public-demo/tests/browser_test.py",
+      "claim": "Exercises four viewports, light and dark captures, first-visit Auto behavior, reduced motion, keyboard controls, target size, view and actor state changes, source visibility, failures, privacy, image loading, overflow, errors, and external requests."
+    },
+    {
+      "id": "E-SOURCE-MANIFEST",
+      "type": "receipt",
+      "path": "manzanita-next/out/manifest.json",
+      "claim": "Retains the exact acquisition run identity and source receipt set consumed by this public projection."
+    },
+    {
+      "id": "E-PUBLIC-DATA",
+      "type": "receipt",
+      "path": "manzanita-next/public-demo/out/PUBLIC_DATA.json",
+      "claim": "Contains the bounded public place, views, actors, source summaries, failure rows, media state, claim boundary, and adverse-action boundary emitted by the builder."
+    },
+    {
+      "id": "E-PROJECTION-RECEIPT",
+      "type": "receipt",
+      "path": "manzanita-next/public-demo/out/PUBLIC_PROJECTION_RECEIPT.json",
+      "claim": "Records public-safe configuration, coordinate precision, source states, omitted classes, media custody, prohibited-key result, secret scan, and projection digest."
+    },
+    {
+      "id": "E-BUILD-RECEIPT",
+      "type": "receipt",
+      "path": "manzanita-next/public-demo/out/BUILD_RECEIPT.json",
+      "claim": "Binds the contract, place config, source registry, design constitution, source acquisition manifest, public projection receipt, public data, generated site files, and no-effect boundary by digest."
+    },
+    {
+      "id": "E-DEMO-BROWSER-REPORT",
+      "type": "receipt",
+      "path": "manzanita-next/public-demo/out/qualification/BROWSER_REPORT.json",
+      "claim": "Retains screenshot hashes, view and actor mechanics, control targets, projection and failure checks, mode campaigns, errors, requests, and no-effect boundary."
+    },
+    {
+      "id": "E-DEMO-WORKFLOW",
+      "type": "receipt",
+      "path": ".github/workflows/manzanita-public-demo.yml",
+      "claim": "Binds source acquisition, validation, deterministic projection, static tests, browser campaign, contained board review, and artifact retention to the submitted pull-request head."
+    },
+    {
+      "id": "E-BOARD-CHARTER",
+      "type": "source",
+      "path": "programs/manzanita-99/review-board/BOARD_CHARTER.json",
+      "claim": "Defines the twelve contained functional seats, evidence minimums, veto law, decision states, and non-authority boundary used for this review."
+    }
+  ],
+  "claim_boundary": "This packet requests internal admission of one generated public-safe read-only place dossier candidate. It does not request deployment to the historical or successor public route, live provider operations authority, field entry, inspection, work, completed remediation, assistance award, safety direction, parcel scoring, insurance consequence, enforcement, eligibility, a whole-product qualification, a design score, or canonical task-count mutation.",
+  "gates": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The artifact is explicitly a generated public-safe read-only place dossier candidate rather than a live directive, field record, public endpoint, or whole product.",
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-DEMO-README",
+        "E-PUBLIC-DATA"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Source custody, projection builder, design integrator, visitor, steward, program operator, release authority, and cold successor each have distinct and visible duties and prohibitions.",
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-DEMO-README",
+        "E-PUBLIC-DATA",
+        "E-DEMO-BROWSER-REPORT",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The live acquisition, builder, generated data, source and failure rails, four view mechanics, three actor mechanics, receipts, and browser report operate the contract rather than simulating a decorative shell.",
+      "evidence_ids": [
+        "E-SOURCE-MANIFEST",
+        "E-PROJECTION-BUILDER",
+        "E-PUBLIC-DATA",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Every source row retains identity, state, time, attribution, rights, storage, claim scope, and digest; provider imagery remains distinct from authored Forkline marks; missing and empty sources remain visible.",
+      "evidence_ids": [
+        "E-SOURCE-REGISTRY",
+        "E-SOURCE-MANIFEST",
+        "E-PROJECTION-BUILDER",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "pass",
+      "reason": "Place, weather, water, and fire controls change geometry, evidence, sources, readings, metrics, safe action, authority, and prohibited consequence; actor controls change five operating fields.",
+      "evidence_ids": [
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-TEST",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "pass",
+      "reason": "The generated artifact consumes Forkline semantic materials, distinguishes provider imagery and authored registration, retains source and failure hierarchy, and survives full-state light and dark captures across four widths.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-DEMO-TEMPLATE",
+        "E-DEMO-STYLE",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "Evidence-view transitions and reduced-motion parity preserve state, while real temporal refresh, source aging during an open session, interruption, and production motion goldens remain later work.",
+      "evidence_ids": [
+        "E-DEMO-STYLE",
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "pass",
+      "reason": "Native controls, fieldsets, headings, source and image alternatives, non-color states, visible focus, keyboard group navigation, 44-pixel targets, reduced motion, and zero overflow are exercised across four widths.",
+      "evidence_ids": [
+        "E-DEMO-TEMPLATE",
+        "E-DEMO-STYLE",
+        "E-DEMO-RUNTIME",
+        "E-DEMO-BROWSER-TEST",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "The built artifact is self-contained, network-independent, error-free, and useful with source failures, while acquisition availability, production budgets, low-end devices, slow networks, cache operations, observability, and rollback remain held.",
+      "evidence_ids": [
+        "E-SOURCE-MANIFEST",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT",
+        "E-DEMO-WORKFLOW"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "The builder requires a public-safe place, rounds coordinates, emits controlled fields, omits private classes, copies only admitted public media, preserves rights, rejects prohibited keys, scans common credential forms, and exposes the adverse-action boundary.",
+      "evidence_ids": [
+        "E-DEMO-CONTRACT",
+        "E-PUBLIC-PLACE-CONFIG",
+        "E-PROJECTION-BUILDER",
+        "E-DEMO-UNIT-TESTS",
+        "E-PROJECTION-RECEIPT",
+        "E-DEMO-BROWSER-REPORT"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "The exact acquisition manifest, inputs, generated site, projection, receipts, screenshots, tests, and hashes support replay, while an independent archive, separate-team cold build, and deployed rollback remain later objects.",
+      "evidence_ids": [
+        "E-DEMO-README",
+        "E-SOURCE-MANIFEST",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT",
+        "E-DEMO-WORKFLOW"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains acquisition, projection, build, browser, screenshot, and contained-board receipts while requesting only internal prototype admission and no public or constitutional-count effect.",
+      "evidence_ids": [
+        "E-DEMO-WORKFLOW",
+        "E-PROJECTION-RECEIPT",
+        "E-BUILD-RECEIPT",
+        "E-DEMO-BROWSER-REPORT",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "seat_prompts": {
+    "board_chair": [
+      "Confirm exact-head evidence, source-run binding, requested internal authority, partial gates, holds, and the absence of a hidden deployment, field, adverse, design-score, or constitutional-count claim."
+    ],
+    "creative_direction": [
+      "Determine whether the generated dossier visibly inherits Forkline Field without allowing public imagery, map geometry, failure states, or dense source records to collapse into generic dashboard grammar."
+    ],
+    "product_interaction": [
+      "Confirm that every view and actor control changes the declared evidence and authority aperture and that the read-only artifact contains no disguised external action."
+    ],
+    "information_design": [
+      "Confirm that place, source, time, transform, uncertainty, rights, health, actor, action, authority, prohibited consequence, and failure remain legible without conflating regional, nearby, authored, empty, or stale evidence."
+    ],
+    "typography": [
+      "Review generated source names, times, metric values, claim boundaries, failure sheets, long operational labels, and compact modes against the admitted Forkline typography roles."
+    ],
+    "motion": [
+      "Review evidence-view transitions and reduced-motion parity, and identify any missing temporal refresh, source-age, interruption, or handoff behavior that must remain held."
+    ],
+    "source_custody": [
+      "Confirm the exact acquisition run, source registry, payload and receipt identities, public projection, rights, copied media, source-state distinctions, and prohibition on transferring source authority."
+    ],
+    "field_operations": [
+      "Confirm that visitor, steward, and program-operator branches preserve verification, consent, safety, equipment, work, acceptance, and field-authority boundaries rather than implying completed operational fitness."
+    ],
+    "accessibility": [
+      "Review keyboard operation, focus, non-color state, image alternatives, source and failure reading order, compact width, target size, reduced motion, forced colors, and theme parity."
+    ],
+    "performance_resilience": [
+      "Confirm deterministic self-contained operation, source failure utility, image loading, zero external requests, errors and overflow, and explicit holds for live acquisition resilience, device budgets, cache, observability, and rollback."
+    ],
+    "security_privacy": [
+      "Confirm public-safe configuration, coordinate reduction, prohibited-field exclusion, secret scan, rights and redistribution boundaries, purpose limits, and the absence of private, credential, provider-purchase, or adverse-decision behavior."
+    ],
+    "continuity_release": [
+      "Confirm that the exact artifact can be rebuilt from its source run and receipts, that internal prototype admission is distinguishable from public deployment, and that rollback and constitutional-count authority remain held."
+    ]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, eligibility, enforcement, inspection, or punitive action",
+      "evacuation, closure, dispatch, field entry, work order, completed-remediation, or safety determination",
+      "presentation of statewide, regional, nearby, authored, empty, missing, stale, or unavailable evidence as a verified local condition",
+      "public deployment or external communication from the contained review artifact"
+    ],
+    "required_human_control": "Any later external effect requires a separate source-backed object, lawful authority, named accountable human decision, affected-actor notice where applicable, consent or program authority, acceptance and appeal paths, and an independently reviewable receipt."
+  },
+  "continuity": {
+    "recovery_path": "Clone the exact admitted head, reacquire or restore the bound source-foundation run, validate every source receipt and payload, rebuild the public projection, compare projection and site digests, rerun the static and browser campaigns, and regenerate the contained board receipt.",
+    "rollback_target": "main before public-demo admission; the historical public manzanita route remains unchanged",
+    "successor_test": "A cold successor must rebuild the dossier from retained inputs, explain every omitted and degraded class, reproduce all full-state captures, and refuse deployment or external effect without a separate release object."
+  },
+  "control_question": "Can the same generated place dossier serve a visitor, steward, program operator, and cold successor while preserving source scope, failure, privacy, authority, safe action, and prohibited consequence without becoming a private record or adverse decision surface?"
+}
