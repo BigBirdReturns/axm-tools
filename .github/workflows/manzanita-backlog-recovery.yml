@@ -33,6 +33,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Validate recovery controls
+        run: |
+          python -m py_compile programs/manzanita-99/recovery/audit_backlog.py
+          python -m json.tool programs/manzanita-99/recovery/RECOVERY_STATE.json > /dev/null
+          test -s programs/manzanita-99/recovery/RECOVERY_FINDING.md
+          test -s programs/manzanita-99/recovery/README.md
+
       - name: Run bounded forensic recovery
         run: |
           rm -rf recovery-out
@@ -51,6 +58,7 @@ jobs:
           cp programs/manzanita-99/AMENDMENTS.json recovery-out/source/
           cp programs/manzanita-99/recovery/RECOVERY_FINDING.md recovery-out/governance/
           cp programs/manzanita-99/recovery/RECOVERY_STATE.json recovery-out/governance/
+          cp programs/manzanita-99/recovery/README.md recovery-out/governance/
           git show refs/remotes/origin/pr-89-head:manzanita/ASSET_REGISTER_V1.md \
             > recovery-out/source/ASSET_REGISTER_V1.md
           python - <<'PY'
