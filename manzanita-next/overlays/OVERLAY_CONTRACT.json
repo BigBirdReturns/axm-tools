@@ -1,0 +1,506 @@
+{
+  "schema": "axm-tools/manzanita-eight-overlay-contract@1",
+  "contract_id": "M99-EIGHT-OVERLAYS-001",
+  "version": "1.0.0",
+  "state": "internal_candidate",
+  "task_reference": "JDB99-015",
+  "object": {
+    "classification": "eight_registered_source_bounded_overlay_instruments",
+    "public_data_source": "manzanita-next/public-demo/out/PUBLIC_DATA.json",
+    "public_projection_receipt": "manzanita-next/public-demo/out/PUBLIC_PROJECTION_RECEIPT.json",
+    "aperture_source": "manzanita-next/apertures/out/APERTURE_BUNDLE.json",
+    "street_scene_source": "manzanita-next/street-glide/out/SCENE_DECISION.json",
+    "street_registration_source": "manzanita-next/street-glide/out/REGISTRATION_RECEIPT.json",
+    "design_constitution": "manzanita-next/design-system/CONSTITUTION.json",
+    "authored_demo": "manzanita-next/overlays/AUTHORED_OVERLAY_DEMO.json",
+    "accountable_actor": "design_integrator",
+    "decision_authority": "release_authority",
+    "public_effect": "none",
+    "constitutional_count_effect": "none",
+    "claim_boundary": "This contract governs eight internal source-bounded overlay instruments over one public-safe place and one retained base registration. It does not create observed private geometry, a survey, inspection, work order, assistance or eligibility decision, adverse score, safety direction, public endpoint, whole-product qualification, design score, or canonical task-count transition."
+  },
+  "common_law": {
+    "same_object": "Every overlay retains the same place_id, source_run_id, public projection receipt, public-demo build, aperture bundle, scene decision, registration receipt, base-image digest, and normalized coordinate space.",
+    "independent_instrument": "Every overlay must retain its own object class, source and aperture evidence, geometry identity, state, legend, reading, uncertainty, safe action, authority, conflict behavior, prohibited consequence, and handoff.",
+    "source_scope": "Public, nearby, regional, authored, empty, stale, missing, rate-limited, unavailable, terms-blocked, unknown, and map-only evidence may not be promoted into a private, local, physical, legal, field, or adverse finding.",
+    "geometry_scope": "The authored overlay geometry is a normalized visualization and registration proposal. It does not identify canopy, drainage, temperature, pollutant, incident, access, need, work, or assistance geometry.",
+    "state_scope": "Missing is not zero, empty is not safe, stale is not current, and authored is not observed. Overlay state is derived from declared source requirements and remains visible.",
+    "legend_scope": "Every legend names the evidence class, symbol, state meaning, source or authorship class, and non-claim. Color alone may not carry meaning.",
+    "conflict_scope": "Conflicting overlays remain independent. The composer may disclose conflict, order, and uncertainty but may not average them into one score or allow one overlay to erase another.",
+    "authority_scope": "Shared base registration does not create shared authority. External effects require a separate source-backed object, lawful authority, accountable human decision, affected-actor process, and retained receipt."
+  },
+  "overlay_states": [
+    "available",
+    "degraded",
+    "held_missing_source",
+    "map_only",
+    "authored_demonstration",
+    "unknown"
+  ],
+  "source_states": [
+    "ok",
+    "empty",
+    "stale",
+    "skipped_missing_credential",
+    "rate_limited",
+    "unavailable",
+    "terms_blocked",
+    "unknown",
+    "authored",
+    "map_only"
+  ],
+  "overlays": [
+    {
+      "id": "care",
+      "order": 1,
+      "object_class": "living_object_and_household_care_attention",
+      "primary_actor": "resident",
+      "aperture_ids": [
+        "plant",
+        "household"
+      ],
+      "source_ids": [
+        "nws_forecast"
+      ],
+      "primary_source_ids": [],
+      "street_inputs": [],
+      "authored_geometry_id": "M99-OVERLAY-GEOMETRY-CARE-001",
+      "source_requirement": "authored_and_context",
+      "reading": "Care relates authored living-object and household attention to public weather context while preserving the absence of a real plant observation, sensor, diagnosis, care event, resident record, or accepted action.",
+      "uncertainty": "The condition and correct action for any real plant or household remain unknown until the accountable household actor observes and records them.",
+      "safe_action": "Observe the real living object and household context, record time and uncertainty, and choose an ordinary household action only within actual resident authority.",
+      "authority": "The resident may perform ordinary household care. The overlay does not diagnose, prescribe, purchase, dispatch, inspect, or establish completed care.",
+      "acceptance": "A real care action requires an observation, action, time, result, uncertainty, and next-check receipt owned by the affected household actor.",
+      "handoff": "Escalate persistent uncertainty with first-party observations and care history to a qualified steward or horticultural source.",
+      "conflicts_with": [
+        "water",
+        "heat",
+        "assistance"
+      ],
+      "conflict_behavior": "Display care, water, heat, and assistance as separate evidence and authority branches. Never derive a watering, diagnosis, eligibility, or work instruction by combining authored geometry with public context.",
+      "legend": [
+        {
+          "id": "care-authored-envelope",
+          "symbol": "open_circle",
+          "meaning": "Authored living-object or household attention area",
+          "non_claim": "Not an observed plant, household, sensor, diagnosis, or care event"
+        },
+        {
+          "id": "care-source-context",
+          "symbol": "double_tick",
+          "meaning": "Public weather context is available",
+          "non_claim": "Not a private plant or household condition"
+        }
+      ],
+      "prohibited_consequence": "No diagnosis, mandatory watering, chemical treatment, resident score, purchase, dispatch, field work, or completed-care claim."
+    },
+    {
+      "id": "shade",
+      "order": 2,
+      "object_class": "public_imagery_terrain_and_shade_question",
+      "primary_actor": "steward",
+      "aperture_ids": [
+        "property",
+        "street",
+        "neighborhood"
+      ],
+      "source_ids": [
+        "usgs_imagery",
+        "usgs_3dep_hillshade",
+        "nws_forecast_hourly"
+      ],
+      "primary_source_ids": [
+        "usgs_imagery"
+      ],
+      "street_inputs": [
+        "registration_receipt"
+      ],
+      "authored_geometry_id": "M99-OVERLAY-GEOMETRY-SHADE-001",
+      "source_requirement": "primary_source_required",
+      "reading": "Shade combines public aerial context, terrain, hourly weather, and a retained image-registration proposal to frame canopy and exposure questions without identifying or measuring a real canopy.",
+      "uncertainty": "Tree species, canopy extent, height, condition, ownership, shadow duration, private obstruction, and field exposure remain unknown.",
+      "safe_action": "Use the overlay to prepare a source and field-verification question, then confirm canopy, exposure, access, ownership, and authority through authorized evidence.",
+      "authority": "The steward may prepare bounded verification. Public imagery and an image gradient provide no pruning, access, inspection, code, hazard, work, or completion authority.",
+      "acceptance": "A shade reading is accepted only after source date, geometry fit, physical-feature interpretation, lawful access, uncertainty, and affected-actor acceptance are explicit.",
+      "handoff": "Return household-specific shade questions to the resident and route public-canopy or corridor questions to the named program or jurisdiction seat.",
+      "conflicts_with": [
+        "heat",
+        "fire",
+        "access"
+      ],
+      "conflict_behavior": "Shade may be viewed beside heat, fire, and access only as separate source-bounded questions. It may not erase heat, become fuel treatment, or authorize access or pruning.",
+      "legend": [
+        {
+          "id": "shade-authored-zone",
+          "symbol": "open_polygon",
+          "meaning": "Authored shade-question registration",
+          "non_claim": "Not observed or measured canopy geometry"
+        },
+        {
+          "id": "shade-image-source",
+          "symbol": "solid_square",
+          "meaning": "Public source imagery is available",
+          "non_claim": "Collection date and visibility do not establish current field condition"
+        }
+      ],
+      "prohibited_consequence": "No canopy inventory, tree-health finding, ownership, pruning, hazard, property, insurance, access, work, or completion decision."
+    },
+    {
+      "id": "water",
+      "order": 3,
+      "object_class": "terrain_weather_and_nearby_water_context",
+      "primary_actor": "steward",
+      "aperture_ids": [
+        "household",
+        "property",
+        "neighborhood",
+        "region"
+      ],
+      "source_ids": [
+        "usgs_3dep_hillshade",
+        "nws_forecast",
+        "usgs_water_sites",
+        "usgs_water_iv"
+      ],
+      "primary_source_ids": [
+        "usgs_3dep_hillshade"
+      ],
+      "street_inputs": [
+        "registration_receipt"
+      ],
+      "authored_geometry_id": "M99-OVERLAY-GEOMETRY-WATER-001",
+      "source_requirement": "primary_source_required",
+      "reading": "Water relates terrain, forecast, and nearby public monitoring availability to runoff, drainage, irrigation, and care questions without claiming household moisture, supply, drainage performance, or site condition.",
+      "uncertainty": "Private irrigation, soil moisture, drainage path, roof runoff, utility condition, standing water, potable supply, and site-specific flow remain unknown.",
+      "safe_action": "Inspect source times and terrain context, then verify private drainage, irrigation, moisture, and utilities through authorized first-party or field evidence before acting.",
+      "authority": "The steward may prepare a verification plan. Nearby monitoring and terrain do not establish household water condition, entry, excavation, utility, work, or completion authority.",
+      "acceptance": "A water action requires source and field evidence, lawful access, scope, utility and safety controls, affected-actor acceptance, completion evidence, and next review.",
+      "handoff": "Return household care questions to the resident and route public drainage, utility, or watershed matters to the accountable jurisdiction or program operator.",
+      "conflicts_with": [
+        "care",
+        "fire",
+        "access",
+        "assistance"
+      ],
+      "conflict_behavior": "Water remains independent from care, fire, access, and assistance. Nearby or regional water evidence may not become a watering instruction, fuel treatment, work order, or eligibility signal.",
+      "legend": [
+        {
+          "id": "water-authored-flow",
+          "symbol": "double_line",
+          "meaning": "Authored runoff or drainage question path",
+          "non_claim": "Not observed flow, drainage, irrigation, or utility geometry"
+        },
+        {
+          "id": "water-monitoring",
+          "symbol": "open_square",
+          "meaning": "Nearby public monitoring metadata is available",
+          "non_claim": "Not household supply, moisture, drainage, or water quality"
+        }
+      ],
+      "prohibited_consequence": "No moisture value, irrigation directive, drainage finding, potable-supply claim, excavation, utility, insurance, work, or completion decision."
+    },
+    {
+      "id": "heat",
+      "order": 4,
+      "object_class": "official_weather_and_exposure_context",
+      "primary_actor": "steward",
+      "aperture_ids": [
+        "household",
+        "property",
+        "neighborhood",
+        "region"
+      ],
+      "source_ids": [
+        "nws_observation",
+        "nws_forecast",
+        "nws_forecast_hourly",
+        "nws_alerts"
+      ],
+      "primary_source_ids": [
+        "nws_observation",
+        "nws_forecast"
+      ],
+      "street_inputs": [],
+      "authored_geometry_id": "M99-OVERLAY-GEOMETRY-HEAT-001",
+      "source_requirement": "primary_source_required",
+      "reading": "Heat presents official observation, forecast, hourly, and alert context as temporal evidence while preserving the absence of a measured private microclimate or personal exposure.",
+      "uncertainty": "Surface temperature, shade duration, indoor condition, plant exposure, personal exposure, hydration, medical risk, and real-time local variation remain unknown.",
+      "safe_action": "Follow named official authorities for time-critical direction and verify private exposure, shade, plant, and household conditions before changing care or work plans.",
+      "authority": "The steward may adjust a bounded verification or work plan within actual authority. The overlay does not issue a medical, occupational, evacuation, closure, or safety directive.",
+      "acceptance": "A heat-related plan requires current source time, affected actors, real conditions, lawful authority, safety controls, reduced-exposure options, and acceptance or hold receipts.",
+      "handoff": "Route official alerts and public resource needs to the program operator while returning household-specific decisions to the resident or responsible professional.",
+      "conflicts_with": [
+        "care",
+        "shade",
+        "air",
+        "fire",
+        "access"
+      ],
+      "conflict_behavior": "Heat may be composed with shade, air, fire, care, and access only with independent source times and actions. No combined severity score or safety directive is permitted.",
+      "legend": [
+        {
+          "id": "heat-temporal-band",
+          "symbol": "triple_tick",
+          "meaning": "Official observation and forecast time band",
+          "non_claim": "Not a measured private microclimate or personal exposure"
+        },
+        {
+          "id": "heat-alert-state",
+          "symbol": "cross_box",
+          "meaning": "Official alert source state",
+          "non_claim": "The overlay does not create an alert or direction"
+        }
+      ],
+      "prohibited_consequence": "No medical, occupational, evacuation, closure, work, personal-risk, resident, property, insurance, or safety determination."
+    },
+    {
+      "id": "air",
+      "order": 5,
+      "object_class": "public_air_quality_source_state_and_context",
+      "primary_actor": "program_operator",
+      "aperture_ids": [
+        "neighborhood",
+        "region"
+      ],
+      "source_ids": [
+        "airnow",
+        "nws_observation"
+      ],
+      "primary_source_ids": [
+        "airnow"
+      ],
+      "street_inputs": [],
+      "authored_geometry_id": "M99-OVERLAY-GEOMETRY-AIR-001",
+      "source_requirement": "primary_source_required",
+      "reading": "Air exposes the approved public air-quality source state and weather context while refusing to fabricate AQI, pollutant values, site exposure, or health advice when the primary source is absent.",
+      "uncertainty": "Current AQI, pollutant concentration, private indoor condition, individual exposure, respiratory risk, and neighborhood variation remain unknown when the approved source is missing or stale.",
+      "safe_action": "Inspect the source state and follow approved public-health authorities. Restore or review the approved source before presenting a quantitative air-quality reading.",
+      "authority": "The program operator may publish source availability and approved public information within lawful authority. The overlay does not provide medical advice, exposure clearance, closure, eligibility, or enforcement authority.",
+      "acceptance": "A quantitative air reading requires an approved source receipt, source and retrieval time, pollutant and averaging period, unit, location, uncertainty, valid-through state, and official action route.",
+      "handoff": "Route source repair to provider operations and affected-actor health questions to qualified public-health or medical authority.",
+      "conflicts_with": [
+        "heat",
+        "fire",
+        "assistance"
+      ],
+      "conflict_behavior": "Air remains independent from heat, fire, and assistance. Missing AQI may not be replaced by weather or incident context, and no combined exposure or eligibility score is permitted.",
+      "legend": [
+        {
+          "id": "air-source-state",
+          "symbol": "split_square",
+          "meaning": "Approved air-quality provider state",
+          "non_claim": "No AQI or pollutant value exists when the source is missing"
+        },
+        {
+          "id": "air-weather-context",
+          "symbol": "open_tick",
+          "meaning": "Weather context is separately available",
+          "non_claim": "Weather does not substitute for air-quality measurement"
+        }
+      ],
+      "prohibited_consequence": "No fabricated AQI, medical advice, exposure clearance, closure, resident score, eligibility, insurance, enforcement, or health determination."
+    },
+    {
+      "id": "fire",
+      "order": 6,
+      "object_class": "official_incident_alert_thermal_and_terrain_attention",
+      "primary_actor": "program_operator",
+      "aperture_ids": [
+        "property",
+        "street",
+        "neighborhood",
+        "region",
+        "stewardship"
+      ],
+      "source_ids": [
+        "calfire_incidents",
+        "calfire_incidents_normalized",
+        "firms",
+        "nws_alerts",
+        "usgs_3dep_hillshade"
+      ],
+      "primary_source_ids": [
+        "calfire_incidents_normalized"
+      ],
+      "street_inputs": [
+        "registration_receipt"
+      ],
+      "authored_geometry_id": "M99-OVERLAY-GEOMETRY-FIRE-001",
+      "source_requirement": "primary_source_required",
+      "reading": "Fire separates official incident perimeters, alerts, satellite thermal-detection availability, terrain, and an authored attention extent without turning statewide or regional evidence into a local parcel condition.",
+      "uncertainty": "Local ignition, fuel condition, defensible space, containment, evacuation, structure damage, cause, loss, insurance exposure, and current field threat remain unknown absent separate authoritative evidence.",
+      "safe_action": "Follow official incident and emergency authorities for time-critical direction and route verified mitigation needs toward accountable human assistance and field review.",
+      "authority": "The program operator may coordinate public information and assistance within lawful authority. The overlay does not create evacuation, closure, inspection, enforcement, insurance, parcel-risk, damage, cause, or loss authority.",
+      "acceptance": "A local mitigation object requires source geometry and time, site-specific evidence, lawful authority, affected actors, safe scope, assistance or work decision, completion evidence, and appeal or follow-through.",
+      "handoff": "Return household and property questions to the resident or steward, route official direction to the named authority, and route verified assistance needs through stewardship without adverse scoring.",
+      "conflicts_with": [
+        "shade",
+        "water",
+        "heat",
+        "air",
+        "access",
+        "assistance"
+      ],
+      "conflict_behavior": "Fire may coexist with terrain, weather, air, water, shade, access, and assistance only as separate sources and actions. Never collapse them into parcel risk, insurance, evacuation, enforcement, or mitigation completion.",
+      "legend": [
+        {
+          "id": "fire-official-perimeter",
+          "symbol": "double_polygon",
+          "meaning": "Official incident-perimeter source state",
+          "non_claim": "Not a complete incident list, evacuation order, or local threat determination"
+        },
+        {
+          "id": "fire-thermal-state",
+          "symbol": "cross_circle",
+          "meaning": "Satellite thermal-detection provider state",
+          "non_claim": "Missing detections are not zero heat or safety"
+        },
+        {
+          "id": "fire-authored-attention",
+          "symbol": "open_diamond",
+          "meaning": "Authored assistance-oriented attention extent",
+          "non_claim": "Not observed fuel, hazard, parcel risk, or required remediation"
+        }
+      ],
+      "prohibited_consequence": "No parcel-risk score, insurance denial or pricing, evacuation or closure order, enforcement, damage, cause, loss, hazard, work, or completed-remediation determination."
+    },
+    {
+      "id": "access",
+      "order": 7,
+      "object_class": "public_corridor_scene_coverage_and_verification_access",
+      "primary_actor": "steward",
+      "aperture_ids": [
+        "property",
+        "street",
+        "neighborhood"
+      ],
+      "source_ids": [
+        "osm_overpass",
+        "google_street_view",
+        "mapillary",
+        "kartaview_coverage",
+        "kartaview",
+        "panoramax"
+      ],
+      "primary_source_ids": [
+        "osm_overpass"
+      ],
+      "street_inputs": [
+        "scene_decision",
+        "registration_receipt"
+      ],
+      "authored_geometry_id": "M99-OVERLAY-GEOMETRY-ACCESS-001",
+      "source_requirement": "street_scene_or_map_only",
+      "reading": "Access relates public corridor geometry, provider coverage, selected scene or map-only state, and image-registration uncertainty to verification planning without establishing legal access, physical accessibility, traffic, hazard, or work condition.",
+      "uncertainty": "Current street direction, visibility, legal access, private entry, obstruction, traffic, utilities, slope, surface, equipment clearance, hazard, and work staging remain unknown.",
+      "safe_action": "Inspect provider and map receipts, request an authorized current capture where needed, and verify access, consent, safety, equipment, and jurisdiction before field entry or work.",
+      "authority": "The steward may prepare an access-verification plan. Map, imagery, coverage, and edge registration do not authorize entry, traffic control, inspection, pruning, work, enforcement, or completion.",
+      "acceptance": "An access plan requires lawful authority, affected-actor consent, current source or capture, field verification, hazards, equipment, traffic controls, scope, timing, and acceptance or hold receipts.",
+      "handoff": "Route public-right-of-way questions to the named jurisdiction, private access to the affected actor, and source gaps to provider operations.",
+      "conflicts_with": [
+        "shade",
+        "water",
+        "heat",
+        "fire",
+        "assistance"
+      ],
+      "conflict_behavior": "Access remains a separate verification object. It may constrain later care, shade, water, fire, or assistance plans but cannot authorize or complete them.",
+      "legend": [
+        {
+          "id": "access-map-corridor",
+          "symbol": "solid_line",
+          "meaning": "Public corridor or map context is available",
+          "non_claim": "Not legal or physical access authority"
+        },
+        {
+          "id": "access-scene-state",
+          "symbol": "split_circle",
+          "meaning": "Provider scene or map-only state",
+          "non_claim": "No current street condition exists without an admitted scene"
+        },
+        {
+          "id": "access-registration",
+          "symbol": "open_line",
+          "meaning": "Derived image-edge registration proposal",
+          "non_claim": "Not a curb, boundary, access route, hazard, or work limit"
+        }
+      ],
+      "prohibited_consequence": "No legal access, physical accessibility, traffic, hazard, inspection, entry, pruning, dispatch, work, enforcement, property, or completion decision."
+    },
+    {
+      "id": "assistance",
+      "order": 8,
+      "object_class": "evidence_gap_offer_decision_execution_and_follow_through",
+      "primary_actor": "program_operator",
+      "aperture_ids": [
+        "household",
+        "neighborhood",
+        "region",
+        "stewardship"
+      ],
+      "source_ids": [],
+      "primary_source_ids": [],
+      "street_inputs": [],
+      "authored_geometry_id": "M99-OVERLAY-GEOMETRY-ASSISTANCE-001",
+      "source_requirement": "authored_only",
+      "reading": "Assistance relates authored evidence gaps, attention, offer, decision, execution, acceptance, appeal, and follow-through mechanics without creating a real need, household, program, eligibility, award, decision, work, or outcome.",
+      "uncertainty": "Actual need, resident intent, program authority, resources, eligibility, funding, offer, acceptance, refusal, appeal, execution, completion, and benefit remain unknown.",
+      "safe_action": "Create a bounded human-review packet that names evidence, uncertainty, authority, resources, purpose, affected actors, refusal, appeal, execution, completion evidence, and next review before any real offer or action.",
+      "authority": "The program operator may prepare and route a bounded review object within a named lawful program. The authored overlay provides no eligibility, award, funding, work, enforcement, insurance, or completion authority.",
+      "acceptance": "A real assistance object requires source-backed need, lawful program authority, resources, affected-actor notice and response, accountable decision, execution receipt, completion or hold, appeal, and follow-through.",
+      "handoff": "Return accepted, refused, appealed, completed, or held decisions to every accountable lower aperture without changing evidence, purpose, or authority history.",
+      "conflicts_with": [
+        "care",
+        "water",
+        "air",
+        "fire",
+        "access"
+      ],
+      "conflict_behavior": "Assistance may receive verified needs or source gaps from other overlays but may not convert attention, missing data, or public context into eligibility, award, punitive score, insurance consequence, enforcement, dispatch, or completion.",
+      "legend": [
+        {
+          "id": "assistance-attention",
+          "symbol": "open_diamond",
+          "meaning": "Authored attention or evidence-gap route",
+          "non_claim": "Not a verified need or eligibility finding"
+        },
+        {
+          "id": "assistance-decision-chain",
+          "symbol": "branch_line",
+          "meaning": "Authored offer, decision, execution, acceptance, and appeal chain",
+          "non_claim": "No real offer, decision, work, completion, or benefit exists"
+        }
+      ],
+      "prohibited_consequence": "No fabricated need, resident score, eligibility, funding, award, insurance, enforcement, dispatch, work, completion, or benefit claim."
+    }
+  ],
+  "qualification": {
+    "required_campaigns": [
+      "one canonical place, source run, public projection, aperture bundle, scene decision, registration receipt, and base image across all eight overlays",
+      "eight distinct object classes, geometry identities, evidence sets, legends, readings, uncertainties, actions, authorities, conflict behaviors, prohibited consequences, and handoffs",
+      "source and authored geometry custody",
+      "normalized geometry bounds and duplicate-geometry rejection",
+      "available, degraded, held-missing-source, map-only, authored-demonstration, and unknown state preservation",
+      "symmetric conflict-matrix validation",
+      "missing-source rows remain explicit unknown evidence",
+      "private and credential exclusion",
+      "deterministic overlay and build digests",
+      "contained multidisciplinary review",
+      "cold-successor replay"
+    ]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, eligibility, funding, enforcement, inspection, or punitive action",
+      "evacuation, closure, field entry, dispatch, work order, completed remediation, medical, occupational, or safety determination",
+      "presentation of authored geometry, image gradients, public, regional, nearby, empty, stale, missing, or unavailable evidence as a verified private, local, physical, legal, or field condition",
+      "combination of overlays into one severity, confidence, eligibility, risk, or adverse score",
+      "public deployment, whole-product qualification, 99-point score, or constitutional task-count mutation"
+    ],
+    "required_human_control": "Any later external effect requires a separate source-backed object, lawful authority, named accountable human decision, affected-actor notice and consent where applicable, refusal and appeal paths, field and execution receipts where applicable, acceptance, follow-through, and independent review."
+  },
+  "task_standing": "operational_candidate_eight_registered_overlays",
+  "admission_law": "The candidate is admissible only when one exact donor chain produces eight complete and distinct overlay records; every source, aperture, scene, registration, geometry, legend, state, conflict, privacy, and authority dependency resolves or is explicitly held; deterministic and contained-review checks pass; and public and constitutional-count effects remain none.",
+  "control_question": "Can a cold successor compose all eight instruments over one exact place and base registration while every source, authored geometry, state, legend, uncertainty, conflict, actor, safe action, authority, prohibited consequence, acceptance, and handoff remains independently recoverable?"
+}

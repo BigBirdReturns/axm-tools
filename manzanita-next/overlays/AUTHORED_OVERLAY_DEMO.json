@@ -1,0 +1,168 @@
+{
+  "schema": "axm-tools/manzanita-authored-overlay-demo@1",
+  "cartridge_id": "M99-AUTHORED-OVERLAY-DEMO-001",
+  "version": "1.0.0",
+  "state": "authored_demonstration",
+  "public_safe": true,
+  "private_household": false,
+  "authored_on": "2026-08-16",
+  "author_seat": "design_integrator",
+  "coordinate_space": "normalized_base_image",
+  "base_binding": "Use only with the exact base-image digest, place identity, source run, Street Glide scene decision, and registration receipt supplied at build time.",
+  "claim_boundary": "These geometries and legend symbols are authored to prove overlay registration, composition, state, conflict, and authority mechanics. They are not observed canopy, drainage, water, temperature, pollutant, incident, access, hazard, need, work, assistance, parcel, household, field, or completed-remediation geometry. This cartridge is not a private record.",
+  "geometries": [
+    {
+      "id": "M99-OVERLAY-GEOMETRY-CARE-001",
+      "overlay_id": "care",
+      "geometry_type": "polygon",
+      "coordinates": [
+        [0.08, 0.70],
+        [0.19, 0.62],
+        [0.31, 0.64],
+        [0.35, 0.78],
+        [0.24, 0.88],
+        [0.11, 0.84],
+        [0.08, 0.70]
+      ],
+      "source_class": "authored_overlay_registration",
+      "legend_symbol": "open_circle",
+      "claim_boundary": "Authored living-object and household attention placement only; not an observed plant, household, sensor, care, diagnosis, or resident geometry."
+    },
+    {
+      "id": "M99-OVERLAY-GEOMETRY-SHADE-001",
+      "overlay_id": "shade",
+      "geometry_type": "polygon",
+      "coordinates": [
+        [0.16, 0.31],
+        [0.29, 0.20],
+        [0.45, 0.18],
+        [0.55, 0.29],
+        [0.47, 0.43],
+        [0.29, 0.45],
+        [0.16, 0.31]
+      ],
+      "source_class": "authored_overlay_registration",
+      "legend_symbol": "open_polygon",
+      "claim_boundary": "Authored shade-question extent only; not observed or measured canopy, shadow, tree, ownership, hazard, or work geometry."
+    },
+    {
+      "id": "M99-OVERLAY-GEOMETRY-WATER-001",
+      "overlay_id": "water",
+      "geometry_type": "polyline",
+      "coordinates": [
+        [0.07, 0.24],
+        [0.18, 0.34],
+        [0.31, 0.42],
+        [0.45, 0.52],
+        [0.61, 0.62],
+        [0.79, 0.72],
+        [0.93, 0.82]
+      ],
+      "source_class": "authored_overlay_registration",
+      "legend_symbol": "double_line",
+      "claim_boundary": "Authored drainage and runoff question path only; not observed flow, household moisture, irrigation, utility, supply, or field geometry."
+    },
+    {
+      "id": "M99-OVERLAY-GEOMETRY-HEAT-001",
+      "overlay_id": "heat",
+      "geometry_type": "polygon",
+      "coordinates": [
+        [0.48, 0.13],
+        [0.67, 0.10],
+        [0.84, 0.21],
+        [0.88, 0.38],
+        [0.72, 0.47],
+        [0.55, 0.39],
+        [0.48, 0.13]
+      ],
+      "source_class": "authored_overlay_registration",
+      "legend_symbol": "triple_tick",
+      "claim_boundary": "Authored heat-context extent only; not measured surface, indoor, plant, personal, medical, occupational, or local exposure geometry."
+    },
+    {
+      "id": "M99-OVERLAY-GEOMETRY-AIR-001",
+      "overlay_id": "air",
+      "geometry_type": "multipoint",
+      "coordinates": [
+        [0.22, 0.17],
+        [0.40, 0.12],
+        [0.60, 0.17],
+        [0.77, 0.27],
+        [0.83, 0.49],
+        [0.66, 0.57],
+        [0.43, 0.54],
+        [0.25, 0.42]
+      ],
+      "source_class": "authored_overlay_registration",
+      "legend_symbol": "split_square",
+      "claim_boundary": "Authored source-state placement only; not measured AQI, pollutant concentration, plume, exposure, health, or neighborhood variation geometry."
+    },
+    {
+      "id": "M99-OVERLAY-GEOMETRY-FIRE-001",
+      "overlay_id": "fire",
+      "geometry_type": "polygon",
+      "coordinates": [
+        [0.55, 0.46],
+        [0.69, 0.35],
+        [0.84, 0.40],
+        [0.91, 0.57],
+        [0.82, 0.73],
+        [0.65, 0.75],
+        [0.53, 0.62],
+        [0.55, 0.46]
+      ],
+      "source_class": "authored_overlay_registration",
+      "legend_symbol": "open_diamond",
+      "claim_boundary": "Authored assistance-oriented fire attention extent only; not an incident perimeter, thermal detection, fuel, hazard, parcel risk, evacuation, damage, cause, loss, or remediation geometry."
+    },
+    {
+      "id": "M99-OVERLAY-GEOMETRY-ACCESS-001",
+      "overlay_id": "access",
+      "geometry_type": "polyline",
+      "coordinates": [
+        [0.03, 0.86],
+        [0.17, 0.76],
+        [0.34, 0.68],
+        [0.50, 0.59],
+        [0.67, 0.51],
+        [0.82, 0.42],
+        [0.96, 0.31]
+      ],
+      "source_class": "authored_overlay_registration",
+      "legend_symbol": "solid_line",
+      "claim_boundary": "Authored access-verification route only; not legal or physical access, curb, boundary, traffic, hazard, safety, inspection, equipment, staging, or work geometry."
+    },
+    {
+      "id": "M99-OVERLAY-GEOMETRY-ASSISTANCE-001",
+      "overlay_id": "assistance",
+      "geometry_type": "graph",
+      "coordinates": [
+        [0.14, 0.53],
+        [0.29, 0.48],
+        [0.44, 0.55],
+        [0.58, 0.48],
+        [0.73, 0.55],
+        [0.88, 0.48]
+      ],
+      "edges": [
+        [0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [4, 5],
+        [2, 4]
+      ],
+      "source_class": "authored_overlay_registration",
+      "legend_symbol": "branch_line",
+      "claim_boundary": "Authored attention, offer, decision, execution, acceptance, appeal, and follow-through graph only; not a real need, program, eligibility, funding, award, work, completion, or benefit geometry."
+    }
+  ],
+  "prohibited_uses": [
+    "presentation as observed, measured, surveyed, provider, private, physical, legal, or field geometry",
+    "plant diagnosis, household inference, canopy inventory, water or drainage finding, temperature or AQI measurement, incident or fuel finding, access authority, assistance eligibility, award, work, or completion",
+    "insurance, property, resident, enforcement, evacuation, medical, occupational, safety, eligibility, funding, or other adverse action",
+    "combination into one risk, severity, confidence, eligibility, or adverse score",
+    "public release, whole-product qualification, design score, or canonical task-count mutation"
+  ],
+  "control_question": "Can an operator keep every authored overlay extent visibly and machine-readably separate from source-backed evidence and refuse to turn registration geometry into an observed private, local, physical, legal, field, assistance, or adverse condition?"
+}

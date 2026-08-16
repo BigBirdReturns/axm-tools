@@ -1,0 +1,271 @@
+name: Manzanita eight registered overlay instruments
+
+on:
+  push:
+    branches:
+      - agent/manzanita-overlays-015
+    paths:
+      - "manzanita-next/overlays/**"
+      - ".github/workflows/manzanita-eight-overlays.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/overlays/**"
+      - ".github/workflows/manzanita-eight-overlays.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Build and validate registered overlays
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove the exact candidate and dependency boundary
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {".github/workflows/manzanita-eight-overlays.yml"}
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/overlays/")
+          ]
+          if invalid:
+              raise SystemExit(f"Overlay candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("manzanita-next/overlays/") for path in changed):
+              raise SystemExit("Candidate contains no overlay instrument object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+          test -f manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json
+          test -f manzanita-next/apertures/APERTURE_CONTRACT.json
+          test -f manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json
+          test -f manzanita-next/design-system/CONSTITUTION.json
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+          test -f programs/manzanita-99/review-board/validate_review_board.py
+
+      - name: Install source, projection, image, overlay, and review dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            requests beautifulsoup4 pillow jsonschema pytest
+
+      - name: Validate source, donor, overlay, and review contracts
+        run: |
+          pytest -q manzanita-next/tests
+          python -m py_compile \
+            manzanita-next/public-demo/build_public_demo.py \
+            manzanita-next/apertures/build_apertures.py \
+            manzanita-next/street-glide/resolve_scene.py \
+            manzanita-next/street-glide/register_natural_border.py \
+            manzanita-next/overlays/build_overlays.py \
+            manzanita-next/overlays/tests/test_overlays.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m json.tool manzanita-next/overlays/OVERLAY_CONTRACT.json > /dev/null
+          python -m json.tool manzanita-next/overlays/AUTHORED_OVERLAY_DEMO.json > /dev/null
+          python -m json.tool manzanita-next/overlays/review/M99-RB-PKT-007.json > /dev/null
+          python -m json.tool manzanita-next/overlays/review/M99-RB-DEC-007.json > /dev/null
+          python -m unittest discover \
+            -s manzanita-next/public-demo/tests \
+            -p "test_public_demo.py"
+          python -m unittest discover \
+            -s manzanita-next/apertures/tests \
+            -p "test_apertures.py"
+          python -m unittest discover \
+            -s manzanita-next/street-glide/tests \
+            -p "test_street_glide.py"
+          python -m unittest discover \
+            -s manzanita-next/overlays/tests \
+            -p "test_overlays.py"
+
+      - name: Acquire the exact live source foundation
+        id: acquire
+        continue-on-error: true
+        env:
+          AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPILLARY_ACCESS_TOKEN: ${{ secrets.MAPILLARY_ACCESS_TOKEN }}
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
+        run: |
+          rm -rf manzanita-next/out
+          cd manzanita-next
+          python -m scripts.acquire_foundation \
+            --place config/place-demo.json \
+            --registry config/source-registry.json \
+            --out out
+
+      - name: Validate every source receipt and retained payload
+        id: validate_source
+        if: always()
+        run: |
+          python manzanita-next/scripts/validate_foundation.py \
+            --root manzanita-next/out \
+            --source-schema manzanita-next/contracts/source-envelope.schema.json
+
+      - name: Rebuild the exact public-safe place donor
+        if: always()
+        run: |
+          rm -rf manzanita-next/public-demo/out
+          python manzanita-next/public-demo/build_public_demo.py \
+            --repo-root . \
+            --acquisition-root manzanita-next/out \
+            --output manzanita-next/public-demo/out
+
+      - name: Rebuild the seven-aperture architecture donor
+        if: always()
+        run: |
+          rm -rf manzanita-next/apertures/out
+          python manzanita-next/apertures/build_apertures.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --output manzanita-next/apertures/out
+
+      - name: Rebuild the exact Street Glide donors
+        if: always()
+        run: |
+          rm -rf manzanita-next/street-glide/out
+          python manzanita-next/street-glide/resolve_scene.py \
+            --contract manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json \
+            --public-data manzanita-next/public-demo/out/PUBLIC_DATA.json \
+            --scenes manzanita-next/street-glide/AUTHORED_REGISTRATION_DEMO.json \
+            --target-heading 0 \
+            --output manzanita-next/street-glide/out/SCENE_DECISION.json
+          python manzanita-next/street-glide/register_natural_border.py \
+            --contract manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json \
+            --demo manzanita-next/street-glide/AUTHORED_REGISTRATION_DEMO.json \
+            --image manzanita-next/public-demo/out/site/assets/base-imagery.png \
+            --output manzanita-next/street-glide/out/REGISTRATION_RECEIPT.json
+
+      - name: Build the eight exact overlay instruments
+        if: always()
+        run: |
+          rm -rf manzanita-next/overlays/out
+          python manzanita-next/overlays/build_overlays.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --aperture-root manzanita-next/apertures/out \
+            --street-glide-root manzanita-next/street-glide/out \
+            --output manzanita-next/overlays/out
+
+      - name: Run the contained multidisciplinary review
+        if: always()
+        run: |
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/overlays/review/M99-RB-PKT-007.json \
+            --decision manzanita-next/overlays/review/M99-RB-DEC-007.json \
+            --receipt manzanita-next/overlays/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Prove exact-head overlay and board receipts
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          public_build = json.loads(Path("manzanita-next/public-demo/out/BUILD_RECEIPT.json").read_text())
+          aperture_build = json.loads(Path("manzanita-next/apertures/out/BUILD_RECEIPT.json").read_text())
+          scene = json.loads(Path("manzanita-next/street-glide/out/SCENE_DECISION.json").read_text())
+          registration = json.loads(Path("manzanita-next/street-glide/out/REGISTRATION_RECEIPT.json").read_text())
+          bundle = json.loads(Path("manzanita-next/overlays/out/OVERLAY_BUNDLE.json").read_text())
+          build = json.loads(Path("manzanita-next/overlays/out/BUILD_RECEIPT.json").read_text())
+          board = json.loads(Path("manzanita-next/overlays/out/BOARD_DECISION_RECEIPT.json").read_text())
+
+          expected = ["care", "shade", "water", "heat", "air", "fire", "access", "assistance"]
+          assert public_build["result"] == "PASS"
+          assert public_build["release_effect"] == "none"
+          assert aperture_build["result"] == "PASS"
+          assert aperture_build["bundle"]["aperture_count"] == 7
+          assert scene["result"] == "PASS"
+          assert scene["selected_mode"] == "map_only"
+          assert registration["result"] == "PASS"
+
+          assert bundle["schema"] == "axm-tools/manzanita-eight-overlay-bundle@1"
+          assert bundle["overlay_count"] == 8
+          assert bundle["overlay_order"] == expected
+          assert [row["id"] for row in bundle["overlays"]] == expected
+          assert len({row["geometry"]["payload_sha256"] for row in bundle["overlays"]}) == 8
+          assert all(row["geometry"]["coordinate_space"] == "normalized_base_image" for row in bundle["overlays"])
+          assert all(row["base_registration"]["base_image_sha256"] == registration["image"]["sha256"] for row in bundle["overlays"])
+          assert bundle["public_effect"] == "none"
+          assert bundle["constitutional_count_effect"] == "none"
+          assert bundle["conflict_count"] > 0
+          assert len(bundle["payload_sha256"]) == 64
+
+          assert build["schema"] == "axm-tools/manzanita-eight-overlay-build@1"
+          assert build["result"] == "PASS"
+          assert build["bundle"]["overlay_count"] == 8
+          assert build["bundle"]["overlay_order"] == expected
+          assert build["public_effect"] == "none"
+          assert build["constitutional_count_effect"] == "none"
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-007"
+          assert board["decision_id"] == "M99-RB-DEC-007"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 8
+          PY
+
+      - name: Retain source, donor, overlay, and board evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-eight-overlays-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            manzanita-next/out
+            manzanita-next/public-demo/out/PUBLIC_DATA.json
+            manzanita-next/public-demo/out/PUBLIC_PROJECTION_RECEIPT.json
+            manzanita-next/public-demo/out/BUILD_RECEIPT.json
+            manzanita-next/public-demo/out/site/assets/base-imagery.png
+            manzanita-next/apertures/out/APERTURE_BUNDLE.json
+            manzanita-next/apertures/out/BUILD_RECEIPT.json
+            manzanita-next/street-glide/out/SCENE_DECISION.json
+            manzanita-next/street-glide/out/REGISTRATION_RECEIPT.json
+            manzanita-next/overlays/README.md
+            manzanita-next/overlays/OVERLAY_CONTRACT.json
+            manzanita-next/overlays/AUTHORED_OVERLAY_DEMO.json
+            manzanita-next/overlays/build_overlays.py
+            manzanita-next/overlays/tests/test_overlays.py
+            manzanita-next/overlays/review/M99-RB-PKT-007.json
+            manzanita-next/overlays/review/M99-RB-DEC-007.json
+            manzanita-next/overlays/out
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Enforce the acquisition and source-validation outcomes
+        if: always()
+        env:
+          ACQUIRE_OUTCOME: ${{ steps.acquire.outcome }}
+          VALIDATE_SOURCE_OUTCOME: ${{ steps.validate_source.outcome }}
+        run: |
+          test "$ACQUIRE_OUTCOME" = "success"
+          test "$VALIDATE_SOURCE_OUTCOME" = "success"
