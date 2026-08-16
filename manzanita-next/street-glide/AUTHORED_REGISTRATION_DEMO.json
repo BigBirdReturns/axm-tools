@@ -1,0 +1,62 @@
+{
+  "schema": "axm-tools/manzanita-authored-registration-demo@1",
+  "demo_id": "M99-STREET-GLIDE-DEMO-001",
+  "version": "1.0.0",
+  "state": "authored_demonstration",
+  "public_safe": true,
+  "private_household": false,
+  "authored_on": "2026-08-16",
+  "author_seat": "design_integrator",
+  "place_binding": "Use only with the exact public-demo place and source-run receipt supplied at build time.",
+  "scene_candidates": [],
+  "registration": {
+    "id": "M99-AUTH-REGISTRATION-001",
+    "label": "Authored natural-border registration candidate",
+    "image_class": "public_base_imagery_demonstration",
+    "coordinate_space": "normalized_image",
+    "candidate_points": [
+      [
+        0.11,
+        0.78
+      ],
+      [
+        0.25,
+        0.69
+      ],
+      [
+        0.39,
+        0.61
+      ],
+      [
+        0.54,
+        0.52
+      ],
+      [
+        0.69,
+        0.43
+      ],
+      [
+        0.84,
+        0.34
+      ]
+    ],
+    "search_radius_pixels": 18,
+    "minimum_gradient_strength": 0.08,
+    "maximum_mean_displacement_pixels": 24,
+    "candidate_source_class": "authored_registration_candidate",
+    "claim_boundary": "The line is authored to exercise the registration kernel. It is not a curb, property line, roof edge, vegetation boundary, drainage feature, fuel break, access route, work limit, observed geometry, or field record."
+  },
+  "map_only": {
+    "safe_action": "Use the public map and terrain context, preserve every failed street-provider reason, and request an authorized source or site capture when street-direction, visibility, recency, or registration matters.",
+    "authority": "Map-only mode provides public context and source-coverage status. It does not establish current street condition, access, ownership, boundary, safety, inspection, work, or completion authority.",
+    "prohibited_consequence": "No fabricated street scene, field finding, property consequence, insurance decision, enforcement action, dispatch, or completed-remediation claim."
+  },
+  "prohibited_uses": [
+    "presentation as observed or provider street imagery",
+    "physical-feature, property, legal, access, hazard, safety, or work-boundary identification",
+    "private household or resident inference",
+    "inspection, entry, traffic, pruning, dispatch, work, completion, insurance, enforcement, or other adverse action",
+    "public release or canonical task-count mutation"
+  ],
+  "control_question": "Can an operator use this line only as an authored search seed, inspect the source-image evidence and displacement receipt, and refuse to name or operationalize the edge without separate evidence and authority?"
+}
