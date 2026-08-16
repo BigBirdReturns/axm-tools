@@ -1,0 +1,380 @@
+{
+  "schema": "axm-tools/manzanita-review-board-charter@1",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "version": "1.0.0",
+  "status": "active_candidate",
+  "task_reference": "JDB99-027",
+  "accountable_actor": "design_integrator",
+  "decision_authority": "release_authority",
+  "seat_occupancy_law": "Seats are functional apertures, not named personalities. One operator may exercise multiple seats only through separate records with separate evidence, findings, uncertainty, and veto disposition.",
+  "decision_states": [
+    "admit",
+    "admit_with_holds",
+    "admit_governance_only",
+    "hold",
+    "reject",
+    "supersede"
+  ],
+  "gate_states": [
+    "pass",
+    "partial",
+    "fail",
+    "unknown",
+    "not_applicable"
+  ],
+  "required_gates": [
+    "object_classification",
+    "actors_and_authority",
+    "mechanism_fidelity",
+    "source_and_authorship_custody",
+    "interaction_semantics",
+    "visual_and_typographic_finish",
+    "motion_and_temporal_continuity",
+    "responsive_and_accessible_operation",
+    "performance_resilience_and_failure",
+    "security_privacy_rights_and_purpose",
+    "continuity_export_rollback_and_succession",
+    "qualification_receipts_and_public_effect"
+  ],
+  "veto_law": {
+    "critical": "Any open critical veto blocks admit, admit_with_holds, and admit_governance_only.",
+    "high": "Any open high veto blocks admit, admit_with_holds, and admit_governance_only. The board may only hold or reject the object until the veto is resolved.",
+    "medium_low": "Every medium or low defect requires an owner, acceptance condition, and disposition. These defects cannot disappear through score averaging.",
+    "unknown_gate": "Any applicable gate marked unknown blocks admit, admit_with_holds, and admit_governance_only.",
+    "not_applicable": "A not_applicable gate requires a bounded written reason and may be challenged by any seat.",
+    "override": "No contained seat can override another seat's veto. Only a new evidence-backed decision may resolve it. Release authority cannot convert an unresolved veto into a pass by assertion."
+  },
+  "authority_boundary": {
+    "board_may": [
+      "classify a submitted object",
+      "test the operating mechanism against retained evidence",
+      "record separate seat findings, defects, vetoes, uncertainty, and holds",
+      "recommend admit, hold, reject, or supersede within the packet's requested authority",
+      "require new evidence or a revised object"
+    ],
+    "board_may_not": [
+      "deploy or publish a product",
+      "contact an external person or organization",
+      "spend money or bind a provider contract",
+      "make an insurance, underwriting, employment, property, enforcement, eligibility, or other adverse decision",
+      "claim endorsement, review, approval, or affiliation by a named external person or organization",
+      "alter the historical public Manzanita route",
+      "replace source evidence with generated or authored media",
+      "repair the damaged constitutional backlog by inventing missing rows",
+      "grant authority absent from the submitted packet"
+    ]
+  },
+  "seats": [
+    {
+      "id": "board_chair",
+      "discipline": "review process and conflict custody",
+      "role": "Checks packet completeness, exact seat coverage, conflicts, veto disposition, and decision authority without editing another seat's judgment.",
+      "required_questions": [
+        "Is the object correctly classified and bounded?",
+        "Did every applicable seat review the same evidence-addressed object?",
+        "Are conflicts, unknowns, vetoes, holds, and decision authority preserved?"
+      ],
+      "evidence_minimum": [
+        "object identity and target paths",
+        "complete seat-review set",
+        "gate matrix",
+        "veto and defect ledger",
+        "decision-authority receipt"
+      ],
+      "vetoes": [
+        "missing required seat",
+        "packet or decision identity drift",
+        "unresolved critical or high veto",
+        "decision exceeds packet authority",
+        "applicable unknown gate presented as admission"
+      ],
+      "non_authority": [
+        "cannot change a discipline finding",
+        "cannot waive evidence",
+        "cannot authorize release"
+      ]
+    },
+    {
+      "id": "creative_direction",
+      "discipline": "creative direction and distinctive identity",
+      "role": "Tests whether the object has a recognizable authored form appropriate to its mission and whether source classes remain visually distinguishable.",
+      "required_questions": [
+        "Can a demanding outsider recognize the object without its label?",
+        "Does the visual language express the operating mechanism rather than decorate it?",
+        "Are observed, provider, authored, modeled, generated, failure, and unknown states visually distinct?"
+      ],
+      "evidence_minimum": [
+        "representative full-state plates",
+        "source-class examples",
+        "rejected alternatives or defect record",
+        "light and dark comparison where applicable"
+      ],
+      "vetoes": [
+        "generic or contradictory identity at a public release gate",
+        "generated media presented as observed evidence",
+        "decoration obscures authority, uncertainty, or consequence"
+      ],
+      "non_authority": [
+        "cannot approve source truth",
+        "cannot waive accessibility or performance failures"
+      ]
+    },
+    {
+      "id": "product_interaction",
+      "discipline": "product architecture and interaction semantics",
+      "role": "Tests whether controls change the actual operating aperture, state, action, authority, or handoff rather than only changing labels or crops.",
+      "required_questions": [
+        "What object changes when each control is used?",
+        "Can the actor predict, reverse, and verify the resulting state?",
+        "Are safe actions, prohibited effects, and handoffs explicit?"
+      ],
+      "evidence_minimum": [
+        "interaction model",
+        "state transition evidence",
+        "error and recovery cases",
+        "seat-specific action and authority matrix"
+      ],
+      "vetoes": [
+        "control changes copy without changing mechanism",
+        "irreversible effect lacks confirmation or authority",
+        "failure state hides the next safe action"
+      ],
+      "non_authority": [
+        "cannot grant external-effect permission",
+        "cannot classify source evidence alone"
+      ]
+    },
+    {
+      "id": "information_design",
+      "discipline": "information architecture and evidence legibility",
+      "role": "Tests hierarchy, source-time reading, uncertainty, comparison, provenance, and decision trace across dense and compact states.",
+      "required_questions": [
+        "Can the actor identify source, time, transform, uncertainty, authority, and next action?",
+        "Does hierarchy survive density, small viewports, and degraded evidence?",
+        "Are conflicts and absences visible rather than averaged away?"
+      ],
+      "evidence_minimum": [
+        "content hierarchy",
+        "dense and compact states",
+        "source and uncertainty treatment",
+        "comparison or conflict example"
+      ],
+      "vetoes": [
+        "source or uncertainty is materially illegible",
+        "hierarchy reverses consequence or authority",
+        "absence is rendered as a positive observation"
+      ],
+      "non_authority": [
+        "cannot certify provider accuracy",
+        "cannot waive interaction defects"
+      ]
+    },
+    {
+      "id": "typography",
+      "discipline": "typography and optical fit",
+      "role": "Tests display, editorial, label, data, compact, fallback, zoom, and multilingual type behavior at the pair and component level.",
+      "required_questions": [
+        "Do type roles remain distinct and coherent across modes?",
+        "Are spacing, breaks, numbers, symbols, and fallbacks optically resolved?",
+        "Does critical meaning survive compact width and 200 percent zoom?"
+      ],
+      "evidence_minimum": [
+        "type-role specimen",
+        "compact and zoom captures",
+        "fallback specimen",
+        "critical data and label examples"
+      ],
+      "vetoes": [
+        "critical content clips, overlaps, or becomes ambiguous",
+        "type hierarchy contradicts consequence or authority",
+        "fallback destroys required symbols or language"
+      ],
+      "non_authority": [
+        "cannot approve the whole visual system alone",
+        "cannot waive content or accessibility failures"
+      ]
+    },
+    {
+      "id": "motion",
+      "discipline": "motion and temporal continuity",
+      "role": "Tests whether motion explains scale, registration, source change, state transition, or handoff and whether reduced motion preserves the same meaning.",
+      "required_questions": [
+        "What operational meaning does each motion carry?",
+        "Can a user interrupt or reverse it where necessary?",
+        "Does reduced motion preserve sequence, state, and consequence?"
+      ],
+      "evidence_minimum": [
+        "motion inventory",
+        "timing and interruption behavior",
+        "reduced-motion equivalent",
+        "transition failure case"
+      ],
+      "vetoes": [
+        "motion fabricates continuity or source registration",
+        "meaning disappears under reduced motion",
+        "animation blocks a time-critical action"
+      ],
+      "non_authority": [
+        "cannot authorize a state transition",
+        "cannot use motion to conceal latency or failure"
+      ]
+    },
+    {
+      "id": "source_custody",
+      "discipline": "source, authorship, transformation, and rights custody",
+      "role": "Tests identity, retrieval, authorship, time, transforms, claim scope, rights, cache, staleness, health, and failure receipts for every material claim.",
+      "required_questions": [
+        "Can each material claim be traced to retained bytes or a stable source?",
+        "Are source time, retrieval time, transforms, rights, and permitted claims explicit?",
+        "Are missing, stale, contradictory, blocked, and generated states preserved?"
+      ],
+      "evidence_minimum": [
+        "source registry or authorship register",
+        "content hashes or stable source identities",
+        "rights and storage rules",
+        "degradation and failure receipts"
+      ],
+      "vetoes": [
+        "unattributed material claim",
+        "generated or authored object presented as observation",
+        "rights or storage rule prohibits the proposed use",
+        "missing evidence silently replaced"
+      ],
+      "non_authority": [
+        "cannot certify field truth beyond source scope",
+        "cannot authorize provider spending"
+      ]
+    },
+    {
+      "id": "field_operations",
+      "discipline": "field use, labor, equipment, safety, and handoff",
+      "role": "Tests whether the object can be used by the named field actor under real conditions without inventing inspection, entry, work, or completion authority.",
+      "required_questions": [
+        "Can the field actor understand the work object, conditions, hazards, tools, and acceptance criteria?",
+        "What must be verified on site before action?",
+        "Does the handoff preserve resident agency, crew safety, and lawful authority?"
+      ],
+      "evidence_minimum": [
+        "field scenario",
+        "equipment and safety constraints",
+        "site-verification boundary",
+        "work evidence and acceptance path"
+      ],
+      "vetoes": [
+        "remote context presented as completed inspection",
+        "unsafe or unlawful work instruction",
+        "unclear handoff or acceptance responsibility",
+        "field failure would be invisible to the record"
+      ],
+      "non_authority": [
+        "cannot authorize entry, inspection, or work",
+        "cannot certify completion without retained field evidence"
+      ]
+    },
+    {
+      "id": "accessibility",
+      "discipline": "accessible and inclusive operation",
+      "role": "Tests keyboard, touch, screen reader, focus, contrast, zoom, reduced motion, target size, language, cognition, and equivalent-error behavior.",
+      "required_questions": [
+        "Can every material action and state be reached and understood without a pointer or color alone?",
+        "Does assistive technology receive the same source, uncertainty, authority, and failure meaning?",
+        "Do compact, zoomed, and reduced-motion modes preserve hierarchy and action?"
+      ],
+      "evidence_minimum": [
+        "keyboard and focus run",
+        "screen-reader or accessibility-tree evidence",
+        "contrast and non-color state evidence",
+        "zoom, compact, touch, and reduced-motion captures"
+      ],
+      "vetoes": [
+        "material action is inaccessible",
+        "critical status is color-only",
+        "focus or reading order changes consequence",
+        "assistive mode omits source, authority, or failure meaning"
+      ],
+      "non_authority": [
+        "cannot waive source or product defects",
+        "cannot reduce accessible meaning to a separate lesser interface"
+      ]
+    },
+    {
+      "id": "performance_resilience",
+      "discipline": "performance, reliability, degradation, and recovery",
+      "role": "Tests budgets, source latency, slow and intermittent networks, stale data, provider outage, offline utility, retry, cache, observability, and rollback.",
+      "required_questions": [
+        "What are the measurable budgets and target devices?",
+        "What remains useful under slow, stale, intermittent, offline, and provider-outage states?",
+        "Can operators diagnose and recover without fabricating freshness or success?"
+      ],
+      "evidence_minimum": [
+        "performance budget and measurements",
+        "degradation campaign",
+        "source-health and retry evidence",
+        "rollback or recovery receipt"
+      ],
+      "vetoes": [
+        "failure is presented as fresh success",
+        "time-critical path exceeds its admitted budget",
+        "outage destroys the safe-action route",
+        "rollback or recovery cannot be reproduced"
+      ],
+      "non_authority": [
+        "cannot redefine product meaning to meet a budget",
+        "cannot suppress source-health evidence"
+      ]
+    },
+    {
+      "id": "security_privacy",
+      "discipline": "security, privacy, rights, consent, and purpose limitation",
+      "role": "Tests public and private projections, secrets, personal data, consent, retention, purpose firewall, hostile input, provider terms, and adverse-action boundaries.",
+      "required_questions": [
+        "What data, secrets, identities, and locations enter each projection?",
+        "Is collection and retention necessary, authorized, bounded, and revocable?",
+        "Can the object be repurposed for an adverse decision beyond its admitted purpose?"
+      ],
+      "evidence_minimum": [
+        "data and secret inventory",
+        "public/private projection test",
+        "consent, retention, and deletion rules",
+        "purpose and adverse-action threat model"
+      ],
+      "vetoes": [
+        "private or secret material enters a public bundle",
+        "purpose expansion enables unreviewed adverse action",
+        "provider terms or rights are violated",
+        "hostile input can cross an authority boundary"
+      ],
+      "non_authority": [
+        "cannot authorize collection merely because it is technically possible",
+        "cannot convert risk context into an adverse score"
+      ]
+    },
+    {
+      "id": "continuity_release",
+      "discipline": "continuity, export, rollback, qualification, and release governance",
+      "role": "Tests exact release identity, receipts, public endpoint, exports, import, rollback, branch strategy, succession, and the distinction between donor, candidate, and qualified release.",
+      "required_questions": [
+        "Can a cold successor reproduce, operate, export, restore, and roll back the object from retained receipts?",
+        "Do repository, artifact, deployment, and public-byte identities agree?",
+        "Is every qualification claim bound to the exact object and venue tested?"
+      ],
+      "evidence_minimum": [
+        "source and artifact identities",
+        "qualification and deployment receipts",
+        "export, reimport, rollback, and cold-successor evidence",
+        "release and supersession record"
+      ],
+      "vetoes": [
+        "qualification claim moves across commits or artifacts by assertion",
+        "repository state is mistaken for deployed public bytes",
+        "cold successor cannot recover or roll back",
+        "donor or internal review is presented as public release authority"
+      ],
+      "non_authority": [
+        "cannot waive another seat veto",
+        "cannot release without the accountable release authority"
+      ]
+    }
+  ],
+  "qualification_boundary": "A passing board receipt proves that a bounded object received complete contained multidisciplinary review under this charter. It does not constitute external review, product qualification, public release, deployment authority, or permission for an external effect."
+}
