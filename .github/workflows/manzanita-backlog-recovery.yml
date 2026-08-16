@@ -7,6 +7,10 @@ on:
     paths:
       - "programs/manzanita-99/recovery/**"
       - ".github/workflows/manzanita-backlog-recovery.yml"
+  pull_request:
+    paths:
+      - "programs/manzanita-99/recovery/**"
+      - ".github/workflows/manzanita-backlog-recovery.yml"
   workflow_dispatch: {}
 
 permissions:
