@@ -1,0 +1,63 @@
+name: Repair and seal Manzanita seven-aperture decision
+
+on:
+  push:
+    branches:
+      - agent/manzanita-seven-apertures-013
+    paths:
+      - ".github/workflows/manzanita-seven-apertures-repair.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-seven-apertures-repair
+  cancel-in-progress: false
+
+jobs:
+  repair-and-seal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-seven-apertures-013
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Align the bounded release effect with admitted board law
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("manzanita-next/apertures/review/M99-RB-DEC-005.json")
+          decision = json.loads(path.read_text(encoding="utf-8"))
+          current = decision.get("release_effect")
+          if current not in {"internal_architecture_only", "internal_candidate_only"}:
+              raise SystemExit(f"Unexpected aperture release effect: {current!r}")
+          decision["release_effect"] = "internal_candidate_only"
+          path.write_text(
+              json.dumps(decision, indent=2, ensure_ascii=False) + "\n",
+              encoding="utf-8",
+          )
+          PY
+          python -m json.tool manzanita-next/apertures/review/M99-RB-DEC-005.json > /dev/null
+          python -m unittest discover \
+            -s manzanita-next/apertures/tests \
+            -p "test_apertures.py"
+
+      - name: Seal and publish the corrected branch
+        run: |
+          rm .github/workflows/manzanita-seven-apertures-repair.yml
+          git config user.name "manzanita-seven-apertures-repair"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            .github/workflows/manzanita-seven-apertures-repair.yml \
+            manzanita-next/apertures/review/M99-RB-DEC-005.json
+          git commit -m "Manzanita: seal corrected seven-aperture decision"
+          git push origin HEAD:agent/manzanita-seven-apertures-013
