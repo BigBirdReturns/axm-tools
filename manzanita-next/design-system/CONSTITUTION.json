@@ -1,0 +1,642 @@
+{
+  "schema": "axm-tools/manzanita-design-constitution@1",
+  "constitution_id": "M99-DESIGN-CONSTITUTION",
+  "version": "1.0.0",
+  "state": "internal_candidate",
+  "task_references": [
+    "JDB99-004",
+    "JDB99-005",
+    "JDB99-006",
+    "JDB99-007",
+    "JDB99-008",
+    "JDB99-009",
+    "JDB99-010",
+    "JDB99-011"
+  ],
+  "object": {
+    "classification": "multidisciplinary_design_constitution_and_component_specimen",
+    "accountable_actor": "design_integrator",
+    "review_mechanism": "M99-CONTAINED-REVIEW-BOARD",
+    "decision_authority": "release_authority",
+    "public_effect": "none",
+    "constitutional_count_effect": "none",
+    "claim_boundary": "The constitution may govern internal successor production after exact-head review. It does not qualify a Manzanita product, public route, live provider, field action, deployment, design score, or external effect."
+  },
+  "identity": {
+    "name": "Forkline Field",
+    "recognition_test": "A demanding outsider can identify Manzanita from an unlabeled crop containing a terrain-following ground contour, a forked actor branch, square evidence nodes, a consequence-color cut, and a narrow source rail.",
+    "invariants": [
+      "The primary edge follows the geometry of the represented object or is visibly labeled authored demonstration geometry.",
+      "A branch line leaves the ground contour only to identify an actor, action, or handoff.",
+      "A square node marks evidence, uncertainty, conflict, or a receipt rather than decoration.",
+      "A consequence-color cut marks a change in authority, coverage, or material consequence.",
+      "A source rail remains available in dense, compact, print, light, dark, and degraded states."
+    ],
+    "prohibited_shortcuts": [
+      "generic rounded cards as the dominant spatial grammar",
+      "decorative gradients, backdrop blur, or shadow used to imply hierarchy",
+      "one hero image cropped and relabeled as multiple scales",
+      "geometric polygons presented as landscape-following registration",
+      "random bolding or header color used in place of a stable type role",
+      "generated or authored media presented as observed evidence",
+      "a theme or role switch that changes labels while leaving the operating object unchanged"
+    ]
+  },
+  "form_language": {
+    "primitives": [
+      {
+        "id": "ground_contour",
+        "meaning": "Natural, measured, derived, or explicitly authored edge of the represented object.",
+        "required_fields": [
+          "geometry_identity",
+          "source_class",
+          "registration_state",
+          "coverage_state"
+        ],
+        "visual_law": "Continuous solid line for admitted geometry; interrupted line where coverage stops; never close an unknown edge by invention."
+      },
+      {
+        "id": "branch_line",
+        "meaning": "Actor, action, handoff, or causal relation leaving a registered ground contour.",
+        "required_fields": [
+          "actor",
+          "action_or_handoff",
+          "authority"
+        ],
+        "visual_law": "Forks once before additional hierarchy; cannot float free of a registered contour or evidence node."
+      },
+      {
+        "id": "evidence_node",
+        "meaning": "Observation, source receipt, uncertainty, conflict, absence, or completion evidence.",
+        "required_fields": [
+          "evidence_class",
+          "source_or_authorship",
+          "time_or_version",
+          "claim_scope"
+        ],
+        "visual_law": "Square node for evidence, open square for unknown, crossed square for conflict, double square for accepted receipt."
+      },
+      {
+        "id": "consequence_cut",
+        "meaning": "Boundary at which authority, source coverage, safety, privacy, or material consequence changes.",
+        "required_fields": [
+          "boundary_type",
+          "before_state",
+          "after_state",
+          "deciding_authority"
+        ],
+        "visual_law": "Short perpendicular bark-colored cut with a nearby operational label; never used as decoration."
+      },
+      {
+        "id": "register_line",
+        "meaning": "Proof that two visual, spatial, temporal, or decision layers share one coordinate frame.",
+        "required_fields": [
+          "base_identity",
+          "overlay_identity",
+          "transform_identity",
+          "error_or_uncertainty"
+        ],
+        "visual_law": "Thin water-colored alignment line with visible station ticks and stated registration status."
+      },
+      {
+        "id": "source_rail",
+        "meaning": "Persistent compact reading of source, time, transform, uncertainty, rights, health, and prohibited claim.",
+        "required_fields": [
+          "source",
+          "source_time",
+          "retrieval_or_authorship_time",
+          "transform",
+          "uncertainty",
+          "rights",
+          "health",
+          "claim_boundary"
+        ],
+        "visual_law": "Narrow vertical or horizontal rail with fixed type roles and no card treatment."
+      }
+    ],
+    "line_weights_px": {
+      "hairline": 1,
+      "source": 1.5,
+      "registered": 2,
+      "actor_action": 2.5,
+      "authority": 3,
+      "critical_boundary": 4
+    },
+    "corner_law": "Rectilinear controls and labels may have at most a 2-pixel optical correction. Spatial and evidence contours remain geometry-derived rather than rounded for friendliness.",
+    "spacing_unit_px": 4,
+    "spacing_scale": [
+      4,
+      8,
+      12,
+      16,
+      24,
+      32,
+      48,
+      64,
+      96
+    ],
+    "registration_law": "An annotation is admissible only when it references a retained vertex, station, feature identity, temporal event, or explicit authored anchor. Screen-space approximation is labeled and cannot become source geometry."
+  },
+  "typography": {
+    "font_policy": "Local and system font stacks only in the specimen and static public shell. A later bundled font requires rights, fallback, loading, performance, and glyph-coverage receipts.",
+    "roles": [
+      {
+        "id": "display",
+        "stack": "Iowan Old Style, Palatino Linotype, Book Antiqua, Georgia, serif",
+        "weight": 600,
+        "size_clamp": "clamp(2.25rem, 5.8vw, 5.6rem)",
+        "line_height": 0.94,
+        "tracking_em": -0.035,
+        "use": "Place proposition, scale transition, or major consequence only."
+      },
+      {
+        "id": "editorial",
+        "stack": "Iowan Old Style, Palatino Linotype, Book Antiqua, Georgia, serif",
+        "weight": 400,
+        "size_clamp": "clamp(1.05rem, 1.7vw, 1.35rem)",
+        "line_height": 1.48,
+        "tracking_em": 0,
+        "use": "Human context, explanation, and bounded narrative."
+      },
+      {
+        "id": "operational",
+        "stack": "Aptos, Segoe UI, Helvetica Neue, Arial, sans-serif",
+        "weight": 600,
+        "size_clamp": "clamp(0.94rem, 1.25vw, 1.08rem)",
+        "line_height": 1.25,
+        "tracking_em": -0.01,
+        "use": "Action, authority, state, handoff, and consequential control."
+      },
+      {
+        "id": "label",
+        "stack": "Aptos, Segoe UI, Helvetica Neue, Arial, sans-serif",
+        "weight": 700,
+        "size_clamp": "clamp(0.68rem, 0.8vw, 0.78rem)",
+        "line_height": 1.15,
+        "tracking_em": 0.12,
+        "transform": "uppercase",
+        "use": "Source, time, role, gate, category, and compact section label."
+      },
+      {
+        "id": "data",
+        "stack": "ui-monospace, SFMono-Regular, Menlo, Consolas, Liberation Mono, monospace",
+        "weight": 500,
+        "size_clamp": "clamp(0.72rem, 0.9vw, 0.88rem)",
+        "line_height": 1.35,
+        "tracking_em": 0,
+        "use": "Time, coordinate, quantity, digest, source identity, and receipt."
+      },
+      {
+        "id": "compact",
+        "stack": "Aptos, Segoe UI, Helvetica Neue, Arial, sans-serif",
+        "weight": 600,
+        "size_clamp": "clamp(0.78rem, 3.1vw, 0.92rem)",
+        "line_height": 1.22,
+        "tracking_em": -0.005,
+        "use": "Mobile and narrow operational text with retained hierarchy."
+      }
+    ],
+    "measure_ch": {
+      "editorial_max": 68,
+      "operational_max": 46,
+      "label_max": 28,
+      "compact_max": 34
+    },
+    "numeral_law": "Tabular numerals are required for aligned time, quantity, score, coordinate, and receipt tables. Fractions, signs, units, and uncertainty remain attached to the value they qualify.",
+    "optical_acceptance": [
+      "No critical label clips or wraps into an unrelated control at 320 CSS pixels.",
+      "At 200 percent zoom, source, authority, failure, and next action remain ordered and visible.",
+      "Fallback stacks preserve required punctuation, arrows, mathematical signs, Punjabi and CJK sample glyphs where those languages appear.",
+      "Bold, color, capitalization, or size is never assigned ad hoc outside a declared role."
+    ]
+  },
+  "materials": {
+    "semantic_tokens": [
+      {
+        "id": "paper",
+        "light": "#f2ecde",
+        "dark": "#151713",
+        "meaning": "Primary field"
+      },
+      {
+        "id": "paper_alt",
+        "light": "#e5dcc9",
+        "dark": "#22251f",
+        "meaning": "Secondary field and source rail"
+      },
+      {
+        "id": "ink",
+        "light": "#171a16",
+        "dark": "#f0e8d8",
+        "meaning": "Primary text and registered geometry"
+      },
+      {
+        "id": "ink_muted",
+        "light": "#555b50",
+        "dark": "#b9b4a8",
+        "meaning": "Secondary context without authority reduction"
+      },
+      {
+        "id": "bark",
+        "light": "#9f3f2f",
+        "dark": "#e77962",
+        "meaning": "Consequence, authority cut, and urgent contradiction"
+      },
+      {
+        "id": "leaf",
+        "light": "#5c6b43",
+        "dark": "#a7bb7d",
+        "meaning": "Living system, habitat, and viable care"
+      },
+      {
+        "id": "water",
+        "light": "#2f6a78",
+        "dark": "#79b3c0",
+        "meaning": "Registration, flow, source relation, and measured connection"
+      },
+      {
+        "id": "sun",
+        "light": "#b66f1f",
+        "dark": "#e6ad5f",
+        "meaning": "Heat, exposure, opportunity, and attention"
+      },
+      {
+        "id": "uncertain",
+        "light": "#726a5a",
+        "dark": "#aaa18f",
+        "meaning": "Unknown, stale, incomplete, or approximate state"
+      },
+      {
+        "id": "failure",
+        "light": "#7d2431",
+        "dark": "#ff8792",
+        "meaning": "Failed gate, unavailable safe action, or invalid evidence"
+      }
+    ],
+    "parity_law": "Light and dark modes retain identical token meaning, content hierarchy, control order, line weight, source visibility, and failure semantics. Contrast and edge visibility are tested independently rather than inferred from token names.",
+    "minimum_contrast": {
+      "normal_text": 4.5,
+      "large_text": 3,
+      "controls_and_graphics": 3,
+      "critical_text_target": 7
+    },
+    "prohibited": [
+      "gradient as hierarchy",
+      "blur as separation",
+      "shadow as evidence depth",
+      "transparent overlay that reduces source or label contrast below the admitted floor",
+      "dark mode that changes consequence order or hides geometry"
+    ]
+  },
+  "symbols": {
+    "system": "Forkline marks and square evidence states",
+    "stroke_caps": "square",
+    "stroke_joins": "miter for labels and controls; round permitted only where an observed natural contour requires it",
+    "minimum_target_css_px": 44,
+    "minimum_visible_stroke_css_px": 1,
+    "states": [
+      {
+        "id": "evidence_observed",
+        "shape": "filled square",
+        "meaning": "Admitted observed or measured evidence"
+      },
+      {
+        "id": "evidence_provider",
+        "shape": "square with source tick",
+        "meaning": "Provider-rendered or provider-published evidence"
+      },
+      {
+        "id": "evidence_authored",
+        "shape": "square with diagonal author stroke",
+        "meaning": "Authored explanatory or demonstration object"
+      },
+      {
+        "id": "evidence_unknown",
+        "shape": "open square",
+        "meaning": "Unknown or absent evidence"
+      },
+      {
+        "id": "evidence_conflict",
+        "shape": "crossed square",
+        "meaning": "Contradictory evidence requiring disposition"
+      },
+      {
+        "id": "evidence_receipt",
+        "shape": "double square",
+        "meaning": "Accepted receipt bound to an object and authority"
+      },
+      {
+        "id": "authority_cut",
+        "shape": "perpendicular consequence stroke",
+        "meaning": "Authority or purpose boundary"
+      },
+      {
+        "id": "registered_relation",
+        "shape": "stationed alignment line",
+        "meaning": "Shared spatial, temporal, or decision frame"
+      }
+    ],
+    "non_color_law": "Every state remains distinguishable in monochrome through shape, line, label, or pattern. Color may reinforce but never carry the only meaning."
+  },
+  "art_direction": {
+    "classes": [
+      {
+        "id": "observed",
+        "required_label": "Observed",
+        "required_custody": "Original bytes or stable source, capture identity, time, location scope, rights, and permitted claims.",
+        "permitted_claim": "Only what the retained observation supports.",
+        "prohibited_substitution": "Cannot be replaced by generated, modeled, or authored imagery."
+      },
+      {
+        "id": "provider_rendered",
+        "required_label": "Provider",
+        "required_custody": "Provider identity, item or panorama identity, source time, attribution, terms, storage rule, and render receipt.",
+        "permitted_claim": "Provider-supplied imagery or layer within its terms and source scope.",
+        "prohibited_substitution": "Cannot be cached, redistributed, or represented beyond provider terms."
+      },
+      {
+        "id": "captured_first_party",
+        "required_label": "Captured",
+        "required_custody": "Original bytes, accountable capture actor, time, consent, privacy projection, rights, and transforms.",
+        "permitted_claim": "First-party observation within the captured field and time.",
+        "prohibited_substitution": "Cannot be generalized into inspection or property-wide truth without additional evidence."
+      },
+      {
+        "id": "authored",
+        "required_label": "Authored demonstration",
+        "required_custody": "Authoring file, author or accountable seat, version, references, transforms, and claim boundary.",
+        "permitted_claim": "Explanation, demonstration, composition, and design proof.",
+        "prohibited_substitution": "Cannot appear as a real place, completed work, or current condition."
+      },
+      {
+        "id": "modeled",
+        "required_label": "Modeled",
+        "required_custody": "Model version, input identities, assumptions, transform, uncertainty, validation, and prohibited decisions.",
+        "permitted_claim": "Bounded modeled estimate with visible uncertainty.",
+        "prohibited_substitution": "Cannot replace observation or authorize adverse action."
+      },
+      {
+        "id": "generated",
+        "required_label": "Generated reference",
+        "required_custody": "Tool or model identity, prompt or generation instruction, source references, transforms, date, rights position, and human disposition.",
+        "permitted_claim": "Reference, ideation, explanatory motion, redaction assist, or explicitly deterministic demo.",
+        "prohibited_substitution": "Cannot replace available live street imagery, geospatial data, current conditions, household evidence, or work receipts."
+      },
+      {
+        "id": "derived",
+        "required_label": "Derived",
+        "required_custody": "Input identities, transform identity, output digest, uncertainty, and reversibility or regeneration path.",
+        "permitted_claim": "The bounded analytical relation produced by the declared transform.",
+        "prohibited_substitution": "Cannot inherit stronger authority than its inputs."
+      },
+      {
+        "id": "unavailable",
+        "required_label": "Unavailable",
+        "required_custody": "Attempt or coverage receipt, source health, failure class, and retry or fallback rule.",
+        "permitted_claim": "Only that the evidence is unavailable under the recorded conditions.",
+        "prohibited_substitution": "Cannot be rendered as neutral, safe, zero, or absent condition."
+      },
+      {
+        "id": "redacted",
+        "required_label": "Redacted",
+        "required_custody": "Original custody location, redaction method, accountable actor, reason, and public/private projection receipt.",
+        "permitted_claim": "A privacy-preserving projection whose removed fields remain known to the authorized source record.",
+        "prohibited_substitution": "Cannot imply that redacted detail never existed."
+      }
+    ],
+    "composition_law": "The strongest available source class occupies the base field. Authored explanation, labels, and derived overlays remain visibly subordinate and registered. Empty coverage is composed as an honest break rather than filled with atmosphere."
+  },
+  "motion": {
+    "semantics": [
+      {
+        "id": "scale_change",
+        "meaning": "Reveal a genuinely different object and evidence aperture while retaining place identity.",
+        "required_before_after": "Object, source set, geometry, action, authority, and retained anchor.",
+        "reduced_motion": "Immediate state change plus retained origin and destination labels."
+      },
+      {
+        "id": "registration",
+        "meaning": "Show two layers acquiring or losing a shared coordinate frame.",
+        "required_before_after": "Base identity, overlay identity, transform, error, and registration status.",
+        "reduced_motion": "Static aligned stations and an explicit registration result."
+      },
+      {
+        "id": "source_change",
+        "meaning": "Expose a provider, time, health, or evidence-class transition.",
+        "required_before_after": "Old and new source rail, time, health, rights, and claim scope.",
+        "reduced_motion": "Direct replacement with a visible changed-fields ledger."
+      },
+      {
+        "id": "state_transition",
+        "meaning": "Explain a reversible internal state change or a held external effect.",
+        "required_before_after": "Actor, action, prior state, next state, authority, confirmation, and rollback where applicable.",
+        "reduced_motion": "Immediate change with persistent prior-state receipt."
+      },
+      {
+        "id": "handoff",
+        "meaning": "Transfer an evidence-backed obligation between accountable seats.",
+        "required_before_after": "Sending seat, receiving seat, object, evidence, authority, acceptance, and unresolved holds.",
+        "reduced_motion": "Static before-and-after custody columns with a signed transfer line."
+      }
+    ],
+    "duration_ms": {
+      "micro": 90,
+      "state": 180,
+      "scale": 320,
+      "handoff": 420,
+      "maximum_non_user_controlled": 500
+    },
+    "easing": {
+      "enter": "cubic-bezier(0.2, 0.7, 0.2, 1)",
+      "move": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "exit": "cubic-bezier(0.4, 0, 1, 1)"
+    },
+    "prohibited": [
+      "parallax that implies false spatial depth",
+      "continuous ambient movement without operational meaning",
+      "animation that hides loading, staleness, or provider failure",
+      "a crop or zoom presented as a change in scale aperture",
+      "motion required to discover a critical state or action"
+    ]
+  },
+  "content": {
+    "reading_order": [
+      "actor",
+      "object",
+      "source_or_authorship",
+      "time_and_health",
+      "mechanism",
+      "uncertainty_or_conflict",
+      "authority",
+      "next_safe_action",
+      "prohibited_effect",
+      "receipt_or_handoff"
+    ],
+    "label_law": "Use ordinary product language for actors and controls. Internal design-family names may appear in documentation and provenance, not as unexplained user-facing mode labels.",
+    "theme_labels": [
+      "Auto",
+      "Light",
+      "Dark"
+    ],
+    "failure_copy_law": "Name what failed, what remains known, what is unknown, the consequence of proceeding, the available fallback, and the accountable next action. Never use generic reassurance or a blank state where a failure receipt exists.",
+    "action_copy_law": "A consequential action begins with a verb, names its object, states whether it is internal or external, exposes authority and confirmation, and provides the acceptance or rollback condition.",
+    "forbidden_language": [
+      "safe when only no incident is reported",
+      "verified when only a source was fetched",
+      "complete when code or a screenshot exists",
+      "approved when only a contained review passed",
+      "live when a deterministic fixture is displayed",
+      "inspection when the object is remote context",
+      "recommendation when lawful authority and accountable judgment are absent"
+    ]
+  },
+  "components": [
+    {
+      "id": "forkline_header",
+      "object": "Place identity, actor, aperture, and source health",
+      "required_states": [
+        "default",
+        "compact",
+        "stale",
+        "source_unavailable",
+        "light",
+        "dark"
+      ],
+      "acceptance": "The forkline mark, current aperture, actor, source health, and theme control remain legible without turning into a generic navigation bar."
+    },
+    {
+      "id": "registered_field_plate",
+      "object": "Geometry-derived base field with registered contours, nodes, cuts, and overlays",
+      "required_states": [
+        "plant",
+        "household",
+        "street",
+        "region",
+        "overlay_on",
+        "coverage_gap",
+        "conflict"
+      ],
+      "acceptance": "Each aperture changes the actual geometry and evidence set; annotations stay bound to authored stations in the specimen and no unknown edge is closed."
+    },
+    {
+      "id": "source_rail",
+      "object": "Source, time, transform, uncertainty, rights, health, and claim boundary",
+      "required_states": [
+        "healthy",
+        "stale",
+        "unavailable",
+        "authored_demo",
+        "compact"
+      ],
+      "acceptance": "All fields remain visible or explicitly summarized, and a degraded state cannot be mistaken for fresh evidence."
+    },
+    {
+      "id": "actor_action_branch",
+      "object": "Actor-specific safe action and authority branch",
+      "required_states": [
+        "resident",
+        "steward",
+        "planner",
+        "held_external_effect",
+        "handoff"
+      ],
+      "acceptance": "Changing actor changes evidence, action, authority, acceptance, and handoff rather than only changing prose."
+    },
+    {
+      "id": "evidence_ledger",
+      "object": "Evidence classes, times, confidence, conflict, and receipts",
+      "required_states": [
+        "observed",
+        "provider",
+        "authored",
+        "derived",
+        "unknown",
+        "conflict",
+        "receipt"
+      ],
+      "acceptance": "Every state is distinguishable by shape and text in monochrome and links to its claim boundary."
+    },
+    {
+      "id": "failure_sheet",
+      "object": "Failure mechanism, remaining knowledge, blocked consequence, fallback, and accountable next action",
+      "required_states": [
+        "missing_credential",
+        "empty_coverage",
+        "stale",
+        "rate_limited",
+        "provider_outage",
+        "rights_blocked",
+        "unknown"
+      ],
+      "acceptance": "The sheet never fabricates a zero or safe condition and preserves the source or operation receipt that explains the failure."
+    },
+    {
+      "id": "handoff_receipt",
+      "object": "Transfer of one evidence-backed obligation between seats",
+      "required_states": [
+        "proposed",
+        "accepted",
+        "held",
+        "rejected",
+        "rolled_back"
+      ],
+      "acceptance": "Sender, receiver, object, evidence, authority, acceptance, unresolved holds, and rollback remain reproducible."
+    }
+  ],
+  "specimen": {
+    "entry": "manzanita-next/design-system/specimen/index.html",
+    "data_class": "authored_demonstration_geometry",
+    "apertures": [
+      "plant",
+      "household",
+      "street",
+      "region"
+    ],
+    "overlays": [
+      "habitat",
+      "heat",
+      "water",
+      "fire"
+    ],
+    "actors": [
+      "resident",
+      "steward",
+      "planner"
+    ],
+    "viewports": [
+      "1600x1000",
+      "1024x900",
+      "390x844",
+      "320x720"
+    ],
+    "themes": [
+      "auto",
+      "light",
+      "dark"
+    ],
+    "required_tests": [
+      "no external requests",
+      "zero page and console errors",
+      "zero horizontal overflow",
+      "keyboard-complete controls",
+      "theme content parity",
+      "reduced-motion parity",
+      "different geometry and evidence for every aperture",
+      "actor changes evidence, action, authority, acceptance, and handoff",
+      "overlay geometry remains registered to the current authored field",
+      "source rail remains visible in every state"
+    ]
+  },
+  "task_standing": {
+    "JDB99-004": "operational_candidate_form_language",
+    "JDB99-005": "operational_candidate_typography",
+    "JDB99-006": "operational_candidate_light_dark_materials",
+    "JDB99-007": "operational_candidate_symbol_line_annotation",
+    "JDB99-008": "operational_candidate_art_direction",
+    "JDB99-009": "operational_candidate_motion",
+    "JDB99-010": "operational_candidate_content_hierarchy",
+    "JDB99-011": "operational_candidate_representative_components"
+  },
+  "admission_law": "Operational standing becomes admitted only on an exact head that passes static validation, browser and accessibility campaigns, retained full-state captures, contained board review, bounded diff inspection, and release-authority disposition. The admission changes no remembered constitutional count until a successor register reconciles the receipts.",
+  "control_question": "Does every representative fragment remain recognizably Manzanita while preserving the source, actor, geometry, mechanism, authority, uncertainty, next safe action, and prohibited consequence without borrowing product or release standing from the beauty of the specimen?"
+}
