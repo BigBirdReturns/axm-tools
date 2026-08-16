@@ -1,0 +1,393 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bigbirdreturns.github.io/axm-tools/programs/manzanita-99/review-board/review-decision.schema.json",
+  "title": "Manzanita contained review decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "decision_id",
+    "packet_id",
+    "board_id",
+    "board_version",
+    "reviewed_ref",
+    "external_review_claim",
+    "seat_reviews",
+    "defects",
+    "vetoes",
+    "gate_disposition",
+    "outcome",
+    "admitted_claim",
+    "holds",
+    "release_effect",
+    "authority_receipt",
+    "qualification_boundary",
+    "control_question"
+  ],
+  "properties": {
+    "schema": {
+      "const": "axm-tools/manzanita-review-decision@1"
+    },
+    "decision_id": {
+      "type": "string",
+      "pattern": "^M99-RB-DEC-[0-9]{3}$"
+    },
+    "packet_id": {
+      "type": "string",
+      "pattern": "^M99-RB-PKT-[0-9]{3}$"
+    },
+    "board_id": {
+      "const": "M99-CONTAINED-REVIEW-BOARD"
+    },
+    "board_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "reviewed_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding",
+        "ref"
+      ],
+      "properties": {
+        "binding": {
+          "enum": [
+            "exact_commit",
+            "validation_head"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "external_review_claim": {
+      "const": false
+    },
+    "seat_reviews": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/seatReview"
+      }
+    },
+    "defects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/defect"
+      }
+    },
+    "vetoes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/veto"
+      }
+    },
+    "gate_disposition": {
+      "$ref": "#/$defs/gates"
+    },
+    "outcome": {
+      "enum": [
+        "admit",
+        "admit_with_holds",
+        "admit_governance_only",
+        "hold",
+        "reject",
+        "supersede"
+      ]
+    },
+    "admitted_claim": {
+      "type": "string",
+      "minLength": 30
+    },
+    "holds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 15
+      }
+    },
+    "release_effect": {
+      "enum": [
+        "none",
+        "internal_candidate_only",
+        "public_read_only_candidate",
+        "release_authority_required"
+      ]
+    },
+    "authority_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deciding_seat",
+        "decision_scope",
+        "prohibited_effects"
+      ],
+      "properties": {
+        "deciding_seat": {
+          "const": "release_authority"
+        },
+        "decision_scope": {
+          "type": "string",
+          "minLength": 20
+        },
+        "prohibited_effects": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    },
+    "qualification_boundary": {
+      "type": "string",
+      "minLength": 40
+    },
+    "control_question": {
+      "type": "string",
+      "minLength": 30
+    }
+  },
+  "$defs": {
+    "seatReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "seat_id",
+        "disposition",
+        "findings",
+        "evidence_ids",
+        "uncertainty",
+        "veto_ids"
+      ],
+      "properties": {
+        "seat_id": {
+          "type": "string",
+          "minLength": 2
+        },
+        "disposition": {
+          "enum": [
+            "pass",
+            "pass_with_findings",
+            "hold",
+            "reject",
+            "not_applicable"
+          ]
+        },
+        "findings": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 20
+          }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "uncertainty": {
+          "type": "string",
+          "minLength": 15
+        },
+        "veto_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "defect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "severity",
+        "title",
+        "mechanism",
+        "evidence_ids",
+        "owner",
+        "acceptance",
+        "disposition"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^M99-RB-DEF-[0-9]{3}$"
+        },
+        "severity": {
+          "enum": [
+            "critical",
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 10
+        },
+        "mechanism": {
+          "type": "string",
+          "minLength": 20
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 2
+        },
+        "acceptance": {
+          "type": "string",
+          "minLength": 20
+        },
+        "disposition": {
+          "enum": [
+            "open",
+            "accepted_hold",
+            "resolved",
+            "rejected"
+          ]
+        }
+      }
+    },
+    "veto": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "seat_id",
+        "severity",
+        "title",
+        "mechanism",
+        "evidence_ids",
+        "state",
+        "resolution"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^M99-RB-VETO-[0-9]{3}$"
+        },
+        "seat_id": {
+          "type": "string",
+          "minLength": 2
+        },
+        "severity": {
+          "enum": [
+            "critical",
+            "high"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 10
+        },
+        "mechanism": {
+          "type": "string",
+          "minLength": 20
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "enum": [
+            "open",
+            "resolved"
+          ]
+        },
+        "resolution": {
+          "type": "string",
+          "minLength": 15
+        }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "reason",
+        "evidence_ids"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "pass",
+            "partial",
+            "fail",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 15
+        },
+        "evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_classification",
+        "actors_and_authority",
+        "mechanism_fidelity",
+        "source_and_authorship_custody",
+        "interaction_semantics",
+        "visual_and_typographic_finish",
+        "motion_and_temporal_continuity",
+        "responsive_and_accessible_operation",
+        "performance_resilience_and_failure",
+        "security_privacy_rights_and_purpose",
+        "continuity_export_rollback_and_succession",
+        "qualification_receipts_and_public_effect"
+      ],
+      "properties": {
+        "object_classification": { "$ref": "#/$defs/gate" },
+        "actors_and_authority": { "$ref": "#/$defs/gate" },
+        "mechanism_fidelity": { "$ref": "#/$defs/gate" },
+        "source_and_authorship_custody": { "$ref": "#/$defs/gate" },
+        "interaction_semantics": { "$ref": "#/$defs/gate" },
+        "visual_and_typographic_finish": { "$ref": "#/$defs/gate" },
+        "motion_and_temporal_continuity": { "$ref": "#/$defs/gate" },
+        "responsive_and_accessible_operation": { "$ref": "#/$defs/gate" },
+        "performance_resilience_and_failure": { "$ref": "#/$defs/gate" },
+        "security_privacy_rights_and_purpose": { "$ref": "#/$defs/gate" },
+        "continuity_export_rollback_and_succession": { "$ref": "#/$defs/gate" },
+        "qualification_receipts_and_public_effect": { "$ref": "#/$defs/gate" }
+      }
+    }
+  }
+}
