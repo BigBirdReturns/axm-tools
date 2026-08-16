@@ -1,0 +1,158 @@
+name: Repair Manzanita Forkline Field source candidate
+
+on:
+  push:
+    branches:
+      - agent/manzanita-design-constitution-004-011
+    paths:
+      - ".github/workflows/manzanita-design-source-repair-v3.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  repair-and-publish-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      BRANCH_NAME: agent/manzanita-design-constitution-004-011
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-design-constitution-004-011
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Reconcile with the admitted board
+        run: |
+          git config user.name "manzanita-design-source-repair"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --ff-only origin "$BRANCH_NAME"
+          git fetch --no-tags origin main
+          git merge --no-edit origin/main
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+          test -f programs/manzanita-99/review-board/validate_review_board.py
+
+      - name: Apply source, target, motion, and SVG-text corrections
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          constitution_path = Path("manzanita-next/design-system/CONSTITUTION.json")
+          constitution = json.loads(constitution_path.read_text(encoding="utf-8"))
+          replacements = {
+              "observed": "Observed evidence",
+              "provider_rendered": "Provider evidence",
+              "captured_first_party": "First-party capture",
+              "modeled": "Modeled context",
+              "derived": "Derived analysis",
+              "redacted": "Redacted projection",
+          }
+          seen = set()
+          for row in constitution["art_direction"]["classes"]:
+              if row["id"] in replacements:
+                  row["required_label"] = replacements[row["id"]]
+                  seen.add(row["id"])
+          if seen != set(replacements):
+              raise SystemExit(f"Missing art-direction classes: {sorted(set(replacements) - seen)}")
+          for row in constitution["art_direction"]["classes"]:
+              for field in (
+                  "required_label",
+                  "required_custody",
+                  "permitted_claim",
+                  "prohibited_substitution",
+              ):
+                  if len(row[field]) < 10:
+                      raise SystemExit(f"{row['id']} has an underspecified {field}: {row[field]!r}")
+          constitution_path.write_text(
+              json.dumps(constitution, indent=2, ensure_ascii=False) + "\n",
+              encoding="utf-8",
+          )
+
+          css_path = Path("manzanita-next/design-system/specimen/style.css")
+          css = css_path.read_text(encoding="utf-8")
+          css = re.sub(
+              r"(\.theme-control button\s*\{[^}]*?min-height:\s*)36px;",
+              r"\g<1>44px;",
+              css,
+              count=1,
+              flags=re.DOTALL,
+          )
+          if re.search(r"\.theme-control button\s*\{[^}]*min-height:\s*36px;", css, re.DOTALL):
+              raise SystemExit("A compact theme control remains below 44 CSS pixels")
+          if not re.search(r"\.theme-control button\s*\{[^}]*min-height:\s*44px;", css, re.DOTALL):
+              raise SystemExit("The compact theme target is not explicitly 44 CSS pixels")
+          old_receipt = """  .state-receipt {\n    box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 5px var(--ink);\n  }\n"""
+          new_receipt = """  .state-receipt::after {\n    content: \"\";\n    position: absolute;\n    inset: 3px;\n    border: 2px solid var(--ink);\n    pointer-events: none;\n  }\n"""
+          if old_receipt in css:
+              css = css.replace(old_receipt, new_receipt, 1)
+          elif ".state-receipt::after" not in css:
+              css += "\n" + new_receipt
+          css_path.write_text(css, encoding="utf-8")
+
+          browser_path = Path("manzanita-next/design-system/tests/browser_test.py")
+          browser = browser_path.read_text(encoding="utf-8")
+          browser = browser.replace(
+              '"label": page.locator("#overlay-label").inner_text(),',
+              '"label": (page.locator("#overlay-label").text_content() or "").strip(),',
+          )
+          old_transition = """    transition = reduced_page.locator(\"#ground-contour\").evaluate(\n        \"element => getComputedStyle(element).transitionDuration\"\n    )\n    if transition not in {\"0s\", \"1e-06s\", \"0.000001s\"}:\n        raise AssertionError(f\"Reduced-motion transition remains material: {transition}\")\n"""
+          new_transition = """    transition = reduced_page.locator(\"#ground-contour\").evaluate(\n        \"element => getComputedStyle(element).transitionDuration\"\n    )\n\n    def duration_seconds(value: str) -> float:\n        value = value.strip()\n        if value.endswith(\"ms\"):\n            return float(value[:-2]) / 1000\n        if value.endswith(\"s\"):\n            return float(value[:-1])\n        raise AssertionError(f\"Unknown transition duration unit: {value}\")\n\n    durations = [duration_seconds(value) for value in transition.split(\",\")]\n    if any(value > 0.00001 for value in durations):\n        raise AssertionError(f\"Reduced-motion transition remains material: {transition}\")\n"""
+          if old_transition in browser:
+              browser = browser.replace(old_transition, new_transition, 1)
+          old_names = """    names = [value.strip() for value in all_buttons.all_inner_texts()]\n    if any(not value for value in names):\n        raise AssertionError(f\"A button lacks an accessible visible name: {names}\")\n    state_report[\"button_names\"] = names\n"""
+          new_names = """    names = [value.strip() for value in all_buttons.all_inner_texts()]\n    if any(not value for value in names):\n        raise AssertionError(f\"A button lacks an accessible visible name: {names}\")\n    target_boxes = []\n    for index in range(all_buttons.count()):\n        box = all_buttons.nth(index).bounding_box()\n        if not box or box[\"width\"] < 44 or box[\"height\"] < 44:\n            raise AssertionError(\n                f\"Control target is below 44 by 44 CSS pixels: {names[index]} {box}\"\n            )\n        target_boxes.append(\n            {\n                \"name\": names[index],\n                \"width\": round(box[\"width\"], 2),\n                \"height\": round(box[\"height\"], 2),\n            }\n        )\n    state_report[\"button_names\"] = names\n    state_report[\"control_targets\"] = target_boxes\n"""
+          if old_names in browser:
+              browser = browser.replace(old_names, new_names, 1)
+          required_fragments = (
+              'page.locator("#overlay-label").text_content()',
+              "def duration_seconds",
+              'state_report["control_targets"]',
+          )
+          missing = [fragment for fragment in required_fragments if fragment not in browser]
+          if missing:
+              raise SystemExit(f"Browser corrections are incomplete: {missing}")
+          browser_path.write_text(browser, encoding="utf-8")
+          PY
+
+      - name: Prove the repaired source before publication
+        run: |
+          python -m py_compile \
+            manzanita-next/design-system/tests/test_constitution.py \
+            manzanita-next/design-system/tests/browser_test.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m unittest discover \
+            -s manzanita-next/design-system/tests \
+            -p "test_constitution.py"
+
+      - name: Install and run the complete browser and board campaign
+        run: |
+          python -m pip install --disable-pip-version-check playwright
+          python -m playwright install --with-deps chromium
+          rm -rf manzanita-next/design-system/out
+          REVIEW_HEAD_SHA="$(git rev-parse HEAD)" \
+            python manzanita-next/design-system/tests/browser_test.py \
+            --root manzanita-next/design-system/specimen \
+            --out manzanita-next/design-system/out
+          REVIEW_HEAD_SHA="$(git rev-parse HEAD)" \
+            python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/design-system/review/M99-RB-PKT-002.json \
+            --decision manzanita-next/design-system/review/M99-RB-DEC-002.json \
+            --receipt manzanita-next/design-system/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Publish only the corrected source object
+        run: |
+          rm -rf manzanita-next/design-system/out
+          git add \
+            manzanita-next/design-system/CONSTITUTION.json \
+            manzanita-next/design-system/specimen/style.css \
+            manzanita-next/design-system/tests/browser_test.py
+          git commit -m "Manzanita: repair the Forkline Field source candidate"
+          git push origin HEAD:"$BRANCH_NAME"
