@@ -1,0 +1,184 @@
+{
+  "schema": "axm-tools/manzanita-99-backlog-recovery-state@1",
+  "object": {
+    "id": "manzanita-99-canonical-task-register",
+    "class": "constitutional_program_register",
+    "asserted_task_count": 497,
+    "asserted_family_counts": {
+      "program_design_integration_release": 32,
+      "manzanita_asset_system": 361,
+      "estate_backfill": 104
+    },
+    "asserted_priority_counts": {
+      "P0": 318,
+      "P1": 168,
+      "P2": 11
+    }
+  },
+  "state": "original_register_not_recovered",
+  "as_of_commit": "f780b31781a2fe6def8a1fed733003fc74f39fe0",
+  "authority": {
+    "source_custody_may": [
+      "preserve exact bytes and metadata",
+      "hash and classify source objects",
+      "extract exact source components",
+      "record absences and failed recovery paths"
+    ],
+    "source_custody_may_not": [
+      "invent missing task rows",
+      "assign inferred canonical IDs or dependencies",
+      "weaken validation to accept a damaged source",
+      "represent a reconstruction as byte-identical recovery"
+    ],
+    "release_authority_required_for": [
+      "admission of a recovered complete register",
+      "authorization of a governed successor reconstruction",
+      "replacement or supersession of the original register identity"
+    ]
+  },
+  "damaged_sources": {
+    "gzip_base64_tail": {
+      "path": "programs/manzanita-99/MASTER_BACKLOG.json.gz.b64",
+      "encoded_characters": 19999,
+      "strict_base64": "fail",
+      "aligned_drop": 3,
+      "aligned_bytes": 14996,
+      "aligned_sha256": "28857b9b252ab8a0ca0a7c92b448b48fee9477c37827d93bd14b07b2c2a71c7e",
+      "gzip_trailer_crc32": "95f58d14",
+      "gzip_trailer_isize": 570777,
+      "classification": "terminal_slice_of_larger_gzip_stream"
+    },
+    "bz2_base64_repair": {
+      "expected_parts": 5,
+      "present_parts": [
+        "MASTER_BACKLOG.json.bz2.b64.part01",
+        "MASTER_BACKLOG.json.bz2.b64.part02"
+      ],
+      "missing_parts": [
+        "MASTER_BACKLOG.json.bz2.b64.part03",
+        "MASTER_BACKLOG.json.bz2.b64.part04",
+        "MASTER_BACKLOG.json.bz2.b64.part05"
+      ],
+      "concatenated_encoded_characters": 23999,
+      "decoded_bytes": 17999,
+      "decoded_sha256": "913dc94fad74d6be22a6e25eb98fe64d295346b4f8847c41cbcdd6db8cc3b29c",
+      "valid_bz2_header": true,
+      "decompressor_eof": false,
+      "recovered_uncompressed_bytes": 0,
+      "classification": "incomplete_first_bz2_block"
+    }
+  },
+  "reachable_history": {
+    "unique_backlog_source_objects": 3,
+    "paths": [
+      "programs/manzanita-99/MASTER_BACKLOG.json.gz.b64",
+      "programs/manzanita-99/MASTER_BACKLOG.json.bz2.b64.part01",
+      "programs/manzanita-99/MASTER_BACKLOG.json.bz2.b64.part02"
+    ],
+    "complete_master_backlog_json_found": false,
+    "complete_master_backlog_csv_found": false,
+    "missing_bz2_part_found": false,
+    "expanded_workflow_artifact_found": false
+  },
+  "recoverable_source_families": {
+    "estate_backfill": {
+      "standing": "exact_source_components_recovered",
+      "surface_epics": 10,
+      "findings": 30,
+      "required_assets": 64,
+      "total": 104,
+      "evidence": "recovery-out/resolution-backfill-exact-components.json",
+      "canonical_task_fields_recovered": false
+    },
+    "manzanita_asset_system": {
+      "standing": "exact_summary_law_row_register_absent",
+      "asserted_total": 361,
+      "priority_counts": {
+        "P0": 222,
+        "P1": 128,
+        "P2": 11
+      },
+      "preserved": [
+        "namespace counts",
+        "source families",
+        "Street Glide provider order",
+        "generation boundary",
+        "release laws",
+        "build order"
+      ],
+      "exact_row_level_task_objects_recovered": 0,
+      "evidence": "PR #89 manzanita/ASSET_REGISTER_V1.md"
+    },
+    "program_design_integration_release": {
+      "standing": "partial_identifier_and_prose_recovery",
+      "asserted_total": 32,
+      "named_identifiers": [
+        "JDB99-000",
+        "JDB99-001",
+        "JDB99-002",
+        "JDB99-003",
+        "JDB99-004",
+        "JDB99-005",
+        "JDB99-006",
+        "JDB99-007",
+        "JDB99-008",
+        "JDB99-009",
+        "JDB99-010",
+        "JDB99-011",
+        "JDB99-013",
+        "JDB99-014",
+        "JDB99-015",
+        "JDB99-016",
+        "JDB99-017",
+        "JDB99-018",
+        "JDB99-020",
+        "JDB99-027",
+        "JDB99-030",
+        "JDB99-031"
+      ],
+      "unrecovered_identifiers": [
+        "JDB99-012",
+        "JDB99-019",
+        "JDB99-021",
+        "JDB99-022",
+        "JDB99-023",
+        "JDB99-024",
+        "JDB99-025",
+        "JDB99-026",
+        "JDB99-028",
+        "JDB99-029"
+      ],
+      "complete_eleven_field_task_objects_recovered": 0
+    }
+  },
+  "recovery_campaign": {
+    "workflow_run": 31926451145,
+    "artifact_id": 9257973096,
+    "artifact_digest": "sha256:a5180b497cf52f2a6b1d0662210f6fec275318d8f2638649a7d20cc2db2f0709",
+    "result": "pass_with_partial_recovery",
+    "canonical_497_recovered": false
+  },
+  "admission_tests_for_exact_recovery": [
+    "complete source decompresses without repair or inferred bytes",
+    "497 unique complete task objects are present",
+    "priority totals equal 318 P0, 168 P1, and 11 P2",
+    "family totals equal 32, 361, and 104",
+    "every required task field is present",
+    "every dependency resolves",
+    "benchmark and no-affiliation statements match the scorecard",
+    "JDB99-030 amendment applies cleanly",
+    "expanded JSON and CSV outputs have stable retained digests"
+  ],
+  "admissible_next_tracks": {
+    "exact_recovery": "Continue searching independent archives, local estate copies, chat downloads, or missing BZ2 parts.",
+    "governed_reconstruction": "Only after explicit release-authority authorization, create a new register identity with per-row source-family and provenance receipts."
+  },
+  "prohibited_claims": [
+    "the original 497-task machine register has been recovered",
+    "the merged program workflow ever validated 497 tasks",
+    "the PR #89 summary contains 361 exact task rows",
+    "the 104 source components already possess their missing canonical task fields",
+    "the damaged source can support a whole-product release or score claim"
+  ],
+  "control_question": "Can a cold successor distinguish exact recovery from reconstruction and reproduce every admitted row, count, dependency, amendment, and source identity without converting a remembered total into fabricated evidence?"
+}
