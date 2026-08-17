@@ -4,6 +4,7 @@ import copy
 import json
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -311,6 +312,8 @@ class ReleaseControlTests(unittest.TestCase):
         rollback = continuity["rollback_simulation"]
         self.assertEqual(rollback["result"], "PASS")
         self.assertEqual(rollback["active_after_simulation"], "rollback")
+        self.assertEqual(rollback["mechanism"], "atomic_pointer_file_replace")
+        self.assertEqual(rollback["pointer_path"], "ACTIVE.json")
         self.assertFalse(rollback["public_deployment_claim"])
         self.assertFalse(rollback["deployed_rollback_claim"])
         self.assertEqual(
@@ -340,13 +343,20 @@ class ReleaseControlTests(unittest.TestCase):
                     "operator": "accountable operator",
                     "venue": "actual venue",
                     "procedure": "versioned real campaign procedure",
-                    "evidence_receipts": [f"receipt:{row['id']}"],
+                    "evidence_receipts": [
+                        {
+                            "receipt_id": f"receipt:{row['id']}",
+                            "source": "independently retained campaign evidence",
+                            "sha256": "a" * 64,
+                        }
+                    ],
                     "acceptance": "Campaign acceptance met",
                     "failure_disposition": "No unresolved failure",
                 }
             )
         automated = {
             "archive_reimport": {"result": "PASS"},
+            "bounded_secret_scan": {"result": "PASS"},
             "isolated_same_runner_successor": {"result": "PASS"},
             "local_candidate_served_bytes": {"result": "PASS"},
             "local_rollback_served_bytes": {"result": "PASS"},
@@ -356,6 +366,96 @@ class ReleaseControlTests(unittest.TestCase):
         self.assertEqual(decision["state"], "READY_FOR_PUBLIC_RELEASE_REVIEW")
         self.assertEqual(decision["blocking_campaigns"], [])
         self.assertFalse(decision["public_release_authorized"])
+
+    def test_contract_path_escape_is_rejected(self) -> None:
+        path = self.control / "RELEASE_CONTRACT.json"
+        value = json.loads(path.read_text())
+        value["candidate_site"] = "../outside"
+        write_json(path, value)
+        with self.assertRaisesRegex(release.ReleaseControlError, "Unsafe archive path|escapes"):
+            self.build()
+
+    def test_candidate_symlink_is_rejected(self) -> None:
+        site = self.repo / "manzanita-next/experience/out/site"
+        (site / "linked.html").symlink_to(site / "index.html")
+        with self.assertRaisesRegex(release.ReleaseControlError, "symlink"):
+            self.build()
+
+    def test_high_confidence_secret_in_candidate_is_rejected(self) -> None:
+        site = self.repo / "manzanita-next/experience/out/site"
+        (site / "secret.js").write_text(
+            'const token = "ghp_' + ('A' * 36) + '";\n',
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(release.ReleaseControlError, "high-confidence secret pattern"):
+            self.build()
+
+    def _run_standalone_verifier(self) -> subprocess.CompletedProcess[str]:
+        extracted = self.output / "reimported"
+        return subprocess.run(
+            [
+                sys.executable,
+                "-I",
+                str(extracted / "VERIFY_RELEASE.py"),
+                "--root",
+                str(extracted),
+            ],
+            cwd=extracted,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+    def test_duplicate_manifest_rows_are_rejected_by_standalone_verifier(self) -> None:
+        self.build()
+        path = self.output / "reimported/RELEASE_MANIFEST.json"
+        manifest = json.loads(path.read_text())
+        manifest["files"].append(copy.deepcopy(manifest["files"][0]))
+        payload = dict(manifest)
+        payload.pop("payload_sha256")
+        manifest["payload_sha256"] = release.sha256_bytes(release.canonical_bytes(payload))
+        write_json(path, manifest)
+        result = self._run_standalone_verifier()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("duplicate path", result.stderr + result.stdout)
+
+    def test_group_manifest_digest_is_rejected_by_standalone_verifier(self) -> None:
+        self.build()
+        path = self.output / "reimported/RELEASE_MANIFEST.json"
+        manifest = json.loads(path.read_text())
+        manifest["candidate_manifest_sha256"] = "0" * 64
+        payload = dict(manifest)
+        payload.pop("payload_sha256")
+        manifest["payload_sha256"] = release.sha256_bytes(release.canonical_bytes(payload))
+        write_json(path, manifest)
+        result = self._run_standalone_verifier()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("candidate manifest digest drifted", result.stderr + result.stdout)
+
+    def test_invalid_campaign_state_is_rejected(self) -> None:
+        contract = json.loads((self.control / "RELEASE_CONTRACT.json").read_text())
+        ledger = json.loads((self.control / "EXTERNAL_CAMPAIGN_LEDGER.json").read_text())
+        ledger["campaigns"][0]["state"] = "greenish"
+        with self.assertRaisesRegex(release.ReleaseControlError, "invalid state"):
+            release.validate_campaign_ledger(contract, ledger)
+
+    def test_passed_campaign_requires_structured_receipt(self) -> None:
+        contract = json.loads((self.control / "RELEASE_CONTRACT.json").read_text())
+        ledger = json.loads((self.control / "EXTERNAL_CAMPAIGN_LEDGER.json").read_text())
+        row = ledger["campaigns"][0]
+        row.update(
+            {
+                "state": "passed",
+                "operator": "accountable operator",
+                "venue": "actual venue",
+                "procedure": "versioned campaign procedure",
+                "evidence_receipts": ["opaque receipt"],
+                "acceptance": "acceptance met",
+                "failure_disposition": "no unresolved failure",
+            }
+        )
+        with self.assertRaisesRegex(release.ReleaseControlError, "non-object evidence receipt"):
+            release.validate_campaign_ledger(contract, ledger)
 
     def test_replay_selects_exact_p9_run_blocks(self) -> None:
         workflow = {
@@ -376,6 +476,76 @@ class ReleaseControlTests(unittest.TestCase):
         script = replay.render_script(selected)
         self.assertIn("Audit the exact estate reopening ledger", script)
         self.assertIn("Run the contained multidisciplinary P9 review", script)
+
+    def test_replay_rejects_out_of_order_blocks(self) -> None:
+        workflow = {
+            "jobs": {
+                "qualify": {
+                    "steps": [
+                        {"name": replay.REQUIRED_STEP_NAMES[1], "run": "echo second"},
+                        {"name": replay.REQUIRED_STEP_NAMES[0], "run": "echo first"},
+                        {"name": replay.REQUIRED_STEP_NAMES[2], "run": "echo third"},
+                        {"name": replay.REQUIRED_STEP_NAMES[3], "run": "echo fourth"},
+                    ]
+                }
+            }
+        }
+        with self.assertRaisesRegex(replay.ReplayError, "out of order"):
+            replay.select_steps(workflow)
+
+    def test_replay_rejects_unsupported_step_semantics(self) -> None:
+        workflow = {
+            "jobs": {
+                "qualify": {
+                    "steps": [
+                        {
+                            "name": name,
+                            "run": f"echo {index}",
+                            **({"working-directory": "elsewhere"} if index == 2 else {}),
+                        }
+                        for index, name in enumerate(replay.REQUIRED_STEP_NAMES)
+                    ]
+                }
+            }
+        }
+        with self.assertRaisesRegex(replay.ReplayError, "unsupported semantics"):
+            replay.select_steps(workflow)
+
+    def test_replay_preserves_only_explicit_secret_environment_names(self) -> None:
+        steps = []
+        for index, name in enumerate(replay.REQUIRED_STEP_NAMES):
+            row = {"name": name, "run": f"echo {index}"}
+            if index == 1:
+                row["env"] = {"AIRNOW_API_KEY": "${{ secrets.AIRNOW_API_KEY }}"}
+            steps.append(row)
+        selected = replay.select_steps({"jobs": {"qualify": {"steps": steps}}})
+        self.assertEqual(selected[1]["environment"], ["AIRNOW_API_KEY"])
+        script = replay.render_script(selected)
+        self.assertIn('export AIRNOW_API_KEY="${AIRNOW_API_KEY-}"', script)
+
+    def test_replay_receipt_records_required_environment(self) -> None:
+        steps = []
+        for index, name in enumerate(replay.REQUIRED_STEP_NAMES):
+            row = {"name": name, "run": f"echo {index}"}
+            if index == 1:
+                row["env"] = {
+                    "USGS_API_KEY": "${{ secrets.USGS_API_KEY }}",
+                    "AIRNOW_API_KEY": "${{ secrets.AIRNOW_API_KEY }}",
+                }
+            steps.append(row)
+        workflow = self.repo / "p9-workflow.json"
+        script = self.repo / "replay-p9.sh"
+        receipt = self.repo / "P9_REPLAY_PLAN.json"
+        write_json(workflow, {"jobs": {"qualify": {"steps": steps}}})
+
+        plan = replay.build_plan(workflow, script, receipt)
+
+        self.assertEqual(
+            plan["required_environment"],
+            ["AIRNOW_API_KEY", "USGS_API_KEY"],
+        )
+        retained = json.loads(receipt.read_text(encoding="utf-8"))
+        self.assertEqual(retained["required_environment"], plan["required_environment"])
 
     def test_replay_rejects_missing_p9_step(self) -> None:
         workflow = {

@@ -9,7 +9,9 @@ import hashlib
 import http.server
 import json
 import os
+import re
 import shutil
+import stat
 import subprocess
 import sys
 import threading
@@ -26,6 +28,41 @@ DECISION_SCHEMA = "axm-tools/manzanita-release-decision@1"
 CONTINUITY_SCHEMA = "axm-tools/manzanita-continuity-receipt@1"
 BUILD_SCHEMA = "axm-tools/manzanita-release-control-build@1"
 FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)
+CAMPAIGN_STATES = {
+    "not_performed",
+    "scheduled",
+    "in_progress",
+    "blocked",
+    "failed",
+    "passed",
+}
+AUTOMATED_PROOF_KEYS = {
+    "archive_reimport",
+    "bounded_secret_scan",
+    "isolated_same_runner_successor",
+    "local_candidate_served_bytes",
+    "local_rollback_served_bytes",
+    "atomic_local_rollback",
+}
+SECRET_PATTERNS = (
+    ("pem_private_key", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----")),
+    ("aws_access_key", re.compile(r"\b(?:AKIA|ASIA)[0-9A-Z]{16}\b")),
+    ("github_token", re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9]{36,255}|github_pat_[A-Za-z0-9_]{40,255})\b")),
+    ("google_api_key", re.compile(r"\bAIza[0-9A-Za-z_-]{35}\b")),
+    ("slack_token", re.compile(r"\bxox[baprs]-[0-9A-Za-z-]{20,}\b")),
+    ("stripe_live_key", re.compile(r"\b(?:sk|rk)_live_[0-9A-Za-z]{20,}\b")),
+    (
+        "bearer_token",
+        re.compile(r"(?i)\b(?:authorization\s*[:=]\s*bearer|bearer)\s+[A-Za-z0-9._~+/=-]{20,}"),
+    ),
+    (
+        "credential_assignment",
+        re.compile(
+            r"(?i)\b(?:api[_-]?key|access[_-]?token|authorization|password|secret|private[_-]?key)"
+            r"\b\s*[:=]\s*[\"']([A-Za-z0-9._~+/=-]{20,})[\"']"
+        ),
+    ),
+)
 
 
 class ReleaseControlError(ValueError):
@@ -83,12 +120,31 @@ def recursive_keys(value: Any) -> set[str]:
     return found
 
 
+def resolve_repo_path(repo_root: Path, value: Path | str, label: str) -> Path:
+    root = repo_root.resolve()
+    raw = Path(value)
+    candidate = raw if raw.is_absolute() else root / raw
+    require(not candidate.is_symlink(), f"{label} may not be a symlink: {candidate}")
+    resolved = candidate.resolve()
+    try:
+        resolved.relative_to(root)
+    except ValueError as exc:
+        raise ReleaseControlError(f"{label} escapes the repository root: {value}") from exc
+    return resolved
+
+
+def resolve_contract_path(repo_root: Path, value: Any, label: str) -> Path:
+    require(isinstance(value, str) and value, f"{label} must be a repository-relative path")
+    safe_archive_path(value)
+    return resolve_repo_path(repo_root, Path(value), label)
+
+
 def portable_path(path: Path, repo_root: Path) -> str:
     resolved = path.resolve()
     try:
         return resolved.relative_to(repo_root.resolve()).as_posix()
-    except ValueError:
-        return path.name
+    except ValueError as exc:
+        raise ReleaseControlError(f"Source path is outside the repository root: {path}") from exc
 
 
 def safe_archive_path(value: str) -> str:
@@ -96,16 +152,50 @@ def safe_archive_path(value: str) -> str:
     require(
         bool(value)
         and value != "."
+        and "\x00" not in value
+        and "\\" not in value
         and not path.is_absolute()
-        and ".." not in path.parts,
+        and ".." not in path.parts
+        and not (path.parts and ":" in path.parts[0]),
         f"Unsafe archive path: {value!r}",
     )
     return path.as_posix()
 
 
+def validate_regular_tree(root: Path, label: str) -> None:
+    require(root.exists(), f"{label} is missing: {root}")
+    require(root.is_dir(), f"{label} is not a directory: {root}")
+    require(not root.is_symlink(), f"{label} may not be a symlink: {root}")
+    for current, directories, files in os.walk(root, followlinks=False):
+        current_path = Path(current)
+        for name in sorted(directories):
+            path = current_path / name
+            mode = path.lstat().st_mode
+            require(not stat.S_ISLNK(mode), f"{label} contains a symlink: {path}")
+            require(stat.S_ISDIR(mode), f"{label} contains a non-directory node: {path}")
+        for name in sorted(files):
+            path = current_path / name
+            mode = path.lstat().st_mode
+            require(not stat.S_ISLNK(mode), f"{label} contains a symlink: {path}")
+            require(stat.S_ISREG(mode), f"{label} contains a non-regular file: {path}")
+
+
+def require_regular_file(path: Path, label: str) -> None:
+    require(path.exists(), f"{label} is missing: {path}")
+    mode = path.lstat().st_mode
+    require(not stat.S_ISLNK(mode), f"{label} may not be a symlink: {path}")
+    require(stat.S_ISREG(mode), f"{label} is not a regular file: {path}")
+
+
 def iter_files(root: Path) -> Iterator[Path]:
+    validate_regular_tree(root, "Manifest tree")
     for path in sorted(root.rglob("*")):
-        if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc":
+        if path.is_dir():
+            continue
+        mode = path.lstat().st_mode
+        require(not stat.S_ISLNK(mode), f"Manifest tree contains a symlink: {path}")
+        require(stat.S_ISREG(mode), f"Manifest tree contains a non-regular file: {path}")
+        if "__pycache__" not in path.parts and path.suffix != ".pyc":
             yield path
 
 
@@ -143,8 +233,8 @@ def current_head(repo_root: Path) -> str:
     return observed if len(observed) == 40 else "WORKTREE"
 
 
-def copy_tree(source: Path, target: Path) -> None:
-    require(source.is_dir(), f"Required source directory is missing: {source}")
+def copy_tree(source: Path, target: Path, label: str) -> None:
+    validate_regular_tree(source, label)
     if target.exists():
         shutil.rmtree(target)
     shutil.copytree(
@@ -153,6 +243,42 @@ def copy_tree(source: Path, target: Path) -> None:
         copy_function=shutil.copy2,
         ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
     )
+    validate_regular_tree(target, f"Copied {label}")
+
+
+def scan_tree_for_secrets(root: Path, label: str) -> dict[str, Any]:
+    validate_regular_tree(root, label)
+    scanned_files = 0
+    text_files = 0
+    binary_files = 0
+    for path in iter_files(root):
+        scanned_files += 1
+        payload = path.read_bytes()
+        if b"\x00" in payload[:8192]:
+            binary_files += 1
+            continue
+        try:
+            text = payload.decode("utf-8")
+        except UnicodeDecodeError:
+            binary_files += 1
+            continue
+        text_files += 1
+        for pattern_id, pattern in SECRET_PATTERNS:
+            require(
+                pattern.search(text) is None,
+                f"{label} contains a high-confidence secret pattern {pattern_id}: "
+                f"{path.relative_to(root).as_posix()}",
+            )
+    return {
+        "result": "PASS",
+        "scope": label,
+        "scanner": "bounded_high_confidence_static_patterns@1",
+        "pattern_ids": [pattern_id for pattern_id, _ in SECRET_PATTERNS],
+        "scanned_files": scanned_files,
+        "text_files": text_files,
+        "binary_files": binary_files,
+        "finding_count": 0,
+    }
 
 
 def validate_json_boundary(
@@ -297,7 +423,7 @@ def copy_evidence(
     values: dict[str, dict[str, Any]] = {}
     receipts = []
     for label, source in sorted(sources.items()):
-        require(source.is_file(), f"Required evidence file is missing: {source}")
+        require_regular_file(source, f"Required evidence file {label}")
         value = validate_json_boundary(source, prohibited_keys)
         values[label] = value
         destination = target / f"{label}.json"
@@ -318,7 +444,7 @@ def zip_info(name: str) -> zipfile.ZipInfo:
     info = zipfile.ZipInfo(safe_archive_path(name), FIXED_ZIP_TIME)
     info.compress_type = zipfile.ZIP_STORED
     info.create_system = 3
-    info.external_attr = (0o644 & 0xFFFF) << 16
+    info.external_attr = ((stat.S_IFREG | 0o644) & 0xFFFF) << 16
     return info
 
 
@@ -338,15 +464,23 @@ def extract_archive(archive_path: Path, target: Path) -> None:
         shutil.rmtree(target)
     target.mkdir(parents=True)
     with zipfile.ZipFile(archive_path) as archive:
-        names = archive.namelist()
-        require(len(names) == len(set(names)), "Portable archive contains duplicate names")
-        for name in names:
-            safe_archive_path(name)
+        infos = archive.infolist()
+        names = [info.filename for info in infos]
+        normalized = [safe_archive_path(name) for name in names]
+        require(len(normalized) == len(set(normalized)), "Portable archive contains duplicate names")
+        for info in infos:
+            mode = (info.external_attr >> 16) & 0xFFFF
+            require(not stat.S_ISLNK(mode), f"Portable archive contains a symlink: {info.filename}")
+            require(info.is_dir() or mode == 0 or stat.S_ISREG(mode), f"Portable archive contains an unsupported node: {info.filename}")
         archive.extractall(target)
+    validate_regular_tree(target, "Reimported portable archive")
 
 
 def verify_rows(root: Path, rows: list[dict[str, Any]]) -> None:
+    require(isinstance(rows, list), "Manifest rows must be a list")
     expected = {row["path"]: row for row in rows}
+    require(len(expected) == len(rows), "Manifest rows contain duplicate paths")
+    validate_regular_tree(root, "Verified manifest tree")
     observed: dict[str, dict[str, Any]] = {}
     for path in iter_files(root):
         relative = path.relative_to(root).as_posix()
@@ -416,18 +550,41 @@ def served_byte_proof(
     }
 
 
-def atomic_replace(source: Path, active: Path) -> None:
-    staging = active.with_name(active.name + ".staging")
-    previous = active.with_name(active.name + ".previous")
-    for path in (staging, previous):
-        if path.exists():
-            shutil.rmtree(path)
-    shutil.copytree(source, staging)
-    if active.exists():
-        active.rename(previous)
-    staging.rename(active)
-    if previous.exists():
-        shutil.rmtree(previous)
+def write_active_pointer(
+    workspace: Path,
+    target: str,
+    manifest_sha256: str,
+) -> dict[str, Any]:
+    require(target in {"candidate", "rollback"}, f"Unknown active target: {target}")
+    pointer: dict[str, Any] = {
+        "schema": "axm-tools/manzanita-local-release-pointer@1",
+        "target": target,
+        "manifest_sha256": manifest_sha256,
+    }
+    pointer["payload_sha256"] = sha256_bytes(canonical_bytes(pointer))
+    temporary = workspace / "ACTIVE.json.next"
+    active = workspace / "ACTIVE.json"
+    write_json(temporary, pointer)
+    with temporary.open("rb") as handle:
+        os.fsync(handle.fileno())
+    os.replace(temporary, active)
+    return pointer
+
+
+def verify_active_pointer(
+    workspace: Path,
+    expected_target: str,
+    rows: list[dict[str, Any]],
+) -> dict[str, Any]:
+    pointer = load_json(workspace / "ACTIVE.json")
+    payload = dict(pointer)
+    supplied = payload.pop("payload_sha256", None)
+    require(supplied == sha256_bytes(canonical_bytes(payload)), "Active pointer checksum is invalid")
+    require(pointer.get("target") == expected_target, "Active pointer target drifted")
+    expected_digest = manifest_digest(rows)
+    require(pointer.get("manifest_sha256") == expected_digest, "Active pointer manifest drifted")
+    verify_rows(workspace / "versions" / expected_target, rows)
+    return pointer
 
 
 def rollback_simulation(
@@ -439,31 +596,44 @@ def rollback_simulation(
 ) -> dict[str, Any]:
     if workspace.exists():
         shutil.rmtree(workspace)
-    workspace.mkdir(parents=True)
-    active = workspace / "active"
-    atomic_replace(candidate, active)
-    verify_rows(active, candidate_rows)
-    atomic_replace(rollback, active)
-    verify_rows(active, rollback_rows)
+    versions = workspace / "versions"
+    versions.mkdir(parents=True)
+    copy_tree(candidate, versions / "candidate", "Candidate rollback-simulation version")
+    copy_tree(rollback, versions / "rollback", "Historical rollback-simulation version")
+    candidate_pointer = write_active_pointer(
+        workspace,
+        "candidate",
+        manifest_digest(candidate_rows),
+    )
+    verify_active_pointer(workspace, "candidate", candidate_rows)
+    rollback_pointer = write_active_pointer(
+        workspace,
+        "rollback",
+        manifest_digest(rollback_rows),
+    )
+    verify_active_pointer(workspace, "rollback", rollback_rows)
     return {
         "result": "PASS",
-        "mechanism": "atomic_directory_swap",
+        "mechanism": "atomic_pointer_file_replace",
+        "pointer_path": "ACTIVE.json",
+        "candidate_pointer_sha256": candidate_pointer["payload_sha256"],
+        "rollback_pointer_sha256": rollback_pointer["payload_sha256"],
         "candidate_manifest_sha256": manifest_digest(candidate_rows),
         "rollback_manifest_sha256": manifest_digest(rollback_rows),
         "active_after_simulation": "rollback",
         "public_deployment_claim": False,
         "deployed_rollback_claim": False,
-        "claim_boundary": "This proves an exact local atomic directory-swap mechanism. It does not prove that a public deployment or public rollback occurred.",
+        "claim_boundary": "This proves an exact local atomic pointer-file replacement over retained candidate and rollback directories. It does not prove that a public deployment or public rollback occurred.",
     }
 
 
 def standalone_verifier_source() -> str:
-    return '''#!/usr/bin/env python3
+    return r'''#!/usr/bin/env python3
 from __future__ import annotations
 import argparse
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 MANIFEST_SCHEMA = "axm-tools/manzanita-portable-release-manifest@1"
 
@@ -474,6 +644,26 @@ def canonical_bytes(value):
 
 def sha256_bytes(payload):
     return hashlib.sha256(payload).hexdigest()
+
+
+def safe_path(value):
+    path = PurePosixPath(value)
+    if (
+        not isinstance(value, str)
+        or not value
+        or value == "."
+        or "\x00" in value
+        or "\\" in value
+        or path.is_absolute()
+        or ".." in path.parts
+        or (path.parts and ":" in path.parts[0])
+    ):
+        raise SystemExit(f"Unsafe manifest path: {value!r}")
+    return path.as_posix()
+
+
+def group_digest(rows):
+    return sha256_bytes(canonical_bytes(sorted(rows, key=lambda row: row["path"])))
 
 
 def main():
@@ -489,14 +679,49 @@ def main():
     supplied = payload.pop("payload_sha256", None)
     if supplied != sha256_bytes(canonical_bytes(payload)):
         raise SystemExit("Release manifest payload checksum is invalid")
-    rows = manifest.get("files", [])
-    expected = {row["path"]: row for row in rows}
+    if manifest.get("release_state") != "HOLD":
+        raise SystemExit("Portable release state is not HOLD")
+    if manifest.get("public_release_authorized") is not False:
+        raise SystemExit("Portable manifest authorizes public release")
+    if manifest.get("public_effect") != "none" or manifest.get("constitutional_count_effect") != "none":
+        raise SystemExit("Portable manifest carries an effect")
+    rows = manifest.get("files")
+    if not isinstance(rows, list):
+        raise SystemExit("Manifest files must be a list")
+    expected = {}
+    groups = {"candidate": [], "rollback": [], "evidence": []}
+    for row in rows:
+        if not isinstance(row, dict):
+            raise SystemExit("Every manifest row must be an object")
+        path = safe_path(row.get("path"))
+        prefix = path.split("/", 1)[0]
+        if prefix not in groups or "/" not in path:
+            raise SystemExit(f"Manifest path has an invalid group: {path}")
+        if path in expected:
+            raise SystemExit(f"Manifest rows contain a duplicate path: {path}")
+        if not isinstance(row.get("bytes"), int) or row["bytes"] < 0:
+            raise SystemExit(f"Manifest row has an invalid byte count: {path}")
+        digest = row.get("sha256")
+        if not isinstance(digest, str) or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
+            raise SystemExit(f"Manifest row has an invalid digest: {path}")
+        normalized = {"path": path, "bytes": row["bytes"], "sha256": digest}
+        expected[path] = normalized
+        groups[prefix].append(normalized)
+    for prefix in groups:
+        count_key = f"{prefix}_file_count"
+        digest_key = f"{prefix}_manifest_sha256"
+        if manifest.get(count_key) != len(groups[prefix]):
+            raise SystemExit(f"{prefix} file count drifted")
+        if manifest.get(digest_key) != group_digest(groups[prefix]):
+            raise SystemExit(f"{prefix} manifest digest drifted")
     observed = {}
-    for prefix in ("candidate", "rollback", "evidence"):
+    for prefix in groups:
         for path in sorted((root / prefix).rglob("*")):
+            if path.is_symlink():
+                raise SystemExit(f"Portable archive contains a symlink: {path}")
             if not path.is_file():
                 continue
-            relative = path.relative_to(root).as_posix()
+            relative = safe_path(path.relative_to(root).as_posix())
             payload_bytes = path.read_bytes()
             observed[relative] = {
                 "path": relative,
@@ -561,14 +786,97 @@ def run_isolated_verifier(extracted: Path) -> dict[str, Any]:
     }
 
 
+def is_sha256(value: Any) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(char in "0123456789abcdef" for char in value)
+    )
+
+
+def validate_campaign_ledger(
+    contract: dict[str, Any],
+    ledger: dict[str, Any],
+) -> list[dict[str, Any]]:
+    require(ledger.get("schema") == LEDGER_SCHEMA, "Unexpected external campaign ledger schema")
+    require(ledger.get("release_state") == "HOLD", "External campaign ledger is not held")
+    require(ledger.get("public_release_authorized") is False, "External campaign ledger authorizes release")
+    require(ledger.get("public_effect") == "none", "External campaign ledger carries a public effect")
+    require(
+        ledger.get("constitutional_count_effect") == "none",
+        "External campaign ledger carries a count effect",
+    )
+    campaigns = ledger.get("campaigns")
+    require(isinstance(campaigns, list), "External campaign ledger lacks campaigns")
+    campaign_ids = [row.get("id") if isinstance(row, dict) else None for row in campaigns]
+    require(campaign_ids == contract["external_campaign_ids"], "External campaign identities drifted")
+    require(
+        len(campaign_ids) == len(set(campaign_ids)) == 10,
+        "External campaign identities are incomplete or duplicated",
+    )
+    classes: list[str] = []
+    for row in campaigns:
+        require(isinstance(row, dict), "Every external campaign must be an object")
+        campaign_id = row["id"]
+        campaign_class = row.get("class")
+        require(
+            isinstance(campaign_class, str) and len(campaign_class) >= 8,
+            f"Campaign {campaign_id} lacks a class",
+        )
+        classes.append(campaign_class)
+        state = row.get("state")
+        require(state in CAMPAIGN_STATES, f"Campaign {campaign_id} has invalid state {state!r}")
+        require(
+            isinstance(row.get("required_for_public_release"), bool),
+            f"Campaign {campaign_id} lacks a public-release requirement flag",
+        )
+        receipts = row.get("evidence_receipts")
+        require(isinstance(receipts, list), f"Campaign {campaign_id} evidence_receipts must be a list")
+        if state == "passed":
+            for field in ("operator", "venue", "procedure", "acceptance", "failure_disposition"):
+                value = row.get(field)
+                require(
+                    isinstance(value, str) and len(value) >= 8,
+                    f"Passed campaign {campaign_id} lacks complete {field}",
+                )
+            require(receipts, f"Passed campaign {campaign_id} lacks evidence receipts")
+            receipt_ids: list[str] = []
+            for receipt in receipts:
+                require(
+                    isinstance(receipt, dict),
+                    f"Passed campaign {campaign_id} has a non-object evidence receipt",
+                )
+                receipt_id = receipt.get("receipt_id")
+                source = receipt.get("source")
+                require(
+                    isinstance(receipt_id, str) and receipt_id,
+                    f"Passed campaign {campaign_id} has an invalid receipt id",
+                )
+                require(
+                    isinstance(source, str) and len(source) >= 8,
+                    f"Passed campaign {campaign_id} has an invalid receipt source",
+                )
+                require(
+                    is_sha256(receipt.get("sha256")),
+                    f"Passed campaign {campaign_id} has an invalid receipt digest",
+                )
+                receipt_ids.append(receipt_id)
+            require(
+                len(receipt_ids) == len(set(receipt_ids)),
+                f"Passed campaign {campaign_id} repeats an evidence receipt",
+            )
+    require(len(classes) == len(set(classes)), "External campaign classes are duplicated")
+    return campaigns
+
+
 def release_decision(
     contract: dict[str, Any],
     ledger: dict[str, Any],
     automated_proofs: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
+    require(set(automated_proofs) == AUTOMATED_PROOF_KEYS, "Automated proof coverage drifted")
     require(all(row.get("result") == "PASS" for row in automated_proofs.values()), "An automated proof failed")
-    campaigns = ledger.get("campaigns")
-    require(isinstance(campaigns, list), "External campaign ledger lacks campaigns")
+    campaigns = validate_campaign_ledger(contract, ledger)
     blocking = [
         row["id"]
         for row in campaigns
@@ -616,9 +924,14 @@ def build(
     output_root: Path,
 ) -> dict[str, Any]:
     repo_root = repo_root.resolve()
-    contract_path = (repo_root / contract_path).resolve() if not contract_path.is_absolute() else contract_path.resolve()
-    ledger_path = (repo_root / ledger_path).resolve() if not ledger_path.is_absolute() else ledger_path.resolve()
+    require(repo_root.is_dir(), f"Repository root is missing: {repo_root}")
+    contract_path = resolve_repo_path(repo_root, contract_path, "Release contract")
+    ledger_path = resolve_repo_path(repo_root, ledger_path, "External campaign ledger")
+    require_regular_file(contract_path, "Release contract")
+    require_regular_file(ledger_path, "External campaign ledger")
     output_root = (repo_root / output_root).resolve() if not output_root.is_absolute() else output_root.resolve()
+    require(output_root != repo_root, "Output root may not replace the repository root")
+    require(output_root not in repo_root.parents, "Output root may not contain the repository root")
     if output_root.exists():
         shutil.rmtree(output_root)
     output_root.mkdir(parents=True)
@@ -626,24 +939,29 @@ def build(
     contract = load_json(contract_path)
     ledger = load_json(ledger_path)
     require(contract.get("schema") == CONTRACT_SCHEMA, "Unexpected release-control contract schema")
-    require(ledger.get("schema") == LEDGER_SCHEMA, "Unexpected external campaign ledger schema")
     require(contract["object"].get("release_state") == "HOLD", "Release contract is not held")
     require(contract["object"].get("public_effect") == "none", "Release contract carries a public effect")
     require(contract["object"].get("constitutional_count_effect") == "none", "Release contract carries a count effect")
-    require(ledger.get("release_state") == "HOLD", "External campaign ledger is not held")
-    require(ledger.get("public_release_authorized") is False, "External campaign ledger authorizes release")
-    campaign_ids = [row.get("id") for row in ledger.get("campaigns", [])]
-    require(campaign_ids == contract["external_campaign_ids"], "External campaign identities drifted")
-    require(len(campaign_ids) == len(set(campaign_ids)) == 10, "External campaign identities are incomplete or duplicated")
+    validate_campaign_ledger(contract, ledger)
 
-    candidate_site = (repo_root / contract["candidate_site"]).resolve()
-    rollback_site = (repo_root / contract["rollback_site"]).resolve()
+    candidate_site = resolve_contract_path(
+        repo_root,
+        contract["candidate_site"],
+        "Candidate site",
+    )
+    rollback_site = resolve_contract_path(
+        repo_root,
+        contract["rollback_site"],
+        "Historical rollback site",
+    )
     require(candidate_site.is_dir(), "The exact P7 candidate site is missing")
     require(rollback_site.is_dir(), "The historical rollback site is missing")
 
+    evidence_inputs = contract.get("evidence_inputs")
+    require(isinstance(evidence_inputs, dict) and evidence_inputs, "Release contract lacks evidence inputs")
     evidence_sources = {
-        label: (repo_root / relative).resolve()
-        for label, relative in contract["evidence_inputs"].items()
+        label: resolve_contract_path(repo_root, relative, f"Evidence input {label}")
+        for label, relative in evidence_inputs.items()
     }
     evidence_sources["release_contract"] = contract_path
     evidence_sources["external_campaign_ledger"] = ledger_path
@@ -652,8 +970,8 @@ def build(
     candidate_target = package / "candidate"
     rollback_target = package / "rollback"
     evidence_target = package / "evidence"
-    copy_tree(candidate_site, candidate_target)
-    copy_tree(rollback_site, rollback_target)
+    copy_tree(candidate_site, candidate_target, "Exact P7 candidate site")
+    copy_tree(rollback_site, rollback_target, "Historical rollback donor")
     values, evidence_receipts = copy_evidence(
         evidence_sources,
         evidence_target,
@@ -661,6 +979,16 @@ def build(
         set(contract["prohibited_keys"]),
     )
     validate_donor_chain(values)
+    secret_scan = {
+        "result": "PASS",
+        "scanner": "bounded_high_confidence_static_patterns@1",
+        "scopes": [
+            scan_tree_for_secrets(candidate_target, "Candidate package"),
+            scan_tree_for_secrets(rollback_target, "Rollback package"),
+            scan_tree_for_secrets(evidence_target, "Evidence package"),
+        ],
+        "finding_count": 0,
+    }
 
     candidate_rows_prefixed = manifest_rows(candidate_target, "candidate")
     rollback_rows_prefixed = manifest_rows(rollback_target, "rollback")
@@ -756,6 +1084,7 @@ def build(
     )
     automated_proofs = {
         "archive_reimport": reimport,
+        "bounded_secret_scan": secret_scan,
         "isolated_same_runner_successor": cold,
         "local_candidate_served_bytes": candidate_served,
         "local_rollback_served_bytes": rollback_served,
@@ -776,6 +1105,7 @@ def build(
         },
         "release_manifest_payload_sha256": manifest["payload_sha256"],
         "archive_reimport": reimport,
+        "bounded_secret_scan": secret_scan,
         "isolated_same_runner_successor": cold,
         "candidate_served_byte_proof": candidate_served,
         "rollback_served_byte_proof": rollback_served,
