@@ -3,7 +3,9 @@
   "request_id": "M99-P9-QUAL-001",
   "requested_on": "2026-08-17",
   "source_main_sha": "9697d409d49284b57fe8e84a6227d84a0f0ccfbd",
-  "sealed_candidate_sha": "019eb474cb57f82045f97008c8a23bdf13bc7aed",
+  "qualification_binding": "current_pull_request_head",
+  "candidate_source_sha": "b12bcd3f8caf20f1d549bccbfcb702b081656ceb",
+  "transport_cleanup_sha": "1a955693634ca804451d872c3bd77c43e46876af",
   "bootstrap_validation": {
     "workflow_run": 32068691458,
     "payload_sha256": "a4eb051b050de4a950ac53f82f51406791f70d05f865dd7f8c780c3cf68437ef",
@@ -11,6 +13,19 @@
     "schema_validation": "PASS",
     "unit_test_count": 10,
     "unit_test_result": "PASS"
+  },
+  "portable_path_repair": {
+    "failed_workflow_run": 32068926349,
+    "failure_classification": "relative_and_absolute_path_identity_mismatch",
+    "failure_location": "manzanita-next/parity/build_parity.py",
+    "mechanism": "Every repository input is resolved into the governed input map before source traversal, receipt hashing, and repository-relative projection.",
+    "repair_workflow_run": 32069354675,
+    "repair_commit": "b12bcd3f8caf20f1d549bccbfcb702b081656ceb",
+    "compile_result": "PASS",
+    "unit_test_count": 11,
+    "unit_test_result": "PASS",
+    "relative_path_regression": "PASS",
+    "absolute_path_operation": "PASS"
   },
   "requested_campaign": {
     "workflow": ".github/workflows/manzanita-estate-parity.yml",
@@ -29,6 +44,6 @@
     "external_effect_authorized": false,
     "canonical_task_count_effect": "none"
   },
-  "claim_boundary": "This request triggers exact-head qualification of the complete estate-surface disposition register. It does not qualify an underlying estate product, close a source finding or required asset, absorb another product's authority, deploy a public successor, award a score, or change a canonical task row.",
-  "control_question": "Can the exact candidate account for every estate surface and source component, preserve explicit noninheritance and retained holds, replay the admitted P7 and nineteen-campaign P8 chain, and emit deterministic receipts without promoting any underlying surface or public release?"
+  "claim_boundary": "This request triggers exact-head qualification of the complete estate-surface disposition register after a bounded input-path repair. It does not qualify an underlying estate product, close a source finding or required asset, absorb another product's authority, deploy a public successor, award a score, or change a canonical task row.",
+  "control_question": "Can the exact candidate account for every estate surface and source component, preserve explicit noninheritance and retained holds, replay the admitted P7 and nineteen-campaign P8 chain, and emit deterministic receipts from both relative and resolved repository inputs without promoting any underlying surface or public release?"
 }
