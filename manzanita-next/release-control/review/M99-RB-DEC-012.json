@@ -1,0 +1,340 @@
+{
+  "schema": "axm-tools/manzanita-review-decision@1",
+  "decision_id": "M99-RB-DEC-012",
+  "packet_id": "M99-RB-PKT-012",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "reviewed_ref": {
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "external_review_claim": false,
+  "seat_reviews": [
+    {
+      "seat_id": "board_chair",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The board chair review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The board chair review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "creative_direction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The creative direction review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The creative direction review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "product_interaction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The product interaction review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The product interaction review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "information_design",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The information design review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The information design review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "typography",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The typography review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The typography review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "motion",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The motion review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The motion review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "source_custody",
+      "disposition": "pass",
+      "findings": [
+        "The source custody review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The source custody review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "field_operations",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The field operations review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The field operations review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "accessibility",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The accessibility review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The accessibility review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "performance_resilience",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The performance resilience review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The performance resilience review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "security_privacy",
+      "disposition": "pass",
+      "findings": [
+        "The security privacy review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The security privacy review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "continuity_release",
+      "disposition": "pass",
+      "findings": [
+        "The continuity release review finds the exact archive, manifest, reimport, local serving, rollback, and HOLD mechanisms internally admissible within their recorded claim boundary.",
+        "The continuity release review refuses to convert same-runner and loopback proofs into independent, physical, deployed, public, score, or external-effect standing."
+      ],
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-CONTINUITY",
+        "E-RC-DECISION"
+      ],
+      "uncertainty": "External campaigns, public endpoint bytes, real rollback, independent archive and operator, physical fitness, and public release remain unproved.",
+      "veto_ids": []
+    }
+  ],
+  "defects": [],
+  "vetoes": [],
+  "gate_disposition": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is a byte-addressed internal release candidate and continuity control whose public release state remains explicitly held.",
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-MANIFEST",
+        "E-RC-DECISION"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Release authority, continuity, qualification, external-campaign operators, affected actors, provider and field operators, and the cold successor retain separate authority.",
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-LEDGER",
+        "E-RC-DECISION",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The implementation operates exact manifests, deterministic archive, reimport, isolated verification, local served-byte comparison, atomic rollback, and release blocking rather than documentation alone.",
+      "evidence_ids": [
+        "E-RC-BUILDER",
+        "E-RC-TESTS",
+        "E-RC-CONTINUITY",
+        "E-RC-BUILD"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Candidate, rollback donor, P7, P8, P9, contract, ledger, archive, and every retained file remain independently identified and hash-bound.",
+      "evidence_ids": [
+        "E-P7-BUILD",
+        "E-P8-REPORT",
+        "E-P8-BOARD",
+        "E-P9-REGISTER",
+        "E-P9-BOARD",
+        "E-RC-MANIFEST"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "not_applicable",
+      "reason": "This gate is not applicable to the release-control package because it creates no new product interaction surface and packages the already admitted P7 behavior.",
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-P7-BUILD"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "not_applicable",
+      "reason": "This gate is not applicable because the package creates no new visual or typographic surface and makes no new finish claim.",
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-P8-REPORT"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "Archive, reimport, local serving, verification, and rollback order are explicit, while public deployment timing, source aging, interruption, and real rollback remain external campaigns.",
+      "evidence_ids": [
+        "E-RC-CONTINUITY",
+        "E-RC-LEDGER"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "The fresh nineteen-campaign automated P8 evidence is packaged, while real assistive technologies, people, and physical devices remain unperformed campaigns.",
+      "evidence_ids": [
+        "E-P8-REPORT",
+        "E-RC-LEDGER"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "Deterministic archive, reimport, tamper detection, served-byte checks, and local rollback pass, while real networks, devices, providers, deployment, observability, and recovery remain held.",
+      "evidence_ids": [
+        "E-RC-BUILDER",
+        "E-RC-TESTS",
+        "E-RC-CONTINUITY",
+        "E-RC-LEDGER"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "Private and credential keys, external-effect implications, failed donor receipts, unsafe archive paths, tampering, and parity gaps are rejected before packaging or decision.",
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-BUILDER",
+        "E-RC-TESTS",
+        "E-RC-MANIFEST",
+        "E-RC-DECISION"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Portable archive, reimport, standard-library isolated replay, exact rollback donor, local served-byte proof, and atomic rollback pass, while independent archive, operator, machine, public endpoint, and deployed rollback remain held.",
+      "evidence_ids": [
+        "E-RC-ARCHIVE",
+        "E-RC-CONTINUITY",
+        "E-RC-LEDGER",
+        "E-P9-REGISTER"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains every automated release and continuity receipt while public release remains false and public and constitutional-count effects remain none.",
+      "evidence_ids": [
+        "E-RC-WORKFLOW",
+        "E-RC-BUILD",
+        "E-RC-DECISION",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "outcome": "admit_with_holds",
+  "admitted_claim": "The repository may admit the exact byte-addressed internal release candidate, deterministic portable archive, exact historical rollback donor, archive reimport, isolated same-runner verifier, local served-byte proofs, atomic local rollback simulation, release HOLD, continuity receipt, and external campaign ledger.",
+  "holds": [
+    "All ten external assistive-technology, human, device, network, private, provider, field, archive, public-endpoint, and deployed-rollback campaigns remain not performed.",
+    "The isolated successor replay occurs on the qualification runner, not an independently controlled operator, machine, account, or archive.",
+    "The served-byte proof occurs on a local loopback server, not the public endpoint.",
+    "The rollback event occurs through a local atomic directory swap, not a deployed production rollback.",
+    "No private household projection, consent event, precise private coordinate, lawful access, field observation, work, completion, or affected-actor acceptance receipt is admitted.",
+    "No credentialed provider quota, cost, rights-change, outage, purchase, contract, spend, or production zero-key campaign is admitted.",
+    "No real assistive technology, human comprehension, cognitive-load, real-device, or actual constrained-network campaign is admitted.",
+    "No email, calendar, payment, publication, appointment, representation, institutional acceptance, assistance, eligibility, insurance, enforcement, property, evacuation, safety, or other external effect is admitted.",
+    "No public release, whole-product 99-point qualification, external endorsement, or canonical task-count mutation is admitted."
+  ],
+  "release_effect": "internal_candidate_only",
+  "authority_receipt": {
+    "deciding_seat": "release_authority",
+    "decision_scope": "Admit only the exact internal release-candidate and local continuity-control object while preserving public-release HOLD.",
+    "prohibited_effects": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, eligibility, funding, enforcement, inspection, or adverse action",
+      "evacuation, safety, entry, traffic, pruning, labor, work, remediation, completion, or institutional acceptance",
+      "public deployment or serving",
+      "provider credential operation, purchase, contract, or spend",
+      "whole-product public qualification, external endorsement, 99-point score award, or canonical task-count mutation"
+    ]
+  },
+  "qualification_boundary": "A passing decision proves only exact internal bytes, deterministic portable archive, archive reimport, same-runner isolated verification, local served-byte equality, local rollback mechanism, complete blocking-campaign ledger, and release HOLD. It does not prove independent archive or successor operation, physical fitness, private or field use, provider operation, public endpoint bytes, real rollback, or public release.",
+  "control_question": "Can a cold successor recover, verify, serve, export, reimport, explain, and locally roll back the exact candidate from retained bytes while release authority still refuses public promotion until every external campaign carries its own accountable receipt?"
+}

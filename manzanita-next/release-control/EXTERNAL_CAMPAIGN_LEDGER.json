@@ -1,0 +1,133 @@
+{
+  "schema": "axm-tools/manzanita-external-campaign-ledger@1",
+  "ledger_id": "M99-EXTERNAL-CAMPAIGNS-001",
+  "version": "1.0.0",
+  "release_state": "HOLD",
+  "campaigns": [
+    {
+      "id": "M99-PHYS-AT-001",
+      "class": "real_assistive_technology",
+      "state": "not_performed",
+      "required_for_public_release": true,
+      "operator": null,
+      "venue": null,
+      "procedure": null,
+      "evidence_receipts": [],
+      "acceptance": null,
+      "failure_disposition": null
+    },
+    {
+      "id": "M99-PHYS-HUMAN-001",
+      "class": "human_comprehension_and_acceptance",
+      "state": "not_performed",
+      "required_for_public_release": true,
+      "operator": null,
+      "venue": null,
+      "procedure": null,
+      "evidence_receipts": [],
+      "acceptance": null,
+      "failure_disposition": null
+    },
+    {
+      "id": "M99-PHYS-DEVICE-001",
+      "class": "real_device_matrix",
+      "state": "not_performed",
+      "required_for_public_release": true,
+      "operator": null,
+      "venue": null,
+      "procedure": null,
+      "evidence_receipts": [],
+      "acceptance": null,
+      "failure_disposition": null
+    },
+    {
+      "id": "M99-PHYS-NETWORK-001",
+      "class": "actual_constrained_networks",
+      "state": "not_performed",
+      "required_for_public_release": true,
+      "operator": null,
+      "venue": null,
+      "procedure": null,
+      "evidence_receipts": [],
+      "acceptance": null,
+      "failure_disposition": null
+    },
+    {
+      "id": "M99-PHYS-PRIVATE-001",
+      "class": "private_projection_consent_export_and_deletion",
+      "state": "not_performed",
+      "required_for_public_release": true,
+      "operator": null,
+      "venue": null,
+      "procedure": null,
+      "evidence_receipts": [],
+      "acceptance": null,
+      "failure_disposition": null
+    },
+    {
+      "id": "M99-PHYS-PROVIDER-001",
+      "class": "credentialed_provider_operations",
+      "state": "not_performed",
+      "required_for_public_release": true,
+      "operator": null,
+      "venue": null,
+      "procedure": null,
+      "evidence_receipts": [],
+      "acceptance": null,
+      "failure_disposition": null
+    },
+    {
+      "id": "M99-PHYS-FIELD-001",
+      "class": "lawful_field_operation",
+      "state": "not_performed",
+      "required_for_public_release": true,
+      "operator": null,
+      "venue": null,
+      "procedure": null,
+      "evidence_receipts": [],
+      "acceptance": null,
+      "failure_disposition": null
+    },
+    {
+      "id": "M99-PHYS-ARCHIVE-001",
+      "class": "independent_external_archive_and_cold_recovery",
+      "state": "not_performed",
+      "required_for_public_release": true,
+      "operator": null,
+      "venue": null,
+      "procedure": null,
+      "evidence_receipts": [],
+      "acceptance": null,
+      "failure_disposition": null
+    },
+    {
+      "id": "M99-DEPLOY-PUBLIC-001",
+      "class": "exact_public_endpoint_bytes",
+      "state": "not_performed",
+      "required_for_public_release": true,
+      "operator": null,
+      "venue": null,
+      "procedure": null,
+      "evidence_receipts": [],
+      "acceptance": null,
+      "failure_disposition": null
+    },
+    {
+      "id": "M99-DEPLOY-ROLLBACK-001",
+      "class": "real_deployed_rollback",
+      "state": "not_performed",
+      "required_for_public_release": true,
+      "operator": null,
+      "venue": null,
+      "procedure": null,
+      "evidence_receipts": [],
+      "acceptance": null,
+      "failure_disposition": null
+    }
+  ],
+  "public_release_authorized": false,
+  "public_effect": "none",
+  "constitutional_count_effect": "none",
+  "claim_boundary": "Every campaign remains unperformed until a real accountable operator, venue, procedure, observations, evidence receipts, acceptance, and failure disposition are retained. This ledger does not perform a campaign or authorize release.",
+  "control_question": "Does every external campaign remain visibly held until real evidence carries its operator, venue, procedure, observations, acceptance, and failure disposition?"
+}

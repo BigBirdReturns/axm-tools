@@ -1,0 +1,90 @@
+{
+  "schema": "axm-tools/manzanita-release-control-contract@1",
+  "contract_id": "M99-RELEASE-CONTROL-001",
+  "version": "1.0.0",
+  "classification": "internal_release_candidate_and_continuity_control",
+  "object": {
+    "description": "A byte-addressed internal Manzanita release candidate, exact historical rollback donor, portable archive, archive reimport, isolated verifier, local served-byte proof, atomic local rollback simulation, and explicit public-release hold ledger.",
+    "state": "internal_candidate",
+    "release_state": "HOLD",
+    "public_effect": "none",
+    "constitutional_count_effect": "none",
+    "claim_boundary": "This contract can qualify exact internal bytes and local continuity mechanisms. It does not prove a public endpoint, real deployed rollback, independent external archive recovery, independently controlled cold-successor operation, physical or human fitness, private projection, credentialed provider operation, lawful field use, whole-product public release, a 99-point score, endorsement, or canonical task-row closure."
+  },
+  "candidate_site": "manzanita-next/experience/out/site",
+  "rollback_site": "manzanita",
+  "evidence_inputs": {
+    "experience_data": "manzanita-next/experience/out/EXPERIENCE_DATA.json",
+    "experience_build": "manzanita-next/experience/out/BUILD_RECEIPT.json",
+    "experience_browser": "manzanita-next/experience/out/browser/BROWSER_CAMPAIGN.json",
+    "p8_report": "manzanita-next/qualification/out/QUALIFICATION_REPORT.json",
+    "p8_board": "manzanita-next/qualification/out/BOARD_DECISION_RECEIPT.json",
+    "p9_register": "manzanita-next/parity/out/PARITY_REGISTER.json",
+    "p9_build": "manzanita-next/parity/out/BUILD_RECEIPT.json",
+    "p9_board": "manzanita-next/parity/out/BOARD_DECISION_RECEIPT.json"
+  },
+  "required_proofs": [
+    "candidate_manifest",
+    "rollback_manifest",
+    "evidence_manifest",
+    "deterministic_portable_archive",
+    "archive_reimport",
+    "isolated_same_runner_successor",
+    "local_candidate_served_bytes",
+    "local_rollback_served_bytes",
+    "atomic_local_rollback",
+    "effect_firewall",
+    "public_release_hold"
+  ],
+  "performance_limits": {
+    "maximum_archive_bytes": 50000000,
+    "maximum_candidate_files": 100,
+    "maximum_rollback_files": 200,
+    "maximum_evidence_files": 16
+  },
+  "external_campaign_ids": [
+    "M99-PHYS-AT-001",
+    "M99-PHYS-HUMAN-001",
+    "M99-PHYS-DEVICE-001",
+    "M99-PHYS-NETWORK-001",
+    "M99-PHYS-PRIVATE-001",
+    "M99-PHYS-PROVIDER-001",
+    "M99-PHYS-FIELD-001",
+    "M99-PHYS-ARCHIVE-001",
+    "M99-DEPLOY-PUBLIC-001",
+    "M99-DEPLOY-ROLLBACK-001"
+  ],
+  "release_law": [
+    "Repository, browser, archive, loopback-serving, and local rollback evidence can qualify only an internal candidate.",
+    "Public promotion requires one exact authorized archive, one named public endpoint, an observed public-byte manifest, and an accountable release-authority receipt.",
+    "A local directory swap proves only the rollback mechanism and exact donor bytes; it is not a deployed rollback receipt.",
+    "Same-runner isolated verification does not establish an independently controlled successor, machine, account, or archive.",
+    "Every physical, human, private, provider, field, archive, endpoint, and deployed-rollback campaign changes state only through its own source-linked receipt.",
+    "No generated receipt, successful process, completed form, or green workflow may manufacture physical, private, public, or external-effect standing.",
+    "Canonical task rows and the remembered 497-task count remain unchanged unless their exact source records are recovered and amended under their own law."
+  ],
+  "prohibited_keys": [
+    "street_address",
+    "resident_name",
+    "resident_email",
+    "resident_phone",
+    "household_address",
+    "api_key",
+    "access_token",
+    "authorization",
+    "password",
+    "secret",
+    "cookie",
+    "private_key"
+  ],
+  "prohibited_effects": [
+    "public deployment or serving",
+    "private household identity or precise private coordinate",
+    "provider credential operation, purchase, contract, quota change, or spend",
+    "entry, inspection, traffic, pruning, labor, work, remediation, or completion authorization",
+    "assistance eligibility, award, insurance, underwriting, premium, enforcement, property, evacuation, safety, or other adverse decision",
+    "email, calendar, payment, publication, appointment, representation, institutional acceptance, or other external effect",
+    "whole-product public qualification, external endorsement, 99-point score award, or canonical task-count mutation"
+  ],
+  "control_question": "Can a cold successor recover, verify, serve, export, reimport, explain, and locally roll back the exact candidate from retained bytes while release authority still refuses public promotion until every external campaign carries its own accountable receipt?"
+}
