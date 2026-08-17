@@ -1,0 +1,293 @@
+name: Manzanita estate-wide parity
+
+on:
+  push:
+    branches:
+      - agent/manzanita-estate-parity-021
+    paths:
+      - "manzanita-next/parity/**"
+      - ".github/workflows/manzanita-estate-parity.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/parity/**"
+      - ".github/workflows/manzanita-estate-parity.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Reconcile every estate surface and source component
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove the exact P9 candidate and dependency boundary
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {".github/workflows/manzanita-estate-parity.yml"}
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/parity/")
+          ]
+          if invalid:
+              raise SystemExit(f"P9 candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("manzanita-next/parity/") for path in changed):
+              raise SystemExit("P9 candidate contains no parity object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+          test -f resolution-backfill/inventory.json
+          test -f resolution-backfill/contracts/surface.schema.json
+          test -f resolution-backfill/scripts/audit.py
+          test -f manzanita-next/experience/EXPERIENCE_CONTRACT.json
+          test -f manzanita-next/qualification/QUALIFICATION_CONTRACT.json
+          test -f manzanita-next/qualification/run_qualification.py
+          test -f manzanita-next/qualification/replay_p7_workflow.py
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+
+      - name: Install exact audit browser schema and review dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            requests beautifulsoup4 pillow jsonschema pytest playwright pyyaml
+          python -m playwright install --with-deps chromium
+
+      - name: Validate P9 contracts implementation and adversarial suite
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          pytest -q manzanita-next/tests
+          python -m py_compile \
+            manzanita-next/parity/build_parity.py \
+            manzanita-next/parity/tests/test_parity.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m json.tool manzanita-next/parity/PARITY_CONTRACT.json > /dev/null
+          python -m json.tool manzanita-next/parity/SURFACE_DISPOSITIONS.json > /dev/null
+          python -m json.tool manzanita-next/parity/review/M99-RB-PKT-011.json > /dev/null
+          python -m json.tool manzanita-next/parity/review/M99-RB-DEC-011.json > /dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from jsonschema import Draft202012Validator
+
+          root = Path("programs/manzanita-99/review-board")
+          for value_path, schema_path in (
+              (
+                  Path("manzanita-next/parity/review/M99-RB-PKT-011.json"),
+                  root / "review-packet.schema.json",
+              ),
+              (
+                  Path("manzanita-next/parity/review/M99-RB-DEC-011.json"),
+                  root / "review-decision.schema.json",
+              ),
+          ):
+              Draft202012Validator(json.loads(schema_path.read_text())).validate(
+                  json.loads(value_path.read_text())
+              )
+          PY
+          python -m unittest discover \
+            -s manzanita-next/parity/tests \
+            -p "test_parity.py"
+
+      - name: Audit the exact estate reopening ledger
+        run: |
+          rm -rf resolution-backfill/out
+          python resolution-backfill/scripts/audit.py \
+            --root . \
+            --out resolution-backfill/out
+
+      - name: Rebuild the exact P7 and P8 evidence chain
+        env:
+          AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPILLARY_ACCESS_TOKEN: ${{ secrets.MAPILLARY_ACCESS_TOKEN }}
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
+        run: |
+          rm -rf \
+            manzanita-next/out \
+            manzanita-next/public-demo/out \
+            manzanita-next/apertures/out \
+            manzanita-next/street-glide/out \
+            manzanita-next/overlays/out \
+            manzanita-next/roles/out \
+            manzanita-next/experience/out \
+            manzanita-next/qualification/out \
+            manzanita-next/parity/out
+          python manzanita-next/qualification/replay_p7_workflow.py \
+            --workflow .github/workflows/manzanita-whole-experience.yml \
+            --output-script /tmp/replay-p7.sh \
+            --receipt manzanita-next/qualification/out/P7_REPLAY_PLAN.json
+          bash /tmp/replay-p7.sh
+          python manzanita-next/qualification/run_qualification.py \
+            --site manzanita-next/experience/out/site \
+            --experience-data manzanita-next/experience/out/EXPERIENCE_DATA.json \
+            --contract manzanita-next/qualification/QUALIFICATION_CONTRACT.json \
+            --output manzanita-next/qualification/out
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/qualification/review/M99-RB-PKT-010.json \
+            --decision manzanita-next/qualification/review/M99-RB-DEC-010.json \
+            --receipt manzanita-next/qualification/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Build the exact complete-coverage parity register
+        run: |
+          python manzanita-next/parity/build_parity.py \
+            --repo-root . \
+            --contract manzanita-next/parity/PARITY_CONTRACT.json \
+            --dispositions manzanita-next/parity/SURFACE_DISPOSITIONS.json \
+            --inventory resolution-backfill/inventory.json \
+            --surface-schema resolution-backfill/contracts/surface.schema.json \
+            --backfill-report resolution-backfill/out/report.json \
+            --backfill-qualification resolution-backfill/out/qualification.json \
+            --p7-build manzanita-next/experience/out/BUILD_RECEIPT.json \
+            --p8-report manzanita-next/qualification/out/QUALIFICATION_REPORT.json \
+            --p8-board manzanita-next/qualification/out/BOARD_DECISION_RECEIPT.json \
+            --output manzanita-next/parity/out
+
+      - name: Run the contained multidisciplinary P9 review
+        run: |
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/parity/review/M99-RB-PKT-011.json \
+            --decision manzanita-next/parity/review/M99-RB-DEC-011.json \
+            --receipt manzanita-next/parity/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Prove exact-head parity and board receipts
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          contract = json.loads(Path("manzanita-next/parity/PARITY_CONTRACT.json").read_text())
+          backfill = json.loads(Path("resolution-backfill/out/report.json").read_text())
+          backfill_qualification = json.loads(Path("resolution-backfill/out/qualification.json").read_text())
+          p8 = json.loads(Path("manzanita-next/qualification/out/QUALIFICATION_REPORT.json").read_text())
+          p8_board = json.loads(Path("manzanita-next/qualification/out/BOARD_DECISION_RECEIPT.json").read_text())
+          register = json.loads(Path("manzanita-next/parity/out/PARITY_REGISTER.json").read_text())
+          build = json.loads(Path("manzanita-next/parity/out/BUILD_RECEIPT.json").read_text())
+          board = json.loads(Path("manzanita-next/parity/out/BOARD_DECISION_RECEIPT.json").read_text())
+
+          assert backfill["result"] == "PASS"
+          assert backfill["summary"]["surface_count"] == 10
+          assert sum(backfill["summary"]["finding_counts"].values()) == 30
+          assert backfill["summary"]["asset_requirements"] == 64
+          assert backfill_qualification["result"] == "PASS"
+          assert backfill_qualification["qualified_surface_count"] == 0
+
+          assert p8["result"] == "PASS"
+          assert p8["campaign_count"] == 19
+          assert all(row["result"] == "PASS" for row in p8["campaigns"])
+          assert p8["physical_campaigns_performed"] is False
+          assert p8["real_assistive_technology_claim"] is False
+          assert p8["real_device_claim"] is False
+          assert p8["actual_network_claim"] is False
+          assert p8["private_projection_claim"] is False
+          assert p8["credentialed_provider_claim"] is False
+          assert p8["field_operation_claim"] is False
+          assert p8["public_effect"] == "none"
+          assert p8["constitutional_count_effect"] == "none"
+          assert p8["release_effect"] == "none"
+          assert p8_board["result"] == "PASS"
+          assert p8_board["packet_id"] == "M99-RB-PKT-010"
+          assert p8_board["decision_id"] == "M99-RB-DEC-010"
+          assert p8_board["outcome"] == "admit_with_holds"
+          assert p8_board["open_vetoes"] == []
+          assert p8_board["open_critical_or_high_defects"] == []
+
+          assert register["schema"] == "axm-tools/manzanita-estate-parity-register@1"
+          assert register["surface_count"] == contract["expected_surface_count"] == 10
+          assert register["component_count"] == contract["expected_component_count"] == 104
+          assert len(register["surfaces"]) == 10
+          assert len(register["components"]) == 104
+          assert len({row["id"] for row in register["surfaces"]}) == 10
+          assert len({row["component_id"] for row in register["components"]}) == 104
+          assert register["disposition_counts"] == {"donor": 1, "held": 9}
+          assert register["relationship_counts"] == {
+              "bounded_handoff_compatible_separate_surface": 1,
+              "explicit_noninheritance": 8,
+              "historical_public_rollback_donor": 1,
+          }
+          assert register["qualified_public_surfaces"] == []
+          assert len(register["held_public_surfaces"]) == 9
+          assert register["archived_public_surfaces"] == []
+          assert register["donor_public_surfaces"] == ["manzanita"]
+          assert register["uncovered_surfaces"] == []
+          assert register["unknown_components"] == []
+          assert register["successor_candidate"]["state"] == "qualified_internal_candidate"
+          assert register["successor_candidate"]["campaign_count"] == 19
+          assert register["successor_candidate"]["public_release_authorized"] is False
+          assert register["successor_candidate"]["external_effect_authorized"] is False
+          assert register["public_effect"] == "none"
+          assert register["constitutional_count_effect"] == "none"
+          assert register["release_effect"] == "none"
+          assert len(register["payload_sha256"]) == 64
+
+          assert build["schema"] == "axm-tools/manzanita-estate-parity-build@1"
+          assert build["result"] == "PASS"
+          assert build["register"]["surface_count"] == 10
+          assert build["register"]["component_count"] == 104
+          assert build["register"]["uncovered_surfaces"] == []
+          assert build["register"]["unknown_components"] == []
+          assert build["successor_candidate_state"] == "qualified_internal_candidate"
+          assert build["public_effect"] == "none"
+          assert build["constitutional_count_effect"] == "none"
+          assert build["release_effect"] == "none"
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-011"
+          assert board["decision_id"] == "M99-RB-DEC-011"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 7
+          assert board["gate_states"]["continuity_export_rollback_and_succession"] == "partial"
+          PY
+
+      - name: Retain complete parity and donor evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-estate-parity-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            resolution-backfill/inventory.json
+            resolution-backfill/contracts/surface.schema.json
+            resolution-backfill/surfaces
+            resolution-backfill/out
+            manzanita-next/experience/out
+            manzanita-next/qualification/out
+            manzanita-next/parity/README.md
+            manzanita-next/parity/PARITY_CONTRACT.json
+            manzanita-next/parity/SURFACE_DISPOSITIONS.json
+            manzanita-next/parity/build_parity.py
+            manzanita-next/parity/tests
+            manzanita-next/parity/review
+            manzanita-next/parity/out
+          if-no-files-found: error
+          retention-days: 90
