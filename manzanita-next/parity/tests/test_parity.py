@@ -338,5 +338,22 @@ class ParityTests(unittest.TestCase):
 
 
 
+    def test_review_not_applicable_reasons_are_explicitly_bounded(self) -> None:
+        for relative in (
+            "review/M99-RB-PKT-011.json",
+            "review/M99-RB-DEC-011.json",
+        ):
+            value = json.loads((PARITY_ROOT / relative).read_text(encoding="utf-8"))
+            gates = value["gates"] if "gates" in value else value["gate_disposition"]
+            for gate_id, row in gates.items():
+                if row["state"] == "not_applicable":
+                    reason = row["reason"].lower()
+                    self.assertTrue(
+                        "not" in reason or "no " in reason,
+                        f"{relative}:{gate_id} lacks a bounded not-applicable reason",
+                    )
+
+
+
 if __name__ == "__main__":
     unittest.main()
