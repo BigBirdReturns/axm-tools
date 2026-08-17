@@ -72,25 +72,61 @@ def workflow_steps(workflow: dict[str, Any]) -> list[dict[str, Any]]:
     return candidates[0][1]
 
 
-def select_steps(workflow: dict[str, Any]) -> list[dict[str, str]]:
+def select_steps(workflow: dict[str, Any]) -> list[dict[str, Any]]:
     steps = workflow_steps(workflow)
-    selected = []
+    selected: list[dict[str, Any]] = []
+    positions: list[int] = []
     for required_name in REQUIRED_STEP_NAMES:
         matches = [
-            row for row in steps
+            (index, row)
+            for index, row in enumerate(steps)
             if isinstance(row, dict) and row.get("name") == required_name
         ]
         require(
             len(matches) == 1,
             f"P9 workflow step is missing or duplicated: {required_name}",
         )
-        run = matches[0].get("run")
+        index, row = matches[0]
+        unsupported = sorted(set(row) - {"name", "run", "env"})
+        require(
+            not unsupported,
+            f"P9 replay step {required_name} uses unsupported semantics: {unsupported}",
+        )
+        run = row.get("run")
         require(isinstance(run, str) and run.strip(), f"P9 step has no run block: {required_name}")
-        selected.append({"name": required_name, "run": run.rstrip()})
+        env = row.get("env", {})
+        require(isinstance(env, dict), f"P9 step env must be a mapping: {required_name}")
+        env_keys: list[str] = []
+        for key, value in sorted(env.items()):
+            require(
+                isinstance(key, str)
+                and key
+                and key.replace("_", "A").isalnum()
+                and key.upper() == key,
+                f"P9 step has an invalid environment key: {required_name}",
+            )
+            require(
+                value == f"${{{{ secrets.{key} }}}}",
+                f"P9 replay cannot preserve non-secret environment semantics: {required_name}:{key}",
+            )
+            env_keys.append(key)
+        selected.append(
+            {
+                "name": required_name,
+                "run": run.rstrip(),
+                "environment": env_keys,
+            }
+        )
+        positions.append(index)
+    require(positions == sorted(positions), "P9 replay steps are out of order")
+    require(
+        positions == list(range(positions[0], positions[0] + len(positions))),
+        "P9 replay steps are not one contiguous run block",
+    )
     return selected
 
 
-def render_script(selected: list[dict[str, str]]) -> str:
+def render_script(selected: list[dict[str, Any]]) -> str:
     lines = [
         "#!/usr/bin/env bash",
         "set -euo pipefail",
@@ -98,6 +134,11 @@ def render_script(selected: list[dict[str, str]]) -> str:
         'ROOT="${REPO_ROOT:-$PWD}"',
         'cd "$ROOT"',
     ]
+    required_environment = sorted(
+        {key for row in selected for key in row.get("environment", [])}
+    )
+    for key in required_environment:
+        lines.append(f'export {key}="${{{key}-}}"')
     for index, row in enumerate(selected, start=1):
         lines.extend(
             [
@@ -133,6 +174,9 @@ def build_plan(workflow_path: Path, script_path: Path, receipt_path: Path) -> di
             row["name"]: sha256_bytes(row["run"].encode("utf-8"))
             for row in selected
         },
+        "required_environment": sorted(
+            {key for row in selected for key in row.get("environment", [])}
+        ),
         "script": script_path.as_posix(),
         "script_sha256": sha256_bytes(script.encode("utf-8")),
         "public_effect": "none",
