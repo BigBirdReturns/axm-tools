@@ -30,10 +30,47 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Recover the bounded transport under its exact chunk digest
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+
+          path = Path('.github/bootstrap/manzanita-p7-whole-experience-part-01.b64')
+          expected = '1bf6a00bcb94a87ffe4c85c9e3f16cf4f9937f5d57b7cbd8e961161f8d789b32'
+          alphabet = b'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+          payload = bytearray(path.read_bytes())
+
+          if sha256(payload).hexdigest() != expected:
+              matches = []
+              for index in range(len(payload)):
+                  original = payload[index]
+                  for candidate in alphabet:
+                      if candidate == original:
+                          continue
+                      payload[index] = candidate
+                      if sha256(payload).hexdigest() == expected:
+                          matches.append((index, original, candidate, bytes(payload)))
+                  payload[index] = original
+              if len(matches) != 1:
+                  raise SystemExit(
+                      f'Expected one single-symbol recovery, found {len(matches)} candidates'
+                  )
+              index, original, candidate, recovered = matches[0]
+              path.write_bytes(recovered)
+              print(
+                  'Recovered part-01 at byte '
+                  f'{index}: {chr(original)!r} -> {chr(candidate)!r}'
+              )
+
+          actual = sha256(path.read_bytes()).hexdigest()
+          if actual != expected:
+              raise SystemExit(f'part-01 digest remains {actual}, expected {expected}')
+          PY
+
       - name: Audit, reconstruct, verify, and expand the bounded payload
         run: |
           wc -c .github/bootstrap/manzanita-p7-whole-experience-part-*.b64
-          sha256sum .github/bootstrap/manzanita-p7-whole-experience-part-*.b64
           echo "e56214b3d9d7a89c2a670a019f9400d570e16c13237898f6a0547a2821178f0d  .github/bootstrap/manzanita-p7-whole-experience-part-00.b64" | sha256sum -c -
           echo "1bf6a00bcb94a87ffe4c85c9e3f16cf4f9937f5d57b7cbd8e961161f8d789b32  .github/bootstrap/manzanita-p7-whole-experience-part-01.b64" | sha256sum -c -
           echo "c9f42ab1241b0a0464537f686f67e7ed324477edb700891156ef0bf481e4a2cb  .github/bootstrap/manzanita-p7-whole-experience-part-02.b64" | sha256sum -c -
