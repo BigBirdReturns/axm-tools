@@ -1,0 +1,235 @@
+{
+  "schema": "axm-tools/manzanita-review-decision@1",
+  "decision_id": "M99-RB-DEC-010",
+  "packet_id": "M99-RB-PKT-010",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "reviewed_ref": {
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "external_review_claim": false,
+  "seat_reviews": [
+    {
+      "seat_id": "board_chair",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The board chair review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The board chair review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-REPORT", "E-BOARD-CHARTER"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "creative_direction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The creative direction review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The creative direction review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-DESIGN-CONSTITUTION", "E-Q-REPORT", "E-P7-BUILD"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "product_interaction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The product interaction review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The product interaction review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-Q-RUNNER", "E-Q-REPORT", "E-Q-REIMPORT"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "information_design",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The information design review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The information design review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-P7-DATA", "E-Q-REPORT", "E-Q-RUNNER"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "typography",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The typography review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The typography review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-DESIGN-CONSTITUTION", "E-Q-REPORT"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "motion",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The motion review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The motion review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-P7-CONTRACT", "E-Q-REPORT"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "source_custody",
+      "disposition": "pass",
+      "findings": [
+        "The source custody review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The source custody review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-Q-REPLAY", "E-Q-REPLAY-PLAN", "E-P7-BUILD", "E-Q-REPORT"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "field_operations",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The field operations review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The field operations review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-P7-DATA", "E-Q-REPORT", "E-P7-CONTRACT"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "accessibility",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The accessibility review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The accessibility review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-RUNNER", "E-Q-REPORT"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "performance_resilience",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The performance resilience review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The performance resilience review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-TESTS", "E-Q-REPORT"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "security_privacy",
+      "disposition": "pass",
+      "findings": [
+        "The security privacy review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The security privacy review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-Q-RUNNER", "E-Q-TESTS", "E-Q-REPORT", "E-Q-REIMPORT"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "continuity_release",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The continuity release review finds the exact automated P8 mechanism internally admissible for the evidence classes it actually exercises.",
+        "The continuity release review retains every real assistive-technology, human, device, network, private, provider, field, archive, public, rollback, score, and constitutional-count boundary applicable to this seat."
+      ],
+      "evidence_ids": ["E-Q-REPLAY-PLAN", "E-Q-REPORT", "E-Q-REIMPORT", "E-Q-WORKFLOW"],
+      "uncertainty": "Independent physical, human, provider, field, archive, deployed, and public campaigns remain outside this automated decision.",
+      "veto_ids": []
+    }
+  ],
+  "defects": [],
+  "vetoes": [],
+  "gate_disposition": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is an automated qualification matrix over the admitted P7 internal experience, rather than a public endpoint, real assistive-technology record, physical-device certification, private projection, field instrument, or release decision.",
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-README", "E-Q-REPORT"]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Qualification operator, source custody, design integrator, contained review board, affected actors, physical campaign operators, release authority, and cold successor retain distinct evidence and decision authority.",
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-README", "E-P7-CONTRACT", "E-BOARD-CHARTER"]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The matrix operates the exact generated P7 site through nineteen static, browser, performance, failure, hostile-input, privacy, and continuity transactions rather than reviewing labels or selected screenshots.",
+      "evidence_ids": ["E-Q-RUNNER", "E-Q-REPLAY", "E-Q-TESTS", "E-Q-REPORT"]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "The canonical P7 workflow is replayed by exact run-block identity, every P7 donor and site digest remains bound, and injected stale, outage, contradiction, and hostile states are explicitly classified as qualification-only copies.",
+      "evidence_ids": ["E-Q-REPLAY", "E-Q-REPLAY-PLAN", "E-P7-DATA", "E-P7-BUILD", "E-Q-REPORT"]
+    },
+    "interaction_semantics": {
+      "state": "pass",
+      "reason": "The browser matrix operates scale, overlay, role, source, section, help, keyboard, offline, and export controls while confirming the governed object and no-effect state continue to change correctly.",
+      "evidence_ids": ["E-P7-BROWSER", "E-Q-RUNNER", "E-Q-REPORT", "E-Q-REIMPORT"]
+    },
+    "visual_and_typographic_finish": {
+      "state": "pass",
+      "reason": "Desktop light, desktop dark, touch tablet, reduced-motion mobile, and compact forced-colors profiles retain the P7 hierarchy, source rail, action and authority order, target floor, bounded overflow, and captured state.",
+      "evidence_ids": ["E-DESIGN-CONSTITUTION", "E-P7-BUILD", "E-Q-REPORT"]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "pass",
+      "reason": "Reduced motion, delayed resources, offline-after-load operation, stale data, outage, and contradictory evidence retain state identity and meaning without hiding source or consequence boundaries.",
+      "evidence_ids": ["E-P7-CONTRACT", "E-Q-RUNNER", "E-Q-REPORT"]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "Automated semantics, accessible names, landmarks, dialog, skip link, live regions, keyboard groups, 44-pixel targets, touch emulation, forced colors, reduced motion, compact width, and 200-percent text zoom pass, while real assistive technologies, people, and physical devices remain open campaigns.",
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-RUNNER", "E-Q-REPORT"]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "Static budgets, low-end CPU throttling, delayed resources, offline-after-load, missing imagery, stale source, provider outage, contradiction, and hostile text pass in automated Chromium, while actual low-end hardware, constrained networks, provider accounts, caches, observability, and independent recovery remain open.",
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-RUNNER", "E-Q-TESTS", "E-Q-REPORT"]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "The matrix enforces CSP and self-containment, rejects private and credential keys and high-confidence secret patterns, proves hostile text remains literal, preserves public-safe scope, and retains no-contact, no-adverse-action, no-release effects.",
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-RUNNER", "E-Q-TESTS", "E-Q-REPORT", "E-Q-REIMPORT"]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Canonical P7 replay, deterministic site and report digests, local snapshot export, verifier-level reimport, and successor-role operation pass, while independent archive recovery, separate-person cold replay, deployed rollback, and exact public bytes remain open.",
+      "evidence_ids": ["E-Q-REPLAY", "E-Q-REPLAY-PLAN", "E-P7-BUILD", "E-Q-REIMPORT", "E-Q-WORKFLOW"]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains fresh P7 donor, browser, P8 matrix, screenshot, reimport, and board receipts while public, release, external, physical, and constitutional-count effects remain none.",
+      "evidence_ids": ["E-Q-WORKFLOW", "E-Q-REPORT", "E-Q-REIMPORT", "E-BOARD-CHARTER"]
+    }
+  },
+  "outcome": "admit_with_holds",
+  "admitted_claim": "The repository may admit the exact nineteen-campaign automated P8 qualification matrix, canonical P7 replay plan, static and browser observations, injected failure-state campaign, hostile-input campaign, export-reimport receipt, and contained-board receipt for internal product work.",
+  "holds": [
+    "No independent NVDA, JAWS, VoiceOver, TalkBack, switch-control, magnification, or other real assistive-technology campaign is admitted.",
+    "No independent human comprehension, cognitive-load, resident-acceptance, affected-actor, or field-operator playtest is admitted.",
+    "No real desktop, laptop, tablet, phone, graphics, browser, operating-system, input, or touch-device matrix is admitted.",
+    "No actual constrained, intermittent, captive, metered, or household-network campaign is admitted beyond deterministic browser emulation.",
+    "No private household projection, consent, refusal, export, deletion, or public-separation campaign is admitted.",
+    "No credentialed provider quota, cost, rights, cache, outage, revocation, or zero-key production campaign is admitted.",
+    "No lawful field access, safety, observation, work, completion, or affected-actor acceptance evidence is admitted.",
+    "No independent archive recovery, separate-person cold replay, public endpoint, deployed rollback, public release, whole-product score, external review, or canonical task-row transition is admitted."
+  ],
+  "release_effect": "internal_candidate_only",
+  "authority_receipt": {
+    "deciding_seat": "release_authority",
+    "decision_scope": "Admit only the exact automated P8 qualification floor and its retained internal evidence for later physical and release campaigns.",
+    "prohibited_effects": [
+      "real assistive-technology, human, device, network, private, provider, field, archive, public-endpoint, or rollback standing",
+      "insurance, property, eligibility, enforcement, safety, entry, work, completion, or other adverse action",
+      "credential operation, payment, contact, publication, representation, appointment, or institutional acceptance",
+      "public deployment, whole-product release, external endorsement, score award, or canonical task-count mutation"
+    ]
+  },
+  "qualification_boundary": "A passing decision proves only that the exact P7 candidate survives the nineteen declared automated campaigns under the retained budgets and no-effect law. It does not prove real assistive-technology, human, physical-device, actual-network, private, provider, field, independent-archive, deployed, public, rollback, score, or canonical task-row fitness.",
+  "control_question": "Does the exact P7 experience remain usable, legible, source-honest, bounded, and incapable of external effect under every automated P8 condition while every real physical, human, provider, field, archive, deployed, public, score, and canonical-count hold remains visible?"
+}
