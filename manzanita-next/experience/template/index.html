@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Manzanita source-bound whole-experience internal candidate">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Manzanita | Whole experience candidate</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="experience-data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the operating surface</a>
+  <div class="app-shell">
+    <aside class="source-rail" aria-label="Source custody rail">
+      <div class="identity-lockup">
+        <svg class="forkline-mark" viewBox="0 0 56 56" aria-hidden="true">
+          <path d="M6 43 C16 37 20 28 30 23 C39 18 44 11 51 8"></path>
+          <path d="M29 24 C35 29 39 34 43 42"></path>
+          <rect x="4" y="40" width="7" height="7"></rect>
+          <rect x="27" y="20" width="7" height="7"></rect>
+          <path class="cut" d="M39 35 l8 10"></path>
+        </svg>
+        <div>
+          <p class="rail-kicker">Forkline Field</p>
+          <p class="rail-title">Manzanita</p>
+        </div>
+      </div>
+      <div class="rail-block">
+        <p class="rail-label">Canonical place</p>
+        <p id="rail-place" class="rail-value">Loading place</p>
+        <p id="rail-place-id" class="rail-mono"></p>
+      </div>
+      <div class="rail-block">
+        <p class="rail-label">Source run</p>
+        <p id="rail-source-run" class="rail-mono"></p>
+        <p id="rail-source-time" class="rail-small"></p>
+      </div>
+      <div class="rail-block">
+        <p class="rail-label">Coverage</p>
+        <dl id="rail-source-counts" class="state-counts"></dl>
+      </div>
+      <div class="rail-block rail-boundary">
+        <p class="rail-label">Authority boundary</p>
+        <p>This internal candidate can explain and export a bounded projection. It cannot contact, decide, dispatch, execute, or release.</p>
+      </div>
+      <div class="rail-block rail-receipt">
+        <p class="rail-label">Experience receipt</p>
+        <p id="rail-receipt" class="rail-mono"></p>
+      </div>
+    </aside>
+
+    <main id="main" class="main-field" tabindex="-1">
+      <header class="masthead">
+        <div class="masthead-copy">
+          <p class="eyebrow">One place · seven scales · eight instruments · five seats</p>
+          <h1>From household care to regional stewardship</h1>
+          <p id="masthead-summary" class="masthead-summary">Loading the governed place and its source-bound operating record.</p>
+        </div>
+        <div class="masthead-actions">
+          <div class="theme-control" role="group" aria-label="Theme">
+            <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
+            <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+            <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+          </div>
+          <button id="export-button" type="button" class="utility-button">Export snapshot</button>
+          <button id="help-button" type="button" class="utility-button" aria-haspopup="dialog">Help</button>
+        </div>
+      </header>
+
+      <div id="global-status" class="global-status" aria-live="polite"></div>
+
+      <nav class="section-nav" aria-label="Experience sections">
+        <button type="button" data-section="overview" aria-current="page">Overview</button>
+        <button type="button" data-section="place">Place</button>
+        <button type="button" data-section="scales">Scales</button>
+        <button type="button" data-section="instruments">Instruments</button>
+        <button type="button" data-section="seats">Seats</button>
+        <button type="button" data-section="fab_handoff">FAB handoff</button>
+        <button type="button" data-section="sources">Sources</button>
+        <button type="button" data-section="help">Operating guide</button>
+      </nav>
+
+      <section id="section-overview" class="section-panel" data-section-panel="overview">
+        <div class="control-deck" aria-label="Operating controls">
+          <fieldset class="control-group" data-control-group="aperture">
+            <legend>Scale aperture</legend>
+            <div id="aperture-controls" class="segmented-controls"></div>
+          </fieldset>
+          <fieldset class="control-group" data-control-group="overlay">
+            <legend>Registered instrument</legend>
+            <div id="overlay-controls" class="segmented-controls overlay-controls"></div>
+          </fieldset>
+          <fieldset class="control-group" data-control-group="role">
+            <legend>Functional seat</legend>
+            <div id="role-controls" class="segmented-controls"></div>
+          </fieldset>
+        </div>
+
+        <div class="experience-grid">
+          <figure class="registered-stage" aria-labelledby="stage-title stage-caption">
+            <div class="stage-head">
+              <div>
+                <p class="panel-label">Registered place stage</p>
+                <h2 id="stage-title">Loading registered view</h2>
+              </div>
+              <div id="stage-state" class="state-stamp"></div>
+            </div>
+            <div class="map-frame">
+              <img id="base-image" src="assets/base-imagery.png" alt="Public USGS aerial context for the demonstration place">
+              <svg id="registration-layer" class="registration-layer" viewBox="0 0 1600 1000" role="img" aria-labelledby="map-title map-desc">
+                <title id="map-title">Registered Manzanita place view</title>
+                <desc id="map-desc">Public aerial context with authored aperture geometry and one selected source-bound overlay.</desc>
+                <g id="aperture-geometry" class="aperture-geometry">
+                  <path id="aperture-ground"></path>
+                  <path id="aperture-branch"></path>
+                  <path id="aperture-cut"></path>
+                </g>
+                <g id="overlay-geometry" class="overlay-geometry"></g>
+                <g id="registration-points" class="registration-points"></g>
+              </svg>
+              <div class="map-mode" id="map-mode"></div>
+            </div>
+            <figcaption id="stage-caption"></figcaption>
+          </figure>
+
+          <aside class="operating-panel" aria-labelledby="operating-title">
+            <div class="operating-head">
+              <p class="panel-label">Current operating projection</p>
+              <h2 id="operating-title">Loading projection</h2>
+              <p id="operating-object" class="object-class"></p>
+            </div>
+            <dl class="operating-ledger">
+              <div><dt>Reading</dt><dd id="operating-reading"></dd></div>
+              <div><dt>Uncertainty</dt><dd id="operating-uncertainty"></dd></div>
+              <div><dt>Next safe action</dt><dd id="operating-action"></dd></div>
+              <div><dt>Authority</dt><dd id="operating-authority"></dd></div>
+              <div><dt>Acceptance</dt><dd id="operating-acceptance"></dd></div>
+              <div><dt>Handoff</dt><dd id="operating-handoff"></dd></div>
+              <div class="prohibited"><dt>Prohibited consequence</dt><dd id="operating-prohibited"></dd></div>
+            </dl>
+            <div class="role-controls-panel">
+              <p class="panel-label">Seat controls</p>
+              <ul id="role-action-list"></ul>
+            </div>
+          </aside>
+        </div>
+
+        <div class="overview-ledgers">
+          <section class="state-ledger" aria-labelledby="evidence-ledger-title">
+            <div class="section-heading-inline">
+              <div>
+                <p class="panel-label">Evidence condition</p>
+                <h2 id="evidence-ledger-title">Degraded and unavailable evidence</h2>
+              </div>
+              <span id="degraded-count" class="metric"></span>
+            </div>
+            <div id="degraded-ledger" class="ledger-list"></div>
+          </section>
+          <section class="conflict-ledger" aria-labelledby="conflict-title">
+            <div class="section-heading-inline">
+              <div>
+                <p class="panel-label">Cross-instrument law</p>
+                <h2 id="conflict-title">Conflicts retained, never averaged</h2>
+              </div>
+            </div>
+            <div id="conflict-list" class="ledger-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="section-place" class="section-panel" data-section-panel="place" hidden>
+        <div class="section-intro">
+          <p class="eyebrow">Governed place and data plane</p>
+          <h2 id="place-heading">Place</h2>
+          <p>The public-safe place is the stable identity. Source coverage, scene availability, registration, and operating claims can change without silently changing the place.</p>
+        </div>
+        <div class="detail-grid">
+          <section class="detail-block"><p class="panel-label">Place identity</p><dl id="place-details" class="detail-list"></dl></section>
+          <section class="detail-block"><p class="panel-label">Street Glide decision</p><div id="scene-details"></div></section>
+          <section class="detail-block"><p class="panel-label">Natural-border registration</p><div id="registration-details"></div></section>
+          <section class="detail-block"><p class="panel-label">Donor identities</p><dl id="donor-details" class="detail-list mono-list"></dl></section>
+        </div>
+      </section>
+
+      <section id="section-scales" class="section-panel" data-section-panel="scales" hidden>
+        <div class="section-intro"><p class="eyebrow">Seven genuine apertures</p><h2>Scale changes the governed object</h2><p>Each aperture changes evidence, geometry, actor, safe action, authority, acceptance, and handoff while preserving one source run.</p></div>
+        <div id="scale-register" class="register-table" role="list"></div>
+      </section>
+
+      <section id="section-instruments" class="section-panel" data-section-panel="instruments" hidden>
+        <div class="section-intro"><p class="eyebrow">Eight registered overlays</p><h2>Each instrument carries its own source and consequence law</h2><p>Unavailable, degraded, map-only, and authored states remain distinct. No instrument can manufacture a safe or adverse finding from missing evidence.</p></div>
+        <div id="instrument-register" class="register-table" role="list"></div>
+      </section>
+
+      <section id="section-seats" class="section-panel" data-section-panel="seats" hidden>
+        <div class="section-intro"><p class="eyebrow">Five functional seats</p><h2>Changing seats changes the governed work</h2><p>Evidence, controls, authority, acceptance, export, failure, and handoff differ by seat without duplicating the place record.</p></div>
+        <div id="seat-register" class="register-table" role="list"></div>
+        <section class="handoff-graph" aria-labelledby="handoff-graph-title"><p class="panel-label">Directed handoff graph</p><h3 id="handoff-graph-title">Questions move; authority does not</h3><div id="handoff-edges"></div></section>
+      </section>
+
+      <section id="section-fab_handoff" class="section-panel" data-section-panel="fab_handoff" hidden>
+        <div class="section-intro"><p class="eyebrow">Essential Attention handoff</p><h2>FAB offer preparation remains internal</h2><p>The planner can prepare a source-linked assistance question. The affected resident retains correction, refusal, narrowing, deferral, and appeal before any external effect exists.</p></div>
+        <div id="fab-record" class="fab-record"></div>
+      </section>
+
+      <section id="section-sources" class="section-panel" data-section-panel="sources" hidden>
+        <div class="section-intro"><p class="eyebrow">Source custody</p><h2>Coverage, time, rights, health, and claim scope</h2><p>A successful response is not the only legitimate state. Empty coverage and missing credentials remain inspectable evidence about the system.</p></div>
+        <div id="source-filters" class="source-filters" role="group" aria-label="Filter sources by state"></div>
+        <div id="source-register" class="source-register"></div>
+      </section>
+
+      <section id="section-help" class="section-panel" data-section-panel="help" hidden>
+        <div class="section-intro"><p class="eyebrow">Operating guide</p><h2>Identify the actor, evidence, authority, and next safe action</h2><p>This guide explains the object without hiding the current state or turning internal controls into implied permission.</p></div>
+        <div id="help-content" class="help-content"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-dialog-title">
+    <form method="dialog" class="dialog-shell">
+      <header><div><p class="panel-label">Persistent help</p><h2 id="help-dialog-title">How to operate this candidate</h2></div><button class="dialog-close" value="close" aria-label="Close help">Close</button></header>
+      <div id="help-dialog-content"></div>
+    </form>
+  </dialog>
+
+  <div id="announcer" class="sr-only" aria-live="polite"></div>
+</body>
+</html>

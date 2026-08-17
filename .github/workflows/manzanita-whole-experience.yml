@@ -1,0 +1,349 @@
+name: Manzanita whole-experience authorship
+
+on:
+  push:
+    branches:
+      - agent/manzanita-whole-experience-017
+    paths:
+      - "manzanita-next/experience/**"
+      - ".github/workflows/manzanita-whole-experience.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/experience/**"
+      - ".github/workflows/manzanita-whole-experience.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Build and validate whole experience
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove the exact candidate and dependency boundary
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {".github/workflows/manzanita-whole-experience.yml"}
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/experience/")
+          ]
+          if invalid:
+              raise SystemExit(f"Whole-experience candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("manzanita-next/experience/") for path in changed):
+              raise SystemExit("Candidate contains no whole-experience object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+          test -f manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json
+          test -f manzanita-next/apertures/APERTURE_CONTRACT.json
+          test -f manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json
+          test -f manzanita-next/overlays/OVERLAY_CONTRACT.json
+          test -f manzanita-next/roles/ROLE_CONTRACT.json
+          test -f manzanita-next/design-system/CONSTITUTION.json
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+          test -f programs/manzanita-99/review-board/validate_review_board.py
+
+      - name: Install source, image, experience, browser, and review dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            requests beautifulsoup4 pillow jsonschema pytest playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Validate source, donor, experience, and review contracts
+        run: |
+          pytest -q manzanita-next/tests
+          python -m py_compile \
+            manzanita-next/public-demo/build_public_demo.py \
+            manzanita-next/apertures/build_apertures.py \
+            manzanita-next/street-glide/resolve_scene.py \
+            manzanita-next/street-glide/register_natural_border.py \
+            manzanita-next/overlays/build_overlays.py \
+            manzanita-next/roles/build_roles.py \
+            manzanita-next/experience/build_experience.py \
+            manzanita-next/experience/tests/test_experience.py \
+            manzanita-next/experience/tests/browser_test.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          node --check manzanita-next/experience/template/app.js
+          python -m json.tool manzanita-next/experience/EXPERIENCE_CONTRACT.json > /dev/null
+          python -m json.tool manzanita-next/experience/review/M99-RB-PKT-009.json > /dev/null
+          python -m json.tool manzanita-next/experience/review/M99-RB-DEC-009.json > /dev/null
+          python -m unittest discover \
+            -s manzanita-next/public-demo/tests \
+            -p "test_public_demo.py"
+          python -m unittest discover \
+            -s manzanita-next/apertures/tests \
+            -p "test_apertures.py"
+          python -m unittest discover \
+            -s manzanita-next/street-glide/tests \
+            -p "test_street_glide.py"
+          python -m unittest discover \
+            -s manzanita-next/overlays/tests \
+            -p "test_overlays.py"
+          python -m unittest discover \
+            -s manzanita-next/roles/tests \
+            -p "test_roles.py"
+          python -m unittest discover \
+            -s manzanita-next/experience/tests \
+            -p "test_experience.py"
+
+      - name: Acquire the exact live source foundation
+        id: acquire
+        continue-on-error: true
+        env:
+          AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPILLARY_ACCESS_TOKEN: ${{ secrets.MAPILLARY_ACCESS_TOKEN }}
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
+        run: |
+          rm -rf manzanita-next/out
+          cd manzanita-next
+          python -m scripts.acquire_foundation \
+            --place config/place-demo.json \
+            --registry config/source-registry.json \
+            --out out
+
+      - name: Validate every source receipt and retained payload
+        id: validate_source
+        if: always()
+        run: |
+          python manzanita-next/scripts/validate_foundation.py \
+            --root manzanita-next/out \
+            --source-schema manzanita-next/contracts/source-envelope.schema.json
+
+      - name: Rebuild the exact public-safe place donor
+        if: always()
+        run: |
+          rm -rf manzanita-next/public-demo/out
+          python manzanita-next/public-demo/build_public_demo.py \
+            --repo-root . \
+            --acquisition-root manzanita-next/out \
+            --output manzanita-next/public-demo/out
+
+      - name: Rebuild the seven-aperture donor
+        if: always()
+        run: |
+          rm -rf manzanita-next/apertures/out
+          python manzanita-next/apertures/build_apertures.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --output manzanita-next/apertures/out
+
+      - name: Rebuild the Street Glide donors
+        if: always()
+        run: |
+          rm -rf manzanita-next/street-glide/out
+          python manzanita-next/street-glide/resolve_scene.py \
+            --contract manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json \
+            --public-data manzanita-next/public-demo/out/PUBLIC_DATA.json \
+            --scenes manzanita-next/street-glide/AUTHORED_REGISTRATION_DEMO.json \
+            --target-heading 0 \
+            --output manzanita-next/street-glide/out/SCENE_DECISION.json
+          python manzanita-next/street-glide/register_natural_border.py \
+            --contract manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json \
+            --demo manzanita-next/street-glide/AUTHORED_REGISTRATION_DEMO.json \
+            --image manzanita-next/public-demo/out/site/assets/base-imagery.png \
+            --output manzanita-next/street-glide/out/REGISTRATION_RECEIPT.json
+
+      - name: Rebuild the eight-overlay donor
+        if: always()
+        run: |
+          rm -rf manzanita-next/overlays/out
+          python manzanita-next/overlays/build_overlays.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --aperture-root manzanita-next/apertures/out \
+            --street-glide-root manzanita-next/street-glide/out \
+            --output manzanita-next/overlays/out
+
+      - name: Rebuild the five-role and FAB handoff donors
+        if: always()
+        run: |
+          rm -rf manzanita-next/roles/out
+          python manzanita-next/roles/build_roles.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --aperture-root manzanita-next/apertures/out \
+            --overlay-root manzanita-next/overlays/out \
+            --output manzanita-next/roles/out
+
+      - name: Build the exact whole experience
+        if: always()
+        run: |
+          rm -rf manzanita-next/experience/out
+          python manzanita-next/experience/build_experience.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --aperture-root manzanita-next/apertures/out \
+            --street-glide-root manzanita-next/street-glide/out \
+            --overlay-root manzanita-next/overlays/out \
+            --role-root manzanita-next/roles/out \
+            --output manzanita-next/experience/out
+
+      - name: Exercise the whole experience in Chromium
+        if: always()
+        run: |
+          python manzanita-next/experience/tests/browser_test.py \
+            --site manzanita-next/experience/out/site \
+            --output manzanita-next/experience/out/browser
+
+      - name: Run the contained multidisciplinary review
+        if: always()
+        run: |
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/experience/review/M99-RB-PKT-009.json \
+            --decision manzanita-next/experience/review/M99-RB-DEC-009.json \
+            --receipt manzanita-next/experience/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Prove exact-head whole-experience and board receipts
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          data = json.loads(Path("manzanita-next/experience/out/EXPERIENCE_DATA.json").read_text())
+          build = json.loads(Path("manzanita-next/experience/out/BUILD_RECEIPT.json").read_text())
+          browser = json.loads(Path("manzanita-next/experience/out/browser/BROWSER_CAMPAIGN.json").read_text())
+          exported = json.loads(Path("manzanita-next/experience/out/browser/exported-snapshot.json").read_text())
+          board = json.loads(Path("manzanita-next/experience/out/BOARD_DECISION_RECEIPT.json").read_text())
+
+          expected_sections = ["overview", "place", "scales", "instruments", "seats", "fab_handoff", "sources", "help"]
+          expected_apertures = ["plant", "household", "property", "street", "neighborhood", "region", "stewardship"]
+          expected_overlays = ["care", "shade", "water", "heat", "air", "fire", "access", "assistance"]
+          expected_roles = ["resident", "nursery_grower", "crew_steward", "planner_program", "successor"]
+
+          assert data["schema"] == "axm-tools/manzanita-whole-experience-data@1"
+          assert data["section_order"] == expected_sections
+          assert data["aperture_order"] == expected_apertures
+          assert data["overlay_order"] == expected_overlays
+          assert data["role_order"] == expected_roles
+          assert len(data["apertures"]) == 7
+          assert len(data["overlays"]) == 8
+          assert len(data["roles"]) == 5
+          assert len(data["themes"]) == 3
+          assert len(data["viewports"]) == 4
+          assert data["scene"]["selected_mode"] == "map_only"
+          assert data["registration"]["admission_state"] == "registration_proposal"
+          assert data["fab_handoff"]["target_system"] == "Essential Attention"
+          assert data["fab_handoff"]["release_state"] == "not_authorized"
+          assert data["public_effect"] == "none"
+          assert data["constitutional_count_effect"] == "none"
+          assert data["release_effect"] == "none"
+          assert data["source_summary"]["state_counts"]["skipped_missing_credential"] >= 4
+          assert data["source_summary"]["state_counts"]["empty"] >= 2
+          assert next(row for row in data["overlays"] if row["id"] == "air")["state"] == "held_missing_source"
+          assert next(row for row in data["overlays"] if row["id"] == "access")["state"] == "map_only"
+
+          assert build["schema"] == "axm-tools/manzanita-whole-experience-build@1"
+          assert build["result"] == "PASS"
+          assert build["experience"]["aperture_count"] == 7
+          assert build["experience"]["overlay_count"] == 8
+          assert build["experience"]["role_count"] == 5
+          assert build["site"]["file_count"] == 5
+          assert build["site"]["self_contained"] is True
+          assert build["site"]["network_requests_required"] == 0
+          assert build["public_effect"] == "none"
+          assert build["constitutional_count_effect"] == "none"
+          assert build["release_effect"] == "none"
+
+          assert browser["schema"] == "axm-tools/manzanita-whole-experience-browser-campaign@1"
+          assert browser["result"] == "PASS"
+          assert len(browser["captures"]) == 8
+          assert browser["console_errors"] == []
+          assert browser["page_errors"] == []
+          assert browser["external_requests"] == []
+          assert browser["reduced_motion"]["preference"] is True
+          assert browser["zoom_200_percent"]["horizontal_overflow"] <= 2
+          assert all(row["horizontal_overflow"] <= 1 for row in browser["captures"])
+          assert all(row["minimum_visible_target_height"] >= 43.5 for row in browser["captures"])
+
+          assert exported["schema"] == "axm-tools/manzanita-whole-experience-snapshot@1"
+          assert exported["public_effect"] == "none"
+          assert exported["constitutional_count_effect"] == "none"
+          assert exported["release_state"] == "not_authorized"
+          assert exported["export_law"]["private_record_transfer"] == "prohibited"
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-009"
+          assert board["decision_id"] == "M99-RB-DEC-009"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 7
+          assert board["gate_states"]["interaction_semantics"] == "pass"
+          assert board["gate_states"]["visual_and_typographic_finish"] == "pass"
+          assert board["gate_states"]["responsive_and_accessible_operation"] == "partial"
+          assert board["gate_states"]["performance_resilience_and_failure"] == "partial"
+          assert board["gate_states"]["continuity_export_rollback_and_succession"] == "partial"
+          PY
+
+      - name: Retain source, donor, whole-experience, browser, and board evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-whole-experience-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            manzanita-next/out
+            manzanita-next/public-demo/out/PUBLIC_DATA.json
+            manzanita-next/public-demo/out/PUBLIC_PROJECTION_RECEIPT.json
+            manzanita-next/public-demo/out/BUILD_RECEIPT.json
+            manzanita-next/public-demo/out/site/assets/base-imagery.png
+            manzanita-next/apertures/out/APERTURE_BUNDLE.json
+            manzanita-next/apertures/out/BUILD_RECEIPT.json
+            manzanita-next/street-glide/out/SCENE_DECISION.json
+            manzanita-next/street-glide/out/REGISTRATION_RECEIPT.json
+            manzanita-next/overlays/out/OVERLAY_BUNDLE.json
+            manzanita-next/overlays/out/BUILD_RECEIPT.json
+            manzanita-next/roles/out/ROLE_BUNDLE.json
+            manzanita-next/roles/out/FAB_HANDOFF.json
+            manzanita-next/roles/out/BUILD_RECEIPT.json
+            manzanita-next/experience/README.md
+            manzanita-next/experience/EXPERIENCE_CONTRACT.json
+            manzanita-next/experience/build_experience.py
+            manzanita-next/experience/template
+            manzanita-next/experience/tests
+            manzanita-next/experience/review
+            manzanita-next/experience/out
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Enforce acquisition and source-validation outcomes
+        if: always()
+        env:
+          ACQUIRE_OUTCOME: ${{ steps.acquire.outcome }}
+          VALIDATE_SOURCE_OUTCOME: ${{ steps.validate_source.outcome }}
+        run: |
+          test "$ACQUIRE_OUTCOME" = "success"
+          test "$VALIDATE_SOURCE_OUTCOME" = "success"
