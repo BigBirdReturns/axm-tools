@@ -1,0 +1,214 @@
+{
+  "schema": "axm-tools/manzanita-review-packet@1",
+  "packet_id": "M99-RB-PKT-010",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "object": "M99-RESILIENCE-QUALIFICATION-001, the nineteen-campaign automated P8 qualification matrix over the exact source-bound Manzanita P7 whole experience.",
+  "classification": "automated_resilience_accessibility_performance_security_matrix",
+  "target_paths": [
+    "manzanita-next/qualification"
+  ],
+  "source_ref": {
+    "repository": "BigBirdReturns/axm-tools",
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "requested_decision": "admit_with_holds",
+  "requested_authority": "prototype_admission",
+  "public_effect": "internal_only",
+  "actors": [
+    "qualification_operator",
+    "source_custody",
+    "design_integrator",
+    "affected_actor",
+    "physical_campaign_operator",
+    "contained_review_board",
+    "release_authority",
+    "cold_successor"
+  ],
+  "mechanism": "The workflow installs the exact qualification dependencies, replays the canonical P7 acquisition, source validation, donor builds, whole-experience build, and browser campaign by extracting their current workflow run blocks, verifies the P7 receipts, runs nineteen P8 static and Chromium campaigns, retains screenshots and export-reimport evidence, and subjects the exact report to the twelve-seat contained board without creating physical, private, public, release, or count authority.",
+  "evidence": [
+    {
+      "id": "E-Q-CONTRACT",
+      "type": "source",
+      "path": "manzanita-next/qualification/QUALIFICATION_CONTRACT.json",
+      "claim": "Defines the nineteen automated campaigns, browser profiles, budgets, privacy and secret law, failure law, automated pass law, retained physical holds, effects, and control question."
+    },
+    {
+      "id": "E-Q-README",
+      "type": "source",
+      "path": "manzanita-next/qualification/README.md",
+      "claim": "Classifies the P8 automated object, names the operating actors and authority, explains the campaign mechanism, and preserves real assistive-technology, device, network, private, provider, field, deployed, release, and count holds."
+    },
+    {
+      "id": "E-Q-RUNNER",
+      "type": "test",
+      "path": "manzanita-next/qualification/run_qualification.py",
+      "claim": "Operates static integrity, privacy, five browser profiles, semantic, keyboard, zoom, CPU, delayed, offline, missing-image, stale, outage, contradiction, hostile-text, and export-reimport campaigns over the exact P7 artifact."
+    },
+    {
+      "id": "E-Q-REPLAY",
+      "type": "test",
+      "path": "manzanita-next/qualification/replay_p7_workflow.py",
+      "claim": "Extracts and replays the exact canonical P7 acquisition, validation, donor-build, whole-experience, and Chromium run blocks without copying stale commands or importing P7 release authority."
+    },
+    {
+      "id": "E-Q-TESTS",
+      "type": "test",
+      "path": "manzanita-next/qualification/tests/test_qualification.py",
+      "claim": "Exercises campaign completeness, static integrity, CSP, runtime network refusal, privacy and secret rejection, stale, outage, contradiction, hostile serialization, snapshot boundaries, and exact P7 replay-step selection."
+    },
+    {
+      "id": "E-Q-WORKFLOW",
+      "type": "receipt",
+      "path": ".github/workflows/manzanita-resilience-qualification.yml",
+      "claim": "Binds exact-head path scope, source acquisition, canonical P7 replay, P8 matrix, contained review, exact receipt assertions, and retained artifacts to the submitted candidate."
+    },
+    {
+      "id": "E-P7-CONTRACT",
+      "type": "source",
+      "path": "manzanita-next/experience/EXPERIENCE_CONTRACT.json",
+      "claim": "Supplies the admitted P7 object, controls, viewports, themes, failure states, motion, accessibility, export, adverse-action boundary, and explicit P8 through P10 holds."
+    },
+    {
+      "id": "E-P7-DATA",
+      "type": "receipt",
+      "path": "manzanita-next/experience/out/EXPERIENCE_DATA.json",
+      "claim": "Supplies the exact P7 place, source run, source states, apertures, overlays, roles, FAB handoff, donor digests, export law, effects, and experience digest under qualification."
+    },
+    {
+      "id": "E-P7-BUILD",
+      "type": "receipt",
+      "path": "manzanita-next/experience/out/BUILD_RECEIPT.json",
+      "claim": "Binds every P7 donor and generated site file, exact object counts, self-containment, zero runtime network requirement, no-effect boundary, and deterministic site manifest."
+    },
+    {
+      "id": "E-P7-BROWSER",
+      "type": "playtest",
+      "path": "manzanita-next/experience/out/browser/BROWSER_CAMPAIGN.json",
+      "claim": "Supplies the admitted P7 primary path, viewport and theme captures, keyboard operation, reduced motion, zoom, local export, errors, requests, and effect boundaries before P8 stress expansion."
+    },
+    {
+      "id": "E-Q-REPLAY-PLAN",
+      "type": "receipt",
+      "path": "manzanita-next/qualification/out/P7_REPLAY_PLAN.json",
+      "claim": "Binds the canonical P7 workflow identity, exact selected step names, run-block hashes, generated replay script, and no-effect boundary used in the P8 workflow."
+    },
+    {
+      "id": "E-Q-REPORT",
+      "type": "receipt",
+      "path": "manzanita-next/qualification/out/QUALIFICATION_REPORT.json",
+      "claim": "Records all nineteen automated campaigns, observations, screenshots, injected failure states, budgets, privacy and secret results, export-reimport receipt, retained holds, and exact output digest."
+    },
+    {
+      "id": "E-Q-REIMPORT",
+      "type": "receipt",
+      "path": "manzanita-next/qualification/out/P8_REIMPORT_RECEIPT.json",
+      "claim": "Verifies the exported snapshot against the exact experience, place, source run, selected aperture, overlay, role, donor digests, private-transfer prohibition, and release boundary."
+    },
+    {
+      "id": "E-DESIGN-CONSTITUTION",
+      "type": "source",
+      "path": "manzanita-next/design-system/CONSTITUTION.json",
+      "claim": "Supplies the admitted Forkline Field identity, typography, semantic materials, symbols, source rail, motion, accessibility, failure, component, and authority laws inherited by the exact P7 candidate."
+    },
+    {
+      "id": "E-BOARD-CHARTER",
+      "type": "source",
+      "path": "programs/manzanita-99/review-board/BOARD_CHARTER.json",
+      "claim": "Defines the twelve contained functional seats, evidence minimums, veto grounds, decision states, authority boundary, and constitutional no-effect law used for this review."
+    }
+  ],
+  "claim_boundary": "This packet requests admission of the automated P8 qualification floor only. It does not request real assistive-technology, human, physical-device, actual-network, private-projection, credentialed-provider, field, archive, public-endpoint, deployed-rollback, public-release, whole-product score, external-review, or canonical task-row standing.",
+  "gates": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is an automated qualification matrix over the admitted P7 internal experience, rather than a public endpoint, real assistive-technology record, physical-device certification, private projection, field instrument, or release decision.",
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-README", "E-Q-REPORT"]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Qualification operator, source custody, design integrator, contained review board, affected actors, physical campaign operators, release authority, and cold successor retain distinct evidence and decision authority.",
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-README", "E-P7-CONTRACT", "E-BOARD-CHARTER"]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The matrix operates the exact generated P7 site through nineteen static, browser, performance, failure, hostile-input, privacy, and continuity transactions rather than reviewing labels or selected screenshots.",
+      "evidence_ids": ["E-Q-RUNNER", "E-Q-REPLAY", "E-Q-TESTS", "E-Q-REPORT"]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "The canonical P7 workflow is replayed by exact run-block identity, every P7 donor and site digest remains bound, and injected stale, outage, contradiction, and hostile states are explicitly classified as qualification-only copies.",
+      "evidence_ids": ["E-Q-REPLAY", "E-Q-REPLAY-PLAN", "E-P7-DATA", "E-P7-BUILD", "E-Q-REPORT"]
+    },
+    "interaction_semantics": {
+      "state": "pass",
+      "reason": "The browser matrix operates scale, overlay, role, source, section, help, keyboard, offline, and export controls while confirming the governed object and no-effect state continue to change correctly.",
+      "evidence_ids": ["E-P7-BROWSER", "E-Q-RUNNER", "E-Q-REPORT", "E-Q-REIMPORT"]
+    },
+    "visual_and_typographic_finish": {
+      "state": "pass",
+      "reason": "Desktop light, desktop dark, touch tablet, reduced-motion mobile, and compact forced-colors profiles retain the P7 hierarchy, source rail, action and authority order, target floor, bounded overflow, and captured state.",
+      "evidence_ids": ["E-DESIGN-CONSTITUTION", "E-P7-BUILD", "E-Q-REPORT"]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "pass",
+      "reason": "Reduced motion, delayed resources, offline-after-load operation, stale data, outage, and contradictory evidence retain state identity and meaning without hiding source or consequence boundaries.",
+      "evidence_ids": ["E-P7-CONTRACT", "E-Q-RUNNER", "E-Q-REPORT"]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "Automated semantics, accessible names, landmarks, dialog, skip link, live regions, keyboard groups, 44-pixel targets, touch emulation, forced colors, reduced motion, compact width, and 200-percent text zoom pass, while real assistive technologies, people, and physical devices remain open campaigns.",
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-RUNNER", "E-Q-REPORT"]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "Static budgets, low-end CPU throttling, delayed resources, offline-after-load, missing imagery, stale source, provider outage, contradiction, and hostile text pass in automated Chromium, while actual low-end hardware, constrained networks, provider accounts, caches, observability, and independent recovery remain open.",
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-RUNNER", "E-Q-TESTS", "E-Q-REPORT"]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "The matrix enforces CSP and self-containment, rejects private and credential keys and high-confidence secret patterns, proves hostile text remains literal, preserves public-safe scope, and retains no-contact, no-adverse-action, no-release effects.",
+      "evidence_ids": ["E-Q-CONTRACT", "E-Q-RUNNER", "E-Q-TESTS", "E-Q-REPORT", "E-Q-REIMPORT"]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Canonical P7 replay, deterministic site and report digests, local snapshot export, verifier-level reimport, and successor-role operation pass, while independent archive recovery, separate-person cold replay, deployed rollback, and exact public bytes remain open.",
+      "evidence_ids": ["E-Q-REPLAY", "E-Q-REPLAY-PLAN", "E-P7-BUILD", "E-Q-REIMPORT", "E-Q-WORKFLOW"]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains fresh P7 donor, browser, P8 matrix, screenshot, reimport, and board receipts while public, release, external, physical, and constitutional-count effects remain none.",
+      "evidence_ids": ["E-Q-WORKFLOW", "E-Q-REPORT", "E-Q-REIMPORT", "E-BOARD-CHARTER"]
+    }
+  },
+  "seat_prompts": {
+    "board_chair": ["Confirm the exact P8 automated object, all nineteen campaign receipts, applicable partial gates, retained physical and public holds, and the absence of hidden task-count or release claims."],
+    "creative_direction": ["Determine whether the P7 visual identity and hierarchy remain coherent across light, dark, touch, reduced-motion, compact, forced-color, zoom, missing-image, and degraded-data profiles."],
+    "product_interaction": ["Confirm every stressed control still changes the governed work, retains source and authority, and never turns an automated test injection into a product or external effect."],
+    "information_design": ["Confirm stale, unavailable, contradictory, missing-image, hostile, source, action, authority, acceptance, and prohibited consequence states remain independently legible."],
+    "typography": ["Confirm long failure, source, authority, hostile, and digest strings remain readable without clipping or page-level overflow at compact width, forced colors, and 200-percent text zoom."],
+    "motion": ["Confirm reduced motion, delayed resources, offline operation, stale evidence, and outage transitions retain state origin, destination, focus, and meaning without decorative dependence."],
+    "source_custody": ["Confirm the canonical P7 workflow and outputs are replayed and hash-bound, and that every injected P8 state remains an explicit test-only derivative rather than source evidence."],
+    "field_operations": ["Confirm missing imagery, provider outage, and degraded evidence never become access, observation, inspection, safety, work, remediation, completion, or affected-actor standing."],
+    "accessibility": ["Confirm automated semantics, keyboard, targets, touch emulation, forced colors, reduced motion, compact width, and zoom pass while real assistive-technology and human campaigns remain openly held."],
+    "performance_resilience": ["Confirm the byte and DOM budgets, CPU throttle, delayed resources, offline operation, missing image, stale, outage, contradiction, hostile text, and error ledgers are complete and falsifiable."],
+    "security_privacy": ["Confirm CSP, zero runtime network primitives, private and credential-key rejection, secret scanning, hostile-text escaping, public-safe projection, and no-effect export boundaries."],
+    "continuity_release": ["Confirm canonical replay, deterministic receipts, export and verifier-level reimport, successor operation, retained artifacts, and the explicit exclusion of independent archive, public bytes, and rollback standing."]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, eligibility, award, funding, enforcement, inspection, citation, or penalty",
+      "evacuation, public-safety, medical, legal, or emergency direction",
+      "entry, pruning, traffic control, labor, work, remediation, or completion authorization",
+      "presentation of injected, authored, stale, contradictory, or unavailable evidence as physical observation"
+    ],
+    "required_human_control": "An accountable human with lawful authority must separately verify evidence, affected-actor consent, accessibility, device, network, provider, private, field, archive, deployment, rollback, and release conditions before any external action or public promotion exists."
+  },
+  "continuity": {
+    "recovery_path": "Rebuild the exact P7 donors and whole experience through the canonical workflow replay, rerun the nineteen-campaign matrix, verify the report and snapshot digests, and compare the retained exact-head artifact.",
+    "rollback_target": "Historical public manzanita v1.4 route",
+    "successor_test": "A separate cold successor must later recover the retained package and independently operate the real assistive-technology, device, network, archive, public-byte, and rollback campaigns before public release."
+  },
+  "control_question": "Does the exact P7 experience remain usable, legible, source-honest, bounded, and incapable of external effect under every automated P8 condition while every real physical, human, provider, field, archive, deployed, public, score, and canonical-count hold remains visible?"
+}
