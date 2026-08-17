@@ -370,11 +370,9 @@
   }
 
   function focusControl(kind, id) {
-    requestAnimationFrame(() => {
-      const selector = kind === "role" ? `[data-role="${CSS.escape(id)}"]` : `[data-${kind}="${CSS.escape(id)}"]`;
-      const control = $(selector);
-      if (control) control.focus();
-    });
+    const selector = kind === "role" ? `[data-role="${CSS.escape(id)}"]` : `[data-${kind}="${CSS.escape(id)}"]`;
+    const control = $(selector);
+    if (control) control.focus();
   }
 
   function select(kind, id, { announceChange = true } = {}) {
