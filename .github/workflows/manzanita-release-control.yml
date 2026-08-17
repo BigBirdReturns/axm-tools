@@ -81,6 +81,7 @@ jobs:
             manzanita-next/release-control/build_release_control.py \
             manzanita-next/release-control/replay_p9_workflow.py \
             manzanita-next/release-control/tests/test_release_control.py \
+            manzanita-next/release-control/tests/test_replay_environment.py \
             programs/manzanita-99/review-board/validate_review_board.py
           python -m json.tool manzanita-next/release-control/RELEASE_CONTRACT.json > /dev/null
           python -m json.tool manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json > /dev/null
@@ -108,7 +109,7 @@ jobs:
           PY
           python -m unittest discover \
             -s manzanita-next/release-control/tests \
-            -p "test_release_control.py"
+            -p "test_*.py"
 
       - name: Replay the exact estate audit P7 P8 and P9 chain
         env:
