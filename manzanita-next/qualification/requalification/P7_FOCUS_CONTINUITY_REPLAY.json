@@ -1,0 +1,43 @@
+{
+  "schema": "axm-tools/manzanita-p8-requalification-request@1",
+  "request_id": "M99-P8-REQUAL-001",
+  "requested_on": "2026-08-17",
+  "source_main_sha": "091bf4c9196c48e437da6c7d1462535d31d25b0d",
+  "trigger": {
+    "failed_p8_run": 32043557778,
+    "failed_campaign": "keyboard_only",
+    "failure": "ArrowLeft did not move one aperture after End selected Stewardship",
+    "classification": "P7 dynamic-control focus continuity defect"
+  },
+  "admitted_repair": {
+    "pull_request": 106,
+    "repair_head": "485f46407aca619d31017d04760925908262bcc7",
+    "merge_commit": "115867b65875b954a188984a10525afc5a91797f",
+    "runtime_path": "manzanita-next/experience/template/app.js",
+    "runtime_blob_sha": "0a7456e01f80e309ab280d396649ec389eadc138",
+    "mechanism": "Focus is restored synchronously to the newly rendered governed control after each selection.",
+    "regressions": [
+      "ArrowRight preserves exact one-step transition and active-element continuity",
+      "End selects Stewardship and focuses its replacement control",
+      "Immediate ArrowLeft selects Region exactly once",
+      "Home selects Plant and focuses its replacement control",
+      "Immediate ArrowRight selects Household exactly once"
+    ]
+  },
+  "requested_campaign": {
+    "workflow": ".github/workflows/manzanita-resilience-qualification.yml",
+    "job": "Qualify resilience accessibility and hostile states",
+    "campaign_count": 19,
+    "required_result": "PASS",
+    "required_review": "M99-RB-DEC-010",
+    "artifact_retention_days": 90
+  },
+  "authority": {
+    "requested_effect": "internal_requalification_only",
+    "public_release_authorized": false,
+    "external_effect_authorized": false,
+    "canonical_task_count_effect": "none"
+  },
+  "claim_boundary": "This request triggers an exact-head replay of the admitted automated P8 matrix after a source-level P7 interaction repair. The request itself is not qualification evidence, does not perform a physical or human campaign, does not authorize public release, and does not change a canonical task row.",
+  "control_question": "Does the corrected P7 runtime pass all nineteen P8 campaigns on one exact head without weakening the consecutive-key contract or broadening any source, private, field, external-effect, release, score, or task-count authority?"
+}
