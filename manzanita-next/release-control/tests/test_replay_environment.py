@@ -36,14 +36,15 @@ class ReplayEnvironmentReceiptTests(unittest.TestCase):
 
             plan = replay.build_plan(workflow, script, receipt)
             retained = json.loads(receipt.read_text(encoding="utf-8"))
+            script_text = script.read_text(encoding="utf-8")
 
         self.assertEqual(
             plan["required_environment"],
             ["AIRNOW_API_KEY", "USGS_API_KEY"],
         )
         self.assertEqual(retained["required_environment"], plan["required_environment"])
-        self.assertIn('export AIRNOW_API_KEY="${AIRNOW_API_KEY-}"', script.read_text(encoding="utf-8"))
-        self.assertIn('export USGS_API_KEY="${USGS_API_KEY-}"', script.read_text(encoding="utf-8"))
+        self.assertIn('export AIRNOW_API_KEY="${AIRNOW_API_KEY-}"', script_text)
+        self.assertIn('export USGS_API_KEY="${USGS_API_KEY-}"', script_text)
 
 
 if __name__ == "__main__":
