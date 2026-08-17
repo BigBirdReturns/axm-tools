@@ -287,7 +287,7 @@ def build(
     source_resolution_states = set(contract["source_resolution_states"])
 
     for relative in surface_files:
-        source_path = (inventory_path.parent / str(relative)).resolve()
+        source_path = (paths["inventory"].parent / str(relative)).resolve()
         require(source_path.is_file(), f"Surface file is missing: {source_path}")
         surface = load_json(source_path)
         try:
@@ -408,10 +408,10 @@ def build(
         "schema": REGISTER_SCHEMA,
         "contract_id": contract["contract_id"],
         "contract_version": contract["version"],
-        "source_inventory": inventory_path.relative_to(repo_root).as_posix(),
-        "source_inventory_sha256": sha256_file(inventory_path),
-        "surface_schema": surface_schema_path.relative_to(repo_root).as_posix(),
-        "surface_schema_sha256": sha256_file(surface_schema_path),
+        "source_inventory": paths["inventory"].relative_to(repo_root).as_posix(),
+        "source_inventory_sha256": sha256_file(paths["inventory"]),
+        "surface_schema": paths["surface_schema"].relative_to(repo_root).as_posix(),
+        "surface_schema_sha256": sha256_file(paths["surface_schema"]),
         "backfill_audit": {
             "result": backfill_report["result"],
             "head_sha": backfill_report.get("head_sha"),

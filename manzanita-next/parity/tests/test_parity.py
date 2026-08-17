@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import shutil
 import sys
 import tempfile
@@ -304,6 +305,37 @@ class ParityTests(unittest.TestCase):
         self.assertEqual(register["constitutional_count_effect"], "none")
         self.assertEqual(register["release_effect"], "none")
         self.assertTrue(all(row["public_effect"] == "none" for row in register["components"]))
+
+
+    def test_relative_paths_are_normalized_against_the_repository_root(self) -> None:
+        original = Path.cwd()
+        try:
+            os.chdir(self.repo)
+            receipt = builder.build(
+                Path("."),
+                Path("manzanita-next/parity/PARITY_CONTRACT.json"),
+                Path("manzanita-next/parity/SURFACE_DISPOSITIONS.json"),
+                Path("resolution-backfill/inventory.json"),
+                Path("resolution-backfill/contracts/surface.schema.json"),
+                Path("resolution-backfill/out/report.json"),
+                Path("resolution-backfill/out/qualification.json"),
+                Path("manzanita-next/experience/out/BUILD_RECEIPT.json"),
+                Path("manzanita-next/qualification/out/QUALIFICATION_REPORT.json"),
+                Path("manzanita-next/qualification/out/BOARD_DECISION_RECEIPT.json"),
+                Path("manzanita-next/parity/out-relative"),
+            )
+        finally:
+            os.chdir(original)
+        self.assertEqual(receipt["result"], "PASS")
+        register = json.loads(
+            (self.parity / "out-relative/PARITY_REGISTER.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(register["source_inventory"], "resolution-backfill/inventory.json")
+        self.assertEqual(
+            register["surface_schema"],
+            "resolution-backfill/contracts/surface.schema.json",
+        )
+
 
 
 if __name__ == "__main__":
