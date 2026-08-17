@@ -549,5 +549,15 @@ class ExperienceTests(unittest.TestCase):
         self.assertIn("focusControl(kind, id);", app)
         self.assertNotIn("buttons[next].click();", app)
 
+    def test_dynamic_control_focus_is_synchronous(self) -> None:
+        script = (EXPERIENCE_ROOT / "template" / "app.js").read_text(encoding="utf-8")
+        start = script.index("  function focusControl(kind, id) {")
+        end = script.index("\n  function select(kind, id", start)
+        focus = script[start:end]
+        self.assertNotIn("requestAnimationFrame", focus)
+        self.assertIn("if (control) control.focus();", focus)
+
+
+
 if __name__ == "__main__":
     unittest.main()
