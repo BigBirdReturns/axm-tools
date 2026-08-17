@@ -49,6 +49,7 @@ jobs:
           target = Path("/tmp/manzanita-estate-parity-materialized")
           target.mkdir(parents=True, exist_ok=True)
           allowed_file = ".github/workflows/manzanita-estate-parity.yml"
+          allowed_root = "manzanita-next/parity"
           allowed_prefix = "manzanita-next/parity/"
           seen = set()
 
@@ -63,7 +64,11 @@ jobs:
                   seen.add(name)
                   if member.issym() or member.islnk() or member.isdev() or member.isfifo():
                       raise SystemExit(f"Unsupported archive member type: {name}")
-                  if name != allowed_file and not name.startswith(allowed_prefix):
+                  if (
+                      name != allowed_file
+                      and name != allowed_root
+                      and not name.startswith(allowed_prefix)
+                  ):
                       raise SystemExit(f"Out-of-scope archive member: {name}")
               bundle.extractall(target)
           PY
