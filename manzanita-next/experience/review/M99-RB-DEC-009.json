@@ -1,0 +1,368 @@
+{
+  "schema": "axm-tools/manzanita-review-decision@1",
+  "decision_id": "M99-RB-DEC-009",
+  "packet_id": "M99-RB-PKT-009",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "reviewed_ref": {
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "external_review_claim": false,
+  "seat_reviews": [
+    {
+      "seat_id": "board_chair",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The packet covers one bounded whole-experience object, every admitted donor, all twelve functional seats, exact internal authority, and the retained P8 through P10 release holds.",
+        "No hidden private, field, adverse-action, public-release, score, external-review, or canonical task-count claim is present."
+      ],
+      "evidence_ids": [
+        "E-EXPERIENCE-CONTRACT",
+        "E-EXPERIENCE-BUILD",
+        "E-BROWSER-CAMPAIGN",
+        "E-BOARD-CHARTER"
+      ],
+      "uncertainty": "Physical, independent, deployed, and final-score campaigns remain outside this decision.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "creative_direction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The source rail, registered aerial stage, Forkline contours, evidence nodes, consequence cuts, operating ledger, and section sequence produce one recognizable internal experience across retained captures.",
+        "Light and dark materials preserve the same hierarchy and consequence order without gradients, blur, shadow, or rounded-card dominance."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-EXPERIENCE-DATA",
+        "E-BROWSER-CAMPAIGN"
+      ],
+      "uncertainty": "Independent art direction and public-route comparison remain later release work.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "product_interaction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Aperture, overlay, role, section, help, source-filter, theme, keyboard, and export controls change the represented object or retained operating state rather than merely changing labels.",
+        "The exact primary path reaches degraded evidence and the FAB firewall while preserving affected-actor control and no external effect."
+      ],
+      "evidence_ids": [
+        "E-EXPERIENCE-BROWSER-TEST",
+        "E-BROWSER-CAMPAIGN",
+        "E-EXPERIENCE-DATA",
+        "E-FAB-HANDOFF"
+      ],
+      "uncertainty": "Correction editing, reimport, undo, and live collaborative operation remain open.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "information_design",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Place, source run, scale, instrument, seat, reading, uncertainty, safe action, authority, acceptance, handoff, failure, and prohibited consequence remain independently legible in the overview and detailed registers.",
+        "Unavailable sources and conflicts are presented as records rather than being hidden or averaged."
+      ],
+      "evidence_ids": [
+        "E-EXPERIENCE-DATA",
+        "E-BROWSER-CAMPAIGN",
+        "E-PUBLIC-DATA",
+        "E-OVERLAY-BUNDLE"
+      ],
+      "uncertainty": "Independent comprehension testing with unfamiliar users remains open.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "typography",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Declared display, editorial, operational, label, data, and compact roles carry one hierarchy across desktop, laptop, mobile, compact, light, dark, and zoomed states.",
+        "Long source, authority, digest, and consequence strings wrap without horizontal overflow in the bounded browser campaign."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-BROWSER-CAMPAIGN",
+        "E-EXPERIENCE-BUILD"
+      ],
+      "uncertainty": "Multilingual expansion, fallback metrics, and optical review on physical devices remain open.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "motion",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Scale, instrument, role, source, section, and help changes preserve one place and source-run anchor with explicit before and after labels.",
+        "Reduced-motion operation passes with immediate state replacement and no loss of controls, authority, or next-action meaning."
+      ],
+      "evidence_ids": [
+        "E-EXPERIENCE-CONTRACT",
+        "E-EXPERIENCE-BROWSER-TEST",
+        "E-BROWSER-CAMPAIGN"
+      ],
+      "uncertainty": "Long-running source aging, interruption, and reconnect motion remain P8 concerns.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "source_custody",
+      "disposition": "pass",
+      "findings": [
+        "Every public source, authored aperture and overlay, scene decision, registration proposal, role projection, FAB handoff, and final site file carries a retained identity and bounded claim.",
+        "Missing credentials, empty coverage, map-only operation, authored demonstrations, and degraded evidence remain distinct throughout the experience."
+      ],
+      "evidence_ids": [
+        "E-PUBLIC-DATA",
+        "E-APERTURE-BUNDLE",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT",
+        "E-OVERLAY-BUNDLE",
+        "E-ROLE-BUNDLE",
+        "E-EXPERIENCE-DATA"
+      ],
+      "uncertainty": "Future provider, private, and field donors require their own custody campaigns.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "field_operations",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The visible action and authority language routes verification and affected-actor control without asserting access, inspection, equipment, crew, work, safety, remediation, or completion standing.",
+        "Map-only and registration-proposal states remain explicit where real street and field evidence are unavailable."
+      ],
+      "evidence_ids": [
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT",
+        "E-EXPERIENCE-DATA",
+        "E-FAB-HANDOFF"
+      ],
+      "uncertainty": "No field operation or affected-resident acceptance has occurred.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "accessibility",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Keyboard group navigation, visible focus, 44-pixel control floors, text and shape state labels, 320-pixel composition, 200-percent zoom, and reduced-motion parity pass in the bounded campaign.",
+        "Source, uncertainty, authority, failure, and next safe action remain in document order and do not depend on color alone."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-EXPERIENCE-BROWSER-TEST",
+        "E-BROWSER-CAMPAIGN"
+      ],
+      "uncertainty": "Independent screen-reader, forced-color, touch-device, cognitive, and assistive-technology campaigns remain open.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "performance_resilience",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The site is deterministic, self-contained, requires no runtime network request, preserves degraded states, and produces no JavaScript or console error in the bounded campaign.",
+        "Source acquisition and every donor rebuild are executed before the exact whole-experience receipt is admitted."
+      ],
+      "evidence_ids": [
+        "E-EXPERIENCE-BUILDER",
+        "E-EXPERIENCE-UNIT-TESTS",
+        "E-EXPERIENCE-BUILD",
+        "E-BROWSER-CAMPAIGN",
+        "E-EXPERIENCE-WORKFLOW"
+      ],
+      "uncertainty": "Low-end hardware, slow and intermittent networks, hostile inputs, cache behavior, observability, and recovery remain unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "security_privacy",
+      "disposition": "pass",
+      "findings": [
+        "Public-safe inputs and explicitly authored donors are accepted while private and credential fields are rejected before experience composition.",
+        "Local export and the FAB handoff retain no-contact, no-payment, no-publication, no-eligibility, no-insurance, no-enforcement, no-work, and no-release firewalls."
+      ],
+      "evidence_ids": [
+        "E-EXPERIENCE-CONTRACT",
+        "E-EXPERIENCE-BUILDER",
+        "E-EXPERIENCE-UNIT-TESTS",
+        "E-FAB-HANDOFF",
+        "E-EXPERIENCE-DATA"
+      ],
+      "uncertainty": "Private projection and independent security testing remain later controlled campaigns.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "continuity_release",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Exact donor, experience, site, screenshot, and export digests plus deterministic tests and replay commands support bounded reconstruction.",
+        "The successor seat and local snapshot preserve the current projection and holds without changing the historical public route."
+      ],
+      "evidence_ids": [
+        "E-EXPERIENCE-README",
+        "E-EXPERIENCE-BUILD",
+        "E-BROWSER-CAMPAIGN",
+        "E-EXPERIENCE-WORKFLOW"
+      ],
+      "uncertainty": "Reimport, independent archive recovery, separate-person operation, deployed rollback, exact public bytes, and final score remain open.",
+      "veto_ids": []
+    }
+  ],
+  "defects": [],
+  "vetoes": [],
+  "gate_disposition": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is one source-bound internal whole experience over an admitted public-safe place, rather than a private record, field instrument, eligibility system, work order, adverse-action surface, or public endpoint.",
+      "evidence_ids": [
+        "E-EXPERIENCE-CONTRACT",
+        "E-EXPERIENCE-README",
+        "E-EXPERIENCE-DATA",
+        "E-EXPERIENCE-BUILD"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Resident, nursery or grower, crew or steward, planner or program, successor, source custody, design integrator, affected actor, and release authority remain distinct across controls, acceptance, handoff, export, and prohibited effects.",
+      "evidence_ids": [
+        "E-EXPERIENCE-CONTRACT",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The exact site changes aperture object and geometry, overlay source state and registration, role evidence and authority, section content, help, and local export rather than relabeling one static view.",
+      "evidence_ids": [
+        "E-EXPERIENCE-BUILDER",
+        "E-EXPERIENCE-UNIT-TESTS",
+        "E-EXPERIENCE-BROWSER-TEST",
+        "E-EXPERIENCE-DATA",
+        "E-BROWSER-CAMPAIGN"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Public sources, authored aperture and overlay geometry, Street Glide decision, derived registration proposal, role projections, FAB preparation, and final experience outputs remain separately classified, hashed, scoped, and visible.",
+      "evidence_ids": [
+        "E-PUBLIC-DATA",
+        "E-APERTURE-BUNDLE",
+        "E-SCENE-DECISION",
+        "E-REGISTRATION-RECEIPT",
+        "E-OVERLAY-BUNDLE",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF",
+        "E-EXPERIENCE-DATA"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "pass",
+      "reason": "Scale, instrument, role, theme, section, help, source filter, and export controls change the governed object and retained evidence, support keyboard group operation, and keep no-effect state visible throughout the exact browser path.",
+      "evidence_ids": [
+        "E-EXPERIENCE-CONTRACT",
+        "E-EXPERIENCE-BROWSER-TEST",
+        "E-BROWSER-CAMPAIGN",
+        "E-EXPERIENCE-DATA"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "pass",
+      "reason": "The Forkline whole-experience composition applies one source rail, registered place stage, stable type roles, square evidence grammar, equal semantic light and dark materials, complete information hierarchy, and eight retained full-state viewport and theme captures.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-EXPERIENCE-DATA",
+        "E-BROWSER-CAMPAIGN",
+        "E-EXPERIENCE-BUILD"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "pass",
+      "reason": "State changes preserve place and source-run identity, immediate reduced-motion equivalents retain origin and destination meaning, and the browser campaign verifies reduced-motion operation without semantic loss.",
+      "evidence_ids": [
+        "E-EXPERIENCE-CONTRACT",
+        "E-EXPERIENCE-BROWSER-TEST",
+        "E-BROWSER-CAMPAIGN"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "Keyboard groups, focus visibility, 44-pixel controls, complete text alternatives, non-color state labels, 320-pixel layout, 200-percent zoom, and reduced motion pass, while independent screen-reader, forced-color, touch-device, cognitive, and assistive-technology campaigns remain open.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-EXPERIENCE-CONTRACT",
+        "E-EXPERIENCE-BROWSER-TEST",
+        "E-BROWSER-CAMPAIGN"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "The artifact is self-contained, deterministic, network-independent at runtime, explicit under degraded and unavailable evidence, and free of browser errors in the bounded campaign, while low-end devices, slow and intermittent networks, hostile inputs, caching, observability, and recovery remain P8 work.",
+      "evidence_ids": [
+        "E-EXPERIENCE-UNIT-TESTS",
+        "E-EXPERIENCE-BROWSER-TEST",
+        "E-EXPERIENCE-BUILD",
+        "E-BROWSER-CAMPAIGN"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "The builder rejects private and credential fields, the site consumes only public-safe and authored bounded donors, all source rights and claim limits remain visible, and export, FAB, insurance, enforcement, work, and release effects remain blocked.",
+      "evidence_ids": [
+        "E-EXPERIENCE-CONTRACT",
+        "E-EXPERIENCE-BUILDER",
+        "E-EXPERIENCE-UNIT-TESTS",
+        "E-PUBLIC-DATA",
+        "E-FAB-HANDOFF",
+        "E-EXPERIENCE-DATA"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Deterministic donor and site hashes, local snapshot export, source-run identity, a successor seat, exact build commands, and retained artifacts support replay, while reimport, independent archive recovery, separate-person cold operation, deployed rollback, and public-byte proof remain open.",
+      "evidence_ids": [
+        "E-EXPERIENCE-README",
+        "E-EXPERIENCE-BUILDER",
+        "E-EXPERIENCE-BROWSER-TEST",
+        "E-EXPERIENCE-BUILD",
+        "E-BROWSER-CAMPAIGN",
+        "E-EXPERIENCE-WORKFLOW"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains fresh source, donor, whole-experience, browser, export, screenshot, and board receipts while public, release, external, and constitutional-count effects remain none.",
+      "evidence_ids": [
+        "E-EXPERIENCE-WORKFLOW",
+        "E-EXPERIENCE-BUILD",
+        "E-BROWSER-CAMPAIGN",
+        "E-FAB-HANDOFF",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "outcome": "admit_with_holds",
+  "admitted_claim": "The repository may admit the exact self-contained Manzanita whole-experience artifact as an internal candidate whose one place, seven apertures, eight registered instruments, five seats, degraded evidence, help, local export, and bounded FAB handoff remain source-linked, operable, and reproducible across the retained viewport and theme campaign.",
+  "holds": [
+    "No private household projection, resident identity, actual affected-actor acceptance, or private-record reimport is admitted.",
+    "No live credential, provider quota, cost, latency, outage, terms-change, or commercial-provider storage campaign is admitted.",
+    "No field observation, lawful access, equipment, crew, traffic control, work, remediation, completion, or field acceptance evidence is admitted.",
+    "No independent screen-reader, forced-color, touch-device, cognitive, assistive-technology, low-end-device, poor-network, or hostile-input campaign is admitted.",
+    "No real nursery inventory, diagnosis, purchase, substitution, order, payment, program eligibility, award, insurance, enforcement, evacuation, contact, publication, appointment, representation, or institutional acceptance is admitted.",
+    "No export reimport, independent archive recovery, separate-person cold-successor operation, deployed-byte proof, rollback, or public-endpoint campaign is admitted.",
+    "No whole-product score, external review claim, canonical task-row transition, remembered-count effect, or public release is admitted."
+  ],
+  "release_effect": "internal_candidate_only",
+  "authority_receipt": {
+    "deciding_seat": "release_authority",
+    "decision_scope": "Admit only the exact source-bound whole-experience data, self-contained site, browser campaign, local export behavior, and retained internal review evidence for later P8 through P10 qualification.",
+    "prohibited_effects": [
+      "public deployment or serving",
+      "private household or resident record publication",
+      "field access, inspection, equipment, traffic, labor, work, remediation, or completion authorization",
+      "nursery order, purchase, payment, diagnosis, prescription, inventory, or availability promise",
+      "assistance, eligibility, award, denial, insurance, enforcement, evacuation, property, safety, or resident decision",
+      "contact, publication, appointment, representation, institutional acceptance, or other external effect",
+      "provider credential operation, purchase, contract, or spend",
+      "whole-product qualification, design-score award, external endorsement, or canonical task-count mutation"
+    ]
+  },
+  "qualification_boundary": "A passing decision proves only that the exact experience contract, donors, deterministic builder, unit tests, self-contained site, bounded browser campaign, local export, help, failure states, and internal review agree. It does not prove private operation, field fitness, live provider operation, assistive-technology completeness, poor-network resilience, rollback, cold succession, public serving, final score, or task closure.",
+  "control_question": "Can a cold successor operate the exact whole experience through every scale, instrument, seat, degraded source, help surface, local export, and FAB handoff while preserving source, authority, affected-actor control, and every retained release hold?"
+}

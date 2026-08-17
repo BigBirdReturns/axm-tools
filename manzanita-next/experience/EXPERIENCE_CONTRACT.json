@@ -1,0 +1,177 @@
+{
+  "schema": "axm-tools/manzanita-whole-experience-contract@1",
+  "contract_id": "M99-WHOLE-EXPERIENCE-001",
+  "version": "1.0.0",
+  "task_reference": "JDB99-017",
+  "state": "internal_candidate",
+  "object": {
+    "classification": "source_bound_whole_experience_candidate",
+    "accountable_actor": "design_integrator",
+    "review_mechanism": "M99-CONTAINED-REVIEW-BOARD",
+    "decision_authority": "release_authority",
+    "public_effect": "none",
+    "constitutional_count_effect": "none",
+    "claim_boundary": "The object composes one public-safe place, seven apertures, eight registered overlays, five functional role projections, source and failure rails, help, export, and the bounded FAB preparation record into one internal whole-experience candidate. It is not a public endpoint, private household record, field instrument, eligibility system, work order, insurance or enforcement input, completed-remediation record, or released product."
+  },
+  "section_order": [
+    "overview",
+    "place",
+    "scales",
+    "instruments",
+    "seats",
+    "fab_handoff",
+    "sources",
+    "help"
+  ],
+  "aperture_order": [
+    "plant",
+    "household",
+    "property",
+    "street",
+    "neighborhood",
+    "region",
+    "stewardship"
+  ],
+  "overlay_order": [
+    "care",
+    "shade",
+    "water",
+    "heat",
+    "air",
+    "fire",
+    "access",
+    "assistance"
+  ],
+  "role_order": [
+    "resident",
+    "nursery_grower",
+    "crew_steward",
+    "planner_program",
+    "successor"
+  ],
+  "theme_order": [
+    "auto",
+    "light",
+    "dark"
+  ],
+  "viewports": [
+    {
+      "id": "desktop",
+      "width": 1600,
+      "height": 1000
+    },
+    {
+      "id": "laptop",
+      "width": 1024,
+      "height": 900
+    },
+    {
+      "id": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "compact",
+      "width": 320,
+      "height": 720
+    }
+  ],
+  "controls": [
+    {
+      "id": "aperture",
+      "meaning": "Change the represented object, evidence set, geometry, safe action, authority, acceptance, and handoff while retaining one place identity."
+    },
+    {
+      "id": "overlay",
+      "meaning": "Change the registered instrument, source state, geometry, legend, uncertainty, conflict, safe action, authority, and prohibited consequence."
+    },
+    {
+      "id": "role",
+      "meaning": "Change evidence visibility, controls, authority, acceptance, export, handoff, and failure state over the same canonical record."
+    },
+    {
+      "id": "theme",
+      "meaning": "Change semantic materials while preserving content, control order, line weights, source visibility, and consequence order."
+    },
+    {
+      "id": "help",
+      "meaning": "Explain the object, actors, source classes, state symbols, safe operating path, holds, and prohibited consequences without hiding the current work."
+    },
+    {
+      "id": "export",
+      "meaning": "Produce a local JSON snapshot of the current bounded projection with no contact, publication, payment, appointment, representation, execution, or release effect."
+    }
+  ],
+  "required_surfaces": [
+    "persistent source rail",
+    "place overview",
+    "registered image and overlay stage",
+    "seven-aperture control group",
+    "eight-overlay control group",
+    "five-role control group",
+    "reading, uncertainty, safe-action, authority, acceptance, and handoff panel",
+    "degraded and unavailable evidence ledger",
+    "FAB handoff firewall",
+    "persistent help dialog",
+    "local export control"
+  ],
+  "failure_states": [
+    "missing credential remains unavailable rather than zero or safe",
+    "empty coverage remains empty rather than atmospheric filler",
+    "map-only operation remains visibly distinct from a street scene",
+    "stale, contradictory, failed, rate-limited, or unknown evidence keeps its own state",
+    "registration proposal remains a proposal rather than a physical feature",
+    "role preparation remains preparation rather than authority or execution",
+    "FAB handoff remains internal and cannot become eligibility, award, assignment, or institutional commitment"
+  ],
+  "motion_law": {
+    "allowed": [
+      "scale change",
+      "registered overlay change",
+      "source or state change",
+      "role and handoff change",
+      "help disclosure"
+    ],
+    "duration_ms": {
+      "micro": 120,
+      "state": 180,
+      "section": 240
+    },
+    "reduced_motion": "Immediate state replacement with retained origin and destination labels, changed-field ledger, focus continuity, and no loss of meaning."
+  },
+  "accessibility_law": {
+    "minimum_target_css_px": 44,
+    "keyboard_groups": [
+      "aperture",
+      "overlay",
+      "role",
+      "theme"
+    ],
+    "required": "All meaning remains available in text and shape without color alone; source, uncertainty, authority, failure, and next action remain ordered at 320 CSS pixels and 200 percent zoom."
+  },
+  "export_law": {
+    "format": "portable_json_snapshot",
+    "private_record_transfer": "prohibited",
+    "external_effect": "none",
+    "release_state": "not_authorized",
+    "claim_boundary": "Export preserves the selected public-safe projection, donor identities, source states, authority, acceptance, handoff, holds, and no-effect boundary. It cannot contact, publish, purchase, appoint, represent, authorize work, decide eligibility, or create institutional acceptance."
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, eligibility, award, funding, enforcement, inspection, citation, or penalty",
+      "evacuation, public-safety, medical, legal, or emergency direction",
+      "entry, pruning, traffic control, labor, work, remediation, or completion authorization",
+      "presentation of authored or unavailable evidence as observation"
+    ],
+    "required_human_control": "An accountable human must verify evidence, authority, affected-actor consent, lawful access, safety, funding, execution, and completion before any external action exists."
+  },
+  "release_holds": [
+    "No private household projection or affected-resident campaign is admitted.",
+    "No live credential, provider quota, cost, outage, or terms-change campaign is admitted.",
+    "No field observation, lawful access, equipment, crew, work, completion, or resident acceptance evidence is admitted.",
+    "No independent assistive-technology, low-end device, poor-network, hostile-input, export/reimport, rollback, or cold-successor campaign is admitted.",
+    "No public endpoint, whole-product score, external review, or canonical task-count mutation is admitted."
+  ],
+  "control_question": "Can a demanding outsider move through one place, seven scales, eight instruments, five seats, degraded evidence, local export, and the FAB handoff while always identifying the source, actor, mechanism, authority, acceptance condition, next safe action, and prohibited consequence?"
+}
