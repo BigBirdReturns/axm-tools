@@ -1,0 +1,11 @@
+# Manzanita P8 resilience qualification
+
+This package qualifies the exact P7 whole-experience candidate under the automated portion of the P8 exit. It operates the generated five-file site rather than reviewing screenshots or source labels alone. The qualification operator controls the matrix, source custody controls the P7 data and generated site identities, the contained board reviews the exact report, and release authority controls any later product or public promotion.
+
+`run_qualification.py` verifies static self-containment, CSP, public-safe data, effect boundaries, private and credential key exclusion, high-confidence secret patterns, performance budgets, and exact site-file manifests. Chromium then operates the candidate through desktop light, desktop dark, touch tablet, reduced-motion mobile, compact forced-colors, semantic accessibility, keyboard-only, 200 percent text zoom, low-end CPU throttling, delayed resources, offline-after-load, missing base imagery, stale source, provider outage, contradictory source, hostile text, and snapshot export-reimport campaigns.
+
+The failure injections modify only the in-memory qualification copy of `EXPERIENCE_DATA.json`. They do not rewrite source receipts or claim a real provider incident. Every injected state is visibly marked in the report. Hostile strings must remain literal text; stale, unavailable, and contradictory states must remain visible; missing imagery must leave source and authority text intact; offline operation must remain usable after the self-contained site has loaded; and the exported snapshot must retain donor identities, selected state, no private transfer, and no release authority.
+
+A passing automated matrix does not establish real assistive-technology, human comprehension, real-device, actual-network, private-projection, credentialed-provider, field, independent-archive, public-endpoint, deployed-rollback, release, score, external-review, or canonical task-row standing. Those campaigns remain separately accountable holds.
+
+The controlling question is whether the exact P7 candidate survives every automated P8 falsification without hiding failed evidence or broadening its authority, while every physical and public campaign remains visibly unperformed.
