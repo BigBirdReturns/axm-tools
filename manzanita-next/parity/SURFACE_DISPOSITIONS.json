@@ -1,0 +1,97 @@
+{
+  "schema": "axm-tools/manzanita-estate-surface-dispositions@1",
+  "version": "1.0.0",
+  "source_inventory": "resolution-backfill/inventory.json",
+  "owner_seats": [
+    "design_integrator",
+    "source_custody",
+    "continuity_release",
+    "release_authority"
+  ],
+  "surfaces": [
+    {
+      "surface_id": "repository-shell",
+      "disposition": "held",
+      "relationship": "explicit_noninheritance",
+      "reason": "The repository shell remains an independently governed estate surface with unresolved inventory, cross-surface design, optional-adapter, and qualification obligations.",
+      "authority_owner": "The source product's accountable release authority retains product, qualification, and public standing.",
+      "acceptance": "This disposition may change only through an exact source-linked amendment naming the new relationship, evidence paths, authority, unresolved holds, and release effect."
+    },
+    {
+      "surface_id": "acceptance",
+      "disposition": "held",
+      "relationship": "explicit_noninheritance",
+      "reason": "Acceptance remains an independently governed evidence-challenge tool whose synthetic corpus, actor authority, visual constitution, and successor replay obligations remain open.",
+      "authority_owner": "The source product's accountable release authority retains product, qualification, and public standing.",
+      "acceptance": "This disposition may change only through an exact source-linked amendment naming the new relationship, evidence paths, authority, unresolved holds, and release effect."
+    },
+    {
+      "surface_id": "breakout-parity",
+      "disposition": "held",
+      "relationship": "explicit_noninheritance",
+      "reason": "Breakout Parity remains an independently governed surface; its literature, interaction, visual, resilience, and continuity claims do not transfer into Manzanita.",
+      "authority_owner": "The source product's accountable release authority retains product, qualification, and public standing.",
+      "acceptance": "This disposition may change only through an exact source-linked amendment naming the new relationship, evidence paths, authority, unresolved holds, and release effect."
+    },
+    {
+      "surface_id": "clinical-site-fabric",
+      "disposition": "held",
+      "relationship": "explicit_noninheritance",
+      "reason": "Clinical Site Fabric remains an independently governed clinical workflow surface with its own source, actor, privacy, release, and qualification law.",
+      "authority_owner": "The source product's accountable release authority retains product, qualification, and public standing.",
+      "acceptance": "This disposition may change only through an exact source-linked amendment naming the new relationship, evidence paths, authority, unresolved holds, and release effect."
+    },
+    {
+      "surface_id": "essential-attention",
+      "disposition": "held",
+      "relationship": "bounded_handoff_compatible_separate_surface",
+      "reason": "Essential Attention remains a separate administrative product. Manzanita may prepare a bounded FAB-compatible handoff without inheriting case authority, eligibility, execution, institutional acceptance, or release state.",
+      "authority_owner": "The source product's accountable release authority retains product, qualification, and public standing.",
+      "acceptance": "This disposition may change only through an exact source-linked amendment naming the new relationship, evidence paths, authority, unresolved holds, and release effect."
+    },
+    {
+      "surface_id": "identity",
+      "disposition": "held",
+      "relationship": "explicit_noninheritance",
+      "reason": "Identity remains a separate estate surface whose identity, provenance, responsive, accessibility, resilience, and release obligations remain controlled by its own record.",
+      "authority_owner": "The source product's accountable release authority retains product, qualification, and public standing.",
+      "acceptance": "This disposition may change only through an exact source-linked amendment naming the new relationship, evidence paths, authority, unresolved holds, and release effect."
+    },
+    {
+      "surface_id": "manzanita",
+      "disposition": "donor",
+      "relationship": "historical_public_rollback_donor",
+      "reason": "The historical public Manzanita route remains the byte-preserved public donor and rollback target. It is distinct from the internally qualified manzanita-next successor candidate.",
+      "authority_owner": "The source product's accountable release authority retains product, qualification, and public standing.",
+      "acceptance": "This disposition may change only through an exact source-linked amendment naming the new relationship, evidence paths, authority, unresolved holds, and release effect."
+    },
+    {
+      "surface_id": "organ-evolution",
+      "disposition": "held",
+      "relationship": "explicit_noninheritance",
+      "reason": "Organ Evolution remains an independently governed evaluation surface whose observation, actor, evidence, visual, failure, and succession requirements remain open or separately qualified.",
+      "authority_owner": "The source product's accountable release authority retains product, qualification, and public standing.",
+      "acceptance": "This disposition may change only through an exact source-linked amendment naming the new relationship, evidence paths, authority, unresolved holds, and release effect."
+    },
+    {
+      "surface_id": "polybolos",
+      "disposition": "held",
+      "relationship": "explicit_noninheritance",
+      "reason": "Polybolos remains an independently governed evidence and decision instrument with separate source, authority, resilience, export, and public-surface obligations.",
+      "authority_owner": "The source product's accountable release authority retains product, qualification, and public standing.",
+      "acceptance": "This disposition may change only through an exact source-linked amendment naming the new relationship, evidence paths, authority, unresolved holds, and release effect."
+    },
+    {
+      "surface_id": "pta-tracker",
+      "disposition": "held",
+      "relationship": "explicit_noninheritance",
+      "reason": "PTA Tracker remains an independently governed operational surface with separate live-data, privacy, interaction, accessibility, continuity, and release receipts.",
+      "authority_owner": "The source product's accountable release authority retains product, qualification, and public standing.",
+      "acceptance": "This disposition may change only through an exact source-linked amendment naming the new relationship, evidence paths, authority, unresolved holds, and release effect."
+    }
+  ],
+  "public_effect": "none",
+  "constitutional_count_effect": "none",
+  "release_effect": "none",
+  "claim_boundary": "This contract qualifies complete estate-surface disposition coverage and explicit noninheritance only. It does not qualify the underlying surfaces, absorb their product authority, close their findings or required assets, deploy a public successor, establish a whole-product score, or mutate a canonical task row."
+}
