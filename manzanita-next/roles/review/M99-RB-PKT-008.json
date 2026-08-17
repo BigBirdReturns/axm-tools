@@ -1,0 +1,290 @@
+{
+  "schema": "axm-tools/manzanita-review-packet@1",
+  "packet_id": "M99-RB-PKT-008",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "object": "M99-FIVE-ROLES-001, five functional role projections and one bounded Essential Attention FAB offer-preparation handoff over one canonical public-safe place.",
+  "classification": "five_functional_role_projection_and_fab_handoff_candidate",
+  "target_paths": [
+    "manzanita-next/roles"
+  ],
+  "source_ref": {
+    "repository": "BigBirdReturns/axm-tools",
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "requested_decision": "admit_with_holds",
+  "requested_authority": "prototype_admission",
+  "public_effect": "internal_only",
+  "actors": [
+    "affected_resident",
+    "nursery_or_grower",
+    "crew_or_property_steward",
+    "planner_or_program_operator",
+    "cold_successor",
+    "design_integrator",
+    "release_authority"
+  ],
+  "mechanism": "The role composer consumes the exact public-safe place, seven-aperture bundle, eight-overlay bundle, build receipts, design constitution, and five-role contract. It proves one place and source run, selects distinct evidence for each seat, preserves degraded and map-only states, validates controls, authority, acceptance, portable export, handoff and failure law, rejects private and credential fields, covers all scales and overlays, and emits deterministic role, FAB handoff, and build receipts with no external effect.",
+  "evidence": [
+    {
+      "id": "E-ROLE-CONTRACT",
+      "type": "source",
+      "path": "manzanita-next/roles/ROLE_CONTRACT.json",
+      "claim": "Defines the five functional seats, common law, evidence selection, controls, authority, acceptance, export, handoff, failure, adverse-action boundary, and no-effect limits."
+    },
+    {
+      "id": "E-ROLE-README",
+      "type": "source",
+      "path": "manzanita-next/roles/README.md",
+      "claim": "Classifies the role-projection object, names the actors, explains the common-place mechanism, and preserves private, field, adverse, public, and release holds."
+    },
+    {
+      "id": "E-ROLE-BUILDER",
+      "type": "test",
+      "path": "manzanita-next/roles/build_roles.py",
+      "claim": "Builds five deterministic role projections and a bounded Essential Attention FAB handoff while validating donor identity, evidence coverage, distinct operating semantics, no-effect law, export, and handoff custody."
+    },
+    {
+      "id": "E-ROLE-TESTS",
+      "type": "test",
+      "path": "manzanita-next/roles/tests/test_roles.py",
+      "claim": "Exercises complete role coverage, distinct semantics, degraded and map-only evidence, private-field rejection, donor-effect rejection, handoff law, FAB firewall, drift detection, and deterministic rebuilding."
+    },
+    {
+      "id": "E-RECOVERY-RECEIPT",
+      "type": "receipt",
+      "path": "manzanita-next/roles/RECOVERY_RECEIPT.json",
+      "claim": "Records the damaged segmented transport, exact recovered member identities, null-byte corruption, reconstruction boundary, and the distinction between recovered contract evidence and newly authored implementation."
+    },
+    {
+      "id": "E-DESIGN-CONSTITUTION",
+      "type": "source",
+      "path": "manzanita-next/design-system/CONSTITUTION.json",
+      "claim": "Provides the admitted Forkline evidence, interaction, typography, motion, failure, accessibility, component, and authority laws consumed by later role interfaces."
+    },
+    {
+      "id": "E-PUBLIC-DATA",
+      "type": "receipt",
+      "path": "manzanita-next/public-demo/out/PUBLIC_DATA.json",
+      "claim": "Supplies the exact public-safe place, source run, source states, times, rights, uncertainty, and no-effect boundary shared by all five role projections."
+    },
+    {
+      "id": "E-APERTURE-BUNDLE",
+      "type": "receipt",
+      "path": "manzanita-next/apertures/out/APERTURE_BUNDLE.json",
+      "claim": "Supplies the exact seven scale records, actors, states, evidence, authority, acceptance, handoff, and prohibited consequences selected by each role."
+    },
+    {
+      "id": "E-OVERLAY-BUNDLE",
+      "type": "receipt",
+      "path": "manzanita-next/overlays/out/OVERLAY_BUNDLE.json",
+      "claim": "Supplies the exact eight instruments, source states, map-only and degraded conditions, registered geometry, action, authority, acceptance, conflict, and non-claim records selected by each role."
+    },
+    {
+      "id": "E-ROLE-BUNDLE",
+      "type": "receipt",
+      "path": "manzanita-next/roles/out/ROLE_BUNDLE.json",
+      "claim": "Contains five distinct role projections over one place with complete aperture and overlay coverage, portable exports, a bounded handoff graph, held effects, and deterministic identity."
+    },
+    {
+      "id": "E-FAB-HANDOFF",
+      "type": "receipt",
+      "path": "manzanita-next/roles/out/FAB_HANDOFF.json",
+      "claim": "Contains the bounded internal planner-to-Essential-Attention offer-preparation record with affected-actor authority, refusal, appeal, no eligibility, no award, no execution, and no external-effect standing."
+    },
+    {
+      "id": "E-ROLE-BUILD",
+      "type": "receipt",
+      "path": "manzanita-next/roles/out/BUILD_RECEIPT.json",
+      "claim": "Binds every donor and output digest, role count and order, state counts, scale and overlay coverage, handoff count, FAB target, and no-effect boundary."
+    },
+    {
+      "id": "E-ROLE-WORKFLOW",
+      "type": "receipt",
+      "path": ".github/workflows/manzanita-five-roles.yml",
+      "claim": "Binds fresh source acquisition, donor rebuilding, role tests, role and FAB outputs, exact-head board review, and retained evidence to the submitted candidate."
+    },
+    {
+      "id": "E-BOARD-CHARTER",
+      "type": "source",
+      "path": "programs/manzanita-99/review-board/BOARD_CHARTER.json",
+      "claim": "Defines the twelve contained functional seats, evidence minimums, veto grounds, decision states, release boundary, and constitutional no-effect law used for this review."
+    }
+  ],
+  "claim_boundary": "This packet requests internal role-architecture and FAB-handoff admission only. It does not request a private record, actual resident acceptance, nursery order, field access, work authorization, program offer, eligibility decision, award, contact, public deployment, whole-product qualification, or canonical task-count mutation.",
+  "gates": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is five source-bounded functional projections and one internal FAB preparation handoff, rather than personalities, permissions, private records, field results, offers, decisions, or a public endpoint.",
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-README",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Resident, nursery or grower, crew or steward, planner or program, successor, release authority, and affected actor retain distinct controls, acceptance, refusal, handoff, and prohibited effects.",
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The builder and tests prove five different evidence sets, controls, authority, acceptance, exports, handoffs, failures, and no-effect boundaries over one exact place rather than relabeling one view.",
+      "evidence_ids": [
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-ROLE-BUNDLE",
+        "E-ROLE-BUILD"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Public data, aperture and overlay donors, damaged transport, reconstructed implementation, role outputs, and FAB preparation remain separately classified, hashed, and bounded.",
+      "evidence_ids": [
+        "E-RECOVERY-RECEIPT",
+        "E-PUBLIC-DATA",
+        "E-APERTURE-BUNDLE",
+        "E-OVERLAY-BUNDLE",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "partial",
+      "reason": "Machine role controls, exports, acceptance and handoff law are complete, while an interactive role switcher, corrections, refusal, narrowing, comparison, persistence, and reimport remain later product objects.",
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-ROLE-BUNDLE"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "partial",
+      "reason": "Complete role content and information fields exist, while production role layouts, density, type fitting, visual distinction, compact behavior, light and dark treatment, and full-state goldens remain open.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUNDLE"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "Source run, evidence state, acceptance, export, and handoff sequence are explicit, while production transitions, interruption, source aging, comparison, handoff motion, and reduced-motion equivalence remain unproved.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "Every role retains complete text, controls, authority, acceptance, export and handoff fields, while keyboard, touch, screen-reader, zoom, forced-color, compact, cognitive, and assistive-technology operation remain future campaigns.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUNDLE"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "Deterministic building, donor drift rejection, degraded evidence, no-effect exports, and exact failure records pass, while devices, poor networks, concurrency, large exports, cache, observability, serving, and rollback remain held.",
+      "evidence_ids": [
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-ROLE-BUILD",
+        "E-ROLE-WORKFLOW"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "Private and credential keys are rejected, public-safe and authored donors retain their limits, resident authority remains explicit, and the FAB handoff prohibits eligibility, award, contact, insurance, enforcement, and execution.",
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-FAB-HANDOFF"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Portable export contracts, a complete role handoff graph, exact digests, deterministic replay, and a successor projection exist, while independent reimport, separate-person replay, deployed rollback, and durable second custody remain open.",
+      "evidence_ids": [
+        "E-ROLE-README",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF",
+        "E-ROLE-BUILD",
+        "E-ROLE-WORKFLOW"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains fresh donor, role, FAB, test, and board receipts while public, external, release, and constitutional-count effects remain none.",
+      "evidence_ids": [
+        "E-ROLE-WORKFLOW",
+        "E-ROLE-BUILD",
+        "E-FAB-HANDOFF",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "seat_prompts": {
+    "board_chair": [
+      "Confirm the exact object, five-seat coverage, FAB handoff boundary, requested internal authority, open holds, and the absence of a hidden private, field, adverse, public, or canonical-count claim."
+    ],
+    "creative_direction": [
+      "Determine whether five roles can become visibly distinct Forkline operating places without decorative role skins, generic cards, or hierarchy that obscures shared evidence and authority."
+    ],
+    "product_interaction": [
+      "Confirm each role changes evidence, controls, authority, acceptance, export, and handoff, then enumerate switching, correction, refusal, narrowing, comparison, persistence, undo, and reimport work still required."
+    ],
+    "information_design": [
+      "Confirm shared place identity, role-specific evidence, state, authority, acceptance, export, handoff, failure, prohibited consequence, and FAB effect firewall remain separately legible."
+    ],
+    "typography": [
+      "Review the later hierarchy demands of five roles, long evidence readings, controls, authority, acceptance, exports, handoffs, failures, and compact and multilingual recomposition."
+    ],
+    "motion": [
+      "Review role change, evidence-state change, acceptance, refusal, export, FAB handoff, interruption, source aging, and reduced-motion evidence still required."
+    ],
+    "source_custody": [
+      "Confirm every public, aperture, overlay, role, FAB, and recovery record retains identity, state, digest, scope, uncertainty, and no-transfer boundaries."
+    ],
+    "field_operations": [
+      "Confirm the resident, grower, steward, and program projections remain questions and preparation records until lawful access, competent observation, consent, safety, execution, and completion evidence exist."
+    ],
+    "accessibility": [
+      "Review textual completeness and later keyboard, touch, screen-reader, zoom, forced-color, compact, cognitive, and reduced-motion campaigns across all five roles and FAB handoff."
+    ],
+    "performance_resilience": [
+      "Confirm deterministic composition and explicit degraded states while holding devices, networks, live refresh, concurrency, large exports, observability, serving, reimport, and rollback."
+    ],
+    "security_privacy": [
+      "Confirm public-safe input, prohibited-field rejection, private correction boundaries, no implied consent, no eligibility or adverse-action conversion, and no external-effect adapter."
+    ],
+    "continuity_release": [
+      "Confirm exact donor and output digests, successor visibility, export and handoff law, no public or count effect, and later independent replay, rollback, endpoint, and release requirements."
+    ]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, coverage triage, or property-risk scoring",
+      "eligibility, award, denial, enforcement, evacuation, resident ranking, or unreviewed adverse action",
+      "entry, inspection, traffic control, pruning, digging, labor, equipment deployment, remediation, or completion authorization",
+      "contact, payment, publication, appointment, representation, or institutional acceptance without accountable human authority"
+    ],
+    "required_human_control": "The affected actor and accountable functional seat must review source scope, authority, resources, refusal, appeal, execution, acceptance, and prohibited effects before any real action."
+  },
+  "continuity": {
+    "recovery_path": "Rebuild fresh public data, apertures and overlays, run build_roles.py from the retained contract and constitution, compare role and FAB digests, and preserve every open hold.",
+    "rollback_target": "historical public Manzanita v1.4 route",
+    "successor_test": "A cold successor must reproduce all five projections, the FAB handoff, exports, handoff graph, input and output digests, authority limits, and no-release state from a clean root."
+  },
+  "control_question": "Can a cold successor project one exact place through five genuinely different functional seats and deliver a bounded FAB handoff without manufacturing consent, eligibility, execution, or release?"
+}

@@ -1,0 +1,261 @@
+{
+  "schema": "axm-tools/manzanita-five-role-contract@1",
+  "contract_id": "M99-FIVE-ROLES-001",
+  "version": "1.0.0",
+  "task_reference": "JDB99-016",
+  "state": "internal_architecture_candidate",
+  "object": {
+    "classification": "five_functional_role_projection_architecture",
+    "place_model": "one canonical public-safe place, source run, seven-aperture bundle, eight-overlay bundle, and design constitution",
+    "public_effect": "none",
+    "constitutional_count_effect": "none",
+    "claim_boundary": "These records project one admitted public-safe place through five functional seats. They are not simulated personalities, private household records, field observations, offers, eligibility decisions, work authorizations, completed-remediation receipts, public releases, or canonical task-row transitions."
+  },
+  "role_order": [
+    "resident",
+    "nursery_grower",
+    "crew_steward",
+    "planner_program",
+    "successor"
+  ],
+  "common_law": [
+    "Every role consumes the same place identity and source-run lineage.",
+    "A role changes evidence, controls, authority, acceptance, export, and handoff rather than only changing labels.",
+    "Missing, stale, map-only, authored, and degraded evidence remain visible inside every projection that consumes them.",
+    "A safe action is a bounded internal next step, not entry, inspection, labor, payment, publication, representation, or another external effect.",
+    "Authority does not transfer merely because evidence is visible to a role.",
+    "Exports retain source, state, uncertainty, authority, prohibited-consequence, and no-effect fields.",
+    "Affected actors retain acceptance, refusal, correction, and appeal where applicable.",
+    "The successor role proves replay and continuity, not release authority."
+  ],
+  "adverse_action_boundary": "No role projection may create insurance, underwriting, premium, enforcement, property, resident, eligibility, evacuation, safety, work-completion, or other adverse standing.",
+  "roles": [
+    {
+      "id": "resident",
+      "order": 1,
+      "label": "Resident",
+      "object_class": "lived_place_review_projection",
+      "primary_actor": "affected_resident",
+      "operating_purpose": "Review public context and authored household-scale questions, correct what does not match lived experience, and accept, refuse, narrow, or defer any later proposal.",
+      "aperture_ids": [
+        "plant",
+        "household",
+        "property",
+        "street"
+      ],
+      "overlay_ids": [
+        "care",
+        "shade",
+        "water",
+        "heat",
+        "access"
+      ],
+      "controls": [
+        "inspect source and authored evidence separately",
+        "mark a statement correct, incorrect, unknown, or not applicable",
+        "record a private correction locally without publishing it",
+        "accept, refuse, narrow, or defer a later bounded proposal"
+      ],
+      "reading": "The resident projection prioritizes lived use, care burden, access, comfort, pets, tools, and household agency while public and authored context remains non-diagnostic.",
+      "safe_actions": [
+        "review the evidence and identify one bounded question that requires private confirmation",
+        "prepare a local correction or acceptance record without sending or publishing it"
+      ],
+      "authority": "The affected resident controls private correction, consent, refusal, and acceptance. The projection grants no authority to inspect, enter, schedule, pay, publish, or represent.",
+      "acceptance": "The resident can identify the source, uncertainty, proposed action, held effects, and the exact point at which explicit resident acceptance would later be required.",
+      "export_contract": "Export a resident-review packet containing only the selected public evidence, authored questions, local corrections, authority limits, and explicit non-release state.",
+      "handoff_to": [
+        "nursery_grower",
+        "crew_steward",
+        "planner_program",
+        "successor"
+      ],
+      "handoff": "Hand off only a resident-selected question, correction, or accepted scope together with its source and consent boundary; never transfer the private record by implication.",
+      "failure_state": "When lived confirmation or consent is absent, hold the claim and preserve the unanswered question rather than substituting public context or an authored demonstration.",
+      "prohibited_consequence": "No household score, resident ranking, entry authority, work order, eligibility result, insurance consequence, enforcement action, or public representation."
+    },
+    {
+      "id": "nursery_grower",
+      "order": 2,
+      "label": "Nursery or Grower",
+      "object_class": "cultivation_option_projection",
+      "primary_actor": "nursery_or_grower",
+      "operating_purpose": "Relate plant, care, shade, heat, and water evidence to a bounded cultivation option without diagnosing a real plant or prescribing care from unavailable observations.",
+      "aperture_ids": [
+        "plant",
+        "household",
+        "property",
+        "neighborhood"
+      ],
+      "overlay_ids": [
+        "care",
+        "shade",
+        "water",
+        "heat",
+        "assistance"
+      ],
+      "controls": [
+        "compare source-backed context with authored care questions",
+        "prepare a non-binding plant or material option",
+        "state required resident and field confirmation",
+        "define nursery acceptance and substitution limits"
+      ],
+      "reading": "The nursery or grower projection turns plant and environmental context into options, availability questions, and care constraints while diagnosis and real-site fitness remain held.",
+      "safe_actions": [
+        "prepare an option set with source, uncertainty, and substitution rules",
+        "request the minimum resident or field observation needed before recommending a real intervention"
+      ],
+      "authority": "The nursery or grower may prepare options and explain material characteristics. It may not diagnose, promise availability, enter a property, authorize work, or bind a resident or program.",
+      "acceptance": "The option identifies its intended use, exclusions, source dates, substitution rule, resident confirmation, and the evidence needed before it could become a real recommendation.",
+      "export_contract": "Export a cultivation-option packet with selected plant and environmental evidence, candidate options, substitution limits, required observations, and no-order status.",
+      "handoff_to": [
+        "resident",
+        "crew_steward",
+        "planner_program",
+        "successor"
+      ],
+      "handoff": "Hand off a bounded option and its assumptions to the resident or steward; do not convert an option into an order, prescription, availability claim, or completed-care record.",
+      "failure_state": "When plant condition, resident use, inventory, or field fitness is unknown, retain the option as conditional and name the missing observation or availability check.",
+      "prohibited_consequence": "No diagnosis, watering command, pesticide instruction, purchase, inventory promise, site-fitness claim, work authorization, or completion claim."
+    },
+    {
+      "id": "crew_steward",
+      "order": 3,
+      "label": "Crew or Property Steward",
+      "object_class": "bounded_field_preparation_projection",
+      "primary_actor": "crew_or_property_steward",
+      "operating_purpose": "Prepare source-linked access, verification, sequencing, equipment, and acceptance questions for later lawful field work without claiming a physical condition or authorizing execution.",
+      "aperture_ids": [
+        "property",
+        "street",
+        "neighborhood",
+        "stewardship"
+      ],
+      "overlay_ids": [
+        "shade",
+        "water",
+        "fire",
+        "access",
+        "assistance"
+      ],
+      "controls": [
+        "review map-only, source-backed, and authored geometry as separate classes",
+        "prepare a verification route and access question",
+        "identify equipment, safety, and consent prerequisites",
+        "define execution and completion evidence before work begins"
+      ],
+      "reading": "The crew or steward projection emphasizes access, source registration, work boundaries, field verification, sequencing, and acceptance while physical identity and lawful entry remain unknown.",
+      "safe_actions": [
+        "prepare a no-entry verification plan tied to exact source and geometry receipts",
+        "list the consent, safety, equipment, and completion evidence required before any real work"
+      ],
+      "authority": "The crew or steward may prepare an internal verification and work-readiness question. It has no entry, traffic, pruning, labor, safety, equipment, scheduling, or completion authority.",
+      "acceptance": "The preparation record separates known public context from unknown physical conditions and names lawful access, resident acceptance, competent review, execution, and completion receipts.",
+      "export_contract": "Export a steward-preparation packet containing source and registration receipts, proposed verification sequence, prerequisites, held effects, and explicit no-entry and no-work status.",
+      "handoff_to": [
+        "resident",
+        "nursery_grower",
+        "planner_program",
+        "successor"
+      ],
+      "handoff": "Hand off a verification question or accepted scope to the accountable resident, provider, or program operator; never hand off a fabricated physical finding or implied work order.",
+      "failure_state": "When access, physical identity, safety, equipment, or consent is unknown, hold execution and preserve the exact missing prerequisite rather than inferring readiness from imagery.",
+      "prohibited_consequence": "No entry, inspection, traffic control, pruning, digging, labor, equipment deployment, safety determination, work order, remediation, or completion claim."
+    },
+    {
+      "id": "planner_program",
+      "order": 4,
+      "label": "Planner or Public Program",
+      "object_class": "assistance_and_coordination_projection",
+      "primary_actor": "planner_or_program_operator",
+      "operating_purpose": "Relate neighborhood and regional conditions to bounded assistance, source repair, coordination, and offer preparation without creating a punitive score or an eligibility decision.",
+      "aperture_ids": [
+        "street",
+        "neighborhood",
+        "region",
+        "stewardship"
+      ],
+      "overlay_ids": [
+        "heat",
+        "air",
+        "fire",
+        "access",
+        "assistance"
+      ],
+      "controls": [
+        "compare regional source state without collapsing it into a parcel score",
+        "route source repair, verification, or assistance preparation",
+        "prepare an offer with authority, resources, refusal, and appeal",
+        "record accountable review before any external effect"
+      ],
+      "reading": "The planner or program projection widens from local context to shared routes, source health, incidents, resources, and assistance while household condition and eligibility remain unproved.",
+      "safe_actions": [
+        "prepare a source-repair, verification, or assistance-routing question",
+        "draft a bounded offer record that still requires accountable human review and affected-actor acceptance"
+      ],
+      "authority": "The planner or program operator may coordinate internal review and prepare a bounded offer. It may not determine eligibility, funding, insurance, enforcement, property condition, or resident standing.",
+      "acceptance": "The program record identifies source scope, affected actor, lawful authority, resources, refusal and appeal, execution owner, acceptance criteria, and all prohibited consequences.",
+      "export_contract": "Export an assistance-preparation packet with regional and local source states, proposed offer terms, accountable review requirements, appeal route, and no-award and no-adverse-action status.",
+      "handoff_to": [
+        "resident",
+        "nursery_grower",
+        "crew_steward",
+        "successor"
+      ],
+      "handoff": "Hand off a source-repair request, verification question, or reviewed offer to the affected actor and accountable operator; never convert attention or context into eligibility or adverse action.",
+      "failure_state": "When source quality, authority, resources, affected-actor identity, or offer terms are incomplete, hold the offer and route the exact gap rather than assigning a score or silent denial.",
+      "prohibited_consequence": "No punitive place score, insurance action, eligibility decision, award, denial, enforcement, evacuation order, property judgment, resident ranking, or unreviewed external effect."
+    },
+    {
+      "id": "successor",
+      "order": 5,
+      "label": "Cold Successor",
+      "object_class": "continuity_and_replay_projection",
+      "primary_actor": "cold_successor",
+      "operating_purpose": "Reproduce the canonical place, donor identities, role projections, holds, exports, and handoff law from retained repository objects without inheriting unstated authority.",
+      "aperture_ids": [
+        "plant",
+        "household",
+        "property",
+        "street",
+        "neighborhood",
+        "region",
+        "stewardship"
+      ],
+      "overlay_ids": [
+        "care",
+        "shade",
+        "water",
+        "heat",
+        "air",
+        "fire",
+        "access",
+        "assistance"
+      ],
+      "controls": [
+        "verify every donor and output digest",
+        "rebuild all role projections from a clean root",
+        "compare exported and reimported role packets",
+        "identify unresolved holds and the only seat allowed to release"
+      ],
+      "reading": "The successor projection exposes the complete evidence, authority, failure, export, and handoff graph so continuity does not depend on memory, personality, or a hidden operational shortcut.",
+      "safe_actions": [
+        "replay the deterministic build and identify any digest or contract drift",
+        "prepare a bounded continuity report that preserves every unresolved hold and authority limit"
+      ],
+      "authority": "The cold successor may inspect, rebuild, compare, and report. It may not release, contact, spend, operate credentials, enter a field site, mutate canonical counts, or inherit another actor's authority.",
+      "acceptance": "A successor can reproduce all five projections, explain every donor and hold, verify export parity, and identify release authority without relying on undocumented context.",
+      "export_contract": "Export a cold-successor packet with all role manifests, input and output digests, replay commands, held gates, rollback target, and explicit no-release state.",
+      "handoff_to": [
+        "resident",
+        "nursery_grower",
+        "crew_steward",
+        "planner_program"
+      ],
+      "handoff": "Return a verified discrepancy, replay receipt, or bounded continuity question to the accountable functional seat or release authority; never repair evidence or authority by inference.",
+      "failure_state": "When an input, digest, replay step, export, or authority record is missing, report the exact gap and hold promotion rather than reconstructing the missing fact from remembered program shape.",
+      "prohibited_consequence": "No silent reconstruction, canonical task closure, provider operation, contact, spend, field action, public deployment, release decision, or inherited external-effect authority."
+    }
+  ],
+  "control_question": "Can one canonical place be projected through five genuinely different functional seats while each seat retains distinct evidence, controls, authority, acceptance, export, handoff, failure, and prohibited consequence?"
+}

@@ -1,0 +1,358 @@
+{
+  "schema": "axm-tools/manzanita-review-decision@1",
+  "decision_id": "M99-RB-DEC-008",
+  "packet_id": "M99-RB-PKT-008",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "reviewed_ref": {
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "external_review_claim": false,
+  "seat_reviews": [
+    {
+      "seat_id": "board_chair",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The packet names one bounded role and FAB-handoff object, all five functional seats, all twelve review seats, the exact donor chain, and internal-only requested authority.",
+        "Admission retains interaction, visual, accessibility, private, field, operational, succession, public-release, and constitutional-count holds."
+      ],
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUILD",
+        "E-FAB-HANDOFF",
+        "E-BOARD-CHARTER"
+      ],
+      "uncertainty": "The candidate has not been operated as a complete public or private experience.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "creative_direction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Five distinct object classes, purposes, evidence selections, controls, exports, and handoffs provide a real basis for differentiated Forkline role views.",
+        "Production composition, visual distinction, density, light and dark treatment, and full-state goldens remain outside this machine candidate."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUNDLE"
+      ],
+      "uncertainty": "No production role composition or visual comparison has been admitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "product_interaction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Each role changes evidence, controls, authority, acceptance, export, handoff, failure, and prohibited consequence rather than changing labels alone.",
+        "Interactive switching, correction, refusal, narrowing, comparison, persistence, undo, export and reimport remain unimplemented product objects."
+      ],
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-ROLE-BUNDLE"
+      ],
+      "uncertainty": "No affected actor has operated the projections through an interactive surface.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "information_design",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The records keep shared place identity, role evidence, source state, controls, authority, acceptance, export, handoff, failure, and prohibited consequences separately legible.",
+        "Dense, compact, mobile, and whole-experience information hierarchy remain later obligations."
+      ],
+      "evidence_ids": [
+        "E-PUBLIC-DATA",
+        "E-APERTURE-BUNDLE",
+        "E-OVERLAY-BUNDLE",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF"
+      ],
+      "uncertainty": "Human comprehension under real density and constrained width remains untested.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "typography",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The contract supplies complete role names, readings, controls, authority, acceptance, export, handoff, failure, and consequence copy for later typographic composition.",
+        "Type fitting, fallback behavior, multilingual expansion, numerals, 200 percent zoom, and responsive recomposition remain open."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUNDLE"
+      ],
+      "uncertainty": "No production typography specimen for the five-seat density has been admitted.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "motion",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Source run, evidence state, acceptance, export, and handoff sequence provide a bounded temporal model.",
+        "No role transition, evidence aging, interruption, FAB handoff motion, or reduced-motion equivalent is submitted."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF"
+      ],
+      "uncertainty": "Temporal comprehension and reduced-motion parity remain untested.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "source_custody",
+      "disposition": "pass",
+      "findings": [
+        "Public data, apertures, overlays, roles, FAB handoff, and reconstruction receipt remain separately classified, hashed, scoped, and prohibited from authority transfer.",
+        "The damaged transport is not misrepresented as recovered implementation; the new builder and tests are explicitly authored against retained contracts and schemas."
+      ],
+      "evidence_ids": [
+        "E-RECOVERY-RECEIPT",
+        "E-PUBLIC-DATA",
+        "E-APERTURE-BUNDLE",
+        "E-OVERLAY-BUNDLE",
+        "E-ROLE-BUILD"
+      ],
+      "uncertainty": "Independent archive recovery and later donor changes remain continuity holds.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "field_operations",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Resident, grower, steward, and program projections state preparation routes while withholding entry, inspection, equipment, labor, work, completion, and physical-condition authority.",
+        "No private place, resident consent, lawful access, field observation, competent review, crew procedure, or completion receipt is submitted."
+      ],
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF"
+      ],
+      "uncertainty": "Field fitness and affected-actor acceptance remain wholly unproved.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "accessibility",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Every role preserves textual evidence, controls, authority, acceptance, export, handoff, failure, and non-claim fields without depending on color.",
+        "Keyboard, touch, screen-reader, zoom, forced-color, compact, cognitive, and assistive-technology operation remain later interface campaigns."
+      ],
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUNDLE"
+      ],
+      "uncertainty": "No interactive accessibility campaign is represented by these machine records.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "performance_resilience",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Deterministic local composition, donor drift rejection, degraded evidence, portable output, and explicit failure records pass in the bounded builder.",
+        "Devices, slow networks, concurrency, large exports, caches, observability, serving, reimport, and rollback remain unproved."
+      ],
+      "evidence_ids": [
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-ROLE-BUILD",
+        "E-ROLE-WORKFLOW"
+      ],
+      "uncertainty": "Runtime resource use and constrained-network behavior remain outside this candidate.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "security_privacy",
+      "disposition": "pass",
+      "findings": [
+        "Private and credential keys are rejected, public-safe and authored donors retain their scope, private corrections are not exported by implication, and the FAB effect firewall prohibits contact, payment, insurance, enforcement, eligibility, award, and execution.",
+        "No household identity, precise private coordinate, provider secret, punitive score, institutional acceptance, or external-effect adapter is admitted."
+      ],
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-FAB-HANDOFF"
+      ],
+      "uncertainty": "Private projection, live credentials, and independent security testing remain later controlled campaigns.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "continuity_release",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Exact donor and output hashes, deterministic tests, complete aperture and overlay coverage, a handoff graph, and a successor projection support bounded replay.",
+        "Independent archive recovery, separate-person operation, production export and reimport, public serving, rollback, and canonical task-row reconciliation remain held."
+      ],
+      "evidence_ids": [
+        "E-RECOVERY-RECEIPT",
+        "E-ROLE-README",
+        "E-ROLE-BUILD",
+        "E-ROLE-WORKFLOW"
+      ],
+      "uncertainty": "No public endpoint, rollback event, or independent successor campaign has occurred.",
+      "veto_ids": []
+    }
+  ],
+  "defects": [],
+  "vetoes": [],
+  "gate_disposition": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is five source-bounded functional projections and one internal FAB preparation handoff, rather than personalities, permissions, private records, field results, offers, decisions, or a public endpoint.",
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-README",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Resident, nursery or grower, crew or steward, planner or program, successor, release authority, and affected actor retain distinct controls, acceptance, refusal, handoff, and prohibited effects.",
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The builder and tests prove five different evidence sets, controls, authority, acceptance, exports, handoffs, failures, and no-effect boundaries over one exact place rather than relabeling one view.",
+      "evidence_ids": [
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-ROLE-BUNDLE",
+        "E-ROLE-BUILD"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Public data, aperture and overlay donors, damaged transport, reconstructed implementation, role outputs, and FAB preparation remain separately classified, hashed, and bounded.",
+      "evidence_ids": [
+        "E-RECOVERY-RECEIPT",
+        "E-PUBLIC-DATA",
+        "E-APERTURE-BUNDLE",
+        "E-OVERLAY-BUNDLE",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "partial",
+      "reason": "Machine role controls, exports, acceptance and handoff law are complete, while an interactive role switcher, corrections, refusal, narrowing, comparison, persistence, and reimport remain later product objects.",
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-ROLE-BUNDLE"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "partial",
+      "reason": "Complete role content and information fields exist, while production role layouts, density, type fitting, visual distinction, compact behavior, light and dark treatment, and full-state goldens remain open.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUNDLE"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "Source run, evidence state, acceptance, export, and handoff sequence are explicit, while production transitions, interruption, source aging, comparison, handoff motion, and reduced-motion equivalence remain unproved.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "Every role retains complete text, controls, authority, acceptance, export and handoff fields, while keyboard, touch, screen-reader, zoom, forced-color, compact, cognitive, and assistive-technology operation remain future campaigns.",
+      "evidence_ids": [
+        "E-DESIGN-CONSTITUTION",
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUNDLE"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "Deterministic building, donor drift rejection, degraded evidence, no-effect exports, and exact failure records pass, while devices, poor networks, concurrency, large exports, cache, observability, serving, and rollback remain held.",
+      "evidence_ids": [
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-ROLE-BUILD",
+        "E-ROLE-WORKFLOW"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "Private and credential keys are rejected, public-safe and authored donors retain their limits, resident authority remains explicit, and the FAB handoff prohibits eligibility, award, contact, insurance, enforcement, and execution.",
+      "evidence_ids": [
+        "E-ROLE-CONTRACT",
+        "E-ROLE-BUILDER",
+        "E-ROLE-TESTS",
+        "E-FAB-HANDOFF"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Portable export contracts, a complete role handoff graph, exact digests, deterministic replay, and a successor projection exist, while independent reimport, separate-person replay, deployed rollback, and durable second custody remain open.",
+      "evidence_ids": [
+        "E-ROLE-README",
+        "E-ROLE-BUNDLE",
+        "E-FAB-HANDOFF",
+        "E-ROLE-BUILD",
+        "E-ROLE-WORKFLOW"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains fresh donor, role, FAB, test, and board receipts while public, external, release, and constitutional-count effects remain none.",
+      "evidence_ids": [
+        "E-ROLE-WORKFLOW",
+        "E-ROLE-BUILD",
+        "E-FAB-HANDOFF",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "outcome": "admit_with_holds",
+  "admitted_claim": "The repository may admit the deterministic five-role projection architecture and bounded Essential Attention FAB preparation handoff as internal candidates whose shared place, distinct evidence, controls, authority, acceptance, export, handoff, failure, refusal, appeal, and no-effect boundaries remain independently reproducible.",
+  "holds": [
+    "No interactive role switcher, correction workflow, refusal control, narrowing, comparison, persistence, undo, export, or reimport surface is admitted.",
+    "No complete visual composition, role-specific hierarchy, typography fit, light and dark treatment, responsive authorship, or visual golden is admitted.",
+    "No production motion, interruption, source-aging, role-transition, handoff-transition, or reduced-motion campaign is admitted.",
+    "No keyboard, touch, screen-reader, 200 percent zoom, forced-color, compact-width, cognitive, or assistive-technology campaign is admitted.",
+    "No private household, resident identity, actual resident consent, accepted correction, lawful access, field observation, equipment, crew, work, completion, or affected-actor receipt is admitted.",
+    "No real nursery inventory, plant diagnosis, purchase, substitution acceptance, order, payment, or care completion is admitted.",
+    "No real program offer, eligibility, award, denial, insurance action, enforcement action, evacuation direction, contact, publication, appointment, representation, execution, or institutional acceptance is admitted.",
+    "No live credential, provider quota, cost, latency, terms-change, outage, device, network, cache, concurrency, large-export, observability, serving, or rollback campaign is admitted.",
+    "No independent archive recovery, separate-person cold-successor operation, deployed-byte proof, public endpoint, or public rollback is admitted.",
+    "No whole-product qualification, design score, external review claim, canonical task-row transition, or remembered-count effect is admitted."
+  ],
+  "release_effect": "internal_candidate_only",
+  "authority_receipt": {
+    "deciding_seat": "release_authority",
+    "decision_scope": "Admit only the exact five machine role projections, bounded FAB preparation handoff, tests, reconstruction receipt, and retained internal qualification evidence for later controlled product integration.",
+    "prohibited_effects": [
+      "public deployment or serving",
+      "private household or resident record publication",
+      "entry, inspection, equipment, labor, work, remediation, or completion authorization",
+      "nursery order, purchase, payment, diagnosis, prescription, or availability promise",
+      "assistance, eligibility, award, denial, insurance, enforcement, evacuation, property, or resident decision",
+      "contact, publication, appointment, representation, institutional acceptance, or other external effect",
+      "provider credential operation, purchase, contract, or spend",
+      "whole-product qualification, design-score award, external endorsement, or canonical task-count mutation"
+    ]
+  },
+  "qualification_boundary": "A passing decision proves only that the exact role contract, reconstructed builder, tests, five projections, FAB preparation record, donor identities, exports, handoff graph, holds, and internal review agree. It does not prove private operation, interaction, visual finish, field fitness, provider operation, external effect, public release, whole-product quality, or task closure.",
+  "control_question": "Can a cold successor project one exact place through five genuinely different functional seats and deliver a bounded FAB handoff without manufacturing consent, eligibility, execution, or release?"
+}

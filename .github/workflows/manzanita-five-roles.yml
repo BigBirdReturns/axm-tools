@@ -1,0 +1,349 @@
+name: Manzanita five functional role projections
+
+on:
+  push:
+    branches:
+      - agent/manzanita-five-roles-016
+    paths:
+      - "manzanita-next/roles/**"
+      - ".github/workflows/manzanita-five-roles.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/roles/**"
+      - ".github/workflows/manzanita-five-roles.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Build and validate functional role projections
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove the exact candidate and dependency boundary
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {".github/workflows/manzanita-five-roles.yml"}
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/roles/")
+          ]
+          if invalid:
+              raise SystemExit(f"Role candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("manzanita-next/roles/") for path in changed):
+              raise SystemExit("Candidate contains no role-projection object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+          test -f manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json
+          test -f manzanita-next/apertures/APERTURE_CONTRACT.json
+          test -f manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json
+          test -f manzanita-next/overlays/OVERLAY_CONTRACT.json
+          test -f manzanita-next/design-system/CONSTITUTION.json
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+          test -f programs/manzanita-99/review-board/validate_review_board.py
+
+      - name: Install source, projection, image, role, and review dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            requests beautifulsoup4 pillow jsonschema pytest
+
+      - name: Validate source, donor, role, recovery, and review contracts
+        run: |
+          pytest -q manzanita-next/tests
+          python -m py_compile \
+            manzanita-next/public-demo/build_public_demo.py \
+            manzanita-next/apertures/build_apertures.py \
+            manzanita-next/street-glide/resolve_scene.py \
+            manzanita-next/street-glide/register_natural_border.py \
+            manzanita-next/overlays/build_overlays.py \
+            manzanita-next/roles/build_roles.py \
+            manzanita-next/roles/tests/test_roles.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m json.tool manzanita-next/roles/ROLE_CONTRACT.json > /dev/null
+          python -m json.tool manzanita-next/roles/RECOVERY_RECEIPT.json > /dev/null
+          python -m json.tool manzanita-next/roles/review/M99-RB-PKT-008.json > /dev/null
+          python -m json.tool manzanita-next/roles/review/M99-RB-DEC-008.json > /dev/null
+          python -m unittest discover \
+            -s manzanita-next/public-demo/tests \
+            -p "test_public_demo.py"
+          python -m unittest discover \
+            -s manzanita-next/apertures/tests \
+            -p "test_apertures.py"
+          python -m unittest discover \
+            -s manzanita-next/street-glide/tests \
+            -p "test_street_glide.py"
+          python -m unittest discover \
+            -s manzanita-next/overlays/tests \
+            -p "test_overlays.py"
+          python -m unittest discover \
+            -s manzanita-next/roles/tests \
+            -p "test_roles.py"
+
+      - name: Verify reconstruction receipts against exact repository bytes
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          receipt = json.loads(Path("manzanita-next/roles/RECOVERY_RECEIPT.json").read_text())
+          assert receipt["schema"] == "axm-tools/manzanita-five-role-recovery-receipt@1"
+          assert receipt["source_archive"]["sha256"] == "5261af08a5d821c4102917a25b6604e68ad430101b7228466699ae9149e55810"
+          assert receipt["source_archive"]["builder_damage"]["null_bytes"] == 596
+          assert receipt["source_archive"]["builder_damage"]["null_runs"] == 81
+          assert receipt["admission"]["original_builder_recovered"] is False
+          assert receipt["public_effect"] == "none"
+          assert receipt["constitutional_count_effect"] == "none"
+
+          for row in receipt["reconstructed_outputs"]:
+              path = Path(row["path"])
+              payload = path.read_bytes()
+              assert len(payload) == row["bytes"], path
+              assert hashlib.sha256(payload).hexdigest() == row["sha256"], path
+          PY
+
+      - name: Acquire the exact live source foundation
+        id: acquire
+        continue-on-error: true
+        env:
+          AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPILLARY_ACCESS_TOKEN: ${{ secrets.MAPILLARY_ACCESS_TOKEN }}
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
+        run: |
+          rm -rf manzanita-next/out
+          cd manzanita-next
+          python -m scripts.acquire_foundation \
+            --place config/place-demo.json \
+            --registry config/source-registry.json \
+            --out out
+
+      - name: Validate every source receipt and retained payload
+        id: validate_source
+        if: always()
+        run: |
+          python manzanita-next/scripts/validate_foundation.py \
+            --root manzanita-next/out \
+            --source-schema manzanita-next/contracts/source-envelope.schema.json
+
+      - name: Rebuild the exact public-safe place donor
+        if: always()
+        run: |
+          rm -rf manzanita-next/public-demo/out
+          python manzanita-next/public-demo/build_public_demo.py \
+            --repo-root . \
+            --acquisition-root manzanita-next/out \
+            --output manzanita-next/public-demo/out
+
+      - name: Rebuild the seven-aperture architecture donor
+        if: always()
+        run: |
+          rm -rf manzanita-next/apertures/out
+          python manzanita-next/apertures/build_apertures.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --output manzanita-next/apertures/out
+
+      - name: Rebuild the exact Street Glide donors
+        if: always()
+        run: |
+          rm -rf manzanita-next/street-glide/out
+          python manzanita-next/street-glide/resolve_scene.py \
+            --contract manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json \
+            --public-data manzanita-next/public-demo/out/PUBLIC_DATA.json \
+            --scenes manzanita-next/street-glide/AUTHORED_REGISTRATION_DEMO.json \
+            --target-heading 0 \
+            --output manzanita-next/street-glide/out/SCENE_DECISION.json
+          python manzanita-next/street-glide/register_natural_border.py \
+            --contract manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json \
+            --demo manzanita-next/street-glide/AUTHORED_REGISTRATION_DEMO.json \
+            --image manzanita-next/public-demo/out/site/assets/base-imagery.png \
+            --output manzanita-next/street-glide/out/REGISTRATION_RECEIPT.json
+
+      - name: Rebuild the eight-overlay architecture donor
+        if: always()
+        run: |
+          rm -rf manzanita-next/overlays/out
+          python manzanita-next/overlays/build_overlays.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --aperture-root manzanita-next/apertures/out \
+            --street-glide-root manzanita-next/street-glide/out \
+            --output manzanita-next/overlays/out
+
+      - name: Build the five exact functional role projections and FAB handoff
+        if: always()
+        run: |
+          rm -rf manzanita-next/roles/out
+          python manzanita-next/roles/build_roles.py \
+            --repo-root . \
+            --public-demo-root manzanita-next/public-demo/out \
+            --aperture-root manzanita-next/apertures/out \
+            --overlay-root manzanita-next/overlays/out \
+            --output manzanita-next/roles/out
+
+      - name: Run the contained multidisciplinary review
+        if: always()
+        run: |
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/roles/review/M99-RB-PKT-008.json \
+            --decision manzanita-next/roles/review/M99-RB-DEC-008.json \
+            --receipt manzanita-next/roles/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Prove exact-head role, FAB, and board receipts
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          public_build = json.loads(Path("manzanita-next/public-demo/out/BUILD_RECEIPT.json").read_text())
+          aperture_build = json.loads(Path("manzanita-next/apertures/out/BUILD_RECEIPT.json").read_text())
+          overlay_build = json.loads(Path("manzanita-next/overlays/out/BUILD_RECEIPT.json").read_text())
+          bundle = json.loads(Path("manzanita-next/roles/out/ROLE_BUNDLE.json").read_text())
+          fab = json.loads(Path("manzanita-next/roles/out/FAB_HANDOFF.json").read_text())
+          build = json.loads(Path("manzanita-next/roles/out/BUILD_RECEIPT.json").read_text())
+          board = json.loads(Path("manzanita-next/roles/out/BOARD_DECISION_RECEIPT.json").read_text())
+
+          expected_roles = ["resident", "nursery_grower", "crew_steward", "planner_program", "successor"]
+          expected_apertures = ["plant", "household", "property", "street", "neighborhood", "region", "stewardship"]
+          expected_overlays = ["care", "shade", "water", "heat", "air", "fire", "access", "assistance"]
+
+          assert public_build["result"] == "PASS"
+          assert public_build["release_effect"] == "none"
+          assert aperture_build["result"] == "PASS"
+          assert aperture_build["bundle"]["aperture_count"] == 7
+          assert overlay_build["result"] == "PASS"
+          assert overlay_build["bundle"]["overlay_count"] == 8
+
+          assert bundle["schema"] == "axm-tools/manzanita-five-role-bundle@1"
+          assert bundle["role_count"] == 5
+          assert bundle["role_order"] == expected_roles
+          assert [row["id"] for row in bundle["roles"]] == expected_roles
+          assert bundle["aperture_coverage"] == expected_apertures
+          assert bundle["overlay_coverage"] == expected_overlays
+          assert bundle["handoff_edge_count"] == 20
+          assert bundle["public_effect"] == "none"
+          assert bundle["constitutional_count_effect"] == "none"
+          assert len(bundle["payload_sha256"]) == 64
+          assert all(row["public_effect"] == "none" for row in bundle["roles"])
+          assert all(row["constitutional_count_effect"] == "none" for row in bundle["roles"])
+          assert all(row["export"]["external_effect"] == "none" for row in bundle["roles"])
+          assert all(row["export"]["release_state"] == "not_authorized" for row in bundle["roles"])
+          assert all(row["evidence"]["evidence_count"] > 0 for row in bundle["roles"])
+          assert len({row["object_class"] for row in bundle["roles"]}) == 5
+          assert len({row["operating_purpose"] for row in bundle["roles"]}) == 5
+          assert len({tuple(row["controls"]) for row in bundle["roles"]}) == 5
+          assert len({tuple(row["safe_actions"]) for row in bundle["roles"]}) == 5
+          assert len({row["authority"] for row in bundle["roles"]}) == 5
+          assert len({row["acceptance"] for row in bundle["roles"]}) == 5
+          assert len({row["export"]["contract"] for row in bundle["roles"]}) == 5
+          assert len({row["handoff"] for row in bundle["roles"]}) == 5
+          assert len({row["failure_state"] for row in bundle["roles"]}) == 5
+          assert len({row["prohibited_consequence"] for row in bundle["roles"]}) == 5
+
+          assert fab["schema"] == "axm-tools/manzanita-fab-handoff@1"
+          assert fab["source_role"] == "planner_program"
+          assert fab["affected_actor_role"] == "resident"
+          assert fab["target_system"] == "Essential Attention"
+          assert fab["role_bundle_sha256"] == bundle["payload_sha256"]
+          assert fab["proposal"]["execution_state"] == "not_authorized"
+          assert fab["proposal"]["award_state"] == "not_decided"
+          assert fab["proposal"]["eligibility_state"] == "not_determined"
+          assert "refuse" in fab["proposal"]["refusal_and_appeal"].lower()
+          assert "appeal" in fab["proposal"]["refusal_and_appeal"].lower()
+          assert fab["effect_firewall"]["external_effect"] == "none"
+          assert fab["effect_firewall"]["insurance"] == "prohibited"
+          assert fab["effect_firewall"]["enforcement"] == "prohibited"
+          assert fab["public_effect"] == "none"
+          assert fab["constitutional_count_effect"] == "none"
+          assert fab["release_state"] == "not_authorized"
+
+          assert build["schema"] == "axm-tools/manzanita-five-role-build@1"
+          assert build["result"] == "PASS"
+          assert build["bundle"]["role_count"] == 5
+          assert build["bundle"]["role_order"] == expected_roles
+          assert build["bundle"]["aperture_coverage"] == expected_apertures
+          assert build["bundle"]["overlay_coverage"] == expected_overlays
+          assert build["fab_handoff"]["target_system"] == "Essential Attention"
+          assert build["fab_handoff"]["release_state"] == "not_authorized"
+          assert build["public_effect"] == "none"
+          assert build["constitutional_count_effect"] == "none"
+          assert build["release_effect"] == "none"
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-008"
+          assert board["decision_id"] == "M99-RB-DEC-008"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 8
+          PY
+
+      - name: Retain source, donor, role, FAB, and board evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-five-roles-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            manzanita-next/out
+            manzanita-next/public-demo/out/PUBLIC_DATA.json
+            manzanita-next/public-demo/out/PUBLIC_PROJECTION_RECEIPT.json
+            manzanita-next/public-demo/out/BUILD_RECEIPT.json
+            manzanita-next/apertures/out/APERTURE_BUNDLE.json
+            manzanita-next/apertures/out/BUILD_RECEIPT.json
+            manzanita-next/street-glide/out/SCENE_DECISION.json
+            manzanita-next/street-glide/out/REGISTRATION_RECEIPT.json
+            manzanita-next/overlays/out/OVERLAY_BUNDLE.json
+            manzanita-next/overlays/out/BUILD_RECEIPT.json
+            manzanita-next/roles/README.md
+            manzanita-next/roles/ROLE_CONTRACT.json
+            manzanita-next/roles/RECOVERY_RECEIPT.json
+            manzanita-next/roles/build_roles.py
+            manzanita-next/roles/tests/test_roles.py
+            manzanita-next/roles/review/M99-RB-PKT-008.json
+            manzanita-next/roles/review/M99-RB-DEC-008.json
+            manzanita-next/roles/out
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Enforce the acquisition and source-validation outcomes
+        if: always()
+        env:
+          ACQUIRE_OUTCOME: ${{ steps.acquire.outcome }}
+          VALIDATE_SOURCE_OUTCOME: ${{ steps.validate_source.outcome }}
+        run: |
+          test "$ACQUIRE_OUTCOME" = "success"
+          test "$VALIDATE_SOURCE_OUTCOME" = "success"
