@@ -1,0 +1,152 @@
+{
+  "schema": "axm-tools/manzanita-resilience-qualification-contract@1",
+  "contract_id": "M99-RESILIENCE-QUALIFICATION-001",
+  "version": "1.0.0",
+  "phase": "P8",
+  "task_reference": "canonical_row_unavailable",
+  "state": "internal_qualification_candidate",
+  "object": {
+    "classification": "automated_resilience_accessibility_performance_security_matrix",
+    "accountable_actor": "qualification_operator",
+    "review_mechanism": "M99-CONTAINED-REVIEW-BOARD",
+    "decision_authority": "release_authority",
+    "public_effect": "none",
+    "constitutional_count_effect": "none",
+    "claim_boundary": "The matrix exercises the exact P7 whole-experience candidate under automated semantic, responsive, low-end CPU, delayed-resource, offline, missing-image, stale-source, provider-outage, contradictory-source, hostile-text, privacy, secret-scan, and export-reimport conditions. It is not real assistive-technology evidence, a physical-device certification, a private projection, provider-operation proof, a field campaign, a public endpoint, a release decision, or a canonical task-row transition."
+  },
+  "required_campaigns": [
+    "static_integrity",
+    "privacy_secret_scan",
+    "desktop_light",
+    "desktop_dark",
+    "tablet_touch",
+    "mobile_reduced_motion",
+    "compact_forced_colors",
+    "semantic_accessibility",
+    "keyboard_only",
+    "zoom_200_percent",
+    "low_end_cpu",
+    "delayed_resources",
+    "offline_after_load",
+    "missing_base_image",
+    "stale_source",
+    "provider_outage",
+    "contradictory_source",
+    "hostile_text",
+    "export_reimport"
+  ],
+  "browser_profiles": [
+    {
+      "id": "desktop_light",
+      "viewport": {"width": 1600, "height": 1000},
+      "color_scheme": "light",
+      "reduced_motion": "no-preference",
+      "forced_colors": "none",
+      "has_touch": false,
+      "is_mobile": false
+    },
+    {
+      "id": "desktop_dark",
+      "viewport": {"width": 1440, "height": 900},
+      "color_scheme": "dark",
+      "reduced_motion": "no-preference",
+      "forced_colors": "none",
+      "has_touch": false,
+      "is_mobile": false
+    },
+    {
+      "id": "tablet_touch",
+      "viewport": {"width": 820, "height": 1180},
+      "color_scheme": "light",
+      "reduced_motion": "no-preference",
+      "forced_colors": "none",
+      "has_touch": true,
+      "is_mobile": true
+    },
+    {
+      "id": "mobile_reduced_motion",
+      "viewport": {"width": 390, "height": 844},
+      "color_scheme": "dark",
+      "reduced_motion": "reduce",
+      "forced_colors": "none",
+      "has_touch": true,
+      "is_mobile": true
+    },
+    {
+      "id": "compact_forced_colors",
+      "viewport": {"width": 320, "height": 720},
+      "color_scheme": "light",
+      "reduced_motion": "reduce",
+      "forced_colors": "active",
+      "has_touch": false,
+      "is_mobile": false
+    }
+  ],
+  "performance_budgets": {
+    "site_total_bytes": 12582912,
+    "javascript_bytes": 7340032,
+    "css_bytes": 262144,
+    "image_bytes": 8388608,
+    "dom_nodes": 4000,
+    "first_interactive_ms": 20000,
+    "request_count": 8,
+    "minimum_visible_target_css_px": 43.5,
+    "maximum_horizontal_overflow_css_px": 2
+  },
+  "privacy_and_secret_law": {
+    "prohibited_keys": [
+      "street_address",
+      "resident_name",
+      "resident_email",
+      "resident_phone",
+      "household_address",
+      "api_key",
+      "access_token",
+      "authorization",
+      "password",
+      "secret",
+      "cookie",
+      "private_key"
+    ],
+    "high_confidence_patterns": [
+      "AWS access key",
+      "Google API key",
+      "GitHub token",
+      "OpenAI-style secret",
+      "Bearer token",
+      "private-key block"
+    ],
+    "private_projection": "not_admitted",
+    "credential_operation": "not_admitted"
+  },
+  "failure_law": [
+    "A stale source remains stale and cannot become current, safe, absent, or complete.",
+    "A provider outage remains unavailable and cannot be replaced by generated observation.",
+    "Contradictory sources remain independently visible and cannot be averaged into one false conclusion.",
+    "Missing base imagery cannot erase source, registration, uncertainty, authority, or next-action text.",
+    "Offline-after-load operation cannot create an external request or broaden authority.",
+    "Hostile text remains literal text and cannot create markup, execute script, or alter the no-effect boundary.",
+    "Export reimport validates the bounded snapshot but does not import a private record or create external effect."
+  ],
+  "automated_pass_law": {
+    "all_required_campaigns_present": true,
+    "all_campaigns_pass": true,
+    "console_errors": 0,
+    "page_errors": 0,
+    "unexpected_external_requests": 0,
+    "public_effect": "none",
+    "constitutional_count_effect": "none",
+    "release_effect": "none"
+  },
+  "retained_holds": [
+    "Independent NVDA, JAWS, VoiceOver, TalkBack, switch-control, magnification, and other real assistive-technology campaigns remain open.",
+    "Independent human comprehension, cognitive-load, resident-acceptance, affected-actor, and field-operator playtests remain open.",
+    "Real desktop, laptop, tablet, phone, graphics, browser, operating-system, input, and touch-device campaigns remain open.",
+    "Actual constrained, intermittent, captive, metered, and household-network campaigns remain open beyond deterministic browser emulation.",
+    "Private household projection, consent, refusal, export, deletion, and public-separation campaigns remain open.",
+    "Credentialed provider quota, cost, rights, cache, outage, revocation, and zero-key production campaigns remain open.",
+    "Lawful field access, safety, observation, work, completion, and affected-actor acceptance remain open.",
+    "Independent archive recovery, separate-person cold succession, deployed rollback, exact public bytes, public release, whole-product score, external review, and canonical task-row mutation remain open."
+  ],
+  "control_question": "Does the exact P7 experience remain usable, legible, source-honest, bounded, and incapable of external effect under every automated accessibility, performance, resilience, outage, stale-data, privacy, secret, and hostile-input condition while every real physical, human, provider, field, archive, deployed, public, score, and canonical-count hold remains visible?"
+}
