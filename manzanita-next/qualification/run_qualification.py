@@ -490,8 +490,25 @@ def keyboard_only(browser: Browser, base_url: str, data: dict[str, Any]) -> dict
     page.locator(f'[data-aperture="{first_aperture}"]').focus()
     page.keyboard.press("End")
     require(runtime_snapshot(page)["state"]["aperture"] == last_aperture, "End did not select the last aperture")
+    page.wait_for_function(
+        "(id) => document.activeElement?.dataset.aperture === id",
+        arg=last_aperture,
+    )
+    require(
+        page.locator(f'[data-aperture="{last_aperture}"]').evaluate("node => node === document.activeElement"),
+        "End did not transfer focus to the selected aperture",
+    )
+    previous_aperture = data["aperture_order"][-2]
     page.keyboard.press("ArrowLeft")
-    require(runtime_snapshot(page)["state"]["aperture"] == data["aperture_order"][-2], "ArrowLeft did not move one aperture")
+    require(runtime_snapshot(page)["state"]["aperture"] == previous_aperture, "ArrowLeft did not move one aperture")
+    page.wait_for_function(
+        "(id) => document.activeElement?.dataset.aperture === id",
+        arg=previous_aperture,
+    )
+    require(
+        page.locator(f'[data-aperture="{previous_aperture}"]').evaluate("node => node === document.activeElement"),
+        "ArrowLeft did not transfer focus to the selected aperture",
+    )
     page.locator("#help-button").focus()
     page.keyboard.press("Enter")
     require(page.locator("#help-dialog").evaluate("node => node.open"), "Keyboard did not open help")
