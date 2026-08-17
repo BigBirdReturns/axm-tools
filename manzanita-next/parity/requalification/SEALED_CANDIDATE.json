@@ -1,0 +1,34 @@
+{
+  "schema": "axm-tools/manzanita-estate-parity-qualification-request@1",
+  "request_id": "M99-P9-QUAL-001",
+  "requested_on": "2026-08-17",
+  "source_main_sha": "9697d409d49284b57fe8e84a6227d84a0f0ccfbd",
+  "sealed_candidate_sha": "019eb474cb57f82045f97008c8a23bdf13bc7aed",
+  "bootstrap_validation": {
+    "workflow_run": 32068691458,
+    "payload_sha256": "a4eb051b050de4a950ac53f82f51406791f70d05f865dd7f8c780c3cf68437ef",
+    "source_compile": "PASS",
+    "schema_validation": "PASS",
+    "unit_test_count": 10,
+    "unit_test_result": "PASS"
+  },
+  "requested_campaign": {
+    "workflow": ".github/workflows/manzanita-estate-parity.yml",
+    "job": "Reconcile every estate surface and source component",
+    "source_surface_count": 10,
+    "source_component_count": 104,
+    "required_p8_campaign_count": 19,
+    "required_review_packet": "M99-RB-PKT-011",
+    "required_review_decision": "M99-RB-DEC-011",
+    "artifact_retention_days": 90
+  },
+  "authority": {
+    "requested_effect": "internal_parity_register_admission_only",
+    "underlying_surface_qualification_authorized": false,
+    "public_release_authorized": false,
+    "external_effect_authorized": false,
+    "canonical_task_count_effect": "none"
+  },
+  "claim_boundary": "This request triggers exact-head qualification of the complete estate-surface disposition register. It does not qualify an underlying estate product, close a source finding or required asset, absorb another product's authority, deploy a public successor, award a score, or change a canonical task row.",
+  "control_question": "Can the exact candidate account for every estate surface and source component, preserve explicit noninheritance and retained holds, replay the admitted P7 and nineteen-campaign P8 chain, and emit deterministic receipts without promoting any underlying surface or public release?"
+}
