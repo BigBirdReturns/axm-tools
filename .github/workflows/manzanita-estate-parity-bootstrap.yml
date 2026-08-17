@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  materialize-and-seal:
+  materialize-and-publish-source:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -73,16 +73,17 @@ jobs:
               bundle.extractall(target)
           PY
 
-      - name: Materialize the bounded P9 candidate
+      - name: Materialize the bounded P9 source
         run: |
           test ! -e manzanita-next/parity
-          test ! -e .github/workflows/manzanita-estate-parity.yml
+          test -f .github/workflows/manzanita-estate-parity.yml
+          cmp \
+            /tmp/manzanita-estate-parity-materialized/.github/workflows/manzanita-estate-parity.yml \
+            .github/workflows/manzanita-estate-parity.yml
           find /tmp/manzanita-estate-parity-materialized \
             -type d -name __pycache__ -prune -exec rm -rf {} +
           find /tmp/manzanita-estate-parity-materialized \
             -type f -name '*.pyc' -delete
-          cp /tmp/manzanita-estate-parity-materialized/.github/workflows/manzanita-estate-parity.yml \
-            .github/workflows/manzanita-estate-parity.yml
           cp -R /tmp/manzanita-estate-parity-materialized/manzanita-next/parity \
             manzanita-next/parity
 
@@ -123,21 +124,13 @@ jobs:
             -s manzanita-next/parity/tests \
             -p "test_parity.py"
 
-      - name: Seal and publish the materialized branch
+      - name: Publish only the validated parity source
         run: |
-          rm -f \
-            .github/workflows/manzanita-estate-parity-bootstrap.yml \
-            .github/bootstrap/manzanita-estate-parity-part-*.b64
-          rmdir .github/bootstrap 2>/dev/null || true
           find . -type d -name __pycache__ -prune -exec rm -rf {} +
           find . -type f -name '*.pyc' -delete
           rm -rf manzanita-next/parity/out
           git config user.name "manzanita-estate-parity-bootstrap"
           git config user.email "actions@users.noreply.github.com"
-          git add -A \
-            .github/workflows/manzanita-estate-parity-bootstrap.yml \
-            .github/bootstrap \
-            .github/workflows/manzanita-estate-parity.yml \
-            manzanita-next/parity
+          git add manzanita-next/parity
           git commit -m "Manzanita: materialize exact estate-wide parity candidate"
           git push origin HEAD:agent/manzanita-estate-parity-021
