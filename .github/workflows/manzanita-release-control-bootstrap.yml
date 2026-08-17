@@ -1,0 +1,127 @@
+name: Bootstrap Manzanita release-control candidate
+
+on:
+  push:
+    branches:
+      - agent/manzanita-release-control-022
+    paths:
+      - ".github/workflows/manzanita-release-control-bootstrap.yml"
+      - ".github/bootstrap/manzanita-release-control-part-*.b64"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-release-control-bootstrap
+  cancel-in-progress: false
+
+jobs:
+  materialize-and-publish-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-release-control-022
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install exact schema and replay dependencies
+        run: python -m pip install --disable-pip-version-check jsonschema pyyaml
+
+      - name: Reassemble and verify the exact staged payload
+        run: |
+          test "$(find .github/bootstrap -maxdepth 1 -name 'manzanita-release-control-part-*.b64' | wc -l)" -eq 7
+          cat .github/bootstrap/manzanita-release-control-part-*.b64 \
+            | base64 --decode \
+            > /tmp/manzanita-release-control.tar.gz
+          test "$(sha256sum /tmp/manzanita-release-control.tar.gz | awk '{print $1}')" = \
+            "81b6ace4e896336fbceea6127cfccd5cb2967357a64a32350492dddd3bc66d6e"
+          python - <<'PY'
+          from pathlib import Path, PurePosixPath
+          import tarfile
+
+          archive = Path("/tmp/manzanita-release-control.tar.gz")
+          target = Path("/tmp/manzanita-release-control-materialized")
+          target.mkdir(parents=True, exist_ok=True)
+          allowed_root = "manzanita-next/release-control"
+          allowed_prefix = "manzanita-next/release-control/"
+          seen = set()
+
+          with tarfile.open(archive, "r:gz") as bundle:
+              for member in bundle.getmembers():
+                  name = PurePosixPath(member.name).as_posix()
+                  path = PurePosixPath(name)
+                  if path.is_absolute() or ".." in path.parts:
+                      raise SystemExit(f"Unsafe archive member: {name}")
+                  if name in seen:
+                      raise SystemExit(f"Duplicate archive member: {name}")
+                  seen.add(name)
+                  if member.issym() or member.islnk() or member.isdev() or member.isfifo():
+                      raise SystemExit(f"Unsupported archive member type: {name}")
+                  if name != allowed_root and not name.startswith(allowed_prefix):
+                      raise SystemExit(f"Out-of-scope archive member: {name}")
+              bundle.extractall(target)
+          PY
+
+      - name: Materialize the bounded release-control source
+        run: |
+          test ! -e manzanita-next/release-control
+          find /tmp/manzanita-release-control-materialized \
+            -type d -name __pycache__ -prune -exec rm -rf {} +
+          find /tmp/manzanita-release-control-materialized \
+            -type f -name '*.pyc' -delete
+          cp -R /tmp/manzanita-release-control-materialized/manzanita-next/release-control \
+            manzanita-next/release-control
+
+      - name: Validate source contracts review schemas and adversarial suite
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile \
+            manzanita-next/release-control/build_release_control.py \
+            manzanita-next/release-control/replay_p9_workflow.py \
+            manzanita-next/release-control/tests/test_release_control.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m json.tool manzanita-next/release-control/RELEASE_CONTRACT.json > /dev/null
+          python -m json.tool manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json > /dev/null
+          python -m json.tool manzanita-next/release-control/review/M99-RB-PKT-012.json > /dev/null
+          python -m json.tool manzanita-next/release-control/review/M99-RB-DEC-012.json > /dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from jsonschema import Draft202012Validator
+
+          root = Path("programs/manzanita-99/review-board")
+          for value_path, schema_path in (
+              (
+                  Path("manzanita-next/release-control/review/M99-RB-PKT-012.json"),
+                  root / "review-packet.schema.json",
+              ),
+              (
+                  Path("manzanita-next/release-control/review/M99-RB-DEC-012.json"),
+                  root / "review-decision.schema.json",
+              ),
+          ):
+              Draft202012Validator(json.loads(schema_path.read_text())).validate(
+                  json.loads(value_path.read_text())
+              )
+          PY
+          python -m unittest discover \
+            -s manzanita-next/release-control/tests \
+            -p "test_release_control.py"
+
+      - name: Publish only the validated release-control source
+        run: |
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          find . -type f -name '*.pyc' -delete
+          rm -rf manzanita-next/release-control/out*
+          git config user.name "manzanita-release-control-bootstrap"
+          git config user.email "actions@users.noreply.github.com"
+          git add manzanita-next/release-control
+          git commit -m "Manzanita: materialize exact release-control candidate"
+          git push origin HEAD:agent/manzanita-release-control-022
