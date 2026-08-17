@@ -1,0 +1,167 @@
+name: Diagnose Manzanita P7 text-resize overflow
+
+on:
+  push:
+    branches:
+      - debug/manzanita-p7-200-overflow
+    paths:
+      - ".github/workflows/manzanita-p7-overflow-diagnostic.yml"
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: debug/manzanita-p7-200-overflow
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser driver
+        run: python -m pip install --disable-pip-version-check playwright
+
+      - name: Download the exact failed P7 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl --fail --location \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/vnd.github+json" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/BigBirdReturns/axm-tools/actions/artifacts/9296536336/zip" \
+            --output /tmp/p7-artifact.zip
+          mkdir -p /tmp/p7-artifact
+          unzip -q /tmp/p7-artifact.zip -d /tmp/p7-artifact
+          test -f /tmp/p7-artifact/experience/out/site/index.html
+
+      - name: Measure every overflowing element at true 200 percent text size
+        run: |
+          cat > /tmp/diagnose.py <<'PY'
+          from __future__ import annotations
+
+          import contextlib
+          import http.server
+          import json
+          import shutil
+          import threading
+          from pathlib import Path
+
+          from playwright.sync_api import sync_playwright
+
+          site = Path("/tmp/p7-artifact/experience/out/site")
+
+          class QuietHandler(http.server.SimpleHTTPRequestHandler):
+              def log_message(self, format: str, *args: object) -> None:
+                  return
+
+          @contextlib.contextmanager
+          def serve(directory: Path):
+              class Handler(QuietHandler):
+                  def __init__(self, *args, **kwargs):
+                      super().__init__(*args, directory=str(directory), **kwargs)
+              server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+              thread = threading.Thread(target=server.serve_forever, daemon=True)
+              thread.start()
+              try:
+                  yield f"http://127.0.0.1:{server.server_port}/"
+              finally:
+                  server.shutdown()
+                  thread.join(timeout=5)
+
+          executable = (
+              shutil.which("google-chrome-stable")
+              or shutil.which("google-chrome")
+              or shutil.which("chromium")
+          )
+          if not executable:
+              raise SystemExit("No system Chromium executable is available")
+
+          with serve(site) as url, sync_playwright() as playwright:
+              browser = playwright.chromium.launch(
+                  headless=True,
+                  executable_path=executable,
+                  args=["--no-sandbox"],
+              )
+              page = browser.new_page(viewport={"width": 1280, "height": 900})
+              page.goto(url, wait_until="networkidle")
+              page.evaluate("document.documentElement.style.fontSize = '200%'")
+              page.wait_for_timeout(250)
+              report = page.evaluate(
+                  """
+                  () => {
+                    const root = document.documentElement;
+                    const client = root.clientWidth;
+                    const rows = [...document.querySelectorAll('*')]
+                      .map((node) => {
+                        const rect = node.getBoundingClientRect();
+                        const style = getComputedStyle(node);
+                        return {
+                          tag: node.tagName.toLowerCase(),
+                          id: node.id || null,
+                          className: typeof node.className === 'string' ? node.className : null,
+                          text: (node.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 140),
+                          left: Math.round(rect.left * 100) / 100,
+                          right: Math.round(rect.right * 100) / 100,
+                          width: Math.round(rect.width * 100) / 100,
+                          scrollWidth: node.scrollWidth,
+                          clientWidth: node.clientWidth,
+                          display: style.display,
+                          gridTemplateColumns: style.gridTemplateColumns,
+                          minWidth: style.minWidth,
+                          overflowX: style.overflowX,
+                          position: style.position,
+                        };
+                      })
+                      .filter((row) => row.right > client + 1 || row.left < -1 || row.scrollWidth > row.clientWidth + 1)
+                      .sort((a, b) => Math.max(b.right - client, b.scrollWidth - b.clientWidth) - Math.max(a.right - client, a.scrollWidth - a.clientWidth));
+                    const query = matchMedia('(max-width: 900px)').matches;
+                    const main = document.querySelector('.main-field');
+                    const shell = document.querySelector('.app-shell');
+                    const experience = document.querySelector('.experience-grid');
+                    return {
+                      viewport: { width: innerWidth, height: innerHeight },
+                      root: { clientWidth: root.clientWidth, scrollWidth: root.scrollWidth },
+                      body: { clientWidth: document.body.clientWidth, scrollWidth: document.body.scrollWidth },
+                      mediaMax900: query,
+                      main: main ? {
+                        rect: main.getBoundingClientRect().toJSON(),
+                        containerType: getComputedStyle(main).containerType,
+                        containerName: getComputedStyle(main).containerName,
+                      } : null,
+                      shell: shell ? {
+                        rect: shell.getBoundingClientRect().toJSON(),
+                        gridTemplateColumns: getComputedStyle(shell).gridTemplateColumns,
+                      } : null,
+                      experience: experience ? {
+                        rect: experience.getBoundingClientRect().toJSON(),
+                        gridTemplateColumns: getComputedStyle(experience).gridTemplateColumns,
+                      } : null,
+                      overflowingCount: rows.length,
+                      overflowing: rows.slice(0, 100),
+                    };
+                  }
+                  """
+              )
+              Path("/tmp/p7-overflow-diagnostic.json").write_text(
+                  json.dumps(report, indent=2) + "\n",
+                  encoding="utf-8",
+              )
+              print(json.dumps(report, indent=2))
+              browser.close()
+          PY
+          python /tmp/diagnose.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-p7-overflow-diagnostic
+          path: /tmp/p7-overflow-diagnostic.json
+          if-no-files-found: error
+          retention-days: 30
