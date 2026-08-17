@@ -1,0 +1,290 @@
+{
+  "schema": "axm-tools/manzanita-review-packet@1",
+  "packet_id": "M99-RB-PKT-011",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "object": "M99-ESTATE-PARITY-001, the exact ten-surface and 104-component disposition register over the AXM resolution-backfill inventory and current P8-qualified internal Manzanita successor.",
+  "classification": "estate_surface_disposition_register",
+  "target_paths": [
+    "manzanita-next/parity"
+  ],
+  "source_ref": {
+    "repository": "BigBirdReturns/axm-tools",
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "requested_decision": "admit_with_holds",
+  "requested_authority": "donor_admission",
+  "public_effect": "internal_only",
+  "actors": [
+    "design_integrator",
+    "source_custody",
+    "source_product_owner",
+    "essential_attention_operator",
+    "historical_manzanita_custodian",
+    "release_authority",
+    "cold_successor"
+  ],
+  "mechanism": "The workflow runs the fresh estate audit, replays the exact P7 donor and browser chain, reruns all nineteen P8 campaigns and its contained review, validates every source surface against the existing schema, expands one epic plus every exact finding and required asset, applies the complete authored disposition map, preserves source-product authority and noninheritance, distinguishes the historical public donor from the internal successor, and emits deterministic parity and board receipts.",
+  "evidence": [
+    {
+      "id": "E-PARITY-CONTRACT",
+      "type": "source",
+      "path": "manzanita-next/parity/PARITY_CONTRACT.json",
+      "claim": "Defines the exact ten-surface, 104-component disposition law, relationship vocabulary, successor-candidate boundary, prohibited keys, effects, and control question."
+    },
+    {
+      "id": "E-PARITY-DISPOSITIONS",
+      "type": "decision",
+      "path": "manzanita-next/parity/SURFACE_DISPOSITIONS.json",
+      "claim": "Classifies every exact source surface as held or donor and names its product relationship, authority owner, reason, acceptance rule, and no-effect boundary."
+    },
+    {
+      "id": "E-PARITY-README",
+      "type": "source",
+      "path": "manzanita-next/parity/README.md",
+      "claim": "Classifies the P9 object, names the actors and mechanism, distinguishes complete accounting from product remediation, and preserves P10 and release holds."
+    },
+    {
+      "id": "E-PARITY-BUILDER",
+      "type": "test",
+      "path": "manzanita-next/parity/build_parity.py",
+      "claim": "Validates the source inventory and schema, expands every exact finding and required asset, binds P8, rejects authority laundering and private keys, and emits deterministic parity receipts."
+    },
+    {
+      "id": "E-PARITY-TESTS",
+      "type": "test",
+      "path": "manzanita-next/parity/tests/test_parity.py",
+      "claim": "Exercises complete coverage, missing and duplicate dispositions, component-count drift, false qualification, private keys, P8 regression, open high defects, deterministic output, and effect boundaries."
+    },
+    {
+      "id": "E-PARITY-WORKFLOW",
+      "type": "receipt",
+      "path": ".github/workflows/manzanita-estate-parity.yml",
+      "claim": "Binds exact-head path scope, source audit, canonical P7 replay, nineteen-campaign P8 replay, P8 review, parity build, P9 review, receipt assertions, and artifact retention."
+    },
+    {
+      "id": "E-BACKFILL-INVENTORY",
+      "type": "source",
+      "path": "resolution-backfill/inventory.json",
+      "claim": "Names the exact ten public estate surface records and the policy that legacy completion claims remain provisional until mandatory evidence gates pass."
+    },
+    {
+      "id": "E-BACKFILL-SCHEMA",
+      "type": "schema",
+      "path": "resolution-backfill/contracts/surface.schema.json",
+      "claim": "Defines the exact surface object, actors, mechanism, twelve gates, findings, required assets, resolution status, and next-gate structure retained by P9."
+    },
+    {
+      "id": "E-BACKFILL-REPORT",
+      "type": "receipt",
+      "path": "resolution-backfill/out/report.json",
+      "claim": "Records the fresh exact-head audit of all ten source surfaces, gate states, findings, asset requirements, evidence paths, and explicit non-remediation meaning."
+    },
+    {
+      "id": "E-BACKFILL-QUALIFICATION",
+      "type": "receipt",
+      "path": "resolution-backfill/out/qualification.json",
+      "claim": "Qualifies only the completeness, evidence addressability, and honesty of the reopening ledger while expressly excluding underlying product remediation or completion."
+    },
+    {
+      "id": "E-P8-REPORT",
+      "type": "receipt",
+      "path": "manzanita-next/qualification/out/QUALIFICATION_REPORT.json",
+      "claim": "Supplies the fresh nineteen-campaign automated qualification of the exact current P7 successor candidate with all physical, human, private, provider, field, public, and release claims false."
+    },
+    {
+      "id": "E-P8-BOARD",
+      "type": "decision",
+      "path": "manzanita-next/qualification/out/BOARD_DECISION_RECEIPT.json",
+      "claim": "Supplies the fresh twelve-seat contained P8 admission with zero open vetoes or critical and high defects and an internal-candidate-only release boundary."
+    },
+    {
+      "id": "E-PARITY-REGISTER",
+      "type": "receipt",
+      "path": "manzanita-next/parity/out/PARITY_REGISTER.json",
+      "claim": "Contains every source surface, every exact surface epic, finding, and required asset, complete disposition and relationship coverage, the qualified internal successor identity, and zero uncovered or unknown components."
+    },
+    {
+      "id": "E-PARITY-BUILD",
+      "type": "receipt",
+      "path": "manzanita-next/parity/out/BUILD_RECEIPT.json",
+      "claim": "Binds all P9 input files, the exact register digest and counts, complete coverage, successor state, and no public, release, external, or constitutional-count effect."
+    },
+    {
+      "id": "E-BOARD-CHARTER",
+      "type": "source",
+      "path": "programs/manzanita-99/review-board/BOARD_CHARTER.json",
+      "claim": "Defines the twelve contained functional seats, evidence minimums, veto grounds, decision states, authority boundary, and no-external-review law used for P9."
+    }
+  ],
+  "claim_boundary": "This packet requests admission of complete estate disposition coverage only. It does not request remediation or qualification of the held source products, product absorption, private or field authority, public deployment, whole-product score, external review, P10 release proof, or canonical task-row closure.",
+  "gates": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is a complete estate-surface disposition register rather than a claim that every source product is remediated, integrated, superseded, or released.",
+      "evidence_ids": [
+        "E-PARITY-CONTRACT",
+        "E-PARITY-DISPOSITIONS",
+        "E-PARITY-REGISTER"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Design integrator, source custody, each source-product owner, Essential Attention, historical Manzanita, release authority, and cold successor retain separate product, evidence, acceptance, and release authority.",
+      "evidence_ids": [
+        "E-PARITY-CONTRACT",
+        "E-PARITY-DISPOSITIONS",
+        "E-BACKFILL-INVENTORY",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The builder reads the exact inventory and schema, expands every surface epic, finding, and required asset, validates complete authored dispositions, binds current P8 evidence, and fails silent loss or authority laundering.",
+      "evidence_ids": [
+        "E-PARITY-BUILDER",
+        "E-PARITY-TESTS",
+        "E-PARITY-REGISTER",
+        "E-PARITY-BUILD"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Every source path, source record, source digest, source resolution status, disposition, product relationship, authority owner, acceptance rule, and successor receipt remains independently visible and hash-bound.",
+      "evidence_ids": [
+        "E-BACKFILL-INVENTORY",
+        "E-BACKFILL-SCHEMA",
+        "E-BACKFILL-REPORT",
+        "E-P8-REPORT",
+        "E-PARITY-REGISTER"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "not_applicable",
+      "reason": "P9 is a machine-readable governance register and creates no new product interaction surface; the current successor interaction semantics remain controlled by the fresh P7 and P8 receipts.",
+      "evidence_ids": [
+        "E-PARITY-CONTRACT",
+        "E-P8-REPORT"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "not_applicable",
+      "reason": "P9 creates no new public or operator-facing visual composition and makes no typography, imagery, or finish claim for the source products it classifies.",
+      "evidence_ids": [
+        "E-PARITY-CONTRACT",
+        "E-PARITY-README"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "not_applicable",
+      "reason": "P9 creates no motion surface; later disposition changes require exact source-linked amendments rather than inferred temporal promotion.",
+      "evidence_ids": [
+        "E-PARITY-CONTRACT",
+        "E-PARITY-DISPOSITIONS"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "not_applicable",
+      "reason": "P9 is deterministic machine governance; accessible operation of the current Manzanita successor remains controlled by P8, while the other source surfaces retain their own open accessibility gates.",
+      "evidence_ids": [
+        "E-P8-REPORT",
+        "E-BACKFILL-REPORT",
+        "E-PARITY-REGISTER"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "pass",
+      "reason": "Exact counts, schema validation, duplicate detection, missing-disposition failure, component-drift failure, private-key refusal, P8 regression refusal, and deterministic rebuilding prevent silent coverage loss.",
+      "evidence_ids": [
+        "E-PARITY-BUILDER",
+        "E-PARITY-TESTS",
+        "E-PARITY-BUILD"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "Private and credential keys are rejected, source products retain their own authority, bounded handoff cannot transfer external standing, historical and successor Manzanita remain distinct, and every effect remains none.",
+      "evidence_ids": [
+        "E-PARITY-CONTRACT",
+        "E-PARITY-DISPOSITIONS",
+        "E-PARITY-BUILDER",
+        "E-PARITY-TESTS",
+        "E-PARITY-REGISTER"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Exact source paths, hashes, deterministic outputs, authority owners, acceptance rules, historical rollback donor, and successor identity are explicit, while independent archive recovery and separate-person cold explanation remain open P10 campaigns.",
+      "evidence_ids": [
+        "E-PARITY-BUILD",
+        "E-PARITY-REGISTER",
+        "E-P8-BOARD",
+        "E-PARITY-WORKFLOW"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains fresh backfill, P7, P8, P9, and board receipts while zero surfaces or components remain uncovered or unknown and public, release, external, and count effects remain none.",
+      "evidence_ids": [
+        "E-PARITY-WORKFLOW",
+        "E-BACKFILL-QUALIFICATION",
+        "E-P8-BOARD",
+        "E-PARITY-BUILD",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "seat_prompts": {
+    "board_chair": [
+      "Review the exact P9 parity register through the board chair aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "creative_direction": [
+      "Review the exact P9 parity register through the creative direction aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "product_interaction": [
+      "Review the exact P9 parity register through the product interaction aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "information_design": [
+      "Review the exact P9 parity register through the information design aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "typography": [
+      "Review the exact P9 parity register through the typography aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "motion": [
+      "Review the exact P9 parity register through the motion aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "source_custody": [
+      "Review the exact P9 parity register through the source custody aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "field_operations": [
+      "Review the exact P9 parity register through the field operations aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "accessibility": [
+      "Review the exact P9 parity register through the accessibility aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "performance_resilience": [
+      "Review the exact P9 parity register through the performance resilience aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "security_privacy": [
+      "Review the exact P9 parity register through the security privacy aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ],
+    "continuity_release": [
+      "Review the exact P9 parity register through the continuity release aperture, confirm complete source coverage and explicit noninheritance, and refuse any product, field, public, release, score, or task authority absent from the source records."
+    ]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, eligibility, funding, enforcement, inspection, or adverse action",
+      "evacuation, safety, entry, traffic, pruning, labor, work, remediation, completion, or institutional acceptance",
+      "presentation of a held, separate, archived, donor, authored, stale, unavailable, or similarly named object as completed source-product evidence"
+    ],
+    "required_human_control": "An accountable owner of each source product must approve any change in product relationship, qualification, supersession, acceptance, public standing, release, or external effect, and release authority must separately approve any Manzanita public promotion."
+  },
+  "continuity": {
+    "recovery_path": "Rerun the resolution-backfill audit, canonical P7 replay, nineteen-campaign P8 matrix, P8 review, parity builder, exact count checks, and P9 contained review from retained source paths and dispositions.",
+    "rollback_target": "Historical public manzanita v1.4 route",
+    "successor_test": "A separate cold successor must reproduce the ten-surface and 104-component register and explain every disposition, relationship, authority owner, evidence receipt, and retained hold without relying on resemblance."
+  },
+  "control_question": "Can a cold successor account for every public estate surface and every exact source component, identify whether it is qualified, held, archived, or donor, and locate the evidence or hold controlling that state without relying on visual resemblance or shared vocabulary?"
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "axm-tools/manzanita-estate-parity-contract@1",
+  "contract_id": "M99-ESTATE-PARITY-001",
+  "version": "1.0.0",
+  "classification": "estate_surface_disposition_register",
+  "expected_surface_count": 10,
+  "expected_component_count": 104,
+  "disposition_states": [
+    "qualified",
+    "held",
+    "archived",
+    "donor"
+  ],
+  "relationship_states": [
+    "integrated_product_family",
+    "bounded_handoff_compatible_separate_surface",
+    "explicit_noninheritance",
+    "historical_public_rollback_donor"
+  ],
+  "source_resolution_states": [
+    "reopened",
+    "remediation_in_progress",
+    "qualified",
+    "retired"
+  ],
+  "successor_candidate": {
+    "state": "qualified_internal_candidate",
+    "required_p8_campaign_count": 19,
+    "required_p8_packet": "M99-RB-PKT-010",
+    "required_p8_decision": "M99-RB-DEC-010",
+    "public_release_authorized": false,
+    "external_effect_authorized": false,
+    "canonical_task_count_effect": "none"
+  },
+  "component_law": [
+    "Every inventory surface contributes exactly one surface epic, every exact finding, and every exact required asset.",
+    "A parity disposition classifies custody and product relationship; it does not close the source surface's findings, gates, or required assets.",
+    "A held source product remains independently governed and transfers no ontology, qualification, release authority, or public standing into Manzanita.",
+    "Essential Attention may receive a bounded FAB-compatible handoff while remaining a separate administrative product with separate evidence and authority.",
+    "The historical public Manzanita route remains a rollback and comparison donor; it is not the internally qualified successor candidate.",
+    "No similarly named mechanism can satisfy a source-specific finding or required asset without an exact source-linked receipt."
+  ],
+  "prohibited_keys": [
+    "street_address",
+    "resident_name",
+    "resident_email",
+    "resident_phone",
+    "household_address",
+    "api_key",
+    "access_token",
+    "authorization",
+    "password",
+    "secret",
+    "cookie",
+    "private_key"
+  ],
+  "public_effect": "none",
+  "constitutional_count_effect": "none",
+  "release_effect": "none",
+  "claim_boundary": "This contract qualifies complete estate-surface disposition coverage and explicit noninheritance only. It does not qualify the underlying surfaces, absorb their product authority, close their findings or required assets, deploy a public successor, establish a whole-product score, or mutate a canonical task row.",
+  "control_question": "Can a cold successor account for every public estate surface and every exact source component, identify whether it is qualified, held, archived, or donor, and locate the evidence or hold controlling that state without relying on visual resemblance or shared vocabulary?"
+}
