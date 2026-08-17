@@ -1,0 +1,285 @@
+name: Manzanita release control and local continuity
+
+on:
+  push:
+    branches:
+      - agent/manzanita-release-control-022
+    paths:
+      - "manzanita-next/release-control/**"
+      - ".github/workflows/manzanita-release-control.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/release-control/**"
+      - ".github/workflows/manzanita-release-control.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Qualify release bytes archive and local rollback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove the exact P10 candidate and dependency boundary
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {".github/workflows/manzanita-release-control.yml"}
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/release-control/")
+          ]
+          if invalid:
+              raise SystemExit(f"P10 candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("manzanita-next/release-control/") for path in changed):
+              raise SystemExit("P10 candidate contains no release-control object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+          test -f manzanita/QUALIFICATION.json
+          test -f .github/workflows/manzanita-estate-parity.yml
+          test -f manzanita-next/experience/EXPERIENCE_CONTRACT.json
+          test -f manzanita-next/qualification/QUALIFICATION_CONTRACT.json
+          test -f manzanita-next/parity/PARITY_CONTRACT.json
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+
+      - name: Install exact source browser archive schema and review dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            requests beautifulsoup4 pillow jsonschema pytest playwright pyyaml
+          python -m playwright install --with-deps chromium
+
+      - name: Validate release-control contracts implementation and adversarial suite
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          pytest -q manzanita-next/tests
+          python -m py_compile \
+            manzanita-next/release-control/build_release_control.py \
+            manzanita-next/release-control/replay_p9_workflow.py \
+            manzanita-next/release-control/tests/test_release_control.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m json.tool manzanita-next/release-control/RELEASE_CONTRACT.json > /dev/null
+          python -m json.tool manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json > /dev/null
+          python -m json.tool manzanita-next/release-control/review/M99-RB-PKT-012.json > /dev/null
+          python -m json.tool manzanita-next/release-control/review/M99-RB-DEC-012.json > /dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from jsonschema import Draft202012Validator
+
+          root = Path("programs/manzanita-99/review-board")
+          for value_path, schema_path in (
+              (
+                  Path("manzanita-next/release-control/review/M99-RB-PKT-012.json"),
+                  root / "review-packet.schema.json",
+              ),
+              (
+                  Path("manzanita-next/release-control/review/M99-RB-DEC-012.json"),
+                  root / "review-decision.schema.json",
+              ),
+          ):
+              Draft202012Validator(json.loads(schema_path.read_text())).validate(
+                  json.loads(value_path.read_text())
+              )
+          PY
+          python -m unittest discover \
+            -s manzanita-next/release-control/tests \
+            -p "test_release_control.py"
+
+      - name: Replay the exact estate audit P7 P8 and P9 chain
+        env:
+          AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPILLARY_ACCESS_TOKEN: ${{ secrets.MAPILLARY_ACCESS_TOKEN }}
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
+        run: |
+          rm -rf manzanita-next/release-control/out
+          python manzanita-next/release-control/replay_p9_workflow.py \
+            --workflow .github/workflows/manzanita-estate-parity.yml \
+            --output-script /tmp/replay-p9.sh \
+            --receipt manzanita-next/release-control/P9_REPLAY_PLAN.json
+          REPO_ROOT="$PWD" bash /tmp/replay-p9.sh
+
+      - name: Build and operate the exact internal release candidate
+        run: |
+          python manzanita-next/release-control/build_release_control.py \
+            --repo-root . \
+            --contract manzanita-next/release-control/RELEASE_CONTRACT.json \
+            --campaign-ledger manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json \
+            --output manzanita-next/release-control/out
+
+      - name: Run the contained multidisciplinary P10 review
+        run: |
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/release-control/review/M99-RB-PKT-012.json \
+            --decision manzanita-next/release-control/review/M99-RB-DEC-012.json \
+            --receipt manzanita-next/release-control/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Prove exact-head release archive continuity and HOLD receipts
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import zipfile
+          from pathlib import Path
+
+          contract = json.loads(Path("manzanita-next/release-control/RELEASE_CONTRACT.json").read_text())
+          ledger = json.loads(Path("manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json").read_text())
+          replay = json.loads(Path("manzanita-next/release-control/P9_REPLAY_PLAN.json").read_text())
+          manifest = json.loads(Path("manzanita-next/release-control/out/package/RELEASE_MANIFEST.json").read_text())
+          release = json.loads(Path("manzanita-next/release-control/out/RELEASE_DECISION.json").read_text())
+          continuity = json.loads(Path("manzanita-next/release-control/out/CONTINUITY_RECEIPT.json").read_text())
+          build = json.loads(Path("manzanita-next/release-control/out/BUILD_RECEIPT.json").read_text())
+          board = json.loads(Path("manzanita-next/release-control/out/BOARD_DECISION_RECEIPT.json").read_text())
+          archive = Path("manzanita-next/release-control/out/MANZANITA_INTERNAL_RELEASE_CANDIDATE.zip")
+
+          assert replay["result"] == "PASS"
+          assert replay["step_count"] == 4
+          assert replay["step_names"] == [
+              "Audit the exact estate reopening ledger",
+              "Rebuild the exact P7 and P8 evidence chain",
+              "Build the exact complete-coverage parity register",
+              "Run the contained multidisciplinary P9 review",
+          ]
+          assert replay["required_environment"] == [
+              "AIRNOW_API_KEY",
+              "FIRMS_MAP_KEY",
+              "GOOGLE_MAPS_API_KEY",
+              "MAPILLARY_ACCESS_TOKEN",
+              "USGS_API_KEY",
+          ]
+
+          assert manifest["schema"] == "axm-tools/manzanita-portable-release-manifest@1"
+          assert manifest["source_commit"] == os.environ["REVIEW_HEAD_SHA"]
+          assert manifest["candidate_file_count"] > 0
+          assert manifest["rollback_file_count"] > 0
+          assert manifest["evidence_file_count"] == 10
+          assert len(manifest["candidate_manifest_sha256"]) == 64
+          assert len(manifest["rollback_manifest_sha256"]) == 64
+          assert len(manifest["evidence_manifest_sha256"]) == 64
+          assert len(manifest["payload_sha256"]) == 64
+          assert manifest["release_state"] == "HOLD"
+          assert manifest["public_release_authorized"] is False
+          assert manifest["public_effect"] == "none"
+          assert manifest["constitutional_count_effect"] == "none"
+          with zipfile.ZipFile(archive) as package:
+              assert package.testzip() is None
+              names = package.namelist()
+              assert len(names) == len(set(names))
+              assert "RELEASE_MANIFEST.json" in names
+              assert "VERIFY_RELEASE.py" in names
+
+          assert release["schema"] == "axm-tools/manzanita-release-decision@1"
+          assert release["state"] == "HOLD"
+          assert release["automated_candidate_state"] == "QUALIFIED_INTERNAL_RELEASE_CANDIDATE"
+          assert release["public_release_authorized"] is False
+          assert set(release["blocking_campaigns"]) == set(contract["external_campaign_ids"])
+          assert release["blocking_campaign_count"] == len(ledger["campaigns"]) == 10
+          assert release["public_effect"] == "none"
+          assert release["constitutional_count_effect"] == "none"
+
+          assert continuity["schema"] == "axm-tools/manzanita-continuity-receipt@1"
+          assert continuity["result"] == "PASS"
+          assert continuity["source_commit"] == os.environ["REVIEW_HEAD_SHA"]
+          assert continuity["release_decision_state"] == "HOLD"
+          assert continuity["public_release_authorized"] is False
+          assert continuity["archive_reimport"]["result"] == "PASS"
+          assert continuity["bounded_secret_scan"]["result"] == "PASS"
+          assert continuity["bounded_secret_scan"]["finding_count"] == 0
+          assert continuity["isolated_same_runner_successor"]["result"] == "PASS"
+          assert continuity["isolated_same_runner_successor"]["repository_imports"] is False
+          assert continuity["isolated_same_runner_successor"]["private_credentials"] is False
+          assert continuity["isolated_same_runner_successor"]["independent_operator_claim"] is False
+          assert continuity["candidate_served_byte_proof"]["result"] == "PASS"
+          assert continuity["rollback_served_byte_proof"]["result"] == "PASS"
+          assert continuity["rollback_simulation"]["result"] == "PASS"
+          assert continuity["rollback_simulation"]["mechanism"] == "atomic_pointer_file_replace"
+          assert continuity["rollback_simulation"]["active_after_simulation"] == "rollback"
+          assert continuity["public_endpoint_claim"] is False
+          assert continuity["real_deployed_rollback_claim"] is False
+          assert continuity["independent_cold_successor_claim"] is False
+
+          assert build["schema"] == "axm-tools/manzanita-release-control-build@1"
+          assert build["result"] == "PASS"
+          assert build["release_state"] == "HOLD"
+          assert build["automated_candidate_state"] == "QUALIFIED_INTERNAL_RELEASE_CANDIDATE"
+          assert build["public_release_authorized"] is False
+          assert build["source_commit"] == os.environ["REVIEW_HEAD_SHA"]
+          assert build["archive"]["bytes"] == archive.stat().st_size
+          assert len(build["archive"]["sha256"]) == 64
+          assert set(build["proofs"]) == {
+              "archive_reimport",
+              "bounded_secret_scan",
+              "isolated_same_runner_successor",
+              "local_candidate_served_bytes",
+              "local_rollback_served_bytes",
+              "atomic_local_rollback",
+          }
+          assert all(row["result"] == "PASS" for row in build["proofs"].values())
+          assert build["blocking_campaign_count"] == 10
+          assert build["public_endpoint_claim"] is False
+          assert build["real_deployed_rollback_claim"] is False
+          assert build["independent_cold_successor_claim"] is False
+          assert build["public_effect"] == "none"
+          assert build["constitutional_count_effect"] == "none"
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-012"
+          assert board["decision_id"] == "M99-RB-DEC-012"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 9
+          assert board["gate_states"]["continuity_export_rollback_and_succession"] == "partial"
+          PY
+
+      - name: Retain complete release-control and donor evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-release-control-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            resolution-backfill/out
+            manzanita-next/experience/out
+            manzanita-next/qualification/out
+            manzanita-next/parity/out
+            manzanita-next/release-control/README.md
+            manzanita-next/release-control/RELEASE_CONTRACT.json
+            manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json
+            manzanita-next/release-control/P9_REPLAY_PLAN.json
+            manzanita-next/release-control/build_release_control.py
+            manzanita-next/release-control/replay_p9_workflow.py
+            manzanita-next/release-control/tests
+            manzanita-next/release-control/review
+            manzanita-next/release-control/out
+          if-no-files-found: error
+          retention-days: 90
