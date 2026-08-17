@@ -541,5 +541,13 @@ class ExperienceTests(unittest.TestCase):
         self.assertEqual(next(row for row in data["overlays"] if row["id"] == "access")["state"], "map_only")
 
 
+    def test_keyboard_group_binding_is_single_and_focus_safe(self) -> None:
+        app = (EXPERIENCE_ROOT / "template" / "app.js").read_text(encoding="utf-8")
+        self.assertIn('fieldset.dataset.keyboardBound === "true"', app)
+        self.assertIn('fieldset.dataset.keyboardBound = "true"', app)
+        self.assertIn("select(kind, id);", app)
+        self.assertIn("focusControl(kind, id);", app)
+        self.assertNotIn("buttons[next].click();", app)
+
 if __name__ == "__main__":
     unittest.main()

@@ -390,6 +390,8 @@
     $$('[data-overlay]').forEach((button) => button.addEventListener("click", () => select("overlay", button.dataset.overlay)));
     $$('[data-role]').forEach((button) => button.addEventListener("click", () => select("role", button.dataset.role)));
     $$('[data-control-group]').forEach((fieldset) => {
+      if (fieldset.dataset.keyboardBound === "true") return;
+      fieldset.dataset.keyboardBound = "true";
       fieldset.addEventListener("keydown", (event) => {
         if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
         const buttons = $$('button', fieldset);
@@ -400,9 +402,19 @@
         if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (current - 1 + buttons.length) % buttons.length;
         if (event.key === 'Home') next = 0;
         if (event.key === 'End') next = buttons.length - 1;
+        const target = buttons[next];
+        const kind = target.hasAttribute("data-aperture")
+          ? "aperture"
+          : target.hasAttribute("data-overlay")
+            ? "overlay"
+            : target.hasAttribute("data-role")
+              ? "role"
+              : null;
+        const id = kind ? target.dataset[kind] : null;
+        if (!kind || !id) return;
         event.preventDefault();
-        buttons[next].focus();
-        buttons[next].click();
+        select(kind, id);
+        focusControl(kind, id);
       });
     });
   }
