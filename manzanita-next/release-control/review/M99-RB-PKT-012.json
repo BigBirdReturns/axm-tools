@@ -1,0 +1,308 @@
+{
+  "schema": "axm-tools/manzanita-review-packet@1",
+  "packet_id": "M99-RB-PKT-012",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "object": "M99-RELEASE-CONTROL-001, the byte-addressed internal Manzanita release candidate, exact historical rollback donor, portable archive, reimport, isolated verifier, local served-byte proofs, atomic rollback simulation, external campaign ledger, and public-release HOLD.",
+  "classification": "internal_release_candidate_and_continuity_control",
+  "target_paths": [
+    "manzanita-next/release-control"
+  ],
+  "source_ref": {
+    "repository": "BigBirdReturns/axm-tools",
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "requested_decision": "admit_with_holds",
+  "requested_authority": "release_candidate_admission",
+  "public_effect": "internal_only",
+  "actors": [
+    "release_authority",
+    "continuity_release",
+    "qualification_operator",
+    "external_campaign_operator",
+    "affected_actor",
+    "provider_operator",
+    "field_operator",
+    "cold_successor"
+  ],
+  "mechanism": "The workflow replays the exact estate audit, P7, nineteen-campaign P8, P8 review, P9 register, and P9 review chain; copies the exact candidate and historical rollback route; hashes every candidate, rollback, and evidence file; builds a deterministic portable archive with a standalone verifier; reimports it; verifies candidate and rollback bytes through local HTTP; performs an atomic local rollback; runs the verifier under isolated Python; and emits a public-release HOLD naming every unperformed external campaign.",
+  "evidence": [
+    {
+      "id": "E-RC-CONTRACT",
+      "type": "source",
+      "path": "manzanita-next/release-control/RELEASE_CONTRACT.json",
+      "claim": "Defines the exact internal release-candidate, archive, rollback, external-campaign, effect, authority, and no-public-release law."
+    },
+    {
+      "id": "E-RC-LEDGER",
+      "type": "decision",
+      "path": "manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json",
+      "claim": "Retains all ten physical, human, private, provider, field, archive, public-endpoint, and deployed-rollback campaigns as not performed."
+    },
+    {
+      "id": "E-RC-README",
+      "type": "source",
+      "path": "manzanita-next/release-control/README.md",
+      "claim": "Classifies the release-control object, names its actors, explains its mechanism, and distinguishes local continuity proof from public deployment."
+    },
+    {
+      "id": "E-RC-REPLAY",
+      "type": "test",
+      "path": "manzanita-next/release-control/replay_p9_workflow.py",
+      "claim": "Extracts only the exact estate audit, P7, P8, P9 build, and P9 contained-review run blocks from the admitted workflow."
+    },
+    {
+      "id": "E-RC-BUILDER",
+      "type": "test",
+      "path": "manzanita-next/release-control/build_release_control.py",
+      "claim": "Builds and verifies deterministic candidate, rollback, evidence, archive, reimport, served-byte, isolated-verifier, rollback, decision, continuity, and build receipts."
+    },
+    {
+      "id": "E-RC-TESTS",
+      "type": "test",
+      "path": "manzanita-next/release-control/tests/test_release_control.py",
+      "claim": "Exercises deterministic archives, safe paths, donor refusal, evidence tamper, campaign hold law, local serving, isolated replay, rollback, and P9 workflow selection."
+    },
+    {
+      "id": "E-RC-WORKFLOW",
+      "type": "receipt",
+      "path": ".github/workflows/manzanita-release-control.yml",
+      "claim": "Binds exact-head path scope, fresh P9 replay, release-control build, contained review, receipt assertions, and 90-day artifact retention."
+    },
+    {
+      "id": "E-P7-BUILD",
+      "type": "receipt",
+      "path": "manzanita-next/experience/out/BUILD_RECEIPT.json",
+      "claim": "Supplies the fresh exact-head whole-experience identity and no-effect boundary packaged into the internal release candidate."
+    },
+    {
+      "id": "E-P8-REPORT",
+      "type": "receipt",
+      "path": "manzanita-next/qualification/out/QUALIFICATION_REPORT.json",
+      "claim": "Supplies the fresh nineteen-campaign automated resilience qualification with all physical, private, provider, field, public, and release claims false."
+    },
+    {
+      "id": "E-P8-BOARD",
+      "type": "decision",
+      "path": "manzanita-next/qualification/out/BOARD_DECISION_RECEIPT.json",
+      "claim": "Supplies the fresh twelve-seat P8 admission with no open vetoes or critical and high defects and an internal-candidate-only release boundary."
+    },
+    {
+      "id": "E-P9-REGISTER",
+      "type": "receipt",
+      "path": "manzanita-next/parity/out/PARITY_REGISTER.json",
+      "claim": "Supplies complete ten-surface and 104-component estate disposition coverage, zero uncovered surfaces, zero unknown components, and explicit noninheritance."
+    },
+    {
+      "id": "E-P9-BOARD",
+      "type": "decision",
+      "path": "manzanita-next/parity/out/BOARD_DECISION_RECEIPT.json",
+      "claim": "Supplies the fresh twelve-seat P9 admission while preserving nine held source products, the historical rollback donor, and P10 release holds."
+    },
+    {
+      "id": "E-RC-MANIFEST",
+      "type": "receipt",
+      "path": "manzanita-next/release-control/out/package/RELEASE_MANIFEST.json",
+      "claim": "Binds every candidate, rollback, and evidence file to one source commit, path, byte count, SHA-256, hold state, and portable release identity."
+    },
+    {
+      "id": "E-RC-ARCHIVE",
+      "type": "receipt",
+      "path": "manzanita-next/release-control/out/MANZANITA_INTERNAL_RELEASE_CANDIDATE.zip",
+      "claim": "Contains the exact candidate, historical rollback donor, governed evidence, release manifest, and standalone standard-library verifier."
+    },
+    {
+      "id": "E-RC-DECISION",
+      "type": "decision",
+      "path": "manzanita-next/release-control/out/RELEASE_DECISION.json",
+      "claim": "Records the qualified internal release candidate and explicit public-release HOLD with every incomplete external campaign named."
+    },
+    {
+      "id": "E-RC-CONTINUITY",
+      "type": "receipt",
+      "path": "manzanita-next/release-control/out/CONTINUITY_RECEIPT.json",
+      "claim": "Records archive reimport, isolated same-runner verification, local candidate and rollback served bytes, atomic rollback, and all remaining public-release blocks."
+    },
+    {
+      "id": "E-RC-BUILD",
+      "type": "receipt",
+      "path": "manzanita-next/release-control/out/BUILD_RECEIPT.json",
+      "claim": "Binds the portable archive, manifests, automated proofs, blocking campaigns, no-effect boundary, and deterministic release-control output digest."
+    },
+    {
+      "id": "E-BOARD-CHARTER",
+      "type": "source",
+      "path": "programs/manzanita-99/review-board/BOARD_CHARTER.json",
+      "claim": "Defines the twelve contained functional seats, evidence minimums, gate and veto law, authority boundary, and non-external review claim."
+    }
+  ],
+  "claim_boundary": "This packet requests internal release-candidate and local continuity admission only. It does not request public deployment, public endpoint standing, real deployed rollback, independently controlled archive or cold successor, physical or human campaign completion, private or field authority, credentialed provider operation, external effect, whole-product public release, 99-point score, endorsement, or canonical task-row closure.",
+  "gates": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is a byte-addressed internal release candidate and continuity control whose public release state remains explicitly held.",
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-MANIFEST",
+        "E-RC-DECISION"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Release authority, continuity, qualification, external-campaign operators, affected actors, provider and field operators, and the cold successor retain separate authority.",
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-LEDGER",
+        "E-RC-DECISION",
+        "E-BOARD-CHARTER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The implementation operates exact manifests, deterministic archive, reimport, isolated verification, local served-byte comparison, atomic rollback, and release blocking rather than documentation alone.",
+      "evidence_ids": [
+        "E-RC-BUILDER",
+        "E-RC-TESTS",
+        "E-RC-CONTINUITY",
+        "E-RC-BUILD"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Candidate, rollback donor, P7, P8, P9, contract, ledger, archive, and every retained file remain independently identified and hash-bound.",
+      "evidence_ids": [
+        "E-P7-BUILD",
+        "E-P8-REPORT",
+        "E-P8-BOARD",
+        "E-P9-REGISTER",
+        "E-P9-BOARD",
+        "E-RC-MANIFEST"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "not_applicable",
+      "reason": "This gate is not applicable to the release-control package because it creates no new product interaction surface and packages the already admitted P7 behavior.",
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-P7-BUILD"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "not_applicable",
+      "reason": "This gate is not applicable because the package creates no new visual or typographic surface and makes no new finish claim.",
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-P8-REPORT"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "partial",
+      "reason": "Archive, reimport, local serving, verification, and rollback order are explicit, while public deployment timing, source aging, interruption, and real rollback remain external campaigns.",
+      "evidence_ids": [
+        "E-RC-CONTINUITY",
+        "E-RC-LEDGER"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "The fresh nineteen-campaign automated P8 evidence is packaged, while real assistive technologies, people, and physical devices remain unperformed campaigns.",
+      "evidence_ids": [
+        "E-P8-REPORT",
+        "E-RC-LEDGER"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "partial",
+      "reason": "Deterministic archive, reimport, tamper detection, served-byte checks, and local rollback pass, while real networks, devices, providers, deployment, observability, and recovery remain held.",
+      "evidence_ids": [
+        "E-RC-BUILDER",
+        "E-RC-TESTS",
+        "E-RC-CONTINUITY",
+        "E-RC-LEDGER"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "Private and credential keys, external-effect implications, failed donor receipts, unsafe archive paths, tampering, and parity gaps are rejected before packaging or decision.",
+      "evidence_ids": [
+        "E-RC-CONTRACT",
+        "E-RC-BUILDER",
+        "E-RC-TESTS",
+        "E-RC-MANIFEST",
+        "E-RC-DECISION"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Portable archive, reimport, standard-library isolated replay, exact rollback donor, local served-byte proof, and atomic rollback pass, while independent archive, operator, machine, public endpoint, and deployed rollback remain held.",
+      "evidence_ids": [
+        "E-RC-ARCHIVE",
+        "E-RC-CONTINUITY",
+        "E-RC-LEDGER",
+        "E-P9-REGISTER"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains every automated release and continuity receipt while public release remains false and public and constitutional-count effects remain none.",
+      "evidence_ids": [
+        "E-RC-WORKFLOW",
+        "E-RC-BUILD",
+        "E-RC-DECISION",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "seat_prompts": {
+    "board_chair": [
+      "Review the exact internal release and continuity object through the board chair aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "creative_direction": [
+      "Review the exact internal release and continuity object through the creative direction aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "product_interaction": [
+      "Review the exact internal release and continuity object through the product interaction aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "information_design": [
+      "Review the exact internal release and continuity object through the information design aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "typography": [
+      "Review the exact internal release and continuity object through the typography aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "motion": [
+      "Review the exact internal release and continuity object through the motion aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "source_custody": [
+      "Review the exact internal release and continuity object through the source custody aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "field_operations": [
+      "Review the exact internal release and continuity object through the field operations aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "accessibility": [
+      "Review the exact internal release and continuity object through the accessibility aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "performance_resilience": [
+      "Review the exact internal release and continuity object through the performance resilience aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "security_privacy": [
+      "Review the exact internal release and continuity object through the security privacy aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ],
+    "continuity_release": [
+      "Review the exact internal release and continuity object through the continuity release aperture, identify which byte and replay proofs pass, and preserve every physical, human, private, provider, field, archive, endpoint, rollback, public-release, score, and canonical-count hold."
+    ]
+  },
+  "adverse_action_boundary": {
+    "prohibited_uses": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, eligibility, funding, enforcement, inspection, or adverse action",
+      "evacuation, safety, entry, traffic, pruning, labor, work, remediation, completion, or institutional acceptance"
+    ],
+    "required_human_control": "An accountable release authority must verify every required external campaign, affected actor, provider, field, archive, endpoint, deployment, and rollback receipt before any public promotion."
+  },
+  "continuity": {
+    "recovery_path": "Recover the portable ZIP and build receipt, verify the archive digest, extract it, run VERIFY_RELEASE.py under isolated Python, serve and compare candidate and rollback manifests, and inspect the blocking campaign ledger.",
+    "rollback_target": "Historical public manzanita v1.4 route",
+    "successor_test": "A separate cold successor on an independently controlled machine and archive must repeat recovery, verification, serving, export, reimport, explanation, and rollback before public release."
+  },
+  "control_question": "Can a cold successor recover, verify, serve, export, reimport, explain, and locally roll back the exact candidate from retained bytes while release authority still refuses public promotion until every external campaign carries its own accountable receipt?"
+}
