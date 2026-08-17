@@ -1,0 +1,253 @@
+name: Manzanita P8 resilience qualification
+
+on:
+  push:
+    branches:
+      - agent/manzanita-resilience-qualification-019
+    paths:
+      - "manzanita-next/qualification/**"
+      - ".github/workflows/manzanita-resilience-qualification.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/qualification/**"
+      - ".github/workflows/manzanita-resilience-qualification.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Qualify resilience accessibility and hostile states
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove the exact P8 candidate and dependency boundary
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {".github/workflows/manzanita-resilience-qualification.yml"}
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/qualification/")
+          ]
+          if invalid:
+              raise SystemExit(f"P8 candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("manzanita-next/qualification/") for path in changed):
+              raise SystemExit("P8 candidate contains no qualification object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+          test -f manzanita-next/experience/EXPERIENCE_CONTRACT.json
+          test -f manzanita-next/experience/build_experience.py
+          test -f manzanita-next/experience/tests/browser_test.py
+          test -f .github/workflows/manzanita-whole-experience.yml
+          test -d manzanita-next/roles
+          test -f manzanita-next/design-system/CONSTITUTION.json
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+          test -f programs/manzanita-99/review-board/validate_review_board.py
+
+      - name: Install source browser qualification and review dependencies
+        run: |
+          python -m pip install --disable-pip-version-check \
+            requests beautifulsoup4 pillow jsonschema pytest playwright pyyaml
+          python -m playwright install --with-deps chromium
+
+      - name: Validate P8 contracts CLIs and adversarial suite
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          pytest -q manzanita-next/tests
+          python -m py_compile \
+            manzanita-next/qualification/run_qualification.py \
+            manzanita-next/qualification/replay_p7_workflow.py \
+            manzanita-next/qualification/tests/test_qualification.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m json.tool manzanita-next/qualification/QUALIFICATION_CONTRACT.json > /dev/null
+          python -m json.tool manzanita-next/qualification/review/M99-RB-PKT-010.json > /dev/null
+          python -m json.tool manzanita-next/qualification/review/M99-RB-DEC-010.json > /dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from jsonschema import Draft202012Validator
+
+          root = Path("programs/manzanita-99/review-board")
+          pairs = [
+              (
+                  Path("manzanita-next/qualification/review/M99-RB-PKT-010.json"),
+                  root / "review-packet.schema.json",
+              ),
+              (
+                  Path("manzanita-next/qualification/review/M99-RB-DEC-010.json"),
+                  root / "review-decision.schema.json",
+              ),
+          ]
+          for value_path, schema_path in pairs:
+              Draft202012Validator(json.loads(schema_path.read_text())).validate(
+                  json.loads(value_path.read_text())
+              )
+          PY
+          python -m unittest discover \
+            -s manzanita-next/qualification/tests \
+            -p "test_qualification.py"
+
+      - name: Replay the canonical P7 source donor and browser chain
+        env:
+          AIRNOW_API_KEY: ${{ secrets.AIRNOW_API_KEY }}
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          MAPILLARY_ACCESS_TOKEN: ${{ secrets.MAPILLARY_ACCESS_TOKEN }}
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}
+        run: |
+          rm -rf manzanita-next/qualification/out
+          python manzanita-next/qualification/replay_p7_workflow.py \
+            --workflow .github/workflows/manzanita-whole-experience.yml \
+            --output-script /tmp/replay-p7.sh \
+            --receipt manzanita-next/qualification/out/P7_REPLAY_PLAN.json
+          bash /tmp/replay-p7.sh
+
+      - name: Run the nineteen-campaign automated P8 matrix
+        run: |
+          python manzanita-next/qualification/run_qualification.py \
+            --site manzanita-next/experience/out/site \
+            --experience-data manzanita-next/experience/out/EXPERIENCE_DATA.json \
+            --contract manzanita-next/qualification/QUALIFICATION_CONTRACT.json \
+            --output manzanita-next/qualification/out
+
+      - name: Run the contained multidisciplinary review
+        run: |
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet manzanita-next/qualification/review/M99-RB-PKT-010.json \
+            --decision manzanita-next/qualification/review/M99-RB-DEC-010.json \
+            --receipt manzanita-next/qualification/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Prove exact-head P8 matrix and board receipts
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          contract = json.loads(Path("manzanita-next/qualification/QUALIFICATION_CONTRACT.json").read_text())
+          plan = json.loads(Path("manzanita-next/qualification/out/P7_REPLAY_PLAN.json").read_text())
+          p7_data = json.loads(Path("manzanita-next/experience/out/EXPERIENCE_DATA.json").read_text())
+          p7_build = json.loads(Path("manzanita-next/experience/out/BUILD_RECEIPT.json").read_text())
+          p7_browser = json.loads(Path("manzanita-next/experience/out/browser/BROWSER_CAMPAIGN.json").read_text())
+          report = json.loads(Path("manzanita-next/qualification/out/QUALIFICATION_REPORT.json").read_text())
+          reimport = json.loads(Path("manzanita-next/qualification/out/P8_REIMPORT_RECEIPT.json").read_text())
+          board = json.loads(Path("manzanita-next/qualification/out/BOARD_DECISION_RECEIPT.json").read_text())
+
+          assert plan["schema"] == "axm-tools/manzanita-p7-replay-plan@1"
+          assert plan["result"] == "PASS"
+          assert plan["step_count"] == 9
+          assert len({row["name"] for row in plan["steps"]}) == 9
+          assert plan["public_effect"] == "none"
+          assert plan["constitutional_count_effect"] == "none"
+          assert plan["release_effect"] == "none"
+
+          assert p7_data["schema"] == "axm-tools/manzanita-whole-experience-data@1"
+          assert len(p7_data["apertures"]) == 7
+          assert len(p7_data["overlays"]) == 8
+          assert len(p7_data["roles"]) == 5
+          assert p7_data["public_effect"] == "none"
+          assert p7_data["constitutional_count_effect"] == "none"
+          assert p7_data["release_effect"] == "none"
+          assert p7_build["result"] == "PASS"
+          assert p7_build["site"]["file_count"] == 5
+          assert p7_build["site"]["self_contained"] is True
+          assert p7_build["site"]["network_requests_required"] == 0
+          assert p7_browser["result"] == "PASS"
+          assert p7_browser["console_errors"] == []
+          assert p7_browser["page_errors"] == []
+          assert p7_browser["external_requests"] == []
+
+          assert report["schema"] == "axm-tools/manzanita-resilience-qualification@1"
+          assert report["result"] == "PASS"
+          assert report["campaign_count"] == 19
+          assert set(report["required_campaigns"]) == set(contract["required_campaigns"])
+          assert {row["id"] for row in report["campaigns"]} == set(contract["required_campaigns"])
+          assert all(row["result"] == "PASS" for row in report["campaigns"])
+          assert report["physical_campaigns_performed"] is False
+          assert report["real_assistive_technology_claim"] is False
+          assert report["real_device_claim"] is False
+          assert report["actual_network_claim"] is False
+          assert report["private_projection_claim"] is False
+          assert report["credentialed_provider_claim"] is False
+          assert report["field_operation_claim"] is False
+          assert report["public_effect"] == "none"
+          assert report["constitutional_count_effect"] == "none"
+          assert report["release_effect"] == "none"
+          assert len(report["retained_holds"]) >= 8
+          assert len(report["payload_sha256"]) == 64
+
+          hostile = next(row for row in report["campaigns"] if row["id"] == "hostile_text")
+          assert hostile["hostile_script_executed"] is False
+          assert hostile["hostile_element_created"] is False
+          assert next(row for row in report["campaigns"] if row["id"] == "stale_source")["visible_state"] == "stale"
+          assert next(row for row in report["campaigns"] if row["id"] == "provider_outage")["visible_state"] == "unavailable"
+          assert next(row for row in report["campaigns"] if row["id"] == "contradictory_source")["visible_state"] == "contradictory"
+
+          assert reimport["result"] == "PASS"
+          assert reimport["public_effect"] == "none"
+          assert reimport["constitutional_count_effect"] == "none"
+          assert reimport["release_state"] == "not_authorized"
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-010"
+          assert board["decision_id"] == "M99-RB-DEC-010"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 8
+          assert board["gate_states"]["responsive_and_accessible_operation"] == "partial"
+          assert board["gate_states"]["performance_resilience_and_failure"] == "partial"
+          assert board["gate_states"]["continuity_export_rollback_and_succession"] == "partial"
+          PY
+
+      - name: Retain source donor P7 P8 and board evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-resilience-qualification-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            manzanita-next/out
+            manzanita-next/public-demo/out
+            manzanita-next/apertures/out
+            manzanita-next/street-glide/out
+            manzanita-next/overlays/out
+            manzanita-next/roles/out
+            manzanita-next/experience/out
+            manzanita-next/qualification/README.md
+            manzanita-next/qualification/QUALIFICATION_CONTRACT.json
+            manzanita-next/qualification/run_qualification.py
+            manzanita-next/qualification/replay_p7_workflow.py
+            manzanita-next/qualification/tests
+            manzanita-next/qualification/review
+            manzanita-next/qualification/out
+          if-no-files-found: error
+          retention-days: 90
