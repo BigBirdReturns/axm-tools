@@ -1,0 +1,183 @@
+{
+  "schema": "axm-tools/manzanita-five-role-recovery-receipt@1",
+  "task_reference": "JDB99-016",
+  "recorded_on": "2026-08-16",
+  "object": "Five functional role projection and FAB handoff source recovery",
+  "source_archive": {
+    "classification": "damaged_segmented_transport_donor",
+    "branch": "agent/manzanita-five-roles-016",
+    "last_segment_commit": "7962863ccd4721c0af069686930573d9dedb903f",
+    "segments": [
+      {
+        "name": "manzanita-five-roles-part-00.b64",
+        "encoded_characters": 3000,
+        "sha256": "615a9390dc06a202e9c27c3c8a98067135d5db96ef2ae029c273b6022dbc0a59"
+      },
+      {
+        "name": "manzanita-five-roles-part-01.b64",
+        "encoded_characters": 3000,
+        "sha256": "9c48b8f7c9aae739f2914ab6d3b5b9a6ce418f81de99b7eb93b75d158bc8112d"
+      },
+      {
+        "name": "manzanita-five-roles-part-02.b64",
+        "encoded_characters": 3000,
+        "sha256": "27fb9e1e845e2ffdbd4d818e6e871a6b2852e2d7b4a21fdba83d019d589b8d22"
+      },
+      {
+        "name": "manzanita-five-roles-part-03.b64",
+        "encoded_characters": 3000,
+        "sha256": "cb09172d00134b0d8266fa3195004c3f4c10c6f9fc476f5101aa4a4e5d7502b0"
+      },
+      {
+        "name": "manzanita-five-roles-part-04.b64",
+        "encoded_characters": 2999,
+        "sha256": "bd8ba1cbd78f595326705ca60e47f40b4126c51d077622198916a3ddaf70d26f"
+      },
+      {
+        "name": "manzanita-five-roles-part-05.b64",
+        "encoded_characters": 3000,
+        "sha256": "64a2f56bc058a5e812251afbb45cdb5844eed64043ce5739459581eed32363a4"
+      },
+      {
+        "name": "manzanita-five-roles-part-06.b64",
+        "encoded_characters": 3000,
+        "sha256": "5577f91db3d7b74c4ad6d5c54cf53a0e0132d07553767f6db492951e7848ff72"
+      },
+      {
+        "name": "manzanita-five-roles-part-07.b64",
+        "encoded_characters": 3000,
+        "sha256": "74c4a60d43b3144e3c92ef001ae1653d869773d5a149eb75715e5ae4eee3777c"
+      },
+      {
+        "name": "manzanita-five-roles-part-08.b64",
+        "encoded_characters": 2999,
+        "sha256": "e38d511334a65c44b03e74448c243fc5ffb1b4fed16c3c64bf6bd828361fdef3"
+      }
+    ],
+    "bytes": 20248,
+    "sha256": "5261af08a5d821c4102917a25b6604e68ad430101b7228466699ae9149e55810",
+    "members": [
+      {
+        "path": ".github/workflows/manzanita-five-roles.yml",
+        "bytes": 14144,
+        "sha256": "ab66307c41501a34f78a619fc824d0a28ffdb051022aac5ed4aaa17121a176b0",
+        "null_bytes": 0
+      },
+      {
+        "path": "manzanita-next/roles/README.md",
+        "bytes": 2716,
+        "sha256": "313bb83eb37172dae98aa5a01f9f0ce802a938674e91bd60fe17aa3b8fe22009",
+        "null_bytes": 0
+      },
+      {
+        "path": "manzanita-next/roles/ROLE_CONTRACT.json",
+        "bytes": 15849,
+        "sha256": "a064aba01b2b4c97e21e18bcda6544dc07d390762f232f938dea5e09c30be082",
+        "null_bytes": 0
+      },
+      {
+        "path": "manzanita-next/roles/build_roles.py",
+        "bytes": 22113,
+        "sha256": "d251dded48f9e158665ef476fdb9037c244c86ed5d0d5baaab5cecdbd8173dd3",
+        "null_bytes": 596
+      }
+    ],
+    "diagnostic_workflow_run": 31980469736,
+    "diagnostic_artifact_id": 9272194654,
+    "diagnostic_artifact_sha256": "733bd4e3b73e3c08c860b4ea2a669ab74067b3fc41eed50195921f9cec5a9919",
+    "builder_damage": {
+      "path": "manzanita-next/roles/build_roles.py",
+      "bytes": 22113,
+      "sha256": "d251dded48f9e158665ef476fdb9037c244c86ed5d0d5baaab5cecdbd8173dd3",
+      "null_bytes": 596,
+      "null_runs": 81,
+      "first_null_byte_offset": 9817,
+      "first_null_line": 262,
+      "corruption_precedes_first_null": true,
+      "remove_all_nulls_candidate": "FAIL: unterminated string literal at line 252",
+      "classification": "non_admissible_source_implementation"
+    }
+  },
+  "recovered_objects": [
+    {
+      "path": "manzanita-next/roles/ROLE_CONTRACT.json",
+      "bytes": 15849,
+      "sha256": "a064aba01b2b4c97e21e18bcda6544dc07d390762f232f938dea5e09c30be082",
+      "status": "recovered_exact"
+    },
+    {
+      "path": "manzanita-next/roles/README.md",
+      "bytes": 2716,
+      "sha256": "313bb83eb37172dae98aa5a01f9f0ce802a938674e91bd60fe17aa3b8fe22009",
+      "status": "recovered_exact_then_revised_with_recovery_boundary"
+    },
+    {
+      "path": ".github/workflows/manzanita-five-roles.yml",
+      "bytes": 14144,
+      "sha256": "ab66307c41501a34f78a619fc824d0a28ffdb051022aac5ed4aaa17121a176b0",
+      "status": "recovered_exact_then_revised_for_fab_and_recovery_proof"
+    }
+  ],
+  "admission": {
+    "original_builder_recovered": false,
+    "reason": "The recovered builder contains structural text corruption before and after 596 null bytes; deleting null bytes does not produce valid Python.",
+    "reconstruction_basis": [
+      "the exact recovered ROLE_CONTRACT.json",
+      "the exact recovered qualification workflow assertions",
+      "the recovered README object and authority boundary",
+      "the admitted public-demo, aperture, overlay, design-constitution, and review-board schemas",
+      "the exact current-head overlay acquisition artifact and donor receipts"
+    ],
+    "new_objects": [
+      "a deterministic five-role builder",
+      "a bounded Essential Attention FAB handoff artifact",
+      "sixteen adversarial role tests",
+      "a contained multidisciplinary review packet and decision",
+      "an exact-head qualification workflow with reconstruction verification"
+    ],
+    "qualification_boundary": "The reconstructed outputs are newly authored implementation and review evidence. They do not inherit the damaged builder's identity or claim byte-for-byte recovery."
+  },
+  "reconstructed_outputs": [
+    {
+      "path": ".github/workflows/manzanita-five-roles.yml",
+      "bytes": 16777,
+      "sha256": "122293e7f1f72312aa945d579aba859360d845fb3c12fbb2cbccf2f629eda7d8",
+      "status": "authored_reconstruction"
+    },
+    {
+      "path": "manzanita-next/roles/README.md",
+      "bytes": 4145,
+      "sha256": "18537287a4dc18e131ccca3bcd83b40f2a3480f39346ca8ce8b5c74b3b55eea7",
+      "status": "revised_source_document"
+    },
+    {
+      "path": "manzanita-next/roles/build_roles.py",
+      "bytes": 30239,
+      "sha256": "35fe7744cd875efed52a89d58b106cae6c6e76f2a75ba41dd5961e0bdc9a844e",
+      "status": "authored_reconstruction"
+    },
+    {
+      "path": "manzanita-next/roles/tests/test_roles.py",
+      "bytes": 16996,
+      "sha256": "a339b1bfad71ff7fcea8701ac012f263c105d4034c9c22107dcabbdd314dfc01",
+      "status": "authored_reconstruction"
+    },
+    {
+      "path": "manzanita-next/roles/review/M99-RB-PKT-008.json",
+      "bytes": 15775,
+      "sha256": "1c1974871ad22cae831f7458bef3c188598401037814237a330728b50deab08c",
+      "status": "authored_reconstruction"
+    },
+    {
+      "path": "manzanita-next/roles/review/M99-RB-DEC-008.json",
+      "bytes": 17750,
+      "sha256": "86191eca66268643ad0a8a32043b533cb492b9fe2e753c4e5c6f5cfb1a714fe3",
+      "status": "authored_reconstruction"
+    }
+  ],
+  "public_effect": "none",
+  "constitutional_count_effect": "none",
+  "release_effect": "none",
+  "claim_boundary": "This receipt proves the damaged transport, exact recovered members, non-admission of corrupted code, and identities of the newly authored reconstruction. It does not qualify the role product, public release, private operation, field use, external effect, or canonical task closure.",
+  "control_question": "Can a cold successor distinguish exact recovered evidence from newly authored reconstruction, reproduce every listed hash, and refuse to inherit authority from the damaged transport?"
+}
