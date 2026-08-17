@@ -5,7 +5,7 @@ on:
     branches:
       - agent/manzanita-whole-experience-017
     paths:
-      - ".github/bootstrap/manzanita-p7-whole-experience.tar.gz"
+      - ".github/bootstrap/manzanita-p7-whole-experience-part-*.b64"
       - ".github/workflows/manzanita-whole-experience-bootstrap.yml"
 
 permissions:
@@ -30,10 +30,21 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Verify and expand the bounded payload
+      - name: Reconstruct, verify, and expand the bounded payload
         run: |
-          echo "b4f6a252f52b508d80c700eb9b9dff9c23ba67a2a47726ccb7303ea5678e058d  .github/bootstrap/manzanita-p7-whole-experience.tar.gz" | sha256sum -c -
-          tar -xzf .github/bootstrap/manzanita-p7-whole-experience.tar.gz
+          cat \
+            .github/bootstrap/manzanita-p7-whole-experience-part-00.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-01.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-02.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-03.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-04.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-05.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-06.b64 \
+            > /tmp/manzanita-p7-whole-experience.tar.gz.b64
+          base64 --decode /tmp/manzanita-p7-whole-experience.tar.gz.b64 \
+            > /tmp/manzanita-p7-whole-experience.tar.gz
+          echo "b4f6a252f52b508d80c700eb9b9dff9c23ba67a2a47726ccb7303ea5678e058d  /tmp/manzanita-p7-whole-experience.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/manzanita-p7-whole-experience.tar.gz
 
       - name: Prove local contracts before sealing
         run: |
@@ -54,6 +65,13 @@ jobs:
         run: |
           rm -f \
             .github/bootstrap/manzanita-p7-whole-experience.tar.gz \
+            .github/bootstrap/manzanita-p7-whole-experience-part-00.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-01.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-02.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-03.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-04.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-05.b64 \
+            .github/bootstrap/manzanita-p7-whole-experience-part-06.b64 \
             .github/workflows/manzanita-whole-experience-bootstrap.yml
           find . -type d -name __pycache__ -prune -exec rm -rf {} +
           git config user.name "manzanita-whole-experience-bootstrap"
