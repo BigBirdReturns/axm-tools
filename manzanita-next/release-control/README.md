@@ -29,8 +29,8 @@ imports no merge, publication, deployment, score, or external-effect authority.
 - runs a standard-library verifier under isolated Python with no repository
   imports or private credentials;
 - serves and rehashes every candidate and rollback byte over loopback HTTP;
-- performs an atomic local directory-swap rollback that ends on the historical
-  donor;
+- performs an atomic local active-pointer replacement that ends on the
+  historical donor;
 - emits manifest, decision, continuity, and build receipts.
 
 The release decision remains `HOLD` while any required external campaign is
@@ -40,9 +40,9 @@ self-authorizes publication.
 
 Loopback serving is not public-endpoint proof. Same-runner isolated verification
 is not an independently controlled successor, machine, account, or archive.
-Local directory swapping is not a deployed rollback. The historical route is
-copied and verified as a rollback donor but is not modified or redeployed by
-this package.
+Local active-pointer replacement is not a deployed rollback. The historical
+route is copied and verified as a rollback donor but is not modified or
+redeployed by this package.
 
 The controlling question is whether a cold successor can recover, verify,
 serve, export, reimport, explain, and locally roll back the exact candidate from
