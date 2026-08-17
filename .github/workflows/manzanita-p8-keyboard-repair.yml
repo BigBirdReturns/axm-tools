@@ -1,0 +1,100 @@
+name: Repair and seal Manzanita P8 keyboard focus
+
+on:
+  push:
+    branches:
+      - agent/manzanita-resilience-qualification-019
+    paths:
+      - ".github/workflows/manzanita-p8-keyboard-repair.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-p8-keyboard-repair
+  cancel-in-progress: false
+
+jobs:
+  repair-and-seal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-resilience-qualification-019
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install exact source-test dependencies
+        run: python -m pip install --disable-pip-version-check playwright pyyaml
+
+      - name: Synchronize P8 with the governed focus-transfer contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("manzanita-next/qualification/run_qualification.py")
+          text = path.read_text(encoding="utf-8")
+          old = '''    page.locator(f'[data-aperture="{first_aperture}"]').focus()
+    page.keyboard.press("End")
+    require(runtime_snapshot(page)["state"]["aperture"] == last_aperture, "End did not select the last aperture")
+    page.keyboard.press("ArrowLeft")
+    require(runtime_snapshot(page)["state"]["aperture"] == data["aperture_order"][-2], "ArrowLeft did not move one aperture")
+'''
+          new = '''    page.locator(f'[data-aperture="{first_aperture}"]').focus()
+    page.keyboard.press("End")
+    require(runtime_snapshot(page)["state"]["aperture"] == last_aperture, "End did not select the last aperture")
+    page.wait_for_function(
+        "(id) => document.activeElement?.dataset.aperture === id",
+        arg=last_aperture,
+    )
+    require(
+        page.locator(f'[data-aperture="{last_aperture}"]').evaluate("node => node === document.activeElement"),
+        "End did not transfer focus to the selected aperture",
+    )
+    previous_aperture = data["aperture_order"][-2]
+    page.keyboard.press("ArrowLeft")
+    require(runtime_snapshot(page)["state"]["aperture"] == previous_aperture, "ArrowLeft did not move one aperture")
+    page.wait_for_function(
+        "(id) => document.activeElement?.dataset.aperture === id",
+        arg=previous_aperture,
+    )
+    require(
+        page.locator(f'[data-aperture="{previous_aperture}"]').evaluate("node => node === document.activeElement"),
+        "ArrowLeft did not transfer focus to the selected aperture",
+    )
+'''
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif "End did not transfer focus to the selected aperture" not in text:
+              raise SystemExit("Cannot locate the bounded P8 keyboard campaign block")
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Prove the repaired source campaign before sealing
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile \
+            manzanita-next/qualification/run_qualification.py \
+            manzanita-next/qualification/replay_p7_workflow.py \
+            manzanita-next/qualification/tests/test_qualification.py
+          python -m unittest discover \
+            -s manzanita-next/qualification/tests \
+            -p "test_qualification.py"
+
+      - name: Seal and publish the corrected candidate
+        run: |
+          rm -f .github/workflows/manzanita-p8-keyboard-repair.yml
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          git config user.name "manzanita-p8-keyboard-repair"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            .github/workflows/manzanita-p8-keyboard-repair.yml \
+            manzanita-next/qualification/run_qualification.py
+          git commit -m "Manzanita: synchronize P8 keyboard focus transfer"
+          git push origin HEAD:agent/manzanita-resilience-qualification-019
