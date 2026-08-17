@@ -1,0 +1,65 @@
+name: Repair Manzanita P7 long labels at 200 percent text size
+
+on:
+  push:
+    branches:
+      - fix/manzanita-p7-text-resize-200
+    paths:
+      - ".github/workflows/manzanita-p7-long-label-repair.yml"
+      - ".github/scripts/manzanita-p7-long-label-repair.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-p7-long-label-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/manzanita-p7-text-resize-200
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install exact P7 source-test dependencies
+        run: python -m pip install --disable-pip-version-check pillow playwright
+
+      - name: Apply bounded long-label repair
+        run: python .github/scripts/manzanita-p7-long-label-repair.py
+
+      - name: Prove source contracts before sealing
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile \
+            manzanita-next/experience/build_experience.py \
+            manzanita-next/experience/tests/test_experience.py \
+            manzanita-next/experience/tests/browser_test.py
+          python -m unittest discover \
+            -s manzanita-next/experience/tests \
+            -p "test_experience.py"
+          grep -q 'overflow-wrap: anywhere' manzanita-next/experience/template/style.css
+          grep -q 'flex: 1 1 12rem' manzanita-next/experience/template/style.css
+          grep -q 'grid-template-columns: repeat(2, minmax(0, 1fr))' manzanita-next/experience/template/style.css
+
+      - name: Seal and publish the repaired source candidate
+        run: |
+          rm -f .github/workflows/manzanita-p7-long-label-repair.yml
+          rm -f .github/scripts/manzanita-p7-long-label-repair.py
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          git config user.name "manzanita-p7-long-label-repair"
+          git config user.email "actions@users.noreply.github.com"
+          git add .github/workflows/manzanita-p7-long-label-repair.yml
+          git add .github/scripts/manzanita-p7-long-label-repair.py
+          git add manzanita-next/experience/template/style.css
+          git commit -m "Manzanita: repair long-label text-resize overflow"
+          git push origin HEAD:fix/manzanita-p7-text-resize-200
