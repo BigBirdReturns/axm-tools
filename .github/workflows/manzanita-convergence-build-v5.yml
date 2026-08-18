@@ -1,6 +1,6 @@
 name: Manzanita rendered-gated photographic convergence
 
-# Exact four-donor plus four-view stewardship convergence after the v1.4.1 live regression was observed.
+# Final sealed execution after the branch-mutating watcher was retired.
 on:
   push:
     branches: [agent/manzanita-public-convergence-v1-6]
@@ -102,4 +102,4 @@ jobs:
           set -euo pipefail
           git add -A
           git commit -m "Manzanita: preserve v1.4.1 and seal rendered-gated v1.6.0"
-          git push origin HEAD:agent/manzanita-public-convergence-v1-6
+          git push --force-with-lease=refs/heads/agent/manzanita-public-convergence-v1-6:${GITHUB_SHA} origin HEAD:agent/manzanita-public-convergence-v1-6
