@@ -31,7 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           root=.github/materialize/essential-capacity
-          for part in 00 01 02 03 04 05 06; do
+          for part in $(seq -w 0 16); do
             if [[ ! -f "$root/part-$part" ]]; then
               echo "ready=false" >> "$GITHUB_OUTPUT"
               echo "Payload is not complete; part-$part is not present."
