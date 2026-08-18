@@ -6,6 +6,7 @@ on:
     branches: [agent/manzanita-public-convergence-v1-6]
     paths:
       - ".github/workflows/manzanita-convergence-build-v5.yml"
+      - ".github/patches/manzanita-*.py"
       - "programs/manzanita-public-convergence/**"
   workflow_dispatch: {}
 
