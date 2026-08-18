@@ -1,0 +1,155 @@
+name: Agent Manzanita v1.4.1 public polish bootstrap
+
+on:
+  push:
+    branches:
+      - agent/manzanita-v14-public-polish
+    paths:
+      - ".github/bootstrap/manzanita_v14_public_polish.py"
+      - ".github/workflows/agent-manzanita-v14-public-polish-bootstrap.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      BASE_COMMIT: 58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb
+      BRANCH: agent/manzanita-v14-public-polish
+      BOOTSTRAP: .github/workflows/agent-manzanita-v14-public-polish-bootstrap.yml
+      PAYLOAD: .github/bootstrap/manzanita_v14_public_polish.py
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-v14-public-polish
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify exact bootstrap-only input
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$BASE_COMMIT" HEAD
+          test "$(git rev-parse "$BASE_COMMIT:manzanita")" = "846132be374b1e1da5a9444dc67da877bbb32224"
+          python - <<'PY'
+          import os
+          import subprocess
+
+          base = os.environ["BASE_COMMIT"]
+          expected = {
+              os.environ["PAYLOAD"],
+              os.environ["BOOTSTRAP"],
+          }
+          observed = set(
+              subprocess.check_output(
+                  ["git", "diff", "--name-only", f"{base}..HEAD"],
+                  text=True,
+              ).splitlines()
+          )
+          if observed != expected:
+              raise SystemExit(
+                  f"bootstrap input scope drifted: expected={sorted(expected)} observed={sorted(observed)}"
+              )
+          PY
+
+      - name: Apply checksummed maintenance release transaction
+        run: python "$PAYLOAD"
+
+      - name: Verify public and custody contracts before commit
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            manzanita/tests/public_contract_test.py \
+            manzanita/tests/browser_test.py \
+            programs/manzanita-99/custody/build_custody.py \
+            programs/manzanita-99/custody/validate_custody.py \
+            programs/manzanita-99/custody/audit_history.py \
+            programs/manzanita-99/custody/tests/test_custody.py \
+            programs/manzanita-99/custody/tests/test_independent_archive.py
+          node --check manzanita/app.js
+          node --check manzanita/theme-init.js
+          python manzanita/tests/public_contract_test.py
+          python -m unittest discover \
+            -s programs/manzanita-99/custody/tests \
+            -p "test_*.py"
+          python programs/manzanita-99/custody/build_custody.py \
+            --repo-root . \
+            --output /tmp/MANZANITA_CUSTODY_MANIFEST.json
+          python programs/manzanita-99/custody/validate_custody.py \
+            --repo-root . \
+            --manifest /tmp/MANZANITA_CUSTODY_MANIFEST.json
+
+      - name: Seal only the permanent release and custody sources
+        run: |
+          set -euo pipefail
+          git config user.name "manzanita-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          git rm "$PAYLOAD" "$BOOTSTRAP"
+          git add -- \
+            README.md \
+            index.html \
+            manzanita \
+            .github/workflows/manzanita-check.yml \
+            .github/workflows/manzanita-live-check.yml \
+            programs/manzanita-99/custody/CUSTODY_CONTRACT.json \
+            programs/manzanita-99/custody/DONOR_REGISTER.json \
+            programs/manzanita-99/custody/OBSERVED_EXECUTION_LEDGER.json \
+            programs/manzanita-99/custody/README.md \
+            programs/manzanita-99/custody/tests/test_custody.py \
+            programs/manzanita-99/custody/validate_custody.py
+
+          git diff --cached --check
+          python - <<'PY'
+          import subprocess
+
+          expected = {
+              ".github/bootstrap/manzanita_v14_public_polish.py",
+              ".github/workflows/agent-manzanita-v14-public-polish-bootstrap.yml",
+              ".github/workflows/manzanita-check.yml",
+              ".github/workflows/manzanita-live-check.yml",
+              "README.md",
+              "index.html",
+              "manzanita/QUALIFICATION.json",
+              "manzanita/README.md",
+              "manzanita/RELEASE_RECEIPT.json",
+              "manzanita/VISUAL_CONSTITUTION.md",
+              "manzanita/app.js",
+              "manzanita/index.html",
+              "manzanita/style.css",
+              "manzanita/tests/browser_test.py",
+              "manzanita/tests/public_contract_test.py",
+              "programs/manzanita-99/custody/CUSTODY_CONTRACT.json",
+              "programs/manzanita-99/custody/DONOR_REGISTER.json",
+              "programs/manzanita-99/custody/OBSERVED_EXECUTION_LEDGER.json",
+              "programs/manzanita-99/custody/README.md",
+              "programs/manzanita-99/custody/tests/test_custody.py",
+              "programs/manzanita-99/custody/validate_custody.py",
+          }
+          observed = set(
+              subprocess.check_output(
+                  ["git", "diff", "--cached", "--name-only"],
+                  text=True,
+              ).splitlines()
+          )
+          if observed != expected:
+              raise SystemExit(
+                  f"sealed scope drifted: expected={sorted(expected)} observed={sorted(observed)}"
+              )
+          if subprocess.check_output(
+              ["git", "diff", "--cached", "--name-only", "--", "manzanita-next"],
+              text=True,
+          ).strip():
+              raise SystemExit("successor source changed")
+          PY
+
+          git commit -m "Manzanita: polish and publish Signal Sheet v1.4.1"
+          git push origin "HEAD:$BRANCH"
+          test -z "$(git status --porcelain)"
