@@ -69,7 +69,7 @@ def exercise(page, theme: str, label: str) -> None:
     state_url = TARGET_URL + ("&" if "?" in TARGET_URL else "?") + "scale=region&role=successor&layers=fire,air"
     response = page.goto(state_url, wait_until="networkidle", timeout=60_000)
     assert response is not None and response.status == 200, response.status if response else None
-    assert page.locator("#visualTitle").inner_text().strip() == "Region"
+    assert page.locator("#visualTitle").text_content().strip() == "Region"
     assert page.locator("#roleTitle").inner_text().strip() == "Successor"
     assert page.locator('[data-overlay-button="fire"]').get_attribute("aria-pressed") == "true"
     assert page.locator('[data-overlay-button="air"]').get_attribute("aria-pressed") == "true"
@@ -95,7 +95,7 @@ def exercise(page, theme: str, label: str) -> None:
 
     page.locator('[data-scale="3"]').click()
     page.locator("#nextScale").click()
-    assert page.locator("#visualTitle").inner_text().strip() == "Neighborhood"
+    assert page.locator("#visualTitle").text_content().strip() == "Neighborhood"
     assert page.locator('[data-overlay-button="fire"]').get_attribute("aria-pressed") == "true"
     assert page.locator('[data-overlay-button="labor"]').get_attribute("aria-pressed") == "true"
     assert page.locator('[data-overlay-button="access"]').get_attribute("aria-pressed") == "false"
