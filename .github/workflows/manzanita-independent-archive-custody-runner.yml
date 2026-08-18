@@ -36,7 +36,6 @@ jobs:
           python - <<'PY'
           import subprocess
           import sys
-          import textwrap
           from pathlib import Path
 
           workflow = Path(".github/workflows/manzanita-independent-archive-custody-bootstrap.yml")
@@ -48,9 +47,13 @@ jobs:
           end = next((index for index in range(start, len(lines)) if lines[index].strip() == "PY"), None)
           if end is None:
               raise SystemExit("Transformation heredoc has no closing marker")
-          block = "\n".join(lines[start:end])
+          normalized = []
+          for line in lines[start:end]:
+              if line and not line.startswith("          "):
+                  raise SystemExit(f"Transformation line escaped YAML block indentation: {line!r}")
+              normalized.append(line[10:] if line else "")
           script = Path("/tmp/materialize-independent-archive.py")
-          script.write_text(textwrap.dedent(block) + "\n", encoding="utf-8")
+          script.write_text("\n".join(normalized) + "\n", encoding="utf-8")
           subprocess.run([sys.executable, str(script)], check=True)
           PY
 
