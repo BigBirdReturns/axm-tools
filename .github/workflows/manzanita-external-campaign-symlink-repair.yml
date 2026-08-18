@@ -1,0 +1,81 @@
+name: Repair Manzanita external campaign symlink evidence guard
+
+on:
+  push:
+    branches:
+      - agent/manzanita-external-campaign-runner-024
+    paths:
+      - ".github/workflows/manzanita-external-campaign-symlink-repair.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-external-campaign-symlink-repair
+  cancel-in-progress: false
+
+jobs:
+  repair-and-seal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-external-campaign-runner-024
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Reject symlinks before path resolution
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("manzanita-next/external-campaigns/campaign_runner.py")
+          text = path.read_text(encoding="utf-8")
+          old = '''def require_regular_file(path: Path, label: str) -> Path:
+              resolved = path.expanduser().resolve()
+              require(resolved.exists(), f"{label} is missing: {resolved}")
+              mode = resolved.lstat().st_mode
+              require(not stat.S_ISLNK(mode), f"{label} may not be a symlink: {resolved}")
+              require(stat.S_ISREG(mode), f"{label} is not a regular file: {resolved}")
+              return resolved
+          '''.replace("          ", "")
+          new = '''def require_regular_file(path: Path, label: str) -> Path:
+              candidate = path.expanduser()
+              require(candidate.exists() or candidate.is_symlink(), f"{label} is missing: {candidate}")
+              mode = candidate.lstat().st_mode
+              require(not stat.S_ISLNK(mode), f"{label} may not be a symlink: {candidate}")
+              require(stat.S_ISREG(mode), f"{label} is not a regular file: {candidate}")
+              return candidate.resolve()
+          '''.replace("          ", "")
+          if old not in text:
+              raise SystemExit("Expected regular-file guard was not found")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
+      - name: Prove the correction
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile \
+            manzanita-next/external-campaigns/campaign_runner.py \
+            manzanita-next/external-campaigns/tests/test_campaign_runner.py
+          python -m unittest discover \
+            -s manzanita-next/external-campaigns/tests \
+            -p "test_*.py"
+
+      - name: Seal the corrected candidate
+        run: |
+          rm .github/workflows/manzanita-external-campaign-symlink-repair.yml
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          git config user.name "manzanita-external-campaign-repair"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            .github/workflows/manzanita-external-campaign-symlink-repair.yml \
+            manzanita-next/external-campaigns/campaign_runner.py
+          git commit -m "Manzanita: reject symlink evidence before resolution"
+          git push origin HEAD:agent/manzanita-external-campaign-runner-024
