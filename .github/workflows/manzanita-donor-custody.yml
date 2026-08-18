@@ -1,0 +1,196 @@
+name: Manzanita donor custody
+
+on:
+  push:
+    branches:
+      - agent/manzanita-donor-custody-002
+    paths:
+      - "programs/manzanita-99/custody/**"
+      - ".github/workflows/manzanita-donor-custody.yml"
+  pull_request:
+    paths:
+      - "programs/manzanita-99/custody/**"
+      - ".github/workflows/manzanita-donor-custody.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Validate current donor custody
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove exact candidate and protected route
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {".github/workflows/manzanita-donor-custody.yml"}
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("programs/manzanita-99/custody/")
+          ]
+          if invalid:
+              raise SystemExit(f"Custody candidate contains out-of-scope paths: {invalid}")
+          if not any(path.startswith("programs/manzanita-99/custody/") for path in changed):
+              raise SystemExit("Candidate contains no donor-custody object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+          test -d manzanita-next
+          test -d programs/manzanita-99/review-board
+          test -d programs/manzanita-99/recovery
+          test -d resolution-backfill
+          test -f .github/pages-deployment.json
+          test -f .github/workflows/manzanita-external-campaign-runner.yml
+
+      - name: Test custody machinery
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile \
+            programs/manzanita-99/custody/build_custody.py \
+            programs/manzanita-99/custody/validate_custody.py \
+            programs/manzanita-99/custody/tests/test_custody.py
+          python -m unittest discover \
+            -s programs/manzanita-99/custody/tests \
+            -p "test_*.py"
+          python -m json.tool \
+            programs/manzanita-99/custody/DONOR_REGISTER.json \
+            > /dev/null
+
+      - name: Build deterministic custody manifest
+        run: |
+          rm -f programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+          python programs/manzanita-99/custody/build_custody.py \
+            --repo-root . \
+            --output programs/manzanita-99/custody/CUSTODY_MANIFEST.json \
+            --git-commit "$REVIEW_HEAD_SHA"
+
+      - name: Validate repository custody and public-route guard
+        run: |
+          python programs/manzanita-99/custody/validate_custody.py \
+            --repo-root . \
+            --manifest programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+
+      - name: Prove current chain and honest partial state
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          register = json.loads(
+              Path("programs/manzanita-99/custody/DONOR_REGISTER.json").read_text()
+          )
+          manifest = json.loads(
+              Path("programs/manzanita-99/custody/CUSTODY_MANIFEST.json").read_text()
+          )
+
+          assert register["task"] == "JDB99-001"
+          assert register["state"] == "in_progress"
+          assert register["source_snapshot_commit"] == "c21d48f1086f66bd7778c4b0c7605f5cb648e561"
+          subprocess.run(
+              [
+                  "git",
+                  "merge-base",
+                  "--is-ancestor",
+                  register["source_snapshot_commit"],
+                  os.environ["REVIEW_HEAD_SHA"],
+              ],
+              check=True,
+          )
+          assert register["public_route_guard"]["tree_sha"] == "846132be374b1e1da5a9444dc67da877bbb32224"
+          assert manifest["generated_from"]["git_commit"] == os.environ["REVIEW_HEAD_SHA"]
+          assert manifest["status"] == "PARTIAL"
+          assert manifest["task_state"] == "in_progress"
+          assert manifest["source_file_count"] > 100
+          assert len(manifest["open_required_gaps"]) == 11
+
+          pull_requests = set()
+          for donor in register["donors"]:
+              anchors = donor.get("anchors", {})
+              value = anchors.get("pull_request")
+              if isinstance(value, int):
+                  pull_requests.add(value)
+              value = anchors.get("primary_pull_request")
+              if isinstance(value, int):
+                  pull_requests.add(value)
+              pull_requests.update(anchors.get("repair_pull_requests", []))
+              value = anchors.get("requalification_pull_request")
+              if isinstance(value, int):
+                  pull_requests.add(value)
+          expected = {90, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 111}
+          assert expected.issubset(pull_requests), sorted(expected - pull_requests)
+          assert 110 not in pull_requests
+
+          archived_classes = {
+              donor["class"]
+              for donor in register["donors"]
+              if donor["custody_state"] == "archived"
+          }
+          for required in (
+              "public_release",
+              "source_foundation",
+              "review_governance",
+              "design_constitution",
+              "public_demo",
+              "scale_aperture",
+              "street_glide",
+              "overlay_architecture",
+              "role_runtime",
+              "whole_experience",
+              "automated_qualification",
+              "estate_parity",
+              "release_control",
+              "campaign_runner",
+              "program_control",
+              "deployment_receipt",
+              "live_data_acquisition",
+          ):
+              assert required in archived_classes, required
+
+          assert all(
+              gap["state"] == "open"
+              for gap in register["gaps"]
+              if gap["required_for_close"]
+          )
+          PY
+
+      - name: Retain custody evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-donor-custody-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            programs/manzanita-99/custody/README.md
+            programs/manzanita-99/custody/DONOR_REGISTER.json
+            programs/manzanita-99/custody/SOURCE_FOUNDATION_ARTIFACT.json.gz.b64
+            programs/manzanita-99/custody/build_custody.py
+            programs/manzanita-99/custody/validate_custody.py
+            programs/manzanita-99/custody/tests/test_custody.py
+            programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+          if-no-files-found: error
+          retention-days: 90
