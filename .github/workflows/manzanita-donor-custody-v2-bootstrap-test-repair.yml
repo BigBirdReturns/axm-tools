@@ -1,0 +1,53 @@
+name: Repair Manzanita custody bootstrap test fixtures
+
+on:
+  push:
+    branches:
+      - agent/manzanita-donor-custody-v2-actual
+    paths:
+      - ".github/workflows/manzanita-donor-custody-v2-bootstrap-test-repair.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-donor-custody-v2-bootstrap-test-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-donor-custody-v2-actual
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Correct path fixtures embedded in the custody bootstrap
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path=Path(".github/workflows/manzanita-donor-custody-v2-actual-bootstrap.yml")
+          text=path.read_text(encoding="utf-8")
+          old1='target=write(self.repo/"real.txt","real\\n"); (self.repo/"manzanita-next/source.txt").unlink(); (self.repo/"manzanita-next/source.txt").symlink_to(target)'
+          new1='target=self.repo/"real.txt"; write(target,"real\\n"); (self.repo/"manzanita-next/source.txt").unlink(); (self.repo/"manzanita-next/source.txt").symlink_to(target)'
+          old2='target=write(self.repo/"replacement.txt","source\\n"); (self.repo/"manzanita-next/source.txt").unlink(); (self.repo/"manzanita-next/source.txt").symlink_to(target)'
+          new2='target=self.repo/"replacement.txt"; write(target,"source\\n"); (self.repo/"manzanita-next/source.txt").unlink(); (self.repo/"manzanita-next/source.txt").symlink_to(target)'
+          if text.count(old1)!=1 or text.count(old2)!=1:
+              raise SystemExit("Exact embedded symlink fixtures were not found once")
+          path.write_text(text.replace(old1,new1,1).replace(old2,new2,1),encoding="utf-8")
+          PY
+
+      - name: Remove repair carrier and push the corrected bootstrap
+        run: |
+          rm .github/workflows/manzanita-donor-custody-v2-bootstrap-test-repair.yml
+          git config user.name "manzanita-custody-bootstrap-test-repair"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            .github/workflows/manzanita-donor-custody-v2-bootstrap-test-repair.yml \
+            .github/workflows/manzanita-donor-custody-v2-actual-bootstrap.yml
+          git commit -m "Manzanita: correct custody bootstrap symlink fixtures"
+          git push origin HEAD:agent/manzanita-donor-custody-v2-actual
