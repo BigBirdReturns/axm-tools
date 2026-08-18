@@ -1,9 +1,10 @@
-name: Manzanita Works v1.4.1 Signal Sheet contract
+name: Manzanita Works v1.6.0 Photographic Place Fabric contract
 
 on:
   push:
     paths:
       - "manzanita/**"
+      - "programs/manzanita-public-convergence/**"
       - "index.html"
       - "README.md"
       - ".github/workflows/manzanita-check.yml"
@@ -11,6 +12,7 @@ on:
   pull_request:
     paths:
       - "manzanita/**"
+      - "programs/manzanita-public-convergence/**"
       - "index.html"
       - "README.md"
       - ".github/workflows/manzanita-check.yml"
@@ -39,15 +41,19 @@ jobs:
           node --check manzanita/theme-init.js
       - name: Install Playwright and Chromium
         run: |
-          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
           python -m playwright install --with-deps chromium
       - name: Drive light, dark, desktop, and mobile contracts
         env:
           MANZANITA_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-screens
         run: python manzanita/tests/browser_test.py
+      - name: Enforce rendered photographic composition and aperture distinction
+        run: python programs/manzanita-public-convergence/rendered_visual_floor.py --output ${{ runner.temp }}/manzanita-rendered-visual-floor
       - uses: actions/upload-artifact@v4
         with:
-          name: manzanita-signal-sheet-v1.4.1-screens
-          path: ${{ runner.temp }}/manzanita-screens
+          name: manzanita-place-fabric-v1.6.0-screens
+          path: |
+            ${{ runner.temp }}/manzanita-screens
+            ${{ runner.temp }}/manzanita-rendered-visual-floor
           if-no-files-found: error
           retention-days: 30
