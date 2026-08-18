@@ -60,7 +60,8 @@ jobs:
             programs/manzanita-99/custody/build_custody.py \
             programs/manzanita-99/custody/validate_custody.py \
             programs/manzanita-99/custody/audit_history.py \
-            programs/manzanita-99/custody/tests/test_custody.py
+            programs/manzanita-99/custody/tests/test_custody.py \
+            programs/manzanita-99/custody/tests/test_independent_archive.py
           python -m unittest discover \
             -s programs/manzanita-99/custody/tests \
             -p "test_*.py"
@@ -83,7 +84,7 @@ jobs:
             --repo-root . \
             --output programs/manzanita-99/custody/HISTORY_AUDIT.json
 
-      - name: Prove the bounded partial-custody result
+      - name: Prove the bounded custody result
         run: |
           python - <<'PY'
           import json
@@ -97,8 +98,14 @@ jobs:
               row for row in register['donors']
               if row['id'] == 'pr-109-release_control'
           )
-          assert manifest['status'] == 'PARTIAL'
-          assert len(manifest['open_required_gaps']) == 10
+          open_required = sorted(
+              row['id']
+              for row in register['gaps']
+              if row['required_for_close'] and row['state'] != 'closed'
+          )
+          expected_status = 'COMPLETE' if not open_required else 'PARTIAL'
+          assert manifest['status'] == expected_status
+          assert manifest['open_required_gaps'] == open_required
           assert manifest['canonical_task_count_effect'] == 'none'
           assert donor['class'] == 'generated_candidate'
           assert history['unique_historical_public_route_tree_count'] >= 1
@@ -114,6 +121,7 @@ jobs:
             programs/manzanita-99/custody/CUSTODY_CONTRACT.json
             programs/manzanita-99/custody/DONOR_REGISTER.json
             programs/manzanita-99/custody/OBSERVED_EXECUTION_LEDGER.json
+            programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json
             programs/manzanita-99/custody/CUSTODY_MANIFEST.json
             programs/manzanita-99/custody/HISTORY_AUDIT.json
             programs/manzanita-99/custody/build_custody.py
