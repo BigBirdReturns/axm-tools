@@ -1,0 +1,71 @@
+{
+  "schema": "axm-tools/manzanita-independent-archive-receipt@1",
+  "receipt_id": "M99-CUSTODY-INDEPENDENT-ARCHIVE-001",
+  "gap_id": "M99-CUSTODY-GAP-002",
+  "verified_at": "2026-08-18T13:51:29Z",
+  "source_release": {
+    "pull_request": 109,
+    "qualified_head": "ed387ac8d27576484c71a13a7d0c8c8194f9b2ed",
+    "release_id": "M99-INTERNAL-RC-001",
+    "public_release_authorized": false
+  },
+  "archive_control": {
+    "class": "owner_controlled_private_object_store",
+    "repository_independent": true,
+    "workflow_retention_independent": true,
+    "shared": false,
+    "public_discovery": false,
+    "permission_class": "owner_only",
+    "provider_identifiers_retained_privately": true
+  },
+  "objects": [
+    {
+      "id": "M99-ARCHIVE-OBJECT-CANDIDATE-001",
+      "role": "p10_portable_candidate",
+      "file_name": "Manzanita_Internal_Release_Candidate_ed387ac8.zip",
+      "bytes": 696968,
+      "sha256": "73a222505b40ffd74c3c2464a0a313b0fc5c4ff7df9f9b6e996cba8be036e90b",
+      "created_at": "2026-08-17T23:51:36.050Z",
+      "modified_at": "2026-08-17T23:51:36.050Z",
+      "metadata_readback": true,
+      "byte_readback": true,
+      "zip_integrity": "PASS",
+      "unsafe_paths": 0,
+      "symbolic_links": 0
+    },
+    {
+      "id": "M99-ARCHIVE-OBJECT-EVIDENCE-001",
+      "role": "p7_p10_complete_evidence",
+      "file_name": "manzanita-release-control-ed387ac8-evidence.zip",
+      "bytes": 10247061,
+      "sha256": "d57f3878f9958b446d2ac55dfdd395ae3881cf9be44fffbfddffd7932cd47454",
+      "created_at": "2026-08-17T23:51:27.035Z",
+      "modified_at": "2026-08-17T23:51:27.035Z",
+      "metadata_readback": true,
+      "byte_readback": true,
+      "zip_integrity": "PASS",
+      "unsafe_paths": 0,
+      "symbolic_links": 0
+    }
+  ],
+  "cold_recovery": {
+    "result": "PASS",
+    "extracted_to_clean_directory": true,
+    "command_class": "python_isolated_mode_standard_library_verifier",
+    "verifier": "VERIFY_RELEASE.py",
+    "repository_imports": false,
+    "private_credentials": false,
+    "release_id": "M99-INTERNAL-RC-001",
+    "source_commit": "ed387ac8d27576484c71a13a7d0c8c8194f9b2ed",
+    "file_count": 24,
+    "candidate_manifest_sha256": "72ed850dd354da2bd465383c11a6c114058c2e7ed68a2dc6e183456c1017168d",
+    "rollback_manifest_sha256": "099413ab7aeeae06551144b5132710c89a076b7af8869c8ab19185dfe5686e25",
+    "evidence_manifest_sha256": "3acde61d8bb73f2e2e32006653f039f31c83b42e546c6291b6bb5a2f6d6163db",
+    "manifest_sha256": "35a2b2ffc8be0d51191b40bd45cdd04cbf117cb2176829db91fe5f4402742a74"
+  },
+  "public_release_authorized": false,
+  "external_campaign_effect": "none",
+  "public_effect": "none",
+  "constitutional_count_effect": "none",
+  "claim_boundary": "This receipt proves independently retained P10 candidate and P7-P10 evidence bytes, private owner-only metadata, exact readback, and a clean isolated verifier replay. It does not prove a public endpoint, deployed rollback, human or physical campaign, whole-product release, or canonical task closure."
+}
