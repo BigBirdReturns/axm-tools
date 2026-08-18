@@ -96,7 +96,7 @@ jobs:
           python programs/manzanita-99/custody/build_custody.py --repo-root .
           python programs/manzanita-99/custody/validate_custody.py --repo-root .
           python -m unittest discover -s programs/manzanita-99/custody/tests -p 'test_*.py'
-          python programs/manzanita-99/custody/audit_history.py --repo-root .
+          python programs/manzanita-99/custody/audit_history.py --repo-root . --output programs/manzanita-99/custody/HISTORY_AUDIT.json
       - name: Seal custody, cleanup, and exact review head
         run: |
           set -euo pipefail
