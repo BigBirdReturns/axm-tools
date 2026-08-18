@@ -1,0 +1,113 @@
+name: Materialize Manzanita independent archive custody
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/manzanita-independent-archive-custody-bootstrap.yml"
+      - ".github/workflows/manzanita-independent-archive-custody-runner.yml"
+      - "programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_TRIGGER.txt"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-independent-archive-custody-materializer
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-independent-archive-custody-002
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Execute the source-controlled custody transformation
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+          import textwrap
+          from pathlib import Path
+
+          workflow = Path(".github/workflows/manzanita-independent-archive-custody-bootstrap.yml")
+          text = workflow.read_text(encoding="utf-8")
+          start = "          python - <<'PY'\n"
+          end = "\n          PY\n\n      - name: Prove the complete custody suite"
+          if text.count(start) != 1 or text.count(end) != 1:
+              raise SystemExit("Cannot locate the exact custody transformation once")
+          block = text.split(start, 1)[1].split(end, 1)[0]
+          script = Path("/tmp/materialize-independent-archive.py")
+          script.write_text(textwrap.dedent(block) + "\n", encoding="utf-8")
+          subprocess.run([sys.executable, str(script)], check=True)
+          PY
+
+      - name: Prove the complete custody suite and partial boundary
+        run: |
+          python -m json.tool programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json > /dev/null
+          python -m json.tool programs/manzanita-99/custody/DONOR_REGISTER.json > /dev/null
+          python -m py_compile \
+            programs/manzanita-99/custody/build_custody.py \
+            programs/manzanita-99/custody/validate_custody.py \
+            programs/manzanita-99/custody/audit_history.py \
+            programs/manzanita-99/custody/tests/test_custody.py \
+            programs/manzanita-99/custody/tests/test_independent_archive.py
+          python -m unittest discover \
+            -s programs/manzanita-99/custody/tests \
+            -p "test_*.py"
+          python programs/manzanita-99/custody/build_custody.py \
+            --repo-root . \
+            --output programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+          python programs/manzanita-99/custody/validate_custody.py \
+            --repo-root . \
+            --manifest programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+          if python programs/manzanita-99/custody/validate_custody.py \
+            --repo-root . \
+            --manifest programs/manzanita-99/custody/CUSTODY_MANIFEST.json \
+            --require-complete
+          then
+            echo "Custody falsely reached COMPLETE" >&2
+            exit 1
+          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          register = json.loads(Path("programs/manzanita-99/custody/DONOR_REGISTER.json").read_text())
+          open_gaps = [row["id"] for row in register["gaps"] if row["required_for_close"] and row["state"] != "closed"]
+          assert open_gaps == [
+              "M99-CUSTODY-GAP-001",
+              "M99-CUSTODY-GAP-003",
+              "M99-CUSTODY-GAP-004",
+              "M99-CUSTODY-GAP-005",
+              "M99-CUSTODY-GAP-006",
+              "M99-CUSTODY-GAP-007",
+              "M99-CUSTODY-GAP-008",
+              "M99-CUSTODY-GAP-009",
+              "M99-CUSTODY-GAP-010",
+          ]
+          PY
+
+      - name: Commit only permanent provider-neutral custody evidence
+        run: |
+          rm -f \
+            programs/manzanita-99/custody/CUSTODY_MANIFEST.json \
+            programs/manzanita-99/custody/HISTORY_AUDIT.json
+          find programs/manzanita-99/custody -type d -name __pycache__ -prune -exec rm -rf {} +
+          git config user.name "manzanita-independent-archive-custody"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            programs/manzanita-99/custody/DONOR_REGISTER.json \
+            programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json \
+            programs/manzanita-99/custody/README.md \
+            programs/manzanita-99/custody/tests/test_independent_archive.py
+          git commit -m "Manzanita: admit independent archive readback and cold recovery"
+          git push origin HEAD:agent/manzanita-independent-archive-custody-002
