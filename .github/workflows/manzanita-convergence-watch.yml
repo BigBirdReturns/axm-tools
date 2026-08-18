@@ -1,6 +1,6 @@
 name: Manzanita convergence run watcher
 
-# Observe the isolated final-v5 convergence execution.
+# Observe the exact Region-repaired final-v5 convergence execution.
 on:
   push:
     branches: [agent/manzanita-public-convergence-v1-6]
@@ -23,7 +23,7 @@ jobs:
       GH_REPO: ${{ github.repository }}
       BRANCH: agent/manzanita-public-convergence-v1-6
       PR_NUMBER: "117"
-      EXPECTED_HEAD: 824bc09ddc2c8bc8989a71b6e6ae21ee0669664b
+      EXPECTED_HEAD: 28b252cb17fbc30ca8c9893680cb8dc814bcc1ff
     steps:
       - name: Wait for the exact rendered convergence run
         run: |
@@ -54,7 +54,7 @@ jobs:
           status=$(jq -r '.status' /tmp/run.json)
           conclusion=$(jq -r '.conclusion // ""' /tmp/run.json)
           head_sha=$(jq -r '.headSha' /tmp/run.json)
-          gh pr comment "$PR_NUMBER" --repo "$GH_REPO" --body "Isolated rendered convergence run \`$run_id\` completed with status \`$status\`, conclusion \`$conclusion\`, head \`$head_sha\`."
+          gh pr comment "$PR_NUMBER" --repo "$GH_REPO" --body "Region-repaired rendered convergence run \`$run_id\` completed with status \`$status\`, conclusion \`$conclusion\`, head \`$head_sha\`."
           if [ "$conclusion" != "success" ]; then
             gh run view "$run_id" --repo "$GH_REPO" --log-failed > /tmp/failed.log || true
             tail -c 50000 /tmp/failed.log > /tmp/failed-tail.log
