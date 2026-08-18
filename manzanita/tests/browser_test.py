@@ -70,7 +70,7 @@ def exercise(page, theme: str, label: str) -> None:
     response = page.goto(state_url, wait_until="networkidle", timeout=60_000)
     assert response is not None and response.status == 200, response.status if response else None
     assert page.locator("#visualTitle").text_content().strip() == "Region"
-    assert page.locator("#roleTitle").inner_text().strip() == "Successor"
+    assert page.locator("#roleTitle").text_content().strip() == "Successor"
     assert page.locator('[data-overlay-button="fire"]').get_attribute("aria-pressed") == "true"
     assert page.locator('[data-overlay-button="air"]').get_attribute("aria-pressed") == "true"
     assert page.locator('[data-overlay-button][aria-pressed="true"]').count() == 2
@@ -91,7 +91,7 @@ def exercise(page, theme: str, label: str) -> None:
     assert page.locator(':focus').get_attribute("data-scale") == "6"
     page.keyboard.press("Home")
     assert first_scale.get_attribute("aria-pressed") == "true"
-    assert page.locator("#interactionStatus").inner_text().strip().startswith("Plant scale selected.")
+    assert page.locator("#interactionStatus").text_content().strip().startswith("Plant scale selected.")
 
     page.locator('[data-scale="3"]').click()
     page.locator("#nextScale").click()
@@ -119,8 +119,8 @@ def exercise(page, theme: str, label: str) -> None:
     for button in page.locator("[data-role]").all():
         button.click()
         assert button.get_attribute("aria-pressed") == "true"
-        assert page.locator("#roleTitle").inner_text().strip()
-        assert page.locator("#roleNeed").inner_text().strip().startswith("Needs:")
+        assert page.locator("#roleTitle").text_content().strip()
+        assert page.locator("#roleNeed").text_content().strip().startswith("Needs:")
 
     page.locator('[data-role="0"]').focus()
     page.keyboard.press("End")
