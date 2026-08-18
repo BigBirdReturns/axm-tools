@@ -1,0 +1,509 @@
+name: Bootstrap Manzanita donor custody v2
+
+on:
+  push:
+    branches:
+      - agent/manzanita-donor-custody-v2-actual
+    paths:
+      - ".github/workflows/manzanita-donor-custody-v2-actual-bootstrap.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-donor-custody-v2-actual-bootstrap
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-donor-custody-v2-actual
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Materialize the permanent custody object
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          files = {
+            "programs/manzanita-99/custody-v2/README.md": r'''
+          # Manzanita donor custody v2
+
+          This directory operates `JDB99-001` against the current admitted Manzanita repository chain. The object is the recoverable evidence base beneath the successor build. Source custody may locate, hash, classify, retain, and reject donor evidence. It may not promote a donor into a product, infer a physical or external campaign, change public Manzanita bytes, authorize release, or reconstruct a canonical task row.
+
+          `CUSTODY_CONTRACT.json` defines the ten evidence classes that still prevent closure. `DONOR_REGISTER.json` names the current repo-resident donors and their claim boundaries. `OBSERVED_EXECUTION_LEDGER.json` records only path-observed operating objects and carries no canonical task-count effect. `PUBLIC_ROUTE_GUARD.json` binds every tracked file in the historical public `manzanita/` route to Git blob and SHA-256 identities.
+
+          `build_custody.py` emits a deterministic manifest over every admitted repo-resident donor. `validate_custody.py` re-hashes the source files, verifies the historical route, rejects symlinks before resolution, checks the open-gap ledger, and refuses false closure. `audit_history.py` inventories every reachable historical `manzanita/` tree without treating reachability as release approval or deployed-byte proof.
+
+          From the repository root:
+
+          ```bash
+          python -m unittest discover -s programs/manzanita-99/custody-v2/tests -p "test_*.py"
+          python programs/manzanita-99/custody-v2/build_custody.py --repo-root . --output programs/manzanita-99/custody-v2/out/CUSTODY_MANIFEST.json
+          python programs/manzanita-99/custody-v2/validate_custody.py --repo-root . --manifest programs/manzanita-99/custody-v2/out/CUSTODY_MANIFEST.json
+          python programs/manzanita-99/custody-v2/audit_history.py --repo-root . --output programs/manzanita-99/custody-v2/out/HISTORICAL_TREE_AUDIT.json
+          ```
+
+          The ordinary validator must report `PARTIAL_BY_CONTRACT` while returning `PASS`. `--require-complete` must fail until all ten required gaps are closed and every required donor has durable cold-successor custody. The controlling question is whether a cold successor can recover every admitted donor and every retained absence without confusing consistency with product or program completion.
+          ''',
+            "programs/manzanita-99/custody-v2/CUSTODY_CONTRACT.json": r'''
+          {
+            "schema": "axm-tools/manzanita-donor-custody-contract@2",
+            "task": "JDB99-001",
+            "state": "in_progress",
+            "owner_seat": "source_custody_and_release_continuity",
+            "public_effect": "none",
+            "constitutional_count_effect": "none",
+            "qualification_boundary": "A passing custody validation proves only repository-resident identity, route integrity, ledger consistency, and explicit gaps. It does not close JDB99-001, qualify a product, perform an external campaign, authorize public release, or mutate a canonical task row.",
+            "required_classes": [
+              "public_release",
+              "source_foundation",
+              "program_control",
+              "visual_golden",
+              "playtest",
+              "failure_receipt",
+              "live_data_acquisition",
+              "deployment_receipt",
+              "asset_provenance",
+              "standalone_export"
+            ],
+            "gaps": [
+              {"id":"M99-CUSTODY-GAP-001","class":"public_release","state":"open","required_for_close":true,"target":"Predecessor releases and failed builds","admission":"Every predecessor and failed build has immutable bytes, manifest, hashes, disposition, and claim boundary.","failure_mode":"A meaningful predecessor disappears behind the label old version."},
+              {"id":"M99-CUSTODY-GAP-002","class":"source_foundation","state":"open","required_for_close":true,"target":"Independently controlled durable archive and cold recovery","admission":"Exact source and release artifacts are written, read back, hash-verified, and recovered by a cold successor outside the source account.","failure_mode":"One account or ephemeral store remains a succession single point of failure."},
+              {"id":"M99-CUSTODY-GAP-003","class":"visual_golden","state":"open","required_for_close":true,"target":"Approved and rejected visual goldens","admission":"Every relevant state has route, commit, viewport, theme, browser, capture method, and disposition.","failure_mode":"A later build imitates a crop while losing the state actually reviewed."},
+              {"id":"M99-CUSTODY-GAP-004","class":"playtest","state":"open","required_for_close":true,"target":"Seat and affected-actor playtests","admission":"Every finding names build, seat, scenario, observation, severity, disposition, and retained evidence.","failure_mode":"A known human failure survives only as summary prose."},
+              {"id":"M99-CUSTODY-GAP-005","class":"failure_receipt","state":"open","required_for_close":true,"target":"Material CI deployment and rejected-release failures","admission":"Every material failure retains stable run or file identity, affected commit, bounded logs, classification, and resulting rule.","failure_mode":"Successful reruns erase the causal evidence for later safeguards."},
+              {"id":"M99-CUSTODY-GAP-006","class":"live_data_acquisition","state":"open","required_for_close":true,"target":"Complete happy and degraded source bundles","admission":"Receipts retain request, response class, source time, retrieval time, transforms, rights, uncertainty, cache law, and degradation state.","failure_mode":"Only a happy-path payload remains available for qualification."},
+              {"id":"M99-CUSTODY-GAP-007","class":"deployment_receipt","state":"open","required_for_close":true,"target":"Historical and successor deployed-byte receipts","admission":"Every deployment has source commit, artifact digest, endpoint, run identity, observed public hashes, outcome, and rollback target.","failure_mode":"Repository state is mistaken for bytes that reached an endpoint."},
+              {"id":"M99-CUSTODY-GAP-008","class":"asset_provenance","state":"open","required_for_close":true,"target":"Original sourced authored captured generated and transformed assets","admission":"Every asset has original bytes or stable source, author or provider, date, rights, transforms, generated-state label, and permitted claims.","failure_mode":"A polished asset becomes an unattributed orphan or is mistaken for observation."},
+              {"id":"M99-CUSTODY-GAP-009","class":"standalone_export","state":"open","required_for_close":true,"target":"Externally circulated HTML ZIP PDF image and handoff exports","admission":"Every export has complete bytes, SHA-256, production date, source build, purpose, recipient class, and supersession status.","failure_mode":"An external artifact cannot be reproduced or distinguished from the canonical route."},
+              {"id":"M99-CUSTODY-GAP-010","class":"program_control","state":"open","required_for_close":true,"target":"Exact canonical task-row recovery and source-linked closure ledger","admission":"The complete canonical row set is recovered and every closure carries exact source identity and authorized count effect.","failure_mode":"Remembered counts or later PRs are substituted for the missing constitutional register."}
+            ],
+            "close_law": {
+              "required_open_gaps": 0,
+              "required_donor_states": ["archived"],
+              "require_complete_flag": true,
+              "public_release_authorized": false
+            }
+          }
+          ''',
+            "programs/manzanita-99/custody-v2/DONOR_REGISTER.json": r'''
+          {
+            "schema": "axm-tools/manzanita-donor-register@2",
+            "task": "JDB99-001",
+            "state": "in_progress",
+            "public_effect": "none",
+            "constitutional_count_effect": "none",
+            "donors": [
+              {"id":"historical-public-manzanita","class":"public_release","path":"manzanita","required":true,"custody_state":"archived","claim_boundary":"Historical public rollback donor. Reachability and repository custody do not prove current successor qualification or deployed-byte identity."},
+              {"id":"source-foundation","class":"source_foundation","path":"manzanita-next","required":true,"custody_state":"archived_repo_resident","claim_boundary":"Repository-resident successor source and bounded internal receipts. External provider, field, private, and release authority remain separate."},
+              {"id":"review-board","class":"program_control","path":"programs/manzanita-99/review-board","required":true,"custody_state":"archived","claim_boundary":"Contained functional review law only. It is not independent external review or whole-product release authority."},
+              {"id":"design-constitution","class":"program_control","path":"manzanita-next/design-system","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Design constitution and specimens only. Visual finish and physical campaigns remain separately qualified."},
+              {"id":"public-demo","class":"live_data_acquisition","path":"manzanita-next/public-demo","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Public-safe demonstration place and source projection only; no private household or field standing."},
+              {"id":"seven-apertures","class":"program_control","path":"manzanita-next/apertures","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Seven governed scale projections over one place; no source authority transfer."},
+              {"id":"street-glide","class":"asset_provenance","path":"manzanita-next/street-glide","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Provider-order scene and registration kernel; no physical-feature or field determination."},
+              {"id":"registered-overlays","class":"asset_provenance","path":"manzanita-next/overlays","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Authored and source-bounded overlay geometry; no observed field condition or adverse decision."},
+              {"id":"five-roles-and-fab","class":"program_control","path":"manzanita-next/roles","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Internal role projections and bounded FAB handoff; no external-effect adapter."},
+              {"id":"whole-experience","class":"standalone_export","path":"manzanita-next/experience","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Internal whole-experience source and receipts; not a public endpoint or whole-product release."},
+              {"id":"automated-qualification","class":"failure_receipt","path":"manzanita-next/qualification","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Automated browser security and resilience evidence only; real people devices networks and assistive technology remain separate."},
+              {"id":"estate-parity","class":"program_control","path":"manzanita-next/parity","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Estate disposition register only; complete accounting does not absorb independently governed products."},
+              {"id":"release-control","class":"deployment_receipt","path":"manzanita-next/release-control","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Internal portable candidate and local continuity proofs under public-release HOLD; no public endpoint or deployed rollback standing."},
+              {"id":"external-campaign-runner","class":"playtest","path":"manzanita-next/external-campaigns","required":false,"custody_state":"archived_repo_resident","claim_boundary":"Evidence instrument only. Its existence does not perform a physical human private provider field deployment or rollback campaign."}
+            ]
+          }
+          ''',
+            "programs/manzanita-99/custody-v2/OBSERVED_EXECUTION_LEDGER.json": r'''
+          {
+            "schema": "axm-tools/manzanita-observed-execution-ledger@2",
+            "state": "path_observed_not_task_closed",
+            "public_effect": "none",
+            "constitutional_count_effect": "none",
+            "qualification_boundary": "An entry means the named path is present in the reviewed repository head. It does not prove public deployment, physical execution, external campaign passage, or canonical task closure.",
+            "entries": [
+              {"id":"source-foundation","path":"manzanita-next","state":"observed_on_head"},
+              {"id":"contained-review-board","path":"programs/manzanita-99/review-board","state":"observed_on_head"},
+              {"id":"public-demo","path":"manzanita-next/public-demo","state":"observed_if_present"},
+              {"id":"seven-apertures","path":"manzanita-next/apertures","state":"observed_if_present"},
+              {"id":"street-glide","path":"manzanita-next/street-glide","state":"observed_if_present"},
+              {"id":"eight-overlays","path":"manzanita-next/overlays","state":"observed_if_present"},
+              {"id":"five-roles","path":"manzanita-next/roles","state":"observed_if_present"},
+              {"id":"whole-experience","path":"manzanita-next/experience","state":"observed_if_present"},
+              {"id":"automated-qualification","path":"manzanita-next/qualification","state":"observed_if_present"},
+              {"id":"estate-parity","path":"manzanita-next/parity","state":"observed_if_present"},
+              {"id":"release-control","path":"manzanita-next/release-control","state":"observed_if_present"},
+              {"id":"external-campaign-runner","path":"manzanita-next/external-campaigns","state":"observed_if_present"}
+            ]
+          }
+          ''',
+            "programs/manzanita-99/custody-v2/build_custody.py": r'''
+          #!/usr/bin/env python3
+          from __future__ import annotations
+          import argparse, hashlib, json, stat, subprocess
+          from pathlib import Path, PurePosixPath
+          from typing import Any, Iterable
+
+          ROOT = Path(__file__).resolve().parent
+          CONTRACT = ROOT / "CUSTODY_CONTRACT.json"
+          REGISTER = ROOT / "DONOR_REGISTER.json"
+          LEDGER = ROOT / "OBSERVED_EXECUTION_LEDGER.json"
+          GUARD = ROOT / "PUBLIC_ROUTE_GUARD.json"
+          SCHEMA = "axm-tools/manzanita-donor-custody-manifest@2"
+
+          class CustodyError(ValueError): pass
+          def require(c: bool, m: str) -> None:
+              if not c: raise CustodyError(m)
+          def canonical(v: Any) -> bytes:
+              return json.dumps(v, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+          def sha256(b: bytes) -> str: return hashlib.sha256(b).hexdigest()
+          def git_blob(b: bytes) -> str: return hashlib.sha1(f"blob {len(b)}\0".encode() + b).hexdigest()
+          def load(path: Path) -> dict[str, Any]:
+              v=json.loads(path.read_text()); require(isinstance(v,dict), f"{path} must contain an object"); return v
+          def safe_rel(value: str) -> str:
+              p=PurePosixPath(value); require(value and value!="." and not p.is_absolute() and ".." not in p.parts, f"unsafe path {value!r}"); return p.as_posix()
+          def regular(repo: Path, rel: str) -> Path:
+              rel=safe_rel(rel); candidate=repo/rel
+              require(candidate.exists() or candidate.is_symlink(), f"missing source {rel}")
+              mode=candidate.lstat().st_mode
+              require(not stat.S_ISLNK(mode), f"source may not be a symlink: {rel}")
+              require(stat.S_ISREG(mode), f"source is not a regular file: {rel}")
+              resolved=candidate.resolve(strict=True); require(resolved.is_relative_to(repo), f"source escapes repository: {rel}"); return resolved
+          def iter_files(repo: Path, rel: str, output: Path) -> Iterable[Path]:
+              root=repo/safe_rel(rel)
+              if not root.exists(): return
+              candidates=[root] if root.is_file() else sorted(root.rglob("*"))
+              for p in candidates:
+                  if not p.is_file() or "__pycache__" in p.parts or p.suffix==".pyc": continue
+                  rp=p.relative_to(repo).as_posix()
+                  if "/out/" in f"/{rp}/" or rp.endswith("CUSTODY_MANIFEST.json") or rp.endswith("HISTORICAL_TREE_AUDIT.json"): continue
+                  yield regular(repo,rp)
+          def head(repo: Path) -> str:
+              p=subprocess.run(["git","-C",str(repo),"rev-parse","HEAD"],capture_output=True,text=True); return p.stdout.strip() if p.returncode==0 else "WORKTREE"
+          def build(repo: Path) -> dict[str, Any]:
+              repo=repo.resolve(); contract=load(CONTRACT); register=load(REGISTER); ledger=load(LEDGER); guard=load(GUARD)
+              require(contract.get("schema")=="axm-tools/manzanita-donor-custody-contract@2","contract schema")
+              require(register.get("schema")=="axm-tools/manzanita-donor-register@2","register schema")
+              files: dict[str,dict[str,Any]]={}; donors=[]
+              for donor in register["donors"]:
+                  rel=safe_rel(donor["path"]); exists=(repo/rel).exists()
+                  if donor.get("required"): require(exists, f"required donor missing: {donor['id']}")
+                  paths=[]
+                  if exists:
+                      for p in iter_files(repo,rel,ROOT/"out/CUSTODY_MANIFEST.json"):
+                          rp=p.relative_to(repo).as_posix(); b=p.read_bytes(); row=files.setdefault(rp,{"path":rp,"bytes":len(b),"sha256":sha256(b),"git_blob_sha1":git_blob(b),"donor_ids":[]}); row["donor_ids"].append(donor["id"]); paths.append(rp)
+                  donors.append({"id":donor["id"],"class":donor["class"],"path":rel,"declared_state":donor["custody_state"],"present":exists,"file_count":len(paths),"scope_sha256":sha256("".join(f"{p}\0{files[p]['sha256']}\n" for p in sorted(paths)).encode()),"claim_boundary":donor["claim_boundary"]})
+              file_rows=[]
+              for p in sorted(files): files[p]["donor_ids"]=sorted(set(files[p]["donor_ids"])); file_rows.append(files[p])
+              observed=[]
+              for row in ledger["entries"]:
+                  present=(repo/safe_rel(row["path"])).exists(); observed.append({**row,"present":present,"canonical_task_count_effect":"none"})
+              gaps=sorted(g["id"] for g in contract["gaps"] if g.get("required_for_close") and g.get("state")!="closed")
+              result={"schema":SCHEMA,"task":"JDB99-001","task_state":contract["state"],"custody_state":"COMPLETE" if not gaps else "PARTIAL_BY_CONTRACT","generated_from":{"git_commit":head(repo),"contract_sha256":sha256(CONTRACT.read_bytes()),"register_sha256":sha256(REGISTER.read_bytes()),"ledger_sha256":sha256(LEDGER.read_bytes()),"public_guard_sha256":sha256(GUARD.read_bytes())},"source_file_count":len(file_rows),"source_bytes":sum(r["bytes"] for r in file_rows),"files":file_rows,"donors":donors,"observed_execution":observed,"open_required_gaps":gaps,"public_effect":"none","constitutional_count_effect":"none","public_release_authorized":False,"qualification_boundary":contract["qualification_boundary"]}
+              result["payload_sha256"]=sha256(canonical(result)); return result
+          def main() -> None:
+              ap=argparse.ArgumentParser(); ap.add_argument("--repo-root",type=Path,default=Path.cwd()); ap.add_argument("--output",type=Path,default=ROOT/"out/CUSTODY_MANIFEST.json"); a=ap.parse_args(); value=build(a.repo_root); a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(json.dumps(value,indent=2)+"\n"); print(json.dumps({"result":"PASS","custody_state":value["custody_state"],"files":value["source_file_count"],"open_required_gaps":len(value["open_required_gaps"]),"manifest_sha256":value["payload_sha256"]},indent=2))
+          if __name__=="__main__":
+              try: main()
+              except CustodyError as e: raise SystemExit(str(e)) from e
+          ''',
+            "programs/manzanita-99/custody-v2/validate_custody.py": r'''
+          #!/usr/bin/env python3
+          from __future__ import annotations
+          import argparse, hashlib, json, stat
+          from pathlib import Path, PurePosixPath
+          from typing import Any
+
+          ROOT=Path(__file__).resolve().parent
+          class CustodyError(ValueError): pass
+          def require(c: bool,m: str)->None:
+              if not c: raise CustodyError(m)
+          def canonical(v: Any)->bytes: return json.dumps(v,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode()
+          def sha256(b: bytes)->str:return hashlib.sha256(b).hexdigest()
+          def git_blob(b: bytes)->str:return hashlib.sha1(f"blob {len(b)}\0".encode()+b).hexdigest()
+          def load(p: Path)->dict[str,Any]:
+              v=json.loads(p.read_text()); require(isinstance(v,dict),f"{p} must contain object"); return v
+          def safe(value: str)->str:
+              p=PurePosixPath(value); require(value and value!="." and not p.is_absolute() and ".." not in p.parts,f"unsafe path {value!r}"); return p.as_posix()
+          def source(repo: Path,rel: str)->Path:
+              rel=safe(rel); p=repo/rel; require(p.exists() or p.is_symlink(),f"missing {rel}"); mode=p.lstat().st_mode; require(not stat.S_ISLNK(mode),f"symlink source {rel}"); require(stat.S_ISREG(mode),f"not regular {rel}"); q=p.resolve(strict=True); require(q.is_relative_to(repo),f"escape {rel}"); return q
+          def validate(repo: Path,manifest: dict[str,Any],require_complete: bool=False)->dict[str,Any]:
+              repo=repo.resolve(); contract=load(ROOT/"CUSTODY_CONTRACT.json"); register=load(ROOT/"DONOR_REGISTER.json"); ledger=load(ROOT/"OBSERVED_EXECUTION_LEDGER.json"); guard=load(ROOT/"PUBLIC_ROUTE_GUARD.json")
+              require(manifest.get("schema")=="axm-tools/manzanita-donor-custody-manifest@2","manifest schema")
+              payload=dict(manifest); supplied=payload.pop("payload_sha256",None); require(supplied==sha256(canonical(payload)),"manifest checksum")
+              required=set(contract["required_classes"]); covered={d["class"] for d in register["donors"]}|{g["class"] for g in contract["gaps"]}; require(required<=covered,f"uncovered classes {sorted(required-covered)}")
+              current=[]
+              for row in guard["files"]:
+                  p=source(repo,row["path"]); b=p.read_bytes(); require(len(b)==row["bytes"],f"public byte drift {row['path']}"); require(sha256(b)==row["sha256"],f"public SHA drift {row['path']}"); require(git_blob(b)==row["git_blob_sha1"],f"public blob drift {row['path']}"); current.append(row["path"])
+              tracked=sorted(p.relative_to(repo).as_posix() for p in (repo/"manzanita").rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix!=".pyc"); require(sorted(current)==tracked,"public route file set drift")
+              require(manifest["source_file_count"]==len(manifest["files"]),"file count")
+              require(manifest["source_bytes"]==sum(r["bytes"] for r in manifest["files"]),"byte count")
+              paths=[r["path"] for r in manifest["files"]]; require(paths==sorted(paths) and len(paths)==len(set(paths)),"path ordering or duplicates")
+              for row in manifest["files"]:
+                  p=source(repo,row["path"]); b=p.read_bytes(); require(len(b)==row["bytes"],f"byte drift {row['path']}"); require(sha256(b)==row["sha256"],f"hash drift {row['path']}"); require(git_blob(b)==row["git_blob_sha1"],f"blob drift {row['path']}")
+              expected=sorted(g["id"] for g in contract["gaps"] if g.get("required_for_close") and g.get("state")!="closed"); require(manifest["open_required_gaps"]==expected,"gap set drift"); expected_state="COMPLETE" if not expected else "PARTIAL_BY_CONTRACT"; require(manifest["custody_state"]==expected_state,"false custody state")
+              require(manifest.get("public_effect")=="none" and manifest.get("constitutional_count_effect")=="none" and manifest.get("public_release_authorized") is False,"unauthorized effect")
+              for row in ledger["entries"]: require(row.get("state") in {"observed_on_head","observed_if_present"},"execution ledger invents lifecycle state")
+              if contract["state"]=="closed": require(not expected,"closed task retains gaps")
+              if require_complete: require(not expected,"custody remains partial")
+              return {"result":"PASS","custody_state":expected_state,"open_required_gaps":len(expected),"files":len(paths),"manifest_sha256":supplied}
+          def main()->None:
+              ap=argparse.ArgumentParser(); ap.add_argument("--repo-root",type=Path,default=Path.cwd()); ap.add_argument("--manifest",type=Path,default=ROOT/"out/CUSTODY_MANIFEST.json"); ap.add_argument("--require-complete",action="store_true"); a=ap.parse_args(); print(json.dumps(validate(a.repo_root,load(a.manifest),a.require_complete),indent=2))
+          if __name__=="__main__":
+              try: main()
+              except CustodyError as e: raise SystemExit(str(e)) from e
+          ''',
+            "programs/manzanita-99/custody-v2/audit_history.py": r'''
+          #!/usr/bin/env python3
+          from __future__ import annotations
+          import argparse, hashlib, json, subprocess
+          from pathlib import Path
+
+          def run(repo: Path,*args: str)->str:
+              p=subprocess.run(["git","-C",str(repo),*args],capture_output=True,text=True); return p.stdout if p.returncode==0 else ""
+          def main()->None:
+              ap=argparse.ArgumentParser(); ap.add_argument("--repo-root",type=Path,default=Path.cwd()); ap.add_argument("--output",type=Path,required=True); a=ap.parse_args(); repo=a.repo_root.resolve(); commits=run(repo,"rev-list","--all","--","manzanita").splitlines(); trees={}
+              for commit in commits:
+                  tree=run(repo,"rev-parse",f"{commit}:manzanita").strip()
+                  if len(tree)!=40 or tree in trees: continue
+                  files=[]
+                  for line in run(repo,"ls-tree","-r",tree).splitlines():
+                      meta,path=line.split("\t",1); mode,typ,sha=meta.split(); files.append({"path":f"manzanita/{path}","mode":mode,"type":typ,"git_blob_sha1":sha})
+                  qualification=""
+                  q=run(repo,"show",f"{commit}:manzanita/QUALIFICATION.json")
+                  try: qualification=json.loads(q).get("release") or json.loads(q).get("version") or ""
+                  except Exception: pass
+                  trees[tree]={"tree_sha":tree,"first_observed_commit":commit,"file_count":len(files),"files":files,"classification":"repository_release_candidate" if qualification else "reachable_tree_not_release","declared_release":qualification,"claim_boundary":"Reachable Git history is custody evidence, not deployed-byte or approval proof."}
+              value={"schema":"axm-tools/manzanita-historical-tree-audit@2","result":"PASS","reachable_commit_count":len(commits),"unique_tree_count":len(trees),"trees":sorted(trees.values(),key=lambda r:r["tree_sha"]),"public_effect":"none","constitutional_count_effect":"none"}; value["payload_sha256"]=hashlib.sha256(json.dumps(value,sort_keys=True,separators=(",",":")).encode()).hexdigest(); a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(json.dumps(value,indent=2)+"\n"); print(json.dumps({"result":"PASS","unique_tree_count":len(trees),"receipt_sha256":value["payload_sha256"]},indent=2))
+          if __name__=="__main__": main()
+          ''',
+            "programs/manzanita-99/custody-v2/tests/test_custody_v2.py": r'''
+          from __future__ import annotations
+          import copy, hashlib, importlib.util, json, shutil, tempfile, unittest
+          from pathlib import Path
+
+          ROOT=Path(__file__).resolve().parents[1]
+          def module(name,path):
+              spec=importlib.util.spec_from_file_location(name,path); m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
+          build=module("custody_build",ROOT/"build_custody.py"); validate=module("custody_validate",ROOT/"validate_custody.py")
+          def write(path,text): path.parent.mkdir(parents=True,exist_ok=True); path.write_text(text); return path.read_bytes()
+          def guard_row(path,payload): return {"path":path,"bytes":len(payload),"sha256":hashlib.sha256(payload).hexdigest(),"git_blob_sha1":build.git_blob(payload)}
+          class CustodyV2Tests(unittest.TestCase):
+              def setUp(self):
+                  self.t=tempfile.TemporaryDirectory(); self.repo=Path(self.t.name); public=write(self.repo/"manzanita/index.html","public\n"); write(self.repo/"manzanita-next/source.txt","source\n"); write(self.repo/"programs/manzanita-99/review-board/BOARD_CHARTER.json","{}\n")
+                  self.old={p:(p.read_bytes() if p.exists() else None) for p in (ROOT/"CUSTODY_CONTRACT.json",ROOT/"DONOR_REGISTER.json",ROOT/"OBSERVED_EXECUTION_LEDGER.json",ROOT/"PUBLIC_ROUTE_GUARD.json")}
+                  contract={"schema":"axm-tools/manzanita-donor-custody-contract@2","task":"JDB99-001","state":"in_progress","required_classes":["public_release","source_foundation","program_control"],"gaps":[{"id":"G1","class":"program_control","state":"open","required_for_close":True}],"qualification_boundary":"fixture"}
+                  register={"schema":"axm-tools/manzanita-donor-register@2","donors":[{"id":"public","class":"public_release","path":"manzanita","required":True,"custody_state":"archived","claim_boundary":"fixture"},{"id":"source","class":"source_foundation","path":"manzanita-next","required":True,"custody_state":"archived","claim_boundary":"fixture"}]}
+                  ledger={"schema":"axm-tools/manzanita-observed-execution-ledger@2","entries":[{"id":"source","path":"manzanita-next","state":"observed_on_head"}]}
+                  guard={"schema":"axm-tools/manzanita-public-route-guard@2","files":[guard_row("manzanita/index.html",public)]}
+                  for p,v in ((ROOT/"CUSTODY_CONTRACT.json",contract),(ROOT/"DONOR_REGISTER.json",register),(ROOT/"OBSERVED_EXECUTION_LEDGER.json",ledger),(ROOT/"PUBLIC_ROUTE_GUARD.json",guard)): p.write_text(json.dumps(v,indent=2)+"\n")
+              def tearDown(self):
+                  for p,b in self.old.items():
+                      if b is None:
+                          if p.exists(): p.unlink()
+                      else: p.write_bytes(b)
+                  self.t.cleanup()
+              def manifest(self): return build.build(self.repo)
+              def test_deterministic_partial(self):
+                  a=self.manifest(); b=self.manifest(); self.assertEqual(a["payload_sha256"],b["payload_sha256"]); self.assertEqual(a["custody_state"],"PARTIAL_BY_CONTRACT"); self.assertEqual(validate.validate(self.repo,a)["result"],"PASS")
+              def test_source_tamper(self):
+                  m=self.manifest(); write(self.repo/"manzanita-next/source.txt","changed\n"); self.assertRaisesRegex(validate.CustodyError,"hash drift",validate.validate,self.repo,m)
+              def test_public_route_tamper(self):
+                  m=self.manifest(); write(self.repo/"manzanita/index.html","changed\n"); self.assertRaisesRegex(validate.CustodyError,"public",validate.validate,self.repo,m)
+              def test_source_symlink_rejected_before_resolution(self):
+                  target=write(self.repo/"real.txt","real\n"); (self.repo/"manzanita-next/source.txt").unlink(); (self.repo/"manzanita-next/source.txt").symlink_to(target); self.assertRaisesRegex(build.CustodyError,"symlink",self.manifest)
+              def test_post_manifest_symlink_rejected(self):
+                  m=self.manifest(); target=write(self.repo/"replacement.txt","source\n"); (self.repo/"manzanita-next/source.txt").unlink(); (self.repo/"manzanita-next/source.txt").symlink_to(target); self.assertRaisesRegex(validate.CustodyError,"symlink",validate.validate,self.repo,m)
+              def test_require_complete_refuses_open_gap(self):
+                  m=self.manifest(); self.assertRaisesRegex(validate.CustodyError,"remains partial",validate.validate,self.repo,m,True)
+              def test_false_closed_state_rejected(self):
+                  c=json.loads((ROOT/"CUSTODY_CONTRACT.json").read_text()); c["state"]="closed"; (ROOT/"CUSTODY_CONTRACT.json").write_text(json.dumps(c)); m=self.manifest(); self.assertRaisesRegex(validate.CustodyError,"closed task",validate.validate,self.repo,m)
+              def test_uncovered_required_class_rejected(self):
+                  c=json.loads((ROOT/"CUSTODY_CONTRACT.json").read_text()); c["required_classes"].append("visual_golden"); (ROOT/"CUSTODY_CONTRACT.json").write_text(json.dumps(c)); m=self.manifest(); self.assertRaisesRegex(validate.CustodyError,"uncovered classes",validate.validate,self.repo,m)
+              def test_effect_firewall(self):
+                  m=self.manifest(); self.assertEqual(m["public_effect"],"none"); self.assertEqual(m["constitutional_count_effect"],"none"); self.assertFalse(m["public_release_authorized"])
+          if __name__=="__main__": unittest.main()
+          ''',
+            ".github/workflows/manzanita-donor-custody-v2.yml": r'''
+          name: Manzanita donor custody v2
+
+          on:
+            push:
+              branches:
+                - agent/manzanita-donor-custody-v2-actual
+              paths:
+                - "programs/manzanita-99/custody-v2/**"
+                - ".github/workflows/manzanita-donor-custody-v2.yml"
+            pull_request:
+              paths:
+                - "programs/manzanita-99/custody-v2/**"
+                - ".github/workflows/manzanita-donor-custody-v2.yml"
+            workflow_dispatch: {}
+
+          permissions:
+            contents: read
+
+          jobs:
+            qualify:
+              name: Validate current donor custody without false closure
+              runs-on: ubuntu-24.04
+              timeout-minutes: 20
+              env:
+                REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+              steps:
+                - uses: actions/checkout@v4
+                  with:
+                    ref: ${{ github.event.pull_request.head.sha || github.sha }}
+                    fetch-depth: 0
+                - uses: actions/setup-python@v5
+                  with:
+                    python-version: "3.12"
+                - name: Prove exact head path scope and public-route immutability
+                  run: |
+                    test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+                    git fetch --no-tags origin main
+                    python - <<'PY'
+                    import subprocess
+                    changed=subprocess.run(["git","diff","--name-only","origin/main...HEAD"],check=True,capture_output=True,text=True).stdout.splitlines()
+                    invalid=[p for p in changed if p!=".github/workflows/manzanita-donor-custody-v2.yml" and not p.startswith("programs/manzanita-99/custody-v2/")]
+                    if invalid: raise SystemExit(f"out-of-scope custody paths: {invalid}")
+                    PY
+                    git diff --quiet origin/main...HEAD -- manzanita
+                - name: Compile and run adversarial custody tests
+                  env:
+                    PYTHONDONTWRITEBYTECODE: "1"
+                  run: |
+                    python -m py_compile \
+                      programs/manzanita-99/custody-v2/build_custody.py \
+                      programs/manzanita-99/custody-v2/validate_custody.py \
+                      programs/manzanita-99/custody-v2/audit_history.py \
+                      programs/manzanita-99/custody-v2/tests/test_custody_v2.py
+                    python -m unittest discover \
+                      -s programs/manzanita-99/custody-v2/tests \
+                      -p "test_*.py"
+                - name: Build and validate the real repository custody manifest
+                  run: |
+                    rm -rf programs/manzanita-99/custody-v2/out
+                    python programs/manzanita-99/custody-v2/build_custody.py \
+                      --repo-root . \
+                      --output programs/manzanita-99/custody-v2/out/CUSTODY_MANIFEST.json
+                    python programs/manzanita-99/custody-v2/validate_custody.py \
+                      --repo-root . \
+                      --manifest programs/manzanita-99/custody-v2/out/CUSTODY_MANIFEST.json
+                    if python programs/manzanita-99/custody-v2/validate_custody.py \
+                      --repo-root . \
+                      --manifest programs/manzanita-99/custody-v2/out/CUSTODY_MANIFEST.json \
+                      --require-complete
+                    then
+                      echo "Custody falsely closed" >&2
+                      exit 1
+                    fi
+                    python programs/manzanita-99/custody-v2/audit_history.py \
+                      --repo-root . \
+                      --output programs/manzanita-99/custody-v2/out/HISTORICAL_TREE_AUDIT.json
+                - name: Prove partial state and effect firewalls
+                  run: |
+                    python - <<'PY'
+                    import json
+                    from pathlib import Path
+                    m=json.loads(Path("programs/manzanita-99/custody-v2/out/CUSTODY_MANIFEST.json").read_text())
+                    assert m["custody_state"]=="PARTIAL_BY_CONTRACT"
+                    assert len(m["open_required_gaps"])==10
+                    assert m["public_effect"]=="none"
+                    assert m["constitutional_count_effect"]=="none"
+                    assert m["public_release_authorized"] is False
+                    assert all(r["canonical_task_count_effect"]=="none" for r in m["observed_execution"])
+                    PY
+                - name: Retain custody manifest history audit and source law
+                  uses: actions/upload-artifact@v4
+                  with:
+                    name: manzanita-donor-custody-v2-${{ env.REVIEW_HEAD_SHA }}
+                    path: |
+                      programs/manzanita-99/custody-v2/README.md
+                      programs/manzanita-99/custody-v2/CUSTODY_CONTRACT.json
+                      programs/manzanita-99/custody-v2/DONOR_REGISTER.json
+                      programs/manzanita-99/custody-v2/OBSERVED_EXECUTION_LEDGER.json
+                      programs/manzanita-99/custody-v2/PUBLIC_ROUTE_GUARD.json
+                      programs/manzanita-99/custody-v2/build_custody.py
+                      programs/manzanita-99/custody-v2/validate_custody.py
+                      programs/manzanita-99/custody-v2/audit_history.py
+                      programs/manzanita-99/custody-v2/tests
+                      programs/manzanita-99/custody-v2/out
+                    if-no-files-found: error
+                    retention-days: 90
+          '''
+          }
+
+          for path, content in files.items():
+              target = Path(path)
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_text(textwrap.dedent(content).lstrip(), encoding="utf-8")
+          PY
+
+      - name: Generate the exact historical public-route guard
+        run: |
+          python - <<'PY'
+          import hashlib, json, subprocess
+          from pathlib import Path
+
+          rows=[]
+          for relative in subprocess.run(
+              ["git","ls-files","manzanita"],
+              check=True,capture_output=True,text=True
+          ).stdout.splitlines():
+              path=Path(relative)
+              if not path.is_file() or "__pycache__" in path.parts or path.suffix==".pyc":
+                  continue
+              payload=path.read_bytes()
+              blob=subprocess.run(["git","hash-object",relative],check=True,capture_output=True,text=True).stdout.strip()
+              rows.append({"path":relative,"bytes":len(payload),"sha256":hashlib.sha256(payload).hexdigest(),"git_blob_sha1":blob})
+          value={
+              "schema":"axm-tools/manzanita-public-route-guard@2",
+              "release":"1.4.0-historical-rollback-donor",
+              "tree_sha":subprocess.run(["git","rev-parse","HEAD:manzanita"],check=True,capture_output=True,text=True).stdout.strip(),
+              "files":sorted(rows,key=lambda row:row["path"]),
+              "claim_boundary":"This guard proves repository byte identity for the historical public route. It is not observed endpoint-byte or successor-release proof."
+          }
+          Path("programs/manzanita-99/custody-v2/PUBLIC_ROUTE_GUARD.json").write_text(json.dumps(value,indent=2)+"\n")
+          PY
+
+      - name: Prove the materialized object before sealing
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile \
+            programs/manzanita-99/custody-v2/build_custody.py \
+            programs/manzanita-99/custody-v2/validate_custody.py \
+            programs/manzanita-99/custody-v2/audit_history.py \
+            programs/manzanita-99/custody-v2/tests/test_custody_v2.py
+          python -m unittest discover \
+            -s programs/manzanita-99/custody-v2/tests \
+            -p "test_*.py"
+          python programs/manzanita-99/custody-v2/build_custody.py \
+            --repo-root . \
+            --output programs/manzanita-99/custody-v2/out/CUSTODY_MANIFEST.json
+          python programs/manzanita-99/custody-v2/validate_custody.py \
+            --repo-root . \
+            --manifest programs/manzanita-99/custody-v2/out/CUSTODY_MANIFEST.json
+
+      - name: Seal permanent source and remove bootstrap outputs
+        run: |
+          rm -rf programs/manzanita-99/custody-v2/out
+          rm .github/workflows/manzanita-donor-custody-v2-actual-bootstrap.yml
+          git config user.name "manzanita-donor-custody-v2-bootstrap"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            .github/workflows/manzanita-donor-custody-v2-actual-bootstrap.yml \
+            .github/workflows/manzanita-donor-custody-v2.yml \
+            programs/manzanita-99/custody-v2
+          git commit -m "Manzanita: establish current donor custody v2"
+          git push origin HEAD:agent/manzanita-donor-custody-v2-actual
