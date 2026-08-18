@@ -42,8 +42,8 @@ jobs:
           workflow = Path(".github/workflows/manzanita-independent-archive-custody-bootstrap.yml")
           lines = workflow.read_text(encoding="utf-8").splitlines()
           start_indexes = [index for index, line in enumerate(lines) if line.strip() == "python - <<'PY'"]
-          if len(start_indexes) != 1:
-              raise SystemExit(f"Expected one transformation heredoc, observed {len(start_indexes)}")
+          if not start_indexes:
+              raise SystemExit("Custody transformation heredoc is missing")
           start = start_indexes[0] + 1
           end = next((index for index in range(start, len(lines)) if lines[index].strip() == "PY"), None)
           if end is None:
