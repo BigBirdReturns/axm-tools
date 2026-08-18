@@ -239,7 +239,7 @@
         "qualified_head": "ed387ac8d27576484c71a13a7d0c8c8194f9b2ed",
         "merged_at": "2026-08-17T23:18:15Z"
       },
-      "claim_boundary": "Portable internal generated candidate and local rollback proof; release HOLD. The repo retains its source and qualification law, while exact generated archive custody remains separately bounded by the open archive and standalone-export gaps."
+      "claim_boundary": "Portable internal generated candidate and local rollback proof; release HOLD. Exact independent archive custody is admitted by M99-CUSTODY-INDEPENDENT-ARCHIVE-001. Public endpoint, deployed rollback, standalone-export, and external-campaign standing remain separately held."
     },
     {
       "id": "pr-111-external_campaign_runner",
@@ -254,6 +254,22 @@
         "merged_at": "2026-08-18T05:12:36Z"
       },
       "claim_boundary": "Evidence runner only; no external campaign performed."
+    },
+    {
+      "id": "p10-independent-archive-001",
+      "class": "independent_archive",
+      "custody_state": "archived_external",
+      "archive_scope_ids": [],
+      "anchors": {
+        "receipt": "programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json",
+        "release_head": "ed387ac8d27576484c71a13a7d0c8c8194f9b2ed",
+        "candidate_bytes": 696968,
+        "candidate_sha256": "73a222505b40ffd74c3c2464a0a313b0fc5c4ff7df9f9b6e996cba8be036e90b",
+        "evidence_bytes": 10247061,
+        "evidence_sha256": "d57f3878f9958b446d2ac55dfdd395ae3881cf9be44fffbfddffd7932cd47454",
+        "cold_recovery_manifest_sha256": "35a2b2ffc8be0d51191b40bd45cdd04cbf117cb2176829db91fe5f4402742a74"
+      },
+      "claim_boundary": "Independent private archive and clean byte-readback/cold-recovery custody only. Public endpoint, deployed rollback, external-campaign, release, score, and canonical task-count authority remain held."
     }
   ],
   "gaps": [
@@ -269,11 +285,18 @@
     {
       "id": "M99-CUSTODY-GAP-002",
       "class": "independent_archive",
-      "state": "open",
+      "state": "closed",
       "required_for_close": true,
       "target": "Retain the exact P10 portable candidate and complete P7-P10 evidence package in an independently controlled durable archive and prove byte readback and cold recovery.",
       "admission": "The public receipt names provider-neutral identifiers, exact byte counts, SHA-256 values, archive permissions, readback, and a clean successor verification.",
-      "failure_mode": "Actions retention, account loss, or an unverified copy defeats succession."
+      "failure_mode": "Actions retention, account loss, or an unverified copy defeats succession.",
+      "closed_at": "2026-08-18T13:51:29Z",
+      "closure_evidence": [
+        "programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json",
+        "sha256:73a222505b40ffd74c3c2464a0a313b0fc5c4ff7df9f9b6e996cba8be036e90b",
+        "sha256:d57f3878f9958b446d2ac55dfdd395ae3881cf9be44fffbfddffd7932cd47454",
+        "verifier:35a2b2ffc8be0d51191b40bd45cdd04cbf117cb2176829db91fe5f4402742a74"
+      ]
     },
     {
       "id": "M99-CUSTODY-GAP-003",
