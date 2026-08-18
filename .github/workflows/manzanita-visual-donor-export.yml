@@ -5,6 +5,10 @@ on:
     branches: [agent/manzanita-public-convergence-v1-6]
     paths:
       - ".github/workflows/manzanita-visual-donor-export.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/manzanita-visual-donor-export.yml"
   workflow_dispatch: {}
 
 permissions:
