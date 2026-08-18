@@ -93,17 +93,39 @@ NEW_DONOR_BLOCK = '''    household_source = donor.get("household") or next(iter(
     property_source = donor.get("property") or list(donor.values())[1]
     street_source = donor.get("street")
     region_source = donor.get("region")
+
+    household_view = fit(household_source)
     property_view = ImageEnhance.Contrast(
         fit(property_source).filter(ImageFilter.UnsharpMask(radius=3, percent=400, threshold=1))
     ).enhance(1.25)
+    street_view = fit(street_source) if street_source is not None else street_crop(property_source)
+    region_view = fit(region_source) if region_source is not None else region_composite(household_source, property_source)
+
+    # Stewardship is a continuity object, so show the four retained or derived
+    # place views together instead of floating two photographs on a dark field.
+    # Thin gutters and numbered sequence marks keep it legible as a contact
+    # sheet without pretending the four views are one observed photograph.
+    stewardship_view = Image.new("RGB", CANVAS, "#11120f")
+    stewardship_view.paste(fit(household_view, (790, 490)), (0, 0))
+    stewardship_view.paste(fit(property_view, (790, 490)), (810, 0))
+    stewardship_view.paste(fit(street_view, (790, 490)), (0, 510))
+    stewardship_view.paste(fit(region_view, (790, 490)), (810, 510))
+    stewardship_draw = ImageDraw.Draw(stewardship_view, "RGBA")
+    stewardship_draw.line((800, 0, 800, 1000), fill=(244, 239, 227, 220), width=10)
+    stewardship_draw.line((0, 500, 1600, 500), fill=(244, 239, 227, 220), width=10)
+    stewardship_draw.rectangle((20, 20, 1580, 980), outline=(255, 90, 43, 230), width=6)
+    for label, (x, y) in zip(("01", "02", "03", "04"), ((40, 40), (850, 40), (40, 550), (850, 550))):
+        stewardship_draw.rectangle((x, y, x + 78, y + 48), fill=(17, 18, 15, 220), outline=(244, 239, 227, 210), width=2)
+        stewardship_draw.text((x + 20, y + 14), label, fill=(255, 90, 43, 255))
+
     rendered = {
         "plant": entropy_crop(household_source, 0.48),
-        "household": fit(household_source),
+        "household": household_view,
         "property": property_view,
-        "street": fit(street_source) if street_source is not None else street_crop(property_source),
+        "street": street_view,
         "neighborhood": neighborhood_composite(household_source, property_source),
-        "region": fit(region_source) if region_source is not None else region_composite(household_source, property_source),
-        "stewardship": stewardship_composite(household_source, property_source),
+        "region": region_view,
+        "stewardship": stewardship_view,
     }
     classification = {
         "plant": "derived photographic detail",
@@ -112,7 +134,7 @@ NEW_DONOR_BLOCK = '''    household_source = donor.get("household") or next(iter(
         "street": "retained generated street reference view" if street_source is not None else "derived photographic street-edge crop",
         "neighborhood": "derived multi-place analytical composite",
         "region": "retained generated regional reference view" if region_source is not None else "derived modeled regional context",
-        "stewardship": "derived continuity contact sheet",
+        "stewardship": "derived four-view continuity contact sheet",
     }
 '''
 
@@ -127,4 +149,4 @@ text = text.replace(OLD_IMPORT, NEW_IMPORT, 1)
 text = text.replace(OLD_REGION, NEW_REGION, 1)
 text = text.replace(OLD_DONOR_BLOCK, NEW_DONOR_BLOCK, 1)
 TARGET.write_text(text, encoding="utf-8")
-print("Four-donor photographic aperture repair: APPLIED")
+print("Four-donor photographic aperture and stewardship repair: APPLIED")
