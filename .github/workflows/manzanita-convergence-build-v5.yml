@@ -45,6 +45,7 @@ jobs:
           python programs/manzanita-public-convergence/acceptance_repair.py
           python programs/manzanita-public-convergence/strict_selector_repair.py
           python programs/manzanita-public-convergence/registration_repair.py
+          python .github/patches/manzanita-print-repair.py
           python programs/manzanita-public-convergence/release_transition.py prepare
           python programs/manzanita-public-convergence/workflow_integration.py
       - name: Qualify source, photographic substance, registration, behavior, and rendered composition
@@ -86,6 +87,7 @@ jobs:
           rm -f .github/workflows/manzanita-p10-recovery.yml
           rm -f .github/workflows/manzanita-live-browser-probe.yml
           rm -f .github/patches/manzanita-region-repair.py
+          rm -f .github/patches/manzanita-print-repair.py
           rm -rf manzanita-convergence-preview manzanita-convergence-p10
       - name: Rebuild donor custody against the final source set
         run: |
