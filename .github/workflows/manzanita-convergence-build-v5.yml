@@ -1,6 +1,6 @@
 name: Manzanita rendered-gated photographic convergence
 
-# Exact convergence execution requested after the live v1.4.1 regression was observed.
+# Exact four-donor convergence execution after the v1.4.1 live regression was observed.
 on:
   push:
     branches: [agent/manzanita-public-convergence-v1-6]
