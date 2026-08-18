@@ -1,0 +1,929 @@
+name: Operate Manzanita canonical backlog forensic recovery
+
+on:
+  push:
+    branches:
+      - ops/manzanita-backlog-recovery-controller
+    paths:
+      - ".github/workflows/manzanita-backlog-recovery-controller.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+  checks: read
+
+concurrency:
+  group: manzanita-backlog-recovery-controller
+  cancel-in-progress: false
+
+jobs:
+  operate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      TARGET_BRANCH: agent/manzanita-canonical-backlog-recovery-026
+      TARGET_WORKFLOW: manzanita-canonical-backlog-recovery.yml
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ops/manzanita-backlog-recovery-controller
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Wait for current custody and history-census admission
+        run: |
+          for attempt in $(seq 1 240)
+          do
+            git fetch origin main
+            if git cat-file -e origin/main:programs/manzanita-99/custody-v2/CUSTODY_CONTRACT.json 2>/dev/null \
+              && git cat-file -e origin/main:programs/manzanita-99/custody-v2/history/build_history_census.py 2>/dev/null
+            then
+              git checkout -B "$TARGET_BRANCH" origin/main
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Custody and history census did not enter main" >&2
+          exit 1
+
+      - name: Materialize exact forensic recovery source
+        run: |
+          mkdir -p programs/manzanita-99/custody-v2/backlog-recovery/tests
+          cat > programs/manzanita-99/custody-v2/backlog-recovery/README.md <<'EOF'
+          # Manzanita canonical backlog forensic recovery
+
+          This object searches Git history, current compressed fragments, and retained GitHub Actions artifacts for the exact machine-readable 497-row Manzanita program register. It preserves partial bytes and exact source components but refuses to synthesize missing canonical rows.
+
+          An exact recovery requires a JSON object with a `tasks` array of 497 unique task records and the remembered priority distribution of 318 P0, 168 P1, and 11 P2. A matching count without complete row objects is not recovery. A recovered candidate remains evidence pending separate source-custody and release-authority admission; the tool itself cannot mutate the canonical register or remembered task counts.
+
+          The result is either `EXACT_REGISTER_RECOVERED` or `PARTIAL_EVIDENCE_ONLY`. Both states retain source identities, hashes, decode attempts, recoverable complete rows, artifact metadata, and the unresolved boundary. `M99-CUSTODY-GAP-010` is advanced but not closed until the exact candidate is independently verified and admitted.
+          EOF
+
+          cat > programs/manzanita-99/custody-v2/backlog-recovery/recover_backlog.py <<'PY'
+          #!/usr/bin/env python3
+          from __future__ import annotations
+
+          import argparse
+          import base64
+          import bz2
+          import gzip
+          import hashlib
+          import io
+          import json
+          import os
+          import re
+          import subprocess
+          import tempfile
+          import urllib.request
+          import zipfile
+          from collections import Counter
+          from pathlib import Path, PurePosixPath
+          from typing import Any, Iterable
+
+          SCHEMA = "axm-tools/manzanita-canonical-backlog-recovery@1"
+          EXPECTED_COUNT = 497
+          EXPECTED_PRIORITIES = {"P0": 318, "P1": 168, "P2": 11}
+          CANDIDATE_NAMES = (
+              "MASTER_BACKLOG.json",
+              "MASTER_BACKLOG.json.gz.b64",
+              "MASTER_BACKLOG.json.bz2.b64",
+              "Manzanita_99_Complete_Remaining_Work",
+          )
+
+
+          class RecoveryError(ValueError):
+              pass
+
+
+          def require(condition: bool, message: str) -> None:
+              if not condition:
+                  raise RecoveryError(message)
+
+
+          def canonical_bytes(value: Any) -> bytes:
+              return json.dumps(
+                  value,
+                  sort_keys=True,
+                  separators=(",", ":"),
+                  ensure_ascii=False,
+              ).encode("utf-8")
+
+
+          def sha256_bytes(payload: bytes) -> str:
+              return hashlib.sha256(payload).hexdigest()
+
+
+          def run(repo: Path, *args: str) -> str:
+              result = subprocess.run(
+                  ["git", "-C", str(repo), *args],
+                  check=False,
+                  capture_output=True,
+                  text=True,
+                  errors="replace",
+              )
+              return result.stdout if result.returncode == 0 else ""
+
+
+          def safe_member(name: str) -> str:
+              path = PurePosixPath(name)
+              require(
+                  bool(name)
+                  and not path.is_absolute()
+                  and ".." not in path.parts,
+                  f"Unsafe archive member: {name}",
+              )
+              return path.as_posix()
+
+
+          def validate_exact_candidate(value: Any) -> dict[str, Any] | None:
+              if not isinstance(value, dict):
+                  return None
+              tasks = value.get("tasks")
+              if not isinstance(tasks, list) or len(tasks) != EXPECTED_COUNT:
+                  return None
+              if not all(isinstance(row, dict) for row in tasks):
+                  return None
+              ids = [row.get("id") for row in tasks]
+              if not all(isinstance(task_id, str) and task_id for task_id in ids):
+                  return None
+              if len(ids) != len(set(ids)):
+                  return None
+              priorities = Counter(str(row.get("priority")) for row in tasks)
+              if dict(priorities) != EXPECTED_PRIORITIES:
+                  return None
+              payload = json.dumps(value, indent=2, ensure_ascii=False).encode("utf-8") + b"\n"
+              return {
+                  "task_count": len(tasks),
+                  "priority_counts": dict(priorities),
+                  "first_task_id": ids[0],
+                  "last_task_id": ids[-1],
+                  "payload": payload,
+                  "payload_sha256": sha256_bytes(payload),
+              }
+
+
+          def decode_variants(name: str, payload: bytes) -> Iterable[tuple[str, bytes]]:
+              yield "raw", payload
+              lower = name.lower()
+              if lower.endswith(".b64") or b"H4sI" in payload[:16] or b"Qlpo" in payload[:16]:
+                  try:
+                      clean = b"".join(payload.split())
+                      decoded = base64.b64decode(
+                          clean + b"=" * ((-len(clean)) % 4),
+                          validate=True,
+                      )
+                      yield "base64", decoded
+                      payload = decoded
+                      lower = lower[:-4] if lower.endswith(".b64") else lower
+                  except Exception:
+                      return
+              if lower.endswith(".gz") or payload.startswith(b"\x1f\x8b"):
+                  try:
+                      yield "gzip", gzip.decompress(payload)
+                  except Exception:
+                      pass
+              if lower.endswith(".bz2") or payload.startswith(b"BZh"):
+                  try:
+                      yield "bz2", bz2.decompress(payload)
+                  except Exception:
+                      try:
+                          decompressor = bz2.BZ2Decompressor()
+                          recovered = decompressor.decompress(payload)
+                          if recovered:
+                              yield "bz2_partial", recovered
+                      except Exception:
+                          pass
+
+
+          def json_candidates(name: str, payload: bytes) -> Iterable[tuple[str, dict[str, Any]]]:
+              seen: set[str] = set()
+              queue = list(decode_variants(name, payload))
+              for label, decoded in queue:
+                  digest = sha256_bytes(decoded)
+                  if digest in seen:
+                      continue
+                  seen.add(digest)
+                  try:
+                      value = json.loads(decoded)
+                  except Exception:
+                      continue
+                  if isinstance(value, dict):
+                      yield label, value
+
+
+          def recover_complete_task_objects(text: str) -> list[dict[str, Any]]:
+              match = re.search(r'"tasks"\s*:\s*\[', text)
+              if not match:
+                  return []
+              index = match.end()
+              rows: list[dict[str, Any]] = []
+              while index < len(text):
+                  while index < len(text) and text[index] in " \r\n\t,":
+                      index += 1
+                  if index >= len(text) or text[index] == "]":
+                      break
+                  if text[index] != "{":
+                      index += 1
+                      continue
+                  start = index
+                  depth = 0
+                  in_string = False
+                  escape = False
+                  while index < len(text):
+                      char = text[index]
+                      if in_string:
+                          if escape:
+                              escape = False
+                          elif char == "\\":
+                              escape = True
+                          elif char == '"':
+                              in_string = False
+                      else:
+                          if char == '"':
+                              in_string = True
+                          elif char == "{":
+                              depth += 1
+                          elif char == "}":
+                              depth -= 1
+                              if depth == 0:
+                                  try:
+                                      value = json.loads(text[start:index + 1])
+                                  except json.JSONDecodeError:
+                                      return rows
+                                  if isinstance(value, dict):
+                                      rows.append(value)
+                                  index += 1
+                                  break
+                      index += 1
+                  else:
+                      break
+              return rows
+
+
+          def inspect_payload(
+              source: str,
+              name: str,
+              payload: bytes,
+              exact_candidates: list[dict[str, Any]],
+              partial_rows: dict[str, dict[str, Any]],
+              attempts: list[dict[str, Any]],
+          ) -> None:
+              attempts.append(
+                  {
+                      "source": source,
+                      "name": name,
+                      "bytes": len(payload),
+                      "sha256": sha256_bytes(payload),
+                  }
+              )
+              for label, value in json_candidates(name, payload):
+                  exact = validate_exact_candidate(value)
+                  if exact:
+                      exact_candidates.append(
+                          {
+                              "source": source,
+                              "name": name,
+                              "decode": label,
+                              **exact,
+                          }
+                      )
+              for label, decoded in decode_variants(name, payload):
+                  try:
+                      text = decoded.decode("utf-8")
+                  except UnicodeDecodeError:
+                      continue
+                  for row in recover_complete_task_objects(text):
+                      task_id = row.get("id")
+                      if isinstance(task_id, str) and task_id:
+                          partial_rows.setdefault(task_id, row)
+
+
+          def scan_zip(
+              source: str,
+              payload: bytes,
+              exact_candidates: list[dict[str, Any]],
+              partial_rows: dict[str, dict[str, Any]],
+              attempts: list[dict[str, Any]],
+          ) -> None:
+              try:
+                  archive = zipfile.ZipFile(io.BytesIO(payload))
+              except zipfile.BadZipFile:
+                  return
+              names = archive.namelist()
+              require(len(names) == len(set(names)), f"Duplicate names in {source}")
+              for member in names:
+                  safe_member(member)
+                  lower = member.lower()
+                  if not any(token.lower() in lower for token in CANDIDATE_NAMES):
+                      continue
+                  data = archive.read(member)
+                  inspect_payload(
+                      source,
+                      member,
+                      data,
+                      exact_candidates,
+                      partial_rows,
+                      attempts,
+                  )
+                  if zipfile.is_zipfile(io.BytesIO(data)):
+                      scan_zip(
+                          f"{source}!{member}",
+                          data,
+                          exact_candidates,
+                          partial_rows,
+                          attempts,
+                      )
+
+
+          def git_sources(repo: Path) -> list[tuple[str, str, bytes]]:
+              paths = [
+                  "programs/manzanita-99/MASTER_BACKLOG.json",
+                  "programs/manzanita-99/MASTER_BACKLOG.csv",
+                  "programs/manzanita-99/MASTER_BACKLOG.json.gz.b64",
+                  "programs/manzanita-99/MASTER_BACKLOG.json.bz2.b64.part01",
+                  "programs/manzanita-99/MASTER_BACKLOG.json.bz2.b64.part02",
+                  "programs/manzanita-99/MASTER_BACKLOG.json.bz2.b64.part03",
+                  "programs/manzanita-99/MASTER_BACKLOG.json.bz2.b64.part04",
+                  "programs/manzanita-99/MASTER_BACKLOG.json.bz2.b64.part05",
+              ]
+              rows = []
+              seen: set[str] = set()
+              for path in paths:
+                  commits = run(repo, "log", "--all", "--format=%H", "--", path).splitlines()
+                  for commit in commits:
+                      blob = run(repo, "rev-parse", f"{commit}:{path}").strip()
+                      if len(blob) != 40 or blob in seen:
+                          continue
+                      seen.add(blob)
+                      result = subprocess.run(
+                          ["git", "-C", str(repo), "cat-file", "blob", blob],
+                          check=False,
+                          capture_output=True,
+                      )
+                      if result.returncode == 0:
+                          rows.append((f"git:{commit}:{path}", path, result.stdout))
+              # Combine all present BZ2 Base64 repair chunks in every reachable checkout state.
+              present_parts = []
+              for part in range(1, 6):
+                  path = repo / f"programs/manzanita-99/MASTER_BACKLOG.json.bz2.b64.part{part:02d}"
+                  if path.is_file():
+                      present_parts.append(path.read_bytes())
+              if present_parts:
+                  rows.append(
+                      (
+                          "worktree:combined-bz2-parts",
+                          "MASTER_BACKLOG.json.bz2.b64",
+                          b"".join(b"".join(payload.split()) for payload in present_parts),
+                      )
+                  )
+              return rows
+
+
+          def artifact_metadata(repository: str | None, token: str | None) -> list[dict[str, Any]]:
+              if not repository:
+                  return []
+              headers = {
+                  "Accept": "application/vnd.github+json",
+                  "User-Agent": "Manzanita-Backlog-Recovery",
+                  "X-GitHub-Api-Version": "2022-11-28",
+              }
+              if token:
+                  headers["Authorization"] = f"Bearer {token}"
+              rows = []
+              for page in range(1, 6):
+                  url = (
+                      f"https://api.github.com/repos/{repository}/actions/artifacts"
+                      f"?per_page=100&page={page}"
+                  )
+                  try:
+                      request = urllib.request.Request(url, headers=headers)
+                      with urllib.request.urlopen(request, timeout=30) as response:
+                          value = json.loads(response.read())
+                  except Exception:
+                      break
+                  page_rows = value.get("artifacts", [])
+                  if not page_rows:
+                      break
+                  for item in page_rows:
+                      name = str(item.get("name") or "")
+                      if any(token_name in name.lower() for token_name in (
+                          "backlog",
+                          "manzanita-99",
+                          "program",
+                          "custody",
+                          "recovery",
+                      )):
+                          rows.append(
+                              {
+                                  "id": item["id"],
+                                  "name": name,
+                                  "size_in_bytes": item.get("size_in_bytes"),
+                                  "expired": item.get("expired"),
+                                  "created_at": item.get("created_at"),
+                                  "expires_at": item.get("expires_at"),
+                                  "archive_download_url": item.get("archive_download_url"),
+                              }
+                          )
+              return rows
+
+
+          def download_artifact(item: dict[str, Any], token: str | None) -> bytes | None:
+              if item.get("expired") or not item.get("archive_download_url"):
+                  return None
+              if (item.get("size_in_bytes") or 0) > 100_000_000:
+                  return None
+              headers = {
+                  "Accept": "application/vnd.github+json",
+                  "User-Agent": "Manzanita-Backlog-Recovery",
+                  "X-GitHub-Api-Version": "2022-11-28",
+              }
+              if token:
+                  headers["Authorization"] = f"Bearer {token}"
+              try:
+                  request = urllib.request.Request(
+                      item["archive_download_url"],
+                      headers=headers,
+                  )
+                  with urllib.request.urlopen(request, timeout=120) as response:
+                      return response.read()
+              except Exception:
+                  return None
+
+
+          def build(
+              repo: Path,
+              output_root: Path,
+              repository: str | None = None,
+              token: str | None = None,
+          ) -> dict[str, Any]:
+              repo = repo.resolve()
+              output_root = output_root.resolve()
+              output_root.mkdir(parents=True, exist_ok=True)
+              exact_candidates: list[dict[str, Any]] = []
+              partial_rows: dict[str, dict[str, Any]] = {}
+              attempts: list[dict[str, Any]] = []
+
+              for source, name, payload in git_sources(repo):
+                  inspect_payload(
+                      source,
+                      name,
+                      payload,
+                      exact_candidates,
+                      partial_rows,
+                      attempts,
+                  )
+
+              artifacts = artifact_metadata(repository, token)
+              artifact_receipts = []
+              for item in artifacts:
+                  payload = download_artifact(item, token)
+                  receipt = {**item, "downloaded": payload is not None}
+                  if payload is not None:
+                      receipt["downloaded_bytes"] = len(payload)
+                      receipt["downloaded_sha256"] = sha256_bytes(payload)
+                      scan_zip(
+                          f"artifact:{item['id']}:{item['name']}",
+                          payload,
+                          exact_candidates,
+                          partial_rows,
+                          attempts,
+                      )
+                  artifact_receipts.append(receipt)
+
+              # Deduplicate exact candidates by canonical payload hash.
+              unique_exact: dict[str, dict[str, Any]] = {}
+              for candidate in exact_candidates:
+                  unique_exact.setdefault(candidate["payload_sha256"], candidate)
+              exact_rows = list(unique_exact.values())
+              exact_rows.sort(key=lambda row: (row["payload_sha256"], row["source"]))
+
+              recovered_path = None
+              if exact_rows:
+                  chosen = exact_rows[0]
+                  recovered_path = output_root / "RECOVERED_MASTER_BACKLOG.json"
+                  recovered_path.write_bytes(chosen.pop("payload"))
+                  for candidate in exact_rows[1:]:
+                      candidate.pop("payload", None)
+
+              partial_values = [partial_rows[task_id] for task_id in sorted(partial_rows)]
+              (output_root / "RECOVERED_COMPLETE_TASK_ROWS.json").write_text(
+                  json.dumps(
+                      {
+                          "schema": "axm-tools/manzanita-recovered-complete-task-rows@1",
+                          "task_count": len(partial_values),
+                          "tasks": partial_values,
+                          "qualification_boundary": (
+                              "These are complete JSON row objects recovered from partial "
+                              "streams. Their presence does not reconstruct missing rows or "
+                              "authorize canonical task-count mutation."
+                          ),
+                      },
+                      indent=2,
+                      ensure_ascii=False,
+                  )
+                  + "\n",
+                  encoding="utf-8",
+              )
+
+              state = (
+                  "EXACT_REGISTER_RECOVERED"
+                  if recovered_path is not None
+                  else "PARTIAL_EVIDENCE_ONLY"
+              )
+              report: dict[str, Any] = {
+                  "schema": SCHEMA,
+                  "result": "PASS",
+                  "recovery_state": state,
+                  "exact_candidate_count": len(exact_rows),
+                  "exact_candidates": exact_rows,
+                  "recovered_complete_task_row_count": len(partial_values),
+                  "recovered_complete_task_ids": [
+                      row.get("id") for row in partial_values
+                  ],
+                  "attempt_count": len(attempts),
+                  "attempts": attempts,
+                  "artifact_count": len(artifact_receipts),
+                  "artifacts": artifact_receipts,
+                  "gap_effect": {
+                      "M99-CUSTODY-GAP-010": "advanced_not_closed",
+                  },
+                  "canonical_task_count_effect": "none",
+                  "public_effect": "none",
+                  "public_release_authorized": False,
+                  "qualification_boundary": (
+                      "A recovered 497-row candidate remains evidence pending independent "
+                      "verification and source-authority admission. Partial rows and counts "
+                      "may never be used to synthesize missing canonical records."
+                  ),
+              }
+              report["payload_sha256"] = sha256_bytes(canonical_bytes(report))
+              (output_root / "RECOVERY_REPORT.json").write_text(
+                  json.dumps(report, indent=2, ensure_ascii=False) + "\n",
+                  encoding="utf-8",
+              )
+              return report
+
+
+          def main() -> None:
+              parser = argparse.ArgumentParser()
+              parser.add_argument("--repo-root", type=Path, default=Path.cwd())
+              parser.add_argument("--repository")
+              parser.add_argument("--output", type=Path, required=True)
+              args = parser.parse_args()
+              report = build(
+                  args.repo_root,
+                  args.output,
+                  args.repository,
+                  os.environ.get("GITHUB_TOKEN"),
+              )
+              print(
+                  json.dumps(
+                      {
+                          "result": report["result"],
+                          "recovery_state": report["recovery_state"],
+                          "exact_candidate_count": report["exact_candidate_count"],
+                          "recovered_complete_task_row_count": report[
+                              "recovered_complete_task_row_count"
+                          ],
+                          "artifact_count": report["artifact_count"],
+                          "receipt_sha256": report["payload_sha256"],
+                      },
+                      indent=2,
+                  )
+              )
+
+
+          if __name__ == "__main__":
+              try:
+                  main()
+              except RecoveryError as exc:
+                  raise SystemExit(str(exc)) from exc
+          PY
+
+          cat > programs/manzanita-99/custody-v2/backlog-recovery/tests/test_recover_backlog.py <<'PY'
+          from __future__ import annotations
+
+          import base64
+          import bz2
+          import importlib.util
+          import json
+          import tempfile
+          import unittest
+          from pathlib import Path
+
+          ROOT = Path(__file__).resolve().parents[1]
+          SPEC = importlib.util.spec_from_file_location(
+              "recover_backlog",
+              ROOT / "recover_backlog.py",
+          )
+          recovery = importlib.util.module_from_spec(SPEC)
+          assert SPEC.loader is not None
+          SPEC.loader.exec_module(recovery)
+
+
+          def exact_candidate() -> dict:
+              tasks = []
+              for index in range(497):
+                  priority = "P0" if index < 318 else "P1" if index < 486 else "P2"
+                  tasks.append(
+                      {
+                          "id": f"TEST-{index:03d}",
+                          "title": f"Task {index}",
+                          "priority": priority,
+                      }
+                  )
+              return {"schema": "fixture", "tasks": tasks}
+
+
+          class RecoveryTests(unittest.TestCase):
+              def test_exact_candidate_requires_497_unique_rows_and_priority_law(self) -> None:
+                  value = exact_candidate()
+                  result = recovery.validate_exact_candidate(value)
+                  self.assertIsNotNone(result)
+                  self.assertEqual(result["task_count"], 497)
+                  self.assertEqual(result["priority_counts"], {"P0": 318, "P1": 168, "P2": 11})
+
+              def test_duplicate_id_is_rejected(self) -> None:
+                  value = exact_candidate()
+                  value["tasks"][-1]["id"] = value["tasks"][0]["id"]
+                  self.assertIsNone(recovery.validate_exact_candidate(value))
+
+              def test_priority_drift_is_rejected(self) -> None:
+                  value = exact_candidate()
+                  value["tasks"][0]["priority"] = "P2"
+                  self.assertIsNone(recovery.validate_exact_candidate(value))
+
+              def test_partial_stream_recovers_only_complete_rows(self) -> None:
+                  text = '{"tasks":[' + json.dumps({"id": "A", "priority": "P0"}) + ',' + '{"id":"B"'
+                  rows = recovery.recover_complete_task_objects(text)
+                  self.assertEqual(rows, [{"id": "A", "priority": "P0"}])
+
+              def test_base64_bz2_variant_decodes(self) -> None:
+                  raw = json.dumps(exact_candidate()).encode("utf-8")
+                  payload = base64.b64encode(bz2.compress(raw))
+                  values = list(recovery.json_candidates("MASTER_BACKLOG.json.bz2.b64", payload))
+                  self.assertTrue(values)
+                  self.assertIsNotNone(recovery.validate_exact_candidate(values[-1][1]))
+
+              def test_safe_member_rejects_traversal(self) -> None:
+                  with self.assertRaisesRegex(recovery.RecoveryError, "Unsafe"):
+                      recovery.safe_member("../escape.json")
+
+
+          if __name__ == "__main__":
+              unittest.main()
+          PY
+
+          cat > ".github/workflows/$TARGET_WORKFLOW" <<'YAML'
+          name: Manzanita canonical backlog forensic recovery
+
+          on:
+            push:
+              branches:
+                - agent/manzanita-canonical-backlog-recovery-026
+              paths:
+                - "programs/manzanita-99/custody-v2/backlog-recovery/**"
+                - ".github/workflows/manzanita-canonical-backlog-recovery.yml"
+            pull_request:
+              paths:
+                - "programs/manzanita-99/custody-v2/backlog-recovery/**"
+                - ".github/workflows/manzanita-canonical-backlog-recovery.yml"
+            workflow_dispatch: {}
+
+          permissions:
+            contents: read
+            actions: read
+
+          jobs:
+            qualify:
+              name: Recover exact canonical rows without synthesis
+              runs-on: ubuntu-24.04
+              timeout-minutes: 45
+              env:
+                REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+              steps:
+                - uses: actions/checkout@v4
+                  with:
+                    ref: ${{ github.event.pull_request.head.sha || github.sha }}
+                    fetch-depth: 0
+
+                - uses: actions/setup-python@v5
+                  with:
+                    python-version: "3.12"
+
+                - name: Prove exact path scope and unchanged public route
+                  run: |
+                    test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+                    git fetch --no-tags origin main
+                    python - <<'PY'
+                    import subprocess
+                    changed=subprocess.run(
+                      ["git","diff","--name-only","origin/main...HEAD"],
+                      check=True,capture_output=True,text=True
+                    ).stdout.splitlines()
+                    allowed={".github/workflows/manzanita-canonical-backlog-recovery.yml"}
+                    invalid=[
+                      path for path in changed
+                      if path not in allowed
+                      and not path.startswith("programs/manzanita-99/custody-v2/backlog-recovery/")
+                    ]
+                    if invalid:
+                      raise SystemExit(f"out-of-scope recovery paths: {invalid}")
+                    if any(path=="manzanita" or path.startswith("manzanita/") for path in changed):
+                      raise SystemExit("historical public route changed")
+                    PY
+                    git diff --quiet origin/main...HEAD -- manzanita
+
+                - name: Compile and run forensic recovery tests
+                  env:
+                    PYTHONDONTWRITEBYTECODE: "1"
+                  run: |
+                    python -m py_compile \
+                      programs/manzanita-99/custody-v2/backlog-recovery/recover_backlog.py \
+                      programs/manzanita-99/custody-v2/backlog-recovery/tests/test_recover_backlog.py
+                    python -m unittest discover \
+                      -s programs/manzanita-99/custody-v2/backlog-recovery/tests \
+                      -p "test_*.py"
+
+                - name: Search Git history and retained Actions artifacts
+                  env:
+                    GITHUB_TOKEN: ${{ github.token }}
+                  run: |
+                    rm -rf programs/manzanita-99/custody-v2/backlog-recovery/out
+                    python programs/manzanita-99/custody-v2/backlog-recovery/recover_backlog.py \
+                      --repo-root . \
+                      --repository "${{ github.repository }}" \
+                      --output programs/manzanita-99/custody-v2/backlog-recovery/out
+                    python - <<'PY'
+                    import json
+                    from pathlib import Path
+                    report=json.loads(Path(
+                      "programs/manzanita-99/custody-v2/backlog-recovery/out/RECOVERY_REPORT.json"
+                    ).read_text())
+                    assert report["result"]=="PASS"
+                    assert report["recovery_state"] in {
+                      "EXACT_REGISTER_RECOVERED",
+                      "PARTIAL_EVIDENCE_ONLY",
+                    }
+                    assert report["gap_effect"]["M99-CUSTODY-GAP-010"]=="advanced_not_closed"
+                    assert report["canonical_task_count_effect"]=="none"
+                    assert report["public_effect"]=="none"
+                    assert report["public_release_authorized"] is False
+                    if report["recovery_state"]=="EXACT_REGISTER_RECOVERED":
+                      candidate=json.loads(Path(
+                        "programs/manzanita-99/custody-v2/backlog-recovery/out/RECOVERED_MASTER_BACKLOG.json"
+                      ).read_text())
+                      assert len(candidate["tasks"])==497
+                      assert len({row["id"] for row in candidate["tasks"]})==497
+                    PY
+
+                - name: Retain every forensic attempt and recovered byte
+                  uses: actions/upload-artifact@v4
+                  with:
+                    name: manzanita-canonical-backlog-recovery-${{ env.REVIEW_HEAD_SHA }}
+                    path: |
+                      programs/manzanita-99/custody-v2/backlog-recovery/README.md
+                      programs/manzanita-99/custody-v2/backlog-recovery/recover_backlog.py
+                      programs/manzanita-99/custody-v2/backlog-recovery/tests
+                      programs/manzanita-99/custody-v2/backlog-recovery/out
+                    if-no-files-found: error
+                    retention-days: 90
+          YAML
+
+      - name: Prove source locally and seal one exact branch head
+        id: seal
+        run: |
+          python -m py_compile \
+            programs/manzanita-99/custody-v2/backlog-recovery/recover_backlog.py \
+            programs/manzanita-99/custody-v2/backlog-recovery/tests/test_recover_backlog.py
+          python -m unittest discover \
+            -s programs/manzanita-99/custody-v2/backlog-recovery/tests \
+            -p "test_*.py"
+          git config user.name "manzanita-backlog-recovery-controller"
+          git config user.email "actions@users.noreply.github.com"
+          git add ".github/workflows/$TARGET_WORKFLOW" programs/manzanita-99/custody-v2/backlog-recovery
+          git diff --cached --check
+          git commit -m "Manzanita: recover canonical backlog evidence without synthesis"
+          head="$(git rev-parse HEAD)"
+          echo "head=$head" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" >/dev/null 2>&1
+          then
+            old="$(git ls-remote --heads origin "$TARGET_BRANCH" | awk '{print $1}')"
+            git push --force-with-lease="refs/heads/$TARGET_BRANCH:$old" origin "HEAD:refs/heads/$TARGET_BRANCH"
+          else
+            git push -u origin "HEAD:refs/heads/$TARGET_BRANCH"
+          fi
+
+      - name: Open or update the bounded forensic pull request
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ steps.seal.outputs.head }}
+        run: |
+          existing="$(gh pr list \
+            --repo "${{ github.repository }}" \
+            --head "$TARGET_BRANCH" \
+            --base main \
+            --state open \
+            --json number,url,headRefOid \
+            --limit 2)"
+          if test "$(printf '%s' "$existing" | jq 'length')" -eq 0
+          then
+            url="$(gh pr create \
+              --repo "${{ github.repository }}" \
+              --base main \
+              --head "$TARGET_BRANCH" \
+              --draft \
+              --title "Manzanita: recover canonical backlog evidence without synthesis" \
+              --body "This pull request searches Git history, current compressed fragments, and retained Actions artifacts for the exact 497-row Manzanita program register. It retains partial rows and source hashes but refuses to synthesize missing canonical records. The recovery state may be exact or partial; in either case M99-CUSTODY-GAP-010 is advanced but remains open pending independent source-authority admission. Public bytes, release authority, and canonical task-count effect remain unchanged. The controlling question is whether the exact row set can be recovered without substituting remembered counts or later pull requests for the missing constitutional object.")"
+            pr="${url##*/}"
+          else
+            test "$(printf '%s' "$existing" | jq 'length')" -eq 1
+            pr="$(printf '%s' "$existing" | jq -r '.[0].number')"
+            test "$(printf '%s' "$existing" | jq -r '.[0].headRefOid')" = "$HEAD_SHA"
+          fi
+          echo "number=$pr" >> "$GITHUB_OUTPUT"
+
+      - name: Dispatch and wait for exact-head forensic qualification
+        id: qualify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ steps.seal.outputs.head }}
+        run: |
+          gh workflow run "$TARGET_WORKFLOW" \
+            --repo "${{ github.repository }}" \
+            --ref "$TARGET_BRANCH"
+          for attempt in $(seq 1 240)
+          do
+            runs="$(gh run list \
+              --repo "${{ github.repository }}" \
+              --workflow "$TARGET_WORKFLOW" \
+              --branch "$TARGET_BRANCH" \
+              --event workflow_dispatch \
+              --json databaseId,headSha,status,conclusion,createdAt \
+              --limit 30)"
+            match="$(printf '%s' "$runs" | jq --arg sha "$HEAD_SHA" '[.[]|select(.headSha==$sha)]|sort_by(.createdAt)|last // empty')"
+            if test -n "$match" && test "$(printf '%s' "$match" | jq -r '.status')" = "completed"
+            then
+              test "$(printf '%s' "$match" | jq -r '.conclusion')" = "success"
+              echo "run_id=$(printf '%s' "$match" | jq -r '.databaseId')" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Exact-head backlog recovery qualification did not pass" >&2
+          exit 1
+
+      - name: Merge only the exact qualified forensic head
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ steps.seal.outputs.head }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+        run: |
+          current="$(gh pr view "$PR_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --json headRefOid,isDraft,state)"
+          test "$(printf '%s' "$current" | jq -r '.headRefOid')" = "$HEAD_SHA"
+          test "$(printf '%s' "$current" | jq -r '.state')" = "OPEN"
+          if test "$(printf '%s' "$current" | jq -r '.isDraft')" = "true"
+          then
+            gh pr ready "$PR_NUMBER" --repo "${{ github.repository }}"
+          fi
+          gh pr merge "$PR_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --merge \
+            --match-head-commit "$HEAD_SHA" \
+            --subject "Merge Manzanita canonical backlog forensic recovery" \
+            --body "Admit the exact forensic search, source hashes, recoverable rows, artifact inventory, and explicit no-synthesis boundary. Preserve M99-CUSTODY-GAP-010 as advanced but open until any recovered candidate receives independent source-authority admission."
+
+      - name: Retain controller terminalization receipt
+        if: always()
+        run: |
+          mkdir -p terminalization
+          cat > terminalization/TERMINALIZATION.json <<EOF
+          {
+            "schema": "axm-tools/manzanita-backlog-recovery-terminalization@1",
+            "target_branch": "$TARGET_BRANCH",
+            "head": "${{ steps.seal.outputs.head }}",
+            "pull_request": "${{ steps.pr.outputs.number }}",
+            "qualification_run": "${{ steps.qualify.outputs.run_id }}",
+            "gap_010_effect": "advanced_not_closed",
+            "canonical_task_count_effect": "none",
+            "historical_public_route_changed": false,
+            "public_release_authorized": false
+          }
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manzanita-backlog-recovery-controller-${{ steps.seal.outputs.head }}
+          path: terminalization
+          if-no-files-found: warn
+          retention-days: 90
