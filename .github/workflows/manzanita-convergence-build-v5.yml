@@ -1,6 +1,6 @@
 name: Manzanita rendered-gated photographic convergence
 
-# Final sealed execution after the branch-mutating watcher was retired.
+# Isolated final sealed execution after the branch-mutating watcher was retired.
 on:
   push:
     branches: [agent/manzanita-public-convergence-v1-6]
@@ -14,8 +14,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: manzanita-public-convergence-v1-6-final-v5
-  cancel-in-progress: false
+  group: manzanita-public-convergence-v1-6-sealed-release-20260818
+  cancel-in-progress: true
 
 jobs:
   converge:
