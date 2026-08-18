@@ -38,6 +38,7 @@ jobs:
       - name: Build, finalize, and repair the exact public candidate
         run: |
           set -euo pipefail
+          python .github/patches/manzanita-region-repair.py
           python programs/manzanita-public-convergence/build_public.py
           python programs/manzanita-public-convergence/finalize_public.py
           python programs/manzanita-public-convergence/compact_repair.py
@@ -84,6 +85,7 @@ jobs:
           rm -f .github/workflows/manzanita-visual-donor-export.yml
           rm -f .github/workflows/manzanita-p10-recovery.yml
           rm -f .github/workflows/manzanita-live-browser-probe.yml
+          rm -f .github/patches/manzanita-region-repair.py
           rm -rf manzanita-convergence-preview manzanita-convergence-p10
       - name: Rebuild donor custody against the final source set
         run: |
