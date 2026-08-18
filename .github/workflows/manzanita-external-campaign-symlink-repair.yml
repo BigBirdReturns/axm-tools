@@ -1,0 +1,97 @@
+name: Repair Manzanita campaign evidence symlink refusal
+
+on:
+  push:
+    branches:
+      - agent/manzanita-external-campaign-runner-024
+    paths:
+      - ".github/workflows/manzanita-external-campaign-symlink-repair.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-external-campaign-symlink-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-external-campaign-runner-024
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify the exact vulnerable source object
+        run: |
+          test "$(git hash-object manzanita-next/external-campaigns/campaign_runner.py)" = "cba4f1185e690d1a43c1044a95b038b0016b3325"
+
+      - name: Reject symlinks before path resolution
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("manzanita-next/external-campaigns/campaign_runner.py")
+          old = '''def require_regular_file(path: Path, label: str) -> Path:
+              resolved = path.expanduser().resolve()
+              require(resolved.exists(), f"{label} is missing: {resolved}")
+              mode = resolved.lstat().st_mode
+              require(not stat.S_ISLNK(mode), f"{label} may not be a symlink: {resolved}")
+              require(stat.S_ISREG(mode), f"{label} is not a regular file: {resolved}")
+              return resolved
+          '''
+          new = '''def require_regular_file(path: Path, label: str) -> Path:
+              candidate = path.expanduser()
+              require(
+                  candidate.exists() or candidate.is_symlink(),
+                  f"{label} is missing: {candidate}",
+              )
+              mode = candidate.lstat().st_mode
+              require(
+                  not stat.S_ISLNK(mode),
+                  f"{label} may not be a symlink: {candidate}",
+              )
+              require(
+                  stat.S_ISREG(mode),
+                  f"{label} is not a regular file: {candidate}",
+              )
+              return candidate.resolve(strict=True)
+          '''
+          # The workflow's YAML indentation adds ten spaces to every embedded line.
+          # Dedent both exact blocks before applying them to the source file.
+          import textwrap
+          old = textwrap.dedent(old)
+          new = textwrap.dedent(new)
+          text = path.read_text(encoding="utf-8")
+          if text.count(old) != 1:
+              raise SystemExit("Exact vulnerable block was not found once")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
+      - name: Prove compilation and the complete adversarial suite
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile manzanita-next/external-campaigns/campaign_runner.py
+          python -m unittest discover \
+            -s manzanita-next/external-campaigns/tests \
+            -p "test_*.py"
+
+      - name: Seal the corrected branch and remove this repair carrier
+        run: |
+          rm .github/workflows/manzanita-external-campaign-symlink-repair.yml
+          git config user.name "manzanita-campaign-symlink-repair"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            manzanita-next/external-campaigns/campaign_runner.py \
+            .github/workflows/manzanita-external-campaign-symlink-repair.yml
+          git commit -m "Manzanita: reject campaign evidence symlinks before resolution"
+          git push origin HEAD:agent/manzanita-external-campaign-runner-024
