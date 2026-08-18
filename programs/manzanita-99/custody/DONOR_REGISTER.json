@@ -2,7 +2,7 @@
   "schema": "axm-tools/manzanita-donor-register@2",
   "contract_id": "M99-DONOR-CUSTODY-002",
   "state": "in_progress",
-  "observed_main_head": "58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb",
+  "observed_main_head": "a763a074fab4ec8cf5fe60929a7a69c1e579385b",
   "donors": [
     {
       "id": "manzanita-public-1.4.0",
@@ -21,17 +21,34 @@
       "id": "manzanita-public-1.4.1",
       "class": "historical_public_release",
       "custody_state": "archived_repo",
-      "archive_scope_ids": [
-        "historical-public-route"
-      ],
+      "archive_scope_ids": [],
       "anchors": {
         "release": "1.4.1",
         "supersedes": "1.4.0",
         "route_tree": "f6ea68bd4c5e07919277a099039354a5920d7b2b",
         "qualification_blob": "8446d993eba3582d2f37300769334924266d8ebd",
-        "release_receipt_blob": "768f086673b0b593b8bfbbbdd75c26152bbaa40e"
+        "release_receipt_blob": "768f086673b0b593b8bfbbbdd75c26152bbaa40e",
+        "source_commit": "750ad90f40462ab442a546bdbc2c7f02c81e2b27"
       },
-      "claim_boundary": "Current public maintenance release of the admitted Signal Sheet. It adds bounded interaction, portability, print, and discovery polish without admitting or releasing manzanita-next."
+      "claim_boundary": "Exact predecessor public rollback donor retained by commit, route tree, and file blob identities. It does not transfer complete-successor standing."
+    },
+    {
+      "id": "manzanita-public-1.6.0",
+      "class": "historical_public_release",
+      "custody_state": "archived_repo",
+      "archive_scope_ids": [
+        "historical-public-route"
+      ],
+      "anchors": {
+        "release": "1.6.0",
+        "supersedes": "1.4.1",
+        "source_commit": "a763a074fab4ec8cf5fe60929a7a69c1e579385b",
+        "route_tree": "d17a3d232de59bf4ab3069165abfb43291dd1ef3",
+        "qualification_blob": "bf713a09d2a49ec1b9318cb3f2a544234b048e90",
+        "release_receipt_blob": "e3bd8ba4f9144d48f64f0f8dd1f5251a2afbc4e0",
+        "photographic_donor_commit": "507ace9af2d2121cb93614158809ee5ff88437f2"
+      },
+      "claim_boundary": "Current bounded public photographic convergence release. It combines retained public visual donors with admitted operating laws without releasing the complete manzanita-next successor or changing external-campaign or task-count standing."
     },
     {
       "id": "pr-90-source_foundation",
@@ -407,5 +424,5 @@
     }
   ],
   "canonical_task_count_effect": "none",
-  "qualification_boundary": "A passing custody workflow proves current and predecessor public-route identities, repo-resident sources, donor anchors, observed successor records, and the explicit gap ledger agree. It does not close JDB99-001, release manzanita-next, prove external campaigns, or change canonical task counts."
+  "qualification_boundary": "A passing custody workflow proves current and predecessor public-route identities, repo-resident sources, donor anchors, observed successor records, and the explicit gap ledger agree. It does not close JDB99-001, release the complete manzanita-next successor, prove external campaigns, or change canonical task counts."
 }

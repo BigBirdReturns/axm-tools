@@ -198,5 +198,15 @@
     "historical_public_maintenance_release_effect": "none"
   },
   "canonical_task_count_effect": "none",
-  "claim_boundary": "This ledger records observed merged successor operating objects and their admitted claim boundaries. Its external campaign HOLD applies to the manzanita-next successor candidate, not to a separately authorized maintenance patch of the already public Signal Sheet. It is not a reconstruction of the lost 497-row register and cannot decrement remembered counts or close canonical task rows."
+  "claim_boundary": "This ledger records observed merged successor operating objects and their admitted claim boundaries. The complete manzanita-next successor remains HOLD with ten external campaigns not performed. The separate v1.6.0 public photographic convergence transaction changes only the already public route and has no successor-program, external-campaign, or canonical-task-count effect.",
+  "public_route_transition": {
+    "release": "1.6.0",
+    "release_class": "bounded_public_photographic_convergence",
+    "source_commit": "a763a074fab4ec8cf5fe60929a7a69c1e579385b",
+    "route_tree": "d17a3d232de59bf4ab3069165abfb43291dd1ef3",
+    "photographic_donor_commit": "507ace9af2d2121cb93614158809ee5ff88437f2",
+    "successor_program_effect": "none",
+    "external_campaign_effect": "none",
+    "canonical_task_count_effect": "none"
+  }
 }

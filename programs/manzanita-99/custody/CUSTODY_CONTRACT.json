@@ -1,7 +1,7 @@
 {
   "schema": "axm-tools/manzanita-donor-custody-contract@2",
   "contract_id": "M99-DONOR-CUSTODY-002",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "state": "in_progress",
   "recorded_on": "2026-08-17",
   "observed_repository": {
@@ -9,7 +9,7 @@
     "main_head_at_registration": "591f425d35fd1f946bab59039d02c93de995fdd9",
     "main_tree_at_registration": "df2817be8cc0f96bf0667ed9d59ed1bf5e931f9f",
     "qualification_boundary": "The main head is an observation anchor, not a permanent freeze. The current public-route blob identities and explicit historical release commit, tree, and blob guards are the hard byte boundaries.",
-    "release_transition_base": "58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb"
+    "release_transition_base": "750ad90f40462ab442a546bdbc2c7f02c81e2b27"
   },
   "authority": {
     "owner_seat": "source_custody_and_release_continuity",
@@ -28,7 +28,7 @@
       "mutate the canonical 497-task register or remembered priority totals by inference"
     ]
   },
-  "qualification_boundary": "A passing custody workflow proves that repo-resident sources, the exact current route, every explicitly guarded predecessor release, donor anchors, observed successor execution records, and the open-gap ledger agree. It does not close JDB99-001, qualify or release manzanita-next, prove external campaigns, or change canonical task counts.",
+  "qualification_boundary": "A passing custody workflow proves the exact current photographic public route, every explicitly guarded predecessor release, repo-resident donors, observed successor records, and the open-gap ledger agree. It does not close JDB99-001, release the complete manzanita-next successor, prove external campaigns, or change canonical task counts.",
   "required_classes": [
     "historical_public_release",
     "successor_source",
@@ -148,41 +148,68 @@
   ],
   "public_route_guard": {
     "path": "manzanita",
-    "release": "1.4.1",
-    "tree": "f6ea68bd4c5e07919277a099039354a5920d7b2b",
+    "release": "1.6.0",
+    "tree": "d17a3d232de59bf4ab3069165abfb43291dd1ef3",
     "files": {
       "manzanita/QUALIFICATION.json": {
-        "git_blob_sha1": "8446d993eba3582d2f37300769334924266d8ebd"
+        "git_blob_sha1": "bf713a09d2a49ec1b9318cb3f2a544234b048e90"
       },
       "manzanita/README.md": {
-        "git_blob_sha1": "b3e81089952d53e7c1320025a74619feab8ce6bc"
+        "git_blob_sha1": "e24982f6e6e78d50f59671356ce9b5392487589d"
       },
       "manzanita/RELEASE_RECEIPT.json": {
-        "git_blob_sha1": "768f086673b0b593b8bfbbbdd75c26152bbaa40e"
+        "git_blob_sha1": "e3bd8ba4f9144d48f64f0f8dd1f5251a2afbc4e0"
       },
       "manzanita/VISUAL_CONSTITUTION.md": {
-        "git_blob_sha1": "be68f936e0082f3636c1891fbd7d285bd860cbd1"
+        "git_blob_sha1": "eb8782cc6befb1d0a5be8ef5a3798dd736977f4f"
       },
       "manzanita/app.js": {
-        "git_blob_sha1": "34480240a8ec9e938589286fe9251017eb6ac43e"
+        "git_blob_sha1": "79064b1dd50fe05d8a2f21b9479907379f06db54"
+      },
+      "manzanita/assets/household.webp": {
+        "git_blob_sha1": "131471e09fa64487615fe239bc2d6b118f6c5d54"
+      },
+      "manzanita/assets/neighborhood.webp": {
+        "git_blob_sha1": "4a0a2cf975b968bd98d929af96f121ba961654ae"
+      },
+      "manzanita/assets/plant.webp": {
+        "git_blob_sha1": "9501eab97dfb3c712e95661afde466a3d2f4696b"
+      },
+      "manzanita/assets/property.webp": {
+        "git_blob_sha1": "a8407476aae8c5304ad6e0284842f47dc77f6c66"
+      },
+      "manzanita/assets/region.webp": {
+        "git_blob_sha1": "c2b3817785c2ec2207c90048c06092bccb9986ce"
+      },
+      "manzanita/assets/scene-data.js": {
+        "git_blob_sha1": "b7069db3af74b67664a67a7de9e27b3e00b974c0"
+      },
+      "manzanita/assets/scene-data.json": {
+        "git_blob_sha1": "eeab08442f5b5d9bc6351928da9b0f92f8d3ffcc"
+      },
+      "manzanita/assets/stewardship.webp": {
+        "git_blob_sha1": "bdbd9263d024bde13fb8666c953a1344d6b2e00c"
+      },
+      "manzanita/assets/street.webp": {
+        "git_blob_sha1": "c21257d8fe6f7473836898c35d9a086b3642fecd"
       },
       "manzanita/index.html": {
-        "git_blob_sha1": "1a7db3f366c54b1222883124d45823faf1db3aed"
+        "git_blob_sha1": "3ecd25da176bea917b0e310ab2e2a12aca75bbd1"
       },
       "manzanita/style.css": {
-        "git_blob_sha1": "82b9d1216ecd0c5025f57a19a801e2c375a9e737"
+        "git_blob_sha1": "91bc843045011db3a1d42f68b849b3f446cf08aa"
       },
       "manzanita/tests/browser_test.py": {
-        "git_blob_sha1": "d1b876be7aeb0e60323d5d1fe7f12c99553be2e5"
+        "git_blob_sha1": "88ee5c64eb6bc969770e7b48099d625887e5581d"
       },
       "manzanita/tests/public_contract_test.py": {
-        "git_blob_sha1": "99680b5c63aed6c41664f2c3c31e8c8d1229e9ad"
+        "git_blob_sha1": "bf9e06211d0de8719608f9255a3934ccdc5b3374"
       },
       "manzanita/theme-init.js": {
-        "git_blob_sha1": "18fc2f35742a15cc018b049702634934ee2ec2af"
+        "git_blob_sha1": "5e55ef4e40055006391b50e759fb97312d3dab4b"
       }
     },
-    "failure_message": "The current public maintenance route changed outside its release-authority transaction. Stop and investigate before admission."
+    "failure_message": "The v1.6.0 public photographic route changed outside its release-authority transaction. Stop and investigate before admission."
   },
   "close_law": {
     "all_required_gaps_closed": true,
@@ -229,6 +256,45 @@
         }
       },
       "claim_boundary": "Exact predecessor rollback donor. Reachability does not authorize the manzanita-next successor."
+    },
+    {
+      "release": "1.4.1",
+      "path": "manzanita",
+      "commit": "750ad90f40462ab442a546bdbc2c7f02c81e2b27",
+      "tree": "f6ea68bd4c5e07919277a099039354a5920d7b2b",
+      "files": {
+        "manzanita/QUALIFICATION.json": {
+          "git_blob_sha1": "8446d993eba3582d2f37300769334924266d8ebd"
+        },
+        "manzanita/README.md": {
+          "git_blob_sha1": "b3e81089952d53e7c1320025a74619feab8ce6bc"
+        },
+        "manzanita/RELEASE_RECEIPT.json": {
+          "git_blob_sha1": "768f086673b0b593b8bfbbbdd75c26152bbaa40e"
+        },
+        "manzanita/VISUAL_CONSTITUTION.md": {
+          "git_blob_sha1": "be68f936e0082f3636c1891fbd7d285bd860cbd1"
+        },
+        "manzanita/app.js": {
+          "git_blob_sha1": "34480240a8ec9e938589286fe9251017eb6ac43e"
+        },
+        "manzanita/index.html": {
+          "git_blob_sha1": "1a7db3f366c54b1222883124d45823faf1db3aed"
+        },
+        "manzanita/style.css": {
+          "git_blob_sha1": "82b9d1216ecd0c5025f57a19a801e2c375a9e737"
+        },
+        "manzanita/tests/browser_test.py": {
+          "git_blob_sha1": "d1b876be7aeb0e60323d5d1fe7f12c99553be2e5"
+        },
+        "manzanita/tests/public_contract_test.py": {
+          "git_blob_sha1": "99680b5c63aed6c41664f2c3c31e8c8d1229e9ad"
+        },
+        "manzanita/theme-init.js": {
+          "git_blob_sha1": "18fc2f35742a15cc018b049702634934ee2ec2af"
+        }
+      },
+      "claim_boundary": "Exact predecessor rollback donor. Its public standing does not release the complete manzanita-next successor."
     }
   ],
   "release_transition_law": {
