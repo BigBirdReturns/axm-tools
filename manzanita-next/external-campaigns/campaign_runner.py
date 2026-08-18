@@ -149,12 +149,12 @@ def require_text(value: str, label: str) -> str:
 
 
 def require_regular_file(path: Path, label: str) -> Path:
-    resolved = path.expanduser().resolve()
-    require(resolved.exists(), f"{label} is missing: {resolved}")
-    mode = resolved.lstat().st_mode
-    require(not stat.S_ISLNK(mode), f"{label} may not be a symlink: {resolved}")
-    require(stat.S_ISREG(mode), f"{label} is not a regular file: {resolved}")
-    return resolved
+    candidate = path.expanduser()
+    require(candidate.exists() or candidate.is_symlink(), f"{label} is missing: {candidate}")
+    mode = candidate.lstat().st_mode
+    require(not stat.S_ISLNK(mode), f"{label} may not be a symlink: {candidate}")
+    require(stat.S_ISREG(mode), f"{label} is not a regular file: {candidate}")
+    return candidate.resolve()
 
 
 def validate_contract(contract: dict[str, Any]) -> None:
