@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-17T23:18:31.332016Z",
+  "generated": "2026-08-18T05:12:52.541825Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -35,19 +35,31 @@
       "source": "Google News",
       "scope": "state",
       "ok": true,
-      "kept": 12
+      "kept": 8
     },
     {
       "source": "AUSD board schedule",
       "scope": "district",
       "ok": true,
-      "kept": 1
+      "kept": 2
     }
   ],
   "items": [
     {
+      "id": "ausd-mtg-2026-09-08",
+      "source": "AUSD Board of Education",
+      "title": "AUSD board meeting \u2014 Tuesday, September 8 at 7:00 p.m.",
+      "summary": "Regular Board of Education meeting, Arcadia Education Center Board Room (unless the schedule notes otherwise). Agenda posts on Simbli the Friday before \u2014 worth a skim for anything parents will ask about.",
+      "link": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
+      "published": "2026-09-08",
+      "priority": "hot",
+      "scope": "district",
+      "first_seen": "2026-08-18",
+      "bills": []
+    },
+    {
       "id": "0d842234e85a",
-      "source": "calmatters.org",
+      "source": "CalMatters",
       "title": "Californians voted to spend $1 billion on K-12 arts. Why are schools returning the money?",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1tNFdSLVRKSW9PdS1zSzBIczVzT0ZhYTZ1MmlLMXVfVkNDTF9JRkRCeUx4WW9DcFQ5SF8tZUU5S3JGVWU4bm5pRElLX0FWaVVMV1JmNHpENVdYNW8tUjhXV2VwQmdOMWdjeVE5Ukp2dXlxNVA2?oc=5",
@@ -349,7 +361,7 @@
     },
     {
       "id": "aef3435cc230",
-      "source": "Atkinson, Andelson, Loya, Ruud & Romo",
+      "source": "aalrr.com",
       "title": "California K-12 Districts Must Provide 14 Weeks Paid Pregnancy Leave Beginning 2027",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQZmlpaU9PYWY5LTU2bk0tcnFBb2FlY25yVzBtUkZPOGJ5ekdGcnZ3MV9nRFRoM2U2bnhZZm8wWkR1S2tmZFh4aDRhVzlDaHBFWEhMUERUU1dTbERJZXlHYldvZGwxOVVBaWd3QURBcjdCSlFwVnhEVTB4cTV2V1BoLVQwTHM?oc=5",
@@ -433,7 +445,7 @@
     },
     {
       "id": "bcbfc111c1bf",
-      "source": "calmatters.org",
+      "source": "CalMatters",
       "title": "High schools get a reprieve in proposal to ban student cell phones",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPNXpSc3lvTmhBTU1ZdTZsVTZZd3lXNWZfOGNUTFQwY2MtQkZGSVBmeHFmU3Zrc0hYbFAwa1liVEt1N3pkbWtOOTNqVGt4ZHVzbGpNeUVrUW5mcEo0bUtpNmgwb1FiS2xpcHVMX3RBUFJCazcxYXExcmhlWVVYMmtkUDJ4VkYxcmpDNTVzbXJqRDA?oc=5",
