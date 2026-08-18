@@ -1,6 +1,5 @@
 name: Manzanita convergence run watcher
 
-# Observe the exact four-view stewardship convergence execution.
 on:
   push:
     branches: [agent/manzanita-public-convergence-v1-6]
@@ -17,47 +16,27 @@ permissions:
 jobs:
   watch:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
       BRANCH: agent/manzanita-public-convergence-v1-6
       PR_NUMBER: "117"
-      EXPECTED_HEAD: f8fc1b1772a0e347286f3ad4e5418b566097a843
     steps:
-      - name: Wait for the exact rendered convergence run
+      - name: Report the latest convergence executions
         run: |
           set -euo pipefail
-          for attempt in $(seq 1 100); do
-            row=$(gh run list --repo "$GH_REPO" \
-              --workflow manzanita-convergence-build-v5.yml \
-              --branch "$BRANCH" \
-              --limit 20 \
-              --json databaseId,status,conclusion,headSha,createdAt,updatedAt \
-              --jq ".[] | select(.headSha == \"$EXPECTED_HEAD\")" | head -1)
-            if [ -n "$row" ]; then
-              status=$(printf '%s' "$row" | jq -r '.status')
-              if [ "$status" = "completed" ]; then
-                printf '%s\n' "$row" > /tmp/run.json
-                break
-              fi
-            fi
-            if [ "$attempt" = "100" ]; then
-              echo "Exact rendered convergence run did not complete in time"
-              exit 1
-            fi
-            sleep 15
-          done
-      - name: Report the exact run to PR 117
-        run: |
-          run_id=$(jq -r '.databaseId' /tmp/run.json)
-          status=$(jq -r '.status' /tmp/run.json)
-          conclusion=$(jq -r '.conclusion // ""' /tmp/run.json)
-          head_sha=$(jq -r '.headSha' /tmp/run.json)
-          gh pr comment "$PR_NUMBER" --repo "$GH_REPO" --body "Four-view stewardship convergence run \`$run_id\` completed with status \`$status\`, conclusion \`$conclusion\`, head \`$head_sha\`."
-          if [ "$conclusion" != "success" ]; then
-            gh run view "$run_id" --repo "$GH_REPO" --log-failed > /tmp/failed.log || true
-            tail -c 50000 /tmp/failed.log > /tmp/failed-tail.log
-            gh pr comment "$PR_NUMBER" --repo "$GH_REPO" --body-file /tmp/failed-tail.log
-            exit 1
-          fi
+          gh run list --repo "$GH_REPO" \
+            --workflow manzanita-convergence-build-v5.yml \
+            --branch "$BRANCH" \
+            --limit 12 \
+            --json databaseId,status,conclusion,headSha,createdAt,updatedAt,url \
+            > /tmp/runs.json
+          {
+            echo 'Latest Manzanita convergence executions:'
+            echo
+            echo '```json'
+            jq . /tmp/runs.json
+            echo '```'
+          } > /tmp/comment.md
+          gh pr comment "$PR_NUMBER" --repo "$GH_REPO" --body-file /tmp/comment.md
