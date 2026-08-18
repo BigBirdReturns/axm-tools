@@ -1,29 +1,30 @@
 {
-  "schema": "manzanita-works/release-receipt@1",
-  "release": "1.4.1",
-  "release_class": "public_maintenance_patch",
+  "schema": "manzanita-works/release-receipt@2",
+  "release": "1.6.0",
+  "release_class": "bounded_public_photographic_convergence",
   "prepared_on": "2026-08-18",
   "public_route": "https://bigbirdreturns.github.io/axm-tools/manzanita/",
-  "predecessor": {
-    "release": "1.4.0",
-    "source_commit": "58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb",
-    "route_tree": "846132be374b1e1da5a9444dc67da877bbb32224",
-    "qualification_blob": "a3cb3212c22a32b113929e079a331c5f9a9129dd"
+  "photographic_donor": {
+    "release": "1.1.2",
+    "source_commit": "507ace9af2d2121cb93614158809ee5ff88437f2"
   },
-  "changes": [
-    "URL-addressable scale, perspective, and overlay state",
-    "Arrow, Home, and End navigation for grouped controls",
-    "polite live-region announcements",
-    "consistent default overlays for direct and next-scale transitions",
-    "print and save-to-PDF presentation",
-    "canonical and social metadata",
-    "repository front-door listing"
-  ],
+  "predecessor": {
+    "release": "1.4.1",
+    "source_commit": "750ad90f40462ab442a546bdbc2c7f02c81e2b27",
+    "route_tree": "f6ea68bd4c5e07919277a099039354a5920d7b2b"
+  },
+  "admitted_successor_donors": {
+    "seven_apertures": "f49421f26be443395f7bcc684a1ea932b5694c14",
+    "street_glide": "b37a24859cf924ef71cf7f77300cfb1e30b31fb2",
+    "eight_overlays": "8ca8f1bc1881f7cc89eff56a4b1cc25f546a26fc",
+    "five_roles_fab": "4150caa3ecc2e4859adc5ab7b4a5e5932b23252f",
+    "whole_experience": "0d91b30f5d5997d1649e3f1c0fb3093f3f577c27"
+  },
   "authority": {
-    "basis": "repository_owner_release_directive_2026-08-18",
+    "basis": "repository_owner_public_convergence_directive_2026-08-18",
     "successor_program_effect": "none",
     "external_campaign_effect": "none",
     "canonical_task_count_effect": "none"
   },
-  "deployment_claim": "held_until_exact_main_pages_and_live_browser_gates_pass"
+  "claim_boundary": "This public release converges retained visual and admitted operating donors into a bounded static projection. It does not release the complete manzanita-next successor, perform an external campaign, confer physical or private standing, or mutate canonical task counts."
 }

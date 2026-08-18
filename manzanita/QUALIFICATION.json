@@ -1,8 +1,8 @@
 {
-  "schema": "manzanita-works/pages-qualification@5",
-  "release": "1.4.1",
-  "release_class": "public_maintenance_patch",
-  "visual_system": "signal-sheet",
+  "schema": "manzanita-works/pages-qualification@6",
+  "release": "1.6.0",
+  "release_class": "bounded_public_photographic_convergence",
+  "visual_system": "photographic-place-fabric",
   "entrypoint": "manzanita/index.html",
   "public_route": "https://bigbirdreturns.github.io/axm-tools/manzanita/",
   "themes": [
@@ -10,56 +10,101 @@
     "dark"
   ],
   "files": {
-    "index.html": {
-      "bytes": 20068,
-      "sha256": "ce1e94513e13afb2ba8cf0bd2f0efd36f42b1420d6b423642632c985eae97ff0"
-    },
-    "style.css": {
-      "bytes": 20808,
-      "sha256": "aeecd4075012eeb715a2e4aead43b22646e69a6204e97d857e0eb570c350cf58"
-    },
-    "app.js": {
-      "bytes": 27379,
-      "sha256": "b31f4a67517e36d7f7a3635c11ac7039ccca68524506e2b77fe7a2080653c314"
-    },
-    "theme-init.js": {
-      "bytes": 290,
-      "sha256": "29a2acecd398fba04540e115c8c87a070de1bbf1cf18a3768ca79de494bef1da"
-    },
     "README.md": {
-      "bytes": 4137,
-      "sha256": "a8ffc14d461486d3cfee137b5acbcf68ee1a823bafa84045428139bfa05c47b6"
-    },
-    "VISUAL_CONSTITUTION.md": {
-      "bytes": 3308,
-      "sha256": "7662da62cc033eb0088dd33ecd885b18a09fa06ec590d13098dda1c3e46d0e6a"
+      "bytes": 2365,
+      "sha256": "9fe7a3cf54d885405bff7a5209bf4920cf8477c35372c79150c76043039f709e"
     },
     "RELEASE_RECEIPT.json": {
-      "bytes": 1127,
-      "sha256": "e850082498124a4106985fa65d28d7605f4562b611189c865041bb50018ffab6"
+      "bytes": 1412,
+      "sha256": "6b4b0fa0bf2f4c02ac9d601aa816b491df9875e538249a2b1d5a007042e63bf0"
+    },
+    "VISUAL_CONSTITUTION.md": {
+      "bytes": 2160,
+      "sha256": "409dfee90dc588774c71ef93443ca2359a59bb6d492897a701380ca599b46346"
+    },
+    "app.js": {
+      "bytes": 16318,
+      "sha256": "9dbf2337d279089ab74df37db312d7eaca5b6ca7aa8a31f3fe7ba6b799a5592a"
+    },
+    "assets/household.webp": {
+      "bytes": 67534,
+      "sha256": "51bf4ef0c14cd2d1e174e24baf234455273425a333d7e3e58c32cfcd5ec395d6"
+    },
+    "assets/neighborhood.webp": {
+      "bytes": 80784,
+      "sha256": "c11f1617f314dd08824b277f3d203a87748c89ba7408f5aa5932350c9224bf30"
+    },
+    "assets/plant.webp": {
+      "bytes": 44620,
+      "sha256": "e6148cb9e0bbaf6b117dd5162f52bac2c805aa69e8f4b820fb7909dfece37a23"
+    },
+    "assets/property.webp": {
+      "bytes": 60876,
+      "sha256": "6af8c147b3690e5d784dda46e10f980e6e0a4dfca416b3646e5a85277fcb8cc5"
+    },
+    "assets/region.webp": {
+      "bytes": 43964,
+      "sha256": "9f7049d0946da5b68680856c5a1bad0573f94ad579172a84368cc82c9ce94921"
+    },
+    "assets/scene-data.js": {
+      "bytes": 11538,
+      "sha256": "78cb42adebcb7dbe376899174d84c23f23d2a12785a4b9fe1db4502cf8498a55"
+    },
+    "assets/scene-data.json": {
+      "bytes": 13320,
+      "sha256": "b3f8c6ba2c316a7042809b1eec01293864fd9f5aa1544f1720c81338eb03a036"
+    },
+    "assets/stewardship.webp": {
+      "bytes": 102242,
+      "sha256": "c064e47d67d10e93ff8ebea7d549f392123f64377d3a5e74892327727f1558ec"
+    },
+    "assets/street.webp": {
+      "bytes": 45788,
+      "sha256": "59e1a3d4f59e28816421a43772f72ce450a3db7053bc888d5b4dc6352aa49212"
+    },
+    "index.html": {
+      "bytes": 13333,
+      "sha256": "7d24129db8b7a81f6413ad5e14d34ead032f0870467ae5c99135e1d22ef50a9e"
+    },
+    "style.css": {
+      "bytes": 20421,
+      "sha256": "d2b66b55dc85a04832ca5799823674c68acc18ea620df03a52a4525a4b69f430"
+    },
+    "tests/browser_test.py": {
+      "bytes": 5325,
+      "sha256": "e37631e61aae79fde225d04014dbc5d4f6d3a8f88a082be2027ee2ffa34555a0"
+    },
+    "tests/public_contract_test.py": {
+      "bytes": 2845,
+      "sha256": "0c6b327ab3ecc48c4da67b183882166b44149e24d4534c3befb69e561eee4f27"
+    },
+    "theme-init.js": {
+      "bytes": 263,
+      "sha256": "ef3a1e10e5d7708d722a70fe2fd872bcff56f404b482be0764129e18e40d4896"
     }
   },
-  "scales": 7,
+  "apertures": 7,
+  "distinct_aperture_assets": 7,
   "overlays": 8,
-  "functional_views": 5,
+  "operating_seats": 5,
   "instruments": 6,
-  "visual_medium": "estate-owned responsive SVG",
+  "shareable_url_state": true,
+  "local_export": true,
+  "print_save_sheet": true,
   "external_visual_dependencies": 0,
   "external_effect_adapters": 0,
-  "shareable_url_state": true,
-  "keyboard_group_navigation": [
-    "Arrow",
-    "Home",
-    "End"
-  ],
-  "print_save_sheet": true,
+  "photographic_donor_commit": "507ace9af2d2121cb93614158809ee5ff88437f2",
   "predecessor_release": {
-    "release": "1.4.0",
-    "source_commit": "58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb",
-    "route_tree": "846132be374b1e1da5a9444dc67da877bbb32224",
-    "qualification_blob": "a3cb3212c22a32b113929e079a331c5f9a9129dd"
+    "release": "1.4.1",
+    "source_commit": "750ad90f40462ab442a546bdbc2c7f02c81e2b27",
+    "route_tree": "f6ea68bd4c5e07919277a099039354a5920d7b2b"
   },
-  "authority_boundary": "illustration and modeled context do not become survey, inspection, enforcement, coverage, or work authority",
+  "authority_boundary": "photographic and derived context do not become survey, inspection, field finding, access, work, enforcement, coverage, or completed-remediation authority",
   "successor_program_effect": "none",
-  "canonical_task_count_effect": "none"
+  "canonical_task_count_effect": "none",
+  "compact_320_text_200_contract": true,
+  "control_selector_scope": "button_only",
+  "strict_interaction_selectors": "button_only",
+  "image_registration_shared_box": true,
+  "runtime_network_requests": 0
 }
