@@ -1,0 +1,101 @@
+name: Manzanita convergence PR status
+
+on:
+  push:
+    branches: [agent/manzanita-public-convergence-v1-6]
+    paths:
+      - ".github/workflows/manzanita-convergence-pr-status.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      PR_NUMBER: "117"
+      BRANCH: agent/manzanita-public-convergence-v1-6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-public-convergence-v1-6
+          fetch-depth: 0
+      - name: Wait for the sealed candidate and review packet
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/$BRANCH"
+            if grep -q 'data-release="1.6.0"' manzanita/index.html 2>/dev/null \
+              && test -f review/manzanita-v1.6.0/REVIEW_RECEIPT.json; then
+              break
+            fi
+            if [ "$attempt" = "60" ]; then
+              echo "Candidate or review packet did not materialize"
+              exit 1
+            fi
+            sleep 10
+          done
+      - name: Verify the review packet belongs to the current candidate
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt=json.loads(Path('review/manzanita-v1.6.0/REVIEW_RECEIPT.json').read_text(encoding='utf-8'))
+          assert receipt['release']=='1.6.0'
+          assert receipt['classification']=='review_evidence_not_release_authority'
+          assert len(receipt['states'])==6
+          print(json.dumps(receipt,indent=2))
+          PY
+      - name: Update the pull request with the exact release and visual gate
+        run: |
+          cat > /tmp/pr-body.md <<'EOF'
+          ## Object
+
+          Bounded public photographic convergence release for the existing Manzanita route. This replaces the simplified v1.4.1 Signal Sheet with a photographic place fabric while preserving v1.4.1 as the exact rollback donor and leaving the complete `manzanita-next` successor on HOLD.
+
+          ## Public result
+
+          - retained photographic donor recovered from exact v1.1.2 commit `507ace9af2d2121cb93614158809ee5ff88437f2`;
+          - seven distinct aperture assets for useful plant, household, property, street, neighborhood, region, and stewardship;
+          - image and analytical registration share one normalized coordinate system;
+          - eight independently selectable conditions;
+          - five operating seats that change action, acceptance, handoff, and recommended evidence layers;
+          - assistance-first horticultural and wildfire sequence;
+          - explicit firewall against automatic insurance denial, unrelated property scoring, resident ranking, or punitive enforcement;
+          - URL-addressable state, local JSON export, print, light/dark themes, reduced motion, mobile operation, and 320-pixel 200-percent reflow;
+          - Essential Attention handoff carrying public-safe aperture and seat context;
+          - zero backend and zero external-effect adapters.
+
+          ## Visual review gate
+
+          The exact candidate is rendered at desktop, tablet, mobile, and 320-pixel 200-percent text states. Review the contact sheet before merge:
+
+          ![Manzanita v1.6.0 contact sheet](https://raw.githubusercontent.com/BigBirdReturns/axm-tools/agent/manzanita-public-convergence-v1-6/review/manzanita-v1.6.0/contact-sheet.jpg)
+
+          Full review packet: `review/manzanita-v1.6.0/REVIEW.md`
+
+          ## Authority boundary
+
+          This release performs no `manzanita-next` external campaign, closes no custody gap, releases no private or physical standing, reconstructs no canonical backlog rows, and has no canonical task-count effect. All ten complete-successor external campaigns remain `not_performed`.
+          EOF
+          gh pr edit "$PR_NUMBER" --repo "$GH_REPO" --title "Manzanita: photographic public place fabric v1.6.0" --body-file /tmp/pr-body.md
+          gh pr ready "$PR_NUMBER" --repo "$GH_REPO" || true
+          gh pr comment "$PR_NUMBER" --repo "$GH_REPO" --body "The exact photographic convergence candidate and six-state visual review packet are now bound to this PR. The branch must not merge on DOM success alone; the contact sheet is the visual control surface."
+      - name: Retire this one-shot status workflow
+        run: |
+          set -euo pipefail
+          git fetch origin "$BRANCH"
+          git reset --hard "origin/$BRANCH"
+          rm -f .github/workflows/manzanita-convergence-pr-status.yml
+          git config user.name "manzanita-status-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A .github/workflows/manzanita-convergence-pr-status.yml
+          git commit -m "Manzanita: retire convergence status actuator"
+          git push origin HEAD:"$BRANCH"
