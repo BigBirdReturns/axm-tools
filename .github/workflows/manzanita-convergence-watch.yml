@@ -1,5 +1,6 @@
 name: Manzanita convergence run watcher
 
+# Refresh after compact print-control repair.
 on:
   push:
     branches: [agent/manzanita-public-convergence-v1-6]
