@@ -1,0 +1,99 @@
+name: Install Manzanita history census admission control
+
+on:
+  push:
+    branches:
+      - agent/manzanita-donor-custody-v2-actual
+    paths:
+      - ".github/workflows/manzanita-history-census-admission-installer.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-history-census-admission-installer
+  cancel-in-progress: false
+
+jobs:
+  install:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Wait for the history census branch
+        run: |
+          for attempt in $(seq 1 90)
+          do
+            git fetch origin agent/manzanita-historical-release-census-025 || true
+            if git show-ref --verify --quiet refs/remotes/origin/agent/manzanita-historical-release-census-025
+            then
+              git checkout -B agent/manzanita-historical-release-census-025 origin/agent/manzanita-historical-release-census-025
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "History census branch did not materialize" >&2
+          exit 1
+
+      - name: Add exact-head merge custody to the permanent workflow
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path=Path(".github/workflows/manzanita-history-census.yml")
+          text=path.read_text(encoding="utf-8")
+          text=text.replace(
+              "permissions:\n  contents: read\n  actions: read\n",
+              "permissions:\n  contents: write\n  pull-requests: write\n  actions: read\n  checks: read\n",
+              1,
+          )
+          if "name: Admit exact qualified history census" not in text:
+              text += r'''
+
+  admit:
+    name: Admit exact qualified history census
+    needs: qualify
+    if: github.event_name == 'push' && github.ref_name == 'agent/manzanita-historical-release-census-025'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Re-prove scope and merge only this head
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          QUALIFIED_HEAD: ${{ github.sha }}
+        run: |
+          git fetch --no-tags origin main
+          python - <<'PY2'
+          import subprocess
+          changed=subprocess.run(["git","diff","--name-only","origin/main...HEAD"],check=True,capture_output=True,text=True).stdout.splitlines()
+          allowed={".github/workflows/manzanita-history-census.yml"}
+          invalid=[p for p in changed if p not in allowed and not p.startswith("programs/manzanita-99/custody-v2/history/")]
+          if invalid:raise SystemExit(f"out-of-scope history paths: {invalid}")
+          if any(p=="manzanita" or p.startswith("manzanita/") for p in changed):raise SystemExit("historical route changed")
+          PY2
+          pr_json="$(gh pr list --repo "$REPOSITORY" --head agent/manzanita-historical-release-census-025 --base main --state open --json number,headRefOid,isDraft --limit 2)"
+          test "$(printf '%s' "$pr_json" | jq 'length')" -eq 1
+          pr="$(printf '%s' "$pr_json" | jq -r '.[0].number')"
+          test "$(printf '%s' "$pr_json" | jq -r '.[0].headRefOid')" = "$QUALIFIED_HEAD"
+          if test "$(printf '%s' "$pr_json" | jq -r '.[0].isDraft')" = "true"; then gh pr ready "$pr" --repo "$REPOSITORY"; fi
+          gh pr merge "$pr" --repo "$REPOSITORY" --merge --match-head-commit "$QUALIFIED_HEAD" --subject "Merge Manzanita historical release and failure census" --body "Admit exact reachable-tree and current failed-run custody evidence while preserving both gaps as advanced but open, public bytes unchanged, release authority false, and canonical task-count effect none."
+          '''
+          path.write_text(text,encoding="utf-8")
+          PY
+
+      - name: Seal the permanent workflow
+        run: |
+          git config user.name "manzanita-history-census-admission-installer"
+          git config user.email "actions@users.noreply.github.com"
+          git add .github/workflows/manzanita-history-census.yml
+          git commit -m "Manzanita: bind history census admission to exact qualified head"
+          git push origin HEAD:agent/manzanita-historical-release-census-025
