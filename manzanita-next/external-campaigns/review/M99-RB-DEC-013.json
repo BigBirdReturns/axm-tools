@@ -1,0 +1,329 @@
+{
+  "schema": "axm-tools/manzanita-review-decision@1",
+  "decision_id": "M99-RB-DEC-013",
+  "packet_id": "M99-RB-PKT-013",
+  "board_id": "M99-CONTAINED-REVIEW-BOARD",
+  "board_version": "1.0.0",
+  "reviewed_ref": {
+    "binding": "validation_head",
+    "ref": "GITHUB_SHA"
+  },
+  "external_review_claim": false,
+  "seat_reviews": [
+    {
+      "seat_id": "board_chair",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The board chair finds the exact runner internally admissible as an evidence instrument for the ten external campaigns.",
+        "The board chair refuses to treat the runner, its qualification receipt, or synthetic fixtures as evidence that a real campaign occurred or that release standing changed."
+      ],
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-RUNNER",
+        "E-EC-QUALIFICATION"
+      ],
+      "uncertainty": "Every real campaign, canonical ledger amendment, public release, and external-effect decision remains outside this runner admission.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "creative_direction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The creative direction review finds the object consistently classified as an operator instrument rather than a performed campaign.",
+        "The review retains all physical, human, private, provider, field, deployment, score, and release holds."
+      ],
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-README",
+        "E-EC-QUALIFICATION"
+      ],
+      "uncertainty": "No campaign narrative is accepted without its actual operator, venue, procedure, observations, evidence, acceptance, and failure disposition.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "product_interaction",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "Initialization, evidence intake, observation, status, finalization, verification, proposal, and qualification are separate executable transactions.",
+        "No transaction can directly mutate the canonical ledger or authorize release."
+      ],
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-TESTS",
+        "E-EC-README"
+      ],
+      "uncertainty": "Usability by real campaign operators remains an external human campaign rather than a software inference.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "information_design",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The status transaction makes missing observations, missing evidence classes, absent bytes, failed hashes, unlinked observations, and nonpassing observations explicit.",
+        "The public receipt preserves evidence identity and claim scope without retaining local source paths."
+      ],
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-TESTS",
+        "E-EC-README"
+      ],
+      "uncertainty": "Comprehension by representative human operators remains unproved until the real human campaign is performed.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "typography",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The tranche makes no visual or typographic product claim.",
+        "The not-applicable gate is explicit and does not borrow finish standing from another surface."
+      ],
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-README"
+      ],
+      "uncertainty": "No visual-surface quality is evaluated by this command-line runner admission.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "motion",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The tranche makes no motion claim.",
+        "Operator-supplied timestamps remain evidence fields and do not manufacture temporal observation."
+      ],
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-RUNNER"
+      ],
+      "uncertainty": "Real interruption, recovery, and temporal behavior remain campaign observations.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "source_custody",
+      "disposition": "pass",
+      "findings": [
+        "Evidence custody preserves identifier, class, basename, actor, time, rights, scope, visibility, locator, byte count, and SHA-256.",
+        "Local paths and source bytes are omitted from public receipts, while optional operator-controlled readback verifies exact retained evidence."
+      ],
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-TESTS",
+        "E-EC-README"
+      ],
+      "uncertainty": "Rights and custody outside the operator-supplied record remain accountable to the real evidence custodian.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "field_operations",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The runner can record authority, access, safety, observation, work-or-no-work, completion, and acceptance as distinct field evidence.",
+        "The runner cannot grant access, safety authority, work authority, completion, or affected-actor acceptance."
+      ],
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-RUNNER",
+        "E-RC-LEDGER"
+      ],
+      "uncertainty": "No lawful field campaign has standing from this runner admission alone.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "accessibility",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "The contract identifies the actors, devices, software, focus, semantics, announcements, magnification, reduced-motion, and task-completion evidence required for real assistive-technology work.",
+        "The qualification receipt makes no claim that assistive-technology or affected-user operation occurred."
+      ],
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-QUALIFICATION",
+        "E-RC-LEDGER"
+      ],
+      "uncertainty": "Real assistive technologies, users, devices, browsers, and tasks remain untested until their campaign receipt exists.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "performance_resilience",
+      "disposition": "pass",
+      "findings": [
+        "The runner deterministically rejects missing requirements, tampered evidence, tampered receipts, duplicate identities, symlinks, invalid timestamps, unlinked observations, nonpassing observations, and unauthorized ledger transitions.",
+        "Qualification derives actual passed and open counts from the canonical ledger rather than a hard-coded campaign state."
+      ],
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-TESTS",
+        "E-EC-QUALIFICATION"
+      ],
+      "uncertainty": "Performance and resilience of each real campaign venue remain outside the runner’s synthetic qualification.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "security_privacy",
+      "disposition": "pass",
+      "findings": [
+        "Public receipts reject private and credential keys, raw evidence, file content, local paths, and implied external effects even when a payload checksum is otherwise valid.",
+        "Every receipt and proposed amendment preserves false public-release and ledger-mutation authority."
+      ],
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-TESTS",
+        "E-EC-README"
+      ],
+      "uncertainty": "Actual private-data custody, consent, deletion, provider credentials, and jurisdictional rights remain external campaigns.",
+      "veto_ids": []
+    },
+    {
+      "seat_id": "continuity_release",
+      "disposition": "pass_with_findings",
+      "findings": [
+        "A passed campaign receipt can create only a separate proposed one-row ledger amendment with release-authority review required.",
+        "The canonical ledger, release HOLD, public endpoint, deployed rollback, final score, and canonical task rows remain outside runner authority."
+      ],
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-QUALIFICATION",
+        "E-RC-CONTRACT",
+        "E-RC-LEDGER"
+      ],
+      "uncertainty": "Every actual campaign and release decision remains dependent on its own accountable receipt and authority review.",
+      "veto_ids": []
+    }
+  ],
+  "defects": [],
+  "vetoes": [],
+  "gate_disposition": {
+    "object_classification": {
+      "state": "pass",
+      "reason": "The object is a local-first evidence runner for ten external campaigns, and its qualification explicitly does not claim that any campaign occurred or passed.",
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-RUNNER",
+        "E-EC-QUALIFICATION"
+      ]
+    },
+    "actors_and_authority": {
+      "state": "pass",
+      "reason": "Campaign operator, evidence custodian, affected actor, provider or field authority, deployment operator, release authority, and cold successor retain separate observation, acceptance, amendment, and release authority.",
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-RUNNER",
+        "E-RC-CONTRACT",
+        "E-RC-LEDGER"
+      ]
+    },
+    "mechanism_fidelity": {
+      "state": "pass",
+      "reason": "The runner operates real workspace, evidence, observation, status, finalization, verification, and amendment mechanisms with hard completeness, evidence-linkage, digest, and authority gates.",
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-TESTS",
+        "E-EC-QUALIFICATION"
+      ]
+    },
+    "source_and_authorship_custody": {
+      "state": "pass",
+      "reason": "Evidence bytes remain operator-controlled while receipts preserve file identity, class, time, actor, rights, scope, visibility, locator, byte count, digest, and evidence-manifest checksum.",
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-TESTS",
+        "E-EC-README"
+      ]
+    },
+    "interaction_semantics": {
+      "state": "pass",
+      "reason": "The command interface exposes distinct initialization, evidence, observation, status, finalization, verification, amendment, and qualification transactions with no label-only substitution.",
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-README",
+        "E-EC-QUALIFICATION"
+      ]
+    },
+    "visual_and_typographic_finish": {
+      "state": "not_applicable",
+      "reason": "This gate is not applicable because the tranche is a command-line evidence runner and creates no visual or typographic product surface.",
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-README"
+      ]
+    },
+    "motion_and_temporal_continuity": {
+      "state": "not_applicable",
+      "reason": "This gate is not applicable because campaign times are operator-supplied evidence fields and the tranche creates no motion surface.",
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-RUNNER"
+      ]
+    },
+    "responsive_and_accessible_operation": {
+      "state": "partial",
+      "reason": "The runner is scriptable through a standard command interface, while actual assistive-technology, human, and physical-device campaigns remain the evidence this runner is designed to collect.",
+      "evidence_ids": [
+        "E-EC-CONTRACT",
+        "E-EC-RUNNER",
+        "E-RC-LEDGER"
+      ]
+    },
+    "performance_resilience_and_failure": {
+      "state": "pass",
+      "reason": "Missing evidence, missing observation classes, unlinked observations, tampered bytes, tampered receipts, nonpassing observations, duplicate identities, symlinks, invalid states, and unauthorized ledger transitions fail deterministically.",
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-TESTS",
+        "E-EC-QUALIFICATION"
+      ]
+    },
+    "security_privacy_rights_and_purpose": {
+      "state": "pass",
+      "reason": "Public receipts omit local paths and source bytes, reject prohibited keys and external-effect implications, retain visibility and rights, never self-authorize release or ledger mutation, and require separate authority review.",
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-TESTS",
+        "E-EC-README"
+      ]
+    },
+    "continuity_export_rollback_and_succession": {
+      "state": "partial",
+      "reason": "Deterministic portable receipts and bounded amendments pass, while every real campaign and any remaining public endpoint, deployed rollback, or independent successor operation retain their own external evidence requirements.",
+      "evidence_ids": [
+        "E-EC-RUNNER",
+        "E-EC-QUALIFICATION",
+        "E-RC-LEDGER"
+      ]
+    },
+    "qualification_receipts_and_public_effect": {
+      "state": "pass",
+      "reason": "The exact-head workflow retains the complete runner receipt while campaign-performed, physical-standing, ledger-mutation, public-release, public-effect, and constitutional-count-effect fields remain false or none.",
+      "evidence_ids": [
+        "E-EC-WORKFLOW",
+        "E-EC-QUALIFICATION",
+        "E-BOARD-CHARTER"
+      ]
+    }
+  },
+  "outcome": "admit_with_holds",
+  "admitted_claim": "The repository may admit the exact local-first external campaign runner, its ten-class contract, deterministic evidence and observation law, strict finalization, receipt verification, bounded proposed-ledger amendment, adversarial tests, and runner qualification receipt.",
+  "holds": [
+    "No assistive-technology, human, device, network, private, provider, field, archive, public-endpoint, or deployed-rollback campaign is performed by runner qualification.",
+    "No initialized workspace, synthetic fixture, complete form, green workflow, or successful process exit has physical or human standing.",
+    "No campaign receipt may enter the canonical release ledger without separate release-authority review of its source-linked evidence and proposed amendment.",
+    "Private-controlled evidence bytes remain outside Git and public artifacts; the runner qualifies only bounded metadata, rights, scope, digests, and operator-controlled readback.",
+    "No public release, deployed endpoint, production rollback, external effect, whole-product score, endorsement, or canonical task-count mutation is admitted.",
+    "The first real use of every campaign class requires its own operator, actual venue, versioned procedure, observations, evidence, acceptance, and failure disposition."
+  ],
+  "release_effect": "internal_candidate_only",
+  "authority_receipt": {
+    "deciding_seat": "release_authority",
+    "decision_scope": "Admit only the external campaign evidence runner and its internal qualification receipt.",
+    "prohibited_effects": [
+      "insurance denial, underwriting, premium setting, coverage triage, or parcel-risk scoring",
+      "property valuation, resident ranking, eligibility, funding, enforcement, inspection, or adverse action",
+      "evacuation, safety, entry, traffic, pruning, labor, work, remediation, completion, or institutional acceptance",
+      "canonical release-ledger mutation without separate authority review",
+      "public deployment, serving, or rollback",
+      "whole-product public qualification, external endorsement, 99-point score award, or canonical task-count mutation"
+    ]
+  },
+  "qualification_boundary": "A passing decision proves only that the runner can initialize, record, hash, validate, finalize, verify, and propose amendments under the ten-class contract. It does not prove that any real campaign occurred, that any canonical ledger row passed, or that public release standing changed.",
+  "control_question": "Can an accountable operator perform one named external campaign, retain every required observation and evidence class, verify exact bytes, record acceptance and failure disposition, and produce a receipt that release authority can review without exposing private evidence or inventing physical standing?"
+}

@@ -1,0 +1,442 @@
+{
+  "schema": "axm-tools/manzanita-external-campaign-contract@1",
+  "contract_id": "M99-EXTERNAL-CAMPAIGN-RUNNER-001",
+  "version": "1.0.0",
+  "classification": "local_first_external_evidence_runner",
+  "campaign_states": [
+    "HOLD",
+    "IN_PROGRESS",
+    "PASSED",
+    "FAILED",
+    "ABORTED"
+  ],
+  "observation_results": [
+    "pass",
+    "fail",
+    "hold",
+    "not_observed"
+  ],
+  "receipt_visibility": [
+    "public_safe",
+    "private_controlled"
+  ],
+  "campaigns": [
+    {
+      "id": "M99-PHYS-AT-001",
+      "class": "real_assistive_technology",
+      "object": "Real assistive-technology operation of the exact release candidate",
+      "required_actors": [
+        "assistive_technology_operator",
+        "affected_user_or_representative"
+      ],
+      "venue_requirements": [
+        "Named physical or remote device and operating system",
+        "Named browser and assistive technology with versions"
+      ],
+      "required_observation_types": [
+        "startup",
+        "navigation",
+        "focus",
+        "semantics",
+        "announcements",
+        "zoom_or_magnification",
+        "reduced_motion",
+        "task_completion"
+      ],
+      "required_evidence_classes": [
+        "device_identity",
+        "software_identity",
+        "observation_log",
+        "issue_or_acceptance_receipt"
+      ],
+      "pass_criteria": [
+        "All critical tasks are operable without hidden state",
+        "No critical or high unresolved accessibility defect",
+        "Affected user or accountable representative acceptance is recorded"
+      ],
+      "prohibited_claims": [
+        "General accessibility certification",
+        "Standing for untested assistive technologies, users, devices, browsers, or tasks"
+      ]
+    },
+    {
+      "id": "M99-PHYS-HUMAN-001",
+      "class": "human_comprehension_and_acceptance",
+      "object": "Human comprehension, uncertainty, authority, refusal, and handoff playtest",
+      "required_actors": [
+        "playtest_operator",
+        "representative_actor",
+        "release_observer"
+      ],
+      "venue_requirements": [
+        "Named session venue",
+        "Versioned task script and participant role"
+      ],
+      "required_observation_types": [
+        "orientation",
+        "source_comprehension",
+        "uncertainty_comprehension",
+        "authority_comprehension",
+        "refusal",
+        "handoff",
+        "export",
+        "task_completion"
+      ],
+      "required_evidence_classes": [
+        "task_script",
+        "session_log",
+        "participant_disposition",
+        "defect_or_acceptance_receipt"
+      ],
+      "pass_criteria": [
+        "Representative actors can identify evidence, uncertainty, authority, and refusal",
+        "No critical or high unresolved comprehension defect",
+        "Acceptance or bounded rejection is recorded"
+      ],
+      "prohibited_claims": [
+        "Population-wide usability",
+        "Clinical, legal, safety, eligibility, or institutional validation"
+      ]
+    },
+    {
+      "id": "M99-PHYS-DEVICE-001",
+      "class": "real_device_matrix",
+      "object": "Real device, browser, graphics, input, and operating-system matrix",
+      "required_actors": [
+        "device_campaign_operator",
+        "release_observer"
+      ],
+      "venue_requirements": [
+        "Named physical devices",
+        "Named browsers, operating systems, graphics stack, display, input, and network"
+      ],
+      "required_observation_types": [
+        "startup",
+        "layout",
+        "input",
+        "theme",
+        "export",
+        "local_file",
+        "resource_failure",
+        "recovery"
+      ],
+      "required_evidence_classes": [
+        "device_identity",
+        "software_identity",
+        "screenshots_or_video",
+        "observation_log",
+        "defect_or_acceptance_receipt"
+      ],
+      "pass_criteria": [
+        "Every required device profile completes the campaign",
+        "No critical or high unresolved device-specific defect",
+        "Rendered and exported bytes remain within the release boundary"
+      ],
+      "prohibited_claims": [
+        "Standing for untested devices or operating systems",
+        "Hardware certification"
+      ]
+    },
+    {
+      "id": "M99-PHYS-NETWORK-001",
+      "class": "actual_constrained_networks",
+      "object": "Actual slow, intermittent, offline, captive, metered, and recovery network campaign",
+      "required_actors": [
+        "network_campaign_operator",
+        "release_observer"
+      ],
+      "venue_requirements": [
+        "Named network path and impairment method",
+        "Recorded latency, bandwidth, loss, interruption, and recovery conditions"
+      ],
+      "required_observation_types": [
+        "baseline",
+        "slow",
+        "intermittent",
+        "offline",
+        "resource_loss",
+        "recovery",
+        "cache",
+        "export"
+      ],
+      "required_evidence_classes": [
+        "network_identity",
+        "impairment_receipt",
+        "observation_log",
+        "timing_receipt",
+        "defect_or_acceptance_receipt"
+      ],
+      "pass_criteria": [
+        "Candidate remains bounded and understandable under every required condition",
+        "No missing evidence becomes safe or complete",
+        "Recovery does not duplicate or corrupt state"
+      ],
+      "prohibited_claims": [
+        "Standing for untested networks",
+        "Availability SLA"
+      ]
+    },
+    {
+      "id": "M99-PHYS-PRIVATE-001",
+      "class": "private_projection_consent_export_and_deletion",
+      "object": "Controlled private projection, identity minimization, consent, refusal, export, and deletion campaign",
+      "required_actors": [
+        "private_data_custodian",
+        "affected_actor",
+        "release_observer"
+      ],
+      "venue_requirements": [
+        "Controlled private workspace",
+        "Named data-retention and deletion boundary"
+      ],
+      "required_observation_types": [
+        "intake",
+        "minimization",
+        "consent",
+        "refusal",
+        "projection",
+        "export",
+        "deletion",
+        "public_separation"
+      ],
+      "required_evidence_classes": [
+        "consent_or_refusal_receipt",
+        "private_custody_manifest",
+        "redaction_receipt",
+        "export_receipt",
+        "deletion_receipt"
+      ],
+      "pass_criteria": [
+        "Private bytes never enter public artifacts",
+        "Consent and refusal remain operative",
+        "Export and deletion are independently verified"
+      ],
+      "prohibited_claims": [
+        "Public disclosure of private evidence",
+        "Consent inferred from participation",
+        "Standing for untested data classes or jurisdictions"
+      ]
+    },
+    {
+      "id": "M99-PHYS-PROVIDER-001",
+      "class": "credentialed_provider_operations",
+      "object": "Credential custody, quota, cost, cache, rights, zero-key, outage, and terms campaign",
+      "required_actors": [
+        "provider_operator",
+        "source_custody",
+        "release_observer"
+      ],
+      "venue_requirements": [
+        "Approved credential store",
+        "Named provider account, budget, quota, rights, and alert boundary"
+      ],
+      "required_observation_types": [
+        "zero_key",
+        "valid_credential",
+        "quota",
+        "rate_limit",
+        "cost_limit",
+        "outage",
+        "terms_block",
+        "cache",
+        "revocation"
+      ],
+      "required_evidence_classes": [
+        "credential_custody_receipt",
+        "provider_request_receipt",
+        "quota_and_cost_receipt",
+        "rights_receipt",
+        "failure_receipt"
+      ],
+      "pass_criteria": [
+        "Secrets never enter retained public artifacts",
+        "Missing and failed providers remain explicit",
+        "Budget and rights blocks prevent unauthorized operation"
+      ],
+      "prohibited_claims": [
+        "Credential disclosure",
+        "Unlimited quota or cost",
+        "Provider endorsement",
+        "Standing beyond observed provider account and terms"
+      ]
+    },
+    {
+      "id": "M99-PHYS-FIELD-001",
+      "class": "lawful_field_operation",
+      "object": "Lawful access, safety, observation, work, completion, and affected-actor acceptance campaign",
+      "required_actors": [
+        "field_operator",
+        "affected_actor",
+        "safety_authority",
+        "release_observer"
+      ],
+      "venue_requirements": [
+        "Named lawful-access venue",
+        "Approved safety procedure, equipment, weather, and stop conditions"
+      ],
+      "required_observation_types": [
+        "authority",
+        "access",
+        "safety",
+        "observation",
+        "proposal",
+        "execution_or_no_work",
+        "completion",
+        "acceptance_or_refusal"
+      ],
+      "required_evidence_classes": [
+        "authority_receipt",
+        "safety_receipt",
+        "field_observation_receipt",
+        "work_or_no_work_receipt",
+        "acceptance_or_refusal_receipt"
+      ],
+      "pass_criteria": [
+        "Every field claim is tied to a real observation and authority",
+        "No public context becomes field truth by inference",
+        "Completion and acceptance remain separate receipts"
+      ],
+      "prohibited_claims": [
+        "Entry or work without authority",
+        "Survey, inspection, safety, legal, insurance, or completion standing beyond evidence"
+      ]
+    },
+    {
+      "id": "M99-PHYS-ARCHIVE-001",
+      "class": "independent_external_archive_and_cold_recovery",
+      "object": "Independent durable archive write, readback, digest, recovery, and account-loss campaign",
+      "required_actors": [
+        "continuity_operator",
+        "independent_archive_custodian",
+        "cold_successor"
+      ],
+      "venue_requirements": [
+        "Durable archive outside GitHub Actions retention",
+        "Independently controlled account or storage path"
+      ],
+      "required_observation_types": [
+        "write",
+        "metadata_readback",
+        "byte_readback",
+        "digest",
+        "recovery_path",
+        "account_independence",
+        "cold_recovery"
+      ],
+      "required_evidence_classes": [
+        "source_artifact_receipt",
+        "archive_metadata_receipt",
+        "byte_readback_receipt",
+        "digest_receipt",
+        "recovery_receipt"
+      ],
+      "pass_criteria": [
+        "Exact bytes and digest survive outside expiring storage",
+        "A cold successor can recover without the source account",
+        "Archive permissions and sharing state are recorded"
+      ],
+      "prohibited_claims": [
+        "Independent archive standing from a copy in the same account or ephemeral runner",
+        "Recovery standing without byte readback"
+      ]
+    },
+    {
+      "id": "M99-DEPLOY-PUBLIC-001",
+      "class": "exact_public_endpoint_bytes",
+      "object": "Exact public endpoint deployment and observed-byte campaign",
+      "required_actors": [
+        "release_authority",
+        "deployment_operator",
+        "release_observer"
+      ],
+      "venue_requirements": [
+        "Named public endpoint",
+        "Approved release window and immutable candidate archive"
+      ],
+      "required_observation_types": [
+        "predeploy",
+        "deploy",
+        "endpoint_identity",
+        "served_manifest",
+        "tls",
+        "privacy",
+        "smoke",
+        "postdeploy"
+      ],
+      "required_evidence_classes": [
+        "release_authority_receipt",
+        "deployment_receipt",
+        "endpoint_manifest",
+        "served_byte_receipt",
+        "smoke_receipt"
+      ],
+      "pass_criteria": [
+        "Every observed public byte matches the authorized candidate manifest",
+        "No private or held effect is exposed",
+        "Rollback target is available and verified"
+      ],
+      "prohibited_claims": [
+        "Public release from repository state alone",
+        "Endpoint standing without observed bytes and release authority"
+      ]
+    },
+    {
+      "id": "M99-DEPLOY-ROLLBACK-001",
+      "class": "real_deployed_rollback",
+      "object": "Real deployed rollback trigger, transition, exact-byte proof, recovery, and acceptance campaign",
+      "required_actors": [
+        "release_authority",
+        "deployment_operator",
+        "continuity_operator",
+        "release_observer"
+      ],
+      "venue_requirements": [
+        "The actual public deployment venue",
+        "Named rollback trigger, target, and recovery window"
+      ],
+      "required_observation_types": [
+        "trigger",
+        "candidate_before",
+        "rollback_command",
+        "transition",
+        "rollback_bytes",
+        "service_recovery",
+        "postrollback_smoke",
+        "authority_acceptance"
+      ],
+      "required_evidence_classes": [
+        "rollback_authority_receipt",
+        "deployment_log",
+        "served_byte_receipt",
+        "timing_receipt",
+        "postrollback_acceptance_receipt"
+      ],
+      "pass_criteria": [
+        "The exact rollback target becomes active",
+        "Observed public bytes match its manifest",
+        "Service and authority acceptance are recorded"
+      ],
+      "prohibited_claims": [
+        "Rollback standing from a local simulation",
+        "Successful rollback without observed endpoint bytes"
+      ]
+    }
+  ],
+  "authority": {
+    "may": [
+      "initialize a local campaign workspace",
+      "record operator-supplied actors, venue, procedure, observations, evidence hashes, acceptance, and failure disposition",
+      "verify local evidence bytes and deterministic receipts",
+      "generate a bounded proposed ledger amendment for separate release-authority review"
+    ],
+    "may_not": [
+      "perform a physical or human campaign by assertion",
+      "invent an operator, venue, procedure, observation, acceptance, or evidence receipt",
+      "copy private evidence into the repository or public artifact",
+      "mark a campaign passed while required observations or evidence classes are missing",
+      "apply an amendment directly to the canonical ledger or authorize public release"
+    ]
+  },
+  "claim_boundary": "The runner can create, validate, and package evidence supplied by accountable campaign operators. A synthetic test, initialized workspace, successful process exit, or complete form does not prove that a real campaign occurred.",
+  "control_question": "Can an accountable operator perform one named external campaign, retain every required observation and evidence class, verify exact bytes, record acceptance and failure disposition, and produce a receipt that release authority can review without exposing private evidence or inventing physical standing?"
+}
