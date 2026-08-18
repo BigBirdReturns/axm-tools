@@ -1,0 +1,234 @@
+name: Manzanita bounded photographic convergence
+
+on:
+  push:
+    branches: [agent/manzanita-public-convergence-v1-6]
+    paths:
+      - ".github/workflows/manzanita-convergence-build.yml"
+      - "programs/manzanita-public-convergence/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-public-convergence-v1-6
+  cancel-in-progress: false
+
+jobs:
+  converge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-public-convergence-v1-6
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install deterministic visual and browser dependencies
+        run: |
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Build the photographic public place fabric
+        run: |
+          set -euo pipefail
+          python programs/manzanita-public-convergence/build_public.py
+          python programs/manzanita-public-convergence/finalize_public.py
+      - name: Update the repository front door and permanent release workflows
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          root_readme = Path('README.md')
+          text = root_readme.read_text(encoding='utf-8')
+          row = '| [`manzanita/`](manzanita/) | Public-safe photographic place fabric with seven genuine apertures, image-registered conditions, five operational seats, assistance-first horticultural and wildfire remediation, an explicit adverse-use firewall, local export, and an Essential Attention handoff | [Place Fabric v1.6.0](https://bigbirdreturns.github.io/axm-tools/manzanita/) |'
+          pattern = r'^\| \[`manzanita/`\]\(manzanita/\) \|.*$'
+          if re.search(pattern, text, flags=re.M):
+              text = re.sub(pattern, row, text, count=1, flags=re.M)
+          else:
+              marker = '|------|--------------|-----------|'
+              text = text.replace(marker, marker + '\n' + row, 1)
+          root_readme.write_text(text, encoding='utf-8')
+
+          root_index = Path('index.html')
+          text = root_index.read_text(encoding='utf-8')
+          block = '''<div class="tool">\n  <div class="title"><a href="manzanita/">Manzanita Works · Photographic Place Fabric</a></div>\n  <div class="desc">A public-safe place fabric built around retained photographic donors, seven genuine apertures, image-registered environmental conditions, five operational seats, assistance-first horticultural and wildfire remediation, and a firewall against converting prevention context into automatic insurance denial or punitive property scoring.</div>\n  <a class="open" href="manzanita/">Open Manzanita Works →</a>\n</div>'''
+          pattern = re.compile(r'<div class="tool">\s*<div class="title"><a href="manzanita/">.*?</div>\s*<div class="desc">.*?</div>\s*<a class="open" href="manzanita/">.*?</a>\s*</div>', re.S)
+          if pattern.search(text):
+              text = pattern.sub(block, text, count=1)
+          else:
+              text = text.replace('</header>', '</header>\n\n' + block, 1)
+          root_index.write_text(text, encoding='utf-8')
+
+          check = Path('.github/workflows/manzanita-check.yml')
+          text = check.read_text(encoding='utf-8')
+          text = text.replace('Manzanita Works v1.4.1 Signal Sheet contract', 'Manzanita Works v1.6.0 Photographic Place Fabric contract')
+          text = text.replace('manzanita-signal-sheet-v1.4.1-screens', 'manzanita-place-fabric-v1.6.0-screens')
+          check.write_text(text, encoding='utf-8')
+
+          live = Path('.github/workflows/manzanita-live-check.yml')
+          text = live.read_text(encoding='utf-8')
+          text = text.replace('Manzanita Works v1.4.1 live Pages gate', 'Manzanita Works v1.6.0 live Pages gate')
+          text = text.replace('1.4.1', '1.6.0')
+          text = text.replace('signal-sheet', 'photographic-place-fabric')
+          text = text.replace('manzanita-live-screens', 'manzanita-v1.6.0-live-screens')
+          live.write_text(text, encoding='utf-8')
+          PY
+      - name: Qualify exact source, runtime, responsive behavior, and visual evidence
+        env:
+          MANZANITA_SCREENSHOT_DIR: /tmp/manzanita-v1.6.0-screens
+        run: |
+          set -euo pipefail
+          python manzanita/tests/public_contract_test.py
+          node --check manzanita/app.js
+          node --check manzanita/theme-init.js
+          node --check manzanita/assets/scene-data.js
+          python manzanita/tests/browser_test.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-place-fabric-v1.6.0-review
+          path: /tmp/manzanita-v1.6.0-screens
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit the exact public candidate
+        run: |
+          set -euo pipefail
+          git config user.name "manzanita-convergence-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add manzanita README.md index.html .github/workflows/manzanita-check.yml .github/workflows/manzanita-live-check.yml programs/manzanita-public-convergence
+          git commit -m "Manzanita: build photographic public place fabric v1.6.0"
+          echo "PRODUCT_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Move donor custody to the exact v1.6.0 route and preserve v1.4.1
+        run: |
+          python - <<'PY'
+          import copy
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          repo = Path.cwd()
+          custody = repo / 'programs/manzanita-99/custody'
+          contract_path = custody / 'CUSTODY_CONTRACT.json'
+          register_path = custody / 'DONOR_REGISTER.json'
+          observed_path = custody / 'OBSERVED_EXECUTION_LEDGER.json'
+          readme_path = custody / 'README.md'
+
+          contract = json.loads(contract_path.read_text(encoding='utf-8'))
+          old_guard = copy.deepcopy(contract['public_route_guard'])
+          historical = contract.setdefault('historical_public_route_guards', [])
+          if not any(row.get('release') == '1.4.1' for row in historical):
+              row = {
+                  'release': '1.4.1',
+                  'path': 'manzanita',
+                  'commit': '750ad90f40462ab442a546bdbc2c7f02c81e2b27',
+                  'tree': old_guard['tree'],
+                  'files': old_guard['files'],
+                  'claim_boundary': 'Exact predecessor rollback donor. Its public standing does not release the complete manzanita-next successor.',
+              }
+              historical.append(row)
+          historical.sort(key=lambda row: tuple(int(part) for part in row['release'].split('.')))
+
+          product_commit = os.environ['PRODUCT_COMMIT']
+          route_tree = subprocess.check_output(['git','rev-parse',f'{product_commit}:manzanita'], text=True).strip()
+          listing = subprocess.check_output(['git','ls-tree','-r',product_commit,'manzanita'], text=True)
+          files = {}
+          for line in listing.splitlines():
+              meta, path = line.split('\t', 1)
+              mode, kind, sha = meta.split()
+              if kind == 'blob':
+                  files[path] = {'git_blob_sha1': sha}
+          contract['version'] = '2.2.0'
+          contract['public_route_guard'] = {
+              'path': 'manzanita',
+              'release': '1.6.0',
+              'tree': route_tree,
+              'files': files,
+              'failure_message': 'The v1.6.0 public photographic route changed outside its release-authority transaction. Stop and investigate before admission.',
+          }
+          contract['observed_repository']['release_transition_base'] = '750ad90f40462ab442a546bdbc2c7f02c81e2b27'
+          contract['qualification_boundary'] = 'A passing custody workflow proves the exact current photographic public route, every explicitly guarded predecessor release, repo-resident donors, observed successor records, and the open-gap ledger agree. It does not close JDB99-001, release the complete manzanita-next successor, prove external campaigns, or change canonical task counts.'
+          contract_path.write_text(json.dumps(contract, indent=2) + '\n', encoding='utf-8')
+
+          register = json.loads(register_path.read_text(encoding='utf-8'))
+          register['observed_main_head'] = product_commit
+          donors = [row for row in register['donors'] if row.get('id') != 'manzanita-public-1.6.0']
+          for row in donors:
+              if row.get('id') == 'manzanita-public-1.4.1':
+                  row['archive_scope_ids'] = []
+                  row['anchors']['source_commit'] = '750ad90f40462ab442a546bdbc2c7f02c81e2b27'
+                  row['claim_boundary'] = 'Exact predecessor public rollback donor retained by commit, route tree, and file blob identities. It does not transfer complete-successor standing.'
+          current = {
+              'id': 'manzanita-public-1.6.0',
+              'class': 'historical_public_release',
+              'custody_state': 'archived_repo',
+              'archive_scope_ids': ['historical-public-route'],
+              'anchors': {
+                  'release': '1.6.0',
+                  'supersedes': '1.4.1',
+                  'source_commit': product_commit,
+                  'route_tree': route_tree,
+                  'qualification_blob': files['manzanita/QUALIFICATION.json']['git_blob_sha1'],
+                  'release_receipt_blob': files['manzanita/RELEASE_RECEIPT.json']['git_blob_sha1'],
+                  'photographic_donor_commit': '507ace9af2d2121cb93614158809ee5ff88437f2',
+              },
+              'claim_boundary': 'Current bounded public photographic convergence release. It combines retained public visual donors with admitted operating laws without releasing the complete manzanita-next successor or changing external-campaign or task-count standing.',
+          }
+          insert_at = next((i + 1 for i, row in enumerate(donors) if row.get('id') == 'manzanita-public-1.4.1'), 0)
+          donors.insert(insert_at, current)
+          register['donors'] = donors
+          register['qualification_boundary'] = 'A passing custody workflow proves current and predecessor public-route identities, repo-resident sources, donor anchors, observed successor records, and the explicit gap ledger agree. It does not close JDB99-001, release the complete manzanita-next successor, prove external campaigns, or change canonical task counts.'
+          register_path.write_text(json.dumps(register, indent=2) + '\n', encoding='utf-8')
+
+          observed = json.loads(observed_path.read_text(encoding='utf-8'))
+          observed['public_route_transition'] = {
+              'release': '1.6.0',
+              'release_class': 'bounded_public_photographic_convergence',
+              'source_commit': product_commit,
+              'route_tree': route_tree,
+              'photographic_donor_commit': '507ace9af2d2121cb93614158809ee5ff88437f2',
+              'successor_program_effect': 'none',
+              'external_campaign_effect': 'none',
+              'canonical_task_count_effect': 'none',
+          }
+          observed['claim_boundary'] = 'This ledger records observed merged successor operating objects and their admitted claim boundaries. The complete manzanita-next successor remains HOLD with ten external campaigns not performed. The separate v1.6.0 public photographic convergence transaction changes only the already public route and has no successor-program, external-campaign, or canonical-task-count effect.'
+          observed_path.write_text(json.dumps(observed, indent=2) + '\n', encoding='utf-8')
+
+          text = readme_path.read_text(encoding='utf-8')
+          section = f'''\n## Public photographic convergence transition\n\nManzanita Works v1.6.0 replaces the simplified v1.4.1 Signal Sheet route with a bounded photographic place fabric. Exact v1.4.1 bytes remain guarded at commit `750ad90f40462ab442a546bdbc2c7f02c81e2b27` and route tree `{old_guard['tree']}`. The current route is guarded at candidate commit `{product_commit}` and route tree `{route_tree}`. The release retains photographic donor commit `507ace9af2d2121cb93614158809ee5ff88437f2`, seven distinct aperture assets, image-registered conditions, five operational seats, the adverse-use firewall, and the Essential Attention handoff.\n\nThis transaction performs no `manzanita-next` external campaign, closes no custody gap, releases no private or physical standing, reconstructs no canonical backlog rows, and has no canonical task-count effect.\n'''
+          if '## Public photographic convergence transition' not in text:
+              text += section
+          readme_path.write_text(text, encoding='utf-8')
+          PY
+      - name: Rebuild and validate donor custody against the new route
+        run: |
+          set -euo pipefail
+          python programs/manzanita-99/custody/build_custody.py --repo-root .
+          python programs/manzanita-99/custody/validate_custody.py --repo-root .
+          python -m unittest discover -s programs/manzanita-99/custody/tests -p 'test_*.py'
+          python programs/manzanita-99/custody/audit_history.py --repo-root .
+      - name: Commit custody transition and deterministic manifests
+        run: |
+          set -euo pipefail
+          git add programs/manzanita-99/custody
+          git commit -m "Manzanita: preserve v1.4.1 and guard photographic v1.6.0"
+      - name: Remove temporary recovery surfaces and seal the review branch
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-visual-donor-export.yml
+          rm -f .github/workflows/manzanita-convergence-materialize.yml
+          rm -f .github/workflows/manzanita-p10-recovery.yml
+          rm -f .github/workflows/manzanita-live-browser-probe.yml
+          rm -f .github/workflows/manzanita-convergence-build.yml
+          rm -rf manzanita-convergence-preview manzanita-convergence-p10
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Manzanita: retire convergence transports and failed live probe"
+          fi
+          git push origin HEAD:agent/manzanita-public-convergence-v1-6
