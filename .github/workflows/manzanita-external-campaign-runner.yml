@@ -1,0 +1,250 @@
+name: Manzanita external campaign evidence runner
+
+on:
+  push:
+    branches:
+      - agent/manzanita-external-campaign-runner-024
+    paths:
+      - "manzanita-next/external-campaigns/**"
+      - ".github/workflows/manzanita-external-campaign-runner.yml"
+  pull_request:
+    paths:
+      - "manzanita-next/external-campaigns/**"
+      - ".github/workflows/manzanita-external-campaign-runner.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Qualify external campaign evidence runner
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove exact candidate and bounded path set
+        run: |
+          test "$(git rev-parse HEAD)" = "$REVIEW_HEAD_SHA"
+          git fetch --no-tags origin main
+          python - <<'PY'
+          import subprocess
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", "origin/main...HEAD"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          allowed = {".github/workflows/manzanita-external-campaign-runner.yml"}
+          invalid = [
+              path
+              for path in changed
+              if path not in allowed
+              and not path.startswith("manzanita-next/external-campaigns/")
+          ]
+          if invalid:
+              raise SystemExit(
+                  f"External-campaign candidate contains out-of-scope paths: {invalid}"
+              )
+          if not any(
+              path.startswith("manzanita-next/external-campaigns/")
+              for path in changed
+          ):
+              raise SystemExit("Candidate contains no external campaign runner object")
+          PY
+          git diff --quiet origin/main...HEAD -- manzanita
+          test -f manzanita-next/release-control/RELEASE_CONTRACT.json
+          test -f manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json
+          test -f programs/manzanita-99/review-board/BOARD_CHARTER.json
+
+      - name: Install exact schema and review dependencies
+        run: |
+          python -m pip install --disable-pip-version-check jsonschema
+
+      - name: Validate contract implementation and adversarial suite
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile \
+            manzanita-next/external-campaigns/campaign_runner.py \
+            manzanita-next/external-campaigns/tests/test_campaign_runner.py \
+            programs/manzanita-99/review-board/validate_review_board.py
+          python -m json.tool \
+            manzanita-next/external-campaigns/CAMPAIGN_CONTRACT.json \
+            > /dev/null
+          python -m json.tool \
+            manzanita-next/external-campaigns/review/M99-RB-PKT-013.json \
+            > /dev/null
+          python -m json.tool \
+            manzanita-next/external-campaigns/review/M99-RB-DEC-013.json \
+            > /dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from jsonschema import Draft202012Validator
+
+          root = Path("programs/manzanita-99/review-board")
+          for value_path, schema_path in (
+              (
+                  Path(
+                      "manzanita-next/external-campaigns/review/"
+                      "M99-RB-PKT-013.json"
+                  ),
+                  root / "review-packet.schema.json",
+              ),
+              (
+                  Path(
+                      "manzanita-next/external-campaigns/review/"
+                      "M99-RB-DEC-013.json"
+                  ),
+                  root / "review-decision.schema.json",
+              ),
+          ):
+              Draft202012Validator(
+                  json.loads(schema_path.read_text())
+              ).validate(json.loads(value_path.read_text()))
+          PY
+          python -m unittest discover \
+            -s manzanita-next/external-campaigns/tests \
+            -p "test_*.py"
+          python manzanita-next/external-campaigns/campaign_runner.py --help \
+            > /dev/null
+          for command in \
+            init add-evidence observe status finalize verify propose-ledger qualify
+          do
+            python manzanita-next/external-campaigns/campaign_runner.py \
+              "$command" --help > /dev/null
+          done
+
+      - name: Build the exact runner qualification receipt
+        run: |
+          rm -rf manzanita-next/external-campaigns/out
+          python manzanita-next/external-campaigns/campaign_runner.py qualify \
+            --contract \
+              manzanita-next/external-campaigns/CAMPAIGN_CONTRACT.json \
+            --ledger \
+              manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json \
+            --output \
+              manzanita-next/external-campaigns/out/RUNNER_QUALIFICATION.json
+
+      - name: Run the contained multidisciplinary review
+        run: |
+          python programs/manzanita-99/review-board/validate_review_board.py \
+            --repo-root . \
+            --packet \
+              manzanita-next/external-campaigns/review/M99-RB-PKT-013.json \
+            --decision \
+              manzanita-next/external-campaigns/review/M99-RB-DEC-013.json \
+            --receipt \
+              manzanita-next/external-campaigns/out/BOARD_DECISION_RECEIPT.json
+
+      - name: Prove exact-head runner and authority receipts
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          contract = json.loads(
+              Path(
+                  "manzanita-next/external-campaigns/CAMPAIGN_CONTRACT.json"
+              ).read_text()
+          )
+          ledger = json.loads(
+              Path(
+                  "manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json"
+              ).read_text()
+          )
+          receipt = json.loads(
+              Path(
+                  "manzanita-next/external-campaigns/out/"
+                  "RUNNER_QUALIFICATION.json"
+              ).read_text()
+          )
+          board = json.loads(
+              Path(
+                  "manzanita-next/external-campaigns/out/"
+                  "BOARD_DECISION_RECEIPT.json"
+              ).read_text()
+          )
+
+          contract_ids = [row["id"] for row in contract["campaigns"]]
+          ledger_ids = [row["id"] for row in ledger["campaigns"]]
+          passed = [
+              row["id"]
+              for row in ledger["campaigns"]
+              if row["state"] == "passed"
+          ]
+          open_campaigns = [
+              row["id"]
+              for row in ledger["campaigns"]
+              if row["state"] != "passed"
+          ]
+
+          assert receipt["schema"] == (
+              "axm-tools/manzanita-external-campaign-runner-qualification@1"
+          )
+          assert receipt["result"] == "PASS"
+          assert receipt["campaign_count"] == 10
+          assert receipt["campaign_ids"] == contract_ids == ledger_ids
+          assert receipt["passed_campaigns"] == passed
+          assert receipt["open_campaigns"] == open_campaigns
+          assert receipt["passed_campaign_count"] == len(passed)
+          assert receipt["open_campaign_count"] == len(open_campaigns)
+          assert len(passed) + len(open_campaigns) == 10
+          assert receipt["release_ledger"]["release_state"] == "HOLD"
+          assert receipt["campaign_performed_by_qualification"] is False
+          assert receipt["physical_standing"] is False
+          assert receipt["ledger_mutation_authorized"] is False
+          assert receipt["public_release_authorized"] is False
+          assert receipt["public_effect"] == "none"
+          assert receipt["constitutional_count_effect"] == "none"
+          assert len(receipt["source_manifest_sha256"]) == 64
+          assert len(receipt["payload_sha256"]) == 64
+          source_paths = {row["path"] for row in receipt["source_manifest"]}
+          assert {
+              "CAMPAIGN_CONTRACT.json",
+              "README.md",
+              "campaign_runner.py",
+              "tests/test_campaign_runner.py",
+              "review/M99-RB-PKT-013.json",
+              "review/M99-RB-DEC-013.json",
+          }.issubset(source_paths)
+
+          assert board["result"] == "PASS"
+          assert board["reviewed_head"] == os.environ["REVIEW_HEAD_SHA"]
+          assert board["packet_id"] == "M99-RB-PKT-013"
+          assert board["decision_id"] == "M99-RB-DEC-013"
+          assert board["outcome"] == "admit_with_holds"
+          assert board["release_effect"] == "internal_candidate_only"
+          assert board["constitutional_count_effect"] == "none"
+          assert board["seat_count"] == 12
+          assert board["open_vetoes"] == []
+          assert board["open_critical_or_high_defects"] == []
+          assert len(board["holds"]) >= 6
+          PY
+
+      - name: Retain runner contract source tests and review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-external-campaign-runner-${{ env.REVIEW_HEAD_SHA }}
+          path: |
+            manzanita-next/external-campaigns/README.md
+            manzanita-next/external-campaigns/CAMPAIGN_CONTRACT.json
+            manzanita-next/external-campaigns/campaign_runner.py
+            manzanita-next/external-campaigns/tests
+            manzanita-next/external-campaigns/review
+            manzanita-next/external-campaigns/out
+          if-no-files-found: error
+          retention-days: 90
