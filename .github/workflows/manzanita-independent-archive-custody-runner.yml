@@ -40,12 +40,15 @@ jobs:
           from pathlib import Path
 
           workflow = Path(".github/workflows/manzanita-independent-archive-custody-bootstrap.yml")
-          text = workflow.read_text(encoding="utf-8")
-          start = "          python - <<'PY'\n"
-          end = "\n          PY\n\n      - name: Prove the complete custody suite"
-          if text.count(start) != 1 or text.count(end) != 1:
-              raise SystemExit("Cannot locate the exact custody transformation once")
-          block = text.split(start, 1)[1].split(end, 1)[0]
+          lines = workflow.read_text(encoding="utf-8").splitlines()
+          start_indexes = [index for index, line in enumerate(lines) if line.strip() == "python - <<'PY'"]
+          if len(start_indexes) != 1:
+              raise SystemExit(f"Expected one transformation heredoc, observed {len(start_indexes)}")
+          start = start_indexes[0] + 1
+          end = next((index for index in range(start, len(lines)) if lines[index].strip() == "PY"), None)
+          if end is None:
+              raise SystemExit("Transformation heredoc has no closing marker")
+          block = "\n".join(lines[start:end])
           script = Path("/tmp/materialize-independent-archive.py")
           script.write_text(textwrap.dedent(block) + "\n", encoding="utf-8")
           subprocess.run([sys.executable, str(script)], check=True)
