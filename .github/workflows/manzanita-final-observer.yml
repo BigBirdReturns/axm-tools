@@ -1,0 +1,63 @@
+name: Manzanita final convergence observer
+
+on:
+  push:
+    branches: [agent/manzanita-convergence-observer-v2]
+    paths:
+      - ".github/workflows/manzanita-final-observer.yml"
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TARGET_BRANCH: agent/manzanita-public-convergence-v1-6
+      EXPECTED_HEAD: 929f42c722e33ffe33e01f40dfd77673ab57a062
+      PR_NUMBER: "117"
+    steps:
+      - name: Wait for the final sealed convergence run
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 100); do
+            row=$(gh run list --repo "$GH_REPO" \
+              --workflow manzanita-convergence-build-v5.yml \
+              --branch "$TARGET_BRANCH" \
+              --limit 30 \
+              --json databaseId,status,conclusion,headSha,createdAt,updatedAt,url \
+              --jq ".[] | select(.headSha == \"$EXPECTED_HEAD\")" | head -1)
+            if [ -n "$row" ]; then
+              status=$(printf '%s' "$row" | jq -r '.status')
+              if [ "$status" = "completed" ]; then
+                printf '%s\n' "$row" > /tmp/run.json
+                break
+              fi
+            fi
+            if [ "$attempt" = "100" ]; then
+              echo "Final convergence run did not complete in time"
+              exit 1
+            fi
+            sleep 15
+          done
+      - name: Publish the exact result to PR 117
+        run: |
+          run_id=$(jq -r '.databaseId' /tmp/run.json)
+          status=$(jq -r '.status' /tmp/run.json)
+          conclusion=$(jq -r '.conclusion // ""' /tmp/run.json)
+          head_sha=$(jq -r '.headSha' /tmp/run.json)
+          url=$(jq -r '.url' /tmp/run.json)
+          gh pr comment "$PR_NUMBER" --repo "$GH_REPO" --body "Final sealed convergence run \`$run_id\` completed with status \`$status\`, conclusion \`$conclusion\`, head \`$head_sha\`: $url"
+          if [ "$conclusion" != "success" ]; then
+            gh run view "$run_id" --repo "$GH_REPO" --log-failed > /tmp/failed.log || true
+            tail -c 50000 /tmp/failed.log > /tmp/failed-tail.log
+            gh pr comment "$PR_NUMBER" --repo "$GH_REPO" --body-file /tmp/failed-tail.log
+            exit 1
+          fi
