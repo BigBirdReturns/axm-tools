@@ -1,0 +1,69 @@
+name: Essential Capacity one-shot materialization
+
+on:
+  push:
+    branches:
+      - "agent/essential-capacity-v0-1"
+    paths:
+      - ".github/materialize/essential-capacity/**"
+      - ".github/workflows/essential-capacity-materialize.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: essential-capacity-v0-1-materialize
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/essential-capacity-v0-1
+          fetch-depth: 0
+      - name: Wait for the complete bounded payload
+        id: ready
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=.github/materialize/essential-capacity
+          for part in 00 01 02 03 04 05 06; do
+            if [[ ! -f "$root/part-$part" ]]; then
+              echo "ready=false" >> "$GITHUB_OUTPUT"
+              echo "Payload is not complete; part-$part is not present."
+              exit 0
+            fi
+          done
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+      - name: Materialize the exact candidate
+        if: steps.ready.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=.github/materialize/essential-capacity
+          cat "$root"/part-* > /tmp/essential-capacity.b64
+          base64 --decode /tmp/essential-capacity.b64 > /tmp/essential-capacity.tar.gz
+          echo "5e7e423be9659bb465cf7918715f914844708f1b52f3a217e8853f40b03b983b  /tmp/essential-capacity.tar.gz" | sha256sum --check --strict
+          tar -xzf /tmp/essential-capacity.tar.gz -C .
+          python capacity-commons/scripts/validate.py
+          node --check capacity-commons/app.js
+      - name: Replace staging with the qualified source tree
+        if: steps.ready.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .github/materialize/essential-capacity
+          rm -f .github/workflows/essential-capacity-materialize.yml
+          git config user.name "essential-capacity-materializer"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Exact candidate was already materialized."
+            exit 0
+          fi
+          git commit -m "Essential Capacity: materialize the qualified community commons candidate"
+          git push origin HEAD:agent/essential-capacity-v0-1
