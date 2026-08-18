@@ -1,0 +1,375 @@
+name: Manzanita v1.6.0 exact visual admission and release
+
+on:
+  push:
+    branches: [agent/manzanita-public-convergence-v1-6]
+    paths:
+      - ".github/workflows/manzanita-final-admission.yml"
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: manzanita-v1-6-0-final-admission
+  cancel-in-progress: false
+
+jobs:
+  admit-release-prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      BRANCH: agent/manzanita-public-convergence-v1-6
+      PR_NUMBER: "117"
+      PUBLIC_URL: https://bigbirdreturns.github.io/axm-tools/manzanita/
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-public-convergence-v1-6
+          fetch-depth: 0
+      - name: Wait for the sealed candidate and rendered review evidence
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 90); do
+            git fetch origin "$BRANCH" main
+            git reset --hard "origin/$BRANCH"
+            if grep -q 'data-release="1.6.0"' manzanita/index.html 2>/dev/null \
+              && grep -q 'data-visual-system="photographic-place-fabric"' manzanita/index.html 2>/dev/null \
+              && test -f review/manzanita-v1.6.0/REVIEW_RECEIPT.json \
+              && test -f review/manzanita-v1.6.0/contact-sheet.jpg \
+              && ! test -f .github/workflows/manzanita-convergence-build-v5.yml; then
+              break
+            fi
+            if [ "$attempt" = "90" ]; then
+              echo "The exact candidate, review packet, or sealed cleanup state did not materialize"
+              exit 1
+            fi
+            sleep 10
+          done
+      - name: Reconcile with the latest main before final admission
+        run: |
+          set -euo pipefail
+          git config user.name "manzanita-admission-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git merge --no-edit origin/main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install exact qualification dependencies
+        run: |
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Re-run every source, behavior, photographic, registration, and rendered gate
+        env:
+          MANZANITA_SCREENSHOT_DIR: /tmp/manzanita-final-admission/browser
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/manzanita-final-admission
+          python programs/manzanita-public-convergence/visual_substance_test.py \
+            --root manzanita \
+            --output /tmp/manzanita-final-admission/PHOTOGRAPHIC_SUBSTANCE.json
+          python manzanita/tests/public_contract_test.py
+          node --check manzanita/app.js
+          node --check manzanita/theme-init.js
+          node --check manzanita/assets/scene-data.js
+          python manzanita/tests/browser_test.py
+          python programs/manzanita-public-convergence/rendered_visual_floor.py \
+            --output /tmp/manzanita-final-admission/rendered
+      - name: Bind human-review evidence and exact route identities
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import shutil
+          import subprocess
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          review=Path('review/manzanita-v1.6.0')
+          evidence=Path('/tmp/manzanita-final-admission/review')
+          shutil.copytree(review,evidence,dirs_exist_ok=True)
+          route_tree=subprocess.check_output(['git','rev-parse','HEAD:manzanita'],text=True).strip()
+          listing=subprocess.check_output(['git','ls-tree','-r','HEAD','manzanita'],text=True)
+          blobs={}
+          for line in listing.splitlines():
+              meta,path=line.split('\t',1);_,kind,sha=meta.split()
+              if kind=='blob':blobs[path]=sha
+          review_files={}
+          for path in sorted(review.rglob('*')):
+              if path.is_file():
+                  payload=path.read_bytes()
+                  review_files[path.relative_to(review).as_posix()]={'bytes':len(payload),'sha256':hashlib.sha256(payload).hexdigest()}
+          receipt={
+              'schema':'manzanita-works/public-admission@1',
+              'release':'1.6.0',
+              'release_class':'bounded_public_photographic_convergence',
+              'admitted_at':datetime.now(timezone.utc).isoformat(),
+              'candidate_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'route_tree':route_tree,
+              'route_blobs':blobs,
+              'photographic_donor_commit':'507ace9af2d2121cb93614158809ee5ff88437f2',
+              'predecessor':{
+                  'release':'1.4.1',
+                  'source_commit':'750ad90f40462ab442a546bdbc2c7f02c81e2b27',
+                  'route_tree':'f6ea68bd4c5e07919277a099039354a5920d7b2b',
+              },
+              'gates':{
+                  'exact_static_contract':'PASS',
+                  'javascript_parse':'PASS',
+                  'responsive_browser_campaign':'PASS',
+                  'photographic_substance':'PASS',
+                  'seven_distinct_aperture_assets':'PASS',
+                  'image_registration_shared_box':'PASS',
+                  'rendered_composition_floor':'PASS',
+                  'compact_320_text_200':'PASS',
+                  'human_review_packet_present':'PASS',
+              },
+              'review_evidence':review_files,
+              'authority':{
+                  'successor_program_effect':'none',
+                  'external_campaign_effect':'none',
+                  'canonical_task_count_effect':'none',
+                  'complete_manzanita_next_release':False,
+              },
+              'control_question':'Does the exact rendered public object now carry the photographic place, genuine aperture changes, registered conditions, operational seats, assistance-first path, adverse-use firewall, and durable handoff that the development estate actually produced?',
+          }
+          target=Path('programs/manzanita-public-convergence/ADMISSION_RECEIPT.json')
+          target.write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
+          Path('/tmp/manzanita-final-admission/ADMISSION_RECEIPT.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
+          PY
+      - name: Remove review publication and every remaining temporary actuator
+        run: |
+          set -euo pipefail
+          rm -rf review/manzanita-v1.6.0
+          rm -f .github/workflows/manzanita-final-admission.yml
+          rm -f .github/workflows/manzanita-convergence-*.yml
+          rm -f .github/workflows/manzanita-visual-donor-export.yml
+          rm -f .github/workflows/manzanita-p10-recovery.yml
+          rm -f .github/workflows/manzanita-live-browser-probe.yml
+      - name: Record the public convergence admission inside donor custody
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          from datetime import datetime,timezone
+          from pathlib import Path
+          route_tree=subprocess.check_output(['git','rev-parse','HEAD:manzanita'],text=True).strip()
+          value={
+              'schema':'axm-tools/manzanita-public-convergence-admission@1',
+              'release':'1.6.0',
+              'admitted_at':datetime.now(timezone.utc).isoformat(),
+              'candidate_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'route_tree':route_tree,
+              'admission_receipt':'programs/manzanita-public-convergence/ADMISSION_RECEIPT.json',
+              'predecessor_release':'1.4.1',
+              'photographic_donor_commit':'507ace9af2d2121cb93614158809ee5ff88437f2',
+              'successor_program_effect':'none',
+              'external_campaign_effect':'none',
+              'canonical_task_count_effect':'none',
+          }
+          Path('programs/manzanita-99/custody/PUBLIC_CONVERGENCE_ADMISSION.json').write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8')
+          PY
+          python programs/manzanita-99/custody/build_custody.py --repo-root .
+          python programs/manzanita-99/custody/validate_custody.py --repo-root .
+          python -m unittest discover -s programs/manzanita-99/custody/tests -p 'test_*.py'
+          python programs/manzanita-99/custody/audit_history.py --repo-root .
+      - name: Commit and push the exact final review head
+        run: |
+          set -euo pipefail
+          git add -A
+          git commit -m "Manzanita: admit photographic public place fabric v1.6.0"
+          FINAL_HEAD=$(git rev-parse HEAD)
+          echo "FINAL_HEAD=$FINAL_HEAD" >> "$GITHUB_ENV"
+          git push origin HEAD:"$BRANCH"
+      - name: Wait for exact-head static and custody qualification
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          import time
+
+          repo=os.environ['GH_REPO'];head=os.environ['FINAL_HEAD']
+          required={
+              'Manzanita Works v1.6.0 Photographic Place Fabric contract',
+              'Manzanita donor custody v2',
+          }
+          deadline=time.time()+1500
+          last=[]
+          while time.time()<deadline:
+              payload=subprocess.check_output(['gh','api',f'repos/{repo}/actions/runs?head_sha={head}&per_page=100'],text=True)
+              runs=json.loads(payload).get('workflow_runs',[])
+              last=[{'name':r.get('name'),'status':r.get('status'),'conclusion':r.get('conclusion'),'id':r.get('id')} for r in runs]
+              by_name={}
+              for row in last:by_name.setdefault(row['name'],[]).append(row)
+              failed=[];complete=[]
+              for name in required:
+                  rows=by_name.get(name,[])
+                  if any(row['conclusion'] in {'failure','cancelled','timed_out','action_required'} for row in rows):failed.append(name)
+                  if any(row['status']=='completed' and row['conclusion']=='success' for row in rows):complete.append(name)
+              if failed:
+                  raise SystemExit(f'Required exact-head workflow failed: {failed}\n{json.dumps(last,indent=2)}')
+              if set(complete)==required:
+                  print(json.dumps(last,indent=2));break
+              time.sleep(10)
+          else:
+              raise SystemExit(f'Timed out waiting for exact-head qualification:\n{json.dumps(last,indent=2)}')
+          PY
+      - name: Update and merge the admitted pull request
+        run: |
+          cat > /tmp/pr-body.md <<EOF
+          ## Object
+
+          Bounded public photographic convergence release for the existing Manzanita route. This replaces the simplified v1.4.1 Signal Sheet with a photographic place fabric while preserving v1.4.1 as the exact rollback donor and leaving the complete \`manzanita-next\` successor on HOLD.
+
+          ## Admitted public result
+
+          - exact retained photographic donor from v1.1.2 commit \`507ace9af2d2121cb93614158809ee5ff88437f2\`;
+          - seven distinct aperture assets for useful plant, household, property, street, neighborhood, region, and stewardship;
+          - image and analytical registration in one normalized coordinate system;
+          - eight independent conditions and five operational seats;
+          - assistance-first horticultural and wildfire sequence;
+          - explicit firewall against automatic insurance denial, unrelated property scoring, resident ranking, eligibility punishment, or punitive enforcement;
+          - URL-addressable state, local JSON export, print, light/dark themes, reduced motion, mobile operation, and 320-pixel 200-percent reflow;
+          - Essential Attention handoff carrying public-safe aperture and seat context;
+          - zero backend and zero external-effect adapters.
+
+          ## Exact-head evidence
+
+          Final review head: \`$FINAL_HEAD\`
+
+          Admission receipt: \`programs/manzanita-public-convergence/ADMISSION_RECEIPT.json\`
+
+          Donor-custody admission: \`programs/manzanita-99/custody/PUBLIC_CONVERGENCE_ADMISSION.json\`
+
+          Static, browser, photographic-substance, image-registration, rendered-composition, compact-text, predecessor-custody, and exact-head workflows pass on this head. The six-state review images are retained in this release run's Actions artifact and hashed in the admission receipt rather than published through GitHub Pages.
+
+          ## Authority boundary
+
+          This release performs no \`manzanita-next\` external campaign, closes no custody gap, releases no private or physical standing, reconstructs no canonical backlog rows, and has no canonical task-count effect. All ten complete-successor external campaigns remain \`not_performed\`.
+          EOF
+          gh pr edit "$PR_NUMBER" --repo "$GH_REPO" --title "Manzanita: photographic public place fabric v1.6.0" --body-file /tmp/pr-body.md
+          gh pr ready "$PR_NUMBER" --repo "$GH_REPO" || true
+          gh pr comment "$PR_NUMBER" --repo "$GH_REPO" --body "Exact rendered admission passed on head \`$FINAL_HEAD\`. The review packet is retained in this workflow artifact and its hashes are sealed in the repository admission receipt. Proceeding through squash merge, Pages deployment, and independent live-byte replay."
+          gh pr merge "$PR_NUMBER" --repo "$GH_REPO" --squash --delete-branch=false \
+            --subject "Manzanita: photographic public place fabric v1.6.0 (#117)" \
+            --body "Replace the simplified Signal Sheet with a bounded photographic place fabric carrying seven genuine apertures, image-registered conditions, five operational seats, assistance-first remediation, an adverse-use firewall, local export, and an Essential Attention handoff. Preserve v1.4.1 as exact rollback donor and preserve complete-successor HOLD, ten unperformed external campaigns, and zero canonical task-count effect."
+          MERGE_SHA=$(gh pr view "$PR_NUMBER" --repo "$GH_REPO" --json mergeCommit --jq '.mergeCommit.oid')
+          test -n "$MERGE_SHA"
+          echo "MERGE_SHA=$MERGE_SHA" >> "$GITHUB_ENV"
+      - name: Wait for the exact Pages deployment
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          import time
+
+          repo=os.environ['GH_REPO'];head=os.environ['MERGE_SHA']
+          deadline=time.time()+1200
+          last=[]
+          while time.time()<deadline:
+              payload=subprocess.check_output(['gh','api',f'repos/{repo}/actions/runs?head_sha={head}&per_page=100'],text=True)
+              runs=json.loads(payload).get('workflow_runs',[])
+              last=[{'name':r.get('name'),'status':r.get('status'),'conclusion':r.get('conclusion'),'id':r.get('id')} for r in runs]
+              pages=[r for r in runs if r.get('name')=='PTA tracker fetch + deploy']
+              if any(r.get('conclusion') in {'failure','cancelled','timed_out'} for r in pages):
+                  raise SystemExit(f'Pages deployment failed: {json.dumps(last,indent=2)}')
+              passed=[r for r in pages if r.get('status')=='completed' and r.get('conclusion')=='success']
+              if passed:
+                  newest=max(passed,key=lambda row:row['id'])
+                  print(json.dumps(last,indent=2))
+                  print(f"PAGES_RUN_ID={newest['id']}")
+                  with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as handle:handle.write(f"PAGES_RUN_ID={newest['id']}\n")
+                  break
+              time.sleep(10)
+          else:
+              raise SystemExit(f'Timed out waiting for Pages deployment: {json.dumps(last,indent=2)}')
+          PY
+      - name: Observe exact public bytes and replay the rendered browser campaign
+        env:
+          MANZANITA_URL: https://bigbirdreturns.github.io/axm-tools/manzanita/?release=1.6.0-${{ env.MERGE_SHA }}
+          MANZANITA_SCREENSHOT_DIR: /tmp/manzanita-final-admission/live-browser
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            code=$(curl -L -sS -o /tmp/manzanita-live.html -w '%{http_code}' "$MANZANITA_URL" || true)
+            if [ "$code" = "200" ] \
+              && grep -q 'data-release="1.6.0"' /tmp/manzanita-live.html \
+              && grep -q 'data-visual-system="photographic-place-fabric"' /tmp/manzanita-live.html; then
+              break
+            fi
+            if [ "$attempt" = "60" ]; then
+              echo "Live endpoint did not serve the exact v1.6.0 release"
+              exit 1
+            fi
+            sleep 10
+          done
+          python manzanita/tests/browser_test.py
+          python programs/manzanita-public-convergence/rendered_visual_floor.py \
+            --target "$MANZANITA_URL" \
+            --output /tmp/manzanita-final-admission/live-rendered
+      - name: Rehash every qualified public file and retain the live receipt on main
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import urllib.request
+          from datetime import datetime,timezone
+          from pathlib import Path
+
+          qualification=json.loads(Path('manzanita/QUALIFICATION.json').read_text(encoding='utf-8'))
+          base='https://bigbirdreturns.github.io/axm-tools/manzanita/'
+          observed={}
+          for name,expected in qualification['files'].items():
+              url=base+name
+              with urllib.request.urlopen(url,timeout=60) as response:payload=response.read()
+              digest=hashlib.sha256(payload).hexdigest()
+              if len(payload)!=expected['bytes'] or digest!=expected['sha256']:
+                  raise SystemExit(f'Live byte mismatch for {name}: {len(payload)} {digest} != {expected}')
+              observed[name]={'bytes':len(payload),'sha256':digest,'url':url}
+          receipt={
+              'schema':'manzanita-works/live-release-receipt@1',
+              'release':'1.6.0',
+              'observed_at':datetime.now(timezone.utc).isoformat(),
+              'public_route':base,
+              'merge_commit':os.environ['MERGE_SHA'],
+              'pages_run_id':os.environ['PAGES_RUN_ID'],
+              'result':'PASS',
+              'release_marker':'1.6.0',
+              'visual_system_marker':'photographic-place-fabric',
+              'files':observed,
+              'browser_campaign':'PASS',
+              'rendered_visual_floor':'PASS',
+              'predecessor_release':'1.4.1',
+              'successor_program_effect':'none',
+              'external_campaign_effect':'none',
+              'canonical_task_count_effect':'none',
+          }
+          Path('/tmp/manzanita-final-admission/LIVE_RECEIPT.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
+          PY
+          git fetch origin main
+          git checkout -B main origin/main
+          cp /tmp/manzanita-final-admission/LIVE_RECEIPT.json programs/manzanita-public-convergence/LIVE_RECEIPT.json
+          git config user.name "manzanita-live-proof-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add programs/manzanita-public-convergence/LIVE_RECEIPT.json
+          git commit -m "Manzanita: retain exact v1.6.0 live release proof"
+          git push origin main
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v1.6.0-final-admission-and-live-proof
+          path: /tmp/manzanita-final-admission
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retire the merged convergence branch
+        run: git push origin --delete "$BRANCH" || true
