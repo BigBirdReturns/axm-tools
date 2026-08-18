@@ -1,0 +1,67 @@
+name: Trigger final clean-head Manzanita custody requalification
+
+on:
+  push:
+    branches:
+      - agent/manzanita-donor-custody-v2-actual
+    paths:
+      - ".github/workflows/manzanita-custody-final-requalification-trigger.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-custody-final-requalification-trigger
+  cancel-in-progress: false
+
+jobs:
+  trigger:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-donor-custody-v2-actual
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Wait for permanent workflow and temporary carrier removal
+        run: |
+          for attempt in $(seq 1 90)
+          do
+            git fetch origin agent/manzanita-donor-custody-v2-actual
+            git reset --hard origin/agent/manzanita-donor-custody-v2-actual
+            if test -f .github/workflows/manzanita-donor-custody-v2.yml \
+              && ! test -f .github/workflows/manzanita-donor-custody-v2-actual-bootstrap.yml \
+              && ! test -f .github/workflows/manzanita-donor-custody-v2-admission-bootstrap.yml \
+              && ! test -f .github/workflows/manzanita-history-census-bootstrap.yml \
+              && ! test -f .github/workflows/manzanita-history-census-admission-installer.yml \
+              && ! test -f .github/workflows/manzanita-custody-orchestrator-cleanup.yml
+            then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Custody branch did not reach a clean permanent state" >&2
+          exit 1
+
+      - name: Bind a fresh permanent workflow run to the clean head
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path=Path(".github/workflows/manzanita-donor-custody-v2.yml")
+          text=path.read_text(encoding="utf-8")
+          marker="# clean-head-requalification: 1\n"
+          if marker not in text:
+              text=marker+text
+          path.write_text(text,encoding="utf-8")
+          PY
+          rm .github/workflows/manzanita-custody-final-requalification-trigger.yml
+          git config user.name "manzanita-custody-final-requalification"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            .github/workflows/manzanita-custody-final-requalification-trigger.yml \
+            .github/workflows/manzanita-donor-custody-v2.yml
+          git commit -m "Manzanita: requalify custody on the clean permanent head"
+          git push origin HEAD:agent/manzanita-donor-custody-v2-actual
