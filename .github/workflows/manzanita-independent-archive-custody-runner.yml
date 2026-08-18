@@ -3,8 +3,8 @@ name: Materialize Manzanita independent archive custody
 on:
   pull_request:
     paths:
-      - ".github/workflows/manzanita-independent-archive-custody-bootstrap.yml"
       - ".github/workflows/manzanita-independent-archive-custody-runner.yml"
+      - ".github/scripts/materialize-independent-archive-custody.py"
       - "programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_TRIGGER.txt"
   workflow_dispatch: {}
 
@@ -31,37 +31,15 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Execute the source-controlled custody transformation
-        run: |
-          python - <<'PY'
-          import subprocess
-          import sys
-          from pathlib import Path
-
-          workflow = Path(".github/workflows/manzanita-independent-archive-custody-bootstrap.yml")
-          lines = workflow.read_text(encoding="utf-8").splitlines()
-          start_indexes = [index for index, line in enumerate(lines) if line.strip() == "python - <<'PY'"]
-          if not start_indexes:
-              raise SystemExit("Custody transformation heredoc is missing")
-          start = start_indexes[0] + 1
-          end = next((index for index in range(start, len(lines)) if lines[index].strip() == "PY"), None)
-          if end is None:
-              raise SystemExit("Transformation heredoc has no closing marker")
-          normalized = []
-          for line in lines[start:end]:
-              if line and not line.startswith("          "):
-                  raise SystemExit(f"Transformation line escaped YAML block indentation: {line!r}")
-              normalized.append(line[10:] if line else "")
-          script = Path("/tmp/materialize-independent-archive.py")
-          script.write_text("\n".join(normalized) + "\n", encoding="utf-8")
-          subprocess.run([sys.executable, str(script)], check=True)
-          PY
+      - name: Materialize the provider-neutral custody receipt
+        run: python .github/scripts/materialize-independent-archive-custody.py
 
       - name: Prove the complete custody suite and partial boundary
         run: |
           python -m json.tool programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json > /dev/null
           python -m json.tool programs/manzanita-99/custody/DONOR_REGISTER.json > /dev/null
           python -m py_compile \
+            .github/scripts/materialize-independent-archive-custody.py \
             programs/manzanita-99/custody/build_custody.py \
             programs/manzanita-99/custody/validate_custody.py \
             programs/manzanita-99/custody/audit_history.py \
@@ -87,8 +65,17 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          register = json.loads(Path("programs/manzanita-99/custody/DONOR_REGISTER.json").read_text())
-          open_gaps = [row["id"] for row in register["gaps"] if row["required_for_close"] and row["state"] != "closed"]
+
+          register = json.loads(
+              Path("programs/manzanita-99/custody/DONOR_REGISTER.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          open_gaps = [
+              row["id"]
+              for row in register["gaps"]
+              if row["required_for_close"] and row["state"] != "closed"
+          ]
           assert open_gaps == [
               "M99-CUSTODY-GAP-001",
               "M99-CUSTODY-GAP-003",
@@ -100,6 +87,7 @@ jobs:
               "M99-CUSTODY-GAP-009",
               "M99-CUSTODY-GAP-010",
           ]
+          assert sum(row["state"] == "closed" for row in register["gaps"]) == 1
           PY
 
       - name: Commit only permanent provider-neutral custody evidence
@@ -108,6 +96,15 @@ jobs:
             programs/manzanita-99/custody/CUSTODY_MANIFEST.json \
             programs/manzanita-99/custody/HISTORY_AUDIT.json
           find programs/manzanita-99/custody -type d -name __pycache__ -prune -exec rm -rf {} +
+          if git diff --quiet -- \
+            programs/manzanita-99/custody/DONOR_REGISTER.json \
+            programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json \
+            programs/manzanita-99/custody/README.md \
+            programs/manzanita-99/custody/tests/test_independent_archive.py
+          then
+            echo "Permanent custody evidence is already materialized."
+            exit 0
+          fi
           git config user.name "manzanita-independent-archive-custody"
           git config user.email "actions@users.noreply.github.com"
           git add \
