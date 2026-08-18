@@ -1,0 +1,80 @@
+name: Reconcile Manzanita donor custody with current main
+
+on:
+  push:
+    branches:
+      - agent/manzanita-donor-custody-002
+    paths:
+      - ".github/workflows/manzanita-donor-custody-reconcile.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-donor-custody-reconcile
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-donor-custody-002
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Merge current main and advance the custody snapshot
+        run: |
+          git fetch --no-tags origin main
+          git config user.name "manzanita-custody-reconciler"
+          git config user.email "actions@users.noreply.github.com"
+          git merge --no-edit origin/main
+          python - <<'PY'
+          from pathlib import Path
+
+          old = "c21d48f1086f66bd7778c4b0c7605f5cb648e561"
+          new = "591f425d35fd1f946bab59039d02c93de995fdd9"
+          for relative in (
+              "programs/manzanita-99/custody/DONOR_REGISTER.json",
+              ".github/workflows/manzanita-donor-custody.yml",
+          ):
+              path = Path(relative)
+              text = path.read_text(encoding="utf-8")
+              if old not in text:
+                  raise SystemExit(f"Expected snapshot identity is absent from {relative}")
+              path.write_text(text.replace(old, new), encoding="utf-8")
+          PY
+
+      - name: Prove reconciled custody machinery
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m json.tool programs/manzanita-99/custody/DONOR_REGISTER.json > /dev/null
+          python -m unittest discover \
+            -s programs/manzanita-99/custody/tests \
+            -p "test_*.py"
+          rm -f programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+          python programs/manzanita-99/custody/build_custody.py \
+            --repo-root . \
+            --output programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+          python programs/manzanita-99/custody/validate_custody.py \
+            --repo-root . \
+            --manifest programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+          rm programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+
+      - name: Seal reconciled candidate
+        run: |
+          rm .github/workflows/manzanita-donor-custody-reconcile.yml
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          git add \
+            .github/workflows/manzanita-donor-custody-reconcile.yml \
+            .github/workflows/manzanita-donor-custody.yml \
+            programs/manzanita-99/custody/DONOR_REGISTER.json
+          git commit -m "Manzanita: reconcile custody with current production receipts"
+          git push origin HEAD:agent/manzanita-donor-custody-002
