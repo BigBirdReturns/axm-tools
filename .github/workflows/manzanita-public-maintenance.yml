@@ -84,19 +84,37 @@ jobs:
             --repo-root . \
             --manifest /tmp/MANZANITA_CUSTODY_MANIFEST.json
 
-      - name: Seal only the permanent release and custody sources
+      - name: Stage workflow amendments for connector admission
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/manzanita-v1.4.1-workflows
+          cp .github/workflows/manzanita-check.yml \
+            /tmp/manzanita-v1.4.1-workflows/manzanita-check.yml
+          cp .github/workflows/manzanita-live-check.yml \
+            /tmp/manzanita-v1.4.1-workflows/manzanita-live-check.yml
+
+      - name: Retain generated workflow amendments
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v1.4.1-workflow-amendments-${{ env.REVIEW_HEAD_SHA }}
+          path: /tmp/manzanita-v1.4.1-workflows
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Seal non-workflow release and custody sources
         run: |
           set -euo pipefail
           git config user.name "manzanita-release-bot"
           git config user.email "actions@users.noreply.github.com"
 
-          git rm "$PAYLOAD" "$BOOTSTRAP"
+          git restore --source=HEAD -- \
+            .github/workflows/manzanita-check.yml \
+            .github/workflows/manzanita-live-check.yml
+          git rm "$PAYLOAD"
           git add -- \
             README.md \
             index.html \
             manzanita \
-            .github/workflows/manzanita-check.yml \
-            .github/workflows/manzanita-live-check.yml \
             programs/manzanita-99/custody/CUSTODY_CONTRACT.json \
             programs/manzanita-99/custody/DONOR_REGISTER.json \
             programs/manzanita-99/custody/OBSERVED_EXECUTION_LEDGER.json \
@@ -110,9 +128,6 @@ jobs:
 
           expected = {
               ".github/bootstrap/manzanita_v14_public_polish.py",
-              ".github/workflows/agent-manzanita-v14-public-polish-bootstrap.yml",
-              ".github/workflows/manzanita-check.yml",
-              ".github/workflows/manzanita-live-check.yml",
               "README.md",
               "index.html",
               "manzanita/QUALIFICATION.json",
@@ -141,13 +156,22 @@ jobs:
               raise SystemExit(
                   f"sealed scope drifted: expected={sorted(expected)} observed={sorted(observed)}"
               )
-          if subprocess.check_output(
-              ["git", "diff", "--cached", "--name-only", "--", "manzanita-next"],
+          forbidden = subprocess.check_output(
+              [
+                  "git",
+                  "diff",
+                  "--cached",
+                  "--name-only",
+                  "--",
+                  "manzanita-next",
+                  ".github/workflows",
+              ],
               text=True,
-          ).strip():
-              raise SystemExit("successor source changed")
+          ).strip()
+          if forbidden:
+              raise SystemExit(f"forbidden staged path: {forbidden}")
           PY
 
-          git commit -m "Manzanita: polish and publish Signal Sheet v1.4.1"
+          git commit -m "Manzanita: polish Signal Sheet v1.4.1 sources"
           git push origin "HEAD:$BRANCH"
           test -z "$(git status --porcelain)"
