@@ -1,0 +1,190 @@
+{
+  "schema": "axm-tools/manzanita-donor-custody-contract@2",
+  "contract_id": "M99-DONOR-CUSTODY-002",
+  "version": "2.0.0",
+  "state": "in_progress",
+  "recorded_on": "2026-08-17",
+  "observed_repository": {
+    "repository": "BigBirdReturns/axm-tools",
+    "main_head_at_registration": "591f425d35fd1f946bab59039d02c93de995fdd9",
+    "main_tree_at_registration": "df2817be8cc0f96bf0667ed9d59ed1bf5e931f9f",
+    "qualification_boundary": "The main head is an observation anchor, not a permanent freeze. Public-route blob identities and repo-resident custody sources are the hard byte guards."
+  },
+  "authority": {
+    "owner_seat": "source_custody_and_release_continuity",
+    "may": [
+      "locate, copy, hash, classify, and retain donor artifacts",
+      "record exact source identity, claim boundary, rights, failures, and missing evidence",
+      "reject a donor whose bytes, provenance, rights, or claim cannot be reproduced",
+      "emit a partial custody manifest with explicit open close gates"
+    ],
+    "may_not": [
+      "alter the historical public Manzanita route while performing custody work",
+      "promote an internal donor into a public release",
+      "treat an Actions artifact name, pull-request body, or remembered task count as retained bytes",
+      "close donor custody while any required gap remains open",
+      "mutate the canonical 497-task register or remembered priority totals by inference"
+    ]
+  },
+  "qualification_boundary": "A passing custody workflow proves that repo-resident sources, route guards, donor anchors, observed execution records, and the explicit gap ledger agree. It does not close JDB99-001, qualify the whole product, authorize public release, prove external archives, or change canonical task counts.",
+  "required_classes": [
+    "historical_public_release",
+    "successor_source",
+    "governance",
+    "design_constitution",
+    "generated_candidate",
+    "qualification_receipt",
+    "visual_golden",
+    "playtest",
+    "failure_receipt",
+    "live_data_acquisition",
+    "deployment_receipt",
+    "asset_provenance",
+    "standalone_export",
+    "external_campaign",
+    "independent_archive"
+  ],
+  "archive_scopes": [
+    {
+      "id": "historical-public-route",
+      "class": "historical_public_release",
+      "path": "manzanita",
+      "required": true,
+      "include": [
+        "**"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "successor-source-tree",
+      "class": "successor_source",
+      "path": "manzanita-next",
+      "required": true,
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/out/**",
+        "**/__pycache__/**",
+        "**/*.pyc"
+      ]
+    },
+    {
+      "id": "contained-review-board",
+      "class": "governance",
+      "path": "programs/manzanita-99/review-board",
+      "required": true,
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/__pycache__/**",
+        "**/*.pyc"
+      ]
+    },
+    {
+      "id": "constitutional-recovery",
+      "class": "failure_receipt",
+      "path": "programs/manzanita-99/recovery",
+      "required": true,
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/__pycache__/**",
+        "**/*.pyc"
+      ]
+    },
+    {
+      "id": "resolution-backfill",
+      "class": "qualification_receipt",
+      "path": "resolution-backfill",
+      "required": true,
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/__pycache__/**",
+        "**/*.pyc"
+      ]
+    },
+    {
+      "id": "manzanita-workflows",
+      "class": "qualification_receipt",
+      "path": ".github/workflows",
+      "required": true,
+      "include": [
+        "manzanita-*.yml"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "current-pages-receipt",
+      "class": "deployment_receipt",
+      "path": ".github/pages-deployment.json",
+      "required": true,
+      "include": [
+        "**"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "current-custody-source",
+      "class": "governance",
+      "path": "programs/manzanita-99/custody",
+      "required": true,
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "CUSTODY_MANIFEST.json",
+        "HISTORY_AUDIT.json",
+        "**/__pycache__/**",
+        "**/*.pyc"
+      ]
+    }
+  ],
+  "public_route_guard": {
+    "path": "manzanita",
+    "release": "1.4.0",
+    "files": {
+      "manzanita/QUALIFICATION.json": {
+        "git_blob_sha1": "a3cb3212c22a32b113929e079a331c5f9a9129dd"
+      },
+      "manzanita/README.md": {
+        "git_blob_sha1": "072639fef3188c3524dad0c8cb76255d5033e406"
+      },
+      "manzanita/VISUAL_CONSTITUTION.md": {
+        "git_blob_sha1": "23b3fa62fa8828e2725f6fcb6ec01865c8447d82"
+      },
+      "manzanita/app.js": {
+        "git_blob_sha1": "e6eaac1f737b9a7562cf72bd5787403015089a8f"
+      },
+      "manzanita/index.html": {
+        "git_blob_sha1": "1bede6eaab2618d29b6e66860fcd4a2049f53ae0"
+      },
+      "manzanita/style.css": {
+        "git_blob_sha1": "1dd739faf9de442ee830c546870502437a87b453"
+      },
+      "manzanita/tests/browser_test.py": {
+        "git_blob_sha1": "51eb4ec005fe638d1dbc62180baf7200a037ff71"
+      },
+      "manzanita/tests/public_contract_test.py": {
+        "git_blob_sha1": "a15dd83b7ed48993cea4db1fc8dd0cdbc20e9ff0"
+      },
+      "manzanita/theme-init.js": {
+        "git_blob_sha1": "18fc2f35742a15cc018b049702634934ee2ec2af"
+      }
+    },
+    "failure_message": "Custody work changed or failed to recover the historical public route. Stop and investigate before admission."
+  },
+  "close_law": {
+    "all_required_gaps_closed": true,
+    "all_donors_archived": true,
+    "history_audit_present": true,
+    "independent_cold_recovery_present": true,
+    "public_endpoint_and_rollback_present": true,
+    "canonical_task_count_effect": "none_without_exact_row_source"
+  },
+  "control_question": "Can a cold successor recover every admitted donor, verify exact bytes, identify who created or observed it, understand what it proves and does not prove, reproduce the resulting rule, and distinguish an honest absence from forgotten custody?"
+}

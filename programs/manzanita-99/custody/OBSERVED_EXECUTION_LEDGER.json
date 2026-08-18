@@ -1,0 +1,200 @@
+{
+  "schema": "axm-tools/manzanita-observed-execution-ledger@1",
+  "ledger_id": "M99-OBSERVED-EXECUTION-001",
+  "as_of_main_head": "591f425d35fd1f946bab59039d02c93de995fdd9",
+  "constitutional_source_state": "original_row_level_register_unavailable",
+  "records": [
+    {
+      "pull_request": 90,
+      "object": "source_foundation",
+      "qualified_head": "c7c5d96959cc3c51817cafea95b5c63eb5ea853b",
+      "merged_at": "2026-08-16T03:40:51Z",
+      "state": "merged_observed",
+      "admitted_claim": "Live source and Street Glide foundation only.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 95,
+      "object": "constitutional_recovery",
+      "qualified_head": "4c3d4eda122b1ed9fa3079ae95b809e0218088b9",
+      "merged_at": "2026-08-16T04:33:51Z",
+      "state": "merged_observed",
+      "admitted_claim": "Exact recovery boundary; the original 497 rows remain unavailable.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 96,
+      "object": "contained_review_board",
+      "qualified_head": "2c904e796060a1175bb14fe0ce69f5eb67dcd75e",
+      "merged_at": "2026-08-16T17:57:22Z",
+      "state": "merged_observed",
+      "admitted_claim": "Internal governance mechanism only.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 97,
+      "object": "forkline_field",
+      "qualified_head": "e0409cf414fdd6351985f53161c93314b033a925",
+      "merged_at": "2026-08-16T18:20:14Z",
+      "state": "merged_observed",
+      "admitted_claim": "Internal design constitution and specimen only.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 98,
+      "object": "public_safe_demo",
+      "qualified_head": "b1d8d629b88f409f45d78679cba15c88a4c51998",
+      "merged_at": "2026-08-16T21:26:21Z",
+      "state": "merged_observed",
+      "admitted_claim": "One internal public-safe demonstration place.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 99,
+      "object": "seven_apertures",
+      "qualified_head": "f49421f26be443395f7bcc684a1ea932b5694c14",
+      "merged_at": "2026-08-16T21:35:13Z",
+      "state": "merged_observed",
+      "admitted_claim": "Seven-aperture architecture only.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 100,
+      "object": "street_glide_kernel",
+      "qualified_head": "b37a24859cf924ef71cf7f77300cfb1e30b31fb2",
+      "merged_at": "2026-08-16T21:42:17Z",
+      "state": "merged_observed",
+      "admitted_claim": "Provider resolver and image-registration kernel; physical interpretation held.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 101,
+      "object": "eight_overlays",
+      "qualified_head": "8ca8f1bc1881f7cc89eff56a4b1cc25f546a26fc",
+      "merged_at": "2026-08-16T21:57:33Z",
+      "state": "merged_observed",
+      "admitted_claim": "Eight source-bounded overlay instruments.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 102,
+      "object": "five_roles_fab",
+      "qualified_head": "4150caa3ecc2e4859adc5ab7b4a5e5932b23252f",
+      "merged_at": "2026-08-17T00:57:43Z",
+      "state": "merged_observed",
+      "admitted_claim": "Five role projections and bounded internal FAB handoff.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 103,
+      "object": "whole_experience",
+      "qualified_head": "0d91b30f5d5997d1649e3f1c0fb3093f3f577c27",
+      "merged_at": "2026-08-17T03:57:31Z",
+      "state": "merged_observed",
+      "admitted_claim": "Internal whole-experience candidate only.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 104,
+      "object": "automated_resilience",
+      "qualified_head": "8d1a4e194d3ebc0106de3e41e057ddfd7916af97",
+      "merged_at": "2026-08-17T19:20:04Z",
+      "state": "merged_observed",
+      "admitted_claim": "Automated browser resilience floor only.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 105,
+      "object": "text_resize_repair",
+      "qualified_head": "3be0ab6eeb710cdbf60be58b6fab2a95ecdcd84a",
+      "merged_at": "2026-08-17T18:55:53Z",
+      "state": "merged_observed",
+      "admitted_claim": "P7 200 percent text-reflow correction.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 106,
+      "object": "focus_continuity_repair",
+      "qualified_head": "485f46407aca619d31017d04760925908262bcc7",
+      "merged_at": "2026-08-17T20:12:16Z",
+      "state": "merged_observed",
+      "admitted_claim": "P7 consecutive-key focus continuity correction.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 107,
+      "object": "p8_requalification",
+      "qualified_head": "15823b4747fe9cf19a1ecebac1204dea17e16ed0",
+      "merged_at": "2026-08-17T20:19:38Z",
+      "state": "merged_observed",
+      "admitted_claim": "Automated P8 replay after P7 correction.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 108,
+      "object": "estate_parity",
+      "qualified_head": "f818a611ea9cbbf3438a3e6182e7e5919b06b8d1",
+      "merged_at": "2026-08-17T21:21:47Z",
+      "state": "merged_observed",
+      "admitted_claim": "Disposition register for 10 surfaces and 104 source components.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 109,
+      "object": "release_control",
+      "qualified_head": "ed387ac8d27576484c71a13a7d0c8c8194f9b2ed",
+      "merged_at": "2026-08-17T23:18:15Z",
+      "state": "merged_observed",
+      "admitted_claim": "Portable internal candidate and local rollback proof; release HOLD.",
+      "canonical_task_count_effect": "none"
+    },
+    {
+      "pull_request": 111,
+      "object": "external_campaign_runner",
+      "qualified_head": "0e446aa7d2dbb9ff35f854f8d1178f7c47106c3b",
+      "merged_at": "2026-08-18T05:12:36Z",
+      "state": "merged_observed",
+      "admitted_claim": "Evidence runner only; no external campaign performed.",
+      "canonical_task_count_effect": "none"
+    }
+  ],
+  "nonadmitted_records": [
+    {
+      "id": "pr-94-donor-custody-v1",
+      "state": "superseded_candidate",
+      "anchors": {
+        "pull_request": 94,
+        "head": "9999a988ef6f42f2c772033358629ae93a0cf625"
+      },
+      "reason": "The draft is stale, depends on the corrupted constitutional backlog workflow, and predates the admitted P1-P10 source chain. Its custody concepts are preserved here without claiming its failed workflow passed."
+    },
+    {
+      "id": "pr-110-independent-archive",
+      "state": "closed_unmerged_no_effect",
+      "anchors": {
+        "pull_request": 110
+      },
+      "reason": "The pull request closed with zero commits and did not change the canonical external campaign ledger. Independent archive standing therefore remains open."
+    }
+  ],
+  "external_campaign_state": {
+    "ledger_path": "manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json",
+    "release_state": "HOLD",
+    "passed_campaigns": [],
+    "not_performed_campaigns": [
+      "M99-PHYS-AT-001",
+      "M99-PHYS-HUMAN-001",
+      "M99-PHYS-DEVICE-001",
+      "M99-PHYS-NETWORK-001",
+      "M99-PHYS-PRIVATE-001",
+      "M99-PHYS-PROVIDER-001",
+      "M99-PHYS-FIELD-001",
+      "M99-PHYS-ARCHIVE-001",
+      "M99-DEPLOY-PUBLIC-001",
+      "M99-DEPLOY-ROLLBACK-001"
+    ],
+    "public_release_authorized": false
+  },
+  "canonical_task_count_effect": "none",
+  "claim_boundary": "This ledger records observed merged operating objects and their admitted claim boundaries. It is not a reconstruction of the lost 497-row register and cannot decrement remembered counts or close canonical task rows."
+}

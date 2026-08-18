@@ -1,32 +1,34 @@
 #!/usr/bin/env python3
-"""Build a deterministic custody manifest for repo-resident Manzanita donors."""
+"""Build a deterministic manifest over repo-resident Manzanita custody sources."""
 
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import hashlib
 import json
 import subprocess
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable
 
-SCHEMA = "axm-tools/manzanita-99-custody-manifest@1"
-REGISTER_SCHEMA = "axm-tools/manzanita-99-donor-register@1"
-DEFAULT_REGISTER = Path(__file__).with_name("DONOR_REGISTER.json")
-DEFAULT_OUTPUT = Path(__file__).with_name("CUSTODY_MANIFEST.json")
+CONTRACT_SCHEMA = "axm-tools/manzanita-donor-custody-contract@2"
+REGISTER_SCHEMA = "axm-tools/manzanita-donor-register@2"
+MANIFEST_SCHEMA = "axm-tools/manzanita-custody-manifest@2"
+DEFAULT_ROOT = Path.cwd()
+DEFAULT_DIR = Path(__file__).resolve().parent
 
 
-def fail(message: str) -> None:
-    raise SystemExit(message)
+class CustodyBuildError(ValueError):
+    pass
+
+
+def require(condition: bool, message: str) -> None:
+    if not condition:
+        raise CustodyBuildError(message)
 
 
 def canonical_bytes(value: Any) -> bytes:
-    return json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-    ).encode("utf-8")
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
 
 def sha256_bytes(payload: bytes) -> str:
@@ -34,159 +36,144 @@ def sha256_bytes(payload: bytes) -> str:
 
 
 def git_blob_sha1(payload: bytes) -> str:
-    header = f"blob {len(payload)}\0".encode("ascii")
-    return hashlib.sha1(header + payload).hexdigest()
+    return hashlib.sha1(f"blob {len(payload)}\0".encode("ascii") + payload).hexdigest()
 
 
-def clean_relative_path(value: str) -> str:
+def load_json(path: Path) -> tuple[dict[str, Any], bytes]:
+    raw = path.read_bytes()
+    try:
+        value = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise CustodyBuildError(f"Invalid JSON in {path}: {exc}") from exc
+    require(isinstance(value, dict), f"{path} must contain a JSON object")
+    return value, raw
+
+
+def clean_relative(value: str) -> str:
     path = PurePosixPath(value)
-    if path.is_absolute() or ".." in path.parts or value in {"", "."}:
-        fail(f"Unsafe repository-relative path: {value!r}")
+    require(value not in {"", "."} and not path.is_absolute() and ".." not in path.parts, f"Unsafe path: {value!r}")
     return path.as_posix()
 
 
-def read_register(path: Path) -> tuple[dict[str, Any], bytes]:
-    raw = path.read_bytes()
-    try:
-        data = json.loads(raw)
-    except json.JSONDecodeError as exc:
-        fail(f"Invalid donor register JSON: {exc}")
-    if data.get("schema") != REGISTER_SCHEMA:
-        fail(f"Unexpected donor register schema: {data.get('schema')!r}")
-    if data.get("task") != "JDB99-001":
-        fail("Donor register must govern JDB99-001")
-    return data, raw
-
-
-def resolve_repo_path(repo_root: Path, relative: str) -> Path:
-    clean = clean_relative_path(relative)
-    candidate = (repo_root / clean).resolve()
+def resolve_repo_path(repo_root: Path, value: str) -> Path:
+    clean = clean_relative(value)
+    unresolved = repo_root / clean
+    require(
+        unresolved.exists() or unresolved.is_symlink(),
+        f"Archive path is missing: {value}",
+    )
+    require(
+        not unresolved.is_symlink(),
+        f"Archive path may not be a symbolic link: {value}",
+    )
+    candidate = unresolved.resolve()
     try:
         candidate.relative_to(repo_root)
-    except ValueError:
-        fail(f"Path escapes repository root: {relative}")
+    except ValueError as exc:
+        raise CustodyBuildError(f"Path escapes repository: {value}") from exc
     return candidate
 
 
-def is_excluded(relative: str, excludes: set[str]) -> bool:
-    for excluded in excludes:
-        if relative == excluded or relative.startswith(excluded.rstrip("/") + "/"):
-            return True
-    return False
+def match_any(relative_to_scope: str, patterns: list[str]) -> bool:
+    if not patterns:
+        return True
+    if "**" in patterns:
+        return True
+    return any(fnmatch.fnmatch(relative_to_scope, pattern) for pattern in patterns)
 
 
-def iter_scope_files(
-    repo_root: Path,
-    scope_path: str,
-    excludes: Iterable[str],
-    output_path: Path,
-) -> Iterable[Path]:
-    target = resolve_repo_path(repo_root, scope_path)
-    if not target.exists():
-        fail(f"Registered archive scope does not exist: {scope_path}")
+def excluded(relative_to_scope: str, repo_relative: str, patterns: list[str]) -> bool:
+    return any(
+        fnmatch.fnmatch(relative_to_scope, pattern)
+        or fnmatch.fnmatch(repo_relative, pattern)
+        for pattern in patterns
+    )
 
-    clean_excludes = {clean_relative_path(item) for item in excludes}
-    try:
-        output_relative = output_path.resolve().relative_to(repo_root).as_posix()
-    except ValueError:
-        output_relative = None
 
+def iter_scope_files(repo_root: Path, scope: dict[str, Any], output_path: Path) -> Iterable[Path]:
+    target = resolve_repo_path(repo_root, str(scope.get("path", "")))
+    require(target.exists(), f"Archive scope does not exist: {scope.get('id')}")
     candidates = [target] if target.is_file() else sorted(target.rglob("*"))
+    scope_root = target if target.is_dir() else target.parent
+    output_resolved = output_path.resolve()
     for candidate in candidates:
+        require(
+            not candidate.is_symlink(),
+            f"Custody source may not be a symbolic link: {candidate}",
+        )
         if not candidate.is_file():
             continue
-        relative = candidate.resolve().relative_to(repo_root).as_posix()
-        if output_relative and relative == output_relative:
+        resolved = candidate.resolve()
+        if resolved == output_resolved:
             continue
         if "__pycache__" in candidate.parts or candidate.suffix == ".pyc":
             continue
-        if is_excluded(relative, clean_excludes):
+        repo_relative = resolved.relative_to(repo_root).as_posix()
+        relative_to_scope = resolved.relative_to(scope_root).as_posix()
+        if target.is_file():
+            relative_to_scope = target.name
+        if not match_any(relative_to_scope, list(scope.get("include", []))):
+            continue
+        if excluded(relative_to_scope, repo_relative, list(scope.get("exclude", []))):
             continue
         yield candidate
 
 
-def current_commit(repo_root: Path, override: str | None) -> str:
-    if override:
-        return override
-    result = subprocess.run(
-        ["git", "-C", str(repo_root), "rev-parse", "HEAD"],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    value = result.stdout.strip()
-    if result.returncode == 0 and len(value) == 40:
-        return value
-    return "WORKTREE"
+def git_identity(repo_root: Path) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for key, args in (
+        ("commit", ["rev-parse", "HEAD"]),
+        ("tree", ["rev-parse", "HEAD^{tree}"]),
+    ):
+        process = subprocess.run(["git", "-C", str(repo_root), *args], check=False, capture_output=True, text=True)
+        value = process.stdout.strip()
+        result[key] = value if process.returncode == 0 and len(value) == 40 else "WORKTREE"
+    return result
 
 
-def build_manifest(
-    repo_root: Path,
-    register_path: Path,
-    output_path: Path,
-    git_commit: str | None = None,
-) -> dict[str, Any]:
+def build_manifest(repo_root: Path, contract_path: Path, register_path: Path, observed_path: Path, output_path: Path) -> dict[str, Any]:
     repo_root = repo_root.resolve()
-    register_path = register_path.resolve()
-    output_path = output_path.resolve()
-    register, register_raw = read_register(register_path)
+    contract, contract_raw = load_json(contract_path)
+    register, register_raw = load_json(register_path)
+    observed, observed_raw = load_json(observed_path)
+    require(contract.get("schema") == CONTRACT_SCHEMA, "Unexpected custody contract schema")
+    require(register.get("schema") == REGISTER_SCHEMA, "Unexpected donor register schema")
+    require(register.get("contract_id") == contract.get("contract_id"), "Contract identity drifted")
+    require(observed.get("schema") == "axm-tools/manzanita-observed-execution-ledger@1", "Unexpected observed ledger schema")
 
     files: dict[str, dict[str, Any]] = {}
-    scope_rows: list[dict[str, Any]] = []
+    scopes: list[dict[str, Any]] = []
     seen_scope_ids: set[str] = set()
-
-    for scope in register.get("archive_scopes", []):
+    for scope in contract.get("archive_scopes", []):
         scope_id = scope.get("id")
-        if not isinstance(scope_id, str) or not scope_id:
-            fail("Every archive scope needs a non-empty id")
-        if scope_id in seen_scope_ids:
-            fail(f"Duplicate archive scope id: {scope_id}")
+        require(isinstance(scope_id, str) and scope_id, "Archive scope lacks id")
+        require(scope_id not in seen_scope_ids, f"Duplicate archive scope: {scope_id}")
         seen_scope_ids.add(scope_id)
-
-        scoped_paths: list[str] = []
-        scoped_bytes = 0
-        for file_path in iter_scope_files(
-            repo_root,
-            scope.get("path", ""),
-            scope.get("exclude", []),
-            output_path,
-        ):
-            relative = file_path.resolve().relative_to(repo_root).as_posix()
-            payload = file_path.read_bytes()
-            row = files.setdefault(
-                relative,
-                {
-                    "path": relative,
-                    "bytes": len(payload),
-                    "sha256": sha256_bytes(payload),
-                    "git_blob_sha1": git_blob_sha1(payload),
-                    "scopes": [],
-                },
-            )
-            if row["bytes"] != len(payload) or row["sha256"] != sha256_bytes(payload):
-                fail(f"File changed while manifest was being built: {relative}")
+        scoped: list[str] = []
+        for path in iter_scope_files(repo_root, scope, output_path):
+            relative = path.resolve().relative_to(repo_root).as_posix()
+            payload = path.read_bytes()
+            row = files.setdefault(relative, {
+                "path": relative,
+                "bytes": len(payload),
+                "sha256": sha256_bytes(payload),
+                "git_blob_sha1": git_blob_sha1(payload),
+                "scopes": [],
+            })
+            require(row["sha256"] == sha256_bytes(payload), f"File changed while building: {relative}")
             row["scopes"].append(scope_id)
-            scoped_paths.append(relative)
-            scoped_bytes += len(payload)
-
-        if scope.get("required") and not scoped_paths:
-            fail(f"Required archive scope is empty: {scope_id}")
-
-        digest_material = "".join(
-            f"{path}\0{files[path]['sha256']}\0{files[path]['bytes']}\n"
-            for path in sorted(scoped_paths)
-        ).encode("utf-8")
-        scope_rows.append(
-            {
-                "id": scope_id,
-                "class": scope.get("class"),
-                "path": clean_relative_path(scope.get("path", "")),
-                "required": bool(scope.get("required")),
-                "file_count": len(scoped_paths),
-                "bytes": scoped_bytes,
-                "sha256": sha256_bytes(digest_material),
-            }
-        )
+            scoped.append(relative)
+        require(not scope.get("required") or scoped, f"Required scope is empty: {scope_id}")
+        material = "".join(f"{path}\0{files[path]['sha256']}\0{files[path]['bytes']}\n" for path in sorted(scoped)).encode("utf-8")
+        scopes.append({
+            "id": scope_id,
+            "class": scope.get("class"),
+            "path": clean_relative(str(scope.get("path"))),
+            "file_count": len(scoped),
+            "bytes": sum(files[path]["bytes"] for path in scoped),
+            "sha256": sha256_bytes(material),
+            "required": bool(scope.get("required")),
+        })
 
     file_rows = []
     for path in sorted(files):
@@ -194,86 +181,74 @@ def build_manifest(
         row["scopes"] = sorted(set(row["scopes"]))
         file_rows.append(row)
 
-    open_required_gaps = sorted(
-        gap["id"]
-        for gap in register.get("gaps", [])
-        if gap.get("required_for_close") and gap.get("state") != "closed"
+    open_gaps = sorted(
+        row["id"]
+        for row in register.get("gaps", [])
+        if row.get("required_for_close") and row.get("state") != "closed"
     )
-    status = "COMPLETE" if not open_required_gaps else "PARTIAL"
-
+    status = "COMPLETE" if not open_gaps else "PARTIAL"
+    identity = git_identity(repo_root)
     manifest: dict[str, Any] = {
-        "schema": SCHEMA,
-        "task": "JDB99-001",
-        "task_state": register.get("state"),
+        "schema": MANIFEST_SCHEMA,
+        "contract_id": contract["contract_id"],
         "status": status,
+        "task_state": register.get("state"),
         "generated_from": {
-            "git_commit": current_commit(repo_root, git_commit),
-            "register_path": register_path.relative_to(repo_root).as_posix(),
+            "git_commit": identity["commit"],
+            "git_tree": identity["tree"],
+            "contract_path": contract_path.resolve().relative_to(repo_root).as_posix(),
+            "contract_sha256": sha256_bytes(contract_raw),
+            "register_path": register_path.resolve().relative_to(repo_root).as_posix(),
             "register_sha256": sha256_bytes(register_raw),
+            "observed_ledger_path": observed_path.resolve().relative_to(repo_root).as_posix(),
+            "observed_ledger_sha256": sha256_bytes(observed_raw),
         },
-        "scope_count": len(scope_rows),
+        "scope_count": len(scopes),
         "source_file_count": len(file_rows),
         "source_bytes": sum(row["bytes"] for row in file_rows),
-        "scopes": sorted(scope_rows, key=lambda row: row["id"]),
+        "scopes": sorted(scopes, key=lambda row: row["id"]),
         "files": file_rows,
         "donor_anchors": [
             {
-                "id": donor.get("id"),
-                "class": donor.get("class"),
-                "custody_state": donor.get("custody_state"),
-                "anchors": donor.get("anchors", {}),
+                "id": row.get("id"),
+                "class": row.get("class"),
+                "custody_state": row.get("custody_state"),
+                "anchors": row.get("anchors", {}),
             }
-            for donor in sorted(register.get("donors", []), key=lambda row: row.get("id", ""))
+            for row in sorted(register.get("donors", []), key=lambda row: row.get("id", ""))
         ],
-        "open_required_gaps": open_required_gaps,
-        "qualification_boundary": register.get("qualification_boundary"),
+        "open_required_gaps": open_gaps,
+        "canonical_task_count_effect": "none",
+        "qualification_boundary": contract.get("qualification_boundary"),
     }
     manifest["payload_sha256"] = sha256_bytes(canonical_bytes(manifest))
     return manifest
 
 
-def write_manifest(manifest: dict[str, Any], output_path: Path) -> None:
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(
-        json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-
-
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--repo-root", type=Path, default=Path.cwd())
-    parser.add_argument("--register", type=Path, default=DEFAULT_REGISTER)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--git-commit")
-    return parser.parse_args()
-
-
 def main() -> None:
-    args = parse_args()
-    manifest = build_manifest(
-        args.repo_root,
-        args.register,
-        args.output,
-        args.git_commit,
-    )
-    write_manifest(manifest, args.output)
-    print(
-        json.dumps(
-            {
-                "result": "PASS",
-                "task": manifest["task"],
-                "task_state": manifest["task_state"],
-                "custody_status": manifest["status"],
-                "files": manifest["source_file_count"],
-                "bytes": manifest["source_bytes"],
-                "open_required_gaps": len(manifest["open_required_gaps"]),
-                "manifest_sha256": manifest["payload_sha256"],
-            },
-            indent=2,
-        )
-    )
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--repo-root", type=Path, default=DEFAULT_ROOT)
+    parser.add_argument("--contract", type=Path, default=DEFAULT_DIR / "CUSTODY_CONTRACT.json")
+    parser.add_argument("--register", type=Path, default=DEFAULT_DIR / "DONOR_REGISTER.json")
+    parser.add_argument("--observed-ledger", type=Path, default=DEFAULT_DIR / "OBSERVED_EXECUTION_LEDGER.json")
+    parser.add_argument("--output", type=Path, default=DEFAULT_DIR / "CUSTODY_MANIFEST.json")
+    args = parser.parse_args()
+    manifest = build_manifest(args.repo_root, args.contract, args.register, args.observed_ledger, args.output)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(json.dumps({
+        "result": "PASS",
+        "custody_status": manifest["status"],
+        "source_file_count": manifest["source_file_count"],
+        "source_bytes": manifest["source_bytes"],
+        "open_required_gaps": len(manifest["open_required_gaps"]),
+        "manifest_sha256": manifest["payload_sha256"],
+        "canonical_task_count_effect": manifest["canonical_task_count_effect"],
+    }, indent=2))
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except CustodyBuildError as exc:
+        raise SystemExit(str(exc)) from exc
