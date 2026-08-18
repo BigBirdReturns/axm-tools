@@ -1,0 +1,24 @@
+{
+  "schema": "axm-tools/manzanita-external-campaign-repair-receipt@1",
+  "repair_id": "M99-EC-REPAIR-001",
+  "object": "Evidence-path regular-file admission guard",
+  "failure": {
+    "workflow_run": 32089632180,
+    "job": "Qualify external campaign evidence runner",
+    "test": "test_symlink_evidence_is_rejected",
+    "observation": "The guard resolved the path before lstat, so a symlink was replaced by its regular-file target before the symlink check executed."
+  },
+  "correction": {
+    "sealed_commit": "b52a47fa7827cf769c2e07e6a2d4213177503bd5",
+    "mechanism": "Inspect the expanded, unresolved path with lstat; reject symbolic links and non-regular files; resolve only after admission.",
+    "local_test_count": 23,
+    "qualification_required": true
+  },
+  "authority": {
+    "may": "Correct the evidence-file admission mechanism and rerun exact-head qualification.",
+    "may_not": "Treat the repair carrier, local tests, or this receipt as campaign evidence, physical standing, ledger mutation, or public release authority."
+  },
+  "public_effect": "none",
+  "constitutional_count_effect": "none",
+  "claim_boundary": "This receipt records one source defect and its bounded correction. The repaired exact head must still pass all repository workflows before admission."
+}
