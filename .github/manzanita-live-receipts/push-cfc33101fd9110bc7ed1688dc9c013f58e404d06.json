@@ -1,0 +1,48 @@
+{
+  "authority": {
+    "canonical_task_count_effect": "none",
+    "external_campaign_effect": "none",
+    "successor_program_effect": "none"
+  },
+  "failure_receipt": "",
+  "files": {
+    "app.js": {
+      "bytes": 27379,
+      "sha256": "b31f4a67517e36d7f7a3635c11ac7039ccca68524506e2b77fe7a2080653c314"
+    },
+    "index.html": {
+      "bytes": 20068,
+      "sha256": "ce1e94513e13afb2ba8cf0bd2f0efd36f42b1420d6b423642632c985eae97ff0"
+    },
+    "style.css": {
+      "bytes": 20808,
+      "sha256": "aeecd4075012eeb715a2e4aead43b22646e69a6204e97d857e0eb570c350cf58"
+    },
+    "theme-init.js": {
+      "bytes": 290,
+      "sha256": "29a2acecd398fba04540e115c8c87a070de1bbf1cf18a3768ca79de494bef1da"
+    }
+  },
+  "observation_trigger_sha": "cfc33101fd9110bc7ed1688dc9c013f58e404d06",
+  "observed_at": "2026-08-18T18:11:10.406772+00:00",
+  "pages_deployment_receipt_at_observation": {
+    "axm_readiness_release": "readiness-equipment-evidence/1.0",
+    "deployed_at": "2026-08-18T18:06:12.665010+00:00",
+    "page_url": "https://bigbirdreturns.github.io/axm-tools/",
+    "run_attempt": "1",
+    "run_id": "32169126509",
+    "source_sha": "30133e8cf3a467657cb30aa8bbce84398e9a305b"
+  },
+  "probe": {
+    "exact_file_gate": "success",
+    "release_marker": "1.4.1",
+    "run_attempt": 1,
+    "visual_system_marker": "signal-sheet",
+    "workflow_run_id": 32169597127
+  },
+  "public_route": "https://bigbirdreturns.github.io/axm-tools/manzanita/",
+  "release": "1.4.1",
+  "release_class": "public_maintenance_patch",
+  "schema": "manzanita-works/external-byte-observation@1",
+  "state": "PASS"
+}
