@@ -13,8 +13,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: manzanita-public-convergence-v1-6
-  cancel-in-progress: true
+  group: manzanita-public-convergence-v1-6-final-v5
+  cancel-in-progress: false
 
 jobs:
   converge:
