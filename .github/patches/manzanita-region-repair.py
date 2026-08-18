@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Repair the modeled Region aperture without lowering the visual floor."""
+"""Repair visual donor selection and the modeled Region fallback without lowering the floor."""
 
 from __future__ import annotations
 
@@ -46,7 +46,6 @@ NEW_REGION = '''def region_composite(household: Image.Image, prop: Image.Image) 
     draw = ImageDraw.Draw(analytical, "RGBA")
     draw.line((800, 0, 800, 1000), fill=(244, 239, 227, 178), width=5)
     draw.line((0, 500, 1600, 500), fill=(244, 239, 227, 178), width=5)
-
     contours = [
         [(0, 176), (180, 126), (360, 158), (548, 86), (736, 142), (928, 92), (1112, 132), (1320, 72), (1600, 118)],
         [(0, 342), (174, 282), (356, 318), (526, 248), (720, 296), (902, 236), (1104, 270), (1304, 210), (1600, 254)],
@@ -55,7 +54,6 @@ NEW_REGION = '''def region_composite(household: Image.Image, prop: Image.Image) 
     ]
     for index, points in enumerate(contours):
         draw.line(points, fill=(229, 223, 207, 196 - index * 18), width=6)
-
     nodes = [(228, 258), (604, 194), (1032, 316), (1372, 194), (382, 728), (932, 696), (1286, 798)]
     for x, y in nodes:
         draw.ellipse(
@@ -69,12 +67,64 @@ NEW_REGION = '''def region_composite(household: Image.Image, prop: Image.Image) 
     return analytical.convert("RGB")
 '''
 
+OLD_DONOR_BLOCK = '''    household_source = donor.get("household") or next(iter(donor.values()))
+    property_source = donor.get("property") or list(donor.values())[1]
+    rendered = {
+        "plant": entropy_crop(household_source, 0.48),
+        "household": fit(household_source),
+        "property": fit(property_source),
+        "street": street_crop(property_source),
+        "neighborhood": neighborhood_composite(household_source, property_source),
+        "region": region_composite(household_source, property_source),
+        "stewardship": stewardship_composite(household_source, property_source),
+    }
+    classification = {
+        "plant": "derived photographic detail",
+        "household": "retained photographic donor",
+        "property": "retained photographic donor",
+        "street": "derived photographic street-edge crop",
+        "neighborhood": "derived multi-place analytical composite",
+        "region": "derived modeled regional context",
+        "stewardship": "derived continuity contact sheet",
+    }
+'''
+
+NEW_DONOR_BLOCK = '''    household_source = donor.get("household") or next(iter(donor.values()))
+    property_source = donor.get("property") or list(donor.values())[1]
+    street_source = donor.get("street")
+    region_source = donor.get("region")
+    property_view = ImageEnhance.Contrast(
+        fit(property_source).filter(ImageFilter.UnsharpMask(radius=3, percent=400, threshold=1))
+    ).enhance(1.25)
+    rendered = {
+        "plant": entropy_crop(household_source, 0.48),
+        "household": fit(household_source),
+        "property": property_view,
+        "street": fit(street_source) if street_source is not None else street_crop(property_source),
+        "neighborhood": neighborhood_composite(household_source, property_source),
+        "region": fit(region_source) if region_source is not None else region_composite(household_source, property_source),
+        "stewardship": stewardship_composite(household_source, property_source),
+    }
+    classification = {
+        "plant": "derived photographic detail",
+        "household": "retained generated household reference view",
+        "property": "derived sharpened property reference view",
+        "street": "retained generated street reference view" if street_source is not None else "derived photographic street-edge crop",
+        "neighborhood": "derived multi-place analytical composite",
+        "region": "retained generated regional reference view" if region_source is not None else "derived modeled regional context",
+        "stewardship": "derived continuity contact sheet",
+    }
+'''
+
 text = TARGET.read_text(encoding="utf-8")
 if OLD_IMPORT not in text and NEW_IMPORT not in text:
     raise SystemExit("Could not locate the Pillow import")
 if OLD_REGION not in text:
     raise SystemExit("Could not locate the low-information Region compositor")
+if OLD_DONOR_BLOCK not in text:
+    raise SystemExit("Could not locate the two-donor aperture selection block")
 text = text.replace(OLD_IMPORT, NEW_IMPORT, 1)
 text = text.replace(OLD_REGION, NEW_REGION, 1)
+text = text.replace(OLD_DONOR_BLOCK, NEW_DONOR_BLOCK, 1)
 TARGET.write_text(text, encoding="utf-8")
-print("Edge-rich modeled Region aperture repair: APPLIED")
+print("Four-donor photographic aperture repair: APPLIED")
