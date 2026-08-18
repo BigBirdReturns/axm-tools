@@ -1,0 +1,308 @@
+name: Admit Manzanita independent archive custody
+
+on:
+  push:
+    branches:
+      - agent/manzanita-independent-archive-custody-002
+    paths:
+      - ".github/workflows/manzanita-independent-archive-custody-bootstrap.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-independent-archive-custody
+  cancel-in-progress: false
+
+jobs:
+  admit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-independent-archive-custody-002
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Record provider-neutral archive and cold-recovery receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          custody = Path("programs/manzanita-99/custody")
+          register_path = custody / "DONOR_REGISTER.json"
+          receipt_path = custody / "INDEPENDENT_ARCHIVE_RECEIPT.json"
+          test_path = custody / "tests/test_independent_archive.py"
+          readme_path = custody / "README.md"
+
+          register = json.loads(register_path.read_text(encoding="utf-8"))
+          donor_id = "p10-independent-archive-001"
+          gap_id = "M99-CUSTODY-GAP-002"
+          if any(row.get("id") == donor_id for row in register["donors"]):
+              raise SystemExit(f"Donor already exists: {donor_id}")
+          matches = [row for row in register["gaps"] if row.get("id") == gap_id]
+          if len(matches) != 1 or matches[0].get("state") != "open":
+              raise SystemExit(f"Expected one open {gap_id}")
+
+          receipt = {
+            "schema": "axm-tools/manzanita-independent-archive-receipt@1",
+            "receipt_id": "M99-CUSTODY-INDEPENDENT-ARCHIVE-001",
+            "gap_id": gap_id,
+            "verified_at": "2026-08-18T13:51:29Z",
+            "source_release": {
+              "pull_request": 109,
+              "qualified_head": "ed387ac8d27576484c71a13a7d0c8c8194f9b2ed",
+              "release_id": "M99-INTERNAL-RC-001",
+              "public_release_authorized": False
+            },
+            "archive_control": {
+              "class": "owner_controlled_private_object_store",
+              "repository_independent": True,
+              "workflow_retention_independent": True,
+              "shared": False,
+              "public_discovery": False,
+              "permission_class": "owner_only",
+              "provider_identifiers_retained_privately": True
+            },
+            "objects": [
+              {
+                "id": "M99-ARCHIVE-OBJECT-CANDIDATE-001",
+                "role": "p10_portable_candidate",
+                "file_name": "Manzanita_Internal_Release_Candidate_ed387ac8.zip",
+                "bytes": 696968,
+                "sha256": "73a222505b40ffd74c3c2464a0a313b0fc5c4ff7df9f9b6e996cba8be036e90b",
+                "created_at": "2026-08-17T23:51:36.050Z",
+                "modified_at": "2026-08-17T23:51:36.050Z",
+                "metadata_readback": True,
+                "byte_readback": True,
+                "zip_integrity": "PASS",
+                "unsafe_paths": 0,
+                "symbolic_links": 0
+              },
+              {
+                "id": "M99-ARCHIVE-OBJECT-EVIDENCE-001",
+                "role": "p7_p10_complete_evidence",
+                "file_name": "manzanita-release-control-ed387ac8-evidence.zip",
+                "bytes": 10247061,
+                "sha256": "d57f3878f9958b446d2ac55dfdd395ae3881cf9be44fffbfddffd7932cd47454",
+                "created_at": "2026-08-17T23:51:27.035Z",
+                "modified_at": "2026-08-17T23:51:27.035Z",
+                "metadata_readback": True,
+                "byte_readback": True,
+                "zip_integrity": "PASS",
+                "unsafe_paths": 0,
+                "symbolic_links": 0
+              }
+            ],
+            "cold_recovery": {
+              "result": "PASS",
+              "extracted_to_clean_directory": True,
+              "command_class": "python_isolated_mode_standard_library_verifier",
+              "verifier": "VERIFY_RELEASE.py",
+              "repository_imports": False,
+              "private_credentials": False,
+              "release_id": "M99-INTERNAL-RC-001",
+              "source_commit": "ed387ac8d27576484c71a13a7d0c8c8194f9b2ed",
+              "file_count": 24,
+              "candidate_manifest_sha256": "72ed850dd354da2bd465383c11a6c114058c2e7ed68a2dc6e183456c1017168d",
+              "rollback_manifest_sha256": "099413ab7aeeae06551144b5132710c89a076b7af8869c8ab19185dfe5686e25",
+              "evidence_manifest_sha256": "3acde61d8bb73f2e2e32006653f039f31c83b42e546c6291b6bb5a2f6d6163db",
+              "manifest_sha256": "35a2b2ffc8be0d51191b40bd45cdd04cbf117cb2176829db91fe5f4402742a74"
+            },
+            "public_release_authorized": False,
+            "external_campaign_effect": "none",
+            "public_effect": "none",
+            "constitutional_count_effect": "none",
+            "claim_boundary": "This receipt proves independently retained P10 candidate and P7-P10 evidence bytes, private owner-only metadata, exact readback, and a clean isolated verifier replay. It does not prove a public endpoint, deployed rollback, human or physical campaign, whole-product release, or canonical task closure."
+          }
+          receipt_path.write_text(json.dumps(receipt, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+          register["donors"].append({
+            "id": donor_id,
+            "class": "independent_archive",
+            "custody_state": "archived_external",
+            "archive_scope_ids": [],
+            "anchors": {
+              "receipt": receipt_path.as_posix(),
+              "release_head": receipt["source_release"]["qualified_head"],
+              "candidate_bytes": receipt["objects"][0]["bytes"],
+              "candidate_sha256": receipt["objects"][0]["sha256"],
+              "evidence_bytes": receipt["objects"][1]["bytes"],
+              "evidence_sha256": receipt["objects"][1]["sha256"],
+              "cold_recovery_manifest_sha256": receipt["cold_recovery"]["manifest_sha256"]
+            },
+            "claim_boundary": "Independent private archive and clean byte-readback/cold-recovery custody only. Public endpoint, deployed rollback, external-campaign, release, score, and canonical task-count authority remain held."
+          })
+          gap = matches[0]
+          gap["state"] = "closed"
+          gap["closed_at"] = receipt["verified_at"]
+          gap["closure_evidence"] = [
+            receipt_path.as_posix(),
+            f"sha256:{receipt['objects'][0]['sha256']}",
+            f"sha256:{receipt['objects'][1]['sha256']}",
+            f"verifier:{receipt['cold_recovery']['manifest_sha256']}"
+          ]
+
+          for donor in register["donors"]:
+              if donor.get("id") == "pr-109-release_control":
+                  donor["claim_boundary"] = "Portable internal generated candidate and local rollback proof; release HOLD. Exact independent archive custody is admitted by M99-CUSTODY-INDEPENDENT-ARCHIVE-001. Public endpoint, deployed rollback, standalone-export, and external-campaign standing remain separately held."
+
+          register_path.write_text(json.dumps(register, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+          test_path.write_text('''from __future__ import annotations
+
+import json
+import unittest
+from pathlib import Path
+
+
+CUSTODY = Path(__file__).resolve().parents[1]
+
+
+class IndependentArchiveReceiptTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.receipt = json.loads((CUSTODY / "INDEPENDENT_ARCHIVE_RECEIPT.json").read_text(encoding="utf-8"))
+        self.register = json.loads((CUSTODY / "DONOR_REGISTER.json").read_text(encoding="utf-8"))
+        self.observed = json.loads((CUSTODY / "OBSERVED_EXECUTION_LEDGER.json").read_text(encoding="utf-8"))
+
+    def test_receipt_proves_exact_readback_and_clean_recovery(self) -> None:
+        self.assertEqual(self.receipt["schema"], "axm-tools/manzanita-independent-archive-receipt@1")
+        self.assertEqual(self.receipt["gap_id"], "M99-CUSTODY-GAP-002")
+        self.assertEqual(self.receipt["archive_control"]["permission_class"], "owner_only")
+        self.assertFalse(self.receipt["archive_control"]["shared"])
+        self.assertFalse(self.receipt["archive_control"]["public_discovery"])
+        expected = {
+            "M99-ARCHIVE-OBJECT-CANDIDATE-001": (696968, "73a222505b40ffd74c3c2464a0a313b0fc5c4ff7df9f9b6e996cba8be036e90b"),
+            "M99-ARCHIVE-OBJECT-EVIDENCE-001": (10247061, "d57f3878f9958b446d2ac55dfdd395ae3881cf9be44fffbfddffd7932cd47454"),
+        }
+        self.assertEqual({row["id"] for row in self.receipt["objects"]}, set(expected))
+        for row in self.receipt["objects"]:
+            self.assertEqual((row["bytes"], row["sha256"]), expected[row["id"]])
+            self.assertTrue(row["metadata_readback"])
+            self.assertTrue(row["byte_readback"])
+            self.assertEqual(row["zip_integrity"], "PASS")
+            self.assertEqual(row["unsafe_paths"], 0)
+            self.assertEqual(row["symbolic_links"], 0)
+        recovery = self.receipt["cold_recovery"]
+        self.assertEqual(recovery["result"], "PASS")
+        self.assertTrue(recovery["extracted_to_clean_directory"])
+        self.assertFalse(recovery["repository_imports"])
+        self.assertFalse(recovery["private_credentials"])
+        self.assertEqual(recovery["source_commit"], "ed387ac8d27576484c71a13a7d0c8c8194f9b2ed")
+        self.assertEqual(recovery["file_count"], 24)
+        self.assertEqual(recovery["manifest_sha256"], "35a2b2ffc8be0d51191b40bd45cdd04cbf117cb2176829db91fe5f4402742a74")
+
+    def test_public_receipt_is_provider_neutral_and_grants_no_effect(self) -> None:
+        serialized = json.dumps(self.receipt, sort_keys=True).lower()
+        for token in ("drive.google", "gmail.com", "@gmail", "1_dsq", "1eax", "17m4_"):
+            self.assertNotIn(token, serialized)
+        self.assertFalse(self.receipt["public_release_authorized"])
+        self.assertEqual(self.receipt["external_campaign_effect"], "none")
+        self.assertEqual(self.receipt["public_effect"], "none")
+        self.assertEqual(self.receipt["constitutional_count_effect"], "none")
+
+    def test_register_closes_only_the_independent_archive_gap(self) -> None:
+        gaps = {row["id"]: row for row in self.register["gaps"]}
+        self.assertEqual(gaps["M99-CUSTODY-GAP-002"]["state"], "closed")
+        self.assertTrue(gaps["M99-CUSTODY-GAP-002"]["closure_evidence"])
+        self.assertEqual(sum(row["state"] == "closed" for row in self.register["gaps"]), 1)
+        donor = next(row for row in self.register["donors"] if row["id"] == "p10-independent-archive-001")
+        self.assertEqual(donor["class"], "independent_archive")
+        self.assertEqual(donor["custody_state"], "archived_external")
+        self.assertEqual(donor["anchors"]["receipt"], "programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json")
+
+    def test_external_campaign_and_release_hold_remain_unchanged(self) -> None:
+        external = self.observed["external_campaign_state"]
+        self.assertEqual(external["release_state"], "HOLD")
+        self.assertEqual(external["passed_campaigns"], [])
+        self.assertEqual(len(external["not_performed_campaigns"]), 10)
+        self.assertFalse(external["public_release_authorized"])
+        self.assertFalse(self.receipt["public_release_authorized"])
+
+
+if __name__ == "__main__":
+    unittest.main()
+''', encoding="utf-8")
+
+          readme = readme_path.read_text(encoding="utf-8")
+          old = "`DONOR_REGISTER.json` records admitted donors and ten explicit required gaps."
+          new = "`DONOR_REGISTER.json` records admitted donors and ten explicit required gaps. `INDEPENDENT_ARCHIVE_RECEIPT.json` closes only the independently controlled archive and clean readback/cold-recovery gap, leaving nine required gaps open."
+          if old not in readme:
+              raise SystemExit("README anchor drifted")
+          readme = readme.replace(old, new, 1)
+          old2 = "Final closure requires zero required gaps, archived donors, an independently controlled archive and cold recovery, exact public endpoint and deployed rollback receipts, complete visual and playtest custody, and no attempt to mutate canonical task counts without the exact row source."
+          new2 = "Final closure still requires zero required gaps, archived donors, exact public endpoint and deployed rollback receipts, complete visual and playtest custody, and no attempt to mutate canonical task counts without the exact row source. The independent private archive and clean verifier replay are now retained, but they do not satisfy public endpoint, deployed rollback, or external-campaign standing."
+          if old2 not in readme:
+              raise SystemExit("README closure anchor drifted")
+          readme_path.write_text(readme.replace(old2, new2, 1), encoding="utf-8")
+          PY
+
+      - name: Prove the complete custody suite and partial-state boundary
+        run: |
+          python -m json.tool programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json > /dev/null
+          python -m json.tool programs/manzanita-99/custody/DONOR_REGISTER.json > /dev/null
+          python -m py_compile \
+            programs/manzanita-99/custody/build_custody.py \
+            programs/manzanita-99/custody/validate_custody.py \
+            programs/manzanita-99/custody/audit_history.py \
+            programs/manzanita-99/custody/tests/test_custody.py \
+            programs/manzanita-99/custody/tests/test_independent_archive.py
+          python -m unittest discover \
+            -s programs/manzanita-99/custody/tests \
+            -p "test_*.py"
+          python programs/manzanita-99/custody/build_custody.py \
+            --repo-root . \
+            --output programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+          python programs/manzanita-99/custody/validate_custody.py \
+            --repo-root . \
+            --manifest programs/manzanita-99/custody/CUSTODY_MANIFEST.json
+          if python programs/manzanita-99/custody/validate_custody.py \
+            --repo-root . \
+            --manifest programs/manzanita-99/custody/CUSTODY_MANIFEST.json \
+            --require-complete
+          then
+            echo "Custody falsely reached COMPLETE" >&2
+            exit 1
+          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          register = json.loads(Path("programs/manzanita-99/custody/DONOR_REGISTER.json").read_text())
+          open_gaps = [row["id"] for row in register["gaps"] if row["required_for_close"] and row["state"] != "closed"]
+          assert open_gaps == [
+              "M99-CUSTODY-GAP-001",
+              "M99-CUSTODY-GAP-003",
+              "M99-CUSTODY-GAP-004",
+              "M99-CUSTODY-GAP-005",
+              "M99-CUSTODY-GAP-006",
+              "M99-CUSTODY-GAP-007",
+              "M99-CUSTODY-GAP-008",
+              "M99-CUSTODY-GAP-009",
+              "M99-CUSTODY-GAP-010",
+          ]
+          PY
+
+      - name: Seal permanent custody evidence and remove this carrier
+        run: |
+          rm -f \
+            .github/workflows/manzanita-independent-archive-custody-bootstrap.yml \
+            programs/manzanita-99/custody/CUSTODY_MANIFEST.json \
+            programs/manzanita-99/custody/HISTORY_AUDIT.json
+          find programs/manzanita-99/custody -type d -name __pycache__ -prune -exec rm -rf {} +
+          git config user.name "manzanita-independent-archive-custody"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            .github/workflows/manzanita-independent-archive-custody-bootstrap.yml \
+            programs/manzanita-99/custody/DONOR_REGISTER.json \
+            programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json \
+            programs/manzanita-99/custody/README.md \
+            programs/manzanita-99/custody/tests/test_independent_archive.py
+          git commit -m "Manzanita: admit independent archive readback and cold recovery"
+          git push origin HEAD:agent/manzanita-independent-archive-custody-002
