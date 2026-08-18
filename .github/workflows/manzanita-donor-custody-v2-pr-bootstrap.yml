@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Recover the exact source package and repair generated-candidate coverage
+      - name: Recover and repair the exact bounded source package
         env:
           EXPECTED_PAYLOAD_SHA256: "abb3ff6942a9c30d134d3d03a19685cccdd63e546d885425c4c13bad4ddb3ebc"
           EXPECTED_PAYLOAD_BYTES: "16197"
@@ -118,7 +118,7 @@ jobs:
           print(f'PASS: recovered and repaired source package {observed}')
           PY
 
-      - name: Prove exact public bytes and the complete partial-custody contract
+      - name: Prove public-route identity and the complete partial-custody contract
         env:
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
@@ -149,12 +149,9 @@ jobs:
             --repo-root . \
             --output programs/manzanita-99/custody/HISTORY_AUDIT.json
 
-      - name: Remove transport material and seal permanent custody source
+      - name: Push only non-workflow source and transport cleanup
         run: |
           rm -f \
-            .github/workflows/manzanita-donor-custody-v2-pr-bootstrap.yml \
-            .github/workflows/manzanita-donor-custody-v2-bootstrap.yml \
-            .github/workflows/manzanita-donor-custody-v2-class-repair.yml \
             .github/bootstrap/manzanita-donor-custody-v2.part01.b64 \
             .github/bootstrap/manzanita-donor-custody-v2.part02.b64 \
             .github/bootstrap/manzanita-donor-custody-v2.part03.b64 \
@@ -163,46 +160,32 @@ jobs:
             programs/manzanita-99/custody/HISTORY_AUDIT.json
           find programs/manzanita-99/custody \
             -type d -name __pycache__ -prune -exec rm -rf {} +
+          git checkout origin/main -- .github/workflows/manzanita-donor-custody.yml
+          git config user.name "manzanita-donor-custody-v2-materializer"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A .github/bootstrap programs/manzanita-99/custody
           python - <<'PY'
           import subprocess
 
-          rows = subprocess.run(
-              ['git', 'status', '--porcelain'],
+          paths = subprocess.run(
+              ['git', 'diff', '--cached', '--name-only'],
               check=True,
               capture_output=True,
               text=True,
           ).stdout.splitlines()
-          paths = []
-          for row in rows:
-              path = row[3:]
-              if ' -> ' in path:
-                  path = path.split(' -> ', 1)[1]
-              paths.append(path)
-          allowed_exact = {
-              '.github/workflows/manzanita-donor-custody.yml',
-              '.github/workflows/manzanita-donor-custody-v2-pr-bootstrap.yml',
-              '.github/workflows/manzanita-donor-custody-v2-bootstrap.yml',
-              '.github/workflows/manzanita-donor-custody-v2-class-repair.yml',
-              '.github/bootstrap/manzanita-donor-custody-v2.part01.b64',
-              '.github/bootstrap/manzanita-donor-custody-v2.part02.b64',
-              '.github/bootstrap/manzanita-donor-custody-v2.part03.b64',
-              '.github/bootstrap/manzanita-donor-custody-v2.part04.b64',
-          }
           invalid = [
               path for path in paths
-              if path not in allowed_exact
+              if not path.startswith('.github/bootstrap/')
               and not path.startswith('programs/manzanita-99/custody/')
           ]
           if invalid:
-              raise SystemExit(f'Out-of-scope source delta: {invalid}')
-          if 'manzanita' in paths or any(
-              path.startswith('manzanita/') for path in paths
+              raise SystemExit(f'Out-of-scope staged delta: {invalid}')
+          if not any(
+              path.startswith('programs/manzanita-99/custody/')
+              for path in paths
           ):
-              raise SystemExit('Historical public route changed')
-          print(f'PASS: bounded source delta contains {len(paths)} paths')
+              raise SystemExit('No permanent custody source was staged')
+          print(f'PASS: source-only staged delta contains {len(paths)} paths')
           PY
-          git config user.name "manzanita-donor-custody-v2-materializer"
-          git config user.email "actions@users.noreply.github.com"
-          git add -A
           git commit -m "Manzanita: operate donor custody against the admitted chain"
           git push origin HEAD:agent/manzanita-donor-custody-001-v2
