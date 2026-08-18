@@ -9,10 +9,6 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: manzanita-v1-4-1-live
-  cancel-in-progress: false
-
 jobs:
   live:
     if: >-
@@ -34,14 +30,24 @@ jobs:
           python-version: "3.12"
 
       - name: Install Playwright and Chromium
+        id: install
+        continue-on-error: true
         run: |
-          python -m pip install --disable-pip-version-check playwright==1.57.0
-          python -m playwright install --with-deps chromium
+          set -o pipefail
+          mkdir -p /tmp/manzanita-live
+          {
+            python -m pip install --disable-pip-version-check playwright==1.57.0
+            python -m playwright install --with-deps chromium
+          } 2>&1 | tee /tmp/manzanita-live/install.log
 
       - name: Wait for and verify the exact public release bytes
+        id: bytes
+        continue-on-error: true
         run: |
           set -euo pipefail
           mkdir -p /tmp/manzanita-live
+          exec > >(tee /tmp/manzanita-live/bytes.log) 2>&1
+
           for attempt in $(seq 1 24); do
             code=$(curl -L -sS \
               -o /tmp/manzanita-live/index.html \
@@ -92,12 +98,22 @@ jobs:
           PY
 
       - name: Drive the public endpoint
+        id: browser
+        if: steps.install.outcome == 'success' && steps.bytes.outcome == 'success'
+        continue-on-error: true
         env:
           MANZANITA_URL: ${{ env.MANZANITA_BASE_URL }}/?v=${{ env.MANZANITA_SOURCE_SHA }}
           MANZANITA_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-live-screens
-        run: python manzanita/tests/browser_test.py
+        run: |
+          set -o pipefail
+          python manzanita/tests/browser_test.py 2>&1 \
+            | tee /tmp/manzanita-live/browser.log
 
-      - uses: actions/upload-artifact@v4
+      - name: Retain live screenshots
+        id: upload
+        if: steps.browser.outcome == 'success'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
         with:
           name: manzanita-signal-sheet-v1.4.1-live-screens
           path: ${{ runner.temp }}/manzanita-live-screens
@@ -105,24 +121,48 @@ jobs:
           retention-days: 30
 
       - name: Retain the completed Pages observation
-        if: github.event_name == 'workflow_run'
+        id: receipt
+        if: always() && github.event_name == 'workflow_run'
         env:
           LIVE_GATE_RUN_ID: ${{ github.run_id }}
           LIVE_GATE_RUN_ATTEMPT: ${{ github.run_attempt }}
+          INSTALL_OUTCOME: ${{ steps.install.outcome }}
+          BYTE_OUTCOME: ${{ steps.bytes.outcome }}
+          BROWSER_OUTCOME: ${{ steps.browser.outcome }}
+          UPLOAD_OUTCOME: ${{ steps.upload.outcome }}
         run: |
           set -euo pipefail
+          git fetch origin main
+          git rebase origin/main
+
           python - <<'PY'
           import json
           import os
           from datetime import datetime, timezone
           from pathlib import Path
 
+          def tail(path: str, limit: int = 8000) -> str:
+              target = Path(path)
+              if not target.exists():
+                  return ""
+              text = target.read_text(encoding="utf-8", errors="replace")
+              return text[-limit:]
+
+          outcomes = {
+              "install": os.environ["INSTALL_OUTCOME"],
+              "exact_files": os.environ["BYTE_OUTCOME"],
+              "browser_contract": os.environ["BROWSER_OUTCOME"],
+              "screenshot_retention": os.environ["UPLOAD_OUTCOME"],
+          }
+          passed = all(value == "success" for value in outcomes.values())
           pages_receipt_path = Path(".github/pages-deployment.json")
           pages_receipt = json.loads(pages_receipt_path.read_text()) if pages_receipt_path.exists() else {}
+          files_path = Path("/tmp/manzanita-live/files.json")
           receipt = {
               "schema": "manzanita-works/live-pages-receipt@1",
               "release": "1.4.1",
               "release_class": "public_maintenance_patch",
+              "state": "PASS" if passed else "FAIL",
               "observed_at": datetime.now(timezone.utc).isoformat(),
               "public_route": os.environ["MANZANITA_BASE_URL"] + "/",
               "pages": {
@@ -135,24 +175,42 @@ jobs:
                   "run_attempt": int(os.environ["LIVE_GATE_RUN_ATTEMPT"]),
                   "release_marker": "1.4.1",
                   "visual_system_marker": "signal-sheet",
-                  "exact_file_gate": "PASS",
-                  "browser_contract": "PASS",
+                  "outcomes": outcomes,
               },
-              "files": json.loads(Path("/tmp/manzanita-live/files.json").read_text()),
+              "files": json.loads(files_path.read_text()) if files_path.exists() else {},
+              "failure_receipts": {
+                  "install_tail": tail("/tmp/manzanita-live/install.log") if outcomes["install"] != "success" else "",
+                  "exact_files_tail": tail("/tmp/manzanita-live/bytes.log") if outcomes["exact_files"] != "success" else "",
+                  "browser_tail": tail("/tmp/manzanita-live/browser.log") if outcomes["browser_contract"] != "success" else "",
+              },
               "authority": {
                   "successor_program_effect": "none",
                   "external_campaign_effect": "none",
                   "canonical_task_count_effect": "none",
               },
           }
-          Path(".github/manzanita-live-receipt.json").write_text(
-              json.dumps(receipt, indent=2, sort_keys=True) + "\n"
-          )
+          target = Path(".github/manzanita-live-receipts") / f"{os.environ['PAGES_RUN_ID']}.json"
+          target.parent.mkdir(parents=True, exist_ok=True)
+          target.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+          Path("/tmp/manzanita-live/receipt-state.txt").write_text(receipt["state"] + "\n")
           PY
 
+          target=".github/manzanita-live-receipts/$PAGES_RUN_ID.json"
           git config user.name "manzanita-live-gate"
           git config user.email "actions@users.noreply.github.com"
-          git add .github/manzanita-live-receipt.json
+          git add "$target"
           git diff --cached --check
-          git commit -m "Manzanita: record successful v1.4.1 live observation"
+          git commit -m "Manzanita: record v1.4.1 live observation $PAGES_RUN_ID"
           git push origin HEAD:main
+
+      - name: Enforce the retained observation
+        if: always()
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            test "$(cat /tmp/manzanita-live/receipt-state.txt)" = "PASS"
+          else
+            test "${{ steps.install.outcome }}" = "success"
+            test "${{ steps.bytes.outcome }}" = "success"
+            test "${{ steps.browser.outcome }}" = "success"
+            test "${{ steps.upload.outcome }}" = "success"
+          fi
