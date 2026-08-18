@@ -1,0 +1,67 @@
+name: Materialize Essential Capacity candidate
+
+on:
+  push:
+    branches: [agent/essential-capacity-v0-1-test-unattached]
+    paths:
+      - ".github/workflows/essential-capacity-materialize.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: essential-capacity-materialize-v0-1
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/essential-capacity-v0-1-test-unattached
+          fetch-depth: 0
+      - name: Retrieve the exact prequalified public-safe payload
+        run: |
+          set -euo pipefail
+          cd /tmp
+          curl --fail --location --retry 5 --retry-all-errors \
+            https://essential-capacity-v0-1.serveo.net/essential-capacity-payload.tar.gz \
+            --output essential-capacity-payload.tar.gz
+          curl --fail --location --retry 5 --retry-all-errors \
+            https://essential-capacity-v0-1.serveo.net/essential-capacity-payload.tar.gz.sha256 \
+            --output essential-capacity-payload.tar.gz.sha256
+          sha256sum --check essential-capacity-payload.tar.gz.sha256
+      - name: Materialize the self-contained tool and repository map
+        run: |
+          set -euo pipefail
+          tar -xzf /tmp/essential-capacity-payload.tar.gz -C .
+          rm -f .github/workflows/essential-capacity-materialize.yml
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Requalify the exact materialized candidate
+        run: |
+          set -euo pipefail
+          python capacity-commons/scripts/validate.py
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path("capacity-commons/index.html").read_text(encoding="utf-8")
+          scripts = re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>", html, flags=re.S | re.I)
+          Path("/tmp/essential-capacity-app.js").write_text(scripts[-1], encoding="utf-8")
+          PY
+          node --check /tmp/essential-capacity-app.js
+      - name: Seal the review branch
+        run: |
+          set -euo pipefail
+          git config user.name "essential-capacity-build-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Essential Capacity: add operating commons ledger v0.1.0"
+          git push origin HEAD:agent/essential-capacity-v0-1-test-unattached
