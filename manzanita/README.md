@@ -1,4 +1,4 @@
-# Manzanita Works v1.4.0 · Signal Sheet
+# Manzanita Works v1.4.1 · Signal Sheet
 
 Manzanita Works is the public-safe front door for the connected household-to-region estate. It carries one place record from useful plant through Household Habitat, Street Glide, the Regional Observatory, Civic Planner, assistance-first remediation, and Essential Attention.
 
@@ -29,6 +29,12 @@ Prevention information may support grants, tools, nursery supply, crews, horticu
 
 The site has no backend, account, telemetry, model call, email adapter, payment adapter, scheduling adapter, coverage adapter, enforcement adapter, or source-system writeback. Essential Attention remains a separate linked instrument and retains its own authority and local-custody law.
 
+## Maintenance polish in v1.4.1
+
+The patch keeps the seven-scale Signal Sheet, source and authority boundaries, visual grammar, and zero-backend architecture intact. It adds URL-addressable scale, perspective, and overlay state; Arrow, Home, and End navigation across the scale and perspective rails; polite screen-reader announcements; a print or save-to-PDF sheet; canonical and social metadata; and a visible repository-directory entry. The next-scale control now applies the same default-overlay transition as direct scale selection.
+
+The predecessor v1.4.0 route remains recoverable by exact commit, tree, qualification blob, and file blob identities. This maintenance release has no effect on the separate `manzanita-next` successor hold, its external campaigns, or canonical task counts.
+
 ## Qualification
 
 The permanent contract verifies:
@@ -43,4 +49,4 @@ The permanent contract verifies:
 - zero browser errors and zero unexpected external requests;
 - the Essential Attention handoff and purpose-firewall language.
 
-The live workflow waits for GitHub Pages to serve the exact `1.4.0` release marker before replaying the complete browser contract against the public endpoint.
+The live workflow waits for GitHub Pages to serve the exact `1.4.1` release marker before replaying the complete browser contract against the public endpoint.

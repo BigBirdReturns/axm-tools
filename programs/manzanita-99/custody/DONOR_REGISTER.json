@@ -2,20 +2,36 @@
   "schema": "axm-tools/manzanita-donor-register@2",
   "contract_id": "M99-DONOR-CUSTODY-002",
   "state": "in_progress",
-  "observed_main_head": "591f425d35fd1f946bab59039d02c93de995fdd9",
+  "observed_main_head": "58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb",
   "donors": [
     {
       "id": "manzanita-public-1.4.0",
+      "class": "historical_public_release",
+      "custody_state": "archived_repo",
+      "archive_scope_ids": [],
+      "anchors": {
+        "release": "1.4.0",
+        "qualification_blob": "a3cb3212c22a32b113929e079a331c5f9a9129dd",
+        "source_commit": "58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb",
+        "route_tree": "846132be374b1e1da5a9444dc67da877bbb32224"
+      },
+      "claim_boundary": "Exact predecessor public rollback donor retained by commit, route tree, and file blob identities. It does not transfer public standing to manzanita-next."
+    },
+    {
+      "id": "manzanita-public-1.4.1",
       "class": "historical_public_release",
       "custody_state": "archived_repo",
       "archive_scope_ids": [
         "historical-public-route"
       ],
       "anchors": {
-        "release": "1.4.0",
-        "qualification_blob": "a3cb3212c22a32b113929e079a331c5f9a9129dd"
+        "release": "1.4.1",
+        "supersedes": "1.4.0",
+        "route_tree": "f6ea68bd4c5e07919277a099039354a5920d7b2b",
+        "qualification_blob": "8446d993eba3582d2f37300769334924266d8ebd",
+        "release_receipt_blob": "768f086673b0b593b8bfbbbdd75c26152bbaa40e"
       },
-      "claim_boundary": "Historical public rollback donor. It is not the successor and does not transfer public standing to manzanita-next."
+      "claim_boundary": "Current public maintenance release of the admitted Signal Sheet. It adds bounded interaction, portability, print, and discovery polish without admitting or releasing manzanita-next."
     },
     {
       "id": "pr-90-source_foundation",
@@ -391,5 +407,5 @@
     }
   ],
   "canonical_task_count_effect": "none",
-  "qualification_boundary": "A passing custody workflow proves that repo-resident sources, route guards, donor anchors, observed execution records, and the explicit gap ledger agree. It does not close JDB99-001, qualify the whole product, authorize public release, prove external archives, or change canonical task counts."
+  "qualification_boundary": "A passing custody workflow proves current and predecessor public-route identities, repo-resident sources, donor anchors, observed successor records, and the explicit gap ledger agree. It does not close JDB99-001, release manzanita-next, prove external campaigns, or change canonical task counts."
 }

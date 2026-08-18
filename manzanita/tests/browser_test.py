@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import sync_playwright
 
@@ -50,7 +50,7 @@ def exercise(page, theme: str, label: str) -> None:
     response = page.reload(wait_until="networkidle")
     assert response is not None and response.status == 200, response.status if response else None
     assert page.title() == "Manzanita Works · One Place, Every Scale"
-    assert page.locator("html").get_attribute("data-release") == "1.4.0"
+    assert page.locator("html").get_attribute("data-release") == "1.4.1"
     assert page.locator("html").get_attribute("data-visual-system") == "signal-sheet"
     assert page.locator("html").get_attribute("data-theme") == theme
 
@@ -62,7 +62,18 @@ def exercise(page, theme: str, label: str) -> None:
     assert page.locator(".sequence > li").count() == 6
     assert page.locator(".hero-plate svg").count() == 1
     assert page.locator("#placeSvg").count() == 1
+    assert page.locator("#printSheet").count() == 1
+    assert page.locator("#interactionStatus").count() == 1
     assert page.locator("img").count() == 0
+
+    state_url = TARGET_URL + ("&" if "?" in TARGET_URL else "?") + "scale=region&role=successor&layers=fire,air"
+    response = page.goto(state_url, wait_until="networkidle", timeout=60_000)
+    assert response is not None and response.status == 200, response.status if response else None
+    assert page.locator("#visualTitle").text_content().strip() == "Region"
+    assert page.locator("#roleTitle").text_content().strip() == "Successor"
+    assert page.locator('[data-overlay-button="fire"]').get_attribute("aria-pressed") == "true"
+    assert page.locator('[data-overlay-button="air"]').get_attribute("aria-pressed") == "true"
+    assert page.locator('[data-overlay-button][aria-pressed="true"]').count() == 2
 
     for button in page.locator("[data-scale]").all():
         label_text = button.inner_text().strip()
@@ -73,6 +84,25 @@ def exercise(page, theme: str, label: str) -> None:
         assert page.locator("#scaleAuthority").inner_text().strip()
         assert page.locator("#scaleScene > g").count() == 1
 
+    first_scale = page.locator('[data-scale="0"]')
+    first_scale.focus()
+    page.keyboard.press("End")
+    assert page.locator('[data-scale="6"]').get_attribute("aria-pressed") == "true"
+    assert page.locator(':focus').get_attribute("data-scale") == "6"
+    page.keyboard.press("Home")
+    assert first_scale.get_attribute("aria-pressed") == "true"
+    assert page.locator("#interactionStatus").text_content().strip().startswith("Plant scale selected.")
+
+    page.locator('[data-scale="3"]').click()
+    page.locator("#nextScale").click()
+    assert page.locator("#visualTitle").text_content().strip() == "Neighborhood"
+    assert page.locator('[data-overlay-button="fire"]').get_attribute("aria-pressed") == "true"
+    assert page.locator('[data-overlay-button="labor"]').get_attribute("aria-pressed") == "true"
+    assert page.locator('[data-overlay-button="access"]').get_attribute("aria-pressed") == "false"
+    state_query = parse_qs(urlparse(page.url).query, keep_blank_values=True)
+    assert state_query["scale"] == ["neighborhood"]
+    assert set(state_query["layers"][0].split(",")) == {"fire", "labor"}
+
     for button in page.locator("[data-overlay-button]").all():
         before = button.get_attribute("aria-pressed")
         button.click()
@@ -80,11 +110,26 @@ def exercise(page, theme: str, label: str) -> None:
         button.click()
         assert button.get_attribute("aria-pressed") == before
 
+    overlay_states = [button.get_attribute("aria-pressed") for button in page.locator("[data-overlay-button]").all()]
+    page.locator('[data-overlay-button="habitat"]').focus()
+    page.keyboard.press("End")
+    assert page.locator(':focus').get_attribute("data-overlay-button") == "authority"
+    assert [button.get_attribute("aria-pressed") for button in page.locator("[data-overlay-button]").all()] == overlay_states
+
     for button in page.locator("[data-role]").all():
         button.click()
         assert button.get_attribute("aria-pressed") == "true"
-        assert page.locator("#roleTitle").inner_text().strip()
-        assert page.locator("#roleNeed").inner_text().strip().startswith("Needs:")
+        assert page.locator("#roleTitle").text_content().strip()
+        assert page.locator("#roleNeed").text_content().strip().startswith("Needs:")
+
+    page.locator('[data-role="0"]').focus()
+    page.keyboard.press("End")
+    assert page.locator('[data-role="4"]').get_attribute("aria-pressed") == "true"
+    assert page.locator(':focus').get_attribute("data-role") == "4"
+
+    page.evaluate("window.print = () => document.documentElement.dataset.printInvoked = 'true'")
+    page.locator("#printSheet").click()
+    assert page.locator("html").get_attribute("data-print-invoked") == "true"
 
     body_text = page.locator("body").inner_text()
     assert "Automatic insurance denial" in body_text
@@ -154,4 +199,4 @@ finally:
         with contextlib.suppress(Exception):
             server.wait(timeout=5)
 
-print(f"Manzanita Works v1.4.0 browser contract: PASS ({TARGET_URL})")
+print(f"Manzanita Works v1.4.1 browser contract: PASS ({TARGET_URL})")

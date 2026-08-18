@@ -1,0 +1,29 @@
+{
+  "schema": "manzanita-works/release-receipt@1",
+  "release": "1.4.1",
+  "release_class": "public_maintenance_patch",
+  "prepared_on": "2026-08-18",
+  "public_route": "https://bigbirdreturns.github.io/axm-tools/manzanita/",
+  "predecessor": {
+    "release": "1.4.0",
+    "source_commit": "58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb",
+    "route_tree": "846132be374b1e1da5a9444dc67da877bbb32224",
+    "qualification_blob": "a3cb3212c22a32b113929e079a331c5f9a9129dd"
+  },
+  "changes": [
+    "URL-addressable scale, perspective, and overlay state",
+    "Arrow, Home, and End navigation for grouped controls",
+    "polite live-region announcements",
+    "consistent default overlays for direct and next-scale transitions",
+    "print and save-to-PDF presentation",
+    "canonical and social metadata",
+    "repository front-door listing"
+  ],
+  "authority": {
+    "basis": "repository_owner_release_directive_2026-08-18",
+    "successor_program_effect": "none",
+    "external_campaign_effect": "none",
+    "canonical_task_count_effect": "none"
+  },
+  "deployment_claim": "held_until_exact_main_pages_and_live_browser_gates_pass"
+}

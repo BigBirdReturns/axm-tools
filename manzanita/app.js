@@ -87,7 +87,21 @@
   ];
 
   const $ = (selector) => document.querySelector(selector);
-  const state = {scale:1, role:0, overlays:new Set(['habitat','shade'])};
+  function defaultOverlayIds(scaleIndex){
+    return scaleIndex < 2 ? ['habitat','shade'] : scaleIndex < 4 ? ['access','water'] : scaleIndex < 6 ? ['fire','labor'] : ['authority','access'];
+  }
+  const initialParams = new URLSearchParams(window.location.search);
+  const requestedScale = scales.findIndex(s => s.id === initialParams.get('scale'));
+  const requestedRole = roles.findIndex(r => r.id === initialParams.get('role'));
+  const requestedLayers = initialParams.has('layers')
+    ? (initialParams.get('layers') || '').split(',').filter(id => overlays.some(o => o.id === id))
+    : null;
+  const initialScale = requestedScale >= 0 ? requestedScale : 1;
+  const state = {
+    scale:initialScale,
+    role:requestedRole >= 0 ? requestedRole : 0,
+    overlays:new Set(requestedLayers === null ? defaultOverlayIds(initialScale) : requestedLayers)
+  };
 
   function esc(text){ return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
   function label(x,y,title,detail,anchor='start'){
@@ -280,6 +294,66 @@
     $('#roleCode').textContent=r.code; $('#roleTitle').textContent=r.label; $('#roleBody').textContent=r.body; $('#roleNeed').textContent=r.need;
   }
 
+  function announce(message){
+    const region=$('#interactionStatus');
+    if(!region)return;
+    region.textContent=message;
+  }
+
+  function syncUrl(){
+    const url=new URL(window.location.href);
+    url.searchParams.set('scale',scales[state.scale].id);
+    url.searchParams.set('role',roles[state.role].id);
+    const active=overlays.filter(o=>state.overlays.has(o.id)).map(o=>o.id);
+    url.searchParams.set('layers',active.join(','));
+    const query=url.searchParams.toString();
+    window.history.replaceState(null,'',`${url.pathname}${query?`?${query}`:''}${url.hash}`);
+  }
+
+  function selectScale(index,{resetLayers=true,announceChange=true}={}){
+    const numeric=Number(index);
+    state.scale=((numeric%scales.length)+scales.length)%scales.length;
+    if(resetLayers)state.overlays=new Set(defaultOverlayIds(state.scale));
+    renderScale();
+    syncUrl();
+    if(announceChange)announce(`${scales[state.scale].label} scale selected. ${scales[state.scale].title}`);
+  }
+
+  function selectRole(index,{announceChange=true}={}){
+    const numeric=Number(index);
+    state.role=((numeric%roles.length)+roles.length)%roles.length;
+    renderRole();
+    syncUrl();
+    if(announceChange)announce(`${roles[state.role].label} perspective selected.`);
+  }
+
+  function toggleOverlay(id){
+    const item=overlays.find(o=>o.id===id);
+    if(!item)return;
+    const willShow=!state.overlays.has(id);
+    willShow?state.overlays.add(id):state.overlays.delete(id);
+    renderOverlays();
+    syncUrl();
+    announce(`${item.label} condition ${willShow?'shown':'hidden'}.`);
+  }
+
+  function bindArrowNavigation(container,selector,activate){
+    container.addEventListener('keydown',event=>{
+      if(!['ArrowRight','ArrowDown','ArrowLeft','ArrowUp','Home','End'].includes(event.key))return;
+      const buttons=[...container.querySelectorAll(selector)];
+      const current=buttons.indexOf(event.target.closest(selector));
+      if(current<0)return;
+      event.preventDefault();
+      let next=current;
+      if(event.key==='Home')next=0;
+      else if(event.key==='End')next=buttons.length-1;
+      else if(event.key==='ArrowRight'||event.key==='ArrowDown')next=(current+1)%buttons.length;
+      else next=(current-1+buttons.length)%buttons.length;
+      buttons[next].focus();
+      if(activate)activate(buttons[next]);
+    });
+  }
+
   function updateThemeControl(){
     const dark=document.documentElement.dataset.theme==='dark';
     $('#themeToggle').setAttribute('aria-pressed',String(dark));
@@ -290,9 +364,14 @@
 
   buildControls(); renderScale(); renderRole(); updateThemeControl();
 
-  $('#scaleRail').addEventListener('click',e=>{const b=e.target.closest('[data-scale]');if(!b)return;state.scale=Number(b.dataset.scale);state.overlays=new Set(state.scale<2?['habitat','shade']:state.scale<4?['access','water']:state.scale<6?['fire','labor']:['authority','access']);renderScale();});
-  $('#overlayRail').addEventListener('click',e=>{const b=e.target.closest('[data-overlay-button]');if(!b)return;const id=b.dataset.overlayButton;state.overlays.has(id)?state.overlays.delete(id):state.overlays.add(id);renderOverlays();});
-  $('#roleRail').addEventListener('click',e=>{const b=e.target.closest('[data-role]');if(!b)return;state.role=Number(b.dataset.role);renderRole();});
-  $('#nextScale').addEventListener('click',()=>{state.scale=(state.scale+1)%scales.length;renderScale();$('#place').scrollIntoView({block:'start'});});
+  $('#scaleRail').addEventListener('click',e=>{const b=e.target.closest('[data-scale]');if(!b)return;selectScale(Number(b.dataset.scale));});
+  $('#overlayRail').addEventListener('click',e=>{const b=e.target.closest('[data-overlay-button]');if(!b)return;toggleOverlay(b.dataset.overlayButton);});
+  $('#roleRail').addEventListener('click',e=>{const b=e.target.closest('[data-role]');if(!b)return;selectRole(Number(b.dataset.role));});
+  $('#nextScale').addEventListener('click',()=>{selectScale(state.scale+1);$('#place').scrollIntoView({block:'start'});});
+  $('#printSheet').addEventListener('click',()=>window.print());
   $('#themeToggle').addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;localStorage.setItem('manzanita-theme',next);updateThemeControl();});
+
+  bindArrowNavigation($('#scaleRail'),'[data-scale]',button=>selectScale(Number(button.dataset.scale)));
+  bindArrowNavigation($('#roleRail'),'[data-role]',button=>selectRole(Number(button.dataset.role)));
+  bindArrowNavigation($('#overlayRail'),'[data-overlay-button]',null);
 })();

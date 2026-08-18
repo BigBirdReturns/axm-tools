@@ -30,7 +30,11 @@ The primary operating route is visible without onboarding machinery:
 Plant → Household → Property → Street → Neighborhood → Region → Stewardship
 ```
 
-Every scale exposes the current reading, what matters, next safe action, and authority boundary. Eight overlays and five functional perspectives remain independently selectable. The theme toggle, scale rail, overlays, roles, and Essential Attention handoff are keyboard accessible and retain conventional browser behavior.
+Every scale exposes the current reading, what matters, next safe action, and authority boundary. Eight overlays and five functional perspectives remain independently selectable. The theme toggle, scale rail, overlays, roles, and Essential Attention handoff are keyboard accessible and retain conventional browser behavior. Scale and perspective rails also support Arrow, Home, and End navigation without removing ordinary Tab access.
+
+## Portable-state and print law
+
+The current scale, perspective, and visible conditions may be encoded in the page address. Invalid identifiers are ignored, no query value acquires evidence or authority, and changing the view must not create a network request. A printed or saved sheet may suppress interactive controls, but it must preserve the represented place, evidence labels, purpose firewall, authority boundaries, and release identity.
 
 ## Release law
 

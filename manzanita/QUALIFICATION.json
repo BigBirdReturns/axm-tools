@@ -1,36 +1,42 @@
 {
-  "schema": "manzanita-works/pages-qualification@4",
-  "release": "1.4.0",
+  "schema": "manzanita-works/pages-qualification@5",
+  "release": "1.4.1",
+  "release_class": "public_maintenance_patch",
   "visual_system": "signal-sheet",
   "entrypoint": "manzanita/index.html",
+  "public_route": "https://bigbirdreturns.github.io/axm-tools/manzanita/",
   "themes": [
     "light",
     "dark"
   ],
   "files": {
     "index.html": {
-      "bytes": 19023,
-      "sha256": "c8a521ac84cdaba2e9fa6bbeec984feeb1e9f95a57bdcd116302dab62fbdf7cd"
+      "bytes": 20068,
+      "sha256": "ce1e94513e13afb2ba8cf0bd2f0efd36f42b1420d6b423642632c985eae97ff0"
     },
     "style.css": {
-      "bytes": 18807,
-      "sha256": "cc3dfd99aa10ac4116b979e0e1e8d5a479e70d3c023cbf58d1b82036cd2a2100"
+      "bytes": 20808,
+      "sha256": "aeecd4075012eeb715a2e4aead43b22646e69a6204e97d857e0eb570c350cf58"
     },
     "app.js": {
-      "bytes": 24204,
-      "sha256": "59e09813f33c8533e9d10a784afa76d862075fcbb5cc8a234f476663bc16c512"
+      "bytes": 27379,
+      "sha256": "b31f4a67517e36d7f7a3635c11ac7039ccca68524506e2b77fe7a2080653c314"
     },
     "theme-init.js": {
       "bytes": 290,
       "sha256": "29a2acecd398fba04540e115c8c87a070de1bbf1cf18a3768ca79de494bef1da"
     },
     "README.md": {
-      "bytes": 3341,
-      "sha256": "d964e0c9717ee2757c82f0ababe74ef54c48595cff2a3c24237042578cd2c214"
+      "bytes": 4137,
+      "sha256": "a8ffc14d461486d3cfee137b5acbcf68ee1a823bafa84045428139bfa05c47b6"
     },
     "VISUAL_CONSTITUTION.md": {
-      "bytes": 2752,
-      "sha256": "f54dce9d2f61adff25f2e2e6f1ab182746bbc08f1918e918264d78e55ace901a"
+      "bytes": 3308,
+      "sha256": "7662da62cc033eb0088dd33ecd885b18a09fa06ec590d13098dda1c3e46d0e6a"
+    },
+    "RELEASE_RECEIPT.json": {
+      "bytes": 1127,
+      "sha256": "e850082498124a4106985fa65d28d7605f4562b611189c865041bb50018ffab6"
     }
   },
   "scales": 7,
@@ -40,5 +46,20 @@
   "visual_medium": "estate-owned responsive SVG",
   "external_visual_dependencies": 0,
   "external_effect_adapters": 0,
-  "authority_boundary": "illustration and modeled context do not become survey, inspection, enforcement, coverage, or work authority"
+  "shareable_url_state": true,
+  "keyboard_group_navigation": [
+    "Arrow",
+    "Home",
+    "End"
+  ],
+  "print_save_sheet": true,
+  "predecessor_release": {
+    "release": "1.4.0",
+    "source_commit": "58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb",
+    "route_tree": "846132be374b1e1da5a9444dc67da877bbb32224",
+    "qualification_blob": "a3cb3212c22a32b113929e079a331c5f9a9129dd"
+  },
+  "authority_boundary": "illustration and modeled context do not become survey, inspection, enforcement, coverage, or work authority",
+  "successor_program_effect": "none",
+  "canonical_task_count_effect": "none"
 }

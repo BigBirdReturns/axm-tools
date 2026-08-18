@@ -1,4 +1,4 @@
-name: Manzanita Works v1.4.0 Signal Sheet contract
+name: Manzanita Works v1.4.1 Signal Sheet contract
 
 on:
   push:
@@ -47,7 +47,7 @@ jobs:
         run: python manzanita/tests/browser_test.py
       - uses: actions/upload-artifact@v4
         with:
-          name: manzanita-signal-sheet-v1.4.0-screens
+          name: manzanita-signal-sheet-v1.4.1-screens
           path: ${{ runner.temp }}/manzanita-screens
           if-no-files-found: error
           retention-days: 30

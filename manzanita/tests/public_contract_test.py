@@ -7,9 +7,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 receipt = json.loads((ROOT / "QUALIFICATION.json").read_text(encoding="utf-8"))
+release_receipt = json.loads((ROOT / "RELEASE_RECEIPT.json").read_text(encoding="utf-8"))
 
-assert receipt["schema"] == "manzanita-works/pages-qualification@4"
-assert receipt["release"] == "1.4.0"
+assert receipt["schema"] == "manzanita-works/pages-qualification@5"
+assert receipt["release"] == "1.4.1"
 assert receipt["visual_system"] == "signal-sheet"
 assert receipt["themes"] == ["light", "dark"]
 assert receipt["scales"] == 7
@@ -18,6 +19,15 @@ assert receipt["functional_views"] == 5
 assert receipt["instruments"] == 6
 assert receipt["external_effect_adapters"] == 0
 assert receipt["external_visual_dependencies"] == 0
+assert receipt["shareable_url_state"] is True
+assert receipt["keyboard_group_navigation"] == ["Arrow", "Home", "End"]
+assert receipt["print_save_sheet"] is True
+assert receipt["predecessor_release"]["release"] == "1.4.0"
+assert release_receipt["schema"] == "manzanita-works/release-receipt@1"
+assert release_receipt["release"] == "1.4.1"
+assert release_receipt["predecessor"]["route_tree"] == "846132be374b1e1da5a9444dc67da877bbb32224"
+assert release_receipt["authority"]["successor_program_effect"] == "none"
+assert release_receipt["authority"]["canonical_task_count_effect"] == "none"
 
 for name, expected in receipt["files"].items():
     data = (ROOT / name).read_bytes()
@@ -32,7 +42,7 @@ theme = (ROOT / "theme-init.js").read_text(encoding="utf-8")
 constitution = (ROOT / "VISUAL_CONSTITUTION.md").read_text(encoding="utf-8")
 
 for phrase in (
-    'data-release="1.4.0"',
+    'data-release="1.4.1"',
     'data-visual-system="signal-sheet"',
     "One place.<br>Every scale.",
     "Fresh catnip exposed the whole system.",
@@ -43,6 +53,8 @@ for phrase in (
     "Essential Attention keeps the work alive when people change.",
     "Automatic insurance denial",
     "No backend · no external-effect adapters",
+    "Print / save signal sheet",
+    "The address records the current scale",
 ):
     assert phrase in html, phrase
 
@@ -53,6 +65,16 @@ assert 'connect-src \'none\'' in html
 assert 'https://bigbirdreturns.github.io/axm-tools/essential-attention/' in html
 assert 'themeToggle' in html
 assert 'rel="icon"' in html
+assert 'rel="canonical" href="https://bigbirdreturns.github.io/axm-tools/manzanita/"' in html
+assert 'property="og:title"' in html
+assert 'id="interactionStatus"' in html
+assert 'id="printSheet"' in html
+assert 'history.replaceState' in js
+assert 'URLSearchParams' in js
+assert 'window.print()' in js
+assert "'ArrowRight'" in js and "'Home'" in js and "'End'" in js
+assert '@media print' in css
+assert '.sr-only' in css
 assert 'style="' not in js
 assert '.scene-stroke-15' in css and '.scene-stroke-13' in css
 assert 'manzanita-theme' in theme
@@ -93,7 +115,14 @@ for rule in (
     "No section may introduce a decorative gradient",
     "Dark mode is the same grammar inverted",
     "A release fails when the public endpoint loses the exact release marker",
+    "The current scale, perspective, and visible conditions may be encoded in the page address",
+    "A printed or saved sheet may suppress interactive controls",
 ):
     assert rule in constitution, rule
 
-print("Manzanita Works v1.4.0 Signal Sheet static contract: PASS")
+root_index = (ROOT.parent / "index.html").read_text(encoding="utf-8")
+root_readme = (ROOT.parent / "README.md").read_text(encoding="utf-8")
+assert root_index.count('href="manzanita/"') >= 2
+assert "[`manzanita/`](manzanita/)" in root_readme
+
+print("Manzanita Works v1.4.1 Signal Sheet static contract: PASS")

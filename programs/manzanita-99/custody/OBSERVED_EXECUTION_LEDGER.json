@@ -1,7 +1,7 @@
 {
   "schema": "axm-tools/manzanita-observed-execution-ledger@1",
   "ledger_id": "M99-OBSERVED-EXECUTION-001",
-  "as_of_main_head": "591f425d35fd1f946bab59039d02c93de995fdd9",
+  "as_of_main_head": "58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb",
   "constitutional_source_state": "original_row_level_register_unavailable",
   "records": [
     {
@@ -193,8 +193,10 @@
       "M99-DEPLOY-PUBLIC-001",
       "M99-DEPLOY-ROLLBACK-001"
     ],
-    "public_release_authorized": false
+    "public_release_authorized": false,
+    "scope": "manzanita-next_successor_candidate_only",
+    "historical_public_maintenance_release_effect": "none"
   },
   "canonical_task_count_effect": "none",
-  "claim_boundary": "This ledger records observed merged operating objects and their admitted claim boundaries. It is not a reconstruction of the lost 497-row register and cannot decrement remembered counts or close canonical task rows."
+  "claim_boundary": "This ledger records observed merged successor operating objects and their admitted claim boundaries. Its external campaign HOLD applies to the manzanita-next successor candidate, not to a separately authorized maintenance patch of the already public Signal Sheet. It is not a reconstruction of the lost 497-row register and cannot decrement remembered counts or close canonical task rows."
 }

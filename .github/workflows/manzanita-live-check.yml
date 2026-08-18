@@ -1,4 +1,4 @@
-name: Manzanita Works v1.4.0 live Pages gate
+name: Manzanita Works v1.4.1 live Pages gate
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
           for attempt in $(seq 1 24); do
             code=$(curl -L -sS -o /tmp/manzanita.html -w '%{http_code}' "$MANZANITA_URL" || true)
             if [ "$code" = "200" ] \
-              && grep -q 'data-release="1.4.0"' /tmp/manzanita.html \
+              && grep -q 'data-release="1.4.1"' /tmp/manzanita.html \
               && grep -q 'data-visual-system="signal-sheet"' /tmp/manzanita.html; then
               break
             fi
@@ -55,7 +55,7 @@ jobs:
         run: python manzanita/tests/browser_test.py
       - uses: actions/upload-artifact@v4
         with:
-          name: manzanita-signal-sheet-v1.4.0-live-screens
+          name: manzanita-signal-sheet-v1.4.1-live-screens
           path: ${{ runner.temp }}/manzanita-live-screens
           if-no-files-found: error
           retention-days: 30

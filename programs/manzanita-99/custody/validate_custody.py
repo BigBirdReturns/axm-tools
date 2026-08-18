@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path, PurePosixPath
 from typing import Any
 
@@ -34,6 +35,18 @@ def sha256_bytes(payload: bytes) -> str:
 
 def git_blob_sha1(payload: bytes) -> str:
     return hashlib.sha1(f"blob {len(payload)}\0".encode("ascii") + payload).hexdigest()
+
+
+def git_value(repo_root: Path, *args: str) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(repo_root), *args],
+        check=False,
+        capture_output=True,
+        text=True,
+        errors="replace",
+    )
+    require(result.returncode == 0, f"Git object lookup failed for {' '.join(args)}: {result.stderr.strip()}")
+    return result.stdout.strip()
 
 
 def load_json(path: Path) -> tuple[dict[str, Any], bytes]:
@@ -98,6 +111,24 @@ def validate_contract(contract: dict[str, Any]) -> set[str]:
     for path, expected in files.items():
         clean_relative(path)
         require(len(str(expected.get("git_blob_sha1", ""))) == 40, f"Guard lacks Git blob id: {path}")
+    historical = contract.get("historical_public_route_guards", [])
+    require(isinstance(historical, list), "Historical public route guards must be a list")
+    releases = []
+    for row in historical:
+        require(isinstance(row, dict), "Historical public route guard must be an object")
+        releases.append(str(row.get("release", "")))
+        clean_relative(str(row.get("path", "")))
+        require(len(str(row.get("commit", ""))) == 40, "Historical public route guard lacks commit")
+        require(len(str(row.get("tree", ""))) == 40, "Historical public route guard lacks tree")
+        historical_files = row.get("files")
+        require(isinstance(historical_files, dict) and historical_files, "Historical public route guard has no files")
+        for historical_path, expected in historical_files.items():
+            clean_relative(historical_path)
+            require(len(str(expected.get("git_blob_sha1", ""))) == 40, f"Historical guard lacks Git blob id: {historical_path}")
+    require(len(releases) == len(set(releases)), "Historical public releases are duplicated")
+    if historical:
+        law = contract.get("release_transition_law", {})
+        require(law.get("superseded_release_bytes_remain_exact") is True, "Release transition law does not preserve superseded bytes")
     require(contract.get("qualification_boundary"), "Qualification boundary is missing")
     require(contract.get("close_law", {}).get("canonical_task_count_effect") == "none_without_exact_row_source", "Close law weakens canonical task-count boundary")
     return set(required_classes)
@@ -158,6 +189,20 @@ def validate_observed(observed: dict[str, Any]) -> None:
     require(observed.get("canonical_task_count_effect") == "none", "Observed ledger mutates canonical task count")
 
 
+def validate_historical_public_guards(repo_root: Path, contract: dict[str, Any]) -> None:
+    for guard in contract.get("historical_public_route_guards", []):
+        commit = guard["commit"]
+        route_path = clean_relative(guard["path"])
+        observed_tree = git_value(repo_root, "rev-parse", f"{commit}:{route_path}")
+        require(observed_tree == guard["tree"], f"Historical public release tree changed: {guard['release']}")
+        for relative, expected in guard["files"].items():
+            observed_blob = git_value(repo_root, "rev-parse", f"{commit}:{clean_relative(relative)}")
+            require(
+                observed_blob == expected["git_blob_sha1"],
+                f"Historical public release changed: {guard['release']} {relative}",
+            )
+
+
 def validate_public_guard(repo_root: Path, contract: dict[str, Any]) -> None:
     for relative, expected in contract["public_route_guard"]["files"].items():
         path = resolve_regular_repo_file(repo_root, relative, "Guarded file")
@@ -174,6 +219,7 @@ def validate_manifest(repo_root: Path, contract: dict[str, Any], contract_raw: b
     payload = dict(manifest)
     supplied = payload.pop("payload_sha256", None)
     require(supplied == sha256_bytes(canonical_bytes(payload)), "Manifest payload checksum is invalid")
+    validate_historical_public_guards(repo_root, contract)
     validate_public_guard(repo_root, contract)
     files = manifest.get("files")
     require(isinstance(files, list) and files, "Manifest files are missing")

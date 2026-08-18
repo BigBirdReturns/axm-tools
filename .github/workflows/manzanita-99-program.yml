@@ -6,11 +6,11 @@ on:
       - program/manzanita-99-design-rigor
     paths:
       - "programs/manzanita-99/**"
-      - ".github/workflows/manzanita-99-program.yml"
+      - "!programs/manzanita-99/custody/**"
   pull_request:
     paths:
       - "programs/manzanita-99/**"
-      - ".github/workflows/manzanita-99-program.yml"
+      - "!programs/manzanita-99/custody/**"
   workflow_dispatch: {}
 
 permissions:
