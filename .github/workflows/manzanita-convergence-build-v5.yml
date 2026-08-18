@@ -1,6 +1,6 @@
 name: Manzanita rendered-gated photographic convergence
 
-# Isolated final sealed execution after the branch-mutating watcher was retired.
+# Materialize the qualified public route without asking GITHUB_TOKEN to mutate workflow files.
 on:
   push:
     branches: [agent/manzanita-public-convergence-v1-6]
@@ -14,7 +14,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: manzanita-public-convergence-v1-6-sealed-release-20260818
+  group: manzanita-public-convergence-v1-6-product-materialization
   cancel-in-progress: true
 
 jobs:
@@ -26,16 +26,20 @@ jobs:
         with:
           ref: agent/manzanita-public-convergence-v1-6
           fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+
       - name: Install deterministic visual and browser dependencies
         run: |
           python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
           python -m playwright install --with-deps chromium
+
       - name: Build and repair the exact public candidate
         run: |
           set -euo pipefail
@@ -49,57 +53,79 @@ jobs:
           python programs/manzanita-public-convergence/finalize_public.py
           python programs/manzanita-public-convergence/release_transition.py prepare
           python programs/manzanita-public-convergence/workflow_integration.py
-      - name: Qualify source, photographic substance, registration, behavior, and rendered composition
+
+          mkdir -p /tmp/manzanita-permanent-workflows
+          cp .github/workflows/manzanita-check.yml /tmp/manzanita-permanent-workflows/
+          cp .github/workflows/manzanita-live-check.yml /tmp/manzanita-permanent-workflows/
+          cp .github/workflows/manzanita-visual-substance.yml /tmp/manzanita-permanent-workflows/
+
+          # Workflow changes are transported as review artifacts and admitted later
+          # through the GitHub API. The runner pushes product and custody files only.
+          git restore --source="$GITHUB_SHA" -- .github/workflows
+
+      - name: Qualify source, photographic substance, behavior, and rendered composition
         env:
           MANZANITA_SCREENSHOT_DIR: /tmp/manzanita-v1.6.0-screens
         run: |
           set -euo pipefail
-          python programs/manzanita-public-convergence/visual_substance_test.py --root manzanita --output /tmp/manzanita-photographic-substance.json
+          python programs/manzanita-public-convergence/visual_substance_test.py \
+            --root manzanita \
+            --output /tmp/manzanita-photographic-substance.json
           python manzanita/tests/public_contract_test.py
           node --check manzanita/app.js
           node --check manzanita/theme-init.js
           node --check manzanita/assets/scene-data.js
           python manzanita/tests/browser_test.py
-          python programs/manzanita-public-convergence/rendered_visual_floor.py --output /tmp/manzanita-rendered-visual-floor
+          python programs/manzanita-public-convergence/rendered_visual_floor.py \
+            --output /tmp/manzanita-rendered-visual-floor
+
       - uses: actions/upload-artifact@v4
         with:
-          name: manzanita-place-fabric-v1.6.0-exact-review
+          name: manzanita-place-fabric-v1.6.0-materialization
           path: |
             /tmp/manzanita-v1.6.0-screens
             /tmp/manzanita-photographic-substance.json
             /tmp/manzanita-rendered-visual-floor
+            /tmp/manzanita-permanent-workflows
           if-no-files-found: error
           retention-days: 30
-      - name: Commit the exact public candidate
+
+      - name: Commit the exact public candidate without workflow mutations
         run: |
           set -euo pipefail
           git config user.name "manzanita-convergence-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add manzanita README.md index.html .github/workflows/manzanita-check.yml .github/workflows/manzanita-live-check.yml .github/workflows/manzanita-visual-substance.yml programs/manzanita-public-convergence
+          git add manzanita README.md index.html programs/manzanita-public-convergence
           git commit -m "Manzanita: build rendered-gated photographic place fabric v1.6.0"
           echo "PRODUCT_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
-      - name: Move donor custody to the exact v1.6.0 route
-        run: python programs/manzanita-public-convergence/release_transition.py custody --product-commit "$PRODUCT_COMMIT"
-      - name: Remove every temporary convergence, recovery, and failed-live surface
+
+      - name: Move donor custody to the exact product commit
+        run: |
+          python programs/manzanita-public-convergence/release_transition.py \
+            custody \
+            --product-commit "$PRODUCT_COMMIT"
+
+      - name: Remove non-workflow convergence residue
         run: |
           set -euo pipefail
-          rm -f .github/workflows/manzanita-convergence-*.yml
-          rm -f .github/workflows/manzanita-visual-donor-export.yml
-          rm -f .github/workflows/manzanita-p10-recovery.yml
-          rm -f .github/workflows/manzanita-live-browser-probe.yml
           rm -f .github/patches/manzanita-region-repair.py
           rm -f .github/patches/manzanita-print-repair.py
           rm -rf manzanita-convergence-preview manzanita-convergence-p10
-      - name: Rebuild donor custody against the final source set
+
+      - name: Rebuild and validate interim donor custody
         run: |
           set -euo pipefail
           python programs/manzanita-99/custody/build_custody.py --repo-root .
           python programs/manzanita-99/custody/validate_custody.py --repo-root .
           python -m unittest discover -s programs/manzanita-99/custody/tests -p 'test_*.py'
-          python programs/manzanita-99/custody/audit_history.py --repo-root . --output programs/manzanita-99/custody/HISTORY_AUDIT.json
-      - name: Seal custody, cleanup, and exact review head
+          python programs/manzanita-99/custody/audit_history.py \
+            --repo-root . \
+            --output programs/manzanita-99/custody/HISTORY_AUDIT.json
+
+      - name: Push the qualified product and reachable custody commits
         run: |
           set -euo pipefail
           git add -A
-          git commit -m "Manzanita: preserve v1.4.1 and seal rendered-gated v1.6.0"
-          git push --force-with-lease=refs/heads/agent/manzanita-public-convergence-v1-6:${GITHUB_SHA} origin HEAD:agent/manzanita-public-convergence-v1-6
+          git commit -m "Manzanita: retain qualified v1.6.0 product and interim custody"
+          git push --force-with-lease=refs/heads/agent/manzanita-public-convergence-v1-6:${GITHUB_SHA} \
+            origin HEAD:agent/manzanita-public-convergence-v1-6
