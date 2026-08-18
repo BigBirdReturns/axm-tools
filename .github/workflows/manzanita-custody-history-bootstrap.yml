@@ -1,0 +1,101 @@
+name: Bootstrap Manzanita history custody
+
+on:
+  push:
+    branches:
+      - agent/manzanita-custody-history-003
+    paths:
+      - ".github/bootstrap/manzanita-custody-history-part-*.b64"
+      - ".github/workflows/manzanita-custody-history-bootstrap.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-custody-history-bootstrap
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-custody-history-003
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Reconstruct and validate the exact source package
+        run: |
+          cat .github/bootstrap/manzanita-custody-history-part-00.b64 \
+              .github/bootstrap/manzanita-custody-history-part-01.b64 \
+              .github/bootstrap/manzanita-custody-history-part-02.b64 \
+              > /tmp/manzanita-custody-history.b64
+          base64 --decode /tmp/manzanita-custody-history.b64 \
+            > /tmp/manzanita-custody-history.tar.gz
+          test "$(sha256sum /tmp/manzanita-custody-history.tar.gz | cut -d' ' -f1)" \
+            = "5db9b20306efd09a31bb97a11c524126d326a7a93e29c8573ff105ccbfbdeac5"
+          python - <<'PY'
+          import tarfile
+          from pathlib import PurePosixPath
+
+          expected = {
+              ".github/workflows/manzanita-custody-history.yml",
+              "programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json",
+              "programs/manzanita-99/custody/history/README.md",
+              "programs/manzanita-99/custody/history/history_sweep.py",
+              "programs/manzanita-99/custody/history/tests/test_history_sweep.py",
+          }
+          with tarfile.open("/tmp/manzanita-custody-history.tar.gz", "r:gz") as archive:
+              members = archive.getmembers()
+              observed = set()
+              for member in members:
+                  path = PurePosixPath(member.name)
+                  normalized = path.as_posix().removeprefix("./")
+                  if path.is_absolute() or ".." in path.parts:
+                      raise SystemExit(f"Unsafe archive member: {member.name}")
+                  if not member.isfile():
+                      raise SystemExit(f"Non-regular archive member: {member.name}")
+                  if normalized in observed:
+                      raise SystemExit(f"Duplicate archive member: {normalized}")
+                  observed.add(normalized)
+              if observed != expected:
+                  raise SystemExit(
+                      f"Archive member drift: missing={sorted(expected-observed)} "
+                      f"unexpected={sorted(observed-expected)}"
+                  )
+          PY
+          tar -xzf /tmp/manzanita-custody-history.tar.gz -C .
+
+      - name: Prove the materialized source
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile \
+            programs/manzanita-99/custody/history/history_sweep.py \
+            programs/manzanita-99/custody/history/tests/test_history_sweep.py
+          python -m json.tool \
+            programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json \
+            > /dev/null
+          python -m unittest discover \
+            -s programs/manzanita-99/custody/history/tests \
+            -p "test_*.py"
+
+      - name: Remove transport and seal the permanent candidate
+        run: |
+          rm -f \
+            .github/bootstrap/manzanita-custody-history-part-00.b64 \
+            .github/bootstrap/manzanita-custody-history-part-01.b64 \
+            .github/bootstrap/manzanita-custody-history-part-02.b64 \
+            .github/workflows/manzanita-custody-history-bootstrap.yml
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          git config user.name "manzanita-history-custody-bootstrap"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Manzanita: materialize historical route custody sweep"
+          git push origin HEAD:agent/manzanita-custody-history-003
