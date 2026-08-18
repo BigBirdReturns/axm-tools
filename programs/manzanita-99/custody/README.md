@@ -10,4 +10,8 @@ The ordinary workflow is expected to return `PASS` with custody status `PARTIAL`
 
 The workflow deliberately does not invoke the corrupted backlog extractor. The constitutional recovery object remains separately governed under PR #95.
 
+## Public maintenance transition
+
+Signal Sheet v1.4.1 is a release-authority maintenance transaction over the already public route. The current route guard moves to the exact v1.4.1 tree and blobs, while v1.4.0 remains guarded at base commit `58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb`, route tree `846132be374b1e1da5a9444dc67da877bbb32224`, and its original file blobs. The external campaign `HOLD` remains unchanged and scoped to the unreleased `manzanita-next` successor candidate. This transition closes no custody gap, performs no external campaign, and has no canonical task-count effect.
+
 The controlling question is whether a cold successor can recover every admitted donor, verify its exact bytes, identify who created or observed it, understand what it proves and does not prove, reproduce the rule that followed, and distinguish an honest absence from forgotten custody.

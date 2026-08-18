@@ -174,3 +174,47 @@ footer{display:flex;justify-content:space-between;gap:2rem;padding:1.3rem clamp(
   .section-heading h2,.signal-band h2{font-size:3.15rem}.atlas-reading h3{font-size:2.3rem}.desk-rows{grid-template-columns:1fr}.desk-rows span{border-right:0;border-bottom:1px solid var(--line)}.desk-rows span:last-child{border-bottom:0}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+
+/* v1.4.1 portable state and print */
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.state-note{margin:1rem 0 0;color:var(--muted);font:.72rem/1.5 var(--mono);letter-spacing:.025em}
+footer a{text-underline-offset:3px}
+@media print{
+  :root,:root[data-theme="dark"]{
+    color-scheme:light;
+    --field:#fff;
+    --field-2:#f3f0e9;
+    --field-3:#e7e1d7;
+    --ink:#171717;
+    --muted:#55514b;
+    --line:#bbb4a8;
+    --line-strong:#777168;
+    --signal:#c83a18;
+    --signal-ink:#171717;
+    --olive:#59613f;
+    --water:#2f6d80;
+    --air:#617695;
+    --violet:#69577b;
+    --inverse:#fff;
+    --inverse-ink:#171717;
+    --inverse-muted:#55514b;
+  }
+  @page{size:auto;margin:12mm}
+  html{scroll-behavior:auto;background:#fff}
+  body{background:#fff;color:#171717;font-size:10pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .topbar,.skip,.hero-actions,.scale-rail,.atlas-controls,#nextScale,.desk-preview .button,.sr-only{display:none!important}
+  main{overflow:visible}
+  .hero{min-height:0;grid-template-columns:.8fr 1.2fr;break-after:page}
+  .hero-copy{padding:1.2rem;border-right:1px solid var(--line)}
+  .hero h1{font-size:44pt}
+  .hero-plate,.hero-plate>svg{min-height:0;height:auto}
+  .sheet,.inverse,.signal-band{padding:1.1rem 0;background:#fff;color:#171717;break-inside:avoid}
+  .section-heading h2,.signal-band h2{font-size:30pt}
+  .origin-ledger,.instrument-ledger,.sequence,.firewall-ledger,.provenance-ledger,.desk-preview{break-inside:avoid}
+  .instrument-ledger p,.inverse .section-heading p:not(.kicker),.signal-band p:not(.kicker){color:var(--muted)}
+  .atlas-grid{grid-template-columns:1.35fr .65fr}
+  .atlas-visual{border-right:1px solid var(--line-strong);border-bottom:0}
+  .atlas-caption{position:static}
+  footer{background:#fff;color:#55514b;border-top:1px solid var(--line)}
+}

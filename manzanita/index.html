@@ -1,10 +1,19 @@
 <!doctype html>
-<html lang="en" data-release="1.4.0" data-visual-system="signal-sheet">
+<html lang="en" data-release="1.4.1" data-visual-system="signal-sheet">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f4f0e8">
   <meta name="description" content="Manzanita Works carries one household place record from useful plant to street, region, assistance, and durable handoff.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="application-name" content="Manzanita Works">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Manzanita Works · One Place, Every Scale">
+  <meta property="og:description" content="A public-safe place fabric for household use, horticulture, wildfire prevention, assistance, and durable handoff.">
+  <meta property="og:url" content="https://bigbirdreturns.github.io/axm-tools/manzanita/">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://bigbirdreturns.github.io/axm-tools/manzanita/">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f4f0e8'/%3E%3Cpath d='M6 26 26 6M9 7h5v5H9zm9 9h5v5h-5z' fill='none' stroke='%23ff4b1f' stroke-width='2'/%3E%3C/svg%3E">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>Manzanita Works · One Place, Every Scale</title>
@@ -14,6 +23,7 @@
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
+  <p class="sr-only" id="interactionStatus" aria-live="polite" aria-atomic="true"></p>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="Manzanita Works home">
       <svg class="brand-mark" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M6 4h3v3H6zm5 7h3v3h-3zm-8 0h3v3H3zm11 4h3v3h-3z"/></svg>
@@ -39,6 +49,7 @@
         <div class="hero-actions">
           <a class="button button-signal" href="#place">Walk the place record</a>
           <a class="button" href="#boundary">See the purpose boundary</a>
+          <button class="button" id="printSheet" type="button">Print / save signal sheet</button>
         </div>
         <div class="hero-ledger" aria-label="Place record progression">
           <span>Plant</span><span>Household</span><span>Property</span><span>Street</span><span>Region</span><span>Handoff</span>
@@ -197,6 +208,7 @@
           <h3>Show the role what it needs.</h3>
           <div class="control-row" id="roleRail" aria-label="Functional perspectives"></div>
           <div class="role-reading"><span id="roleCode">R-01</span><h4 id="roleTitle">Resident</h4><p id="roleBody"></p><small id="roleNeed"></small></div>
+          <p class="state-note">The address records the current scale, perspective, and visible conditions so this exact reading can be reopened or shared.</p>
         </article>
       </div>
     </section>
@@ -247,7 +259,7 @@
         <div class="desk-head"><span>Essential Attention</span><small>Today</small></div>
         <div class="desk-main"><span>Next safe move</span><strong>Recover the missing source before expanding the claim.</strong><p>Prepared work may continue. External effects remain held.</p></div>
         <div class="desk-rows"><span>Evidence <b>5</b></span><span>Decisions <b>5</b></span><span>Handoff <b>Ready</b></span></div>
-        <a class="button button-light" href="https://bigbirdreturns.github.io/axm-tools/essential-attention/?from=manzanita-v1.4.0">Open the FAB operating desk</a>
+        <a class="button button-light" href="https://bigbirdreturns.github.io/axm-tools/essential-attention/?from=manzanita-v1.4.1">Open the FAB operating desk</a>
       </div>
     </section>
 
@@ -265,8 +277,8 @@
   </main>
 
   <footer>
-    <span>Manzanita Works · Signal Sheet v1.4.0</span>
-    <span>No backend · no external-effect adapters</span>
+    <span>Manzanita Works · Signal Sheet v1.4.1</span>
+    <span><a href="../">All axm-tools</a> · No backend · no external-effect adapters</span>
   </footer>
 </body>
 </html>

@@ -199,6 +199,48 @@ class CustodyV2Tests(unittest.TestCase):
         represented.update(row["class"] for row in package_register["gaps"])
         self.assertEqual(set(package_contract["required_classes"]) - represented, set())
 
+    def test_release_transition_preserves_exact_predecessor(self):
+        subprocess.run(["git", "init"], cwd=self.root, check=True, capture_output=True)
+        subprocess.run(["git", "config", "user.name", "test"], cwd=self.root, check=True)
+        subprocess.run(["git", "config", "user.email", "test@example.invalid"], cwd=self.root, check=True)
+        subprocess.run(["git", "add", "."], cwd=self.root, check=True)
+        subprocess.run(["git", "commit", "-m", "v1.4.0"], cwd=self.root, check=True, capture_output=True)
+        predecessor_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=self.root, check=True, capture_output=True, text=True
+        ).stdout.strip()
+        predecessor_tree = subprocess.run(
+            ["git", "rev-parse", "HEAD:manzanita"], cwd=self.root, check=True, capture_output=True, text=True
+        ).stdout.strip()
+        predecessor_blob = subprocess.run(
+            ["git", "rev-parse", "HEAD:manzanita/index.html"], cwd=self.root, check=True, capture_output=True, text=True
+        ).stdout.strip()
+
+        current = write(self.root / "manzanita/index.html", "<h1>current maintenance release</h1>\n")
+        self.contract["public_route_guard"] = {
+            "path": "manzanita",
+            "release": "1.4.1",
+            "files": {"manzanita/index.html": {"git_blob_sha1": build_custody.git_blob_sha1(current)}},
+        }
+        self.contract["historical_public_route_guards"] = [
+            {
+                "release": "1.4.0",
+                "path": "manzanita",
+                "commit": predecessor_commit,
+                "tree": predecessor_tree,
+                "files": {"manzanita/index.html": {"git_blob_sha1": predecessor_blob}},
+            }
+        ]
+        self.contract["release_transition_law"] = {"superseded_release_bytes_remain_exact": True}
+        write_json(self.contract_path, self.contract)
+        self.build()
+        self.validate()
+
+        self.contract["historical_public_route_guards"][0]["files"]["manzanita/index.html"]["git_blob_sha1"] = "0" * 40
+        write_json(self.contract_path, self.contract)
+        self.build()
+        with self.assertRaisesRegex(validate_custody.CustodyValidationError, "Historical public release changed"):
+            self.validate()
+
     def test_history_audit_distinguishes_trees_from_releases(self):
         subprocess.run(["git", "init"], cwd=self.root, check=True, capture_output=True)
         subprocess.run(["git", "config", "user.name", "test"], cwd=self.root, check=True)
