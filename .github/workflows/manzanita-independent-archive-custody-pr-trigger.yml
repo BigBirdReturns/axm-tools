@@ -1,0 +1,39 @@
+name: Trigger Manzanita independent archive custody admission
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/manzanita-independent-archive-custody-bootstrap.yml"
+      - ".github/workflows/manzanita-independent-archive-custody-pr-trigger.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-independent-archive-custody-pr-trigger
+  cancel-in-progress: false
+
+jobs:
+  trigger:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-independent-archive-custody-002
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Publish one exact push event and remove this trigger
+        run: |
+          printf '\n# PR admission trigger %s\n' "${GITHUB_SHA}" >> .github/workflows/manzanita-independent-archive-custody-bootstrap.yml
+          rm .github/workflows/manzanita-independent-archive-custody-pr-trigger.yml
+          git config user.name "manzanita-independent-archive-trigger"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            .github/workflows/manzanita-independent-archive-custody-bootstrap.yml \
+            .github/workflows/manzanita-independent-archive-custody-pr-trigger.yml
+          git commit -m "Manzanita: trigger independent archive custody admission"
+          git push origin HEAD:agent/manzanita-independent-archive-custody-002
