@@ -12,7 +12,11 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: manzanita-v1-4-1-live
+  cancel-in-progress: false
 
 jobs:
   live:
@@ -21,41 +25,141 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      MANZANITA_BASE_URL: https://bigbirdreturns.github.io/axm-tools/manzanita
+      MANZANITA_SOURCE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      PAGES_RUN_ID: ${{ github.event.workflow_run.id || '' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - name: Install Playwright and Chromium
         run: |
           python -m pip install --disable-pip-version-check playwright==1.57.0
           python -m playwright install --with-deps chromium
-      - name: Wait for the exact public release
-        env:
-          MANZANITA_URL: https://bigbirdreturns.github.io/axm-tools/manzanita/?v=${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Wait for and verify the exact public release bytes
         run: |
+          set -euo pipefail
+          mkdir -p /tmp/manzanita-live
           for attempt in $(seq 1 24); do
-            code=$(curl -L -sS -o /tmp/manzanita.html -w '%{http_code}' "$MANZANITA_URL" || true)
+            code=$(curl -L -sS \
+              -o /tmp/manzanita-live/index.html \
+              -w '%{http_code}' \
+              "$MANZANITA_BASE_URL/?v=$MANZANITA_SOURCE_SHA" || true)
             if [ "$code" = "200" ] \
-              && grep -q 'data-release="1.4.1"' /tmp/manzanita.html \
-              && grep -q 'data-visual-system="signal-sheet"' /tmp/manzanita.html; then
+              && grep -q 'data-release="1.4.1"' /tmp/manzanita-live/index.html \
+              && grep -q 'data-visual-system="signal-sheet"' /tmp/manzanita-live/index.html; then
               break
             fi
             if [ "$attempt" = "24" ]; then
-              echo "Public endpoint failed exact release gate: HTTP $code"
-              head -100 /tmp/manzanita.html || true
+              echo "Public endpoint failed exact release marker gate: HTTP $code"
+              head -100 /tmp/manzanita-live/index.html || true
               exit 1
             fi
             sleep 10
           done
+
+          for path in style.css app.js theme-init.js; do
+            curl -L -f -sS \
+              "$MANZANITA_BASE_URL/$path?v=$MANZANITA_SOURCE_SHA" \
+              -o "/tmp/manzanita-live/$path"
+          done
+
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path("/tmp/manzanita-live")
+          qualification = json.loads(Path("manzanita/QUALIFICATION.json").read_text())
+          observed = {}
+          for path in ("index.html", "style.css", "app.js", "theme-init.js"):
+              payload = (root / path).read_bytes()
+              digest = hashlib.sha256(payload).hexdigest()
+              expected = qualification["files"][path]
+              if len(payload) != expected["bytes"] or digest != expected["sha256"]:
+                  raise SystemExit(
+                      f"live byte mismatch for {path}: "
+                      f"observed=({len(payload)}, {digest}) "
+                      f"expected=({expected['bytes']}, {expected['sha256']})"
+                  )
+              observed[path] = {"bytes": len(payload), "sha256": digest}
+
+          Path("/tmp/manzanita-live/files.json").write_text(
+              json.dumps(observed, indent=2, sort_keys=True) + "\n"
+          )
+          PY
+
       - name: Drive the public endpoint
         env:
-          MANZANITA_URL: https://bigbirdreturns.github.io/axm-tools/manzanita/?v=${{ github.event.workflow_run.head_sha || github.sha }}
+          MANZANITA_URL: ${{ env.MANZANITA_BASE_URL }}/?v=${{ env.MANZANITA_SOURCE_SHA }}
           MANZANITA_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-live-screens
         run: python manzanita/tests/browser_test.py
+
       - uses: actions/upload-artifact@v4
         with:
           name: manzanita-signal-sheet-v1.4.1-live-screens
           path: ${{ runner.temp }}/manzanita-live-screens
           if-no-files-found: error
           retention-days: 30
+
+      - name: Retain the completed Pages observation
+        if: github.event_name == 'workflow_run'
+        env:
+          LIVE_GATE_RUN_ID: ${{ github.run_id }}
+          LIVE_GATE_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          pages_receipt_path = Path(".github/pages-deployment.json")
+          pages_receipt = json.loads(pages_receipt_path.read_text()) if pages_receipt_path.exists() else {}
+          receipt = {
+              "schema": "manzanita-works/live-pages-receipt@1",
+              "release": "1.4.1",
+              "release_class": "public_maintenance_patch",
+              "observed_at": datetime.now(timezone.utc).isoformat(),
+              "public_route": os.environ["MANZANITA_BASE_URL"] + "/",
+              "pages": {
+                  "workflow_run_id": int(os.environ["PAGES_RUN_ID"]),
+                  "source_sha": os.environ["MANZANITA_SOURCE_SHA"],
+                  "deployment_receipt": pages_receipt,
+              },
+              "live_gate": {
+                  "workflow_run_id": int(os.environ["LIVE_GATE_RUN_ID"]),
+                  "run_attempt": int(os.environ["LIVE_GATE_RUN_ATTEMPT"]),
+                  "release_marker": "1.4.1",
+                  "visual_system_marker": "signal-sheet",
+                  "exact_file_gate": "PASS",
+                  "browser_contract": "PASS",
+              },
+              "files": json.loads(Path("/tmp/manzanita-live/files.json").read_text()),
+              "authority": {
+                  "successor_program_effect": "none",
+                  "external_campaign_effect": "none",
+                  "canonical_task_count_effect": "none",
+              },
+          }
+          Path(".github/manzanita-live-receipt.json").write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + "\n"
+          )
+          PY
+
+          git config user.name "manzanita-live-gate"
+          git config user.email "actions@users.noreply.github.com"
+          git add .github/manzanita-live-receipt.json
+          git diff --cached --check
+          git commit -m "Manzanita: record successful v1.4.1 live observation"
+          git push origin HEAD:main
