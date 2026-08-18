@@ -1,5 +1,6 @@
 name: Manzanita convergence PR status
 
+# Wait for the exact rendered candidate before moving PR #117 out of draft.
 on:
   push:
     branches: [agent/manzanita-public-convergence-v1-6]
