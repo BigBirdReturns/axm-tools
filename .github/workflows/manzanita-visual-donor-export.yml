@@ -1,0 +1,52 @@
+name: Manzanita visual donor export
+
+on:
+  push:
+    branches: [agent/manzanita-public-convergence-v1-6]
+    paths:
+      - ".github/workflows/manzanita-visual-donor-export.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export exact photographic and signal-sheet donors
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/manzanita-donors/photographic-v1.1.2
+          mkdir -p /tmp/manzanita-donors/signal-sheet-v1.4.0
+          git archive --format=tar 507ace9af2d2121cb93614158809ee5ff88437f2 manzanita \
+            | tar -xf - -C /tmp/manzanita-donors/photographic-v1.1.2
+          git archive --format=tar 58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb manzanita \
+            | tar -xf - -C /tmp/manzanita-donors/signal-sheet-v1.4.0
+          find /tmp/manzanita-donors -type f -print0 \
+            | sort -z \
+            | xargs -0 sha256sum \
+            > /tmp/manzanita-donors/SHA256SUMS.txt
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('/tmp/manzanita-donors')
+          rows = []
+          for path in sorted(p for p in root.rglob('*') if p.is_file() and p.name != 'MANIFEST.json'):
+              rows.append({'path': path.relative_to(root).as_posix(), 'bytes': path.stat().st_size})
+          (root / 'MANIFEST.json').write_text(json.dumps({
+              'schema': 'manzanita-visual-donor-export@1',
+              'photographic_source_commit': '507ace9af2d2121cb93614158809ee5ff88437f2',
+              'signal_sheet_source_commit': '58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb',
+              'files': rows,
+          }, indent=2) + '\n', encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-visual-donors
+          path: /tmp/manzanita-donors
+          if-no-files-found: error
+          retention-days: 7
