@@ -1,0 +1,1 @@
+This branch is a review object. Retained imagery and authored semantic features do not establish observation, ownership, survey, access, irrigation, drainage, canopy, safety, work, insurance, enforcement, completion, or release authority. The public route, successor release state, external-campaign ledger, and canonical task count are unchanged.
