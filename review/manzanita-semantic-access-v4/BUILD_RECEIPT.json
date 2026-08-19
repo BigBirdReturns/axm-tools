@@ -1,0 +1,1332 @@
+{
+  "schema": "manzanita-works/semantic-access-review-build@2",
+  "release": "source-adaptive-semantic-v4",
+  "result": "PASS",
+  "donor_count": 7,
+  "asset_count": 10,
+  "semantic_receipt_count": 3,
+  "semantic_feature_count": 11,
+  "generic_gradient_registration_count": 0,
+  "image_geometry_instruments": [
+    "access"
+  ],
+  "shade_and_water_image_geometry": 0,
+  "map_and_hold_image_geometry": 0,
+  "files": {
+    "BROWSER_AUDIT.json": {
+      "bytes": 448,
+      "sha256": "27086a004b9c31f5e3a0d1518c95e20124d63c07e7547e64c107f68108b599b5"
+    },
+    "README.md": {
+      "bytes": 1076,
+      "sha256": "579b4a40e3d0aa72c6946a340816e2bc7ddb331a33777a863860e82fb9884342"
+    },
+    "REVIEW_CONTRACT.json": {
+      "bytes": 979,
+      "sha256": "25edf2de383987b47bc84888bf774bb2be3985d93299ba80b546204d1a501862"
+    },
+    "app.js": {
+      "bytes": 14768,
+      "sha256": "1898bcd6c524b70f46be59dc48cfe3ca142f42f3149651196fac46755c85e3d5"
+    },
+    "assets/household-reference-14c3d4284b5a.webp": {
+      "bytes": 625352,
+      "sha256": "14c3d4284b5a57e3c790e43a609f7bebbbe9bda424187bce44a7f8c520e974dc"
+    },
+    "assets/map-reference-a80485954f8c.svg": {
+      "bytes": 1583,
+      "sha256": "a80485954f8c44f729a186f776aa6e7337e72e029290331781f9a50c18d5cb9e"
+    },
+    "assets/neighborhood-reference-5ec9252f1615.webp": {
+      "bytes": 500586,
+      "sha256": "5ec9252f1615e86a239384a76a508554b2bd9e9221d5e202abce109e804f29d8"
+    },
+    "assets/plant-reference-dd2d3b7f5683.webp": {
+      "bytes": 255932,
+      "sha256": "dd2d3b7f5683ec8c785c6baac8b0036ae7ad043767463b963d8c132201817a02"
+    },
+    "assets/property-reference-4f5f752e2c06.webp": {
+      "bytes": 540440,
+      "sha256": "4f5f752e2c064fc65e364748b19c0f465bd8fbaabbe9113394f41226d9a8376a"
+    },
+    "assets/region-reference-df79650c1622.webp": {
+      "bytes": 495322,
+      "sha256": "df79650c1622d3d8371797950167dcb38e5dc8870970260dcf4cc9846c9aef21"
+    },
+    "assets/stewardship-reference-bb8091a783b0.svg": {
+      "bytes": 1830,
+      "sha256": "bb8091a783b02933bba10171f737e0f2bbd0bbadc479a1dd2a3793218f700f96"
+    },
+    "assets/street-provider-1-ac9121366f62.webp": {
+      "bytes": 384768,
+      "sha256": "ac9121366f6210e1a552b850deddedf908055f7e0ae43aeddde6cdd18144fe08"
+    },
+    "assets/street-provider-2-2ef01e8c21b4.webp": {
+      "bytes": 538608,
+      "sha256": "2ef01e8c21b4a6e191e357faa4a1b0fa49f78d0a2259bbbdbcccd1a9f8b51b1e"
+    },
+    "assets/street-reference-0130268b1ddf.webp": {
+      "bytes": 447176,
+      "sha256": "0130268b1ddf8d4de52341b8d5fb0ba0bf851a243e53a009f662fb09bd46652c"
+    },
+    "data.json": {
+      "bytes": 41039,
+      "sha256": "07823503a9f19ba01c7755f788529ba1a7e4b4bf8cf62c88b3533f89519ac163"
+    },
+    "evidence/01-street-access-reference.png": {
+      "bytes": 1314696,
+      "sha256": "4f5cdfa21544b91ce18875d02371a485b3640cf3d816bb2b7d416860242b3dae"
+    },
+    "evidence/02-street-access-live-a.png": {
+      "bytes": 1235585,
+      "sha256": "13f3d94c73fa34c4189d6e198edfa0ae571eb38908aba4ad1f4401289357e857"
+    },
+    "evidence/03-street-access-live-b.png": {
+      "bytes": 1336282,
+      "sha256": "b04dee750f7ea613dd252c8775c0b9de49136ca965c95158e1bf84b7490faa8c"
+    },
+    "evidence/04-street-access-cached.png": {
+      "bytes": 1291397,
+      "sha256": "c70dbe70fc0f9aa0b58558e0e06cc43c46549ab82ca9a02c65f00ee3ff792ea1"
+    },
+    "evidence/05-street-access-map.png": {
+      "bytes": 479416,
+      "sha256": "0a7466410d67bf70b08cfe25cdd6442162967dfc3f8ff19dbe6c9bc07441ac44"
+    },
+    "evidence/06-street-access-held.png": {
+      "bytes": 280414,
+      "sha256": "e1e27712bce9b43ed98c48799f246cae6e0418a1bea59a2234ffbf84e0a08500"
+    },
+    "evidence/07-property-shade-no-geometry.png": {
+      "bytes": 1342831,
+      "sha256": "f5869c33e41fc1f978496007d9852a7f959e3ccaa86730424dbacbd465a4891b"
+    },
+    "evidence/08-neighborhood-water-no-geometry.png": {
+      "bytes": 1366304,
+      "sha256": "de4e91c6f7c41c0d2ebbcd49285bd8a64088a9f27a2d7d392e7e5671811755a4"
+    },
+    "evidence/09-mobile-street-access-live.png": {
+      "bytes": 243058,
+      "sha256": "f8830366ca3a42c5e8cb679523901725e5454a05396e20e062f6b921f6064dec"
+    },
+    "evidence/CAPTURE_RECEIPT.json": {
+      "bytes": 25065,
+      "sha256": "bf59db680056467e6f29a83c68ef640ab38247d0152cff72c12ee156b69a7190"
+    },
+    "evidence/contact-sheet.jpg": {
+      "bytes": 1189547,
+      "sha256": "ab6ccf408d0e0cec797039ea33ef15fc6eb729a5bff8637bc9586be9405252a9"
+    },
+    "evidence/semantic-feature-proof.jpg": {
+      "bytes": 593006,
+      "sha256": "85bbb3c04aa037b491d24f0d3e534b8b4e4d716effb9f61b5c2eeac87514ca54"
+    },
+    "index.html": {
+      "bytes": 31938,
+      "sha256": "6b738c5c3f3ca152df4c033a38270036c36c645095a5f028cf1015d9dd4b5de3"
+    },
+    "semantic-handoff-browser.json": {
+      "bytes": 8429,
+      "sha256": "821b12d449ac5c3f7a3a7722b5e3bfdfa889bf1cbb1368b520dc529189834297"
+    },
+    "style.css": {
+      "bytes": 13074,
+      "sha256": "d006388fa411040aa7eca81ce5f23752e233f8fb70a8ef091a735016674fcffd"
+    }
+  },
+  "public_route_effect": "none",
+  "successor_program_effect": "none",
+  "canonical_task_count_effect": "none",
+  "qualification": {
+    "schema": "manzanita-works/semantic-access-browser-audit@5",
+    "result": "PASS",
+    "valid_states_exercised": 117,
+    "invalid_controls_refused": 28,
+    "street_access_feature_counts": [
+      3,
+      3,
+      5
+    ],
+    "map_and_hold_geometry": 0,
+    "shade_and_water_image_geometry": 0,
+    "functional_seats": 5,
+    "mobile_horizontal_overflow": 0,
+    "console_errors": [],
+    "page_errors": [],
+    "external_requests": [],
+    "public_route_effect": "none"
+  },
+  "capture_receipt": {
+    "schema": "manzanita-works/semantic-access-review-captures@1",
+    "result": "PASS",
+    "captures": [
+      {
+        "name": "01-street-access-reference",
+        "file": "01-street-access-reference.png",
+        "viewport": [
+          1600,
+          1000
+        ],
+        "state": {
+          "aperture": "street",
+          "instrument": "access",
+          "mode": "reference",
+          "seat": "crew_steward",
+          "detail": "evidence",
+          "providerScene": 0,
+          "asset_id": "0130268b1ddf8d4de52341b8d5fb0ba0bf851a243e53a009f662fb09bd46652c",
+          "registration_id": "f013ace0a8deca64ce6ce229b1b4631119a927e1deee1b2e69a4351d6fe0dd0b",
+          "feature_count": 3,
+          "feature_ids": [
+            "reference-public-sidewalk-001",
+            "reference-driveway-apron-001",
+            "reference-entry-segment-001"
+          ],
+          "feature_classes": [
+            "driveway_crossing",
+            "entry_steps",
+            "public_sidewalk"
+          ],
+          "geometry": [
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  0,
+                  724
+                ],
+                [
+                  125,
+                  745
+                ],
+                [
+                  260,
+                  770
+                ],
+                [
+                  420,
+                  800
+                ],
+                [
+                  580,
+                  830
+                ],
+                [
+                  740,
+                  860
+                ],
+                [
+                  900,
+                  892
+                ],
+                [
+                  1060,
+                  925
+                ],
+                [
+                  1180,
+                  958
+                ],
+                [
+                  1260,
+                  1000
+                ],
+                [
+                  1110,
+                  1000
+                ],
+                [
+                  950,
+                  965
+                ],
+                [
+                  790,
+                  933
+                ],
+                [
+                  630,
+                  900
+                ],
+                [
+                  470,
+                  866
+                ],
+                [
+                  310,
+                  832
+                ],
+                [
+                  150,
+                  796
+                ],
+                [
+                  0,
+                  762
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  1180,
+                  958
+                ],
+                [
+                  1260,
+                  920
+                ],
+                [
+                  1340,
+                  875
+                ],
+                [
+                  1430,
+                  835
+                ],
+                [
+                  1515,
+                  805
+                ],
+                [
+                  1600,
+                  795
+                ],
+                [
+                  1600,
+                  1000
+                ],
+                [
+                  1260,
+                  1000
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  1120,
+                  642
+                ],
+                [
+                  1208,
+                  640
+                ],
+                [
+                  1204,
+                  758
+                ],
+                [
+                  1140,
+                  786
+                ],
+                [
+                  1120,
+                  752
+                ]
+              ]
+            }
+          ]
+        },
+        "horizontal_overflow": 0,
+        "errors": [],
+        "bytes": 1314696,
+        "sha256": "4f5cdfa21544b91ce18875d02371a485b3640cf3d816bb2b7d416860242b3dae"
+      },
+      {
+        "name": "02-street-access-live-a",
+        "file": "02-street-access-live-a.png",
+        "viewport": [
+          1600,
+          1000
+        ],
+        "state": {
+          "aperture": "street",
+          "instrument": "access",
+          "mode": "live",
+          "seat": "crew_steward",
+          "detail": "evidence",
+          "providerScene": 0,
+          "asset_id": "ac9121366f6210e1a552b850deddedf908055f7e0ae43aeddde6cdd18144fe08",
+          "registration_id": "4f1d9688427bdcad528d9a99746c2572914ca600ac5bd1e195518c73ca820231",
+          "feature_count": 3,
+          "feature_ids": [
+            "provider-a-public-sidewalk-001",
+            "provider-a-left-drive-001",
+            "provider-a-right-drive-001"
+          ],
+          "feature_classes": [
+            "driveway_crossing",
+            "private_drive_side_access",
+            "public_sidewalk"
+          ],
+          "geometry": [
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  250,
+                  838
+                ],
+                [
+                  430,
+                  850
+                ],
+                [
+                  610,
+                  860
+                ],
+                [
+                  790,
+                  858
+                ],
+                [
+                  970,
+                  827
+                ],
+                [
+                  1130,
+                  798
+                ],
+                [
+                  1260,
+                  775
+                ],
+                [
+                  1410,
+                  752
+                ],
+                [
+                  1600,
+                  735
+                ],
+                [
+                  1600,
+                  805
+                ],
+                [
+                  1410,
+                  820
+                ],
+                [
+                  1260,
+                  840
+                ],
+                [
+                  1120,
+                  865
+                ],
+                [
+                  950,
+                  895
+                ],
+                [
+                  780,
+                  920
+                ],
+                [
+                  600,
+                  930
+                ],
+                [
+                  420,
+                  920
+                ],
+                [
+                  250,
+                  895
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  0,
+                  770
+                ],
+                [
+                  90,
+                  765
+                ],
+                [
+                  180,
+                  790
+                ],
+                [
+                  255,
+                  835
+                ],
+                [
+                  255,
+                  930
+                ],
+                [
+                  145,
+                  925
+                ],
+                [
+                  0,
+                  900
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  1245,
+                  740
+                ],
+                [
+                  1360,
+                  720
+                ],
+                [
+                  1510,
+                  710
+                ],
+                [
+                  1600,
+                  705
+                ],
+                [
+                  1600,
+                  805
+                ],
+                [
+                  1430,
+                  815
+                ],
+                [
+                  1260,
+                  838
+                ]
+              ]
+            }
+          ]
+        },
+        "horizontal_overflow": 0,
+        "errors": [],
+        "bytes": 1235585,
+        "sha256": "13f3d94c73fa34c4189d6e198edfa0ae571eb38908aba4ad1f4401289357e857"
+      },
+      {
+        "name": "03-street-access-live-b",
+        "file": "03-street-access-live-b.png",
+        "viewport": [
+          1600,
+          1000
+        ],
+        "state": {
+          "aperture": "street",
+          "instrument": "access",
+          "mode": "live",
+          "seat": "crew_steward",
+          "detail": "evidence",
+          "providerScene": 1,
+          "asset_id": "2ef01e8c21b4a6e191e357faa4a1b0fa49f78d0a2259bbbdbcccd1a9f8b51b1e",
+          "registration_id": "60af48fed6bb94fe68b64c657ae1c481021e5869fb3fb42f3f79018db69fdedb",
+          "feature_count": 5,
+          "feature_ids": [
+            "provider-b-public-sidewalk-001",
+            "provider-b-entry-path-001",
+            "provider-b-entry-steps-001",
+            "provider-b-center-drive-001",
+            "provider-b-right-drive-001"
+          ],
+          "feature_classes": [
+            "driveway_crossing",
+            "entry_path",
+            "entry_steps",
+            "public_sidewalk"
+          ],
+          "geometry": [
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  0,
+                  776
+                ],
+                [
+                  180,
+                  784
+                ],
+                [
+                  360,
+                  784
+                ],
+                [
+                  540,
+                  780
+                ],
+                [
+                  720,
+                  770
+                ],
+                [
+                  900,
+                  755
+                ],
+                [
+                  1080,
+                  742
+                ],
+                [
+                  1260,
+                  727
+                ],
+                [
+                  1440,
+                  713
+                ],
+                [
+                  1600,
+                  705
+                ],
+                [
+                  1600,
+                  770
+                ],
+                [
+                  1440,
+                  780
+                ],
+                [
+                  1260,
+                  792
+                ],
+                [
+                  1080,
+                  812
+                ],
+                [
+                  900,
+                  830
+                ],
+                [
+                  720,
+                  842
+                ],
+                [
+                  540,
+                  842
+                ],
+                [
+                  360,
+                  832
+                ],
+                [
+                  180,
+                  820
+                ],
+                [
+                  0,
+                  815
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  158,
+                  675
+                ],
+                [
+                  215,
+                  690
+                ],
+                [
+                  285,
+                  713
+                ],
+                [
+                  360,
+                  742
+                ],
+                [
+                  455,
+                  780
+                ],
+                [
+                  418,
+                  805
+                ],
+                [
+                  330,
+                  772
+                ],
+                [
+                  260,
+                  745
+                ],
+                [
+                  200,
+                  718
+                ],
+                [
+                  145,
+                  700
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  76,
+                  625
+                ],
+                [
+                  282,
+                  625
+                ],
+                [
+                  290,
+                  690
+                ],
+                [
+                  170,
+                  697
+                ],
+                [
+                  92,
+                  680
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  535,
+                  676
+                ],
+                [
+                  650,
+                  688
+                ],
+                [
+                  770,
+                  716
+                ],
+                [
+                  900,
+                  750
+                ],
+                [
+                  960,
+                  778
+                ],
+                [
+                  940,
+                  832
+                ],
+                [
+                  810,
+                  816
+                ],
+                [
+                  670,
+                  790
+                ],
+                [
+                  555,
+                  754
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  1265,
+                  673
+                ],
+                [
+                  1415,
+                  665
+                ],
+                [
+                  1600,
+                  666
+                ],
+                [
+                  1600,
+                  770
+                ],
+                [
+                  1420,
+                  782
+                ],
+                [
+                  1280,
+                  758
+                ]
+              ]
+            }
+          ]
+        },
+        "horizontal_overflow": 0,
+        "errors": [],
+        "bytes": 1336282,
+        "sha256": "b04dee750f7ea613dd252c8775c0b9de49136ca965c95158e1bf84b7490faa8c"
+      },
+      {
+        "name": "04-street-access-cached",
+        "file": "04-street-access-cached.png",
+        "viewport": [
+          1600,
+          1000
+        ],
+        "state": {
+          "aperture": "street",
+          "instrument": "access",
+          "mode": "cached",
+          "seat": "successor",
+          "detail": "handoff",
+          "providerScene": 0,
+          "asset_id": "0130268b1ddf8d4de52341b8d5fb0ba0bf851a243e53a009f662fb09bd46652c",
+          "registration_id": "f013ace0a8deca64ce6ce229b1b4631119a927e1deee1b2e69a4351d6fe0dd0b",
+          "feature_count": 3,
+          "feature_ids": [
+            "reference-public-sidewalk-001",
+            "reference-driveway-apron-001",
+            "reference-entry-segment-001"
+          ],
+          "feature_classes": [
+            "driveway_crossing",
+            "entry_steps",
+            "public_sidewalk"
+          ],
+          "geometry": [
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  0,
+                  724
+                ],
+                [
+                  125,
+                  745
+                ],
+                [
+                  260,
+                  770
+                ],
+                [
+                  420,
+                  800
+                ],
+                [
+                  580,
+                  830
+                ],
+                [
+                  740,
+                  860
+                ],
+                [
+                  900,
+                  892
+                ],
+                [
+                  1060,
+                  925
+                ],
+                [
+                  1180,
+                  958
+                ],
+                [
+                  1260,
+                  1000
+                ],
+                [
+                  1110,
+                  1000
+                ],
+                [
+                  950,
+                  965
+                ],
+                [
+                  790,
+                  933
+                ],
+                [
+                  630,
+                  900
+                ],
+                [
+                  470,
+                  866
+                ],
+                [
+                  310,
+                  832
+                ],
+                [
+                  150,
+                  796
+                ],
+                [
+                  0,
+                  762
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  1180,
+                  958
+                ],
+                [
+                  1260,
+                  920
+                ],
+                [
+                  1340,
+                  875
+                ],
+                [
+                  1430,
+                  835
+                ],
+                [
+                  1515,
+                  805
+                ],
+                [
+                  1600,
+                  795
+                ],
+                [
+                  1600,
+                  1000
+                ],
+                [
+                  1260,
+                  1000
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  1120,
+                  642
+                ],
+                [
+                  1208,
+                  640
+                ],
+                [
+                  1204,
+                  758
+                ],
+                [
+                  1140,
+                  786
+                ],
+                [
+                  1120,
+                  752
+                ]
+              ]
+            }
+          ]
+        },
+        "horizontal_overflow": 0,
+        "errors": [],
+        "bytes": 1291397,
+        "sha256": "c70dbe70fc0f9aa0b58558e0e06cc43c46549ab82ca9a02c65f00ee3ff792ea1"
+      },
+      {
+        "name": "05-street-access-map",
+        "file": "05-street-access-map.png",
+        "viewport": [
+          1600,
+          1000
+        ],
+        "state": {
+          "aperture": "street",
+          "instrument": "access",
+          "mode": "map",
+          "seat": "planner_program",
+          "detail": "evidence",
+          "providerScene": 0,
+          "asset_id": "a80485954f8c44f729a186f776aa6e7337e72e029290331781f9a50c18d5cb9e",
+          "registration_id": null,
+          "feature_count": 0,
+          "feature_ids": [],
+          "feature_classes": [],
+          "geometry": []
+        },
+        "horizontal_overflow": 0,
+        "errors": [],
+        "bytes": 479416,
+        "sha256": "0a7466410d67bf70b08cfe25cdd6442162967dfc3f8ff19dbe6c9bc07441ac44"
+      },
+      {
+        "name": "06-street-access-held",
+        "file": "06-street-access-held.png",
+        "viewport": [
+          1600,
+          1000
+        ],
+        "state": {
+          "aperture": "street",
+          "instrument": "access",
+          "mode": "held",
+          "seat": "successor",
+          "detail": "operate",
+          "providerScene": 0,
+          "asset_id": null,
+          "registration_id": null,
+          "feature_count": 0,
+          "feature_ids": [],
+          "feature_classes": [],
+          "geometry": []
+        },
+        "horizontal_overflow": 0,
+        "errors": [],
+        "bytes": 280414,
+        "sha256": "e1e27712bce9b43ed98c48799f246cae6e0418a1bea59a2234ffbf84e0a08500"
+      },
+      {
+        "name": "07-property-shade-no-geometry",
+        "file": "07-property-shade-no-geometry.png",
+        "viewport": [
+          1600,
+          1000
+        ],
+        "state": {
+          "aperture": "property",
+          "instrument": "shade",
+          "mode": "reference",
+          "seat": "crew_steward",
+          "detail": "evidence",
+          "providerScene": 0,
+          "asset_id": "4f5f752e2c064fc65e364748b19c0f465bd8fbaabbe9113394f41226d9a8376a",
+          "registration_id": null,
+          "feature_count": 0,
+          "feature_ids": [],
+          "feature_classes": [],
+          "geometry": []
+        },
+        "horizontal_overflow": 0,
+        "errors": [],
+        "bytes": 1342831,
+        "sha256": "f5869c33e41fc1f978496007d9852a7f959e3ccaa86730424dbacbd465a4891b"
+      },
+      {
+        "name": "08-neighborhood-water-no-geometry",
+        "file": "08-neighborhood-water-no-geometry.png",
+        "viewport": [
+          1600,
+          1000
+        ],
+        "state": {
+          "aperture": "neighborhood",
+          "instrument": "water",
+          "mode": "reference",
+          "seat": "planner_program",
+          "detail": "evidence",
+          "providerScene": 0,
+          "asset_id": "5ec9252f1615e86a239384a76a508554b2bd9e9221d5e202abce109e804f29d8",
+          "registration_id": null,
+          "feature_count": 0,
+          "feature_ids": [],
+          "feature_classes": [],
+          "geometry": []
+        },
+        "horizontal_overflow": 0,
+        "errors": [],
+        "bytes": 1366304,
+        "sha256": "de4e91c6f7c41c0d2ebbcd49285bd8a64088a9f27a2d7d392e7e5671811755a4"
+      },
+      {
+        "name": "09-mobile-street-access-live",
+        "file": "09-mobile-street-access-live.png",
+        "viewport": [
+          390,
+          844
+        ],
+        "state": {
+          "aperture": "street",
+          "instrument": "access",
+          "mode": "live",
+          "seat": "resident",
+          "detail": "operate",
+          "providerScene": 1,
+          "asset_id": "2ef01e8c21b4a6e191e357faa4a1b0fa49f78d0a2259bbbdbcccd1a9f8b51b1e",
+          "registration_id": "60af48fed6bb94fe68b64c657ae1c481021e5869fb3fb42f3f79018db69fdedb",
+          "feature_count": 5,
+          "feature_ids": [
+            "provider-b-public-sidewalk-001",
+            "provider-b-entry-path-001",
+            "provider-b-entry-steps-001",
+            "provider-b-center-drive-001",
+            "provider-b-right-drive-001"
+          ],
+          "feature_classes": [
+            "driveway_crossing",
+            "entry_path",
+            "entry_steps",
+            "public_sidewalk"
+          ],
+          "geometry": [
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  0,
+                  776
+                ],
+                [
+                  180,
+                  784
+                ],
+                [
+                  360,
+                  784
+                ],
+                [
+                  540,
+                  780
+                ],
+                [
+                  720,
+                  770
+                ],
+                [
+                  900,
+                  755
+                ],
+                [
+                  1080,
+                  742
+                ],
+                [
+                  1260,
+                  727
+                ],
+                [
+                  1440,
+                  713
+                ],
+                [
+                  1600,
+                  705
+                ],
+                [
+                  1600,
+                  770
+                ],
+                [
+                  1440,
+                  780
+                ],
+                [
+                  1260,
+                  792
+                ],
+                [
+                  1080,
+                  812
+                ],
+                [
+                  900,
+                  830
+                ],
+                [
+                  720,
+                  842
+                ],
+                [
+                  540,
+                  842
+                ],
+                [
+                  360,
+                  832
+                ],
+                [
+                  180,
+                  820
+                ],
+                [
+                  0,
+                  815
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  158,
+                  675
+                ],
+                [
+                  215,
+                  690
+                ],
+                [
+                  285,
+                  713
+                ],
+                [
+                  360,
+                  742
+                ],
+                [
+                  455,
+                  780
+                ],
+                [
+                  418,
+                  805
+                ],
+                [
+                  330,
+                  772
+                ],
+                [
+                  260,
+                  745
+                ],
+                [
+                  200,
+                  718
+                ],
+                [
+                  145,
+                  700
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  76,
+                  625
+                ],
+                [
+                  282,
+                  625
+                ],
+                [
+                  290,
+                  690
+                ],
+                [
+                  170,
+                  697
+                ],
+                [
+                  92,
+                  680
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  535,
+                  676
+                ],
+                [
+                  650,
+                  688
+                ],
+                [
+                  770,
+                  716
+                ],
+                [
+                  900,
+                  750
+                ],
+                [
+                  960,
+                  778
+                ],
+                [
+                  940,
+                  832
+                ],
+                [
+                  810,
+                  816
+                ],
+                [
+                  670,
+                  790
+                ],
+                [
+                  555,
+                  754
+                ]
+              ]
+            },
+            {
+              "type": "polygon",
+              "points": [
+                [
+                  1265,
+                  673
+                ],
+                [
+                  1415,
+                  665
+                ],
+                [
+                  1600,
+                  666
+                ],
+                [
+                  1600,
+                  770
+                ],
+                [
+                  1420,
+                  782
+                ],
+                [
+                  1280,
+                  758
+                ]
+              ]
+            }
+          ]
+        },
+        "horizontal_overflow": 0,
+        "errors": [],
+        "bytes": 243058,
+        "sha256": "f8830366ca3a42c5e8cb679523901725e5454a05396e20e062f6b921f6064dec"
+      }
+    ],
+    "contact_sheet": {
+      "path": "contact-sheet.jpg",
+      "bytes": 1189547,
+      "sha256": "ab6ccf408d0e0cec797039ea33ef15fc6eb729a5bff8637bc9586be9405252a9"
+    },
+    "semantic_feature_proof": {
+      "path": "semantic-feature-proof.jpg",
+      "bytes": 593006,
+      "sha256": "85bbb3c04aa037b491d24f0d3e534b8b4e4d716effb9f61b5c2eeac87514ca54"
+    },
+    "public_route_effect": "none"
+  }
+}
