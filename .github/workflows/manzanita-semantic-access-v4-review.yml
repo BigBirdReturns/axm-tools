@@ -19,7 +19,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: manzanita-semantic-access-v4-${{ github.event_name }}
+  group: manzanita-semantic-access-v4-fast-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
