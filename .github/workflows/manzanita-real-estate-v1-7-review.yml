@@ -6,13 +6,19 @@ on:
     paths:
       - "programs/manzanita-real-estate-v1-7/**"
       - ".github/workflows/manzanita-real-estate-v1-7-review.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "programs/manzanita-real-estate-v1-7/**"
+      - ".github/workflows/manzanita-real-estate-v1-7-review.yml"
+      - "review/manzanita-v1.7/**"
   workflow_dispatch: {}
 
 permissions:
   contents: write
 
 concurrency:
-  group: manzanita-real-estate-v1-7-review
+  group: manzanita-real-estate-v1-7-review-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
@@ -22,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: agent/manzanita-real-estate-v1-7
+          ref: ${{ github.event.pull_request.head.sha || 'agent/manzanita-real-estate-v1-7' }}
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
@@ -86,6 +92,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Commit the exact review candidate, without touching the live route
+        if: github.event_name == 'push'
         run: |
           set -euo pipefail
           git config user.name "manzanita-review-bot"
