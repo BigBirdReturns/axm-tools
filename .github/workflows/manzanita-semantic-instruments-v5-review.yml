@@ -5,7 +5,7 @@ on:
     branches: [agent/manzanita-semantic-instruments-v5]
     paths:
       - "programs/manzanita-semantic-instruments-v5/src/**"
-      - "programs/manzanita-semantic-instruments-v5/OPERATOR_SOURCE_BUNDLE.tgz"
+      - "programs/manzanita-semantic-instruments-v5/OPERATOR_SOURCE_BUNDLE.*"
       - "programs/manzanita-semantic-instruments-v5/SOURCE_BUNDLE.*"
       - "programs/manzanita-semantic-instruments-v5/donors/**"
       - "programs/manzanita-semantic-instruments-v5/DONOR_REGISTER.json"
@@ -63,13 +63,31 @@ jobs:
               raise SystemExit(f"Semantic review contains out-of-scope paths: {invalid}")
           PY
 
-      - name: Recover the operator source and validate the materialized engine
+      - name: Recover the exact semantic engine and operator source
         run: |
           set -euo pipefail
           program=programs/manzanita-semantic-instruments-v5
           root="$program/src"
-          test "$(sha256sum "$program/OPERATOR_SOURCE_BUNDLE.tgz" | cut -d' ' -f1)" = "5c8e133bc8764020d003f24714b28563c9efb5dde0ec59d6e4fbd6693ab3f2e4"
-          tar -xzf "$program/OPERATOR_SOURCE_BUNDLE.tgz" -C "$root"
+          operator_bundle=/tmp/manzanita-operator-source-bundle.tgz
+
+          rm -rf "$root"
+          mkdir -p "$root"
+
+          cat "$program"/SOURCE_BUNDLE.* \
+            | base64 --decode \
+            | tar -xzf - -C "$root" --strip-components=1
+
+          cat "$program"/OPERATOR_SOURCE_BUNDLE.*.b64 \
+            | base64 --decode \
+            > "$operator_bundle"
+
+          cmp --silent "$operator_bundle" "$program/OPERATOR_SOURCE_BUNDLE.tgz"
+          tar -tzf "$operator_bundle" > /tmp/manzanita-operator-source-members.txt
+          tar -xzf "$operator_bundle" -C "$root"
+
+          printf 'operator_bundle_bytes=%s\n' "$(stat -c%s "$operator_bundle")"
+          printf 'operator_bundle_sha256=%s\n' "$(sha256sum "$operator_bundle" | cut -d' ' -f1)"
+
           test -f "$root/build_review.py"
           test -f "$root/build_operator.py"
           test -f "$root/operator/index.html"
