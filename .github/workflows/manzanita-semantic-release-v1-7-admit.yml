@@ -1,0 +1,160 @@
+name: Manzanita v1.7.0 exact-head admission controller
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-release-v1-7]
+    paths:
+      - ".github/workflows/manzanita-semantic-release-v1-7-admit.yml"
+      - "programs/manzanita-release-1.7/custody_transition.py"
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: manzanita-semantic-release-v1-7-admission
+  cancel-in-progress: true
+
+jobs:
+  custody-check-merge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      BRANCH: agent/manzanita-semantic-release-v1-7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-release-v1-7
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve the exact pull request and predecessor
+        id: identity
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main
+          test "$(git branch --show-current)" = "$BRANCH"
+          test -f manzanita/RELEASE.json
+          test "$(python -c 'import json;print(json.load(open("manzanita/RELEASE.json"))["release"])')" = "1.7.0"
+          pr=$(gh pr list --repo "$GH_REPO" --head "$BRANCH" --state open --json number --jq '.[0].number')
+          test -n "$pr"
+          predecessor=$(git merge-base origin/main HEAD)
+          product=$(git rev-parse HEAD)
+          echo "pr=$pr" >> "$GITHUB_OUTPUT"
+          echo "predecessor=$predecessor" >> "$GITHUB_OUTPUT"
+          echo "product=$product" >> "$GITHUB_OUTPUT"
+
+      - name: Move donor custody to the exact semantic public route
+        run: |
+          set -euo pipefail
+          python programs/manzanita-release-1.7/custody_transition.py \
+            --repo-root . \
+            --predecessor-commit "${{ steps.identity.outputs.predecessor }}" \
+            --product-commit "${{ steps.identity.outputs.product }}"
+          python programs/manzanita-99/custody/build_custody.py --repo-root .
+          python programs/manzanita-99/custody/validate_custody.py --repo-root .
+          python -m unittest discover -s programs/manzanita-99/custody/tests -p 'test_*.py'
+          python programs/manzanita-99/custody/audit_history.py --repo-root .
+          python manzanita/tests/public_contract_test.py manzanita
+
+      - name: Remove this controller and seal the final review head
+        id: final
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-semantic-release-v1-7-admit.yml
+          git config user.name "manzanita-admission-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          if ! git diff --cached --quiet; then
+            git commit -m "Manzanita: seal v1.7.0 custody and exact admission head"
+            git push origin HEAD:"$BRANCH"
+          fi
+          echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Ensure all required exact-head workflows execute
+        run: |
+          set -euo pipefail
+          head="${{ steps.final.outputs.head }}"
+          required=(
+            "Manzanita Works v1.7.0 semantic place fabric"
+            "Manzanita donor custody v2"
+            "Acceptance page"
+          )
+          sleep 15
+          for name in "${required[@]}"; do
+            found=$(gh run list --repo "$GH_REPO" --branch "$BRANCH" --limit 100 \
+              --json name,headSha,status,conclusion,databaseId,event \
+              --jq ".[] | select(.name == \"$name\" and .headSha == \"$head\") | .databaseId" | head -1)
+            if [ -z "$found" ]; then
+              path=$(gh workflow list --repo "$GH_REPO" --all --json name,path --jq ".[] | select(.name == \"$name\") | .path" | head -1)
+              test -n "$path"
+              gh workflow run "$path" --repo "$GH_REPO" --ref "$BRANCH"
+            fi
+          done
+
+      - name: Wait for exact-head qualification, custody, and acceptance
+        run: |
+          set -euo pipefail
+          head="${{ steps.final.outputs.head }}"
+          pr="${{ steps.identity.outputs.pr }}"
+          required=(
+            "Manzanita Works v1.7.0 semantic place fabric"
+            "Manzanita donor custody v2"
+            "Acceptance page"
+          )
+          for attempt in $(seq 1 120); do
+            gh run list --repo "$GH_REPO" --branch "$BRANCH" --limit 100 \
+              --json name,headSha,status,conclusion,databaseId,event,createdAt \
+              > /tmp/runs.json
+            ready=1
+            for name in "${required[@]}"; do
+              row=$(jq -c --arg name "$name" --arg head "$head" '[.[] | select(.name == $name and .headSha == $head)] | sort_by(.createdAt) | reverse | .[0] // empty' /tmp/runs.json)
+              if [ -z "$row" ] || [ "$(printf '%s' "$row" | jq -r .status)" != "completed" ]; then
+                ready=0
+              fi
+            done
+            if [ "$ready" = "1" ]; then break; fi
+            if [ "$attempt" = "120" ]; then
+              gh pr comment "$pr" --repo "$GH_REPO" --body "Exact-head admission timed out while waiting for qualification, donor custody, and Acceptance on \`$head\`."
+              exit 1
+            fi
+            sleep 15
+          done
+
+          failed=0
+          : > /tmp/admission.md
+          printf 'Exact-head admission results for `%s`:\n\n' "$head" >> /tmp/admission.md
+          for name in "${required[@]}"; do
+            row=$(jq -c --arg name "$name" --arg head "$head" '[.[] | select(.name == $name and .headSha == $head)] | sort_by(.createdAt) | reverse | .[0]' /tmp/runs.json)
+            run_id=$(printf '%s' "$row" | jq -r .databaseId)
+            conclusion=$(printf '%s' "$row" | jq -r .conclusion)
+            printf -- '- %s: `%s` (run `%s`)\n' "$name" "$conclusion" "$run_id" >> /tmp/admission.md
+            if [ "$conclusion" != "success" ]; then
+              failed=1
+              gh run view "$run_id" --repo "$GH_REPO" --log-failed > "/tmp/$run_id.log" || true
+              {
+                printf '\n<details><summary>%s failure tail</summary>\n\n```text\n' "$name"
+                tail -c 30000 "/tmp/$run_id.log"
+                printf '\n```\n</details>\n'
+              } >> /tmp/admission.md
+            fi
+          done
+          gh pr comment "$pr" --repo "$GH_REPO" --body-file /tmp/admission.md
+          test "$failed" = "0"
+
+      - name: Admit the exact qualified head
+        run: |
+          set -euo pipefail
+          pr="${{ steps.identity.outputs.pr }}"
+          head="${{ steps.final.outputs.head }}"
+          gh pr ready "$pr" --repo "$GH_REPO" || true
+          gh pr merge "$pr" --repo "$GH_REPO" --squash --match-head-commit "$head" --delete-branch=false
