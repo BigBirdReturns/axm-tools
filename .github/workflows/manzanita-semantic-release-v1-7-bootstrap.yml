@@ -1,0 +1,142 @@
+name: Manzanita semantic place fabric v1.7.0 bootstrap
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-release-v1-7]
+    paths:
+      - ".github/workflows/manzanita-semantic-release-v1-7-bootstrap.yml"
+      - "programs/manzanita-release-1.7/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-semantic-release-v1-7-bootstrap
+  cancel-in-progress: true
+
+jobs:
+  build-qualify-seal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-release-v1-7
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Prove exact branch and acquire current main
+        id: base
+        run: |
+          set -euo pipefail
+          test "$(git branch --show-current)" = "agent/manzanita-semantic-release-v1-7"
+          git fetch --no-tags origin main
+          echo "sha=$(git rev-parse origin/main)" >> "$GITHUB_OUTPUT"
+          git diff --quiet origin/main...HEAD -- manzanita
+
+      - name: Download the exact passed semantic-instruments v5 artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: BigBirdReturns/axm-tools
+          run-id: 32270492054
+          pattern: manzanita-semantic-instruments-v5-*
+          merge-multiple: true
+          path: /tmp/manzanita-v5
+
+      - name: Install deterministic image and browser libraries
+        run: |
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+          python -m playwright install chromium
+
+      - name: Build the exact bounded public release
+        run: |
+          set -euo pipefail
+          python programs/manzanita-release-1.7/build_release.py \
+            --artifact-root /tmp/manzanita-v5 \
+            --repo-root . \
+            --base-sha "${{ steps.base.outputs.sha }}"
+          mkdir -p manzanita/tests
+          cp programs/manzanita-release-1.7/public_contract_test.py manzanita/tests/public_contract_test.py
+          cp programs/manzanita-release-1.7/browser_test.py manzanita/tests/browser_test.py
+          cp programs/manzanita-release-1.7/manzanita-check.yml .github/workflows/manzanita-check.yml
+          cp programs/manzanita-release-1.7/manzanita-live-check.yml .github/workflows/manzanita-live-check.yml
+
+      - name: Verify static release, semantic receipts, asset identities, and exact public manifest
+        run: |
+          set -euo pipefail
+          python manzanita/tests/public_contract_test.py manzanita
+          node --check manzanita/app.js
+          node --check manzanita/v5-semantic.js
+
+      - name: Exercise every state, refusal, seat, export, responsive composition, and registration lock
+        run: |
+          set -euo pipefail
+          rm -rf programs/manzanita-release-1.7/evidence/browser
+          python manzanita/tests/browser_test.py \
+            --site manzanita \
+            --output programs/manzanita-release-1.7/evidence/browser
+
+      - name: Seal source qualification receipt
+        env:
+          BASE_SHA: ${{ steps.base.outputs.sha }}
+          BOOTSTRAP_RUN_ID: ${{ github.run_id }}
+          BOOTSTRAP_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          browser = json.loads(Path('programs/manzanita-release-1.7/evidence/browser/BROWSER_CAMPAIGN.json').read_text())
+          qualification = json.loads(Path('manzanita/QUALIFICATION.json').read_text())
+          release = json.loads(Path('manzanita/RELEASE.json').read_text())
+          receipt = {
+              'schema': 'manzanita-works/source-release-receipt@1',
+              'release': '1.7.0',
+              'visual_system': 'semantic-source-adaptive-place-fabric',
+              'result': 'PASS',
+              'qualified_at': datetime.now(timezone.utc).isoformat(),
+              'base_main_sha': os.environ['BASE_SHA'],
+              'bootstrap_run_id': int(os.environ['BOOTSTRAP_RUN_ID']),
+              'bootstrap_run_attempt': int(os.environ['BOOTSTRAP_RUN_ATTEMPT']),
+              'release_receipt_sha256': hashlib.sha256(Path('manzanita/RELEASE.json').read_bytes()).hexdigest(),
+              'qualification_sha256': hashlib.sha256(Path('manzanita/QUALIFICATION.json').read_bytes()).hexdigest(),
+              'browser_campaign_sha256': hashlib.sha256(Path('programs/manzanita-release-1.7/evidence/browser/BROWSER_CAMPAIGN.json').read_bytes()).hexdigest(),
+              'qualified_public_files': len(qualification['files']),
+              'browser': {
+                  'valid_states': browser['matrix']['valid_states'],
+                  'invalid_controls_refused': browser['matrix']['invalid_controls_refused'],
+                  'rendered_registration_keys': len(browser['matrix']['rendered_registration_keys']),
+                  'captures': len(browser['captures']),
+                  'maximum_horizontal_overflow': browser['maximum_horizontal_overflow'],
+                  'minimum_visible_target_height': browser['minimum_visible_target_height'],
+                  'console_errors': browser['console_errors'],
+                  'page_errors': browser['page_errors'],
+                  'external_requests': browser['external_requests'],
+                  'failed_requests': browser['failed_requests'],
+              },
+              'semantic_receipts': release['semantic_receipts'],
+              'semantic_features': release['semantic_features'],
+              'authority': release['authority'],
+          }
+          Path('programs/manzanita-release-1.7/SOURCE_RELEASE_RECEIPT.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
+          PY
+
+      - name: Retire the one-shot bootstrap and seal the exact review head
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-semantic-release-v1-7-bootstrap.yml
+          git config user.name "manzanita-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "Manzanita: qualify semantic place fabric v1.7.0"
+          git push origin HEAD:agent/manzanita-semantic-release-v1-7
