@@ -1,0 +1,286 @@
+name: Manzanita semantic instruments v5 bootstrap
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths:
+      - ".github/workflows/manzanita-semantic-instruments-v5-bootstrap.yml"
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: manzanita-semantic-instruments-v5-bootstrap
+  cancel-in-progress: true
+
+jobs:
+  build-test-render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-instruments-v5
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Recover exact semantic Access v4 evidence donor
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: BigBirdReturns/axm-tools
+          run-id: 32233516576
+          name: manzanita-semantic-access-v4-d7f03fb12123f9d79aebab2d3dd8bbad802e7702
+          path: /tmp/manzanita-v4
+
+      - name: Materialize the v5 review from the exact v4 site
+        run: |
+          set -euo pipefail
+          source_site=$(find /tmp/manzanita-v4 -type d -path '*/review/manzanita-semantic-access-v4' | head -1)
+          test -n "$source_site"
+          test -f "$source_site/index.html"
+          rm -rf review/manzanita-semantic-instruments-v5
+          mkdir -p review
+          cp -a "$source_site" review/manzanita-semantic-instruments-v5
+          python - <<'PY'
+          from pathlib import Path
+          import base64, hashlib, json, mimetypes, re
+
+          root = Path('review/manzanita-semantic-instruments-v5')
+          index = root / 'index.html'
+          html = index.read_text(encoding='utf-8')
+          html = html.replace('source-adaptive-semantic-v4', 'source-adaptive-semantic-v5')
+          html = html.replace('semantic Access review v4', 'semantic instruments review v5')
+          html = html.replace('</head>', '<link rel="stylesheet" href="v5-semantic.css">\n</head>', 1)
+          marker = '<script src="app.js" defer></script>'
+          if marker not in html:
+              raise SystemExit('Could not locate app.js script marker')
+          html = html.replace(marker, marker + '\n<script src="v5-semantic.js" defer></script>', 1)
+          index.write_text(html, encoding='utf-8')
+
+          css = r'''
+          .v5-semantic-ledger{position:absolute;z-index:18;right:16px;top:72px;width:min(360px,34vw);max-height:58%;overflow:auto;background:rgba(12,17,12,.91);border:1px solid rgba(241,236,223,.34);box-shadow:0 18px 54px rgba(0,0,0,.34);backdrop-filter:blur(12px);padding:14px;color:#f1ecdf;font:12px/1.42 ui-monospace,SFMono-Regular,Consolas,monospace}.v5-semantic-ledger[hidden]{display:none}.v5-semantic-ledger h3{margin:0 0 8px;font:800 11px/1.2 ui-monospace,monospace;letter-spacing:.08em;color:#ff7450}.v5-semantic-ledger p{margin:0 0 10px;color:#c8c9bf}.v5-feature-row{padding:9px 0;border-top:1px solid rgba(241,236,223,.17)}.v5-feature-row b{display:block;font-size:10px;letter-spacing:.06em}.v5-feature-row span{display:block;margin-top:4px;color:#aeb1a7}.v5-export{width:100%;min-height:42px;margin-top:9px;border:1px solid rgba(241,236,223,.46);background:#efe9da;color:#111510;font:800 9px/1 ui-monospace,monospace;letter-spacing:.08em}.v5-semantic-status{position:absolute;z-index:17;left:18px;top:18px;padding:8px 10px;background:rgba(12,17,12,.82);border-left:3px solid #ff5b32;color:#f1ecdf;font:800 8px/1.25 ui-monospace,monospace;letter-spacing:.08em;pointer-events:none}.v5-semantic-overlay .v5-feature{vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}.v5-semantic-overlay .v5-feature[data-confidence="low"]{stroke-dasharray:11 9;fill-opacity:.06}.v5-semantic-overlay .v5-feature[data-confidence="medium"]{stroke-dasharray:5 5;fill-opacity:.10}.v5-semantic-overlay .v5-feature[data-confidence="high"]{fill-opacity:.14}@media(max-width:760px){.v5-semantic-ledger{position:fixed;left:10px;right:10px;top:auto;bottom:10px;width:auto;max-height:43vh}.v5-semantic-status{left:10px;top:10px}}
+          '''
+          (root / 'v5-semantic.css').write_text(css, encoding='utf-8')
+
+          js = r'''
+          (() => {
+            const COLORS = {access:'#f1ecdf',shade:'#b8d482',water:'#69c7e4'};
+            const RECEIPTS = {
+              'street-reference-:access':[
+                f('ref-sidewalk','public_sidewalk','Public sidewalk',[[0,0.79],[0.24,0.76],[0.51,0.79],[0.76,0.86],[1,0.89]],'high','Visible continuous sidewalk edge; driveway interruptions retained.'),
+                f('ref-drive-crossing','driveway_crossing','Driveway crossing',[[0.39,0.73],[0.52,0.69],[0.64,0.78],[0.51,0.81]],'medium','Visible driveway crossing; surface condition and lawful access unverified.'),
+                f('ref-entry-path','entry_path','Entry path',[[0.50,0.69],[0.53,0.57],[0.58,0.50],[0.62,0.48]],'medium','Visible path segment toward the dwelling; full connection is occluded.'),
+                f('ref-private-drive','private_drive_side_access','Drive-side access',[[0.73,0.84],[0.80,0.68],[0.94,0.56],[1,0.56],[1,0.90]],'low','Visible private drive-side surface; no entry or ownership authority.')],
+              'street-provider-1-:access':[
+                f('p1-sidewalk','public_sidewalk','Public sidewalk',[[0,0.81],[0.23,0.78],[0.49,0.80],[0.74,0.87],[1,0.90]],'high','Visible public-sidewalk run with driveway interruption.'),
+                f('p1-drive-crossing','driveway_crossing','Driveway crossing',[[0.44,0.77],[0.55,0.70],[0.68,0.79],[0.56,0.84]],'medium','Visible driveway crossing; grade and accessibility remain unverified.'),
+                f('p1-entry-path','entry_path','Entry path',[[0.55,0.70],[0.58,0.59],[0.63,0.53],[0.68,0.51]],'low','Partial visible path; terminal entrance is obscured.')],
+              'street-provider-2-:access':[
+                f('p2-sidewalk','public_sidewalk','Public sidewalk',[[0,0.80],[0.21,0.76],[0.45,0.78],[0.70,0.85],[1,0.88]],'high','Visible sidewalk continuity across the scene.'),
+                f('p2-drive-crossing','driveway_crossing','Driveway crossing',[[0.36,0.76],[0.48,0.69],[0.61,0.76],[0.49,0.82]],'medium','Visible driveway crossing; curb transition remains unmeasured.'),
+                f('p2-entry-path','entry_path','Entry path',[[0.48,0.69],[0.52,0.58],[0.58,0.52],[0.64,0.50]],'medium','Visible approach path; door connection remains partly occluded.'),
+                f('p2-entry-steps','entry_steps','Entry steps',[[0.60,0.52],[0.66,0.49],[0.70,0.51],[0.64,0.55]],'low','Step-like visible transition; dimensions and accessibility unverified.')],
+
+              'household-reference-:shade':[
+                f('hh-canopy-west','visible_canopy_envelope','West canopy envelope',[[0.00,0.02],[0.57,0.02],[0.54,0.38],[0.37,0.48],[0.08,0.43],[0,0.31]],'medium','Visible foliage and branch envelope in this retained scene; species, height, health, ownership, and measured shade duration remain unknown.'),
+                f('hh-canopy-east','visible_canopy_envelope','East canopy envelope',[[0.54,0.02],[1,0.02],[1,0.43],[0.82,0.46],[0.65,0.36]],'medium','Visible upper canopy envelope; not measured canopy geometry or a pruning recommendation.')],
+              'property-reference-:shade':[
+                f('prop-canopy-main','visible_canopy_envelope','Primary canopy envelope',[[0.05,0.02],[0.71,0.02],[0.69,0.43],[0.52,0.52],[0.24,0.47],[0.07,0.31]],'medium','Visible canopy question over public context imagery; current field condition and ownership are unknown.'),
+                f('prop-structure-shadow-question','structure_shadow_question','Structure shade question',[[0.50,0.44],[0.88,0.42],[0.92,0.66],[0.58,0.69]],'low','Authored question area around visible structures; not a measured shadow or thermal reading.')],
+              'street-reference-:shade':[
+                f('ref-canopy-left','visible_canopy_envelope','Left street canopy',[[0,0.01],[0.41,0.01],[0.39,0.45],[0.18,0.51],[0,0.44]],'medium','Visible tree-crown envelope; no species, ownership, health, or pruning authority.'),
+                f('ref-canopy-center','visible_canopy_envelope','Central street canopy',[[0.33,0.01],[0.73,0.01],[0.70,0.39],[0.52,0.49],[0.38,0.41]],'medium','Visible central canopy envelope; not a measured shade duration.'),
+                f('ref-ground-shade-question','ground_shade_question','Ground shade question',[[0.12,0.58],[0.67,0.55],[0.82,0.78],[0.28,0.80]],'low','Authored ground-area question beneath visible canopy; illumination and duration unmeasured.')],
+              'street-provider-1-:shade':[
+                f('p1-canopy','visible_canopy_envelope','Provider-scene canopy',[[0,0.01],[0.81,0.01],[0.76,0.42],[0.50,0.50],[0.20,0.45],[0,0.31]],'medium','Visible canopy envelope in the exact provider-compatible scene.'),
+                f('p1-ground-shade-question','ground_shade_question','Ground shade question',[[0.18,0.58],[0.73,0.55],[0.88,0.79],[0.31,0.82]],'low','Authored ground-area verification question; not observed shade duration.')],
+              'street-provider-2-:shade':[
+                f('p2-canopy','visible_canopy_envelope','Provider-scene canopy',[[0,0.01],[1,0.01],[1,0.37],[0.73,0.46],[0.39,0.43],[0,0.35]],'medium','Visible canopy envelope in the exact displayed scene.'),
+                f('p2-ground-shade-question','ground_shade_question','Ground shade question',[[0.10,0.57],[0.72,0.55],[0.92,0.78],[0.28,0.81]],'low','Authored verification area; no measured light or heat result.')],
+
+              'household-reference-:water':[
+                f('hh-roof-runoff','roof_runoff_question','Roof runoff question',[[0.36,0.42],[0.53,0.31],[0.70,0.43]],'medium','Visible roof planes frame a runoff question; rainfall and flow are not observed.'),
+                f('hh-downspout','downspout_question','Downspout question',[[0.70,0.43],[0.70,0.68]],'low','Possible conveyance alignment; hardware condition and connection are unverified.'),
+                f('hh-surface-path','surface_flow_question','Surface-flow question',[[0.69,0.68],[0.58,0.75],[0.39,0.82],[0.18,0.85]],'low','Authored downhill verification path; not observed water flow.'),
+                f('hh-capture','capture_opportunity_question','Capture opportunity',[[0.60,0.64],[0.76,0.63],[0.78,0.76],[0.62,0.77]],'low','Potential review area only; no storage, soil, utility, or capacity finding.'),
+                f('hh-irrigation','irrigation_verification_area','Irrigation verification area',[[0.12,0.57],[0.42,0.54],[0.48,0.78],[0.17,0.82]],'low','Visible planted area requiring first-party verification; no watering directive.')],
+              'property-reference-:water':[
+                f('prop-roof-runoff','roof_runoff_question','Roof runoff question',[[0.40,0.38],[0.57,0.27],[0.75,0.39]],'medium','Visible roof planes frame a runoff question; collection and condition remain unknown.'),
+                f('prop-conveyance','conveyance_question','Conveyance question',[[0.75,0.39],[0.74,0.67]],'low','Possible vertical conveyance alignment; exact component and operability unverified.'),
+                f('prop-surface-path','surface_flow_question','Surface-flow question',[[0.74,0.67],[0.61,0.74],[0.45,0.81],[0.24,0.86]],'low','Authored terrain-following verification question; not observed runoff.'),
+                f('prop-low-point','low_point_question','Low-point question',[[0.20,0.77],[0.47,0.73],[0.54,0.88],[0.25,0.91]],'low','Potential low-area question inferred from visual context; field elevation and drainage unknown.'),
+                f('prop-capture','capture_opportunity_question','Capture opportunity',[[0.57,0.62],[0.78,0.61],[0.81,0.77],[0.59,0.78]],'low','Potential review area only; no installation, utility, volume, or work authority.')]
+            };
+
+            function f(id, cls, label, points, confidence, evidence){return {id, class:cls, label, confidence, evidence, points, nonClaim:'Authored semantic interpretation bound to this exact displayed image. Not a survey, inspection, ownership, compliance, safety, work, or completion finding.', unknowns:'Occluded connections, dimensions, current physical condition, ownership, lawful access, and field fitness remain unknown.'};}
+            const spatial = new Set(['access','shade','water']);
+            const $ = (s) => document.querySelector(s);
+            const $$ = (s) => [...document.querySelectorAll(s)];
+            let scheduled = false;
+
+            function selected(selector, attr){const node=$(selector+'[aria-pressed="true"],'+selector+'[aria-selected="true"],'+selector+'.active');return node?.dataset?.[attr] || null;}
+            function current(){
+              const image=$('#sceneImage, .scene-image, img[data-scene], .stage img');
+              const file=(image?.currentSrc || image?.src || '').split('/').pop().split('?')[0];
+              return {image,file,instrument:selected('[data-instrument]','instrument'),mode:selected('[data-mode]','mode'),aperture:selected('[data-aperture]','aperture')};
+            }
+            function receiptKey(file,instrument){const match=Object.keys(RECEIPTS).find(k=>{const [prefix,inst]=k.split(':');return inst===instrument && file.includes(prefix)});return match || null;}
+            function svgNode(name, attrs={}){const n=document.createElementNS('http://www.w3.org/2000/svg',name);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));return n;}
+            function ensureLedger(){let panel=$('#v5SemanticLedger');if(panel)return panel;panel=document.createElement('aside');panel.id='v5SemanticLedger';panel.className='v5-semantic-ledger';panel.innerHTML='<h3>SEMANTIC RECEIPT</h3><p id="v5SemanticSummary"></p><div id="v5FeatureRows"></div><button class="v5-export" id="v5Export" type="button">EXPORT EXACT RECEIPT</button>';const stage=$('#visualStage,.stage,.scene-stage,main');stage.style.position=stage.style.position||'relative';stage.append(panel);$('#v5Export').addEventListener('click',exportReceipt);return panel;}
+            function ensureStatus(){let node=$('#v5SemanticStatus');if(node)return node;node=document.createElement('div');node.id='v5SemanticStatus';node.className='v5-semantic-status';const stage=$('#visualStage,.stage,.scene-stage,main');stage.append(node);return node;}
+            function render(){scheduled=false;const state=current();const overlay=$('#overlay,svg.overlay,#sceneOverlay');if(!overlay)return;const panel=ensureLedger(),status=ensureStatus();if(!spatial.has(state.instrument)){panel.hidden=true;status.textContent='NON-GEOMETRIC INSTRUMENT · '+String(state.instrument||'').toUpperCase();return;}
+              overlay.classList.add('v5-semantic-overlay');overlay.replaceChildren();const blocked=['map','map-only','held'].includes(state.mode);const key=blocked?null:receiptKey(state.file||'',state.instrument);const features=key?RECEIPTS[key]:[];status.textContent=features.length?`${state.instrument.toUpperCase()} · ${features.length} CLASSIFIED FEATURES · EXACT ASSET`:`${String(state.instrument||'').toUpperCase()} · SEMANTIC RECEIPT ABSENT · NO GEOMETRY`;
+              if(!features.length){panel.hidden=false;$('#v5SemanticSummary').textContent=blocked?'This source mode carries no local image geometry.':'The exact displayed asset has no admitted semantic receipt for this instrument. Geometry is withheld.';$('#v5FeatureRows').replaceChildren();window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__={state,key:null,features:[],result:'held_no_geometry'};return;}
+              const vb=(overlay.getAttribute('viewBox')||'0 0 1000 750').split(/\s+/).map(Number);const W=vb[2]||1000,H=vb[3]||750,color=COLORS[state.instrument];for(const feature of features){const pts=feature.points.map(([x,y])=>`${(x*W).toFixed(1)},${(y*H).toFixed(1)}`).join(' ');const closed=feature.points.length>2;const node=svgNode(closed?'polygon':'polyline',{points:pts,fill:closed?color:'none',stroke:color,'stroke-width':state.instrument==='water'?4:3.5,opacity:.94,'data-feature-id':feature.id,'data-feature-class':feature.class,'data-confidence':feature.confidence,class:'v5-feature'});overlay.append(node);}
+              panel.hidden=false;$('#v5SemanticSummary').textContent=`${state.instrument.toUpperCase()} uses a semantic feature inventory bound to ${state.file}. Occluded or unverified connections remain absent.`;const rows=$('#v5FeatureRows');rows.replaceChildren();for(const feature of features){const row=document.createElement('div');row.className='v5-feature-row';row.innerHTML=`<b>${feature.label.toUpperCase()} · ${feature.confidence.toUpperCase()}</b><span>${feature.evidence}</span>`;rows.append(row);}window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__={state,key,features,result:'rendered_exact_asset_semantics'};
+            }
+            function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(render);}}
+            function exportReceipt(){const runtime=window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__||{};const payload={schema:'manzanita-works/semantic-instrument-handoff@1',release:'source-adaptive-semantic-v5',...runtime,public_effect:'none',claim_boundary:'Review geometry only. No survey, inspection, ownership, access, safety, work, insurance, enforcement, or completion authority.'};const blob=new Blob([JSON.stringify(payload,null,2)+'\n'],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='manzanita-semantic-instrument-receipt.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+            document.addEventListener('click',schedule,true);document.addEventListener('change',schedule,true);document.addEventListener('DOMContentLoaded',()=>{const observer=new MutationObserver(schedule);$$('[data-aperture],[data-instrument],[data-mode],[data-scene],#sceneImage,.scene-image').forEach(n=>observer.observe(n,{attributes:true,attributeFilter:['aria-pressed','aria-selected','class','src']}));schedule();});
+          })();
+          '''
+          (root / 'v5-semantic.js').write_text(js, encoding='utf-8')
+
+          # Create a self-contained review file by embedding scripts, styles, and every asset URI.
+          standalone = index.read_text(encoding='utf-8')
+          for name in ('style.css','v5-semantic.css'):
+              path=root/name
+              standalone=standalone.replace(f'<link rel="stylesheet" href="{name}">', '<style>'+path.read_text(encoding='utf-8')+'</style>')
+          for name in ('app.js','v5-semantic.js'):
+              path=root/name
+              standalone=standalone.replace(f'<script src="{name}" defer></script>', '<script>'+path.read_text(encoding='utf-8')+'</script>')
+          for asset in sorted((root/'assets').iterdir()):
+              if not asset.is_file(): continue
+              mime=mimetypes.guess_type(asset.name)[0] or 'application/octet-stream'
+              uri=f'data:{mime};base64,'+base64.b64encode(asset.read_bytes()).decode('ascii')
+              standalone=standalone.replace('assets/'+asset.name, uri)
+          (root/'STANDALONE.html').write_text(standalone, encoding='utf-8')
+
+          receipt={
+            'schema':'manzanita-works/semantic-instruments-v5-build@1',
+            'release':'source-adaptive-semantic-v5',
+            'classification':'review_evidence_not_public_release',
+            'semantic_receipts':{'access':3,'shade':5,'water':2},
+            'semantic_features':{'access':11,'shade':11,'water':10},
+            'generic_gradient_registrations':0,
+            'map_and_held_local_geometry':0,
+            'standalone_embedded':True,
+            'public_route_effect':'none',
+            'canonical_task_count_effect':'none'
+          }
+          (root/'V5_BUILD_RECEIPT.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
+          PY
+
+      - name: Install browser test library
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+
+      - name: Exercise semantic instruments and refusal states
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import contextlib, json, socket, threading
+          from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+          from playwright.sync_api import sync_playwright
+
+          root=Path('review/manzanita-semantic-instruments-v5').resolve()
+          class Quiet(SimpleHTTPRequestHandler):
+              def log_message(self,*args): pass
+          class Handler(Quiet):
+              def __init__(self,*args,**kwargs): super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:
+              s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),Handler);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+          errors=[];rows=[]
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome')
+                  page=browser.new_page(viewport={'width':1600,'height':1000},accept_downloads=True)
+                  page.on('pageerror',lambda e:errors.append(str(e)))
+                  page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                  def click(selector):
+                      loc=page.locator(selector).first
+                      assert loc.count(),selector
+                      loc.click();page.wait_for_timeout(80)
+                  def state(aperture,instrument,mode='reference'):
+                      click(f'[data-aperture="{aperture}"]');click(f'[data-mode="{mode}"]');click(f'[data-instrument="{instrument}"]')
+                      runtime=page.evaluate('window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__')
+                      count=page.locator('#overlay [data-feature-id],svg.overlay [data-feature-id]').count()
+                      rows.append({'aperture':aperture,'instrument':instrument,'mode':mode,'features':count,'runtime':runtime})
+                      return count
+                  assert state('household','shade')==2
+                  assert state('household','water')==5
+                  assert state('property','shade')==2
+                  assert state('property','water')==5
+                  assert state('street','access')==4
+                  assert state('street','shade')==3
+                  assert state('street','access','map')==0
+                  assert state('street','access','held')==0
+                  assert state('street','shade','map')==0
+                  assert state('property','water','held')==0
+                  assert page.evaluate('Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-innerWidth')<=1
+                  browser.close()
+          finally:
+              server.shutdown();thread.join(timeout=5)
+          assert not errors,errors
+          report={'schema':'manzanita-works/semantic-instruments-v5-browser@1','result':'PASS','states':rows,'page_errors':errors,'generic_gradient_registrations':0,'public_route_effect':'none'}
+          (root/'V5_BROWSER_AUDIT.json').write_text(json.dumps(report,indent=2)+'\n')
+          PY
+
+      - name: Render exact instrument proof sheets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from PIL import Image,ImageDraw,ImageOps
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'evidence';out.mkdir(exist_ok=True)
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+          states=[('household-shade','household','shade','reference'),('household-water','household','water','reference'),('property-shade','property','shade','reference'),('property-water','property','water','reference'),('street-access','street','access','reference'),('street-shade','street','shade','reference'),('street-map-hold','street','access','map'),('street-held','street','access','held')]
+          captures=[]
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome')
+                  for name,ap,ins,mode in states:
+                      page=browser.new_page(viewport={'width':1600,'height':1000})
+                      page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                      for selector in (f'[data-aperture="{ap}"]',f'[data-mode="{mode}"]',f'[data-instrument="{ins}"]'):
+                          page.locator(selector).first.click();page.wait_for_timeout(70)
+                      path=out/f'{name}.png';page.screenshot(path=str(path),full_page=False);captures.append(path);page.close()
+                  browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          tw,th,lh=800,500,58;sheet=Image.new('RGB',(1600,4*(th+lh)),'#101510');draw=ImageDraw.Draw(sheet)
+          for i,path in enumerate(captures):
+              with Image.open(path) as im:thumb=ImageOps.fit(im.convert('RGB'),(tw,th),Image.Resampling.LANCZOS)
+              x=(i%2)*tw;y=(i//2)*(th+lh);sheet.paste(thumb,(x,y));draw.rectangle((x,y+th,x+tw,y+th+lh),fill='#efe9da');draw.text((x+15,y+th+18),path.stem.upper(),fill='#111510')
+          sheet.save(out/'semantic-instruments-proof.jpg',quality=93)
+          (out/'CAPTURE_RECEIPT.json').write_text(json.dumps({'schema':'manzanita-works/semantic-instruments-v5-captures@1','result':'PASS','captures':[p.name for p in captures],'contact_sheet':'semantic-instruments-proof.jpg'},indent=2)+'\n')
+          PY
+
+      - name: Retain exact generated v5 review
+        run: |
+          set -euo pipefail
+          git config user.name "manzanita-semantic-v5-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add review/manzanita-semantic-instruments-v5
+          git diff --cached --check
+          git commit -m "Manzanita: materialize semantic Shade and Water v5 review [skip ci]"
+          git push origin HEAD:agent/manzanita-semantic-instruments-v5
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-semantic-instruments-v5-${{ github.sha }}
+          path: review/manzanita-semantic-instruments-v5
+          if-no-files-found: error
+          retention-days: 30
