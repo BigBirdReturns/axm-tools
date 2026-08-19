@@ -1,0 +1,133 @@
+name: Manzanita semantic instruments v5.6.1 source adapter hardening
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths: [".github/workflows/manzanita-semantic-instruments-v561-source-hardening.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  source-adapter-hardening:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: agent/manzanita-semantic-instruments-v5
+      PR_NUMBER: "123"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-instruments-v5
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Bind imported envelopes to the exact retained asset catalog
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64,json,mimetypes
+          root=Path('review/manzanita-semantic-instruments-v5');assets=root/'assets'
+          catalog={path.name:'assets/'+path.name for path in sorted(assets.iterdir()) if path.is_file()}
+          script='window.__MANZANITA_ASSET_CATALOG_V561__='+json.dumps(catalog,separators=(',',':'))+';\n'
+          (root/'v561-asset-catalog.js').write_text(script,encoding='utf-8')
+          html=(root/'index.html').read_text(encoding='utf-8')
+          marker='<script src="v54-source-envelope.js" defer></script>'
+          if 'v561-asset-catalog.js' not in html:
+              if marker not in html:raise SystemExit('v54 marker missing')
+              html=html.replace(marker,'<script src="v561-asset-catalog.js" defer></script>\n'+marker,1)
+          (root/'index.html').write_text(html,encoding='utf-8')
+
+          path=root/'v54-source-envelope.js';text=path.read_text(encoding='utf-8')
+          old="function knownAsset(file){return [...document.querySelectorAll('img')].some(n=>(n.currentSrc||n.src||'').includes(file))||file===assetFile();}"
+          new="function knownAsset(file){const catalog=window.__MANZANITA_ASSET_CATALOG_V561__||{};return Boolean(catalog[file])||[...document.querySelectorAll('img')].some(n=>(n.currentSrc||n.src||'').includes(file))||file===assetFile();}"
+          if old not in text and new not in text:raise SystemExit('knownAsset function not found')
+          text=text.replace(old,new,1)
+          old2="const mode=value.status==='stale'||value.status==='cached'?'cached':value.source_mode==='provider'?'provider':'reference';select('mode',mode);draw();"
+          new2="const mode=value.status==='stale'||value.status==='cached'?'cached':value.source_mode==='provider'?'provider':'reference';select('mode',mode);const catalog=window.__MANZANITA_ASSET_CATALOG_V561__||{};if(value.asset_file&&catalog[value.asset_file]){const target=image();if(target)target.src=catalog[value.asset_file];}draw();"
+          if old2 not in text and new2 not in text:raise SystemExit('import application block not found')
+          text=text.replace(old2,new2,1)
+          old3="document.addEventListener('change',schedule,true);document.addEventListener('DOMContentLoaded',()=>{const img=image();img?.addEventListener('load',schedule);new MutationObserver(schedule).observe(document.body,{subtree:true,attributes:true,attributeFilter:['aria-pressed','aria-selected','src','class']});schedule();});"
+          new3="document.addEventListener('change',schedule,true);document.addEventListener('DOMContentLoaded',()=>{const img=image();img?.addEventListener('load',schedule);img?.addEventListener('error',()=>forceHold('The selected image payload failed to load. The source envelope is held and local geometry is removed.','failed'));new MutationObserver(schedule).observe(document.body,{subtree:true,attributes:true,attributeFilter:['aria-pressed','aria-selected','src','class']});schedule();});"
+          if old3 not in text and new3 not in text:raise SystemExit('DOMContentLoaded source hook not found')
+          text=text.replace(old3,new3,1);path.write_text(text,encoding='utf-8')
+
+          standalone=(root/'index.html').read_text(encoding='utf-8')
+          styles=('style.css','v5-semantic.css','v5-registration-lock.css','v52-feature-grammar.css','v54-source-envelope.css','v55-nonspatial.css','v56-guide.css')
+          scripts=('app.js','v5-semantic.js','v5-registration-lock.js','v52-editor.js','v561-asset-catalog.js','v54-source-envelope.js','v55-nonspatial.js','v56-guide.js')
+          for name in styles:standalone=standalone.replace(f'<link rel="stylesheet" href="{name}">','<style>'+(root/name).read_text(encoding='utf-8')+'</style>')
+          for name in scripts:standalone=standalone.replace(f'<script src="{name}" defer></script>','<script>'+(root/name).read_text(encoding='utf-8')+'</script>')
+          for asset in sorted(assets.iterdir()):
+              if asset.is_file():
+                  mime=mimetypes.guess_type(asset.name)[0] or 'application/octet-stream';uri='data:'+mime+';base64,'+base64.b64encode(asset.read_bytes()).decode('ascii');standalone=standalone.replace('assets/'+asset.name,uri)
+          (root/'STANDALONE.html').write_text(standalone,encoding='utf-8')
+          (root/'V561_ASSET_CATALOG.json').write_text(json.dumps({'schema':'manzanita-works/asset-catalog-v561@1','asset_count':len(catalog),'assets':catalog,'public_route_effect':'none'},indent=2)+'\n')
+          PY
+
+      - name: Install browser library
+        run: python -m pip install --disable-pip-version-check playwright==1.57.0
+
+      - name: Exercise cross-scene import, unknown-scene refusal, image failure, and standalone replay
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification/source-hardening-v561';out.mkdir(parents=True,exist_ok=True);catalog=json.loads((root/'V561_ASSET_CATALOG.json').read_text())['assets']
+          provider=next(name for name in catalog if name.startswith('street-provider-1-'))
+          unknown='unseen-provider-scene-does-not-exist.webp'
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();report={'schema':'manzanita-works/source-hardening-v561-browser@1','result':'HOLD','checks':{},'failures':[],'page_errors':[]}
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome');page=browser.new_page(viewport={'width':1600,'height':1000});page.on('pageerror',lambda e:report['page_errors'].append(str(e)));page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                  for sel in ('[data-aperture="street"]','[data-instrument="access"]','[data-mode="reference"]'):page.locator(sel).first.click();page.wait_for_timeout(70)
+                  env={'schema':'manzanita-works/source-envelope@1','envelope_id':'known-provider-import','source_id':'provider_import','source_mode':'provider','status':'ok','asset_file':provider,'retrieved_at':'2026-08-19T08:00:00Z','source_time':'2026-08-19T07:55:00Z','rights':'provider-compatible review terms','storage_policy':'runtime or retained review asset','claim_scope':'review scene and exact semantic receipt only','freshness_seconds':0,'public_effect':'none'};known=out/'known-provider.json';known.write_text(json.dumps(env));page.locator('#v54SourceToggle').click();page.locator('#v54Import').set_input_files(str(known));page.wait_for_timeout(160);runtime=page.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__');semantic=page.evaluate('window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__');src=page.locator('#sceneImage,.scene-image,.stage img').first.get_attribute('src');report['checks']['known_import']={'result':runtime['result'],'asset':runtime['envelope']['asset_file'],'receipt':semantic.get('key'),'src':src,'features':page.locator('[data-feature-id]').count()}
+                  if runtime['result']!='imported' or provider not in src or not semantic.get('key','').startswith('street-provider-1-') or not page.locator('[data-feature-id]').count():report['failures'].append('known cross-scene import did not switch exact asset and receipt')
+
+                  bad={**env,'envelope_id':'unknown-provider','asset_file':unknown};bad_path=out/'unknown-provider.json';bad_path.write_text(json.dumps(bad));page.locator('#v54Import').set_input_files(str(bad_path));page.wait_for_timeout(130);held=page.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__');report['checks']['unknown_import']={'result':held['result'],'status':held['envelope']['status'],'features':page.locator('[data-feature-id]').count()}
+                  if held['result']!='hold' or page.locator('[data-feature-id]').count():report['failures'].append('unknown scene inherited geometry')
+
+                  page.locator('#v54Reset').click();page.wait_for_timeout(60);page.evaluate("document.querySelector('#sceneImage,.scene-image,.stage img').src='assets/definitely-missing.webp'");page.wait_for_timeout(180);failed=page.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__');report['checks']['image_failure']={'result':failed['result'],'status':failed['envelope']['status'],'features':page.locator('[data-feature-id]').count()}
+                  if failed['result']!='hold' or failed['envelope']['status']!='failed' or page.locator('[data-feature-id]').count():report['failures'].append('image load failure did not fail closed')
+                  page.close()
+
+                  p=browser.new_page(viewport={'width':1280,'height':900});p.goto(f'http://127.0.0.1:{port}/STANDALONE.html',wait_until='networkidle');p.locator('[data-aperture="street"]').first.click();p.locator('[data-instrument="access"]').first.click();p.locator('#v54SourceToggle').click();p.locator('#v54Import').set_input_files(str(known));p.wait_for_timeout(160);stand=p.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__');sem=p.evaluate('window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__');report['checks']['standalone_known_import']={'result':stand['result'],'receipt':sem.get('key'),'features':p.locator('[data-feature-id]').count()}
+                  if stand['result']!='imported' or not sem.get('key','').startswith('street-provider-1-') or not p.locator('[data-feature-id]').count():report['failures'].append('standalone cross-scene import failed')
+                  p.close();browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          if report['page_errors']:report['failures'].append('page errors present')
+          report['result']='PASS' if not report['failures'] else 'FAIL';(out/'BROWSER_AUDIT.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2));assert report['result']=='PASS',report['failures']
+          PY
+
+      - name: Retain v5.6.1 and remove this actuator
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-semantic-instruments-v561-source-hardening.yml
+          git config user.name "manzanita-source-hardening-v561"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A review/manzanita-semantic-instruments-v5 .github/workflows/manzanita-semantic-instruments-v561-source-hardening.yml
+          git diff --cached --check
+          git commit -m "Manzanita: harden exact-asset source-envelope replay v5.6.1 [skip ci]"
+          git push origin HEAD:"$BRANCH"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Imported source envelopes now resolve against an embedded exact-asset catalog. A known provider scene switches both the displayed asset and matching semantic receipt; unknown scenes, missing image payloads, and blocked sources fail closed with zero local geometry in both separated and standalone builds."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-source-hardening-v561-${{ github.sha }}
+          path: review/manzanita-semantic-instruments-v5/qualification/source-hardening-v561
+          if-no-files-found: error
+          retention-days: 30
