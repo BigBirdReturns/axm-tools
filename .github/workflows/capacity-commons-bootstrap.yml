@@ -1,0 +1,51 @@
+name: Capacity Commons v0.2.0 branch materialization
+
+on:
+  push:
+    branches: [agent/capacity-commons-v0-2]
+    paths:
+      - ".github/capacity-commons-bootstrap/READY"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: capacity-commons-v0-2-materialization
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/capacity-commons-v0-2
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Reconstruct exact qualified candidate
+        run: |
+          set -euo pipefail
+          cat .github/capacity-commons-bootstrap/part-* > /tmp/capacity-commons.tar.gz.b64
+          base64 -d /tmp/capacity-commons.tar.gz.b64 > /tmp/capacity-commons.tar.gz
+          echo "649106feb216d96a5562d67e13ec429c7b51fc5a7f883de2217be38c71a9202c  /tmp/capacity-commons.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/capacity-commons.tar.gz -C .
+          rm -rf .github/capacity-commons-bootstrap
+          rm -f .github/workflows/capacity-commons-bootstrap.yml
+      - name: Install deterministic qualification dependencies
+        run: |
+          python -m pip install --disable-pip-version-check jsonschema==4.26.0 playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Run exact schema, semantic, registration, and browser campaigns
+        run: python capacity-commons/scripts/validate.py --browser
+      - name: Commit the qualified add-only candidate
+        run: |
+          set -euo pipefail
+          git config user.name "capacity-commons-materializer"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Capacity Commons: enforce admissible community-capacity runtime v0.2.0"
+          git push origin HEAD:agent/capacity-commons-v0-2
