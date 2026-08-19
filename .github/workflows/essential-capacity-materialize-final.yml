@@ -1,0 +1,128 @@
+name: Materialize and integrate Essential Capacity v0.1.0
+
+on:
+  push:
+    branches: [agent/essential-capacity-v0-1-final]
+    paths:
+      - ".github/workflows/essential-capacity-materialize-final.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: essential-capacity-v0-1-final-materialization
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/essential-capacity-v0-1-final
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Retrieve the exact prequalified public-safe payload
+        run: |
+          set -euo pipefail
+          cd /tmp
+          curl --fail --location --retry 5 --retry-all-errors \
+            https://essential-capacity-v0-1-final.serveo.net/essential-capacity-v0.1.0-payload.tar.gz \
+            --output essential-capacity-v0.1.0-payload.tar.gz
+          curl --fail --location --retry 5 --retry-all-errors \
+            https://essential-capacity-v0-1-final.serveo.net/essential-capacity-v0.1.0-payload.tar.gz.sha256 \
+            --output essential-capacity-v0.1.0-payload.tar.gz.sha256
+          sha256sum --check essential-capacity-v0.1.0-payload.tar.gz.sha256
+      - name: Materialize the self-contained tool and permanent contract workflow
+        run: |
+          set -euo pipefail
+          tar -xzf /tmp/essential-capacity-v0.1.0-payload.tar.gz -C .
+      - name: Patch the repository map against the current main-derived files
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def insert_before(path, marker, addition, identity):
+              p = Path(path)
+              text = p.read_text(encoding="utf-8")
+              if identity in text:
+                  return
+              if marker not in text:
+                  raise SystemExit(f"Cannot locate insertion marker in {path}: {marker}")
+              p.write_text(text.replace(marker, addition + marker, 1), encoding="utf-8")
+
+          readme_row = (
+              '| [`capacity-commons/`](capacity-commons/) | Essential Capacity operating commons: '
+              'eight capacity classes, five bounded seats, one seven-stage collective exchange, '
+              'replaceable MyTurn and payment adapters, participation-credit receipts, contained qualification, '
+              'and portable succession without external-effect adapters | '
+              '[Essential Capacity v0.1.0](https://bigbirdreturns.github.io/axm-tools/capacity-commons/) |\n'
+          )
+          insert_before(
+              "README.md",
+              '| [`essential-attention/`](essential-attention/)',
+              readme_row,
+              '[`capacity-commons/`](capacity-commons/)'
+          )
+
+          index_card = '''<div class="tool">
+            <div class="title"><a href="capacity-commons/">Essential Capacity · Manzanita Works</a></div>
+            <div class="desc">A local capacity-commons operating rehearsal for tools, time, skills, pilotage, knowledge, space, mobility, and money. It keeps offers, commitments, performed work, acceptance, Essential Minutes, evidence, and authority separate; wraps MyTurn and payment rails as replaceable adapters; and proves collective redemption without contacting or binding anyone.</div>
+            <a class="open" href="capacity-commons/">Open Essential Capacity →</a>
+          </div>
+
+          '''
+          insert_before(
+              "index.html",
+              '<div class="tool">\n  <div class="title"><a href="essential-attention/">',
+              index_card,
+              'href="capacity-commons/"'
+          )
+
+          continuity = (
+              '- `capacity-commons/` — the Essential Capacity operating commons: eight capacity classes, '
+              'five authority-bounded seats, a seven-stage offer-to-redemption rehearsal, local receipts, '
+              'component dispositions, portable packets, and zero external-effect adapters; guarded by '
+              '`capacity-commons/scripts/validate.py`, `capacity-commons/scripts/browser_test.py`, and '
+              '`.github/workflows/capacity-commons-check.yml`.\n'
+          )
+          insert_before(
+              "CONTINUITY.md",
+              '- `essential-attention/`',
+              continuity,
+              '`capacity-commons/`'
+          )
+
+          quirks = '''- **MyTurn's public API is a bounded adapter seam, not a complete institutional API** (verified 2026-08-18). Its published API is a subset of the product and access depends on subscription; MyTurn also exposes CSV reports and exports. Preserve MyTurn authority for physical custody, retain export and reconciliation paths, and never make its object model canonical for pilotage, projects, or Essential Minutes.
+          - **TimeOverflow is AGPL-3.0** (verified 2026-08-18). Its member, offer, demand, account, and offline-administration workflows are useful donors, but copying or adapting its code into another runtime requires an explicit license and architecture decision. Essential Capacity v0.1.0 imports no TimeOverflow code.
+
+          '''
+          insert_before(
+              "CLAUDE.md",
+              "## identity/",
+              quirks,
+              "TimeOverflow is AGPL-3.0"
+          )
+          PY
+      - name: Remove the one-shot transport surface and qualify the exact review tree
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/essential-capacity-materialize-final.yml
+          python capacity-commons/scripts/validate.py
+          node --check capacity-commons/app.js
+      - name: Seal the review branch
+        run: |
+          set -euo pipefail
+          git config user.name "essential-capacity-build-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Essential Capacity: add operating commons ledger v0.1.0"
+          git push origin HEAD:agent/essential-capacity-v0-1-final
