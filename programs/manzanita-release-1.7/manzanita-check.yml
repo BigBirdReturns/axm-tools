@@ -1,0 +1,57 @@
+name: Manzanita Works v1.7.0 semantic place fabric
+
+on:
+  push:
+    paths:
+      - "manzanita/**"
+      - "programs/manzanita-release-1.7/**"
+      - "README.md"
+      - "index.html"
+      - ".github/workflows/manzanita-check.yml"
+      - ".github/workflows/manzanita-live-check.yml"
+  pull_request:
+    paths:
+      - "manzanita/**"
+      - "programs/manzanita-release-1.7/**"
+      - "README.md"
+      - "index.html"
+      - ".github/workflows/manzanita-check.yml"
+      - ".github/workflows/manzanita-live-check.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install deterministic image and browser libraries
+        run: |
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+          python -m playwright install chromium
+      - name: Verify static release, asset, semantic, and qualification contract
+        run: python manzanita/tests/public_contract_test.py manzanita
+      - name: Parse every public runtime
+        run: |
+          node --check manzanita/app.js
+          node --check manzanita/v5-semantic.js
+      - name: Exercise every semantic state, refusal, seat, export, and responsive composition
+        run: |
+          python manzanita/tests/browser_test.py \
+            --site manzanita \
+            --output ${{ runner.temp }}/manzanita-v1.7.0-browser
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-semantic-place-fabric-v1.7.0-${{ github.sha }}
+          path: ${{ runner.temp }}/manzanita-v1.7.0-browser
+          if-no-files-found: error
+          retention-days: 30
