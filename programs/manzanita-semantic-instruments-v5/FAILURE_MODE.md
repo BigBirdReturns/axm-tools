@@ -1,0 +1,1 @@
+The controlling failure is a geometry object that remains visually plausible while losing its semantic relationship to the exact displayed source. A different image may not inherit another image's features. A generic contrast edge may not be renamed Access, Shade, or Water. Missing semantic evidence must produce a visible hold and zero local image geometry.
