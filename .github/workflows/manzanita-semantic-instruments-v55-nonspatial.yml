@@ -1,0 +1,187 @@
+name: Manzanita semantic instruments v5.5 nonspatial mechanisms
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths: [".github/workflows/manzanita-semantic-instruments-v55-nonspatial.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  nonspatial-mechanisms:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: agent/manzanita-semantic-instruments-v5
+      PR_NUMBER: "123"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-instruments-v5
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Replace residual decorative overlays with bounded nonspatial mechanisms
+        run: |
+          set -euo pipefail
+          root=review/manzanita-semantic-instruments-v5
+          test -f "$root/v54-source-envelope.js"
+          python - <<'PY'
+          from pathlib import Path
+          import base64,mimetypes
+          root=Path('review/manzanita-semantic-instruments-v5')
+          html=(root/'index.html').read_text(encoding='utf-8')
+          if 'v55-nonspatial.css' not in html:html=html.replace('</head>','<link rel="stylesheet" href="v55-nonspatial.css">\n</head>',1)
+          marker='<script src="v54-source-envelope.js" defer></script>'
+          if 'v55-nonspatial.js' not in html:
+              if marker not in html:raise SystemExit('v54 source-envelope marker missing')
+              html=html.replace(marker,marker+'\n<script src="v55-nonspatial.js" defer></script>',1)
+          (root/'index.html').write_text(html,encoding='utf-8')
+
+          css=r'''
+          .v55-mechanism{position:absolute;z-index:21;left:clamp(18px,4vw,58px);right:clamp(18px,4vw,58px);top:clamp(72px,11vh,120px);max-width:760px;padding:20px;background:rgba(12,17,12,.90);border:1px solid rgba(241,236,223,.35);border-left:4px solid var(--v55-color,#ff5b32);box-shadow:0 24px 80px rgba(0,0,0,.35);backdrop-filter:blur(14px);color:#f1ecdf}.v55-mechanism[hidden]{display:none}.v55-mechanism header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.v55-mechanism small{font:800 8px/1.25 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.09em;color:var(--v55-color,#ff7450)}.v55-mechanism h2{margin:7px 0 0;font:800 clamp(24px,3vw,42px)/.96 ui-sans-serif,system-ui;letter-spacing:-.04em}.v55-source-state{padding:7px 9px;border:1px solid rgba(241,236,223,.35);font:800 8px/1 ui-monospace,monospace;white-space:nowrap}.v55-mechanism>p{max-width:680px;margin:14px 0;color:#c7c9be;line-height:1.52}.v55-mechanism-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}.v55-mechanism-step{min-height:92px;padding:10px;border:1px solid rgba(241,236,223,.22);background:rgba(255,255,255,.025)}.v55-mechanism-step b{display:block;font:800 9px/1.25 ui-monospace,monospace;letter-spacing:.06em}.v55-mechanism-step span{display:block;margin-top:8px;color:#aeb1a7;font-size:11px;line-height:1.4}.v55-timeline{height:116px;display:flex;align-items:end;gap:8px;margin-top:16px;padding:12px;border:1px solid rgba(241,236,223,.20)}.v55-timeline i{flex:1;min-width:8px;height:var(--height);background:var(--v55-color);opacity:var(--opacity,.55);position:relative}.v55-timeline i::after{content:attr(data-label);position:absolute;left:50%;bottom:-25px;transform:translateX(-50%);font:700 7px/1 ui-monospace,monospace;color:#aaa;white-space:nowrap}.v55-provider-card{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;margin-top:16px;padding:14px;border:1px solid rgba(241,236,223,.23)}.v55-provider-dot{width:44px;height:44px;border-radius:50%;background:var(--v55-color);box-shadow:0 0 0 8px color-mix(in srgb,var(--v55-color) 18%,transparent)}.v55-provider-card b{display:block;font:800 10px/1.25 ui-monospace,monospace}.v55-provider-card span{display:block;margin-top:5px;color:#aeb1a7;font-size:11px;line-height:1.4}.v55-mechanism-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:17px}.v55-mechanism-actions button{min-height:44px;border:1px solid rgba(241,236,223,.42);background:transparent;color:#f1ecdf;padding:0 12px;font:800 8px/1 ui-monospace,monospace;letter-spacing:.07em}.v55-mechanism-actions button:first-child{background:var(--v55-color);border-color:var(--v55-color);color:#111510}.v55-nonspatial-active #overlay,.v55-nonspatial-active svg.overlay{pointer-events:none}.v55-nonspatial-active #heatField,.v55-nonspatial-active .heat-field,.v55-nonspatial-active #airField,.v55-nonspatial-active .air-field{display:none!important}.v55-hold{color:#ff9b82}.v55-ok{color:#b8d482}.v55-stale{color:#ffd37b}@media(max-width:760px){.v55-mechanism{position:absolute;left:10px;right:10px;top:60px;max-height:66%;overflow:auto;padding:15px}.v55-mechanism-grid{grid-template-columns:1fr 1fr}.v55-mechanism h2{font-size:26px}.v55-timeline{height:100px}}
+          '''
+          (root/'v55-nonspatial.css').write_text(css,encoding='utf-8')
+
+          js=r'''
+          (()=>{
+            const $=s=>document.querySelector(s);let scheduled=false,guard=false;
+            const nonspatial=new Set(['care','heat','air','fire','assistance']);
+            const specs={
+              care:{title:'Care attention record',color:'#b8d482',reading:'Care combines a first-party observation, ordinary household authority, action, result, uncertainty, and next check. No image contour stands in for a real observation.',steps:[['OBSERVE','Touch, visible condition, drainage, use, and pet access.'],['RECORD','Time, evidence class, uncertainty, and actor.'],['ACT','Only ordinary care within actual household authority.'],['CHECK','Result, acceptance, and next review.']]},
+              heat:{title:'Heat time and exposure context',color:'#ff9c55',reading:'Heat is temporal evidence from an approved source and affected-actor context. It is not a colored patch on a photograph or a measured private microclimate.',timeline:[['NOW',.46],['+3H',.71],['+6H',.86],['+9H',.61],['+12H',.38]],steps:[['SOURCE','Observation, forecast, alert, and valid-through time.'],['AFFECTED ACTOR','Resident, worker, plant, animal, or public program.'],['SAFE CHANGE','Adjust verification or schedule within actual authority.'],['HOLD','No medical, closure, evacuation, or personal-risk decision.']]},
+              air:{title:'Air provider and freshness state',color:'#c8b4ef',reading:'Air presents the approved provider state, pollutant scope, averaging period, location, and time. Missing or stale AQI remains missing or stale.',provider:true,steps:[['PROVIDER','Approved public source or an explicit missing-credential state.'],['TIME','Source time, retrieval time, and freshness.'],['SCOPE','Pollutant, averaging period, unit, and location.'],['ROUTE','Follow named public-health authority; no health clearance.']]},
+              fire:{title:'Fire attention and assistance context',color:'#ff5b32',reading:'Fire keeps incident identity, alert authority, thermal detection, local verification, and assistance routing separate. Regional evidence does not become a parcel-risk polygon.',steps:[['OFFICIAL CONTEXT','Named incident, alert, perimeter, or thermal source with time.'],['LOCAL QUESTION','What is visible, verified, unknown, and affected?'],['ASSISTANCE','Route mitigation resources toward consented remediation.'],['FIREWALL','No insurance, premium, enforcement, evacuation, damage, or loss decision.']]},
+              assistance:{title:'Evidence-to-follow-through workflow',color:'#ff5b32',reading:'Assistance is a governed offer, hold, refusal, appeal, execution, acceptance, and follow-through record. It is not geometry laid over a place.',steps:[['EVIDENCE','Source, observation, uncertainty, purpose, and affected actors.'],['OFFER OR HOLD','Resource, authority, scope, timing, refusal, and appeal.'],['EXECUTION','Accountable actor, safety, receipt, and completion evidence.'],['FOLLOW-THROUGH','Acceptance, unresolved gaps, next review, and preserved history.']]}
+            };
+            function active(kind){const n=$(`[data-${kind}][aria-pressed="true"],[data-${kind}][aria-selected="true"],[data-${kind}].active`);return n?.dataset?.[kind]||null;}
+            function envelope(){return window.__MANZANITA_SOURCE_ENVELOPE_V54__?.envelope||null;}
+            function ensure(){const stage=$('#visualStage,.stage,.scene-stage,main');if(!stage||$('#v55Mechanism'))return;const panel=document.createElement('section');panel.id='v55Mechanism';panel.className='v55-mechanism';panel.hidden=true;panel.innerHTML='<header><div><small id="v55MechanismKind"></small><h2 id="v55MechanismTitle"></h2></div><span id="v55MechanismSource" class="v55-source-state"></span></header><p id="v55MechanismReading"></p><div id="v55MechanismBody"></div><div class="v55-mechanism-actions"><button id="v55Primary" type="button">REVIEW NEXT SAFE ACTION</button><button id="v55OpenSource" type="button">OPEN SOURCE RECEIPT</button><button id="v55Export" type="button">EXPORT OPERATING RECORD</button></div>';stage.append(panel);$('#v55OpenSource').addEventListener('click',()=>$('#v54SourceToggle')?.click());$('#v55Export').addEventListener('click',exportRecord);$('#v55Primary').addEventListener('click',()=>{const target=$('#actionText,#operating-action,[data-field="action"]');target?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});target?.focus?.()});}
+            function body(spec,status){const holder=$('#v55MechanismBody');holder.replaceChildren();if(spec.timeline){const line=document.createElement('div');line.className='v55-timeline';for(const [label,value]of spec.timeline){const bar=document.createElement('i');bar.dataset.label=label;bar.style.setProperty('--height',`${Math.round(value*88)}px`);bar.style.setProperty('--opacity',status==='stale'?'.28':'.58');line.append(bar)}holder.append(line)}if(spec.provider){const card=document.createElement('div');card.className='v55-provider-card';card.innerHTML=`<i class="v55-provider-dot"></i><div><b>${status.toUpperCase()}</b><span>${status==='ok'?'Approved provider receipt is available.':'No quantitative air reading is admitted from this source state.'}</span></div>`;holder.append(card)}const grid=document.createElement('div');grid.className='v55-mechanism-grid';for(const [title,text]of spec.steps){const row=document.createElement('article');row.className='v55-mechanism-step';row.innerHTML=`<b>${title}</b><span>${text}</span>`;grid.append(row)}holder.append(grid)}
+            function exportRecord(){const instrument=active('instrument'),spec=specs[instrument],env=envelope(),payload={schema:'manzanita-works/nonspatial-instrument-record@1',release:'source-adaptive-semantic-v5.5',instrument,aperture:active('aperture'),seat:active('seat'),source_envelope:env,reading:spec?.reading||null,local_image_geometry:0,public_effect:'none',authority:'Read-only review record. External action requires separate lawful authority, accountable human decision, affected-actor process, and retained receipt.'};const blob=new Blob([JSON.stringify(payload,null,2)+'\n'],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='manzanita-nonspatial-instrument-record.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+            function clearLocalGeometry(){const overlay=$('#overlay,svg.overlay,#sceneOverlay');if(overlay){guard=true;overlay.replaceChildren();guard=false;}const semantic=$('#v5SemanticLedger');if(semantic)semantic.hidden=true;$('#v54SourceDrawer')?.removeAttribute('data-spatial');}
+            function draw(){scheduled=false;ensure();const instrument=active('instrument'),panel=$('#v55Mechanism'),stage=$('#visualStage,.stage,.scene-stage,main');if(!panel||!stage)return;if(!nonspatial.has(instrument)){panel.hidden=true;stage.classList.remove('v55-nonspatial-active');window.__MANZANITA_NONSPATIAL_V55__={result:'spatial_instrument',instrument,local_image_geometry:document.querySelectorAll('[data-feature-id]').length};return;}const spec=specs[instrument],env=envelope(),status=env?.status||'unknown';stage.classList.add('v55-nonspatial-active');clearLocalGeometry();panel.hidden=false;panel.style.setProperty('--v55-color',spec.color);$('#v55MechanismKind').textContent=`${instrument.toUpperCase()} · NONSPATIAL OPERATING INSTRUMENT`;$('#v55MechanismTitle').textContent=spec.title;$('#v55MechanismReading').textContent=spec.reading;const source=$('#v55MechanismSource');source.textContent=status.toUpperCase();source.className='v55-source-state '+(status==='ok'?'v55-ok':status==='stale'||status==='cached'?'v55-stale':'v55-hold');body(spec,status);window.__MANZANITA_NONSPATIAL_V55__={result:'rendered_nonspatial_mechanism',instrument,aperture:active('aperture'),seat:active('seat'),source_status:status,local_image_geometry:0,mechanism:spec.title};}
+            function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(()=>requestAnimationFrame(draw));}}
+            document.addEventListener('click',schedule,true);document.addEventListener('change',schedule,true);document.addEventListener('DOMContentLoaded',()=>{const overlay=$('#overlay,svg.overlay,#sceneOverlay');if(overlay)new MutationObserver(()=>{if(!guard&&nonspatial.has(active('instrument')))schedule()}).observe(overlay,{childList:true,subtree:true});new MutationObserver(schedule).observe(document.body,{attributes:true,subtree:true,attributeFilter:['aria-pressed','aria-selected','class','src']});schedule();});
+          })();
+          '''
+          (root/'v55-nonspatial.js').write_text(js,encoding='utf-8')
+
+          standalone=(root/'index.html').read_text(encoding='utf-8')
+          for name in ('style.css','v5-semantic.css','v5-registration-lock.css','v52-feature-grammar.css','v54-source-envelope.css','v55-nonspatial.css'):
+              standalone=standalone.replace(f'<link rel="stylesheet" href="{name}">','<style>'+(root/name).read_text(encoding='utf-8')+'</style>')
+          for name in ('app.js','v5-semantic.js','v5-registration-lock.js','v52-editor.js','v54-source-envelope.js','v55-nonspatial.js'):
+              standalone=standalone.replace(f'<script src="{name}" defer></script>','<script>'+(root/name).read_text(encoding='utf-8')+'</script>')
+          for asset in sorted((root/'assets').iterdir()):
+              if asset.is_file():
+                  mime=mimetypes.guess_type(asset.name)[0] or 'application/octet-stream';uri='data:'+mime+';base64,'+base64.b64encode(asset.read_bytes()).decode('ascii');standalone=standalone.replace('assets/'+asset.name,uri)
+          (root/'STANDALONE.html').write_text(standalone,encoding='utf-8')
+          PY
+
+      - name: Install browser and image libraries
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+
+      - name: Prove zero residual local geometry and distinct nonspatial mechanisms
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification/nonspatial-v55';out.mkdir(parents=True,exist_ok=True)
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+          report={'schema':'manzanita-works/nonspatial-v55-browser@1','result':'HOLD','states':[],'failures':[],'page_errors':[],'public_route_effect':'none'}
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome');page=browser.new_page(viewport={'width':1600,'height':1000},accept_downloads=True);page.on('pageerror',lambda e:report['page_errors'].append(str(e)));page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                  supported={}
+                  for node in page.locator('[data-instrument]').all():
+                      supported[node.get_attribute('data-instrument')]=node
+                  states=[('plant','care'),('household','care'),('household','heat'),('neighborhood','air'),('region','fire'),('stewardship','assistance')]
+                  mechanisms=[]
+                  for ap,ins in states:
+                      page.locator(f'[data-aperture="{ap}"]').first.click();page.wait_for_timeout(30);button=page.locator(f'[data-instrument="{ins}"]').first
+                      if button.is_disabled() or button.get_attribute('aria-disabled')=='true':report['failures'].append(f'{ap}/{ins} unexpectedly unsupported');continue
+                      button.click();page.wait_for_timeout(100);runtime=page.evaluate('window.__MANZANITA_NONSPATIAL_V55__');children=page.locator('#overlay > *,svg.overlay > *').count();features=page.locator('[data-feature-id]').count();visible=page.locator('#v55Mechanism').is_visible();report['states'].append({'aperture':ap,'instrument':ins,'runtime':runtime,'overlay_children':children,'semantic_features':features,'panel_visible':visible});mechanisms.append(runtime.get('mechanism'))
+                      if runtime.get('result')!='rendered_nonspatial_mechanism' or runtime.get('local_image_geometry')!=0 or children or features or not visible:report['failures'].append(f'{ap}/{ins} retained or fabricated local geometry')
+                  if len(set(mechanisms))!=len(mechanisms):report['failures'].append('nonspatial mechanisms collapsed into duplicate surfaces')
+                  page.locator('[data-aperture="street"]').first.click();page.locator('[data-instrument="access"]').first.click();page.wait_for_timeout(100);spatial=page.evaluate('window.__MANZANITA_NONSPATIAL_V55__');
+                  if spatial.get('result')!='spatial_instrument' or not page.locator('[data-feature-id]').count() or page.locator('#v55Mechanism').is_visible():report['failures'].append('spatial instrument did not recover semantic geometry after nonspatial use')
+                  page.locator('[data-aperture="region"]').first.click();page.locator('[data-instrument="fire"]').first.click();page.wait_for_timeout(70)
+                  with page.expect_download() as info:page.locator('#v55Export').click()
+                  export=out/'fire-operating-record.json';info.value.save_as(export);payload=json.loads(export.read_text());
+                  if payload.get('local_image_geometry')!=0 or payload.get('public_effect')!='none' or payload.get('instrument')!='fire':report['failures'].append('nonspatial export lost mechanism or effect boundary')
+                  page.goto(f'http://127.0.0.1:{port}/STANDALONE.html',wait_until='networkidle');page.locator('[data-aperture="stewardship"]').first.click();page.locator('[data-instrument="assistance"]').first.click();page.wait_for_timeout(80)
+                  if not page.locator('#v55Mechanism').is_visible() or page.locator('[data-feature-id]').count():report['failures'].append('standalone nonspatial mechanism failed')
+                  page.close()
+                  for label,w,h in [('mobile',390,844),('compact',320,720)]:
+                      p=browser.new_page(viewport={'width':w,'height':h});p.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle');p.locator('[data-aperture="region"]').first.click();p.locator('[data-instrument="fire"]').first.click();p.wait_for_timeout(80);ov=p.evaluate('Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-innerWidth');report['states'].append({'aperture':'region','instrument':'fire','viewport':label,'overflow':ov,'panel_visible':p.locator('#v55Mechanism').is_visible()});
+                      if ov>2 or not p.locator('#v55Mechanism').is_visible():report['failures'].append(f'{label} nonspatial surface failed')
+                      p.close()
+                  browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          if report['page_errors']:report['failures'].append('page errors present')
+          report['result']='PASS' if not report['failures'] else 'FAIL';(out/'BROWSER_AUDIT.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2));assert report['result']=='PASS',report['failures']
+          PY
+
+      - name: Render nonspatial mechanism proof
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from PIL import Image,ImageDraw,ImageOps
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification/nonspatial-v55';
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();captures=[]
+          states=[('plant-care','plant','care'),('household-care','household','care'),('household-heat','household','heat'),('neighborhood-air','neighborhood','air'),('region-fire','region','fire'),('stewardship-assistance','stewardship','assistance')]
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome')
+                  for name,ap,ins in states:
+                      page=browser.new_page(viewport={'width':1600,'height':1000});page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle');page.locator(f'[data-aperture="{ap}"]').first.click();page.locator(f'[data-instrument="{ins}"]').first.click();page.wait_for_timeout(90);path=out/f'{name}.png';page.screenshot(path=str(path),full_page=False);captures.append(path);page.close()
+                  browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          tw,th,lh=800,500,56;sheet=Image.new('RGB',(1600,3*(th+lh)),'#101510');draw=ImageDraw.Draw(sheet)
+          for i,path in enumerate(captures):
+              with Image.open(path) as im:thumb=ImageOps.fit(im.convert('RGB'),(tw,th),Image.Resampling.LANCZOS)
+              x=(i%2)*tw;y=(i//2)*(th+lh);sheet.paste(thumb,(x,y));draw.rectangle((x,y+th,x+tw,y+th+lh),fill='#efe9da');draw.text((x+15,y+th+17),path.stem.upper(),fill='#111510')
+          sheet.save(out/'NONSPATIAL_MECHANISMS.jpg',quality=94);(out/'CAPTURE_RECEIPT.json').write_text(json.dumps({'result':'PASS','captures':[p.name for p in captures],'contact_sheet':'NONSPATIAL_MECHANISMS.jpg'},indent=2)+'\n')
+          PY
+
+      - name: Retain v5.5 and remove this actuator
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-semantic-instruments-v55-nonspatial.yml
+          git config user.name "manzanita-nonspatial-v55"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A review/manzanita-semantic-instruments-v5 .github/workflows/manzanita-semantic-instruments-v55-nonspatial.yml
+          git diff --cached --check
+          git commit -m "Manzanita: replace residual decorative overlays with nonspatial mechanisms v5.5 [skip ci]"
+          git push origin HEAD:"$BRANCH"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Care, Heat, Air, Fire, and Assistance now clear every local image overlay and render distinct attention, temporal, provider-state, regional-context, or workflow mechanisms. Switching back to Access, Shade, or Water restores exact-asset semantic geometry."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-nonspatial-v55-${{ github.sha }}
+          path: review/manzanita-semantic-instruments-v5/qualification/nonspatial-v55
+          if-no-files-found: error
+          retention-days: 30
