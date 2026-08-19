@@ -1,0 +1,99 @@
+{
+  "schema": "manzanita-works/real-place-review-build@1",
+  "release": "1.7-review",
+  "result": "BUILT_FOR_VISUAL_REVIEW",
+  "classification": "review_only_no_public_effect",
+  "files": {
+    "LICENSE_VISUAL_ASSETS.md": {
+      "bytes": 566,
+      "sha256": "7e3dbfd60be8fb7a94b10e7638b55ca4727bd849065492670b86bf0bcbfe2d7b"
+    },
+    "README.md": {
+      "bytes": 679,
+      "sha256": "b365a8b22d0658553bcb0834d6369c8761c492bee863a6d9b8edb471bc2c9353"
+    },
+    "app.js": {
+      "bytes": 4749,
+      "sha256": "595ad0857232530cb795a629871c3050a0976c2c5a2ba32c8290966985ca50bd"
+    },
+    "assets/lida-twin.webp": {
+      "bytes": 1193534,
+      "sha256": "3f57524fd33bbf6b71656b493707f7f396f176ddc81cc4cc147b7461ac778c88"
+    },
+    "assets/michigan01-twin.webp": {
+      "bytes": 900972,
+      "sha256": "61a472ac276cc8a30dd15b5680b4199724aa1b5587eb086c49cc51f1a32eea67"
+    },
+    "assets/michigan02-twin.webp": {
+      "bytes": 733666,
+      "sha256": "5645951d4887feb6a528de9ab9abfd9671fdb9daf48703127ef663d5ea989dea"
+    },
+    "assets/michigan03-twin.webp": {
+      "bytes": 965608,
+      "sha256": "84482876b2130f26371688b387c31014bbeea9665da3615e3865c240180d1248"
+    },
+    "assets/michigan04-twin.webp": {
+      "bytes": 1005032,
+      "sha256": "508a9f36307916947f996eb3c606db7bdfb5275ec017d6712ebfdb809ee5b576"
+    },
+    "assets/place-data.js": {
+      "bytes": 13229,
+      "sha256": "3c5ebff067784aa3597b055617326b2089de87a63ceb7d5365ffa1cfaccfbea4"
+    },
+    "assets/plant-detail.webp": {
+      "bytes": 282090,
+      "sha256": "15d2e82f160c48ebdf3482e3f642a3f1a7c7e56237849b31ee5bf0386c1619ea"
+    },
+    "assets/region-context.webp": {
+      "bytes": 648296,
+      "sha256": "5e02a78beec431edb61117aca6acc0ffa404e32cd381cf683a8f7b067477058f"
+    },
+    "assets/source/lida.jpg": {
+      "bytes": 1112972,
+      "sha256": "300764517e2caec38f1c790add8c756f69d66b592014f095a0751af2e58507c2"
+    },
+    "assets/source/michigan01.jpg": {
+      "bytes": 827750,
+      "sha256": "48aa05c67c61ad22ad1220eda4937fe25c381916fe064b2fa4fb40cacaa5f9b9"
+    },
+    "assets/source/michigan02.jpg": {
+      "bytes": 726509,
+      "sha256": "a73c7a956a07f713d0f13f68908bfced13e96f4b85c5e08898f435fd6895f124"
+    },
+    "assets/source/michigan03.jpg": {
+      "bytes": 872426,
+      "sha256": "f03074159f0b776a942de234d8e473dab92b8d37391a7efe72cf0bade67ef662"
+    },
+    "assets/source/michigan04.jpg": {
+      "bytes": 937458,
+      "sha256": "ec5e2a517bf40da1556f5c99e675c0e2608eb005e26cf8211ea34ecb6b54a9c7"
+    },
+    "assets/source-ledger.json": {
+      "bytes": 3831,
+      "sha256": "56ed52fd2a5b287abcb73056e289120f4bd6c1a941245458e50bc72f15cca67c"
+    },
+    "assets/stewardship-board.webp": {
+      "bytes": 683454,
+      "sha256": "4a8963f54e4a04980e96a93370e6d5f0362ff91ed288fafe02d0a7e4cd10d4d9"
+    },
+    "index.html": {
+      "bytes": 7206,
+      "sha256": "53011a624c6c2667b42c13453fc239974a7602c0b3be1fe8a54309b092d409d7"
+    },
+    "style.css": {
+      "bytes": 10770,
+      "sha256": "766225d041898af0a954d4669a713f86de5f409ae3bf28d77a366ff2daa5cab9"
+    }
+  },
+  "source_count": 5,
+  "photo_twin_count": 5,
+  "aperture_count": 7,
+  "condition_count": 8,
+  "seat_count": 5,
+  "authority": {
+    "public_release_effect": "none",
+    "external_effects": "none",
+    "successor_program_effect": "none",
+    "canonical_task_count_effect": "none"
+  }
+}
