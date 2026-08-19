@@ -1,0 +1,72 @@
+{
+  "architecture_layers": [
+    {"do_not_outsource":"Do not let a payment processor or toolshare account become the person.","layer":"People","own":"Stable identities, roles, consent, relationship, authority.","question":"Who participates, contributes, receives, stewards, pilots, validates, or succeeds?"},
+    {"do_not_outsource":"A vendor permission bit is not institutional authority.","layer":"Legal / authority","own":"Policies, purpose limits, authority receipts, consequence boundaries.","question":"Who may accept work, issue credits, expose data, bind the organization, or release an external act?"},
+    {"do_not_outsource":"Do not let whichever SaaS schema was purchased define the institution.","layer":"Information","own":"Canonical vocabulary and portable records.","question":"What is an offer, need, commitment, event, receipt, project, account, or evidence object?"},
+    {"do_not_outsource":"Treat implementation as replaceable unless continuity genuinely requires it.","layer":"Technology","own":"Adapter contracts and replacement tests.","question":"Which system performs each bounded function today?"},
+    {"do_not_outsource":"Device identity must not become program authority.","layer":"Physical","own":"Canonical references and qualified physical events.","question":"Where are tools, bikes, lockers, spaces, supplies, and devices, and what is their custody state?"},
+    {"do_not_outsource":"Processor settlement IDs remain evidence, not organizational identity.","layer":"Money","own":"Constituent continuity, project purpose, restrictions, durable receipt links.","question":"What came in, why, for which purpose, through which rail, and under what restriction?"}
+  ],
+  "capacities": [
+    {"id":"tools","label":"Tools","question":"What useful physical capacity is available, reserved, checked out, due back, or unavailable?","system":"MyTurn today; canonical identity stays outside the vendor."},
+    {"id":"time","label":"Time","question":"What verified human time can be offered, committed, accepted, credited, or sponsored?","system":"Capacity Core / Essential Time."},
+    {"id":"talent","label":"Talent","question":"What skills can people contribute without converting every contribution into a bilateral trade?","system":"Offer / need / commitment / event model."},
+    {"id":"pilotage","label":"Pilotage","question":"Who can help someone navigate the system without impersonating the accountable professional or provider?","system":"Essential Pilotage + Essential Attention handoff."},
+    {"id":"money","label":"Money","question":"What dues, reasonable rentals, donations, grants, or campaign receipts support a project?","system":"Replaceable fundraising and payment rails."},
+    {"id":"space","label":"Space","question":"What meeting, workshop, storage, garden, repair, or staging space can be made available?","system":"Capacity Core, with local custody rules."},
+    {"id":"mobility","label":"Mobility","question":"What bikes, transport, delivery, repair, or movement capacity can clear a need?","system":"Project cartridge + later hardware adapters."},
+    {"id":"knowledge","label":"Knowledge","question":"What templates, procedures, navigation knowledge, vendor experience, or institutional memory can be reused?","system":"Portable records, pilotage, and evidence custody."}
+  ],
+  "control_questions": [
+    {"answer":"Anything Manzanita cannot reconstruct outside the vendor is a custody defect.","id":"identity","question":"If MyTurn, Stripe, or a fundraising platform disappeared tomorrow, what organizational facts would we lose?"},
+    {"answer":"No. Evidence informs an authorized transition; it does not manufacture standing.","id":"authority","question":"Can a dashboard row or imported transaction create an obligation, credit, acceptance, or external effect by itself?"},
+    {"answer":"No. Accepted contribution can create a community-held entitlement that later clears a different need.","id":"clearing","question":"Must the person who receives help repay the same person who helped them?"},
+    {"answer":"No. It is a monetary capacity view over people, projects, restrictions, commitments, receipts, and outcomes.","id":"fundraising","question":"Is fundraising the operating system?"},
+    {"answer":"No. It reduces navigation friction, prepares handoffs, and recognizes the labor of helping someone reach the correct provider.","id":"pilotage","question":"Does pilotage replace lawyers, social workers, mechanics, instructors, or other accountable providers?"}
+  ],
+  "handoff": {
+    "links": [
+      {"href":"../manzanita/","label":"Place / stewardship fabric"},
+      {"href":"../essential-attention/","label":"Essential Attention"},
+      {"href":"?view=commons","label":"Governed Capacity Commons"},
+      {"href":"../","label":"axm-tools directory"}
+    ],
+    "sequence": [
+      "Observe the organization as it already works",
+      "Separate institutional facts from vendor implementations",
+      "Name actors, capacities, authority, projects, and constraints",
+      "Sweep commodities and OSS before building",
+      "Choose own / wrap / adapt / donor / hold / build",
+      "Run one bounded exchange through the common substrate",
+      "Retain receipts and export a portable successor packet"
+    ]
+  },
+  "modules": [
+    {"class":"Operating program","commodity":"MyTurn performs toolshare mechanics.","handoff":"Capacity Commons receives bounded custody receipts, not vendor sovereignty.","id":"essential-tools","job":"Physical tool inventory, reservation, checkout, return, and applicable fees.","name":"Essential Tools","owns":"Program purpose, member relationship, local policy, canonical tool references.","route":"?view=commons","state":"OPERATING"},
+    {"class":"Commons rail","commodity":"Time-bank workflow donors may inform interface and operations.","handoff":"Capacity Commons v0.2.0 demonstrates the governed state machine.","id":"essential-time","job":"Verified volunteer time, contribution credits, sponsorship, and later redemption.","name":"Essential Time","owns":"Credit policy, eligible performance, acceptance authority, participant accounts.","route":"?view=commons","state":"QUALIFIED CORE"},
+    {"class":"Human navigation","commodity":"Scheduling or messaging tools may be swapped underneath.","handoff":"Essential Attention can admit the need; Capacity Commons can record accepted pilotage.","id":"pilotage","job":"Hand-holding through programs, tools, services, and bounded institutional handoffs.","name":"Essential Pilotage","owns":"Scope, referral boundary, accepted service, contribution recognition.","route":"?view=pilotage","state":"MODELED"},
+    {"class":"Project cartridge","commodity":"Tool custody now; hardware and mesh adapters later.","handoff":"Draws tools, time, talent, pilotage, money, and mobility from the common substrate.","id":"mobility","job":"Coordinate mobility equipment, repair capacity, instruction, access, and later hardware state.","name":"E-bike Mobility","owns":"Project purpose, participants, eligibility, safety, local authority.","route":"?view=projects","state":"EXISTING PROJECT"},
+    {"class":"Project family","commodity":"Forms, scheduling, messaging, and donor tooling remain replaceable.","handoff":"Sensitive case admission stays in Essential Attention; only bounded capacity needs cross into the commons.","id":"prevention","job":"Recruit workshops and volunteering, admit sensitive needs, route support, and recognize eligible contribution.","name":"Prevention & Victim Services","owns":"Purpose limitation, privacy, victim safety, service authority, acceptance.","route":"../essential-attention/","state":"WORKFLOW TARGET"},
+    {"class":"Money rail","commodity":"Givebutter, Network for Good, Stripe, Square, or later rails.","handoff":"Money is one capacity class and one dashboard lens, not the organizational database.","id":"fundraising","job":"Suggested annual dues, reasonable rentals, donations, campaigns, grants, and receipts.","name":"Fundraising & Support","owns":"Constituent continuity, project allocation, purpose, restrictions, durable transaction references.","route":"?view=money","state":"PLATFORM OPEN"},
+    {"class":"Domain cartridge","commodity":"External data and services remain bounded inputs.","handoff":"Manzanita v1.6+ can hand bounded needs into Essential Attention or the commons.","id":"stewardship","job":"Household-to-region place fabric, horticultural remediation, wildfire triage, and assistance-first handoff.","name":"Stewardship / Place","owns":"Place interpretation, evidence class, purpose firewall, safe action, local authority.","route":"../manzanita/","state":"LIVE"}
+  ],
+  "money_lanes": [
+    {"canonical":"member / household relationship + policy","lane":"Suggested annual dues","processor":"optional payment rail","purpose":"Sustaining participation contribution","status":"POLICY TO ADMIT"},
+    {"canonical":"tool / project / fee basis / receipt","lane":"Reasonable rentals","processor":"often downstream of MyTurn","purpose":"Recover exceptional wear, consumables, or bounded costs where appropriate","status":"BOUNDARY TO DEFINE"},
+    {"canonical":"constituent + restriction + project allocation + receipt","lane":"Donations","processor":"fundraising platform / payment rail","purpose":"Unrestricted or purpose-bound philanthropic support","status":"PLATFORM OPEN"},
+    {"canonical":"project need + source + restriction + outcome","lane":"Campaigns & grants","processor":"fundraising / grant tools","purpose":"Fund projects, equipment, prevention, mobility, and community capacity","status":"DASHBOARD VIEW"}
+  ],
+  "perimeter": [
+    {"capture":"MEDIUM","decision":"WRAP","function":"Toolshare inventory, reservations, checkout, return, fees","name":"MyTurn","why":"Already useful and widely used by toolshares. Keep it doing commodity custody work; preserve exports and canonical IDs."},
+    {"capture":"HIGH","decision":"WRAP","function":"Authorized dues, rental, donation, or payment collection","name":"Stripe / Square / later rail","why":"Processor choice should not re-identify members, projects, obligations, or contribution history."},
+    {"capture":"MED-HIGH","decision":"WRAP","function":"Campaigns, donors, receipts, fundraising workflow","name":"Givebutter / Network for Good / later fundraising","why":"Use the best current fundraising tool while keeping constituent and project continuity portable."},
+    {"capture":"LOW","decision":"DONOR","function":"Time-bank workflow and interface patterns","name":"TimeOverflow","why":"Mine mature workflow and failure modes; no runtime dependency required."},
+    {"capture":"MEDIUM","decision":"DONOR","function":"Constituent, membership, volunteer, event, case, contribution administration","name":"CiviCRM","why":"Commodity reference model or later adapter, not the constitution."},
+    {"capture":"LOW","decision":"ADAPT","function":"Agents, resources, intents, commitments, economic events vocabulary","name":"ValueFlows / REA","why":"Useful semantic donor for portability without external runtime dependence."},
+    {"capture":"HIGH","decision":"HOLD","function":"Potential federation among independent ledgers","name":"Credit Commons","why":"Federation follows a valid local policy and settlement model, not the reverse."},
+    {"capture":"HIGH","decision":"HOLD","function":"Lockers, e-bikes, mesh nodes, sensors, access control","name":"Edge hardware","why":"Later physical adapters may report qualified events; hardware never defines program authority."}
+  ],
+  "principle":"Manzanita Works owns the institutional model, authority, relationships, and durable record. Software and payment providers remain replaceable machinery at the perimeter.",
+  "release":{"classification":"public-safe working architecture and operating surface","id":"mw-operating-fabric-v0.1.0","purpose":"Render the common operating system beneath Essential Tools, time banking, pilotage, projects, fundraising, stewardship, and replaceable digital services without claiming live organizational adoption or external integrations.","status":"candidate","title":"Manzanita Works Operating Fabric","version":"0.1.0"},
+  "schema_version":"mw.operating-fabric/0.1.0"
+}
