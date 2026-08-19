@@ -1,9 +1,11 @@
-name: Manzanita semantic instruments v5 review
+name: Manzanita semantic instruments v5 and operator v6 review
 
 on:
   push:
     branches: [agent/manzanita-semantic-instruments-v5]
     paths:
+      - "programs/manzanita-semantic-instruments-v5/src/**"
+      - "programs/manzanita-semantic-instruments-v5/OPERATOR_SOURCE_BUNDLE.tgz"
       - "programs/manzanita-semantic-instruments-v5/SOURCE_BUNDLE.*"
       - "programs/manzanita-semantic-instruments-v5/donors/**"
       - "programs/manzanita-semantic-instruments-v5/DONOR_REGISTER.json"
@@ -26,7 +28,7 @@ concurrency:
 jobs:
   build-test-render:
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,38 +63,34 @@ jobs:
               raise SystemExit(f"Semantic review contains out-of-scope paths: {invalid}")
           PY
 
-      - name: Recover and repair the exact source package
+      - name: Recover the operator source and validate the materialized engine
         run: |
           set -euo pipefail
-          root=programs/manzanita-semantic-instruments-v5
-          rm -rf "$root/src"
-          mkdir -p "$root/src"
-          cat "$root"/SOURCE_BUNDLE.* | base64 --decode | tar -xzf - -C "$root/src" --strip-components=1
-          python - <<'PY'
-          from pathlib import Path
-          path = Path("programs/manzanita-semantic-instruments-v5/src/template/app.js")
-          text = path.read_text(encoding="utf-8")
-          replacements = {
-              "QUANTITATIVE VALUE NOT FABRICATED": "VALUE: NOT FABRICATED",
-              "LOCAL / PARCEL GEOMETRY: NONE": "LOCAL GEOMETRY: NONE · PARCEL GEOMETRY: NONE",
-          }
-          for old, new in replacements.items():
-              if old not in text and new not in text:
-                  raise SystemExit(f"Required operating marker is absent: {old}")
-              text = text.replace(old, new)
-          path.write_text(text, encoding="utf-8")
-          PY
+          program=programs/manzanita-semantic-instruments-v5
+          root="$program/src"
+          test "$(sha256sum "$program/OPERATOR_SOURCE_BUNDLE.tgz" | cut -d' ' -f1)" = "5c8e133bc8764020d003f24714b28563c9efb5dde0ec59d6e4fbd6693ab3f2e4"
+          tar -xzf "$program/OPERATOR_SOURCE_BUNDLE.tgz" -C "$root"
+          test -f "$root/build_review.py"
+          test -f "$root/build_operator.py"
+          test -f "$root/operator/index.html"
+          test -f "$root/operator/app.js"
+          test -f "$root/operator/style.css"
           python -m py_compile \
-            "$root/src/build_review.py" \
-            "$root/src/tests/test_semantic_contract.py" \
-            "$root/src/tests/browser_test.py" \
-            "$root/src/tests/capture_review.py"
-          node --check "$root/src/template/app.js"
+            "$root/build_review.py" \
+            "$root/build_operator.py" \
+            "$root/tests/test_semantic_contract.py" \
+            "$root/tests/test_operator_contract.py" \
+            "$root/tests/browser_test.py" \
+            "$root/tests/operator_browser_test.py" \
+            "$root/tests/capture_review.py" \
+            "$root/tests/capture_operator.py"
+          node --check "$root/template/app.js"
+          node --check "$root/operator/app.js"
 
       - name: Install deterministic image and browser libraries
         run: python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
 
-      - name: Build the semantic source-adaptive review
+      - name: Build the exact semantic qualification console
         run: |
           set -euo pipefail
           rm -rf review/manzanita-semantic-instruments-v5
@@ -101,32 +99,54 @@ jobs:
             --donor-root programs/manzanita-semantic-instruments-v5 \
             --output review/manzanita-semantic-instruments-v5
 
-      - name: Enforce exact-asset semantic custody
+      - name: Build the progressive-disclosure operator projection
+        run: |
+          python programs/manzanita-semantic-instruments-v5/src/build_operator.py \
+            --source-root programs/manzanita-semantic-instruments-v5/src \
+            --review-root review/manzanita-semantic-instruments-v5 \
+            --output review/manzanita-semantic-instruments-v5/operator
+
+      - name: Enforce exact-asset semantic custody and operator projection law
         run: |
           python programs/manzanita-semantic-instruments-v5/src/tests/test_semantic_contract.py \
             --site review/manzanita-semantic-instruments-v5
+          python programs/manzanita-semantic-instruments-v5/src/tests/test_operator_contract.py \
+            --operator review/manzanita-semantic-instruments-v5/operator
 
-      - name: Exercise every admitted state and refusal
+      - name: Exercise the qualification console state matrix
         run: |
           python programs/manzanita-semantic-instruments-v5/src/tests/browser_test.py \
             --site review/manzanita-semantic-instruments-v5 \
             --output review/manzanita-semantic-instruments-v5/BROWSER_AUDIT.json
 
-      - name: Render exact semantic review evidence
+      - name: Exercise the complete operator path and hostile state matrix
+        run: |
+          python programs/manzanita-semantic-instruments-v5/src/tests/operator_browser_test.py \
+            --operator review/manzanita-semantic-instruments-v5/operator \
+            --output review/manzanita-semantic-instruments-v5/operator/BROWSER_CAMPAIGN.json
+
+      - name: Render qualification and operator evidence
         run: |
           python programs/manzanita-semantic-instruments-v5/src/tests/capture_review.py \
             --site review/manzanita-semantic-instruments-v5 \
             --output review/manzanita-semantic-instruments-v5/evidence
+          python programs/manzanita-semantic-instruments-v5/src/tests/capture_operator.py \
+            --operator review/manzanita-semantic-instruments-v5/operator \
+            --output review/manzanita-semantic-instruments-v5/operator/evidence
 
-      - name: Seal qualification into the build receipt
+      - name: Seal qualification and operator receipts
         run: |
           python - <<'PY'
           import hashlib, json
           from pathlib import Path
+
           root = Path("review/manzanita-semantic-instruments-v5")
           receipt = json.loads((root / "BUILD_RECEIPT.json").read_text())
           receipt["qualification"] = json.loads((root / "BROWSER_AUDIT.json").read_text())
           receipt["capture_receipt"] = json.loads((root / "evidence/CAPTURE_RECEIPT.json").read_text())
+          receipt["operator"] = json.loads((root / "operator/BUILD_RECEIPT.json").read_text())
+          receipt["operator_qualification"] = json.loads((root / "operator/BROWSER_CAMPAIGN.json").read_text())
+          receipt["operator_capture_receipt"] = json.loads((root / "operator/evidence/CAPTURE_RECEIPT.json").read_text())
           files = {}
           for path in sorted(p for p in root.rglob("*") if p.is_file() and p.name != "BUILD_RECEIPT.json"):
               files[path.relative_to(root).as_posix()] = {
@@ -134,14 +154,21 @@ jobs:
                   "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
               }
           receipt["files"] = files
-          receipt["result"] = "PASS" if receipt["qualification"]["result"] == receipt["capture_receipt"]["result"] == "PASS" else "FAIL"
+          passes = [
+              receipt["qualification"]["result"],
+              receipt["capture_receipt"]["result"],
+              receipt["operator"]["result"],
+              receipt["operator_qualification"]["result"],
+              receipt["operator_capture_receipt"]["result"],
+          ]
+          receipt["result"] = "PASS" if all(value == "PASS" for value in passes) else "FAIL"
           (root / "BUILD_RECEIPT.json").write_text(json.dumps(receipt, indent=2) + "\n")
           assert receipt["result"] == "PASS"
           PY
 
       - uses: actions/upload-artifact@v4
         with:
-          name: manzanita-semantic-instruments-v5-${{ github.sha }}
+          name: manzanita-semantic-instruments-v5-operator-v6-${{ github.sha }}
           path: |
             programs/manzanita-semantic-instruments-v5/src
             review/manzanita-semantic-instruments-v5
@@ -157,6 +184,6 @@ jobs:
           git add programs/manzanita-semantic-instruments-v5/src review/manzanita-semantic-instruments-v5
           git diff --cached --check
           if ! git diff --cached --quiet; then
-            git commit -m "Manzanita: materialize semantic instruments v5 review [skip ci]"
+            git commit -m "Manzanita: materialize operator v6 over semantic instruments v5 [skip ci]"
             git push origin HEAD:agent/manzanita-semantic-instruments-v5
           fi
