@@ -72,11 +72,15 @@ jobs:
           from pathlib import Path
           path = Path("programs/manzanita-semantic-instruments-v5/src/template/app.js")
           text = path.read_text(encoding="utf-8")
-          old = "QUANTITATIVE VALUE NOT FABRICATED"
-          new = "VALUE: NOT FABRICATED"
-          if old not in text and new not in text:
-              raise SystemExit("Air provider-state marker is absent")
-          path.write_text(text.replace(old, new), encoding="utf-8")
+          replacements = {
+              "QUANTITATIVE VALUE NOT FABRICATED": "VALUE: NOT FABRICATED",
+              "LOCAL / PARCEL GEOMETRY: NONE": "LOCAL GEOMETRY: NONE · PARCEL GEOMETRY: NONE",
+          }
+          for old, new in replacements.items():
+              if old not in text and new not in text:
+                  raise SystemExit(f"Required operating marker is absent: {old}")
+              text = text.replace(old, new)
+          path.write_text(text, encoding="utf-8")
           PY
           python -m py_compile \
             "$root/src/build_review.py" \
