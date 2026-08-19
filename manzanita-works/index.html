@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src data:; connect-src 'none'; font-src data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="description" content="Manzanita Works Operating Fabric dreamboard: the institutional substrate beneath tools, time, talent, pilotage, projects, stewardship, and money.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="mw-release" content="mw-operating-dreamboard-v0.2.0">
+<title>Manzanita Works · Operating Fabric Dreamboard v0.2.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#board">Skip to operating fabric board</a>
+<header class="mast">
+  <div class="mark" aria-hidden="true"><strong>MW</strong><span>MANZANITA<br>WORKS</span></div>
+  <div class="title"><h1>Manzanita Works <em>Operating Fabric</em></h1><p>One organization. Many capacity classes. Fundraising is a view, not the system.</p></div>
+  <div class="controls">
+    <button class="version" type="button" aria-label="Release version">v0.2.0</button>
+    <button id="focus-fundraising" type="button">Fundraising lens</button>
+    <button id="show-proof" type="button">Show receipts</button>
+    <button id="share" type="button">Copy view</button>
+    <button id="export" type="button">Export model</button>
+    <button id="theme" type="button">Theme</button>
+    <button id="reset" type="button">Reset</button>
+  </div>
+</header>
+<section class="thesis" aria-label="Operating thesis">
+  <div><span class="kicker">The question</span><b>What does the organization already have, what does it need, and what can move safely now?</b></div>
+  <div><span class="kicker">The model</span><b>People + authority + information + technology + physical capacity + money.</b></div>
+  <div><span class="kicker">The rule</span><b>Own the institutional substrate. Commodity-sweep everything else.</b></div>
+</section>
+<main>
+<section id="board" class="board" aria-label="Manzanita Works operating fabric dreamboard">
+  <div class="top-grid">
+    <section class="panel inputs" aria-labelledby="inputs-title"><span class="flow-arrow flow-left" aria-hidden="true">→</span>
+      <h2 id="inputs-title"><span class="icon">◈</span>What the organization already has</h2>
+      <div id="stickies" class="stickies"></div>
+    </section>
+    <section class="panel fabric" aria-labelledby="fabric-title">
+      <div id="fabric-title" class="fabric-head">✣ &nbsp; The Operating Fabric</div>
+      <div class="fabric-body">
+        <div id="cap-left" class="cap-col"></div>
+        <button id="core" class="core" type="button" data-kind="core"><span class="woven">✣</span><strong>Own the institutional substrate.</strong><p>Wrap or adapt everything else.</p></button>
+        <div id="cap-right" class="cap-col"></div>
+      </div>
+    </section>
+    <section class="panel jobs" aria-labelledby="jobs-title"><span class="flow-arrow flow-right" aria-hidden="true">←</span>
+      <h2 id="jobs-title"><span class="icon">◉</span>What the institutional architect is doing</h2>
+      <div id="job-list" class="job-list"></div>
+    </section>
+  </div>
+
+  <section class="band" aria-labelledby="program-title">
+    <h2 id="program-title"><span class="icon">◈</span>Program organs sharing the common substrate</h2>
+    <div id="program-row" class="program-row"></div>
+  </section>
+
+  <section id="rules-band" class="band" aria-labelledby="rules-title">
+    <h2 id="rules-title"><span class="icon">♢</span>Rules that keep the organization sovereign</h2>
+    <div id="rules" class="rules"></div>
+  </section>
+
+  <section id="proof-band" class="band" aria-labelledby="proof-title">
+    <h2 id="proof-title"><span class="icon">✓</span>Receipts: this is an implemented method, not a mood board</h2>
+    <div id="proof" class="proof"></div>
+  </section>
+
+  <section id="detail" class="detail" aria-live="polite" aria-labelledby="detail-title">
+    <div><span id="detail-kicker" class="kicker">Operating fabric</span><h2 id="detail-title">The organization is the system.</h2><p id="detail-summary">Select any input, capacity class, program organ, rule, or receipt to inspect where it belongs and what Manzanita must retain.</p></div>
+    <div id="detail-grid" class="detail-grid"></div>
+  </section>
+  <div class="footer-note"><span>✷</span>Purpose: show the common substrate beneath tools, time, talent, pilotage, projects, stewardship, and money.</div>
+</section>
+</main>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

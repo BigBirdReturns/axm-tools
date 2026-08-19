@@ -1,0 +1,54 @@
+name: Manzanita Works Operating Fabric Dreamboard v0.2.0
+
+on:
+  push:
+    branches: [main, agent/manzanita-operating-dreamboard-v0-2]
+    paths:
+      - "manzanita-works/**"
+      - ".github/workflows/manzanita-works-dreamboard.yml"
+      - "README.md"
+      - "index.html"
+  pull_request:
+    paths:
+      - "manzanita-works/**"
+      - ".github/workflows/manzanita-works-dreamboard.yml"
+      - "README.md"
+      - "index.html"
+  workflow_dispatch: {}
+
+concurrency:
+  group: manzanita-works-dreamboard-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run exact static contract
+        run: python manzanita-works/tests/public_contract_test.py
+      - name: Resolve deterministic browser runtime
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -n "$browser" ]; then
+            echo "MW_CHROMIUM_EXECUTABLE=$browser" >> "$GITHUB_ENV"
+            "$browser" --version
+          else
+            python -m playwright install --with-deps chromium
+          fi
+      - name: Run real Chromium campaign
+        env:
+          MW_DREAMBOARD_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-works-dreamboard-screens
+        run: python manzanita-works/tests/browser_test.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-works-operating-dreamboard-v0.2.0-review
+          path: ${{ runner.temp }}/manzanita-works-dreamboard-screens
+          if-no-files-found: error
+          retention-days: 30

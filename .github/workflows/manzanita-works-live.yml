@@ -1,0 +1,103 @@
+name: Manzanita Works Operating Fabric live gate
+
+on:
+  workflow_run:
+    workflows: ["PTA tracker fetch + deploy"]
+    types: [completed]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  live:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      MANZANITA_WORKS_BASE_URL: https://bigbirdreturns.github.io/axm-tools/manzanita-works
+      MANZANITA_WORKS_SOURCE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Wait for the exact release marker and verify every qualified public byte
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/manzanita-works-live/files
+          for attempt in $(seq 1 30); do
+            code=$(curl -L -sS -o /tmp/manzanita-works-live/index.html -w '%{http_code}' \
+              "$MANZANITA_WORKS_BASE_URL/?v=$MANZANITA_WORKS_SOURCE_SHA" || true)
+            if [ "$code" = "200" ] && grep -q 'mw-operating-dreamboard-v0.2.0' /tmp/manzanita-works-live/index.html; then
+              break
+            fi
+            if [ "$attempt" = "30" ]; then
+              echo "Operating Fabric release marker did not become public: HTTP $code"
+              exit 1
+            fi
+            sleep 10
+          done
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          from urllib.parse import quote, urljoin
+          from urllib.request import Request, urlopen
+
+          base = os.environ["MANZANITA_WORKS_BASE_URL"].rstrip("/") + "/"
+          source = quote(os.environ["MANZANITA_WORKS_SOURCE_SHA"], safe="")
+          qualification = json.loads(Path("manzanita-works/QUALIFICATION.json").read_text(encoding="utf-8"))
+          observed = {}
+          out = Path("/tmp/manzanita-works-live/files")
+          for relative, expected in sorted(qualification["files"].items()):
+              url = urljoin(base, relative) + f"?v={source}"
+              request = Request(url, headers={"User-Agent": "manzanita-works-live-gate/0.2.0"})
+              with urlopen(request, timeout=45) as response:
+                  if response.status != 200:
+                      raise SystemExit(f"HTTP {response.status} for {relative}")
+                  payload = response.read()
+              digest = hashlib.sha256(payload).hexdigest()
+              if len(payload) != expected["bytes"] or digest != expected["sha256"]:
+                  raise SystemExit(
+                      f"live byte mismatch for {relative}: observed=({len(payload)}, {digest}) "
+                      f"expected=({expected['bytes']}, {expected['sha256']})"
+                  )
+              target = out / relative
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_bytes(payload)
+              observed[relative] = {"bytes": len(payload), "sha256": digest}
+          Path("/tmp/manzanita-works-live/files.json").write_text(
+              json.dumps(observed, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+          )
+          print(json.dumps({"result": "PASS", "qualified_files": len(observed)}, indent=2))
+          PY
+      - name: Resolve deterministic browser runtime
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -n "$browser" ]; then
+            echo "MW_CHROMIUM_EXECUTABLE=$browser" >> "$GITHUB_ENV"
+            "$browser" --version
+          else
+            python -m playwright install --with-deps chromium
+          fi
+      - name: Replay the deployed operating surface
+        env:
+          MW_DREAMBOARD_URL: ${{ env.MANZANITA_WORKS_BASE_URL }}/?v=${{ env.MANZANITA_WORKS_SOURCE_SHA }}
+          MW_DREAMBOARD_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-works-live-screens
+        run: python manzanita-works/tests/live_browser_test.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-works-operating-dreamboard-v0.2.0-live-evidence
+          path: |
+            ${{ runner.temp }}/manzanita-works-live-screens
+            /tmp/manzanita-works-live/files.json
+          if-no-files-found: error
+          retention-days: 30
