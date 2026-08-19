@@ -1,0 +1,19 @@
+{
+  "schema": "manzanita-works/semantic-instruments-donor-register@1",
+  "classification": "review_donors_not_observation_authority",
+  "source_commit": "0b86e7380ddd24557e988b494317d73ee57b91d9",
+  "source_pr": 120,
+  "source_pr_disposition": "closed_unmerged_rejected_lookbook_regression",
+  "donors": [
+    {"path": "donors/plant-detail.webp", "git_blob_sha1": "44bef53ddfef3ca13feb69155f775f62248b160b", "claim": "retained visual donor only"},
+    {"path": "donors/lida-twin.webp", "git_blob_sha1": "70e04050481d3d72e46a4c2f089406bd757ea47e", "claim": "retained visual donor only"},
+    {"path": "donors/michigan01-twin.webp", "git_blob_sha1": "1422a6df9fc6e763b2cbb278235d9b95b4bc91b2", "claim": "retained visual donor only"},
+    {"path": "donors/michigan02-twin.webp", "git_blob_sha1": "b18678ffcb15b894f1793c7bef523093a0eac5b7", "claim": "retained visual donor only"},
+    {"path": "donors/michigan03-twin.webp", "git_blob_sha1": "18ca2fa6a809db3481cce92d4ad3b783905f666f", "claim": "retained visual donor only"},
+    {"path": "donors/michigan04-twin.webp", "git_blob_sha1": "675520a1a8e99dae2267b132681e7d4831cea020", "claim": "retained visual donor only"},
+    {"path": "donors/region-context.webp", "git_blob_sha1": "51f99e04102d05d27ce17bdc8737adb363e338cb", "claim": "retained visual donor only"}
+  ],
+  "registration_law": "Semantic geometry requires a separate exact-asset receipt for the selected instrument. Donor identity alone grants no feature, field, ownership, access, shade, water, safety, work, or release authority.",
+  "public_route_effect": "none",
+  "canonical_task_count_effect": "none"
+}

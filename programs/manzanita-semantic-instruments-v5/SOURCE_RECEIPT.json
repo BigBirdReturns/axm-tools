@@ -1,0 +1,17 @@
+{
+  "schema": "manzanita-works/semantic-instruments-source-receipt@1",
+  "release": "source-adaptive-semantic-v5",
+  "source_archive_sha256": "d050284670ed1c1427891135e8d5816abd72aeea17a7be489803df419f2f0ffa",
+  "source_bundle_combined_sha256": "d670eb190c1fbedf73cf2a43b9fff56189ef81a3928b4dc280be14887b7e0989",
+  "source_bundle_chunks": [
+    {"path": "SOURCE_BUNDLE.00", "bytes": 11000, "sha256": "5c5e9eccd83a4fd87579b2a897c20c03bcc3e379bb281f500d7c2f9d71fda247"},
+    {"path": "SOURCE_BUNDLE.01", "bytes": 11000, "sha256": "e499db4d5780df8b72d14a368004c4d4f732ff4a9b2a907b57196a3472fa7114"},
+    {"path": "SOURCE_BUNDLE.02", "bytes": 11000, "sha256": "86345542dc1027ea0b64172566a4166e8fe005c6409f38941e4d01513a75062b"},
+    {"path": "SOURCE_BUNDLE.03", "bytes": 9804, "sha256": "7e02c845b36eea97667638c5a61b0bb285952b64ad79b0405b5622b17b17e343"}
+  ],
+  "semantic_receipts_expected": {"access": 3, "shade": 5, "water": 2},
+  "semantic_features_expected": {"access": 11, "shade": 11, "water": 10},
+  "generic_gradient_registrations_expected": 0,
+  "public_route_effect": "none",
+  "canonical_task_count_effect": "none"
+}
