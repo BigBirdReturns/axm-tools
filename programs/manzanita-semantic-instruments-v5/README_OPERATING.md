@@ -1,0 +1,1 @@
+The review must be used through the rendered interface. A passing machine count does not establish that the semantic polygons follow the intended visible features. The exact rendered proof sheet is the human control surface for deciding whether the geometry is useful, legible, and bounded.
