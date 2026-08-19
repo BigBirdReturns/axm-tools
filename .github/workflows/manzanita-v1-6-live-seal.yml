@@ -1,0 +1,170 @@
+name: Manzanita v1.6.0 deployed live seal
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/manzanita-v1-6-live-seal.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-v1-6-live-seal
+  cancel-in-progress: false
+
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      LIVE_BASE: https://bigbirdreturns.github.io/axm-tools/manzanita
+      SCREEN_ROOT: /tmp/manzanita-v1.6.0-live/screens
+      VISUAL_ROOT: /tmp/manzanita-v1.6.0-live/rendered
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install browser and image dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+          python -m playwright install --with-deps chromium
+
+      - name: Assert main contains the exact photographic release
+        run: |
+          set -euo pipefail
+          grep -q 'data-release="1.6.0"' manzanita/index.html
+          grep -q 'data-visual-system="photographic-place-fabric"' manzanita/index.html
+          python programs/manzanita-public-convergence/visual_substance_test.py \
+            --root manzanita \
+            --output /tmp/manzanita-v1.6.0-live/source-visual-substance.json
+          python manzanita/tests/public_contract_test.py
+          node --check manzanita/app.js
+          node --check manzanita/theme-init.js
+          node --check manzanita/assets/scene-data.js
+
+      - name: Wait for Pages and verify every exact qualified byte
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/manzanita-v1.6.0-live
+          SOURCE_SHA=$(git rev-parse HEAD)
+          echo "SOURCE_SHA=$SOURCE_SHA" >> "$GITHUB_ENV"
+          for attempt in $(seq 1 120); do
+            code=$(curl -L -sS -o /tmp/manzanita-v1.6.0-live/index.html -w '%{http_code}' \
+              "$LIVE_BASE/?v=$SOURCE_SHA" || true)
+            if [ "$code" = "200" ] \
+              && grep -q 'data-release="1.6.0"' /tmp/manzanita-v1.6.0-live/index.html \
+              && grep -q 'data-visual-system="photographic-place-fabric"' /tmp/manzanita-v1.6.0-live/index.html; then
+              break
+            fi
+            if [ "$attempt" = "120" ]; then
+              echo "Public endpoint did not expose Manzanita v1.6.0"
+              exit 1
+            fi
+            sleep 10
+          done
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import time
+          import urllib.request
+          from pathlib import Path
+
+          base = os.environ['LIVE_BASE'].rstrip('/')
+          sha = os.environ['SOURCE_SHA']
+          qualification = json.loads(Path('manzanita/QUALIFICATION.json').read_text())
+          observed = {}
+          for relative, expected in qualification['files'].items():
+              payload = None
+              url = f"{base}/{relative}?v={sha}"
+              for _ in range(18):
+                  try:
+                      with urllib.request.urlopen(url, timeout=30) as response:
+                          payload = response.read()
+                      digest = hashlib.sha256(payload).hexdigest()
+                      if len(payload) == expected['bytes'] and digest == expected['sha256']:
+                          break
+                  except Exception:
+                      pass
+                  time.sleep(5)
+              if payload is None:
+                  raise SystemExit(f'could not fetch {relative}')
+              digest = hashlib.sha256(payload).hexdigest()
+              if len(payload) != expected['bytes'] or digest != expected['sha256']:
+                  raise SystemExit(f'public byte mismatch for {relative}')
+              observed[relative] = {'bytes': len(payload), 'sha256': digest}
+          Path('/tmp/manzanita-v1.6.0-live/files.json').write_text(json.dumps(observed, indent=2) + '\n')
+          PY
+
+      - name: Replay browser and rendered-composition contracts on the live route
+        env:
+          MANZANITA_URL: ${{ env.LIVE_BASE }}/?v=${{ env.SOURCE_SHA }}
+          MANZANITA_SCREENSHOT_DIR: ${{ env.SCREEN_ROOT }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$SCREEN_ROOT" "$VISUAL_ROOT"
+          python manzanita/tests/browser_test.py
+          python programs/manzanita-public-convergence/rendered_visual_floor.py \
+            --target "$MANZANITA_URL" \
+            --output "$VISUAL_ROOT"
+
+      - name: Retain the live receipt and visual proof on main
+        run: |
+          set -euo pipefail
+          mkdir -p .github/manzanita-live-receipts review/manzanita-v1.6.0
+          cp "$VISUAL_ROOT/desktop-hero.png" review/manzanita-v1.6.0/live-desktop-hero.png
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          hero = Path('review/manzanita-v1.6.0/live-desktop-hero.png')
+          receipt = {
+              'schema': 'manzanita-works/live-convergence-receipt@1',
+              'release': '1.6.0',
+              'state': 'PASS',
+              'observed_at': datetime.now(timezone.utc).isoformat(),
+              'public_route': os.environ['LIVE_BASE'] + '/',
+              'source_main_sha': os.environ['SOURCE_SHA'],
+              'release_markers': {
+                  'data-release': '1.6.0',
+                  'data-visual-system': 'photographic-place-fabric',
+              },
+              'files': json.loads(Path('/tmp/manzanita-v1.6.0-live/files.json').read_text()),
+              'source_visual_substance': json.loads(Path('/tmp/manzanita-v1.6.0-live/source-visual-substance.json').read_text()),
+              'rendered_visual_floor': json.loads(Path('/tmp/manzanita-v1.6.0-live/rendered/VISUAL_FLOOR.json').read_text()),
+              'live_desktop_hero': {
+                  'path': hero.as_posix(),
+                  'bytes': hero.stat().st_size,
+                  'sha256': hashlib.sha256(hero.read_bytes()).hexdigest(),
+              },
+              'authority': {
+                  'successor_program_effect': 'none',
+                  'external_campaign_effect': 'none',
+                  'canonical_task_count_effect': 'none',
+              },
+          }
+          Path('.github/manzanita-live-receipts/v1.6.0.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+          rm -f .github/workflows/manzanita-v1-6-live-seal.yml
+          git config user.name "manzanita-live-seal"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "Manzanita: retain v1.6.0 deployed live proof"
+          git push origin HEAD:main
