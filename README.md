@@ -32,6 +32,10 @@ the tool layout, so don't try to fit them into it.
 | [`identity/`](identity/) | The AXM / SCG identity system: the pixel-dandelion mark, its four-token palette and type, frozen release bundles, and the provenance law (`SCG_MARK_CONSTITUTION.md`) that governs every rendering | [live showcase](https://bigbirdreturns.github.io/axm-tools/identity/) — self-contained page, no Action |
 
 `identity/` is deliberately **not** a tool: no workflow, no `data/`, deliberately. Its internal law is `identity/scg/SCG_MARK_CONSTITUTION.md` — read it before touching anything under `identity/`.
+- **No workflow, no `data/`, deliberately.** Don't fit it into the tool layout. Its internal law is `identity/scg/SCG_MARK_CONSTITUTION.md` — read it before touching anything under `identity/`.
+- **`releases/` folders are frozen.** Never edit one, even to fix an error; a change is a new `vX/` folder. (Current: `SCG-Identity-v3.1` is the deployment reference; `v3.0` is the ratified baseline beneath it.)
+- The docs there name paths from the full axm.tools monorepo (a root-level `scg-pixel-mark.js`, `/public/assets/scg/`) that do not exist in this repo. This is known and reconciled; do not "fix" those paths to match this repo.
+- The mark renders live from `identity/scg/source/scg-pixel-mark.js`. Never copy the file elsewhere in this repo, never redraw the mark.
 
 ## The shape of a tool
 
