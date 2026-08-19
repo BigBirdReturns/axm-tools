@@ -1,0 +1,49 @@
+name: Clean Essential Capacity review branch
+
+on:
+  push:
+    branches: [agent/essential-capacity-v0-1-review]
+    paths:
+      - ".github/workflows/essential-capacity-clean-review.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/essential-capacity-v0-1-review
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Remove one-shot transport surfaces and requalify
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/essential-capacity-materialize.yml
+          rm -f .github/workflows/essential-capacity-clean-review.yml
+          python capacity-commons/scripts/validate.py
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path("capacity-commons/index.html").read_text(encoding="utf-8")
+          scripts = re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>", html, flags=re.S | re.I)
+          Path("/tmp/essential-capacity-app.js").write_text(scripts[-1], encoding="utf-8")
+          PY
+          node --check /tmp/essential-capacity-app.js
+      - name: Seal the clean review head
+        run: |
+          set -euo pipefail
+          git config user.name "essential-capacity-build-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Essential Capacity: remove one-shot materialization surfaces"
+          git push origin HEAD:agent/essential-capacity-v0-1-review
