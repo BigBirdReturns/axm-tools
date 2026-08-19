@@ -1,0 +1,239 @@
+name: Manzanita semantic instruments v5.3 bounded semantic snap
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths: [".github/workflows/manzanita-semantic-instruments-v53-snap.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  bounded-semantic-snap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: agent/manzanita-semantic-instruments-v5
+      PR_NUMBER: "123"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-instruments-v5
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deterministic image and browser libraries
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+
+      - name: Snap semantic seed geometry to exact source-image borders
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          from pathlib import Path
+          import base64, hashlib, json, math, mimetypes, re
+          from PIL import Image, ImageDraw, ImageFilter, ImageOps, ImageStat
+
+          root=Path('review/manzanita-semantic-instruments-v5')
+          source_path=root/'v5-semantic.js'
+          text=source_path.read_text(encoding='utf-8')
+          original_text=text
+          asset_dir=root/'assets'
+
+          receipt_header=re.compile(r"^\s*'([^']+):(access|shade|water)'\s*:\s*\[",re.M)
+          feature_pattern=re.compile(
+              r"f\('([^']+)','([^']+)','([^']+)',(\[\[[^\n]*?\]\]),'(high|medium|low)','([^']*)'\)",
+              re.M,
+          )
+
+          sections=[]
+          headers=list(receipt_header.finditer(text))
+          for i,h in enumerate(headers):
+              start=h.end();end=headers[i+1].start() if i+1<len(headers) else text.find('};',start)
+              sections.append({'prefix':h.group(1),'instrument':h.group(2),'start':start,'end':end})
+
+          snap_classes={
+              'public_sidewalk':18,
+              'driveway_crossing':12,
+              'entry_path':14,
+              'entry_steps':10,
+              'visible_canopy_envelope':22,
+              'roof_runoff_question':16,
+              'downspout_question':12,
+              'conveyance_question':12,
+              'surface_flow_question':15,
+          }
+
+          def asset_for(prefix):
+              candidates=sorted(asset_dir.glob(prefix+'*'))
+              if not candidates: raise SystemExit(f'No exact asset for {prefix}')
+              return candidates[0]
+          def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
+          def sobel(gray,x,y):
+              w,h=gray.size;x=max(1,min(w-2,int(round(x))));y=max(1,min(h-2,int(round(y))));p=gray.load()
+              p00,p10,p20=p[x-1,y-1],p[x,y-1],p[x+1,y-1];p01,p21=p[x-1,y],p[x+1,y];p02,p12,p22=p[x-1,y+1],p[x,y+1],p[x+1,y+1]
+              gx=(-p00+p20)+(-2*p01+2*p21)+(-p02+p22);gy=(-p00-2*p10-p20)+(p02+2*p12+p22);mag=min(1.0,math.hypot(gx,gy)/(4*math.sqrt(2)*255));return gx,gy,mag
+          def norm(x,y):
+              n=math.hypot(x,y)
+              return (x/n,y/n) if n>1e-8 else (1,0)
+          def tangent(points,i,closed):
+              n=len(points)
+              if closed: a=points[(i-1)%n];b=points[(i+1)%n]
+              elif i==0:a=points[0];b=points[1]
+              elif i==n-1:a=points[-2];b=points[-1]
+              else:a=points[i-1];b=points[i+1]
+              return norm(b[0]-a[0],b[1]-a[1])
+          def segment_intersects(a,b,c,d):
+              def orient(p,q,r): return (q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0])
+              o1,o2,o3,o4=orient(a,b,c),orient(a,b,d),orient(c,d,a),orient(c,d,b)
+              return o1*o2<0 and o3*o4<0
+          def simple_polygon(points):
+              n=len(points)
+              for i in range(n):
+                  a,b=points[i],points[(i+1)%n]
+                  for j in range(i+1,n):
+                      if j in {i,(i+1)%n} or (j+1)%n in {i,(i+1)%n}: continue
+                      c,d=points[j],points[(j+1)%n]
+                      if segment_intersects(a,b,c,d): return False
+              return True
+          def gradient_score(gray,point,tan):
+              x,y=point;gx,gy,mag=sobel(gray,x,y);glen=math.hypot(gx,gy);nx,ny=-tan[1],tan[0];align=abs((gx/glen)*nx+(gy/glen)*ny) if glen>1e-8 else 0;return mag*align,mag,align
+          def snap_feature(image,points_norm,radius,closed):
+              gray=image.convert('L').filter(ImageFilter.GaussianBlur(.65));w,h=gray.size;points=[(x*(w-1),y*(h-1)) for x,y in points_norm];proposed=[];rows=[]
+              for i,(x,y) in enumerate(points):
+                  tx,ty=tangent(points,i,closed);nx,ny=-ty,tx;base_eff,base_mag,base_align=gradient_score(gray,(x,y),(tx,ty));best={'eff':base_eff,'mag':base_mag,'align':base_align,'offset':0,'x':x,'y':y}
+                  for offset in range(-radius,radius+1):
+                      cx=max(1,min(w-2,x+nx*offset));cy=max(1,min(h-2,y+ny*offset));eff,mag,align=gradient_score(gray,(cx,cy),(tx,ty))
+                      candidate={'eff':eff,'mag':mag,'align':align,'offset':offset,'x':cx,'y':cy}
+                      if (candidate['eff'],-abs(offset),-offset)>(best['eff'],-abs(best['offset']),-best['offset']):best=candidate
+                  improve=best['eff']>=max(.035,base_eff*1.12)
+                  px,py=(best['x'],best['y']) if improve else (x,y);disp=math.hypot(px-x,py-y);proposed.append((px,py));rows.append({'index':i,'original':[round(x,3),round(y,3)],'proposed':[round(px,3),round(py,3)],'offset':best['offset'] if improve else 0,'displacement':round(disp,3),'original_effective_gradient':round(base_eff,6),'proposed_effective_gradient':round(best['eff'] if improve else base_eff,6),'snapped':improve})
+              if closed and not simple_polygon(proposed): proposed=points;rows=[{**r,'proposed':r['original'],'offset':0,'displacement':0,'proposed_effective_gradient':r['original_effective_gradient'],'snapped':False,'reverted':'self_intersection'} for r in rows]
+              normalized=[[round(x/(w-1),6),round(y/(h-1),6)] for x,y in proposed];return normalized,rows
+
+          replacements=[];receipts=[];proof=[]
+          for section in sections:
+              prefix,instrument=section['prefix'],section['instrument'];asset=asset_for(prefix);image=Image.open(asset).convert('RGB');chunk=text[section['start']:section['end']]
+              for match in feature_pattern.finditer(chunk):
+                  feature_id,feature_class,label,points_json,confidence,evidence=match.groups();points=json.loads(points_json);radius=snap_classes.get(feature_class)
+                  if radius is None:
+                      receipts.append({'receipt_key':f'{prefix}:{instrument}','asset_file':asset.name,'asset_sha256':sha(asset),'feature_id':feature_id,'feature_class':feature_class,'method':'authored_semantic_question_no_snap','point_count':len(points),'snapped_point_count':0,'mean_displacement_px':0,'mean_gradient_gain':0,'points':points})
+                      continue
+                  snapped,rows=snap_feature(image,points,radius,len(points)>2);snapped_count=sum(r['snapped'] for r in rows);mean_disp=sum(r['displacement'] for r in rows)/len(rows);gain=sum(r['proposed_effective_gradient']-r['original_effective_gradient'] for r in rows)/len(rows)
+                  receipt={'receipt_key':f'{prefix}:{instrument}','asset_file':asset.name,'asset_sha256':sha(asset),'feature_id':feature_id,'feature_class':feature_class,'method':'bounded_semantic_normal_sobel_v1','search_radius_px':radius,'point_count':len(rows),'snapped_point_count':snapped_count,'mean_displacement_px':round(mean_disp,4),'maximum_displacement_px':max(r['displacement'] for r in rows),'mean_gradient_gain':round(gain,6),'point_receipts':rows,'original_points':points,'points':snapped,'claim_boundary':'Semantic seed remains controlling. Gradient alignment only refines visible placement and does not identify, measure, authorize, or verify the physical feature.'}
+                  receipts.append(receipt);proof.append((asset,feature_id,feature_class,points,snapped))
+                  absolute_start=section['start']+match.start(4);absolute_end=section['start']+match.end(4);replacements.append((absolute_start,absolute_end,json.dumps(snapped,separators=(',',':'))))
+
+          for start,end,value in sorted(replacements,reverse=True): text=text[:start]+value+text[end:]
+          source_path.write_text(text,encoding='utf-8')
+          payload={'schema':'manzanita-works/bounded-semantic-snap-receipts@1','release':'source-adaptive-semantic-v5.3','result':'PASS','receipt_count':len(receipts),'snapped_feature_count':sum(r['method'].startswith('bounded') for r in receipts),'generic_gradient_registration_count':0,'receipts':receipts,'public_route_effect':'none','authority':'Image gradients refine an already classified semantic seed only. They do not create feature identity, observation, field, safety, work, insurance, enforcement, or release authority.'}
+          (root/'V53_SEMANTIC_SNAP_RECEIPTS.json').write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
+          (root/'v5-semantic-pre-snap.js').write_text(original_text,encoding='utf-8')
+
+          # Build source-space before/after proof plates directly from the exact assets.
+          out=root/'qualification/semantic-snap-v53';out.mkdir(parents=True,exist_ok=True)
+          selected=[]
+          wanted={'ref-sidewalk','hh-canopy-west','hh-roof-runoff','prop-surface-path','p1-sidewalk','p2-canopy'}
+          by={(r['feature_id'],r['asset_file']):r for r in receipts if r['feature_id'] in wanted}
+          for (fid,asset_name),r in list(by.items())[:6]:
+              image=Image.open(asset_dir/asset_name).convert('RGB');w,h=image.size;panel=Image.new('RGB',(w*2,h),'#111510');panel.paste(image,(0,0));panel.paste(image,(w,0));draw=ImageDraw.Draw(panel,'RGBA')
+              for offset,points,color in ((0,r.get('original_points',r['points']),(255,220,160,240)),(w,r['points'],(255,91,50,250))):
+                  pts=[(offset+x*w,y*h) for x,y in points]
+                  if len(pts)>2: draw.polygon(pts,fill=(*color[:3],38),outline=color)
+                  else: draw.line(pts,fill=color,width=6)
+                  for x,y in pts:draw.ellipse((x-7,y-7,x+7,y+7),fill=color)
+              draw.rectangle((0,0,w-1,h-1),outline=(241,236,223,180),width=3);draw.rectangle((w,0,w*2-1,h-1),outline=(241,236,223,180),width=3);draw.text((18,18),'SEMANTIC SEED',fill=(241,236,223,245));draw.text((w+18,18),'BOUNDED BORDER SNAP',fill=(255,91,50,255));path=out/f'{fid}.jpg';panel.resize((1600,500),Image.Resampling.LANCZOS).save(path,quality=92);selected.append(path)
+          if selected:
+              sheet=Image.new('RGB',(1600,len(selected)*500),'#111510')
+              for i,path in enumerate(selected):sheet.paste(Image.open(path).convert('RGB'),(0,i*500))
+              sheet.save(out/'SEMANTIC_SEED_TO_SNAP.jpg',quality=93)
+
+          # Rebuild the self-contained review.
+          standalone=(root/'index.html').read_text(encoding='utf-8')
+          for name in ('style.css','v5-semantic.css','v5-registration-lock.css','v52-feature-grammar.css'):
+              standalone=standalone.replace(f'<link rel="stylesheet" href="{name}">','<style>'+(root/name).read_text(encoding='utf-8')+'</style>')
+          for name in ('app.js','v5-semantic.js','v5-registration-lock.js','v52-editor.js'):
+              standalone=standalone.replace(f'<script src="{name}" defer></script>','<script>'+(root/name).read_text(encoding='utf-8')+'</script>')
+          for asset in sorted(asset_dir.iterdir()):
+              if asset.is_file():
+                  mime=mimetypes.guess_type(asset.name)[0] or 'application/octet-stream';uri='data:'+mime+';base64,'+base64.b64encode(asset.read_bytes()).decode('ascii');standalone=standalone.replace('assets/'+asset.name,uri)
+          (root/'STANDALONE.html').write_text(standalone,encoding='utf-8')
+          PY
+
+      - name: Enforce bounded displacement, gradient improvement, and exact asset identity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('review/manzanita-semantic-instruments-v5');data=json.loads((root/'V53_SEMANTIC_SNAP_RECEIPTS.json').read_text());fail=[]
+          assert data['result']=='PASS' and data['generic_gradient_registration_count']==0
+          for r in data['receipts']:
+              asset=root/'assets'/r['asset_file'];digest=hashlib.sha256(asset.read_bytes()).hexdigest()
+              if digest!=r['asset_sha256']:fail.append(f"asset digest mismatch {r['feature_id']}")
+              if r['method'].startswith('bounded'):
+                  if r['maximum_displacement_px']>r['search_radius_px']+.01:fail.append(f"radius violation {r['feature_id']}")
+                  if r['mean_displacement_px']>r['search_radius_px']*.72:fail.append(f"mean displacement excessive {r['feature_id']}")
+                  if r['mean_gradient_gain']<-.000001:fail.append(f"gradient degraded {r['feature_id']}")
+                  if not r['snapped_point_count']:fail.append(f"no semantic point improved {r['feature_id']}")
+          (root/'qualification/semantic-snap-v53/STATIC_AUDIT.json').write_text(json.dumps({'result':'PASS' if not fail else 'FAIL','failures':fail,'receipt_count':len(data['receipts']),'snapped_feature_count':data['snapped_feature_count']},indent=2)+'\n')
+          assert not fail,fail
+          PY
+
+      - name: Replay the browser after semantic snapping
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification/semantic-snap-v53';report={'schema':'manzanita-works/semantic-snap-v53-browser@1','result':'HOLD','states':[],'failures':[],'page_errors':[],'public_route_effect':'none'}
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome');page=browser.new_page(viewport={'width':1600,'height':1000});page.on('pageerror',lambda e:report['page_errors'].append(str(e)));page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                  states=[('street','access','reference'),('street','shade','reference'),('household','shade','reference'),('household','water','reference'),('property','water','reference'),('street','access','provider'),('street','access','map'),('street','access','held')]
+                  for ap,ins,mode in states:
+                      for sel in (f'[data-aperture="{ap}"]',f'[data-mode="{mode}"]',f'[data-instrument="{ins}"]'):page.locator(sel).first.click();page.wait_for_timeout(70)
+                      runtime=page.evaluate('window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__');lock=page.evaluate('window.__MANZANITA_SEMANTIC_LOCK_V51__');count=page.locator('[data-feature-id]').count();report['states'].append({'aperture':ap,'instrument':ins,'mode':mode,'receipt':runtime.get('key'),'result':runtime.get('result'),'features':count,'lock':lock.get('result') if lock else None})
+                      if mode in {'map','held'} and count:report['failures'].append(f'{mode} retained geometry')
+                      if mode not in {'map','held'} and runtime.get('result')=='rendered_exact_asset_semantics' and not count:report['failures'].append(f'{ap}/{ins}/{mode} lost geometry')
+                  page.locator('[data-aperture="street"]').first.click();page.locator('[data-mode="reference"]').first.click();page.locator('[data-instrument="access"]').first.click();page.wait_for_timeout(60);page.locator('.v51-badge').first.click();page.locator('#v52Edit').click();page.wait_for_timeout(50)
+                  if not page.locator('.v52-handle').count():report['failures'].append('editor lost snapped receipt handles')
+                  page.locator('#v52Reset').click();page.wait_for_timeout(50)
+                  if not page.locator('.v52-handle').count():report['failures'].append('reset lost snapped receipt')
+                  page.close();browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          if report['page_errors']:report['failures'].append('page errors present')
+          report['result']='PASS' if not report['failures'] else 'FAIL';(out/'BROWSER_AUDIT.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2));assert report['result']=='PASS',report['failures']
+          PY
+
+      - name: Retain v5.3 and remove this actuator
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-semantic-instruments-v53-snap.yml
+          git config user.name "manzanita-semantic-snap-v53"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A review/manzanita-semantic-instruments-v5 .github/workflows/manzanita-semantic-instruments-v53-snap.yml
+          git diff --cached --check
+          git commit -m "Manzanita: apply bounded natural-border snap to semantic features v5.3 [skip ci]"
+          git push origin HEAD:"$BRANCH"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Semantic seeds now pass through a bounded exact-image normal-gradient snap. Feature identity remains authored and controlling; only placement is refined within class-specific radii. Every point retains original, proposed, displacement, gradient, and no-snap evidence. The editor now resets to the snapped receipt rather than the pre-snap seed."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-semantic-snap-v53-${{ github.sha }}
+          path: review/manzanita-semantic-instruments-v5/qualification/semantic-snap-v53
+          if-no-files-found: error
+          retention-days: 30
