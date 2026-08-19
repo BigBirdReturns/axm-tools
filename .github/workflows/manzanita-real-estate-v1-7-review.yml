@@ -1,0 +1,98 @@
+name: Manzanita v1.7 real-estate visual review
+
+on:
+  push:
+    branches: [agent/manzanita-real-estate-v1-7]
+    paths:
+      - "programs/manzanita-real-estate-v1-7/**"
+      - ".github/workflows/manzanita-real-estate-v1-7-review.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-real-estate-v1-7-review
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-real-estate-v1-7
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deterministic image and browser dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Build the real-photo review object
+        run: |
+          set -euo pipefail
+          rm -rf review/manzanita-v1.7
+          python programs/manzanita-real-estate-v1-7/build_review.py
+          test -f review/manzanita-v1.7/assets/lida-twin.webp
+          test -f review/manzanita-v1.7/assets/michigan01-twin.webp
+          test -f review/manzanita-v1.7/assets/michigan02-twin.webp
+          test -f review/manzanita-v1.7/assets/michigan04-twin.webp
+      - name: Serve and render the exact candidate
+        run: |
+          set -euo pipefail
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/manzanita-v17-http.log 2>&1 &
+          echo $! >/tmp/manzanita-v17-http.pid
+          for n in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8765/review/manzanita-v1.7/ >/dev/null; then break; fi
+            sleep 1
+          done
+          python programs/manzanita-real-estate-v1-7/render_review.py \
+            --url http://127.0.0.1:8765/review/manzanita-v1.7/ \
+            --output review/manzanita-v1.7/evidence
+          kill "$(cat /tmp/manzanita-v17-http.pid)" || true
+      - name: Bind review receipt to exact bytes
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root=Path('review/manzanita-v1.7')
+          files={}
+          for path in sorted(p for p in root.rglob('*') if p.is_file() and p.name!='FINAL_REVIEW_RECEIPT.json'):
+              files[path.relative_to(root).as_posix()]={'bytes':path.stat().st_size,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+          visual=json.loads((root/'evidence/VISUAL_REVIEW.json').read_text())
+          receipt={
+            'schema':'manzanita-works/real-estate-final-review@1',
+            'release':'1.7-review',
+            'state':'PASS' if visual['result']=='PASS' else 'FAIL',
+            'classification':'review_evidence_not_public_release',
+            'files':files,
+            'visual_review':visual,
+            'public_route_effect':'none',
+            'successor_program_effect':'none',
+            'canonical_task_count_effect':'none',
+          }
+          (root/'FINAL_REVIEW_RECEIPT.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          assert receipt['state']=='PASS'
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-real-estate-v1.7-review
+          path: review/manzanita-v1.7
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit the exact review candidate, without touching the live route
+        run: |
+          set -euo pipefail
+          git config user.name "manzanita-review-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add review/manzanita-v1.7
+          git diff --cached --check
+          if ! git diff --cached --quiet; then
+            git commit -m "Manzanita: materialize real-photo v1.7 visual review"
+            git push origin HEAD:agent/manzanita-real-estate-v1-7
+          fi
