@@ -1,0 +1,43 @@
+name: Manzanita Works Operating Fabric Dreamboard v0.2.0
+
+on:
+  push:
+    branches: [main, agent/manzanita-operating-dreamboard-v0-2]
+    paths:
+      - "manzanita-works/**"
+      - ".github/workflows/manzanita-works-dreamboard.yml"
+      - "README.md"
+      - "index.html"
+  pull_request:
+    paths:
+      - "manzanita-works/**"
+      - ".github/workflows/manzanita-works-dreamboard.yml"
+      - "README.md"
+      - "index.html"
+  workflow_dispatch: {}
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run exact static contract
+        run: python manzanita-works/tests/public_contract_test.py
+      - name: Install deterministic browser runtime
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Run real Chromium campaign
+        env:
+          MW_DREAMBOARD_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-works-dreamboard-screens
+        run: python manzanita-works/tests/browser_test.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-works-operating-dreamboard-v0.2.0-review
+          path: ${{ runner.temp }}/manzanita-works-dreamboard-screens
+          if-no-files-found: error
+          retention-days: 30
