@@ -11,6 +11,7 @@ a year and still be working when you come back.
 | Tool | What it does | Interface |
 |------|--------------|-----------|
 | [`manzanita/`](manzanita/) | Public-safe photographic place fabric with seven genuine apertures, image-registered conditions, five operational seats, assistance-first horticultural and wildfire remediation, an explicit adverse-use firewall, local export, and an Essential Attention handoff | [Place Fabric v1.6.0](https://bigbirdreturns.github.io/axm-tools/manzanita/) |
+| [`manzanita-works/`](manzanita-works/) | Public-safe institutional operating fabric spanning Essential Tools, time, talent, pilotage, mobility, fundraising, stewardship, commodity boundaries, authority layers, and portable handoff without external effects | [Operating Fabric v0.1.0](https://bigbirdreturns.github.io/axm-tools/manzanita-works/) |
 | [`essential-attention/`](essential-attention/) | Local FAB operating desk: one recommended next action, seven searchable records, five bounded decisions, local evidence custody, contained internal checks, cold continuity, and portable export without external-effect adapters | [standalone FAB operating desk](https://bigbirdreturns.github.io/axm-tools/essential-attention/) — opens on Today with one clear next move |
 | [`clinical-site-fabric/`](clinical-site-fabric/) | Local multi-protocol clinical-site workbench: ingests de-identified CSV, JSON, NDJSON, model-certificate reports, and hash-only source artifacts; reconstructs protocol lineage, source events, authority, sponsor-separated views, GLP-1 exit evidence, and portable provider-loss packets | [standalone clinical-site workbench](https://bigbirdreturns.github.io/axm-tools/clinical-site-fabric/) — files remain in the browser session and no source-system writeback exists |
 | [`polybolos/`](polybolos/) | Stable source-bound evidence contract for denied communications: records the requested handoff as complete, preserves the bounded fifteen-decision scenario as a permanent pass, accepts later evidence locally, and offers optional versioned qualification plans without retrospective scoring | [one-file evidence tool](https://bigbirdreturns.github.io/axm-tools/polybolos/) — direct standalone page, sanitized public cartridge, explicit private-source opt-in |
@@ -30,12 +31,7 @@ the tool layout, so don't try to fit them into it.
 |------|------------|---------|
 | [`identity/`](identity/) | The AXM / SCG identity system: the pixel-dandelion mark, its four-token palette and type, frozen release bundles, and the provenance law (`SCG_MARK_CONSTITUTION.md`) that governs every rendering | [live showcase](https://bigbirdreturns.github.io/axm-tools/identity/) — self-contained page, no Action |
 
-`identity/` is deliberately **not** a tool: no `scripts/`, no `data/`, no
-workflow. Its `index.html` is a read-only showcase that renders the mark
-live from the canonical source (`identity/scg/source/scg-pixel-mark.js`) —
-it never redraws it. The rules live in the constitution; treat frozen
-`releases/` bundles as immutable (a change is a new `vX`, never an edit in
-place).
+`identity/` is deliberately **not** a tool: no workflow, no `data/`, deliberately. Its internal law is `identity/scg/SCG_MARK_CONSTITUTION.md` — read it before touching anything under `identity/`.
 
 ## The shape of a tool
 
