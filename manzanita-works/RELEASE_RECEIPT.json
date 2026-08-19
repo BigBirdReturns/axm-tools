@@ -1,0 +1,17 @@
+{
+  "authority": {
+    "credit_effect": "none",
+    "organizational_effect": "none",
+    "payment_effect": "none",
+    "source_system_writeback": "none"
+  },
+  "deployment": "HOLD_UNTIL_MERGE_AND_LIVE_REPLAY",
+  "public_route": "https://bigbirdreturns.github.io/axm-tools/manzanita-works/",
+  "qualified_source": {
+    "bytes": 1243,
+    "sha256": "02cf024fb31fb8a2bd10473fbe6835505281fa120a00f8974d49e61a306708c1"
+  },
+  "release": "0.2.0",
+  "schema": "manzanita-works/operating-dreamboard-release-receipt@1",
+  "state": "CANDIDATE_PASS"
+}
