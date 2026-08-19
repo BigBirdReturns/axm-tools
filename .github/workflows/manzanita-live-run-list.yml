@@ -1,4 +1,4 @@
-name: Manzanita live-gate dispatcher and observer
+name: Manzanita live-run observer
 
 on:
   push:
@@ -8,78 +8,31 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  actions: write
+  actions: read
   contents: read
   issues: write
   pull-requests: write
 
 jobs:
-  dispatch-and-observe:
+  observe:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
     steps:
-      - name: Dispatch a fresh main-branch live gate
+      - name: Publish current permanent live-gate runs
         run: |
           set -euo pipefail
-          prior=$(gh run list --repo "$GH_REPO" \
+          gh run list --repo "$GH_REPO" \
             --workflow manzanita-live-check.yml \
-            --event workflow_dispatch \
-            --limit 1 \
-            --json databaseId \
-            --jq '.[0].databaseId // 0')
-          echo "PRIOR_RUN_ID=$prior" >> "$GITHUB_ENV"
-          gh workflow run manzanita-live-check.yml --repo "$GH_REPO" --ref main
-
-      - name: Resolve the new live-gate run
-        run: |
-          set -euo pipefail
-          for attempt in $(seq 1 60); do
-            row=$(gh run list --repo "$GH_REPO" \
-              --workflow manzanita-live-check.yml \
-              --event workflow_dispatch \
-              --limit 5 \
-              --json databaseId,name,status,conclusion,headBranch,headSha,event,createdAt,updatedAt,url \
-              --jq ".[] | select(.databaseId != $PRIOR_RUN_ID)" | head -1)
-            if [ -n "$row" ]; then
-              printf '%s\n' "$row" > /tmp/live-run.json
-              echo "LIVE_RUN_ID=$(printf '%s' "$row" | jq -r '.databaseId')" >> "$GITHUB_ENV"
-              break
-            fi
-            if [ "$attempt" = "60" ]; then
-              echo "Fresh live-gate run was not created"
-              exit 1
-            fi
-            sleep 5
-          done
-
-      - name: Wait for the exact live-gate result
-        id: wait
-        continue-on-error: true
-        run: gh run watch "$LIVE_RUN_ID" --repo "$GH_REPO" --exit-status --interval 10
-
-      - name: Publish the exact live-gate result to PR 117
-        if: always()
-        run: |
-          set -euo pipefail
-          gh run view "$LIVE_RUN_ID" --repo "$GH_REPO" \
+            --limit 10 \
             --json databaseId,name,status,conclusion,headBranch,headSha,event,createdAt,updatedAt,url \
-            > /tmp/live-final.json
+            > /tmp/runs.json
           {
-            echo 'Fresh Manzanita v1.6.0 live-gate result:'
+            echo 'Current Manzanita v1.6.0 live-gate runs:'
             echo
             echo '```json'
-            jq . /tmp/live-final.json
+            jq . /tmp/runs.json
             echo '```'
           } > /tmp/comment.md
-          if [ "${{ steps.wait.outcome }}" != "success" ]; then
-            echo >> /tmp/comment.md
-            echo 'Failed-step tail:' >> /tmp/comment.md
-            echo '```text' >> /tmp/comment.md
-            gh run view "$LIVE_RUN_ID" --repo "$GH_REPO" --log-failed 2>/dev/null | tail -c 30000 >> /tmp/comment.md || true
-            echo '```' >> /tmp/comment.md
-          fi
           gh pr comment 117 --repo "$GH_REPO" --body-file /tmp/comment.md
-          test "${{ steps.wait.outcome }}" = "success"
