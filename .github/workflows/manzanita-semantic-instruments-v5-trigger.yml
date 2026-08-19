@@ -1,0 +1,23 @@
+name: Manzanita semantic instruments v5 trigger
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths: [".github/workflows/manzanita-semantic-instruments-v5-trigger.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Dispatch exact-head semantic v5 bootstrap
+        run: |
+          gh workflow run manzanita-semantic-instruments-v5-bootstrap.yml \
+            --repo "$GITHUB_REPOSITORY" \
+            --ref agent/manzanita-semantic-instruments-v5
