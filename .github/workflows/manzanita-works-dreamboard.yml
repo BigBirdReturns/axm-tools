@@ -16,6 +16,10 @@ on:
       - "index.html"
   workflow_dispatch: {}
 
+concurrency:
+  group: manzanita-works-dreamboard-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   qualify:
     runs-on: ubuntu-latest
@@ -27,10 +31,17 @@ jobs:
           python-version: "3.12"
       - name: Run exact static contract
         run: python manzanita-works/tests/public_contract_test.py
-      - name: Install deterministic browser runtime
+      - name: Resolve deterministic browser runtime
         run: |
+          set -euo pipefail
           python -m pip install --disable-pip-version-check playwright==1.57.0
-          python -m playwright install --with-deps chromium
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -n "$browser" ]; then
+            echo "MW_CHROMIUM_EXECUTABLE=$browser" >> "$GITHUB_ENV"
+            "$browser" --version
+          else
+            python -m playwright install --with-deps chromium
+          fi
       - name: Run real Chromium campaign
         env:
           MW_DREAMBOARD_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-works-dreamboard-screens
