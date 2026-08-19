@@ -76,20 +76,24 @@ def main() -> None:
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "dreamboard-desktop.png"), full_page=True)
 
+        # Input resolution and relationship highlighting.
         page.locator('[data-kind="input"][data-id="timebank"]').click()
         assert "time-bank sketch" in page.locator("#detail-title").inner_text()
         assert page.locator('[data-kind="capacity"][data-id="time"]').get_attribute("class").find("active") >= 0
         assert page.locator('[data-kind="program"][data-id="essential-time"]').get_attribute("class").find("active") >= 0
 
+        # Capacity-to-program projection.
         page.locator('[data-kind="capacity"][data-id="pilotage"]').click()
         assert page.locator("#detail-kicker").inner_text().lower() == "capacity class"
         assert "Essential Pilotage" in page.locator("#detail-grid").inner_text()
 
+        # Program organ details.
         page.locator('[data-kind="program"][data-id="mobility"]').click()
         assert page.locator("#detail-title").inner_text() == "Mobility / E-bike"
         assert "Manzanita owns" in page.locator("#detail-grid").inner_text()
         assert "hardware" in page.locator("#detail-grid").inner_text().lower()
 
+        # Dashboard is explicitly subordinate.
         page.locator('[data-kind="dashboard"]').click()
         assert page.locator("#detail-title").inner_text() == "Fundraising dashboard"
         detail = page.locator("#detail").inner_text()
@@ -97,14 +101,17 @@ def main() -> None:
         assert "focus=fundraising" in page.url
         page.screenshot(path=str(OUT / "dreamboard-fundraising.png"), full_page=True)
 
+        # Institutional architecture mechanism.
         page.locator('[data-kind="job"][data-id="prototype"]').click()
         assert "falsifiable prototype" in page.locator("#detail-title").inner_text()
         assert "adversarial" in page.locator("#detail").inner_text().lower()
 
+        # Rule layer.
         page.locator('[data-kind="rule"][data-id="authority"]').click()
         assert page.locator("#detail-title").inner_text() == "Authority"
         assert "manufacture" in page.locator("#detail").inner_text().lower()
 
+        # Export packet.
         with page.expect_download() as di:
             page.locator("#export").click()
         download = di.value
@@ -116,26 +123,31 @@ def main() -> None:
         serialized = json.dumps(payload)
         assert "What Mila already has" not in serialized and "Stu's dashboard" not in serialized
 
+        # Theme persistence.
         page.locator("#theme").click()
         theme = page.locator("html").get_attribute("data-theme")
         assert theme in {"dark", "light"}
         page.reload(wait_until="networkidle")
         assert page.locator("html").get_attribute("data-theme") == theme
 
+        # Direct-share deep link.
         page.goto(url + "?focus=fundraising", wait_until="networkidle")
         assert page.locator('[data-kind="dashboard"]').get_attribute("class").find("active") >= 0
         assert page.locator("#detail-title").inner_text() == "Fundraising dashboard"
 
+        # Keyboard activation.
         sticky = page.locator('[data-kind="input"][data-id="oss"]')
         sticky.focus()
         page.keyboard.press("Enter")
         assert page.locator("#detail-title").inner_text() == "OSS / community sweep"
 
+        # Ordinary mobile.
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto(url, wait_until="networkidle")
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "dreamboard-mobile.png"), full_page=True)
 
+        # 320px at 200% text.
         page.set_viewport_size({"width": 320, "height": 800})
         page.goto(url + "?focus=fundraising", wait_until="networkidle")
         page.evaluate("document.documentElement.style.fontSize='200%'")
@@ -143,6 +155,7 @@ def main() -> None:
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "dreamboard-mobile-200pct.png"), full_page=True)
 
+        # Reduced motion remains operable.
         reduced = browser.new_context(viewport={"width": 1024, "height": 768}, reduced_motion="reduce")
         rp = reduced.new_page()
         rp.goto(url, wait_until="networkidle")
@@ -150,6 +163,7 @@ def main() -> None:
         assert rp.locator("#detail-title").inner_text() == "Essential Pilotage"
         reduced.close()
 
+        # Standalone file execution.
         standalone = context.new_page()
         standalone.goto((ROOT / "index.html").as_uri(), wait_until="load")
         standalone.locator('[data-kind="dashboard"]').click()
