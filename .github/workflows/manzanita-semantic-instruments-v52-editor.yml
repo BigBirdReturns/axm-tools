@@ -1,0 +1,225 @@
+name: Manzanita semantic instruments v5.2 feature grammar and correction editor
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths: [".github/workflows/manzanita-semantic-instruments-v52-editor.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  feature-grammar-and-editor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: agent/manzanita-semantic-instruments-v5
+      PR_NUMBER: "123"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-instruments-v5
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install semantic feature grammar and local correction editor
+        run: |
+          set -euo pipefail
+          root=review/manzanita-semantic-instruments-v5
+          test -f "$root/index.html"
+          test -f "$root/v5-registration-lock.js"
+          python - <<'PY'
+          from pathlib import Path
+          import base64, mimetypes
+
+          root=Path('review/manzanita-semantic-instruments-v5')
+          html=(root/'index.html').read_text(encoding='utf-8')
+          if 'v52-feature-grammar.css' not in html:
+              html=html.replace('</head>','<link rel="stylesheet" href="v52-feature-grammar.css">\n</head>',1)
+          marker='<script src="v5-registration-lock.js" defer></script>'
+          if 'v52-editor.js' not in html:
+              if marker not in html: raise SystemExit('registration-lock script marker missing')
+              html=html.replace(marker,marker+'\n<script src="v52-editor.js" defer></script>',1)
+          (root/'index.html').write_text(html,encoding='utf-8')
+
+          css=r'''
+          .v52-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}.v52-toolbar button{min-height:44px;border:1px solid rgba(241,236,223,.42);background:transparent;color:#f1ecdf;padding:8px 10px;font:800 8px/1.25 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.07em}.v52-toolbar button[aria-pressed="true"]{background:#ff5b32;color:#111510;border-color:#ff5b32}.v52-toolbar button:disabled{opacity:.32}.v52-legend{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:9px 0 12px}.v52-legend span{display:flex;align-items:center;gap:7px;min-height:32px;color:#c7c9be;font:700 8px/1.2 ui-monospace,monospace;letter-spacing:.04em}.v52-swatch{width:28px;height:16px;border:2px solid currentColor;display:inline-block}.v52-swatch[data-kind="line"]{height:0;border-width:2px 0 0}.v52-swatch[data-kind="dash"]{height:0;border-width:2px 0 0;border-style:dashed}.v52-swatch[data-kind="hatch"]{background:repeating-linear-gradient(135deg,transparent 0 5px,currentColor 5px 7px);opacity:.72}.v52-swatch[data-kind="fill"]{background:currentColor;opacity:.24}.v52-handle{fill:#ff5b32;stroke:#fff;stroke-width:2.5;vector-effect:non-scaling-stroke;cursor:grab}.v52-handle:focus{stroke:#151713;stroke-width:4;outline:none}.v52-handle[data-dragging="true"]{cursor:grabbing;fill:#69c7e4}.v52-handle-index{font:800 10px ui-monospace,monospace;fill:#111510;pointer-events:none}.v52-edit-readout{margin:7px 0 0;color:#ffb49f;font:700 8px/1.35 ui-monospace,monospace}.v52-feature-access-public_sidewalk{stroke-width:9!important;fill:none!important;opacity:.88!important}.v52-feature-access-driveway_crossing{fill:url(#v52-access-hatch)!important;stroke-dasharray:6 4}.v52-feature-access-entry_path{stroke-width:5!important;fill:none!important;stroke-dasharray:10 6;marker-end:url(#v52-arrow-access)}.v52-feature-access-entry_steps{fill:url(#v52-step-hatch)!important}.v52-feature-access-private_drive_side_access{fill:url(#v52-private-hatch)!important;stroke-dasharray:5 5}.v52-feature-shade-visible_canopy_envelope{fill:url(#v52-canopy-hatch)!important;stroke-width:3!important}.v52-feature-shade-structure_shadow_question,.v52-feature-shade-ground_shade_question{fill:url(#v52-question-hatch)!important;stroke-dasharray:9 7}.v52-feature-water-roof_runoff_question,.v52-feature-water-downspout_question,.v52-feature-water-conveyance_question,.v52-feature-water-surface_flow_question{fill:none!important;stroke-dasharray:10 7;marker-end:url(#v52-arrow-water);stroke-width:5!important}.v52-feature-water-capture_opportunity_question{fill:url(#v52-capture-hatch)!important;stroke-width:3!important}.v52-feature-water-irrigation_verification_area,.v52-feature-water-low_point_question{fill:url(#v52-water-question-hatch)!important;stroke-dasharray:8 6}.v52-editing .v5-feature:not(.v51-feature-dim){filter:drop-shadow(0 0 4px rgba(255,255,255,.28))}@media(max-width:760px){.v52-toolbar{grid-template-columns:1fr 1fr}.v52-legend{grid-template-columns:1fr}.v52-toolbar button{font-size:7px}}
+          '''
+          (root/'v52-feature-grammar.css').write_text(css,encoding='utf-8')
+
+          js=r'''
+          (()=>{
+            const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+            const originals=new Map(),edits=new Map(),undo=[],redo=[];let editing=false,selected=null,decorating=false,scheduled=false;
+            const copy=points=>points.map(p=>[Number(p[0]),Number(p[1])]);
+            const runtime=()=>window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__||null;
+            const lock=()=>window.__MANZANITA_SEMANTIC_LOCK_V51__||null;
+            const editKey=(key,id)=>`${key||'none'}:${id}`;
+            function defs(overlay){let d=overlay.querySelector('#v52Defs');if(d)return d;d=document.createElementNS('http://www.w3.org/2000/svg','defs');d.id='v52Defs';d.innerHTML=`
+              <pattern id="v52-access-hatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V12" stroke="#f1ecdf" stroke-width="4" opacity=".55"/></pattern>
+              <pattern id="v52-private-hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V14" stroke="#ff9f85" stroke-width="3" opacity=".5"/></pattern>
+              <pattern id="v52-step-hatch" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M0 2H10M0 7H10" stroke="#f1ecdf" stroke-width="2" opacity=".7"/></pattern>
+              <pattern id="v52-canopy-hatch" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="5" cy="6" r="4" fill="#b8d482" opacity=".24"/><circle cx="14" cy="13" r="5" fill="#b8d482" opacity=".18"/></pattern>
+              <pattern id="v52-question-hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(135)"><path d="M0 0V14" stroke="#b8d482" stroke-width="3" opacity=".32"/></pattern>
+              <pattern id="v52-capture-hatch" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0 6H12M6 0V12" stroke="#69c7e4" stroke-width="2" opacity=".38"/></pattern>
+              <pattern id="v52-water-question-hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V16" stroke="#69c7e4" stroke-width="3" opacity=".32"/></pattern>
+              <marker id="v52-arrow-water" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#69c7e4"/></marker>
+              <marker id="v52-arrow-access" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#f1ecdf"/></marker>`;overlay.prepend(d);return d;}
+            function className(instrument,featureClass){return `v52-feature-${instrument}-${featureClass}`.replace(/[^a-zA-Z0-9_-]/g,'-');}
+            function currentFeature(){const r=runtime();return r?.features?.find(f=>f.id===selected)||null;}
+            function ensureOriginals(){const r=runtime();if(!r?.key)return;r.features.forEach(f=>{const k=editKey(r.key,f.id);if(!originals.has(k))originals.set(k,copy(f.points));if(edits.has(k))f.points=copy(edits.get(k));});}
+            function project(p,l){return [l.rendered.offsetX+p[0]*l.rendered.width,l.rendered.offsetY+p[1]*l.rendered.height];}
+            function unproject(x,y,l){return [Math.max(0,Math.min(1,(x-l.rendered.offsetX)/l.rendered.width)),Math.max(0,Math.min(1,(y-l.rendered.offsetY)/l.rendered.height))];}
+            function decorate(){scheduled=false;if(decorating)return;const r=runtime(),l=lock(),overlay=$('#overlay,svg.overlay,#sceneOverlay');if(!r||!l||!overlay)return;decorating=true;try{ensureOriginals();defs(overlay);overlay.querySelectorAll('.v5-feature').forEach(node=>{const f=r.features.find(row=>row.id===node.dataset.featureId);if(!f)return;node.classList.add(className(r.state.instrument,f.class));});selected=l.selectedFeature||selected;if(editing&&r.result==='rendered_exact_asset_semantics'&&selected)renderHandles(overlay,r,l);else overlay.querySelectorAll('.v52-handle,.v52-handle-index').forEach(n=>n.remove());syncToolbar();}finally{decorating=false;}}
+            function renderHandles(overlay,r,l){overlay.querySelectorAll('.v52-handle,.v52-handle-index').forEach(n=>n.remove());const f=r.features.find(row=>row.id===selected);if(!f)return;overlay.classList.add('v52-editing');f.points.forEach((p,i)=>{const [x,y]=project(p,l),h=document.createElementNS('http://www.w3.org/2000/svg','circle');h.classList.add('v52-handle');h.dataset.featureId=f.id;h.dataset.pointIndex=String(i);h.setAttribute('cx',x);h.setAttribute('cy',y);h.setAttribute('r',10);h.setAttribute('tabindex','0');h.setAttribute('role','slider');h.setAttribute('aria-label',`${f.label} point ${i+1}`);h.addEventListener('pointerdown',startDrag);h.addEventListener('keydown',nudge);overlay.append(h);const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.classList.add('v52-handle-index');t.setAttribute('x',x);t.setAttribute('y',y+3.5);t.setAttribute('text-anchor','middle');t.textContent=String(i+1);overlay.append(t);});}
+            function selectedByV51(){const l=lock();if(l?.selectedFeature&&l.selectedFeature!==selected){selected=l.selectedFeature;schedule();}}
+            function mutate(feature,index,next,kind){const r=runtime(),k=editKey(r.key,feature.id),before=copy(feature.points);undo.push({key:k,featureId:feature.id,before,after:null});redo.length=0;feature.points[index]=next;edits.set(k,copy(feature.points));undo[undo.length-1].after=copy(feature.points);refresh(kind);}
+            function startDrag(event){event.preventDefault();const r=runtime(),l=lock(),f=r?.features?.find(row=>row.id===event.currentTarget.dataset.featureId);if(!r||!l||!f)return;selected=f.id;const index=Number(event.currentTarget.dataset.pointIndex),stage=l.stage?$('#visualStage,.stage,.scene-stage'):null,rect=stage.getBoundingClientRect(),before=copy(f.points),k=editKey(r.key,f.id);event.currentTarget.setPointerCapture?.(event.pointerId);event.currentTarget.dataset.dragging='true';const move=e=>{f.points[index]=unproject(e.clientX-rect.left,e.clientY-rect.top,l);edits.set(k,copy(f.points));refresh('drag')};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);undo.push({key:k,featureId:f.id,before,after:copy(f.points)});redo.length=0;event.currentTarget.dataset.dragging='false';refresh('drag-end')};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up,{once:true});}
+            function nudge(event){if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return;event.preventDefault();const r=runtime(),l=lock(),f=r?.features?.find(row=>row.id===event.currentTarget.dataset.featureId);if(!r||!l||!f)return;selected=f.id;const i=Number(event.currentTarget.dataset.pointIndex),step=event.shiftKey?.01:.002,next=copy(f.points)[i];if(event.key==='ArrowLeft')next[0]-=step;if(event.key==='ArrowRight')next[0]+=step;if(event.key==='ArrowUp')next[1]-=step;if(event.key==='ArrowDown')next[1]+=step;next[0]=Math.max(0,Math.min(1,next[0]));next[1]=Math.max(0,Math.min(1,next[1]));mutate(f,i,next,'keyboard-nudge');}
+            function refresh(reason){document.dispatchEvent(new Event('change',{bubbles:true}));setTimeout(()=>{const l=lock();if(l)l.selectedFeature=selected;schedule();},36);const readout=$('#v52Readout');if(readout)readout.textContent=`LOCAL EDIT · ${reason.toUpperCase()} · EXACT RECEIPT ONLY`;}
+            function undoEdit(){const action=undo.pop();if(!action)return;const r=runtime(),f=r?.features?.find(row=>row.id===action.featureId);if(!r||!f||editKey(r.key,f.id)!==action.key)return;redo.push(action);f.points=copy(action.before);edits.set(action.key,copy(action.before));refresh('undo');}
+            function redoEdit(){const action=redo.pop();if(!action)return;const r=runtime(),f=r?.features?.find(row=>row.id===action.featureId);if(!r||!f||editKey(r.key,f.id)!==action.key)return;undo.push(action);f.points=copy(action.after);edits.set(action.key,copy(action.after));refresh('redo');}
+            function resetEdit(){const r=runtime();if(!r?.key)return;r.features.forEach(f=>{const k=editKey(r.key,f.id),original=originals.get(k);if(original){f.points=copy(original);edits.delete(k);}});undo.length=0;redo.length=0;refresh('reset');}
+            function exportCorrection(){const r=runtime(),l=lock();if(!r?.key||!l)return;const corrections=r.features.map(f=>{const k=editKey(r.key,f.id);return {feature_id:f.id,feature_class:f.class,original_points:copy(originals.get(k)||f.points),corrected_points:copy(f.points),changed:edits.has(k)}});const payload={schema:'manzanita-works/semantic-correction-patch@1',release:'source-adaptive-semantic-v5.2',asset_file:l.assetFile,receipt_key:r.key,instrument:r.state.instrument,source_mode:r.state.mode,corrections,public_effect:'none',authority:'Local review patch only; no observation, field, work, safety, insurance, enforcement, or release authority.'};const blob=new Blob([JSON.stringify(payload,null,2)+'\n'],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='manzanita-semantic-correction-patch.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+            function ensureToolbar(){const panel=$('#v5SemanticLedger');if(!panel||$('#v52Toolbar'))return;const toolbar=document.createElement('div');toolbar.id='v52Toolbar';toolbar.className='v52-toolbar';toolbar.innerHTML='<button id="v52Edit" type="button" aria-pressed="false">EDIT FEATURE</button><button id="v52Undo" type="button">UNDO</button><button id="v52Redo" type="button">REDO</button><button id="v52Reset" type="button">RESET RECEIPT</button><button id="v52Export" type="button">EXPORT CORRECTION</button><button id="v52Done" type="button">DONE</button>';const legend=document.createElement('div');legend.className='v52-legend';legend.innerHTML='<span><i class="v52-swatch" data-kind="fill"></i>CLASSIFIED AREA</span><span><i class="v52-swatch" data-kind="dash"></i>VERIFICATION QUESTION</span><span><i class="v52-swatch" data-kind="line"></i>VISIBLE ROUTE / FLOW</span><span><i class="v52-swatch" data-kind="hatch"></i>UNCERTAIN / BOUNDED</span>';const readout=document.createElement('p');readout.id='v52Readout';readout.className='v52-edit-readout';readout.textContent='RECEIPT LOCKED · REVIEW MODE';panel.querySelector('h3')?.after(toolbar,legend,readout);$('#v52Edit').addEventListener('click',()=>{editing=!editing;$('#v52Edit').setAttribute('aria-pressed',String(editing));schedule()});$('#v52Done').addEventListener('click',()=>{editing=false;$('#v52Edit').setAttribute('aria-pressed','false');schedule()});$('#v52Undo').addEventListener('click',undoEdit);$('#v52Redo').addEventListener('click',redoEdit);$('#v52Reset').addEventListener('click',resetEdit);$('#v52Export').addEventListener('click',exportCorrection);syncToolbar();}
+            function syncToolbar(){ensureToolbar();const r=runtime(),available=r?.result==='rendered_exact_asset_semantics'&&Boolean((lock()||{}).selectedFeature||selected);const edit=$('#v52Edit');if(edit)edit.disabled=!available;const u=$('#v52Undo'),rd=$('#v52Redo'),reset=$('#v52Reset'),ex=$('#v52Export'),done=$('#v52Done');if(u)u.disabled=!undo.length;if(rd)rd.disabled=!redo.length;if(reset)reset.disabled=!r?.key;if(ex)ex.disabled=!r?.key;if(done)done.disabled=!editing;}
+            function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(()=>requestAnimationFrame(()=>{scheduled=false;selectedByV51();decorate();}));}}
+            document.addEventListener('click',schedule,true);document.addEventListener('change',schedule,true);document.addEventListener('DOMContentLoaded',()=>{const overlay=$('#overlay,svg.overlay,#sceneOverlay');if(overlay)new MutationObserver(schedule).observe(overlay,{childList:true,subtree:true,attributes:true});schedule();});
+          })();
+          '''
+          (root/'v52-editor.js').write_text(js,encoding='utf-8')
+
+          standalone=(root/'index.html').read_text(encoding='utf-8')
+          for name in ('style.css','v5-semantic.css','v5-registration-lock.css','v52-feature-grammar.css'):
+              standalone=standalone.replace(f'<link rel="stylesheet" href="{name}">','<style>'+(root/name).read_text(encoding='utf-8')+'</style>')
+          for name in ('app.js','v5-semantic.js','v5-registration-lock.js','v52-editor.js'):
+              standalone=standalone.replace(f'<script src="{name}" defer></script>','<script>'+(root/name).read_text(encoding='utf-8')+'</script>')
+          for asset in sorted((root/'assets').iterdir()):
+              if asset.is_file():
+                  mime=mimetypes.guess_type(asset.name)[0] or 'application/octet-stream';uri='data:'+mime+';base64,'+base64.b64encode(asset.read_bytes()).decode('ascii');standalone=standalone.replace('assets/'+asset.name,uri)
+          (root/'STANDALONE.html').write_text(standalone,encoding='utf-8')
+          PY
+
+      - name: Install browser and image libraries
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+
+      - name: Exercise feature grammar, editing, undo, reset, and export
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification';out.mkdir(exist_ok=True)
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+          report={'schema':'manzanita-works/semantic-editor-v52-browser@1','result':'HOLD','checks':{},'failures':[],'page_errors':[],'public_route_effect':'none'}
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome');page=browser.new_page(viewport={'width':1600,'height':1000},accept_downloads=True);page.on('pageerror',lambda e:report['page_errors'].append(str(e)));page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                  def setstate(ap,ins,mode='reference'):
+                      for sel in (f'[data-aperture="{ap}"]',f'[data-mode="{mode}"]',f'[data-instrument="{ins}"]'):page.locator(sel).first.click();page.wait_for_timeout(60)
+                  setstate('street','access');
+                  access=page.locator('[data-feature-class="public_sidewalk"]');report['checks']['access_public_sidewalk_nodes']=access.count();
+                  if not access.count() or float(access.first.get_attribute('stroke-width') or 0)<8:report['failures'].append('public sidewalk did not use semantic band grammar')
+                  setstate('household','shade');shade=page.locator('[data-feature-class="visible_canopy_envelope"]');report['checks']['shade_nodes']=shade.count();
+                  if not shade.count() or 'v52-canopy-hatch' not in (shade.first.get_attribute('fill') or ''):report['failures'].append('shade canopy did not use semantic canopy grammar')
+                  setstate('household','water');flow=page.locator('[data-feature-class="surface_flow_question"]');report['checks']['water_flow_nodes']=flow.count();
+                  if not flow.count() or 'v52-arrow-water' not in (flow.first.get_attribute('marker-end') or ''):report['failures'].append('water flow question lacks directional semantic grammar')
+
+                  setstate('street','access');page.locator('.v51-badge').first.click();page.locator('#v52Edit').click();page.wait_for_timeout(60);handles=page.locator('.v52-handle');report['checks']['edit_handle_count']=handles.count();
+                  if not handles.count():report['failures'].append('edit mode produced no governed handles')
+                  before=page.evaluate('window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__.features.find(f=>f.id===window.__MANZANITA_SEMANTIC_LOCK_V51__.selectedFeature).points[0]')
+                  handles.first.focus();page.keyboard.press('ArrowRight');page.wait_for_timeout(90);after=page.evaluate('window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__.features.find(f=>f.id===window.__MANZANITA_SEMANTIC_LOCK_V51__.selectedFeature).points[0]')
+                  report['checks']['keyboard_nudge_changed']=before!=after
+                  if before==after:report['failures'].append('keyboard nudge did not change selected point')
+                  page.locator('#v52Undo').click();page.wait_for_timeout(90);undone=page.evaluate('window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__.features.find(f=>f.id===window.__MANZANITA_SEMANTIC_LOCK_V51__.selectedFeature).points[0]')
+                  report['checks']['undo_restored']=undone==before
+                  if undone!=before:report['failures'].append('undo did not restore exact receipt point')
+                  handles=page.locator('.v52-handle');handles.first.focus();page.keyboard.press('Shift+ArrowRight');page.wait_for_timeout(80)
+                  with page.expect_download() as info:page.locator('#v52Export').click()
+                  export=out/'semantic-correction-patch.json';info.value.save_as(export);payload=json.loads(export.read_text());report['checks']['export']={'schema':payload.get('schema'),'asset_file':payload.get('asset_file'),'receipt_key':payload.get('receipt_key'),'changed':sum(1 for row in payload.get('corrections',[]) if row.get('changed'))}
+                  if payload.get('schema')!='manzanita-works/semantic-correction-patch@1' or payload.get('public_effect')!='none' or report['checks']['export']['changed']<1:report['failures'].append('correction export lost identity or change custody')
+                  reference_key=payload.get('receipt_key');page.locator('[data-mode="provider"]').first.click();page.wait_for_timeout(90);provider=page.evaluate('window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__');report['checks']['provider_receipt_changed']=provider.get('key')!=reference_key
+                  if provider.get('key')==reference_key:report['failures'].append('provider scene inherited reference receipt')
+                  page.locator('[data-mode="map"]').first.click();page.wait_for_timeout(70);report['checks']['map_handles']=page.locator('.v52-handle').count();
+                  if report['checks']['map_handles'] or page.locator('[data-feature-id]').count():report['failures'].append('map-only retained editor or geometry')
+                  page.close()
+
+                  for label,w,h in [('mobile',390,844),('compact',320,720)]:
+                      p=browser.new_page(viewport={'width':w,'height':h});p.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle');
+                      for sel in ('[data-aperture="street"]','[data-instrument="access"]'):p.locator(sel).first.click();p.wait_for_timeout(60)
+                      p.locator('.v51-badge').first.click();p.locator('#v52Edit').click();p.wait_for_timeout(60);ov=p.evaluate('Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-innerWidth');floor=p.evaluate('Math.min(...[...document.querySelectorAll("button")].filter(n=>{const b=n.getBoundingClientRect(),s=getComputedStyle(n);return b.width>0&&b.height>0&&s.display!=="none"&&s.visibility!=="hidden"}).map(n=>n.getBoundingClientRect().height))');report['checks'][label]={'overflow':ov,'minimum_button_height':floor,'handles':p.locator('.v52-handle').count()};
+                      if ov>2:report['failures'].append(f'{label} horizontal overflow {ov}')
+                      if floor<43.5:report['failures'].append(f'{label} target floor {floor}')
+                      if not p.locator('.v52-handle').count():report['failures'].append(f'{label} edit handles absent')
+                      p.close()
+                  browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          if report['page_errors']:report['failures'].append('page errors present')
+          report['result']='PASS' if not report['failures'] else 'FAIL';(out/'SEMANTIC_EDITOR_V52.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2));assert report['result']=='PASS',report['failures']
+          PY
+
+      - name: Render semantic grammar and correction proof
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from PIL import Image,ImageDraw,ImageOps
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification/semantic-editor-v52';out.mkdir(parents=True,exist_ok=True)
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();captures=[]
+          states=[('access-classified','street','access','reference',False),('access-edit-mode','street','access','reference',True),('access-provider','street','access','provider',False),('shade-canopy','household','shade','reference',False),('shade-street','street','shade','reference',False),('water-runoff','household','water','reference',False),('water-property','property','water','reference',False),('map-refusal','street','access','map',False)]
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome')
+                  for name,ap,ins,mode,edit in states:
+                      page=browser.new_page(viewport={'width':1600,'height':1000});page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                      for sel in (f'[data-aperture="{ap}"]',f'[data-mode="{mode}"]',f'[data-instrument="{ins}"]'):page.locator(sel).first.click();page.wait_for_timeout(60)
+                      if page.locator('.v51-badge').count():page.locator('.v51-badge').first.click();page.wait_for_timeout(35)
+                      if edit:page.locator('#v52Edit').click();page.wait_for_timeout(60)
+                      path=out/f'{name}.png';page.screenshot(path=str(path),full_page=False);captures.append(path);page.close()
+                  browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          tw,th,lh=800,500,56;sheet=Image.new('RGB',(1600,4*(th+lh)),'#101510');draw=ImageDraw.Draw(sheet)
+          for i,path in enumerate(captures):
+              with Image.open(path) as im:thumb=ImageOps.fit(im.convert('RGB'),(tw,th),Image.Resampling.LANCZOS)
+              x=(i%2)*tw;y=(i//2)*(th+lh);sheet.paste(thumb,(x,y));draw.rectangle((x,y+th,x+tw,y+th+lh),fill='#efe9da');draw.text((x+15,y+th+17),path.stem.upper(),fill='#111510')
+          sheet.save(out/'SEMANTIC_GRAMMAR_AND_EDITOR.jpg',quality=94);(out/'CAPTURE_RECEIPT.json').write_text(json.dumps({'result':'PASS','captures':[p.name for p in captures],'contact_sheet':'SEMANTIC_GRAMMAR_AND_EDITOR.jpg'},indent=2)+'\n')
+          PY
+
+      - name: Retain v5.2 and remove this actuator
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-semantic-instruments-v52-editor.yml
+          git config user.name "manzanita-semantic-editor-v52"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A review/manzanita-semantic-instruments-v5 .github/workflows/manzanita-semantic-instruments-v52-editor.yml
+          git diff --cached --check
+          git commit -m "Manzanita: add semantic feature grammar and correction editor v5.2 [skip ci]"
+          git push origin HEAD:"$BRANCH"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Semantic instruments now use feature-class-specific grammar. Water paths carry direction, shade separates canopy envelopes from verification questions, Access separates public, crossing, path, steps, and private-side classes, and the local correction editor supports keyboard or pointer adjustment, undo, reset, exact receipt export, and source-change isolation."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-semantic-editor-v52-${{ github.sha }}
+          path: review/manzanita-semantic-instruments-v5/qualification/semantic-editor-v52
+          if-no-files-found: error
+          retention-days: 30
