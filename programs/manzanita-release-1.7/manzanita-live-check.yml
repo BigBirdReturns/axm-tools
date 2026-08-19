@@ -1,0 +1,207 @@
+name: Manzanita Works v1.7.0 live semantic gate
+
+on:
+  workflow_run:
+    workflows: ["PTA tracker fetch + deploy"]
+    types: [completed]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  live:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      MANZANITA_BASE_URL: https://bigbirdreturns.github.io/axm-tools/manzanita
+      MANZANITA_SOURCE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      PAGES_RUN_ID: ${{ github.event.workflow_run.id || github.run_id }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deterministic image and browser libraries
+        id: install
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          mkdir -p /tmp/manzanita-live
+          {
+            python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+            python -m playwright install chromium
+          } 2>&1 | tee /tmp/manzanita-live/install.log
+
+      - name: Wait for v1.7.0 and verify every qualified public byte
+        id: bytes
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/manzanita-live/files
+          exec > >(tee /tmp/manzanita-live/bytes.log) 2>&1
+          for attempt in $(seq 1 45); do
+            code=$(curl -L -sS -o /tmp/manzanita-live/index.html -w '%{http_code}' "$MANZANITA_BASE_URL/?v=$MANZANITA_SOURCE_SHA" || true)
+            if [ "$code" = "200" ] \
+              && grep -q 'data-release="1.7.0"' /tmp/manzanita-live/index.html \
+              && grep -q 'data-visual-system="semantic-source-adaptive-place-fabric"' /tmp/manzanita-live/index.html; then
+              break
+            fi
+            if [ "$attempt" = "45" ]; then
+              echo "Public route did not expose the exact v1.7.0 semantic release"
+              head -100 /tmp/manzanita-live/index.html || true
+              exit 1
+            fi
+            sleep 10
+          done
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          from urllib.parse import quote, urljoin
+          from urllib.request import Request, urlopen
+
+          base = os.environ['MANZANITA_BASE_URL'].rstrip('/') + '/'
+          source = quote(os.environ['MANZANITA_SOURCE_SHA'], safe='')
+          qualification = json.loads(Path('manzanita/QUALIFICATION.json').read_text())
+          assert qualification['release'] == '1.7.0'
+          assert qualification['visual_system'] == 'semantic-source-adaptive-place-fabric'
+          observed = {}
+          out = Path('/tmp/manzanita-live/files')
+          for relative, expected in sorted(qualification['files'].items()):
+              url = urljoin(base, relative) + f'?v={source}'
+              request = Request(url, headers={'User-Agent': 'manzanita-live-gate/1.7.0'})
+              with urlopen(request, timeout=60) as response:
+                  if response.status != 200:
+                      raise SystemExit(f'HTTP {response.status} for {relative}')
+                  payload = response.read()
+              digest = hashlib.sha256(payload).hexdigest()
+              if len(payload) != expected['bytes'] or digest != expected['sha256']:
+                  raise SystemExit(f'live byte mismatch for {relative}: observed=({len(payload)}, {digest}) expected=({expected["bytes"]}, {expected["sha256"]})')
+              target = out / relative
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_bytes(payload)
+              observed[relative] = {'bytes': len(payload), 'sha256': digest}
+          Path('/tmp/manzanita-live/files.json').write_text(json.dumps(observed, indent=2, sort_keys=True) + '\n')
+          print(json.dumps({'result': 'PASS', 'qualified_files': len(observed)}, indent=2))
+          PY
+
+      - name: Replay semantic browser and registration-lock campaign against Pages
+        id: browser
+        if: steps.install.outcome == 'success' && steps.bytes.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python manzanita/tests/browser_test.py \
+            --url "$MANZANITA_BASE_URL/?v=$MANZANITA_SOURCE_SHA" \
+            --output /tmp/manzanita-live/browser 2>&1 \
+            | tee /tmp/manzanita-live/browser.log
+
+      - name: Retain live evidence artifact
+        id: upload
+        if: steps.browser.outcome == 'success'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-semantic-place-fabric-v1.7.0-live-${{ env.PAGES_RUN_ID }}
+          path: |
+            /tmp/manzanita-live/files.json
+            /tmp/manzanita-live/browser
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Build durable public observation receipt
+        id: receipt
+        if: always()
+        env:
+          INSTALL_OUTCOME: ${{ steps.install.outcome }}
+          BYTE_OUTCOME: ${{ steps.bytes.outcome }}
+          BROWSER_OUTCOME: ${{ steps.browser.outcome }}
+          UPLOAD_OUTCOME: ${{ steps.upload.outcome }}
+          LIVE_RUN_ID: ${{ github.run_id }}
+          LIVE_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          def tail(path, limit=10000):
+              p = Path(path)
+              return p.read_text(encoding='utf-8', errors='replace')[-limit:] if p.exists() else ''
+
+          outcomes = {
+              'install': os.environ['INSTALL_OUTCOME'],
+              'exact_qualified_files': os.environ['BYTE_OUTCOME'],
+              'browser_and_registration_lock': os.environ['BROWSER_OUTCOME'],
+              'evidence_retention': os.environ['UPLOAD_OUTCOME'],
+          }
+          passed = all(value == 'success' for value in outcomes.values())
+          files = json.loads(Path('/tmp/manzanita-live/files.json').read_text()) if Path('/tmp/manzanita-live/files.json').exists() else {}
+          browser = json.loads(Path('/tmp/manzanita-live/browser/BROWSER_CAMPAIGN.json').read_text()) if Path('/tmp/manzanita-live/browser/BROWSER_CAMPAIGN.json').exists() else {}
+          receipt = {
+              'schema': 'manzanita-works/live-pages-receipt@3',
+              'release': '1.7.0',
+              'visual_system': 'semantic-source-adaptive-place-fabric',
+              'state': 'PASS' if passed else 'FAIL',
+              'observed_at': datetime.now(timezone.utc).isoformat(),
+              'public_route': os.environ['MANZANITA_BASE_URL'] + '/',
+              'pages_run_id': os.environ['PAGES_RUN_ID'],
+              'source_sha': os.environ['MANZANITA_SOURCE_SHA'],
+              'live_gate_run_id': int(os.environ['LIVE_RUN_ID']),
+              'live_gate_run_attempt': int(os.environ['LIVE_RUN_ATTEMPT']),
+              'outcomes': outcomes,
+              'qualified_files': files,
+              'browser_campaign': browser,
+              'failure_receipts': {
+                  'install_tail': tail('/tmp/manzanita-live/install.log') if outcomes['install'] != 'success' else '',
+                  'bytes_tail': tail('/tmp/manzanita-live/bytes.log') if outcomes['exact_qualified_files'] != 'success' else '',
+                  'browser_tail': tail('/tmp/manzanita-live/browser.log') if outcomes['browser_and_registration_lock'] != 'success' else '',
+              },
+              'authority': {
+                  'external_effect': 'none',
+                  'field_authority': 'none',
+                  'adverse_action_authority': 'none',
+                  'successor_program_effect': 'none',
+                  'canonical_task_count_effect': 'none',
+              },
+          }
+          target = Path('/tmp/manzanita-live/receipt.json')
+          target.write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
+          Path('/tmp/manzanita-live/state.txt').write_text(receipt['state'] + '\n')
+          PY
+
+      - name: Commit the observation to the evidence branch
+        if: always() && github.event_name == 'workflow_run'
+        run: |
+          set -euo pipefail
+          cp /tmp/manzanita-live/receipt.json /tmp/manzanita-live-receipt.json
+          git fetch origin evidence/manzanita-live || true
+          if git show-ref --verify --quiet refs/remotes/origin/evidence/manzanita-live; then
+            git checkout -B evidence/manzanita-live origin/evidence/manzanita-live
+          else
+            git checkout --orphan evidence/manzanita-live
+            git rm -rf .
+          fi
+          mkdir -p receipts/v1.7.0
+          cp /tmp/manzanita-live-receipt.json "receipts/v1.7.0/$PAGES_RUN_ID.json"
+          git config user.name "manzanita-live-gate"
+          git config user.email "actions@users.noreply.github.com"
+          git add "receipts/v1.7.0/$PAGES_RUN_ID.json"
+          if ! git diff --cached --quiet; then
+            git commit -m "Manzanita: retain v1.7.0 live observation $PAGES_RUN_ID"
+            git push origin HEAD:evidence/manzanita-live
+          fi
+
+      - name: Enforce live PASS
+        if: always()
+        run: test "$(cat /tmp/manzanita-live/state.txt)" = "PASS"
