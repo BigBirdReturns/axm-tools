@@ -66,7 +66,24 @@ jobs:
           root=programs/manzanita-semantic-access-v4
           rm -rf "$root/src"
           mkdir -p "$root/src"
-          cat "$root"/SOURCE_BUNDLE.* | base64 --decode | tar -xzf - -C "$root/src"
+          cat \
+            "$root/SOURCE_BUNDLE.00" \
+            "$root/SOURCE_BUNDLE.01" \
+            "$root/SOURCE_BUNDLE.02" \
+            "$root/SOURCE_BUNDLE.030" \
+            "$root/SOURCE_BUNDLE.0310" \
+            "$root/SOURCE_BUNDLE.0311" \
+            "$root/SOURCE_BUNDLE.0312" \
+            "$root/SOURCE_BUNDLE.0320" \
+            "$root/SOURCE_BUNDLE.0321" \
+            "$root/SOURCE_BUNDLE.0322" \
+            "$root/SOURCE_BUNDLE.04" \
+            > /tmp/manzanita-semantic-source.b64
+          test "$(git hash-object /tmp/manzanita-semantic-source.b64)" = "f432b5789a2aea713da2388491de17950f48adb1"
+          test "$(sha256sum /tmp/manzanita-semantic-source.b64 | cut -d' ' -f1)" = "f09cab9c757cbdfd82c621cea1c6d9f05e57825dde96d76c6e93ca597d3d3c5a"
+          base64 --decode /tmp/manzanita-semantic-source.b64 > /tmp/manzanita-semantic-source.tar.gz
+          test "$(sha256sum /tmp/manzanita-semantic-source.tar.gz | cut -d' ' -f1)" = "4dd6f17806c494d4feba801278d02e5a7560021988adf9bcb5de27b153345319"
+          tar -xzf /tmp/manzanita-semantic-source.tar.gz -C "$root/src"
           python -m py_compile \
             "$root/src/build_review.py" \
             "$root/src/tests/test_semantic_contract.py" \
