@@ -5,6 +5,11 @@ on:
     branches: [agent/manzanita-works-live-observation-v0-2]
     paths:
       - ".github/workflows/manzanita-works-live-observe-v0-2.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/manzanita-works-live-observe-v0-2.yml"
+      - "manzanita-works/RELEASE_RECEIPT.json"
+      - ".github/manzanita-works-live-receipts/**"
   workflow_dispatch: {}
 
 permissions:
