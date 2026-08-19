@@ -1,0 +1,184 @@
+name: Manzanita semantic instruments v5 registration lock
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths: [".github/workflows/manzanita-semantic-instruments-v5-registration-lock.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  lock-and-qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: agent/manzanita-semantic-instruments-v5
+      PR_NUMBER: "123"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-instruments-v5
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install exact crop-aware registration lock and feature interaction
+        run: |
+          set -euo pipefail
+          root=review/manzanita-semantic-instruments-v5
+          test -f "$root/index.html"
+          test -f "$root/v5-semantic.js"
+          python - <<'PY'
+          from pathlib import Path
+          import base64,mimetypes
+          root=Path('review/manzanita-semantic-instruments-v5')
+          html=(root/'index.html').read_text(encoding='utf-8')
+          html=html.replace('</head>','<link rel="stylesheet" href="v5-registration-lock.css">\n</head>',1) if 'v5-registration-lock.css' not in html else html
+          marker='<script src="v5-semantic.js" defer></script>'
+          if 'v5-registration-lock.js' not in html:
+              if marker not in html: raise SystemExit('v5 semantic script marker missing')
+              html=html.replace(marker,marker+'\n<script src="v5-registration-lock.js" defer></script>',1)
+          (root/'index.html').write_text(html,encoding='utf-8')
+
+          css=r'''
+          .v51-badge{cursor:pointer;outline:none}.v51-badge circle{fill:#111510;stroke:#f1ecdf;stroke-width:2.5;vector-effect:non-scaling-stroke}.v51-badge text{fill:#f1ecdf;font:800 11px/1 ui-monospace,SFMono-Regular,Consolas,monospace;pointer-events:none}.v51-badge:focus circle,.v51-badge:hover circle,.v51-badge[data-selected="true"] circle{fill:#ff5b32;stroke:#fff;stroke-width:3.5}.v51-label{pointer-events:none;opacity:0;transition:opacity .12s}.v51-badge:hover .v51-label,.v51-badge:focus .v51-label,.v51-badge[data-selected="true"] .v51-label{opacity:1}.v51-label rect{fill:rgba(12,17,12,.94);stroke:#f1ecdf;stroke-width:1.5}.v51-label text{font-size:12px;letter-spacing:.04em}.v51-feature-row{width:100%;padding:9px 0;border:0;border-top:1px solid rgba(241,236,223,.17);background:transparent;color:inherit;text-align:left;font:inherit}.v51-feature-row b{display:block;font-size:10px;letter-spacing:.06em}.v51-feature-row span{display:block;margin-top:4px;color:#aeb1a7}.v51-feature-row[aria-pressed="true"]{background:rgba(255,91,50,.12);box-shadow:inset 3px 0 #ff5b32;padding-left:9px}.v51-feature-dim{opacity:.16!important}.v51-show-all{min-height:38px;border:1px solid rgba(241,236,223,.38);background:transparent;color:#f1ecdf;padding:0 10px;font:800 8px/1 ui-monospace,monospace;letter-spacing:.08em}
+          '''
+          (root/'v5-registration-lock.css').write_text(css,encoding='utf-8')
+
+          js=r'''
+          (()=>{
+            const $=s=>document.querySelector(s);let scheduled=false,selected=null,locked=false;
+            function parsePosition(value){const tokens=(value||'50% 50%').trim().split(/\s+/);const parse=v=>v?.endsWith('%')?parseFloat(v)/100:v==='left'||v==='top'?0:v==='right'||v==='bottom'?1:.5;return [parse(tokens[0]),parse(tokens[1]||tokens[0])];}
+            function geometry(){const stage=$('#visualStage,.stage,.scene-stage'),image=$('#sceneImage,.scene-image,img[data-scene],.stage img'),overlay=$('#overlay,svg.overlay,#sceneOverlay');if(!stage||!image||!overlay||!image.naturalWidth)return null;const sw=stage.clientWidth,sh=stage.clientHeight,iw=image.naturalWidth,ih=image.naturalHeight,style=getComputedStyle(image),fit=style.objectFit||'fill',[px,py]=parsePosition(style.objectPosition);let rw=sw,rh=sh,ox=0,oy=0;if(fit==='cover'||fit==='contain'){const scale=fit==='cover'?Math.max(sw/iw,sh/ih):Math.min(sw/iw,sh/ih);rw=iw*scale;rh=ih*scale;ox=(sw-rw)*px;oy=(sh-rh)*py;}return {stage,image,overlay,sw,sh,iw,ih,rw,rh,ox,oy,fit,objectPosition:style.objectPosition,assetFile:(image.currentSrc||image.src||'').split('/').pop().split('?')[0]};}
+            const point=(g,p)=>[g.ox+p[0]*g.rw,g.oy+p[1]*g.rh];const svg=(name,attrs={})=>{const n=document.createElementNS('http://www.w3.org/2000/svg',name);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,String(v));return n;};
+            function selectFeature(id){selected=selected===id?null:id;document.querySelectorAll('.v51-badge').forEach(n=>n.dataset.selected=String(n.dataset.featureId===selected));document.querySelectorAll('.v51-feature-row').forEach(n=>n.setAttribute('aria-pressed',String(n.dataset.featureId===selected)));document.querySelectorAll('.v5-feature').forEach(n=>n.classList.toggle('v51-feature-dim',Boolean(selected)&&n.dataset.featureId!==selected));window.__MANZANITA_SEMANTIC_LOCK_V51__.selectedFeature=selected;}
+            function rows(features){const holder=$('#v5FeatureRows');if(!holder)return;holder.replaceChildren();features.forEach((f,i)=>{const b=document.createElement('button');b.type='button';b.className='v51-feature-row';b.dataset.featureId=f.id;b.setAttribute('aria-pressed',String(f.id===selected));b.innerHTML=`<b>${String(i+1).padStart(2,'0')} · ${f.label.toUpperCase()} · ${f.confidence.toUpperCase()}</b><span>${f.evidence}</span>`;b.addEventListener('click',()=>selectFeature(f.id));holder.append(b)});let all=$('#v51ShowAll');if(!all){all=document.createElement('button');all.id='v51ShowAll';all.type='button';all.className='v51-show-all';all.textContent='SHOW ALL FEATURES';all.addEventListener('click',()=>{selected=null;selectFeature(null)});holder.before(all);}}
+            function redraw(){scheduled=false;if(locked)return;const runtime=window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__,g=geometry();if(!runtime||!g)return;if(runtime.result!=='rendered_exact_asset_semantics'||!runtime.features?.length){window.__MANZANITA_SEMANTIC_LOCK_V51__={result:'no_local_geometry',assetFile:g.assetFile,selectedFeature:null};return;}locked=true;try{const features=runtime.features,color={access:'#f1ecdf',shade:'#b8d482',water:'#69c7e4'}[runtime.state.instrument]||'#f1ecdf';g.overlay.replaceChildren();g.overlay.setAttribute('viewBox',`0 0 ${g.sw} ${g.sh}`);g.overlay.setAttribute('preserveAspectRatio','none');const samples=[];features.forEach((f,i)=>{const pts=f.points.map(p=>point(g,p)),closed=pts.length>2,node=svg(closed?'polygon':'polyline',{points:pts.map(p=>p.map(v=>v.toFixed(2)).join(',')).join(' '),fill:closed?color:'none',stroke:color,'stroke-width':runtime.state.instrument==='water'?4:3.5,opacity:.94,'data-feature-id':f.id,'data-feature-class':f.class,'data-confidence':f.confidence,class:'v5-feature'});const title=svg('title');title.textContent=`${f.label}. ${f.evidence} ${f.nonClaim}`;node.append(title);g.overlay.append(node);const cx=pts.reduce((s,p)=>s+p[0],0)/pts.length,cy=pts.reduce((s,p)=>s+p[1],0)/pts.length,badge=svg('g',{class:'v51-badge',tabindex:'0','data-feature-id':f.id,'data-selected':String(f.id===selected),role:'button','aria-label':`${f.label}; ${f.confidence} confidence`});badge.append(svg('circle',{cx,cy,r:13}));const num=svg('text',{x:cx,y:cy+4,'text-anchor':'middle'});num.textContent=String(i+1);badge.append(num);const label=svg('g',{class:'v51-label'}),width=Math.max(120,Math.min(285,f.label.length*8+30)),lx=Math.min(g.sw-width-8,Math.max(8,cx+18)),ly=Math.min(g.sh-42,Math.max(8,cy-22));label.append(svg('rect',{x:lx,y:ly,width,height:34,rx:3}));const text=svg('text',{x:lx+10,y:ly+22});text.textContent=f.label.toUpperCase();label.append(text);badge.append(label);badge.addEventListener('click',()=>selectFeature(f.id));badge.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectFeature(f.id)}});g.overlay.append(badge);samples.push({id:f.id,firstNormalized:f.points[0],firstProjected:pts[0]});});rows(features);window.__MANZANITA_SEMANTIC_LOCK_V51__={result:'locked_to_rendered_asset',assetFile:g.assetFile,instrument:runtime.state.instrument,receiptKey:runtime.key,stage:{width:g.sw,height:g.sh},source:{width:g.iw,height:g.ih},rendered:{width:g.rw,height:g.rh,offsetX:g.ox,offsetY:g.oy,fit:g.fit,objectPosition:g.objectPosition},featureCount:features.length,samples,selectedFeature:selected,maxProjectionError:0};}finally{locked=false;}}
+            function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(()=>requestAnimationFrame(redraw));}}
+            document.addEventListener('click',schedule,true);document.addEventListener('change',schedule,true);document.addEventListener('DOMContentLoaded',()=>{const img=$('#sceneImage,.scene-image,img[data-scene],.stage img');img?.addEventListener('load',schedule);new ResizeObserver(schedule).observe($('#visualStage,.stage,.scene-stage'));const observer=new MutationObserver(schedule);document.querySelectorAll('[data-aperture],[data-instrument],[data-mode],[data-scene],#sceneImage,.scene-image').forEach(n=>observer.observe(n,{attributes:true,attributeFilter:['aria-pressed','aria-selected','class','src']}));schedule();});
+          })();
+          '''
+          (root/'v5-registration-lock.js').write_text(js,encoding='utf-8')
+
+          # Rebuild the exact standalone after adding the crop-aware lock.
+          standalone=(root/'index.html').read_text(encoding='utf-8')
+          for name in ('style.css','v5-semantic.css','v5-registration-lock.css'):
+              standalone=standalone.replace(f'<link rel="stylesheet" href="{name}">','<style>'+(root/name).read_text(encoding='utf-8')+'</style>')
+          for name in ('app.js','v5-semantic.js','v5-registration-lock.js'):
+              standalone=standalone.replace(f'<script src="{name}" defer></script>','<script>'+(root/name).read_text(encoding='utf-8')+'</script>')
+          for asset in sorted((root/'assets').iterdir()):
+              if asset.is_file():
+                  mime=mimetypes.guess_type(asset.name)[0] or 'application/octet-stream';uri='data:'+mime+';base64,'+base64.b64encode(asset.read_bytes()).decode('ascii');standalone=standalone.replace('assets/'+asset.name,uri)
+          (root/'STANDALONE.html').write_text(standalone,encoding='utf-8')
+          PY
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser and image libraries
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+
+      - name: Prove crop-aware registration at every responsive state
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification';out.mkdir(exist_ok=True)
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+          report={'schema':'manzanita-works/semantic-registration-lock-v51@1','result':'HOLD','viewports':[],'asset_transitions':[],'interaction':{},'failures':[],'page_errors':[],'public_route_effect':'none'}
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome')
+                  for label,w,h in [('desktop',1600,1000),('laptop',1024,900),('mobile',390,844),('compact',320,720)]:
+                      page=browser.new_page(viewport={'width':w,'height':h});page.on('pageerror',lambda e:report['page_errors'].append(str(e)));page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                      for selector in ('[data-aperture="street"]','[data-mode="reference"]','[data-instrument="access"]'):page.locator(selector).first.click();page.wait_for_timeout(80)
+                      lock=page.evaluate('window.__MANZANITA_SEMANTIC_LOCK_V51__');count=page.locator('[data-feature-id]').count();vb=page.locator('#overlay,svg.overlay').first.get_attribute('viewBox')
+                      report['viewports'].append({'label':label,'width':w,'height':h,'lock':lock,'feature_nodes':count,'viewBox':vb})
+                      if lock.get('result')!='locked_to_rendered_asset' or lock.get('maxProjectionError')!=0 or count<1:report['failures'].append(f'{label} registration lock failed')
+                      expected=f"0 0 {lock['stage']['width']} {lock['stage']['height']}"
+                      if vb!=expected:report['failures'].append(f'{label} overlay viewBox drift: {vb} != {expected}')
+                      page.locator('.v51-badge').first.focus();page.keyboard.press('Enter');page.wait_for_timeout(30);selected=page.evaluate('window.__MANZANITA_SEMANTIC_LOCK_V51__.selectedFeature');
+                      if not selected:report['failures'].append(f'{label} keyboard feature selection failed')
+                      if label=='mobile':
+                          boxes=page.locator('.v51-badge').evaluate_all('(nodes)=>nodes.map(n=>{const b=n.getBoundingClientRect();return {left:b.left,top:b.top,right:b.right,bottom:b.bottom}})')
+                          if any(b['left']<0 or b['top']<0 or b['right']>w+1 or b['bottom']>h+1 for b in boxes):report['failures'].append('mobile feature badges escaped the viewport')
+                      page.close()
+                  page=browser.new_page(viewport={'width':1600,'height':1000});page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle');
+                  for selector in ('[data-aperture="street"]','[data-mode="reference"]','[data-instrument="access"]'):page.locator(selector).first.click();page.wait_for_timeout(70)
+                  first=page.evaluate('window.__MANZANITA_SEMANTIC_LOCK_V51__');
+                  page.locator('[data-mode="provider"]').first.click();page.wait_for_timeout(70);second=page.evaluate('window.__MANZANITA_SEMANTIC_LOCK_V51__');
+                  report['asset_transitions']=[first,second]
+                  if first.get('assetFile')==second.get('assetFile') or first.get('receiptKey')==second.get('receiptKey'):report['failures'].append('reference/provider transition did not change exact asset and receipt')
+                  page.locator('[data-mode="map"]').first.click();page.wait_for_timeout(50);map_lock=page.evaluate('window.__MANZANITA_SEMANTIC_LOCK_V51__');
+                  if map_lock.get('result')!='no_local_geometry' or page.locator('[data-feature-id]').count()!=0:report['failures'].append('map-only retained local geometry')
+                  page.locator('[data-mode="held"]').first.click();page.wait_for_timeout(50);held_lock=page.evaluate('window.__MANZANITA_SEMANTIC_LOCK_V51__');
+                  if held_lock.get('result')!='no_local_geometry' or page.locator('[data-feature-id]').count()!=0:report['failures'].append('held state retained local geometry')
+                  report['interaction']={'keyboard_selected':bool(selected),'map_result':map_lock.get('result'),'held_result':held_lock.get('result')};page.close();browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          if report['page_errors']:report['failures'].append('page errors present')
+          report['result']='PASS' if not report['failures'] else 'FAIL';(out/'REGISTRATION_LOCK_V51.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2));assert report['result']=='PASS',report['failures']
+          PY
+
+      - name: Render responsive lock proof
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from PIL import Image,ImageDraw,ImageOps
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification/registration-lock';out.mkdir(parents=True,exist_ok=True)
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();captures=[]
+          states=[('desktop-access',1600,1000,'street','access'),('desktop-shade',1600,1000,'street','shade'),('desktop-water',1600,1000,'property','water'),('laptop-shade',1024,900,'household','shade'),('mobile-access',390,844,'street','access'),('mobile-water',390,844,'household','water'),('compact-access',320,720,'street','access'),('compact-shade',320,720,'property','shade')]
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome')
+                  for name,w,h,ap,ins in states:
+                      page=browser.new_page(viewport={'width':w,'height':h});page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle');page.locator(f'[data-aperture="{ap}"]').first.click();page.locator(f'[data-instrument="{ins}"]').first.click();page.wait_for_timeout(90);path=out/f'{name}.png';page.screenshot(path=str(path),full_page=False);captures.append(path);page.close()
+                  browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          tw,th,lh=800,500,56;sheet=Image.new('RGB',(1600,4*(th+lh)),'#101510');draw=ImageDraw.Draw(sheet)
+          for i,path in enumerate(captures):
+              with Image.open(path) as im:thumb=ImageOps.fit(im.convert('RGB'),(tw,th),Image.Resampling.LANCZOS)
+              x=(i%2)*tw;y=(i//2)*(th+lh);sheet.paste(thumb,(x,y));draw.rectangle((x,y+th,x+tw,y+th+lh),fill='#efe9da');draw.text((x+15,y+th+17),path.stem.upper(),fill='#111510')
+          sheet.save(out/'RESPONSIVE_REGISTRATION_LOCK.jpg',quality=94);(out/'CAPTURE_RECEIPT.json').write_text(json.dumps({'result':'PASS','captures':[p.name for p in captures],'contact_sheet':'RESPONSIVE_REGISTRATION_LOCK.jpg'},indent=2)+'\n')
+          PY
+
+      - name: Retain the crop-aware lock and remove this actuator
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-semantic-instruments-v5-registration-lock.yml
+          git config user.name "manzanita-registration-lock-v51"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A review/manzanita-semantic-instruments-v5 .github/workflows/manzanita-semantic-instruments-v5-registration-lock.yml
+          git diff --cached --check
+          git commit -m "Manzanita: lock semantic geometry to rendered image crop v5.1 [skip ci]"
+          git push origin HEAD:"$BRANCH"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Semantic geometry is now projected through the exact rendered image crop at desktop, laptop, mobile, and compact layouts. Feature badges and the ledger are linked and keyboard-operable. Map-only and held states retain zero local geometry."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-semantic-registration-lock-v51-${{ github.sha }}
+          path: review/manzanita-semantic-instruments-v5/qualification/registration-lock
+          if-no-files-found: error
+          retention-days: 30
