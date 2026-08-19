@@ -42,6 +42,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf review/manzanita-v1.7
+          python programs/manzanita-real-estate-v1-7/visual_refinement.py
           python programs/manzanita-real-estate-v1-7/build_review.py
           test -f review/manzanita-v1.7/assets/lida-twin.webp
           test -f review/manzanita-v1.7/assets/michigan01-twin.webp
