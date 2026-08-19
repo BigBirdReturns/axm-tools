@@ -1,0 +1,1 @@
+Do not merge without a passing exact-head workflow, retained browser audit, rendered semantic proof sheet, zero local image geometry in map-only and held states, and direct human inspection of the Access, Shade, and Water feature fit.
