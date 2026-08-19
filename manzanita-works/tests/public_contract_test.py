@@ -17,6 +17,7 @@ def digest(path: Path) -> dict[str, object]:
 def main() -> None:
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    source = "\n".join((ROOT / name).read_text(encoding="utf-8") for name in ["index.html", "style.css", "data.js", "app.js", "README.md"])
     qualification = json.loads((ROOT / "QUALIFICATION.json").read_text(encoding="utf-8"))
 
     required = [
@@ -35,11 +36,11 @@ def main() -> None:
         'Fundraising dashboard',
         'Rules that keep the organization sovereign',
         'Receipts: this is an implemented method, not a mood board',
-        'connect-src \'none\'',
+        "connect-src 'none'",
         '?focus=fundraising',
     ]
     for marker in required:
-        if marker not in html and marker not in readme:
+        if marker not in source:
             raise SystemExit(f"missing required marker: {marker}")
 
     forbidden = [
@@ -53,11 +54,11 @@ def main() -> None:
         'WebSocket',
     ]
     for marker in forbidden:
-        if marker in html:
+        if marker in source:
             raise SystemExit(f"forbidden public marker: {marker}")
 
     # External URLs are permitted only as explicit user-initiated links to retained public receipts.
-    urls = re.findall(r'https://[^\"\'\s<]+', html)
+    urls = re.findall(r'https://[^\"\'\s<]+', source)
     allowed = {
         'https://bigbirdreturns.github.io/axm-tools/manzanita/',
         'https://bigbirdreturns.github.io/axm-tools/essential-attention/',
