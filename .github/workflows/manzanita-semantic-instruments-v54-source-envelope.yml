@@ -1,0 +1,201 @@
+name: Manzanita semantic instruments v5.4 source-envelope continuum
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths: [".github/workflows/manzanita-semantic-instruments-v54-source-envelope.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  source-envelope-continuum:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: agent/manzanita-semantic-instruments-v5
+      PR_NUMBER: "123"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-instruments-v5
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install one source-envelope contract across static, cached, provider, map, and held states
+        run: |
+          set -euo pipefail
+          root=review/manzanita-semantic-instruments-v5
+          test -f "$root/index.html"
+          test -f "$root/v52-editor.js"
+          python - <<'PY'
+          from pathlib import Path
+          import base64,mimetypes
+          root=Path('review/manzanita-semantic-instruments-v5')
+          html=(root/'index.html').read_text(encoding='utf-8')
+          if 'v54-source-envelope.css' not in html:html=html.replace('</head>','<link rel="stylesheet" href="v54-source-envelope.css">\n</head>',1)
+          marker='<script src="v52-editor.js" defer></script>'
+          if 'v54-source-envelope.js' not in html:
+              if marker not in html:raise SystemExit('v52 editor marker missing')
+              html=html.replace(marker,marker+'\n<script src="v54-source-envelope.js" defer></script>',1)
+          (root/'index.html').write_text(html,encoding='utf-8')
+
+          css=r'''
+          .v54-source-toggle{position:absolute;z-index:24;right:16px;bottom:18px;min-height:44px;border:1px solid rgba(241,236,223,.46);background:rgba(12,17,12,.90);color:#f1ecdf;padding:0 14px;font:800 8px/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.08em}.v54-source-toggle[aria-expanded="true"]{background:#ff5b32;color:#111510;border-color:#ff5b32}.v54-source-drawer{position:absolute;z-index:23;left:16px;right:16px;bottom:72px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:1px;background:rgba(241,236,223,.18);border:1px solid rgba(241,236,223,.34);box-shadow:0 22px 70px rgba(0,0,0,.38);backdrop-filter:blur(14px);max-height:52%;overflow:auto}.v54-source-drawer[hidden]{display:none}.v54-source-card{background:rgba(12,17,12,.94);padding:14px;color:#f1ecdf}.v54-source-card h3{margin:0 0 10px;font:800 9px/1.2 ui-monospace,monospace;letter-spacing:.09em;color:#ff7450}.v54-source-card dl{margin:0}.v54-source-card div{padding:7px 0;border-top:1px solid rgba(241,236,223,.14)}.v54-source-card dt{font:800 7px/1.2 ui-monospace,monospace;color:#888e83;letter-spacing:.08em}.v54-source-card dd{margin:4px 0 0;font:700 9px/1.35 ui-monospace,monospace;word-break:break-word}.v54-source-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.v54-source-actions button,.v54-source-actions label{min-height:44px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(241,236,223,.40);background:transparent;color:#f1ecdf;padding:8px;text-align:center;font:800 8px/1.25 ui-monospace,monospace;letter-spacing:.06em;cursor:pointer}.v54-source-actions input{position:absolute;opacity:0;pointer-events:none}.v54-state-ok{color:#b8d482}.v54-state-stale{color:#ffd37b}.v54-state-hold,.v54-state-terms{color:#ff8f73}.v54-import-result{margin:10px 0 0;padding:9px;border-left:3px solid #ff5b32;background:rgba(255,91,50,.08);font:700 8px/1.4 ui-monospace,monospace}.v54-source-chip{position:absolute;z-index:22;left:18px;bottom:18px;padding:8px 10px;background:rgba(12,17,12,.86);border-left:3px solid #b8d482;color:#f1ecdf;font:800 8px/1.25 ui-monospace,monospace;letter-spacing:.07em}.v54-source-chip[data-status="stale"]{border-color:#ffd37b}.v54-source-chip[data-status="held"],.v54-source-chip[data-status="terms_blocked"],.v54-source-chip[data-status="failed"]{border-color:#ff5b32}@media(max-width:900px){.v54-source-drawer{grid-template-columns:1fr 1fr}}@media(max-width:620px){.v54-source-drawer{position:fixed;left:8px;right:8px;bottom:8px;grid-template-columns:1fr;max-height:72vh}.v54-source-toggle{position:fixed;right:8px;bottom:8px}.v54-source-chip{left:8px;bottom:8px;max-width:60%}}
+          '''
+          (root/'v54-source-envelope.css').write_text(css,encoding='utf-8')
+
+          js=r'''
+          (()=>{
+            const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+            const allowedStatus=new Set(['ok','cached','stale','map_only','held','empty','failed','terms_blocked','skipped_missing_credential','unknown']);
+            let imported=null,lastError=null,scheduled=false;
+            const now=()=>new Date().toISOString();
+            function active(kind){const n=$(`[data-${kind}][aria-pressed="true"],[data-${kind}][aria-selected="true"],[data-${kind}].active`);return n?.dataset?.[kind]||null;}
+            function image(){return $('#sceneImage,.scene-image,img[data-scene],.stage img');}
+            function assetFile(){const img=image();return (img?.currentSrc||img?.src||'').split('/').pop().split('?')[0];}
+            function statusFromMode(mode){return mode==='provider'?'ok':mode==='cached'?'stale':mode==='map'||mode==='map-only'?'map_only':mode==='held'?'held':'cached';}
+            function sourceId(mode,file){if(mode==='provider')return 'street_provider_runtime';if(mode==='map'||mode==='map-only')return 'public_map_context';if(mode==='held')return 'source_hold';return file?.startsWith('street-')?'retained_street_reference':'retained_reference_asset';}
+            function currentEnvelope(){const mode=active('mode')||'reference',aperture=active('aperture')||'household',instrument=active('instrument')||'care',seat=active('seat')||'resident',file=assetFile(),runtime=window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__||{},lock=window.__MANZANITA_SEMANTIC_LOCK_V51__||{};if(imported)return {...imported,aperture,instrument,seat,registration_receipt:runtime.key||null,registration_result:lock.result||runtime.result||'none'};const status=statusFromMode(mode);return {schema:'manzanita-works/source-envelope@1',envelope_id:`${sourceId(mode,file)}:${file||'none'}`,source_id:sourceId(mode,file),source_mode:mode,status,asset_file:file||null,retrieved_at:status==='ok'?now():'2026-08-19T00:00:00Z',source_time:status==='ok'?now():'2026-08-18T00:00:00Z',rights:mode==='provider'?'provider-compatible runtime terms; attribution required':'retained review donor; no observation authority',storage_policy:mode==='provider'?'runtime or permitted metadata only':'retained review bytes',claim_scope:mode==='map'||mode==='map-only'?'public map context only':mode==='held'?'source failure and next action only':'review imagery and exact semantic receipt only',freshness_seconds:mode==='provider'?0:86400,aperture,instrument,seat,registration_receipt:runtime.key||null,registration_result:lock.result||runtime.result||'none',public_effect:'none'};}
+            function knownAsset(file){return [...document.querySelectorAll('img')].some(n=>(n.currentSrc||n.src||'').includes(file))||file===assetFile();}
+            function select(kind,value){const node=$(`[data-${kind}="${CSS.escape(value)}"]`);if(!node||node.disabled||node.getAttribute('aria-disabled')==='true')return false;node.click();return true;}
+            function forceHold(message,status='held'){imported={schema:'manzanita-works/source-envelope@1',envelope_id:'import-hold:'+Date.now(),source_id:'imported_source_envelope',source_mode:'held',status,asset_file:null,retrieved_at:now(),source_time:null,rights:'unavailable or not admitted',storage_policy:'metadata only',claim_scope:'failure state and repair route only',freshness_seconds:null,import_message:message,public_effect:'none'};select('mode','held');lastError=message;draw();}
+            function validate(value){if(!value||typeof value!=='object')throw new Error('Envelope must be a JSON object.');if(value.schema!=='manzanita-works/source-envelope@1')throw new Error('Unsupported source-envelope schema.');if(!allowedStatus.has(value.status))throw new Error('Unsupported source status.');if(value.public_effect&&value.public_effect!=='none')throw new Error('Source envelope requests a public effect.');if(!value.source_id)throw new Error('Source identity is missing.');return value;}
+            async function importFile(file){const before=currentEnvelope();try{const value=validate(JSON.parse(await file.text()));lastError=null;imported={...value,public_effect:'none'};if(value.status==='terms_blocked'){forceHold('Provider terms block use of the supplied media.','terms_blocked');return;}if(['held','failed','empty','skipped_missing_credential','unknown'].includes(value.status)){forceHold(value.error||`Imported source state is ${value.status}.`,value.status==='failed'?'failed':'held');return;}if(value.status==='map_only'){select('mode','map');draw();return;}if(!value.asset_file||!knownAsset(value.asset_file)){forceHold('The imported scene has no exact retained asset or semantic receipt. Geometry is withheld.','held');return;}const mode=value.status==='stale'||value.status==='cached'?'cached':value.source_mode==='provider'?'provider':'reference';select('mode',mode);draw();}catch(error){imported=null;lastError=error.message;window.__MANZANITA_SOURCE_ENVELOPE_V54__={result:'rejected',error:error.message,previous:before};draw();}}
+            function exportEnvelope(){const value=currentEnvelope(),blob=new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='manzanita-source-envelope.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+            function reset(){imported=null;lastError=null;draw();}
+            function replay(){const env=currentEnvelope();imported={...env,status:env.status==='ok'?'cached':env.status,retrieved_at:env.retrieved_at||now(),source_time:env.source_time||null,source_mode:env.status==='ok'?'cached':env.source_mode,replayed_at:now(),public_effect:'none'};if(imported.status==='cached')select('mode','cached');draw();}
+            function ensure(){const stage=$('#visualStage,.stage,.scene-stage,main');if(!stage||$('#v54SourceDrawer'))return;stage.style.position=stage.style.position||'relative';const chip=document.createElement('div');chip.id='v54SourceChip';chip.className='v54-source-chip';stage.append(chip);const toggle=document.createElement('button');toggle.id='v54SourceToggle';toggle.className='v54-source-toggle';toggle.type='button';toggle.setAttribute('aria-expanded','false');toggle.textContent='SOURCE RECEIPT';stage.append(toggle);const drawer=document.createElement('section');drawer.id='v54SourceDrawer';drawer.className='v54-source-drawer';drawer.hidden=true;drawer.innerHTML=`<article class="v54-source-card"><h3>CURRENT SOURCE ENVELOPE</h3><dl id="v54EnvelopeFields"></dl></article><article class="v54-source-card"><h3>REGISTRATION AND CLAIM</h3><dl id="v54RegistrationFields"></dl></article><article class="v54-source-card"><h3>LOCAL CONTROLS</h3><div class="v54-source-actions"><label>IMPORT ENVELOPE<input id="v54Import" type="file" accept="application/json,.json"></label><button id="v54Export" type="button">EXPORT ENVELOPE</button><button id="v54Replay" type="button">REPLAY AS CACHED</button><button id="v54Reset" type="button">RETURN TO UI STATE</button></div><p id="v54ImportResult" class="v54-import-result"></p></article>`;stage.append(drawer);toggle.addEventListener('click',()=>{drawer.hidden=!drawer.hidden;toggle.setAttribute('aria-expanded',String(!drawer.hidden));draw()});$('#v54Import').addEventListener('change',event=>{const file=event.target.files?.[0];if(file)importFile(file)});$('#v54Export').addEventListener('click',exportEnvelope);$('#v54Replay').addEventListener('click',replay);$('#v54Reset').addEventListener('click',reset);}
+            function rows(target,items){target.replaceChildren();for(const [key,value] of items){const wrap=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=key;dd.textContent=value==null?'NOT AVAILABLE':String(value);wrap.append(dt,dd);target.append(wrap);}}
+            function draw(){scheduled=false;ensure();const env=currentEnvelope(),chip=$('#v54SourceChip'),drawer=$('#v54SourceDrawer');if(!chip)return;chip.dataset.status=env.status;chip.textContent=`${String(env.status).toUpperCase()} · ${env.source_id.toUpperCase()}`;if(drawer&&!drawer.hidden){rows($('#v54EnvelopeFields'),[['SOURCE',env.source_id],['STATUS',env.status],['MODE',env.source_mode],['ASSET',env.asset_file],['SOURCE TIME',env.source_time],['RETRIEVED',env.retrieved_at],['RIGHTS',env.rights],['STORAGE',env.storage_policy]]);rows($('#v54RegistrationFields'),[['APERTURE',env.aperture],['INSTRUMENT',env.instrument],['SEAT',env.seat],['RECEIPT',env.registration_receipt],['REGISTRATION',env.registration_result],['CLAIM SCOPE',env.claim_scope],['PUBLIC EFFECT',env.public_effect]]);$('#v54ImportResult').textContent=lastError?`HOLD · ${lastError}`:imported?'IMPORTED · EXACT SOURCE ENVELOPE ACTIVE':'UI STATE · GENERATED SOURCE ENVELOPE';}window.__MANZANITA_SOURCE_ENVELOPE_V54__={result:lastError?'hold':imported?'imported':'generated',envelope:env,error:lastError};}
+            function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(()=>requestAnimationFrame(draw));}}
+            document.addEventListener('click',event=>{if(!event.target.closest('#v54SourceDrawer,#v54SourceToggle')){if(imported&&event.target.closest('[data-mode],[data-scene],[data-aperture]')){imported=null;lastError=null;}schedule();}},true);document.addEventListener('change',schedule,true);document.addEventListener('DOMContentLoaded',()=>{const img=image();img?.addEventListener('load',schedule);new MutationObserver(schedule).observe(document.body,{subtree:true,attributes:true,attributeFilter:['aria-pressed','aria-selected','src','class']});schedule();});
+          })();
+          '''
+          (root/'v54-source-envelope.js').write_text(js,encoding='utf-8')
+
+          standalone=(root/'index.html').read_text(encoding='utf-8')
+          for name in ('style.css','v5-semantic.css','v5-registration-lock.css','v52-feature-grammar.css','v54-source-envelope.css'):
+              standalone=standalone.replace(f'<link rel="stylesheet" href="{name}">','<style>'+(root/name).read_text(encoding='utf-8')+'</style>')
+          for name in ('app.js','v5-semantic.js','v5-registration-lock.js','v52-editor.js','v54-source-envelope.js'):
+              standalone=standalone.replace(f'<script src="{name}" defer></script>','<script>'+(root/name).read_text(encoding='utf-8')+'</script>')
+          for asset in sorted((root/'assets').iterdir()):
+              if asset.is_file():
+                  mime=mimetypes.guess_type(asset.name)[0] or 'application/octet-stream';uri='data:'+mime+';base64,'+base64.b64encode(asset.read_bytes()).decode('ascii');standalone=standalone.replace('assets/'+asset.name,uri)
+          (root/'STANDALONE.html').write_text(standalone,encoding='utf-8')
+          PY
+
+      - name: Install browser and image libraries
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+
+      - name: Exercise generated, imported, cached, map-only, held, terms-blocked, and unknown envelopes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification/source-envelope-v54';out.mkdir(parents=True,exist_ok=True)
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+          report={'schema':'manzanita-works/source-envelope-v54-browser@1','result':'HOLD','states':[],'failures':[],'page_errors':[],'public_route_effect':'none'}
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome');page=browser.new_page(viewport={'width':1600,'height':1000},accept_downloads=True);page.on('pageerror',lambda e:report['page_errors'].append(str(e)));page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                  for sel in ('[data-aperture="street"]','[data-mode="reference"]','[data-instrument="access"]'):page.locator(sel).first.click();page.wait_for_timeout(70)
+                  page.locator('#v54SourceToggle').click();generated=page.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__');report['states'].append({'case':'generated-reference','runtime':generated,'features':page.locator('[data-feature-id]').count()})
+                  if generated['result']!='generated' or generated['envelope']['registration_result']!='locked_to_rendered_asset':report['failures'].append('generated reference envelope lost registration custody')
+                  with page.expect_download() as info:page.locator('#v54Export').click()
+                  ref=out/'reference-envelope.json';info.value.save_as(ref);reference=json.loads(ref.read_text());
+                  if reference['schema']!='manzanita-works/source-envelope@1' or reference['public_effect']!='none':report['failures'].append('exported envelope lost schema or effect boundary')
+
+                  known={**reference,'envelope_id':'import-known-stale','status':'stale','source_mode':'cached','retrieved_at':'2026-08-18T00:00:00Z','source_time':'2026-08-17T00:00:00Z'};known_path=out/'known-stale.json';known_path.write_text(json.dumps(known));page.locator('#v54Import').set_input_files(str(known_path));page.wait_for_timeout(120);stale=page.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__');report['states'].append({'case':'known-stale','runtime':stale,'features':page.locator('[data-feature-id]').count()})
+                  if stale['result']!='imported' or stale['envelope']['status']!='stale' or not page.locator('[data-feature-id]').count():report['failures'].append('known stale asset did not preserve exact receipt with stale state')
+
+                  unknown={**reference,'envelope_id':'import-unknown-live','source_id':'unknown_provider_scene','status':'ok','source_mode':'provider','asset_file':'unseen-provider-scene-abcdef.webp'};unknown_path=out/'unknown-live.json';unknown_path.write_text(json.dumps(unknown));page.locator('#v54Import').set_input_files(str(unknown_path));page.wait_for_timeout(120);held=page.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__');report['states'].append({'case':'unknown-live','runtime':held,'features':page.locator('[data-feature-id]').count()})
+                  if held['result']!='hold' or page.locator('[data-feature-id]').count():report['failures'].append('unknown live asset inherited geometry')
+
+                  page.locator('#v54Reset').click();page.wait_for_timeout(70);map_env={**reference,'envelope_id':'import-map','source_id':'public_map_context','status':'map_only','source_mode':'map','asset_file':None};map_path=out/'map.json';map_path.write_text(json.dumps(map_env));page.locator('#v54Import').set_input_files(str(map_path));page.wait_for_timeout(100);map_state=page.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__');report['states'].append({'case':'map-only','runtime':map_state,'features':page.locator('[data-feature-id]').count()})
+                  if map_state['envelope']['status']!='map_only' or page.locator('[data-feature-id]').count():report['failures'].append('map-only envelope retained local geometry')
+
+                  page.locator('#v54Reset').click();page.wait_for_timeout(70);terms={**reference,'envelope_id':'import-terms','status':'terms_blocked','source_mode':'provider','rights':'redistribution prohibited'};terms_path=out/'terms.json';terms_path.write_text(json.dumps(terms));page.locator('#v54Import').set_input_files(str(terms_path));page.wait_for_timeout(100);terms_state=page.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__');report['states'].append({'case':'terms-blocked','runtime':terms_state,'features':page.locator('[data-feature-id]').count()})
+                  if terms_state['envelope']['status']!='terms_blocked' or page.locator('[data-feature-id]').count():report['failures'].append('terms-blocked envelope retained media geometry')
+
+                  page.locator('#v54Reset').click();page.wait_for_timeout(70);bad_path=out/'bad.json';bad_path.write_text('{"schema":"wrong"}');before=page.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__.envelope.envelope_id');page.locator('#v54Import').set_input_files(str(bad_path));page.wait_for_timeout(100);bad=page.evaluate('window.__MANZANITA_SOURCE_ENVELOPE_V54__');report['states'].append({'case':'malformed','runtime':bad,'features':page.locator('[data-feature-id]').count()})
+                  if bad['result']!='rejected' or not bad['error']:report['failures'].append('malformed envelope was not explicitly rejected')
+
+                  page.goto(f'http://127.0.0.1:{port}/STANDALONE.html',wait_until='networkidle');
+                  if page.locator('#v54SourceToggle').count()!=1:report['failures'].append('standalone lost source-envelope controls')
+                  page.close()
+
+                  for label,w,h in [('mobile',390,844),('compact',320,720)]:
+                      p=browser.new_page(viewport={'width':w,'height':h});p.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle');p.locator('#v54SourceToggle').click();p.wait_for_timeout(50);ov=p.evaluate('Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-innerWidth');visible=p.locator('#v54SourceDrawer').is_visible();report['states'].append({'case':label,'drawer_visible':visible,'overflow':ov});
+                      if not visible or ov>2:report['failures'].append(f'{label} source drawer failed')
+                      p.close()
+                  browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          if report['page_errors']:report['failures'].append('page errors present')
+          report['result']='PASS' if not report['failures'] else 'FAIL';(out/'BROWSER_AUDIT.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2));assert report['result']=='PASS',report['failures']
+          PY
+
+      - name: Render the source-state continuum
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from PIL import Image,ImageDraw,ImageOps
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification/source-envelope-v54';
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();captures=[]
+          states=[('reference','reference'),('provider','provider'),('cached','cached'),('map-only','map'),('held','held')]
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome')
+                  for name,mode in states:
+                      page=browser.new_page(viewport={'width':1600,'height':1000});page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle');
+                      for sel in ('[data-aperture="street"]',f'[data-mode="{mode}"]','[data-instrument="access"]'):page.locator(sel).first.click();page.wait_for_timeout(60)
+                      page.locator('#v54SourceToggle').click();page.wait_for_timeout(30);path=out/f'{name}.png';page.screenshot(path=str(path),full_page=False);captures.append(path);page.close()
+                  browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          tw,th,lh=800,500,56;sheet=Image.new('RGB',(1600,3*(th+lh)),'#101510');draw=ImageDraw.Draw(sheet)
+          for i,path in enumerate(captures):
+              with Image.open(path) as im:thumb=ImageOps.fit(im.convert('RGB'),(tw,th),Image.Resampling.LANCZOS)
+              x=(i%2)*tw;y=(i//2)*(th+lh);sheet.paste(thumb,(x,y));draw.rectangle((x,y+th,x+tw,y+th+lh),fill='#efe9da');draw.text((x+15,y+th+17),path.stem.upper(),fill='#111510')
+          sheet.save(out/'SOURCE_STATE_CONTINUUM.jpg',quality=94);(out/'CAPTURE_RECEIPT.json').write_text(json.dumps({'result':'PASS','captures':[p.name for p in captures],'contact_sheet':'SOURCE_STATE_CONTINUUM.jpg'},indent=2)+'\n')
+          PY
+
+      - name: Retain v5.4 and remove this actuator
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-semantic-instruments-v54-source-envelope.yml
+          git config user.name "manzanita-source-envelope-v54"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A review/manzanita-semantic-instruments-v5 .github/workflows/manzanita-semantic-instruments-v54-source-envelope.yml
+          git diff --cached --check
+          git commit -m "Manzanita: unify static live cached map and held source envelopes v5.4 [skip ci]"
+          git push origin HEAD:"$BRANCH"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "The same source-envelope contract now drives retained reference, provider-compatible, cached/stale, map-only, held, terms-blocked, unknown-scene, import, export, and replay states. Known assets retain exact semantic receipts; unknown or blocked assets fail closed with zero local geometry."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-source-envelope-v54-${{ github.sha }}
+          path: review/manzanita-semantic-instruments-v5/qualification/source-envelope-v54
+          if-no-files-found: error
+          retention-days: 30
