@@ -1,0 +1,245 @@
+name: Manzanita semantic instruments v5 full playtest
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths: [".github/workflows/manzanita-semantic-instruments-v5-full-playtest.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  playtest:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: agent/manzanita-semantic-instruments-v5
+      PR_NUMBER: "123"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-instruments-v5
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deterministic browser and image libraries
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+
+      - name: Exercise the complete operating surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, socket, threading, time
+          from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+          from playwright.sync_api import sync_playwright
+
+          root=Path('review/manzanita-semantic-instruments-v5').resolve()
+          assert (root/'index.html').is_file()
+          assert (root/'STANDALONE.html').is_file()
+          out=root/'qualification';out.mkdir(exist_ok=True)
+
+          class Quiet(SimpleHTTPRequestHandler):
+              def log_message(self,*args): pass
+          class Handler(Quiet):
+              def __init__(self,*args,**kwargs): super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:
+              s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),Handler);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+
+          report={'schema':'manzanita-works/semantic-instruments-v5-full-playtest@1','result':'HOLD','valid_states':0,'refused_states':0,'semantic_states':0,'nongeometric_states':0,'map_or_held_states':0,'seat_signatures':{},'provider_scene_receipts':[],'viewports':[],'console_errors':[],'page_errors':[],'external_requests':[],'failures':[],'public_route_effect':'none','canonical_task_count_effect':'none'}
+          base=f'http://127.0.0.1:{port}/index.html'
+
+          def active(page,kind):
+              node=page.locator(f'[data-{kind}][aria-pressed="true"],[data-{kind}][aria-selected="true"],[data-{kind}].active').first
+              return node.get_attribute(f'data-{kind}') if node.count() else None
+          def enabled(node):
+              return not node.is_disabled() and node.get_attribute('aria-disabled')!='true'
+          def click(node):
+              node.click();node.page.wait_for_timeout(22)
+          def feature_count(page):
+              return page.locator('[data-feature-id]').count()
+          def overflow(page):
+              return page.evaluate('Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-innerWidth')
+
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome')
+                  context=browser.new_context(viewport={'width':1600,'height':1000},accept_downloads=True)
+                  page=context.new_page()
+                  origin=f'http://127.0.0.1:{port}'
+                  page.on('console',lambda m:report['console_errors'].append(m.text) if m.type=='error' else None)
+                  page.on('pageerror',lambda e:report['page_errors'].append(str(e)))
+                  page.on('request',lambda r:report['external_requests'].append(r.url) if not r.url.startswith(origin) else None)
+                  page.goto(base,wait_until='networkidle')
+
+                  apertures=page.locator('[data-aperture]')
+                  instruments=page.locator('[data-instrument]')
+                  modes=page.locator('[data-mode]')
+                  seats=page.locator('[data-seat]')
+                  assert apertures.count()==7,apertures.count()
+                  assert instruments.count()==8,instruments.count()
+                  assert modes.count()>=4,modes.count()
+                  assert seats.count()==5,seats.count()
+
+                  spatial={'access','shade','water'}
+                  for ai in range(apertures.count()):
+                      aperture_node=apertures.nth(ai);click(aperture_node);aperture=aperture_node.get_attribute('data-aperture')
+                      for ii in range(instruments.count()):
+                          instrument_node=instruments.nth(ii);instrument=instrument_node.get_attribute('data-instrument')
+                          before=active(page,'instrument')
+                          if not enabled(instrument_node):
+                              instrument_node.evaluate('node=>node.click()');page.wait_for_timeout(12)
+                              if active(page,'instrument')!=before: report['failures'].append(f'disabled instrument mutated state: {aperture}/{instrument}')
+                              else: report['refused_states']+=1
+                              continue
+                          click(instrument_node)
+                          for mi in range(modes.count()):
+                              mode_node=modes.nth(mi);mode=mode_node.get_attribute('data-mode')
+                              before_mode=active(page,'mode')
+                              if not enabled(mode_node):
+                                  mode_node.evaluate('node=>node.click()');page.wait_for_timeout(12)
+                                  if active(page,'mode')!=before_mode: report['failures'].append(f'disabled mode mutated state: {aperture}/{instrument}/{mode}')
+                                  else: report['refused_states']+=1
+                                  continue
+                              click(mode_node);count=feature_count(page);runtime=page.evaluate('window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__ || null')
+                              report['valid_states']+=1
+                              if instrument in spatial:
+                                  if mode in {'map','map-only','held'}:
+                                      report['map_or_held_states']+=1
+                                      if count: report['failures'].append(f'local geometry survived {mode}: {aperture}/{instrument}/{count}')
+                                  elif runtime and runtime.get('result')=='rendered_exact_asset_semantics':
+                                      report['semantic_states']+=1
+                                      if count!=len(runtime.get('features',[])) or count==0: report['failures'].append(f'semantic feature mismatch: {aperture}/{instrument}/{mode}')
+                                  elif count:
+                                      report['failures'].append(f'geometry rendered without exact receipt: {aperture}/{instrument}/{mode}')
+                              else:
+                                  report['nongeometric_states']+=1
+                                  if count: report['failures'].append(f'non-geometric instrument emitted semantic features: {aperture}/{instrument}/{mode}')
+
+                  # Provider-scene identity and inheritance refusal.
+                  page.locator('[data-aperture="street"]').click();page.locator('[data-mode="provider"]').click();page.locator('[data-instrument="access"]').click();page.wait_for_timeout(60)
+                  scene_buttons=page.locator('[data-scene],[data-provider-scene]')
+                  for si in range(scene_buttons.count()):
+                      node=scene_buttons.nth(si)
+                      if not enabled(node): continue
+                      click(node);runtime=page.evaluate('window.__MANZANITA_SEMANTIC_INSTRUMENTS_V5__ || null')
+                      report['provider_scene_receipts'].append({'scene':node.get_attribute('data-scene') or node.get_attribute('data-provider-scene') or str(si),'key':runtime.get('key') if runtime else None,'features':feature_count(page),'result':runtime.get('result') if runtime else None})
+                  keys={row['key'] for row in report['provider_scene_receipts'] if row['key']}
+                  if len(report['provider_scene_receipts'])>=2 and len(keys)<2: report['failures'].append('provider scenes did not retain distinct semantic receipts')
+
+                  # Functional-seat differentiation.
+                  page.locator('[data-aperture="street"]').click();page.locator('[data-mode="reference"]').click();page.locator('[data-instrument="access"]').click()
+                  for si in range(seats.count()):
+                      seat=seats.nth(si);click(seat);sid=seat.get_attribute('data-seat')
+                      signature=page.locator('body').inner_text()[-6500:]
+                      report['seat_signatures'][sid]=hash(signature)
+                  if len(set(report['seat_signatures'].values()))<5: report['failures'].append('five functional seats did not produce five distinct operating signatures')
+
+                  # Export exact receipt.
+                  with page.expect_download() as info: page.locator('#v5Export').click()
+                  export_path=out/'exported-semantic-receipt.json';info.value.save_as(export_path)
+                  exported=json.loads(export_path.read_text())
+                  if exported.get('release')!='source-adaptive-semantic-v5' or exported.get('public_effect')!='none' or not exported.get('features'):
+                      report['failures'].append('bounded semantic export lost identity, features, or effect boundary')
+
+                  # Keyboard continuity.
+                  first=page.locator('[data-aperture]').first;first.focus();first.press('ArrowRight');page.wait_for_timeout(40)
+                  if page.evaluate('document.activeElement?.hasAttribute("data-aperture")') is not True: report['failures'].append('aperture keyboard focus did not remain in the governed group')
+
+                  context.close()
+
+                  # Responsive, text-resize, reduced-motion, and standalone campaigns.
+                  for label,w,h in [('tablet',1024,900),('mobile',390,844),('compact',320,720)]:
+                      c=browser.new_context(viewport={'width':w,'height':h},reduced_motion='reduce' if label=='mobile' else 'no-preference')
+                      p=c.new_page();p.goto(base,wait_until='networkidle');p.locator('[data-aperture="street"]').click();p.locator('[data-instrument="access"]').click();p.wait_for_timeout(40)
+                      ov=overflow(p);floor=p.evaluate('Math.min(...[...document.querySelectorAll("button")].filter(n=>{const b=n.getBoundingClientRect(),s=getComputedStyle(n);return b.width>0&&b.height>0&&s.display!=="none"&&s.visibility!=="hidden"}).map(n=>n.getBoundingClientRect().height))')
+                      report['viewports'].append({'label':label,'width':w,'height':h,'overflow':ov,'minimum_button_height':floor})
+                      if ov>2: report['failures'].append(f'{label} horizontal overflow {ov}')
+                      if floor<43.5: report['failures'].append(f'{label} target floor {floor}')
+                      c.close()
+                  c=browser.new_context(viewport={'width':1280,'height':900});p=c.new_page();p.goto(base,wait_until='networkidle');p.evaluate('document.documentElement.style.fontSize="200%"');p.wait_for_timeout(80);ov=overflow(p);report['viewports'].append({'label':'text-200','overflow':ov});
+                  if ov>2: report['failures'].append(f'200 percent text overflow {ov}')
+                  c.close()
+                  c=browser.new_context(viewport={'width':1280,'height':900});p=c.new_page();p.goto(f'http://127.0.0.1:{port}/STANDALONE.html',wait_until='networkidle');
+                  if p.locator('[data-aperture]').count()!=7 or p.locator('[data-instrument]').count()!=8: report['failures'].append('standalone lost governed controls')
+                  c.close();browser.close()
+          finally:
+              server.shutdown();thread.join(timeout=5)
+
+          if report['console_errors']: report['failures'].append('console errors present')
+          if report['page_errors']: report['failures'].append('page errors present')
+          if report['external_requests']: report['failures'].append('unexpected external requests present')
+          report['result']='PASS' if not report['failures'] else 'FAIL'
+          (out/'FULL_PLAYTEST.json').write_text(json.dumps(report,indent=2,default=str)+'\n')
+          print(json.dumps(report,indent=2,default=str))
+          assert report['result']=='PASS',report['failures']
+          PY
+
+      - name: Render the operator campaign
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from PIL import Image,ImageDraw,ImageOps
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification';out.mkdir(exist_ok=True)
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+          states=[('access-reference','street','access','reference'),('shade-household','household','shade','reference'),('shade-street','street','shade','reference'),('water-household','household','water','reference'),('water-property','property','water','reference'),('access-map','street','access','map'),('access-held','street','access','held'),('assistance-stewardship','stewardship','assistance','reference')]
+          captures=[]
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome')
+                  for name,ap,ins,mode in states:
+                      page=browser.new_page(viewport={'width':1600,'height':1000});page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                      for selector in (f'[data-aperture="{ap}"]',f'[data-mode="{mode}"]',f'[data-instrument="{ins}"]'):
+                          page.locator(selector).first.click();page.wait_for_timeout(55)
+                      path=out/f'{name}.png';page.screenshot(path=str(path),full_page=False);captures.append(path);page.close()
+                  browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          tw,th,lh=800,500,58;sheet=Image.new('RGB',(1600,4*(th+lh)),'#101510');draw=ImageDraw.Draw(sheet)
+          for i,path in enumerate(captures):
+              with Image.open(path) as im:thumb=ImageOps.fit(im.convert('RGB'),(tw,th),Image.Resampling.LANCZOS)
+              x=(i%2)*tw;y=(i//2)*(th+lh);sheet.paste(thumb,(x,y));draw.rectangle((x,y+th,x+tw,y+th+lh),fill='#efe9da');draw.text((x+15,y+th+18),path.stem.upper(),fill='#111510')
+          sheet.save(out/'FULL_OPERATOR_CAMPAIGN.jpg',quality=94)
+          (out/'CAPTURE_RECEIPT.json').write_text(json.dumps({'schema':'manzanita-works/semantic-instruments-v5-operator-campaign@1','result':'PASS','captures':[p.name for p in captures],'contact_sheet':'FULL_OPERATOR_CAMPAIGN.jpg'},indent=2)+'\n')
+          PY
+
+      - name: Clean setup residue and retain exact qualification
+        run: |
+          set -euo pipefail
+          root=programs/manzanita-semantic-instruments-v5
+          find "$root" -maxdepth 1 -type f \
+            ! -name README.md \
+            ! -name REVIEW_CONTRACT.json \
+            ! -name WORKFLOW_STATUS.json \
+            -delete
+          rm -f .github/workflows/manzanita-semantic-instruments-v5-trigger.yml
+          rm -f .github/workflows/manzanita-semantic-instruments-v5-rerun.yml
+          rm -f .github/workflows/manzanita-semantic-instruments-v5-observer.yml
+          git config user.name "manzanita-semantic-v5-playtest"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A review/manzanita-semantic-instruments-v5 programs/manzanita-semantic-instruments-v5 .github/workflows
+          git diff --cached --check
+          git commit -m "Manzanita: retain full semantic instruments v5 playtest [skip ci]"
+          git push origin HEAD:"$BRANCH"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "The full semantic instruments v5 operator campaign completed. The branch now retains the exhaustive state audit and rendered operator contact sheet; setup residue has been removed."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-semantic-instruments-v5-full-playtest-${{ github.sha }}
+          path: review/manzanita-semantic-instruments-v5/qualification
+          if-no-files-found: error
+          retention-days: 30
