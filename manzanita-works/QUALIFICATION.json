@@ -1,0 +1,42 @@
+{
+  "contracts": {
+    "browser": "PASS",
+    "browser_errors": 0,
+    "desktop": "PASS",
+    "mobile": "PASS",
+    "mobile_320_200pct": "PASS",
+    "reduced_motion": "PASS",
+    "standalone": "PASS",
+    "static": "PASS",
+    "unexpected_external_requests": 0
+  },
+  "files": {
+    "README.md": {
+      "bytes": 2582,
+      "sha256": "ff234aeffb73cf81b5b3d2b50d4d48f3f47211b8cbe9d6e91ca39f8ceaf6b5f5"
+    },
+    "index.html": {
+      "bytes": 38044,
+      "sha256": "02b5afa970ad1c55bcd300d0cf3983dac64988f76f520c443386de6252e047a9"
+    },
+    "tests/browser_test.py": {
+      "bytes": 8317,
+      "sha256": "b92a7824b3e7f925f4e4186e2e8a4cb6f57c4db5130341c94894ab3a53caa9b4"
+    },
+    "tests/public_contract_test.py": {
+      "bytes": 2652,
+      "sha256": "6123477b6237f60db051746bf0d5791ffb98d3b479bdbb83fa22eb989e3d175e"
+    }
+  },
+  "public_boundary": {
+    "external_effects": "none",
+    "live_integrations": "none",
+    "organizational_acceptance": "not_claimed",
+    "private_records": "none"
+  },
+  "qualified_at": "2026-08-19T14:54:40.058098+00:00",
+  "release": "0.2.0",
+  "release_class": "public_safe_interactive_institutional_dreamboard",
+  "schema": "manzanita-works/operating-dreamboard-qualification@1",
+  "state": "PASS"
+}
