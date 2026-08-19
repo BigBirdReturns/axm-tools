@@ -1,0 +1,185 @@
+name: Manzanita v1.7.0 exact admission and live observation
+
+on:
+  push:
+    branches: [ops/manzanita-v17-admission]
+    paths: [".github/workflows/manzanita-v17-admit.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  admit-and-observe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR_NUMBER: "124"
+      RELEASE_BRANCH: release/manzanita-1.7.0-semantic-source-adaptive
+      PUBLIC_URL: https://bigbirdreturns.github.io/axm-tools/manzanita/
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/manzanita-1.7.0-semantic-source-adaptive
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Reconcile the exact release branch with current main
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main "$RELEASE_BRANCH"
+          git switch -C "$RELEASE_BRANCH" "origin/$RELEASE_BRANCH"
+          git rebase origin/main
+          python programs/manzanita-99/custody/build_custody.py --repo-root .
+          python programs/manzanita-99/custody/validate_custody.py --repo-root .
+          python -m unittest discover -s programs/manzanita-99/custody/tests -p 'test_*.py'
+          python programs/manzanita-99/custody/audit_history.py --repo-root .
+          if ! git diff --quiet; then
+            git config user.name "manzanita-v17-admission"
+            git config user.email "actions@users.noreply.github.com"
+            git add programs/manzanita-99/custody
+            git diff --cached --check
+            git commit -m "Manzanita: refresh custody on current main before v1.7.0 admission"
+          fi
+          git push --force-with-lease origin HEAD:"$RELEASE_BRANCH"
+          echo "RELEASE_HEAD=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Falsify the exact reconciled release head
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$RELEASE_HEAD"
+          test "$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json headRefOid --jq .headRefOid)" = "$RELEASE_HEAD"
+          test "$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json state --jq .state)" = OPEN
+          test "$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)" = false
+          python manzanita/tests/public_contract_test.py
+          for file in manzanita/*.js; do node --check "$file"; done
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+          rm -rf /tmp/manzanita-v17-admission
+          python manzanita/tests/browser_test.py --output /tmp/manzanita-v17-admission/browser
+          python programs/manzanita-99/custody/validate_custody.py --repo-root .
+          git diff --exit-code
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          q=json.loads(Path('manzanita/QUALIFICATION.json').read_text())
+          browser=json.loads(Path('/tmp/manzanita-v17-admission/browser/BROWSER_CAMPAIGN.json').read_text())
+          rollback=json.loads(Path('programs/manzanita-1.7.0/ROLLBACK_MANIFEST.json').read_text())
+          assert q['release']=='1.7.0'
+          assert q['visual_system']=='semantic-source-adaptive-place-fabric'
+          assert browser['result']=='PASS'
+          assert rollback['release']=='1.6.0'
+          receipt={'schema':'manzanita-works/admission-receipt@1','release':'1.7.0','result':'PASS','release_head':os.environ['RELEASE_HEAD'],'qualification_sha256':hashlib.sha256(Path('manzanita/QUALIFICATION.json').read_bytes()).hexdigest(),'browser':browser,'rollback':{'release':rollback['release'],'commit':rollback['commit'],'tree':rollback['tree']},'external_effects':'none','successor_program_effect':'none','canonical_task_count_effect':'none'}
+          Path('/tmp/manzanita-v17-admission/ADMISSION_RECEIPT.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+
+      - name: Merge only the exact falsified head
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 30); do
+            mergeable=$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json mergeable --jq .mergeable)
+            if [ "$mergeable" = MERGEABLE ]; then break; fi
+            if [ "$mergeable" = CONFLICTING ]; then echo "Release PR conflicts with main"; exit 1; fi
+            if [ "$attempt" = 30 ]; then echo "Mergeability did not resolve"; exit 1; fi
+            sleep 5
+          done
+          gh pr merge "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --squash --match-head-commit "$RELEASE_HEAD" --delete-branch=false
+          for attempt in $(seq 1 24); do
+            merged=$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json mergedAt --jq .mergedAt)
+            if [ "$merged" != null ]; then break; fi
+            sleep 5
+          done
+          MERGE_SHA=$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json mergeCommit --jq .mergeCommit.oid)
+          test -n "$MERGE_SHA"
+          echo "MERGE_SHA=$MERGE_SHA" >> "$GITHUB_ENV"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Exact head \`$RELEASE_HEAD\` passed admission and was squash-merged as \`$MERGE_SHA\`. Pages deployment, exact public bytes, and live browser replay remain controlling."
+
+      - name: Wait for the Pages deployment sourced from the merged release
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 120); do
+            row=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "PTA tracker fetch + deploy" --branch main --limit 30 --json databaseId,status,conclusion,headSha,createdAt,updatedAt --jq ".[] | select(.headSha == \"$MERGE_SHA\")" | head -1)
+            if [ -n "$row" ]; then
+              status=$(printf '%s' "$row" | jq -r .status)
+              if [ "$status" = completed ]; then
+                conclusion=$(printf '%s' "$row" | jq -r .conclusion)
+                test "$conclusion" = success
+                printf '%s\n' "$row" > /tmp/manzanita-v17-admission/pages-run.json
+                break
+              fi
+            fi
+            if [ "$attempt" = 120 ]; then echo "Pages deployment for the merge did not complete"; exit 1; fi
+            sleep 10
+          done
+          echo "PAGES_RUN_ID=$(jq -r .databaseId /tmp/manzanita-v17-admission/pages-run.json)" >> "$GITHUB_ENV"
+
+      - name: Wait for the permanent live Pages gate
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 120); do
+            row=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow manzanita-live-check.yml --branch main --limit 30 --json databaseId,status,conclusion,headSha,createdAt,updatedAt --jq ".[] | select(.createdAt >= \"$(jq -r .createdAt /tmp/manzanita-v17-admission/pages-run.json)\")" | head -1)
+            if [ -n "$row" ]; then
+              status=$(printf '%s' "$row" | jq -r .status)
+              if [ "$status" = completed ]; then
+                conclusion=$(printf '%s' "$row" | jq -r .conclusion)
+                test "$conclusion" = success
+                printf '%s\n' "$row" > /tmp/manzanita-v17-admission/live-run.json
+                break
+              fi
+            fi
+            if [ "$attempt" = 60 ]; then
+              gh workflow run manzanita-live-check.yml --repo "$GITHUB_REPOSITORY" --ref main || true
+            fi
+            if [ "$attempt" = 120 ]; then echo "Live Pages gate did not complete"; exit 1; fi
+            sleep 10
+          done
+          echo "LIVE_RUN_ID=$(jq -r .databaseId /tmp/manzanita-v17-admission/live-run.json)" >> "$GITHUB_ENV"
+
+      - name: Independently verify the actual public endpoint after the permanent gate
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git switch --detach origin/main
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          mkdir -p /tmp/manzanita-v17-admission/independent
+          for attempt in $(seq 1 30); do
+            if curl -fsSL "$PUBLIC_URL?v=$MERGE_SHA" -o /tmp/manzanita-v17-admission/independent/index.html \
+              && grep -q 'data-release="1.7.0"' /tmp/manzanita-v17-admission/independent/index.html \
+              && grep -q 'data-visual-system="semantic-source-adaptive-place-fabric"' /tmp/manzanita-v17-admission/independent/index.html; then break; fi
+            if [ "$attempt" = 30 ]; then echo "Independent release-marker gate failed"; exit 1; fi
+            sleep 10
+          done
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          from urllib.parse import quote,urljoin
+          from urllib.request import Request,urlopen
+          base=os.environ['PUBLIC_URL'];source=quote(os.environ['MERGE_SHA'],safe='');q=json.loads(Path('manzanita/QUALIFICATION.json').read_text());observed={}
+          for rel,expected in sorted(q['files'].items()):
+              with urlopen(Request(urljoin(base,rel)+f'?v={source}',headers={'User-Agent':'manzanita-independent-admission/1.7.0'}),timeout=45) as response:payload=response.read()
+              digest=hashlib.sha256(payload).hexdigest();assert len(payload)==expected['bytes'] and digest==expected['sha256'],rel;observed[rel]={'bytes':len(payload),'sha256':digest}
+          Path('/tmp/manzanita-v17-admission/independent/EXACT_PUBLIC_BYTES.json').write_text(json.dumps({'result':'PASS','release':'1.7.0','merge_sha':os.environ['MERGE_SHA'],'files':observed},indent=2)+'\n')
+          PY
+          python manzanita/tests/browser_test.py --target "$PUBLIC_URL?v=$MERGE_SHA" --output /tmp/manzanita-v17-admission/independent/browser
+          python - <<'PY'
+          import json,os
+          from datetime import datetime,timezone
+          from pathlib import Path
+          admission=json.loads(Path('/tmp/manzanita-v17-admission/ADMISSION_RECEIPT.json').read_text());public=json.loads(Path('/tmp/manzanita-v17-admission/independent/EXACT_PUBLIC_BYTES.json').read_text());browser=json.loads(Path('/tmp/manzanita-v17-admission/independent/browser/BROWSER_CAMPAIGN.json').read_text())
+          result={'schema':'manzanita-works/final-public-observation@1','release':'1.7.0','result':'PASS' if admission['result']==public['result']==browser['result']=='PASS' else 'FAIL','observed_at':datetime.now(timezone.utc).isoformat(),'release_head':os.environ['RELEASE_HEAD'],'merge_sha':os.environ['MERGE_SHA'],'pages_run_id':int(os.environ['PAGES_RUN_ID']),'live_run_id':int(os.environ['LIVE_RUN_ID']),'public_route':os.environ['PUBLIC_URL'],'admission':admission,'exact_public_bytes':public,'browser':browser,'external_effects':'none','successor_program_effect':'none','canonical_task_count_effect':'none'}
+          Path('/tmp/manzanita-v17-admission/FINAL_PUBLIC_OBSERVATION.json').write_text(json.dumps(result,indent=2)+'\n');assert result['result']=='PASS'
+          PY
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Pages run \`$PAGES_RUN_ID\`, permanent live gate \`$LIVE_RUN_ID\`, independent exact-byte comparison, and independent deployed-browser replay all returned \`PASS\` for merge \`$MERGE_SHA\`."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v1.7.0-final-public-observation-${{ env.MERGE_SHA }}
+          path: /tmp/manzanita-v17-admission
+          if-no-files-found: error
+          retention-days: 90
