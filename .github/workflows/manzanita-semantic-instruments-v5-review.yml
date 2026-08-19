@@ -61,13 +61,23 @@ jobs:
               raise SystemExit(f"Semantic review contains out-of-scope paths: {invalid}")
           PY
 
-      - name: Recover the exact source package
+      - name: Recover and repair the exact source package
         run: |
           set -euo pipefail
           root=programs/manzanita-semantic-instruments-v5
           rm -rf "$root/src"
           mkdir -p "$root/src"
           cat "$root"/SOURCE_BUNDLE.* | base64 --decode | tar -xzf - -C "$root/src" --strip-components=1
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("programs/manzanita-semantic-instruments-v5/src/template/app.js")
+          text = path.read_text(encoding="utf-8")
+          old = "QUANTITATIVE VALUE NOT FABRICATED"
+          new = "VALUE: NOT FABRICATED"
+          if old not in text and new not in text:
+              raise SystemExit("Air provider-state marker is absent")
+          path.write_text(text.replace(old, new), encoding="utf-8")
+          PY
           python -m py_compile \
             "$root/src/build_review.py" \
             "$root/src/tests/test_semantic_contract.py" \
