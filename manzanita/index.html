@@ -1,284 +1,103 @@
 <!doctype html>
-<html lang="en" data-release="1.4.1" data-visual-system="signal-sheet">
+<html lang="en" data-release="1.6.0" data-visual-system="photographic-place-fabric">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f4f0e8">
-  <meta name="description" content="Manzanita Works carries one household place record from useful plant to street, region, assistance, and durable handoff.">
+  <meta name="theme-color" content="#151611">
   <meta name="color-scheme" content="light dark">
+  <meta name="description" content="A public-safe photographic place fabric spanning useful plant, household, property, street, neighborhood, region, and stewardship.">
   <meta name="application-name" content="Manzanita Works">
   <meta name="robots" content="index,follow">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Manzanita Works · One Place, Every Scale">
-  <meta property="og:description" content="A public-safe place fabric for household use, horticulture, wildfire prevention, assistance, and durable handoff.">
+  <meta property="og:title" content="Manzanita Works · The Place Fabric">
+  <meta property="og:description" content="Photographic place apertures, natural-border registration, assistance-first remediation, and durable handoff without parcel scoring.">
   <meta property="og:url" content="https://bigbirdreturns.github.io/axm-tools/manzanita/">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://bigbirdreturns.github.io/axm-tools/manzanita/">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f4f0e8'/%3E%3Cpath d='M6 26 26 6M9 7h5v5H9zm9 9h5v5h-5z' fill='none' stroke='%23ff4b1f' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23151611'/%3E%3Cpath d='M5 26 26 5M7 8h6v6H7zm11 10h6v6h-6z' fill='none' stroke='%23ff5a2b' stroke-width='2'/%3E%3C/svg%3E">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>Manzanita Works · One Place, Every Scale</title>
+  <title>Manzanita Works · The Place Fabric</title>
   <script src="theme-init.js"></script>
   <link rel="stylesheet" href="style.css">
+  <script src="assets/scene-data.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
-  <p class="sr-only" id="interactionStatus" aria-live="polite" aria-atomic="true"></p>
+  <a class="skip" href="#main">Skip to the place fabric</a>
+  <p class="sr-only" id="liveStatus" aria-live="polite" aria-atomic="true"></p>
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="Manzanita Works home">
-      <svg class="brand-mark" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17 17 3M6 4h3v3H6zm5 7h3v3h-3zm-8 0h3v3H3zm11 4h3v3h-3z"/></svg>
-      <span>Manzanita Works</span>
-    </a>
-    <nav aria-label="Primary navigation">
-      <a href="#place">Place</a>
-      <a href="#estate">Estate</a>
-      <a href="#assistance">Assistance</a>
-      <a href="#follow">Follow-through</a>
-    </nav>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-      <span class="theme-icon" aria-hidden="true"></span><span id="themeLabel">Dark</span>
-    </button>
+    <a class="brand" href="#top" aria-label="Manzanita Works home"><span class="brand-mark" aria-hidden="true"></span><span>Manzanita Works</span></a>
+    <nav aria-label="Primary navigation"><a href="#fabric">Place fabric</a><a href="#assistance">Assistance</a><a href="#estate">Estate</a><a href="#handoff">Handoff</a></nav>
+    <div class="header-actions"><button id="printSheet" class="quiet-button" type="button">Print</button><button id="themeToggle" class="quiet-button" type="button" aria-pressed="false"><span id="themeLabel">Light</span></button></div>
   </header>
 
   <main id="main">
     <section class="hero" id="top">
-      <div class="hero-copy">
-        <p class="kicker">Household → street → region → stewardship</p>
-        <h1>One place.<br>Every scale.</h1>
-        <p class="hero-lede">A useful household landscape becomes a shared operating record without losing the people, animals, labor, evidence, authority, or care that made the place matter.</p>
-        <div class="hero-actions">
-          <a class="button button-signal" href="#place">Walk the place record</a>
-          <a class="button" href="#boundary">See the purpose boundary</a>
-          <button class="button" id="printSheet" type="button">Print / save signal sheet</button>
-        </div>
-        <div class="hero-ledger" aria-label="Place record progression">
-          <span>Plant</span><span>Household</span><span>Property</span><span>Street</span><span>Region</span><span>Handoff</span>
-        </div>
-      </div>
-
-      <figure class="hero-plate" aria-labelledby="heroPlateTitle">
-        <figcaption id="heroPlateTitle"><span>MW-PL-001</span> Generated reference place · analytical illustration</figcaption>
-        <svg viewBox="0 0 900 760" role="img" aria-label="A Southern California foothill household shown as a crisp analytical place plate with a house, oak canopy, black cat, water tank, street edge, and regional contours.">
-          <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="svg-grid"/></pattern>
-            <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V10" class="svg-hatch"/></pattern>
-            <clipPath id="heroClip"><rect x="0" y="0" width="900" height="760"/></clipPath>
-          </defs>
-          <g clip-path="url(#heroClip)">
-            <rect width="900" height="760" class="svg-field"/>
-            <rect width="900" height="760" fill="url(#grid)"/>
-            <path d="M0 160 C170 90 250 130 395 70 S690 110 900 22V0H0Z" class="svg-contour-fill"/>
-            <path d="M0 160 C170 90 250 130 395 70 S690 110 900 22" class="svg-contour"/>
-            <path d="M0 205 C150 150 290 190 415 115 S700 145 900 72" class="svg-contour subtle"/>
-            <path d="M0 250 C160 200 300 235 450 165 S710 200 900 120" class="svg-contour subtle"/>
-
-            <g class="hero-region-inset">
-              <rect x="620" y="34" width="244" height="170" class="svg-panel"/>
-              <path d="M632 169c58-85 102-62 138-112 26 21 51 50 82 88" class="svg-region-ridge"/>
-              <path d="M636 133c46-39 85-21 129-62 21 18 43 36 79 51" class="svg-region-line"/>
-              <path d="M648 184c36-33 63-13 96-49 28 25 51 19 94 38" class="svg-region-line"/>
-              <circle cx="736" cy="122" r="7" class="svg-signal-fill"/>
-              <path d="M736 122 806 83" class="svg-signal"/>
-              <text x="634" y="54" class="svg-label">REGIONAL CONTEXT</text>
-              <text x="634" y="72" class="svg-micro">HEAT · AIR · FIRE · SUPPLY</text>
-            </g>
-
-            <path d="M0 618 C160 575 310 600 460 566 S755 590 900 540V760H0Z" class="svg-ground"/>
-            <path d="M0 650 C190 615 332 643 490 602 S720 634 900 580" class="svg-street-edge"/>
-            <path d="M0 688 C200 652 355 688 520 645 S760 680 900 623" class="svg-street-line"/>
-
-            <g class="hero-house">
-              <path d="M196 334 411 210 665 328V574H196Z" class="svg-house"/>
-              <path d="M176 350 407 190 690 338" class="svg-roof"/>
-              <rect x="252" y="380" width="115" height="194" class="svg-door"/>
-              <rect x="435" y="364" width="145" height="105" class="svg-window"/>
-              <path d="M446 376h122M446 400h122M446 424h122M476 364v105M518 364v105" class="svg-window-line"/>
-              <path d="M204 574h475" class="svg-foundation"/>
-            </g>
-
-            <g class="hero-canopy">
-              <path d="M104 112c88-76 178-41 227 13 68-73 176-63 222 10 67-38 157 1 170 72-71 33-121 53-194 48-55 52-158 50-219 0-94 38-200 9-242-48 0-40 15-70 36-95Z" class="svg-canopy"/>
-              <path d="M345 232c-22 124-21 232-8 356M337 291c-59 35-91 78-115 126M340 326c55 33 83 72 107 118" class="svg-trunk"/>
-            </g>
-
-            <g class="hero-water">
-              <ellipse cx="704" cy="420" rx="61" ry="19" class="svg-tank-top"/>
-              <rect x="643" y="420" width="122" height="142" class="svg-tank"/>
-              <path d="M648 439h112M648 462h112M648 485h112M648 508h112M648 531h112" class="svg-tank-line"/>
-              <path d="M618 367c28 13 51 24 73 53" class="svg-water-line"/>
-              <circle cx="617" cy="365" r="5" class="svg-water-dot"/>
-            </g>
-
-            <g class="hero-garden">
-              <path d="M90 545c74-52 150-55 220-5-70 42-150 46-220 5Zm315 11c59-55 128-61 199-12-58 45-126 48-199 12Z" class="svg-bed"/>
-              <path d="M124 553c18-34 28-51 45-73M160 557c8-43 15-63 30-91M212 556c-3-42-2-65 6-91M456 560c7-47 17-70 35-102M507 562c-2-44 3-69 15-99M554 554c11-35 23-53 44-79" class="svg-plant-line"/>
-            </g>
-
-            <g class="hero-cat" transform="translate(508 552)">
-              <path d="M0 35c3-22 18-34 40-31l9-19 12 20c22 8 30 25 24 48-16 13-51 13-78 2-5-6-7-12-7-20Zm82 13c25 3 40-8 48-31" class="svg-cat"/>
-              <circle cx="33" cy="24" r="2.5" class="svg-eye"/>
-            </g>
-
-            <g class="hero-callouts">
-              <path d="M115 489H44V450" class="svg-callout"/><text x="43" y="438" class="svg-label">USE</text><text x="43" y="455" class="svg-micro">FOOD · PET · SHADE</text>
-              <path d="M705 409V286H806" class="svg-callout water"/><text x="811" y="283" class="svg-label">WATER</text><text x="811" y="300" class="svg-micro">CAPTURE · CARE</text>
-              <path d="M511 585v58H635" class="svg-callout signal"/><text x="641" y="646" class="svg-label">LIVED PLACE</text><text x="641" y="663" class="svg-micro">CAT · PATH · LABOR</text>
-              <path d="M311 254 207 152H81" class="svg-callout olive"/><text x="81" y="139" class="svg-label">CANOPY</text><text x="81" y="156" class="svg-micro">HABITAT · HEAT</text>
-            </g>
-
-            <g class="hero-scale-rail">
-              <path d="M52 716H848" class="svg-rail"/>
-              <g transform="translate(52 706)"><circle r="5"/><text x="0" y="31">PLANT</text></g>
-              <g transform="translate(202 706)"><circle r="5"/><text x="0" y="31">HOUSEHOLD</text></g>
-              <g transform="translate(365 706)"><circle r="5"/><text x="0" y="31">PROPERTY</text></g>
-              <g transform="translate(510 706)"><circle r="5"/><text x="0" y="31">STREET</text></g>
-              <g transform="translate(646 706)"><circle r="5"/><text x="0" y="31">REGION</text></g>
-              <g transform="translate(795 706)"><circle r="7" class="active"/><text x="0" y="31">HANDOFF</text></g>
-            </g>
-          </g>
-        </svg>
+      <figure class="hero-photo">
+        <img src="assets/household.webp" alt="A retained photographic household landscape used as the public demonstration place for Manzanita Works.">
+        <figcaption><span>Retained photographic donor</span><span>Public demonstration place · no surveyed geometry</span></figcaption>
+        <div class="hero-trace" aria-hidden="true"><span></span><span></span><span></span></div>
       </figure>
-    </section>
-
-    <section class="sheet origin" id="origin">
-      <div class="section-heading split-heading">
-        <div>
-          <p class="kicker">The origin was a household utility problem</p>
-          <h2>Fresh catnip exposed the whole system.</h2>
-          <p>The product question was whether a household could grow something useful without paying a recurring premium for a disposable product. Solving that question required attention, space, water, time, local supply, household use, and a way to remember what worked.</p>
-        </div>
-        <div class="origin-ledger" aria-label="The four consequences of the catnip origin">
-          <article><span>01</span><h3>Use</h3><p>Begin with what the household actually values.</p></article>
-          <article><span>02</span><h3>Place</h3><p>Keep the physical setting and its natural borders visible.</p></article>
-          <article><span>03</span><h3>Care</h3><p>Model the real burden, tools, cadence, and attention.</p></article>
-          <article><span>04</span><h3>Continuity</h3><p>Preserve enough evidence for the next person to continue.</p></article>
-        </div>
+      <div class="hero-copy">
+        <p class="eyebrow">Useful plant → lived place → shared capacity → durable care</p>
+        <h1>The place is the operating record.</h1>
+        <p class="lede">Manzanita Works carries one landscape through seven genuine apertures without collapsing people, plants, animals, labor, evidence, authority, or uncertainty into a property score.</p>
+        <div class="hero-actions"><a class="primary" href="#fabric">Open the place fabric</a><a class="secondary" href="#firewall">Read the purpose firewall</a></div>
+        <dl class="hero-ledger"><div><dt>7</dt><dd>place apertures</dd></div><div><dt>8</dt><dd>independent conditions</dd></div><div><dt>5</dt><dd>operating seats</dd></div><div><dt>0</dt><dd>external effects</dd></div></dl>
       </div>
     </section>
 
-    <section class="sheet place" id="place">
-      <div class="section-heading atlas-heading">
-        <div><p class="kicker">Interactive place atlas</p><h2>Change the scale. Keep the record.</h2></div>
-        <p>The visual law never changes only because the operating scale changes. The place remains recognizable while evidence, authority, and safe action become more specific.</p>
-      </div>
+    <section class="origin-band" aria-labelledby="originTitle">
+      <div><p class="eyebrow">The actual origin</p><h2 id="originTitle">Fresh catnip exposed the entire system.</h2></div>
+      <p>A household wanted fresh “cat bud” without paying a recurring premium. That small use case immediately connected propagation, attention, water, shade, animal use, tools, local supply, care burden, memory, and continuity. The fabric widened from there.</p>
+    </section>
 
-      <div class="scale-rail" id="scaleRail" aria-label="Place scale"></div>
-      <div class="atlas-grid">
-        <article class="atlas-visual">
-          <div class="plate-topline"><span id="visualKicker">Lived system</span><span id="visualCode">MW-PL-002</span></div>
-          <div class="atlas-canvas">
-            <svg id="placeSvg" viewBox="0 0 920 560" role="img" aria-labelledby="visualTitle visualDescription">
-              <title id="visualTitle">Household</title>
-              <desc id="visualDescription">A crisp analytical illustration of the current place scale.</desc>
-              <defs>
-                <pattern id="atlasGrid" width="46" height="46" patternUnits="userSpaceOnUse"><path d="M46 0H0V46" class="svg-grid"/></pattern>
-                <pattern id="atlasHatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V8" class="svg-hatch"/></pattern>
-                <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" class="svg-arrow"/></marker>
-              </defs>
-              <rect width="920" height="560" class="svg-field"/><rect width="920" height="560" fill="url(#atlasGrid)"/>
-              <g id="scaleScene"></g><g id="overlayScene"></g>
-            </svg>
-            <div class="atlas-caption"><span id="sceneClass">Illustrative reference</span><span id="sceneClaim">Generated scene · no parcel determination</span></div>
+    <section class="fabric" id="fabric" aria-labelledby="fabricTitle">
+      <header class="section-head"><div><p class="eyebrow">One canonical place, seven operating apertures</p><h2 id="fabricTitle">Change the aperture. Keep the record.</h2></div><p>The image, registration, evidence class, next safe action, authority boundary, and handoff change together. A scale control is not a crop switch.</p></header>
+
+      <div class="aperture-rail" id="apertureRail" role="group" aria-label="Place apertures"></div>
+
+      <div class="workbench">
+        <article class="scene-card">
+          <div class="scene-topline"><span id="sceneCode">MW-AP-01</span><span id="sceneClass">Derived photographic detail</span></div>
+          <div class="scene" id="scene">
+            <img id="sceneImage" src="assets/plant.webp" alt="">
+            <svg id="overlaySvg" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-label="Registered analytical conditions over the current place aperture"></svg>
+            <div class="scene-label"><strong id="sceneLabel">Useful plant</strong><span id="sceneSource">Photographic donor · derived detail</span></div>
           </div>
-          <p id="sceneCaption" class="scene-caption"></p>
+          <p class="scene-caption" id="sceneCaption"></p>
         </article>
 
-        <aside class="atlas-reading">
-          <p class="kicker">Current reading</p>
-          <h3 id="scaleTitle">The yard is an inhabited operating environment.</h3>
-          <p id="scaleBody"></p>
-          <dl>
-            <div><dt>What matters here</dt><dd id="scaleNeed"></dd></div>
-            <div><dt>Next safe action</dt><dd id="scaleNext"></dd></div>
-            <div><dt>Authority boundary</dt><dd id="scaleAuthority"></dd></div>
-          </dl>
-          <button class="button button-dark" id="nextScale" type="button">Continue to next scale</button>
+        <aside class="reading-card" aria-live="polite">
+          <p class="eyebrow" id="apertureKicker"></p>
+          <h3 id="apertureTitle"></h3>
+          <p id="apertureBody"></p>
+          <dl class="reading-ledger"><div><dt>Evidence in view</dt><dd id="evidenceView"></dd></div><div><dt>What matters</dt><dd id="whatMatters"></dd></div><div><dt>Next safe action</dt><dd id="nextAction"></dd></div><div><dt>Authority boundary</dt><dd id="authorityBoundary"></dd></div></dl>
+          <button class="primary full" id="nextAperture" type="button">Continue through the place</button>
         </aside>
       </div>
 
-      <div class="atlas-controls">
-        <article>
-          <p class="kicker">Eight independent conditions</p>
-          <h3>Reveal a condition, not a verdict.</h3>
-          <div class="control-row" id="overlayRail" aria-label="Analytical overlays"></div>
-          <p class="control-note">The plate follows visible edges and retains uncertainty. A highlighted condition does not become a score, inspection, or enforcement action.</p>
-        </article>
-        <article>
-          <p class="kicker">Five functional perspectives</p>
-          <h3>Show the role what it needs.</h3>
-          <div class="control-row" id="roleRail" aria-label="Functional perspectives"></div>
-          <div class="role-reading"><span id="roleCode">R-01</span><h4 id="roleTitle">Resident</h4><p id="roleBody"></p><small id="roleNeed"></small></div>
-          <p class="state-note">The address records the current scale, perspective, and visible conditions so this exact reading can be reopened or shared.</p>
-        </article>
+      <div class="instrument-grid">
+        <article class="control-card"><p class="eyebrow">Eight independent conditions</p><h3>Reveal a condition, not a verdict.</h3><div class="chip-row" id="overlayRail" role="group" aria-label="Condition overlays"></div><p class="small">Every mark is registered to this demonstration image. It remains authored analytical geometry, not field observation, survey, inspection, enforcement, coverage, or completed work.</p></article>
+        <article class="control-card"><p class="eyebrow">Five operating seats</p><h3>Change who is acting and what they may do.</h3><div class="chip-row" id="roleRail" role="group" aria-label="Operating seats"></div><div class="role-reading"><span id="roleCode"></span><div><h4 id="roleTitle"></h4><p id="roleBody"></p></div></div><dl class="role-ledger"><div><dt>Available action</dt><dd id="roleAction"></dd></div><div><dt>Acceptance</dt><dd id="roleAcceptance"></dd></div><div><dt>Handoff</dt><dd id="roleHandoff"></dd></div></dl></article>
       </div>
+      <div class="portable-row"><p>The current aperture, seat, and visible conditions are encoded in the address. This exact public reading can be reopened without creating a network request or external effect.</p><button class="secondary" id="exportState" type="button">Export this reading</button></div>
     </section>
 
-    <section class="inverse estate" id="estate">
-      <div class="section-heading atlas-heading">
-        <div><p class="kicker">The connected estate</p><h2>Six instruments. One durable record.</h2></div>
-        <p>Each instrument owns a bounded function. The system becomes legible because those functions compose without pretending to be a single all-purpose platform.</p>
-      </div>
-      <div class="instrument-ledger">
-        <article><span>01</span><h3>Household Habitat</h3><p>Preserves lived use, care burden, pets, food, shade, water, access, tools, and household agency.</p><small>Object: inhabited place</small></article>
-        <article><span>02</span><h3>Street Glide</h3><p>Binds claims to curb, canopy, roof, sidewalk, driveway, utility, and work edges.</p><small>Object: visible edge</small></article>
-        <article><span>03</span><h3>Regional Observatory</h3><p>Widens heat, water, fire, air, access, supply, labor, and program context without parcel certainty.</p><small>Object: wider signal</small></article>
-        <article><span>04</span><h3>Civic Planner</h3><p>Explores possible futures without disguising a scenario as permission or completed work.</p><small>Object: bounded possibility</small></article>
-        <article><span>05</span><h3>Manzanita Works</h3><p>Routes assistance, horticulture, tools, crews, remediation, verification, and monitoring.</p><small>Object: assistance path</small></article>
-        <article><span>06</span><h3>Essential Attention</h3><p>Preserves evidence, bounded decisions, held effects, execution receipts, and successor continuity.</p><small>Object: durable handoff</small></article>
-      </div>
+    <section class="assistance" id="assistance" aria-labelledby="assistTitle">
+      <header class="section-head inverse-head"><div><p class="eyebrow">Assistance-first operation</p><h2 id="assistTitle">Risk context should start help.</h2></div><p>Broad signals and verified local evidence remain separate. The route begins with capacity, consent, and assistance rather than punishment.</p></header>
+      <ol class="sequence"><li><span>01</span><h3>Observe</h3><p>Retain source, place, time, transform, uncertainty, and rights.</p></li><li><span>02</span><h3>Verify</h3><p>Separate visible signal from accountable determination.</p></li><li><span>03</span><h3>Offer</h3><p>Route grants, tools, plants, advice, or trusted help.</p></li><li><span>04</span><h3>Plan</h3><p>Bound consent, access, scope, dependencies, and acceptance.</p></li><li><span>05</span><h3>Remediate</h3><p>Perform horticultural or operational work under real authority.</p></li><li><span>06</span><h3>Preserve</h3><p>Verify the result and retain a cold-successor handoff.</p></li></ol>
     </section>
 
-    <section class="sheet assistance" id="assistance">
-      <div class="section-heading atlas-heading">
-        <div><p class="kicker">Assistance-first operation</p><h2>Risk context should start help.</h2></div>
-        <p>Regional conditions and verified local evidence become a bounded offer of resources. Observation does not become punishment.</p>
-      </div>
-      <ol class="sequence">
-        <li><span>01</span><h3>Observe</h3><p>Retain the original signal and place.</p></li>
-        <li><span>02</span><h3>Verify</h3><p>Separate observation from determination.</p></li>
-        <li><span>03</span><h3>Offer</h3><p>Route grants, tools, advice, or trusted help.</p></li>
-        <li><span>04</span><h3>Plan</h3><p>Bound scope, consent, authority, and acceptance.</p></li>
-        <li><span>05</span><h3>Remediate</h3><p>Perform the horticultural or operational work.</p></li>
-        <li><span>06</span><h3>Monitor</h3><p>Verify the result and preserve the handoff.</p></li>
-      </ol>
-    </section>
+    <section class="firewall" id="firewall" aria-labelledby="firewallTitle"><div><p class="eyebrow">Purpose firewall</p><h2 id="firewallTitle">Prevention data stays prevention data.</h2><p>Wildfire, heat, water, access, habitat, air, labor, and program context may start assistance. They do not silently become an adverse property verdict.</p></div><div class="firewall-grid"><article><span>May support</span><p>Inspection priority, grants, nursery supply, tool lending, crew coordination, horticultural remediation, community assistance, and emergency triage.</p></article><article class="deny"><span>Cannot silently become</span><p>Automatic insurance denial, unrelated property scoring, resident reputation ranking, eligibility punishment, or enforcement without accountable review and lawful authority.</p></article></div></section>
 
-    <section class="sheet firewall" id="boundary">
-      <div class="section-heading split-heading">
-        <div><p class="kicker">Purpose firewall</p><h2>Prevention data stays prevention data.</h2></div>
-        <div class="firewall-ledger">
-          <article class="allow"><span>May support</span><p>Inspection priority, grants, tool routing, nursery supply, crew coordination, horticultural remediation, community assistance, and emergency triage.</p></article>
-          <article class="deny"><span>Cannot silently become</span><p>Automatic insurance denial, unrelated property scoring, resident reputation ranking, or punitive enforcement without review.</p></article>
-        </div>
-      </div>
-    </section>
+    <section class="estate" id="estate" aria-labelledby="estateTitle"><header class="section-head"><div><p class="eyebrow">The connected estate</p><h2 id="estateTitle">Six instruments. One durable record.</h2></div><p>Each instrument owns a bounded function. Their composition carries the place without turning the estate into one all-purpose platform.</p></header><div class="estate-grid"><article><span>01</span><h3>Household Habitat</h3><p>Lived use, pets, food, shade, water, access, tools, burden, and household agency.</p><small>Object: inhabited place</small></article><article><span>02</span><h3>Street Glide</h3><p>Claims registered to curb, canopy, roof, sidewalk, driveway, utility, and work edges.</p><small>Object: visible edge</small></article><article><span>03</span><h3>Regional Observatory</h3><p>Heat, fire, air, water, access, supply, labor, and program context without parcel certainty.</p><small>Object: wider signal</small></article><article><span>04</span><h3>Civic Planner</h3><p>Possible futures kept separate from permission, commitment, funding, or completed work.</p><small>Object: bounded possibility</small></article><article><span>05</span><h3>Manzanita Works</h3><p>Assistance, horticulture, tools, crews, remediation, verification, and monitoring.</p><small>Object: assistance path</small></article><article><span>06</span><h3>Essential Attention</h3><p>Evidence, bounded decisions, held effects, execution receipts, and successor continuity.</p><small>Object: durable handoff</small></article></div></section>
 
-    <section class="signal-band" id="follow">
-      <div><p class="kicker">Governance and follow-through</p><h2>Essential Attention keeps the work alive when people change.</h2><p>A condition becomes a source-bound record. The right function sees it. Authority remains explicit. Safe work proceeds. External effects stay held until authorized. A successor can reconstruct what happened and continue.</p></div>
-      <div class="desk-preview" aria-label="Essential Attention operating desk preview">
-        <div class="desk-head"><span>Essential Attention</span><small>Today</small></div>
-        <div class="desk-main"><span>Next safe move</span><strong>Recover the missing source before expanding the claim.</strong><p>Prepared work may continue. External effects remain held.</p></div>
-        <div class="desk-rows"><span>Evidence <b>5</b></span><span>Decisions <b>5</b></span><span>Handoff <b>Ready</b></span></div>
-        <a class="button button-light" href="https://bigbirdreturns.github.io/axm-tools/essential-attention/?from=manzanita-v1.4.1">Open the FAB operating desk</a>
-      </div>
-    </section>
+    <section class="handoff" id="handoff" aria-labelledby="handoffTitle"><div><p class="eyebrow">Governance and follow-through</p><h2 id="handoffTitle">The record survives the role.</h2><p>A condition becomes a source-bound object. The right function sees it. Authority stays explicit. Safe preparation continues. External effects remain held until authorized. The next person can reconstruct why the work exists.</p></div><div class="handoff-card"><div class="handoff-head"><span>Essential Attention</span><span>Public-safe handoff</span></div><div class="handoff-main"><small>Prepared next move</small><strong id="handoffMove">Carry the current place reading into a bounded evidence and decision record.</strong><p>No source-system writeback, assignment, purchase, scheduling, coverage, or enforcement effect is released here.</p></div><a id="handoffLink" class="primary full" href="../essential-attention/?from=manzanita-1.6.0">Open the FAB operating desk</a></div></section>
 
-    <section class="sheet provenance" id="provenance">
-      <div class="section-heading split-heading">
-        <div><p class="kicker">Visual provenance</p><h2>The reference world is labeled and bounded.</h2></div>
-        <div class="provenance-ledger">
-          <div><span>Illustrative reference</span><p>Generated analytical scenes establish the operating vocabulary. They are not documentary photographs.</p></div>
-          <div><span>Modeled context</span><p>Regional forms show relationships among conditions without creating a parcel determination.</p></div>
-          <div><span>Operating receipt</span><p>Recorded interface states may establish what the software retained, prepared, blocked, or exported.</p></div>
-          <div><span>Public boundary</span><p>No private household record, exact address, meeting material, correspondence, or evidence bytes appear here.</p></div>
-        </div>
-      </div>
-    </section>
+    <section class="provenance" aria-labelledby="provTitle"><header class="section-head"><div><p class="eyebrow">Visual and evidentiary provenance</p><h2 id="provTitle">Every image says what it is.</h2></div><p>The photographic donor is retained from the qualified v1.1.2 public release. Several apertures are deterministically derived analytical compositions. Registration marks are authored for the demonstration and acquire no physical standing.</p></header><div class="provenance-grid"><article><span>Retained photographic donor</span><p>Household and property images are recovered from exact commit <code>507ace9…</code>.</p></article><article><span>Derived photographic detail</span><p>Plant and street plates are deterministic crops of retained donor bytes.</p></article><article><span>Modeled context</span><p>Neighborhood, region, and stewardship plates compose retained bytes to expose wider relationships and continuity.</p></article><article><span>Public boundary</span><p>No private address, resident identity, credential, correspondence, meeting record, or field finding appears here.</p></article></div></section>
   </main>
 
-  <footer>
-    <span>Manzanita Works · Signal Sheet v1.4.1</span>
-    <span><a href="../">All axm-tools</a> · No backend · no external-effect adapters</span>
-  </footer>
+  <footer><span>Manzanita Works · Public Place Fabric v1.6.0</span><span><a href="../">All axm-tools</a> · Static · local interaction · zero external-effect adapters</span></footer>
 </body>
 </html>

@@ -1,52 +1,13 @@
-# Manzanita Works v1.4.1 · Signal Sheet
+# Manzanita Works v1.6.0 · Public Place Fabric
 
-Manzanita Works is the public-safe front door for the connected household-to-region estate. It carries one place record from useful plant through Household Habitat, Street Glide, the Regional Observatory, Civic Planner, assistance-first remediation, and Essential Attention.
+Manzanita Works is the public-safe photographic front door for the connected household-to-region estate. The release converges the retained v1.1.2 photographic donor with the bounded operating law developed through the seven-aperture, Street Glide, eight-overlay, five-seat, whole-experience, resilience, parity, succession, and release-control program.
 
-## What the page contains
+The site contains seven visually and semantically distinct apertures over one public demonstration place: useful plant, household, property, street, neighborhood, region, and stewardship. Household and property images are retained from exact commit `507ace9af2d2121cb93614158809ee5ff88437f2`. Plant and street are deterministic crops. Neighborhood, region, and stewardship are deterministic analytical compositions. Every aperture states its asset class. Authored registration follows image-derived edge profiles but remains a demonstration treatment rather than survey, inspection, field observation, access, work, enforcement, coverage, or completed-remediation authority.
 
-- seven place scales: Plant, Household, Property, Street, Neighborhood, Region, and Stewardship;
-- eight independent condition overlays: habitat, shade and heat, water, fire, air, access, labor and tools, and authority and programs;
-- five functional perspectives: resident, nursery or grower, crew or steward, planner or public program, and successor;
-- six bounded instruments with distinct functions;
-- an assistance-first operating sequence;
-- an explicit prevention-data purpose firewall;
-- a direct handoff into the Essential Attention FAB Operating Desk;
-- persistent light and dark modes using the same Signal Sheet hierarchy.
+Eight independent conditions remain selectable: habitat, shade and heat, water, fire, air, access, labor and tools, and authority and programs. Five operating seats change the governed object rather than merely relabeling prose: resident, nursery or grower, crew or steward, planner or program, and successor. Each seat changes available action, acceptance, handoff, and recommended evidence layers.
 
-## Visual system
+The page is static and makes no application network request after its own files load. It has no account, telemetry, model call, payment, email, scheduling, assignment, coverage, enforcement, or source-system writeback adapter. Export creates a local JSON reading only. The Essential Attention link carries public-safe aperture and seat context into a separate local operating desk.
 
-The release is governed by [`VISUAL_CONSTITUTION.md`](VISUAL_CONSTITUTION.md). The surface uses estate-owned vector scenes rather than compressed photographic thumbnails or external visual dependencies. All scenes remain crisp at any device density and are explicitly classified as illustrative reference, modeled context, operating illustration, or operating receipt.
+## Release boundary
 
-The design law is intentionally narrow: editorial field, analytical ink, one consequence color, hairline rules, large type, square controls, no gradients, no glass blur, no floating shadows, no rounded dashboard cards, and no external font dependency.
-
-## Public boundary
-
-The page does not publish a private household record, exact address, meeting material, correspondence, or evidence bytes. Its generated analytical scenes are not documentary photographs, surveys, inspections, property determinations, insurance findings, work authorizations, or completed-remediation evidence.
-
-Prevention information may support grants, tools, nursery supply, crews, horticultural remediation, community assistance, inspection priority, and emergency triage. It may not silently become automatic insurance denial, unrelated property scoring, resident reputation ranking, or punitive enforcement without review.
-
-## Operating boundary
-
-The site has no backend, account, telemetry, model call, email adapter, payment adapter, scheduling adapter, coverage adapter, enforcement adapter, or source-system writeback. Essential Attention remains a separate linked instrument and retains its own authority and local-custody law.
-
-## Maintenance polish in v1.4.1
-
-The patch keeps the seven-scale Signal Sheet, source and authority boundaries, visual grammar, and zero-backend architecture intact. It adds URL-addressable scale, perspective, and overlay state; Arrow, Home, and End navigation across the scale and perspective rails; polite screen-reader announcements; a print or save-to-PDF sheet; canonical and social metadata; and a visible repository-directory entry. The next-scale control now applies the same default-overlay transition as direct scale selection.
-
-The predecessor v1.4.0 route remains recoverable by exact commit, tree, qualification blob, and file blob identities. This maintenance release has no effect on the separate `manzanita-next` successor hold, its external campaigns, or canonical task counts.
-
-## Qualification
-
-The permanent contract verifies:
-
-- exact release and visual-system identity;
-- exact file byte counts and SHA-256 values;
-- no external scripts, stylesheets, fonts, images, or network adapters;
-- no decorative gradients, blur, shadows, or rounded-card grammar;
-- all seven scales, eight overlays, five perspectives, and six instruments;
-- theme initialization, persistence, and light/dark geometry parity;
-- desktop and mobile operation without overflow;
-- zero browser errors and zero unexpected external requests;
-- the Essential Attention handoff and purpose-firewall language.
-
-The live workflow waits for GitHub Pages to serve the exact `1.4.1` release marker before replaying the complete browser contract against the public endpoint.
+This is a bounded public projection authorized as a replacement for the already public Manzanita route. It does not release the complete `manzanita-next` successor, perform any of its ten external campaigns, confer physical or private standing, reconstruct the missing canonical backlog, or change canonical task counts. v1.4.1 remains the exact public rollback donor at commit `750ad90f40462ab442a546bdbc2c7f02c81e2b27` and route tree `f6ea68bd4c5e07919277a099039354a5920d7b2b`.

@@ -1,0 +1,69 @@
+name: Manzanita public-route custody seal
+
+on:
+  push:
+    branches: [agent/manzanita-public-convergence-v1-6]
+    paths:
+      - "manzanita/**"
+      - "README.md"
+      - "index.html"
+      - ".github/workflows/manzanita-*.yml"
+      - "programs/manzanita-public-convergence/**"
+      - "programs/manzanita-99/custody/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-public-route-custody-seal
+  cancel-in-progress: true
+
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-public-convergence-v1-6
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Require the final photographic route and retired temporary actuators
+        run: |
+          set -euo pipefail
+          grep -q 'data-release="1.6.0"' manzanita/index.html
+          grep -q 'data-visual-system="photographic-place-fabric"' manzanita/index.html
+          test -z "$(find .github/workflows -maxdepth 1 -type f \( \
+            -name 'manzanita-convergence-*.yml' -o \
+            -name 'manzanita-visual-donor-export.yml' -o \
+            -name 'manzanita-p10-recovery.yml' -o \
+            -name 'manzanita-live-browser-probe.yml' \
+          \) -print -quit)"
+
+      - name: Rebuild and validate exact donor custody
+        run: |
+          set -euo pipefail
+          python programs/manzanita-99/custody/build_custody.py --repo-root .
+          python programs/manzanita-99/custody/validate_custody.py --repo-root .
+          python -m unittest discover -s programs/manzanita-99/custody/tests -p 'test_*.py'
+          python programs/manzanita-99/custody/audit_history.py \
+            --repo-root . \
+            --output programs/manzanita-99/custody/HISTORY_AUDIT.json
+
+      - name: Retain the final source-state custody outputs
+        run: |
+          set -euo pipefail
+          git config user.name "manzanita-custody-seal"
+          git config user.email "actions@users.noreply.github.com"
+          git add programs/manzanita-99/custody
+          if git diff --cached --quiet; then
+            echo "Custody already matches the final source state"
+            exit 0
+          fi
+          git commit -m "Manzanita: seal v1.6.0 final source-state custody"
+          git push origin HEAD:agent/manzanita-public-convergence-v1-6

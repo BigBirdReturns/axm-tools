@@ -1,0 +1,37 @@
+name: Manzanita photographic substance
+
+on:
+  push:
+    branches: [main, agent/manzanita-public-convergence-v1-6]
+    paths:
+      - "manzanita/assets/**"
+      - "programs/manzanita-public-convergence/visual_substance_test.py"
+      - ".github/workflows/manzanita-visual-substance.yml"
+  pull_request:
+    paths:
+      - "manzanita/assets/**"
+      - "programs/manzanita-public-convergence/visual_substance_test.py"
+      - ".github/workflows/manzanita-visual-substance.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  photographic-substance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deterministic image audit dependency
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0
+      - name: Reject flat or visually duplicated apertures
+        run: python programs/manzanita-public-convergence/visual_substance_test.py --root manzanita --output /tmp/manzanita-photographic-substance.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-photographic-substance-v1.6.0
+          path: /tmp/manzanita-photographic-substance.json
+          if-no-files-found: error
+          retention-days: 30

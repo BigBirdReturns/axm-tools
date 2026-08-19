@@ -1,0 +1,2106 @@
+{
+  "schema": "axm-tools/manzanita-custody-manifest@2",
+  "contract_id": "M99-DONOR-CUSTODY-002",
+  "status": "PARTIAL",
+  "task_state": "in_progress",
+  "generated_from": {
+    "git_commit": "a825d08e1b6a4a54b3c5cffa4f258186b0253e7e",
+    "git_tree": "e5732cd050520c187bb39de975746684d0d9b2c1",
+    "contract_path": "programs/manzanita-99/custody/CUSTODY_CONTRACT.json",
+    "contract_sha256": "5199afe9ea442ac04da4c2cfef329509bd41f5c255bc05696973507eab8d7e8d",
+    "register_path": "programs/manzanita-99/custody/DONOR_REGISTER.json",
+    "register_sha256": "2b45e3486710eed5327654b28a5e27f3d4792462a3e9c7e588f1252ab919e9ba",
+    "observed_ledger_path": "programs/manzanita-99/custody/OBSERVED_EXECUTION_LEDGER.json",
+    "observed_ledger_sha256": "4c038deed7a29a61acb2c5da81ebd3ef919465ac8131a35eb6cdd5003df92d9a"
+  },
+  "scope_count": 8,
+  "source_file_count": 197,
+  "source_bytes": 2584582,
+  "scopes": [
+    {
+      "id": "constitutional-recovery",
+      "class": "failure_receipt",
+      "path": "programs/manzanita-99/recovery",
+      "file_count": 4,
+      "bytes": 38488,
+      "sha256": "bb8868224bb3e13140377d62b82b30dc58fe89a2c76b7bdbdd338ef363ee8cd7",
+      "required": true
+    },
+    {
+      "id": "contained-review-board",
+      "class": "governance",
+      "path": "programs/manzanita-99/review-board",
+      "file_count": 9,
+      "bytes": 104324,
+      "sha256": "ce58b612d4b4600d88afcfc03a9badaf9469c17cc5d83d456f0013a445135a10",
+      "required": true
+    },
+    {
+      "id": "current-custody-source",
+      "class": "governance",
+      "path": "programs/manzanita-99/custody",
+      "file_count": 11,
+      "bytes": 104569,
+      "sha256": "1b7b67925482ea3108c05e44474de8acc6482810e1aa925fe97fd9ea0a65d2a8",
+      "required": true
+    },
+    {
+      "id": "current-pages-receipt",
+      "class": "deployment_receipt",
+      "path": ".github/pages-deployment.json",
+      "file_count": 1,
+      "bytes": 289,
+      "sha256": "b0f2f173b2cb0511e7a7758593abaa3e2c97530e790232ad0db268f2f19bef6d",
+      "required": true
+    },
+    {
+      "id": "historical-public-route",
+      "class": "historical_public_release",
+      "path": "manzanita",
+      "file_count": 19,
+      "bytes": 538972,
+      "sha256": "43a92a6d89c3762c9e740295a5d4a9bf52b07800010bfd134e3bfc347dc33090",
+      "required": true
+    },
+    {
+      "id": "manzanita-workflows",
+      "class": "qualification_receipt",
+      "path": ".github/workflows",
+      "file_count": 21,
+      "bytes": 171222,
+      "sha256": "3773329f2f33d0f0549daefbc5f1939d6a5ccb2c1b43cb2a8c2f3e3194935683",
+      "required": true
+    },
+    {
+      "id": "resolution-backfill",
+      "class": "qualification_receipt",
+      "path": "resolution-backfill",
+      "file_count": 18,
+      "bytes": 113341,
+      "sha256": "99cfec012df17964c270d3c1aad7361de4f1037049fe1c96eb7f62bff6e80efe",
+      "required": true
+    },
+    {
+      "id": "successor-source-tree",
+      "class": "successor_source",
+      "path": "manzanita-next",
+      "file_count": 114,
+      "bytes": 1513377,
+      "sha256": "c734c29998bcf6d5be77b36e1a42cd1e2ff4f5c368eae9c37eb10abc2c928427",
+      "required": true
+    }
+  ],
+  "files": [
+    {
+      "path": ".github/pages-deployment.json",
+      "bytes": 289,
+      "sha256": "26899df159a770f9634d6494fef8508b302bd04b969f94a21a83d3323a866eaf",
+      "git_blob_sha1": "0cd9918db92dae48df2a7aaf24c47f0979c38dbc",
+      "scopes": [
+        "current-pages-receipt"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-99-program.yml",
+      "bytes": 1246,
+      "sha256": "9d40cbec124bda058c55a814369fe04a52e5b79fa31a1520a580e663bc02f053",
+      "git_blob_sha1": "461288819e73e61387e97747f3b47fe3a9c821da",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-backlog-recovery.yml",
+      "bytes": 4248,
+      "sha256": "18920bcd33f3d6f77aa8441d2e224b0003c1e488e3b24b104e9442eb7b332fb1",
+      "git_blob_sha1": "fdced63de78449eb11c0edf0d4fb3aa54a287857",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-check.yml",
+      "bytes": 2053,
+      "sha256": "88af7511c1778f866f44487d03da3502d7609311ad3f8ebba6f514cdbcbf7799",
+      "git_blob_sha1": "a437ee396cca199e4121c45307c23e2b39145e11",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-custody-history-bootstrap.yml",
+      "bytes": 4217,
+      "sha256": "24194f49fb68f437694b108f3c8e0102dddd1c8a998633dda6e1424c6f8ec74f",
+      "git_blob_sha1": "7bdb33c0a20fd22f5a86b985a0b000874d62ad83",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-custody-seal.yml",
+      "bytes": 2429,
+      "sha256": "313c468cf03f760f71f94ce5032b0e62a0acf8d29dcee9817633d076da59ad94",
+      "git_blob_sha1": "3973e8d4a94a43ef5a9932c6d9e62980cc052819",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-design-constitution.yml",
+      "bytes": 6475,
+      "sha256": "6f60127a5b10cd7866d3dc744f6f306021a99616727516f7d93b9abc1108a5ef",
+      "git_blob_sha1": "47a5957b3e5ce25b21dafef75a93e95afc013798",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-donor-custody.yml",
+      "bytes": 5117,
+      "sha256": "68780311e0766aa98d004d92dbeccd7cf7e4a7d2d6ae706210efd651b272690a",
+      "git_blob_sha1": "7367d9df1dcb1bb9b73b1663d5ab7410408346b9",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-eight-overlays.yml",
+      "bytes": 12365,
+      "sha256": "d0e883a88704ea9f763149622ff9353b2848c7117eae8f8d81ec1496ea9718fd",
+      "git_blob_sha1": "5f94662f191f1f2fe7a8526de1ad8e956ad9ad9b",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-estate-parity.yml",
+      "bytes": 14014,
+      "sha256": "88da82d8ce85e57f26ffd39be58e0197e07142bb6c35ec9d2aacccc23f9c1ebd",
+      "git_blob_sha1": "cb9a07f41bdb0c004bbcb56b888db8de6d127649",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-external-campaign-runner.yml",
+      "bytes": 9753,
+      "sha256": "558030d872b23748276f7293485f090061c9c40c0a881a95ee0ccb2e17ac38e1",
+      "git_blob_sha1": "82a99df24a8e3f3cdbe624585f65c5f9f4535c85",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-five-roles.yml",
+      "bytes": 16777,
+      "sha256": "122293e7f1f72312aa945d579aba859360d845fb3c12fbb2cbccf2f629eda7d8",
+      "git_blob_sha1": "3b0337c79352294ee26e6bed542c7ccb95f7165c",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-live-check.yml",
+      "bytes": 10256,
+      "sha256": "a180d851043ecb85aa141ae47cc2c57c5b70934a9669ed71574ee214fc7178fc",
+      "git_blob_sha1": "81a69d6e1d3bb8c420495581d3255e5e20e19ccb",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-public-demo.yml",
+      "bytes": 9878,
+      "sha256": "dae69c09eae3a9788be4b49a8390137d9a5a15ce2e1f97ff6aa5b0774d6f13b7",
+      "git_blob_sha1": "6315362974c58c9f7345f3cee86fc7c6c25dc03a",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-release-control.yml",
+      "bytes": 14081,
+      "sha256": "c4fd6b78194e467c191b7d51c0d8abdb1cfdce7ae748ccdcef496a59812d6af1",
+      "git_blob_sha1": "86e086810817e52e5212281859974c2e7a584978",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-resilience-qualification.yml",
+      "bytes": 12135,
+      "sha256": "e88c03fb9d70ce39f024508fe23d068f148c38cbf7f67f471eb742f5b48c8199",
+      "git_blob_sha1": "523e7da1d55ec606a074343ccdfc6604ce1d515f",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-review-board.yml",
+      "bytes": 4125,
+      "sha256": "1cafd48d6e4b0412c050510daa6247cc5a6f5abe9b93cd4981b675d3266d14f3",
+      "git_blob_sha1": "732d414d9817e4bb4e7dc4e8096e7478e54daf04",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-seven-apertures.yml",
+      "bytes": 9532,
+      "sha256": "3ab9d6a0f7f2a68662e39f97bbda8614a335890940f5e549961b6a0d8a485cc6",
+      "git_blob_sha1": "53c9165b307da3cc130ac2755816bcd911eacf45",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-source-foundation.yml",
+      "bytes": 2361,
+      "sha256": "b8d99ba18cbdf085503164da95321d5227f786b1d980d3c4dbc5f502af33643c",
+      "git_blob_sha1": "9b02443da6f941b82fb16d8f4029b62f037b9749",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-street-glide.yml",
+      "bytes": 12335,
+      "sha256": "5b17bbb17b62b24ee3abebf93b00adc11c97bc8d607c4cda88980f046deb2eae",
+      "git_blob_sha1": "ae0fa594fd942721c22c941c62c3177ceee9a597",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-visual-substance.yml",
+      "bytes": 1303,
+      "sha256": "680f8a1c9cdb2d08f8b09c9ad32606061e560adffa411ff3947f56dc03310d70",
+      "git_blob_sha1": "3610e4cfaa6d5531ba67d0ce6e8d75fd86fd56a7",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": ".github/workflows/manzanita-whole-experience.yml",
+      "bytes": 16522,
+      "sha256": "eef2ac529a7e5c955ff997ee2cc5510f1dde97ae84bdba2fb33217d023a5dfae",
+      "git_blob_sha1": "d3aa921291b8c78e0eafb65b80c52aedd4dd370c",
+      "scopes": [
+        "manzanita-workflows"
+      ]
+    },
+    {
+      "path": "manzanita-next/ADAPTER_CONTRACT.md",
+      "bytes": 3018,
+      "sha256": "a82d7c1febd14d183d9bc8df8286dbf2e089c5e520521ea177ea58a0c2ecb77a",
+      "git_blob_sha1": "d5fcf191e1a1feccb9ad02d7e0a3be658115d059",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/README.md",
+      "bytes": 970,
+      "sha256": "cd3aa2f7b9c68da26a8245a8b0989d37b27677f8b90776dd58806184a1dc157b",
+      "git_blob_sha1": "8bef508b1521d0d16b6db308b3b6190e2ebfb082",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/apertures/APERTURE_CONTRACT.json",
+      "bytes": 16137,
+      "sha256": "5ccbaceab4ef8cad617aea768c6af0ffc5452441a80d8e45dfc38e1fdcc3428f",
+      "git_blob_sha1": "835646007d390c4df45fa5c6772bd7143c2a9cac",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/apertures/AUTHORED_DEMO.json",
+      "bytes": 5090,
+      "sha256": "453400e361c8f5e780d44fa94a31b923b0ecfc3864a5946956f011df32a2352f",
+      "git_blob_sha1": "18b0ebe707233a20f2abb419e77c7082726c4015",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/apertures/README.md",
+      "bytes": 4507,
+      "sha256": "d6671580d7664a95923f93d46eacc7b3faf1d22c2c94558cb09aa3f862c77e8d",
+      "git_blob_sha1": "24de888e8fcb113831674399b8c41e0244ae70c5",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/apertures/build_apertures.py",
+      "bytes": 21237,
+      "sha256": "4c8d49e974c05e6c4fb70d7cfde77099940ef252dcda784af8bad967973f5d3c",
+      "git_blob_sha1": "78320d701ca4392e8d15ffcbbe27ad58bebcf95e",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/apertures/review/M99-RB-DEC-005.json",
+      "bytes": 21906,
+      "sha256": "4de6d43dd0d12db4282b2b61b3cfca365ff0fe5dcdf1782653f9629132750377",
+      "git_blob_sha1": "6906b348f34f5302994d5a95e5e058de85095ff1",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/apertures/review/M99-RB-PKT-005.json",
+      "bytes": 16098,
+      "sha256": "7f915bab1008842c81de7f0ea86cae1d8fc87440fc2b0fb05efc042ae57b443d",
+      "git_blob_sha1": "961e73b695166330a54535a50476bbb51d7f75c1",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/apertures/tests/test_apertures.py",
+      "bytes": 13908,
+      "sha256": "1db4abfcf5c42c1012d424606f5b5edcdbfd5dbd2c491f4688249606d5e0adce",
+      "git_blob_sha1": "3baa80d3de9f77e9de6d27c4ee43a554f6b4e996",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/config/credentials.example.json",
+      "bytes": 133,
+      "sha256": "3350abad257b9d03ebae131725f5500a4822c506970229e29d817693bf78523c",
+      "git_blob_sha1": "603560eda7d71c06b6b21ee0360f3bef1c1880fd",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/config/place-demo.json",
+      "bytes": 1110,
+      "sha256": "ce4dfa82c5a862927b15fd69df70f1d64b0e0e39914ebadaf7309d7a2a897366",
+      "git_blob_sha1": "86093af2a01fd2312d7b3da1e6dc01332e780cbe",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/config/source-registry.json",
+      "bytes": 12022,
+      "sha256": "0105575d7a6c176d7bba7fd4a619520c07bcdc035dd3d93f03940b82bfefe729",
+      "git_blob_sha1": "a7531f6117f5e81a1b2e9db3e6145bd66df7cb74",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/config/source-registry.zz-fire.json",
+      "bytes": 1841,
+      "sha256": "70041685de79e92d5ca0ad48c011e321b9311a693fab794269fd34217f1777b4",
+      "git_blob_sha1": "b3808f93c9f3dc81db4fe9554fd562e3a800537a",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/config/source-registry.zz-street.json",
+      "bytes": 1668,
+      "sha256": "0954003f0d54da39e0772e53f64a10053c720b11b6044e3927a389bd86a2773f",
+      "git_blob_sha1": "fa99927887de3e405657395cd58cd50274bc446f",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/contracts/place-record.schema.json",
+      "bytes": 1784,
+      "sha256": "47e0b5a1249c0c96cb0e77f14ce34b41f8e380b3ee5b681838e3227ad48c6528",
+      "git_blob_sha1": "74fc7388a3a07a713aff6041afd7d7155d6d6633",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/contracts/source-envelope.schema.json",
+      "bytes": 2176,
+      "sha256": "6fc460385140574f8856d2a430e502e8aaa3c6e60e462bcc45a3edbbc52a9805",
+      "git_blob_sha1": "a0dbfc1baf67ffd1a96e19f74e4286d016880df3",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/contracts/street-scene.schema.json",
+      "bytes": 2030,
+      "sha256": "01ca5f7222de09a17fdcbf2cc4aa9f0e8ab0446ff43945d690b706d2999c0571",
+      "git_blob_sha1": "09208fd9d8eb331de2ae800026cdff96c02b5416",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/design-system/CONSTITUTION.json",
+      "bytes": 26287,
+      "sha256": "e49e809bed75a5b7966a8c89c418dd4f114772291b85469e4a1eaf83f9e68d51",
+      "git_blob_sha1": "0f02804febfdb4b12d22e4685421ac1f34fc48cb",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/design-system/README.md",
+      "bytes": 5489,
+      "sha256": "2b6fb52a4b6133982d12056c11b28de48ac62a29227b85e3b93ff869710d5862",
+      "git_blob_sha1": "86e6c3e93b6e47f0a8a08ba7a506558252f097d6",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/design-system/review/M99-RB-DEC-002.json",
+      "bytes": 21228,
+      "sha256": "6de9a5e200997bd11466540de1c767dc32d7667404d41fc11c6f39e3ad88467f",
+      "git_blob_sha1": "4d875bef8670009fa5a72423bef351f140d1873c",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/design-system/review/M99-RB-PKT-002.json",
+      "bytes": 14079,
+      "sha256": "308119ba70e38535e41802ebed4df22a3b30043232d66a78c7b854e20c8fe433",
+      "git_blob_sha1": "32e3f978402e3e21d08a061d4ad13a665ccb869e",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/design-system/specimen/app.js",
+      "bytes": 25268,
+      "sha256": "df60612cca4390112c63ad6c287d5e553ae91c36b955c91366cf50ac6a1ce145",
+      "git_blob_sha1": "d2e717b73bec5ed6c38a6f64f0ba0d5f8a660506",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/design-system/specimen/index.html",
+      "bytes": 17919,
+      "sha256": "68de4f0033a7254a85310aa7ccfb851f11ff5121498bf9ec69c5635e82cafd52",
+      "git_blob_sha1": "250974b8138512a71165c15c0e24a0ea7a674b05",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/design-system/specimen/style.css",
+      "bytes": 23948,
+      "sha256": "47fdad721ff2e85ccfb17a2bc4196549070d8aa63a04a78464dcdf9f97f5e558",
+      "git_blob_sha1": "66c71e4a7d9e96fd1b17e5f25e646c9e4b60fadf",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/design-system/tests/browser_test.py",
+      "bytes": 20189,
+      "sha256": "7f58c910bd137a9be06e9676a93e428f0caedf4e10b07fa0042c9b9d5178e82f",
+      "git_blob_sha1": "2cde6ba075f98738bcef4f16c22e0ad956efa641",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/design-system/tests/test_constitution.py",
+      "bytes": 14888,
+      "sha256": "76c8db88c3c92dcd2c8fb2af6aefeb060771d9524e5c087fd1afb464aa9b7f18",
+      "git_blob_sha1": "f13738698cbe99ab631198c0d245efe318cc48f7",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/experience/EXPERIENCE_CONTRACT.json",
+      "bytes": 7019,
+      "sha256": "5cdccf34d708a3f43c5bddae15d21ddc80f6467f5f738af466b9d31a72f9c5e6",
+      "git_blob_sha1": "ac72964c8b127b275eee1f4328f26ee7988e18fe",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/experience/README.md",
+      "bytes": 3798,
+      "sha256": "58e874a6c999731bc1e673b79b49654b5afb9c00aab8ebc19b60f5199dc59146",
+      "git_blob_sha1": "eb2a2cd85fc3700c7dcb9f24c743fb05d47d72e9",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/experience/build_experience.py",
+      "bytes": 31167,
+      "sha256": "5fdf38d72d4185fa54aa233a4204bc3f22fe1b970d8fe7af08c004c31e6a7aaa",
+      "git_blob_sha1": "6c91e7eb01861e1048b88c3d74ff1902fa7dd7c9",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/experience/review/M99-RB-DEC-009.json",
+      "bytes": 18752,
+      "sha256": "ad47888b7d7bc57e0dff4cfce98b7869fe190f0c71e407f363c447ee8cb009af",
+      "git_blob_sha1": "f25a0cd1145d20658d8dd35bca5d771ee036582b",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/experience/review/M99-RB-PKT-009.json",
+      "bytes": 18370,
+      "sha256": "2173f5f15b685c9788df30cc78e45e5e7a9aaa5b7dd0799007e282ae5a029f85",
+      "git_blob_sha1": "6e9a20cc46a088e0d8660faa9a4a82400f9a17f9",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/experience/template/app.js",
+      "bytes": 24831,
+      "sha256": "9a2f2cbd13116489d1e6a67ab9344dc19b954fa294b4f5da1b65eea1d9e030a0",
+      "git_blob_sha1": "0a7456e01f80e309ab280d396649ec389eadc138",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/experience/template/index.html",
+      "bytes": 13479,
+      "sha256": "3515c44fba199b770ac16458daef9850ff247092de560f9d8c582cf76c481d04",
+      "git_blob_sha1": "d03fc765b2e73ababa189d2d363f729e459b3130",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/experience/template/style.css",
+      "bytes": 20313,
+      "sha256": "e55cdba834aa52e13985487717e72d7180978681caea4620828042198d3f56aa",
+      "git_blob_sha1": "91f0e8a7f8f4a77126f169c5c7be75365400f28b",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/experience/tests/browser_test.py",
+      "bytes": 16682,
+      "sha256": "60bbeebc036bdf02f66e3991730b794edfe8e048f503b84d5a15fd17096884dd",
+      "git_blob_sha1": "3cd4b616febe7252ab436569e5257287b2dad68a",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/experience/tests/test_experience.py",
+      "bytes": 29480,
+      "sha256": "e3b4a3c54c9702ecc9b30ef4db1d11beea6058d7c9f4f726c666a530490199d9",
+      "git_blob_sha1": "4e01a3d10bb331cbae0371ba5eda55859efc8ed9",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/external-campaigns/CAMPAIGN_CONTRACT.json",
+      "bytes": 14666,
+      "sha256": "1c51e88ad1d81a1ff19efb46b88a331daf3dc68621da4a0313228d4641fc4532",
+      "git_blob_sha1": "7f0a64cf3149e71e2f1e27b9c765bedb9e57449b",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/external-campaigns/README.md",
+      "bytes": 4154,
+      "sha256": "dbf00b292907f58f9991292f7eade023097406989ebce1f43785a1abbb88c766",
+      "git_blob_sha1": "1b1bd2109202504bb0be587a3532138fc819a71c",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/external-campaigns/SYMLINK_EVIDENCE_REPAIR_RECEIPT.json",
+      "bytes": 1290,
+      "sha256": "88871bc3bfd0485387e470fbf4dd0476ae6bb29a5a0da14a5125251c53b95847",
+      "git_blob_sha1": "f90cd436ad6762b346fb63cefadc5cd0beb5e473",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/external-campaigns/campaign_runner.py",
+      "bytes": 37692,
+      "sha256": "855e470f5060d34b5e5aa729f1fc5d0e391eb8cfb9a5d890c7f26010eb1aadc7",
+      "git_blob_sha1": "cd2f4514f458b27a49b4eb55e6e753ee5b90b634",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/external-campaigns/review/M99-RB-DEC-013.json",
+      "bytes": 15595,
+      "sha256": "1db961238076f79bcd2d960037fb284d235cc1ee364b6e1ee45cd7df3546f035",
+      "git_blob_sha1": "decdb9de46edbfe26d14329c86df19153b2b42f6",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/external-campaigns/review/M99-RB-PKT-013.json",
+      "bytes": 13177,
+      "sha256": "198d81afb7d146f94b99675f9c96cedc620e21bfa75cb48a39722cbe3fa763a9",
+      "git_blob_sha1": "f1fa7b4e7c23d7d1d89947c56626dd65ed5f42f4",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/external-campaigns/tests/test_campaign_runner.py",
+      "bytes": 25259,
+      "sha256": "e49163706b22eb7b98ba135655d8aec384d265273bab576d68dcd5b50820b4b8",
+      "git_blob_sha1": "950b3ec3c628ee31bd2163406b10d1320def22de",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/overlays/AUTHORED_OVERLAY_DEMO.json",
+      "bytes": 6640,
+      "sha256": "e65517bacdb87cc97986354f69c52d0ea0ded1fdbedf26afcf004fa7bb9ebfb3",
+      "git_blob_sha1": "5048191f8323961619fd6a18350d36229f163f85",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/overlays/OVERLAY_CONTRACT.json",
+      "bytes": 29526,
+      "sha256": "d972dd74b3235cbf11e7ae943219eae9d540e5a57de25cbe1ceb63817c938fb1",
+      "git_blob_sha1": "8a308e5eb5e13deaf1de6ad84e9022902e312ff2",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/overlays/README.md",
+      "bytes": 6138,
+      "sha256": "17182a037c12505412e94c21632af44bb21352d2ad0722f7410ae4d41015f168",
+      "git_blob_sha1": "7e4395aad9be198dd8b56c1eaa03a5de71bed746",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/overlays/build_overlays.py",
+      "bytes": 31974,
+      "sha256": "e4d0b18c2363376ef0423dd053544ccddabf76bbce823ba2f0cfff37ff19a398",
+      "git_blob_sha1": "37cfb964dc26ad4099fac9d8ebb8543c278a9f43",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/overlays/review/M99-RB-DEC-007.json",
+      "bytes": 16792,
+      "sha256": "aac29e18da628e46ec6185c0919e666f9bdbf4ab64ba4494198e21f2cc84667a",
+      "git_blob_sha1": "ff0d86de03afc2d60dc93f79211568c7dab1088b",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/overlays/review/M99-RB-PKT-007.json",
+      "bytes": 17430,
+      "sha256": "c44f055e9a8a95f1e82ab17e6d98934be9310d52928a5647a15dc4a6fb6eb1d3",
+      "git_blob_sha1": "6705fd2c8e0760aeb65de2e59bf8dbbf32a367e3",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/overlays/tests/test_overlays.py",
+      "bytes": 21937,
+      "sha256": "6b79f3c95013e68e9be32317f92c62a573eaa4bb0ee7f9dda4487383bcff238f",
+      "git_blob_sha1": "ef1ac241ce7c7c7c4dd204b24dd620370c9a8a64",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/parity/PARITY_CONTRACT.json",
+      "bytes": 2841,
+      "sha256": "89378bb28a3d4043f8feb374be4d61663b3619f0f58ed66b2253635b7bbd6c0b",
+      "git_blob_sha1": "b68eaa5a3d97d33adc257f54ff247ee7d3333d1c",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/parity/README.md",
+      "bytes": 2054,
+      "sha256": "41449c16d81544fe6e9566015edb7f9edb2ed6e3ba35604fdf2867d3435f50be",
+      "git_blob_sha1": "063e44d5aae1bafbfc769c60398e49bbfdf5da3f",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/parity/SURFACE_DISPOSITIONS.json",
+      "bytes": 7185,
+      "sha256": "6f32faf34f856577297ced4af1503ddc414057d2f84d6dc4a3ce789c265f0059",
+      "git_blob_sha1": "dc1334ece3bcc5f12703ce47f5d42d1378e61a82",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/parity/build_parity.py",
+      "bytes": 23679,
+      "sha256": "8c29a9da50b659e70337b075d77287f93492102d68d08d02f11ebf800ed26e9e",
+      "git_blob_sha1": "2108ce1c7aada713d0696f36b7d359b9e9d58fb9",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/parity/requalification/SEALED_CANDIDATE.json",
+      "bytes": 3410,
+      "sha256": "c84a89d53920321bf1b79742814b63ac3db6e0bb6c9b2c5eb35f85eb41cbf63e",
+      "git_blob_sha1": "7d63129b579233cee604c2192c42e09833ec4f95",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/parity/review/M99-RB-DEC-011.json",
+      "bytes": 18763,
+      "sha256": "f2f5199829b42c5e9f5d26ebd7a49e5a293a4cefeb15c3ec80d712cfc2058b71",
+      "git_blob_sha1": "936a27c8b57726efc98761b9b307a6e654d32db6",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/parity/review/M99-RB-PKT-011.json",
+      "bytes": 16727,
+      "sha256": "afa5f26406b3de9afa8de12d1061d0f7c9ce1be507042988dbd9c8320b84f0b6",
+      "git_blob_sha1": "ab7def8581a61a0427b5410461e77206d9d911f6",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/parity/tests/test_parity.py",
+      "bytes": 16725,
+      "sha256": "4d5e1853ca65775fb50b56af2f1a5c1e57f71301e7077debf6731ced39d6720c",
+      "git_blob_sha1": "c52576ff0b463eb9cadc17be80840383fc084bc1",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/providers/street/google_street_view.js",
+      "bytes": 386,
+      "sha256": "008a595b1c7bb1bd553483322aee2c8e1b4e1a91dac3284d9dc76a818aa32973",
+      "git_blob_sha1": "296ce36cb307d4be87461eeb7e89de3ab1cfbeae",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/providers/street/kartaview.js",
+      "bytes": 1365,
+      "sha256": "e986ee04c2fde1bce06df9426321b7237c2f7117548b0a30e4cf959d1f5155d2",
+      "git_blob_sha1": "4b1573933c1de85ba3408b083a28ded004d68458",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/providers/street/map_only.js",
+      "bytes": 279,
+      "sha256": "e6128cb8fc1ab4966e28c2a04edba29016b112604f1a8281bd07ff3bad59189e",
+      "git_blob_sha1": "266752757709457630dc4193bc167c622b8b8537",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/providers/street/mapillary.js",
+      "bytes": 671,
+      "sha256": "9d3c2641f69de5ee1fc2e473b911fd150064d41a9332a79b9bbb6104124ff45a",
+      "git_blob_sha1": "a5d44df03920161ec16e3d340284dcc42458c624",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/providers/street/owned_capture.js",
+      "bytes": 492,
+      "sha256": "f2c73c189cb158811cc6c77da791228b676926ad24a0e533529d331925fedff8",
+      "git_blob_sha1": "28e0f41db4b43d4ddc0c8078c345a46e20590e20",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/providers/street/panoramax.js",
+      "bytes": 326,
+      "sha256": "38002081ac19ad1fb787187558c0ae60c7755ff48d307dbc843442643b25ab9c",
+      "git_blob_sha1": "99e09477226ec84eee0662ab50b912db7c47eea6",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/providers/street/provider_resolver.js",
+      "bytes": 1144,
+      "sha256": "28ccef3c4c9adfeb3583a42dc67b9682e67b6e12088ede4b9e69db44e79734d2",
+      "git_blob_sha1": "16499a37d8b1946e9393eb68f874e4032f391160",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/public-demo/PLACE_DEMO_CONTRACT.json",
+      "bytes": 11798,
+      "sha256": "3e884a9b54d859666649ed77fdde63683bab82e9ff2226efc50116ba133dfd9e",
+      "git_blob_sha1": "97df4a16b54beb2d7c3952e67f72930928448738",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/public-demo/README.md",
+      "bytes": 5452,
+      "sha256": "c8274892ccd7d8f3684c09c523c00bca7b498f9fbfa26aface8084f3d1c33c1c",
+      "git_blob_sha1": "794e5df96f0131b226daeb5f6189128a338802a9",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/public-demo/build_public_demo.py",
+      "bytes": 45483,
+      "sha256": "21260d3d0a2fa5f652ff3de340a6330702a8873904044c3f02aaffd0fec8b053",
+      "git_blob_sha1": "31bd2a8a5e4d278eb8633e862ef4f454a735b212",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/public-demo/review/M99-RB-DEC-003.json",
+      "bytes": 24764,
+      "sha256": "7ce08ac99018d88a3236acc7cb24236f3eb824cf1166df38ec0a09924a88ad17",
+      "git_blob_sha1": "1894150385d3c3de6e71f9bae8727352e94ededf",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/public-demo/review/M99-RB-PKT-003.json",
+      "bytes": 18388,
+      "sha256": "46550a093086f559e8eea51f8ef16950e1a019ffb8d85a19c6475718f4814bf0",
+      "git_blob_sha1": "6333765cd21eeca35085ee46963292ef36fae02b",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/public-demo/template/app.js",
+      "bytes": 19236,
+      "sha256": "5e123f10d39d5f1e586273f3b3187893ce8fd90668b6a89c0eae382e6f4d6624",
+      "git_blob_sha1": "01f159f51fd3c5c4040e31bbc627a4335c088006",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/public-demo/template/index.html",
+      "bytes": 12196,
+      "sha256": "57cede49c80717e98084ed6a61b1ce0796c130bb851618fedb43a656e092320f",
+      "git_blob_sha1": "f8182d7a796a7d4cf1c8463cb9af59fd6feab839",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/public-demo/template/style.css",
+      "bytes": 23959,
+      "sha256": "85d1c4693577d78f9637d8384f20f2488c671e368335d4a5c569c0c6c010bae1",
+      "git_blob_sha1": "0b75ecd2bdfc746f76cb90d69ec850877bc0f758",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/public-demo/tests/browser_test.py",
+      "bytes": 22557,
+      "sha256": "fcb7012d80e1497ae4ad4366c3697ba053869f021626a9ead949f7c69b7ab833",
+      "git_blob_sha1": "08252d7275ff4346f9af6156feacb713fc13f434",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/public-demo/tests/test_public_demo.py",
+      "bytes": 21533,
+      "sha256": "388f6bda841f12319b9cf9772b6d05dd8f0b1aef1f0303b72a4974edffce8dea",
+      "git_blob_sha1": "01810462f2c7ba3cd2e77ab7054791d8e71a7586",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/qualification/QUALIFICATION_CONTRACT.json",
+      "bytes": 6331,
+      "sha256": "e12b076b5fab82c566a19fd8ff776af0ab5d0d1285f12dab5767192b70315f81",
+      "git_blob_sha1": "17c0021d502a69a145a05e2f122faacc7c53f7dd",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/qualification/README.md",
+      "bytes": 2258,
+      "sha256": "631528c763fbe40f33d1f9566fa4d9e1254eac41cfde29b55fc57a97ec0e1ae7",
+      "git_blob_sha1": "6e758ed8dbd407b5aa875705342fbdde84309392",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/qualification/replay_p7_workflow.py",
+      "bytes": 5675,
+      "sha256": "a26c662aec6364aa4d573316f1278a8b3ea3ec9dac2527a04b2fbf26ede2b974",
+      "git_blob_sha1": "167f2596747addb451eb9abd421abced2cd4293f",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/qualification/requalification/P7_FOCUS_CONTINUITY_REPLAY.json",
+      "bytes": 2314,
+      "sha256": "f89946a8d5d7a34d49d970d306dcb663b1545ca6b0bf9292028050233649ce6b",
+      "git_blob_sha1": "523cad042a00bee9385911586f812cea002179ee",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/qualification/review/M99-RB-DEC-010.json",
+      "bytes": 17008,
+      "sha256": "20c7d6476f08e10e7d6b9f50238fde30a66905e7af7779df84363326a89ffe3a",
+      "git_blob_sha1": "89c72f60ac6f2a77a25c6f67ff850228b3b52098",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/qualification/review/M99-RB-PKT-010.json",
+      "bytes": 16176,
+      "sha256": "74f8aa066105aa878284ac2243cf44e812cb2590fe4ebf81eae67a62715373f6",
+      "git_blob_sha1": "08404dd0eb7d5972b5698b168f6262bb482fa319",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/qualification/run_qualification.py",
+      "bytes": 41701,
+      "sha256": "575ac20b028722e40b0ca55487352215b91ecb8fe8f6edd9ba71b078a4305f48",
+      "git_blob_sha1": "2560c6c884dce60b415d39751a07674a1a490a6f",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/qualification/tests/test_qualification.py",
+      "bytes": 10111,
+      "sha256": "b966d1f97db3701c16ec07b13a3510405a49a74fcf25db939fedf0dd63d6aa08",
+      "git_blob_sha1": "d701a107e097d18716bc0896d46806423d3c45c6",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json",
+      "bytes": 4061,
+      "sha256": "d5c43aa54439b6c20dbc1650dd70ff4cbb0a1812171c3a7e402744abc8b32e5a",
+      "git_blob_sha1": "8891f6878aa13b3874ddfaf393e71cbd42480cdd",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/release-control/README.md",
+      "bytes": 2829,
+      "sha256": "13f6de35cb5e570aae9748e589de62444eecec677f893d153fd53ac63e5c57ad",
+      "git_blob_sha1": "88455be2dd30c61b94b8a439bd126e1bf67a9da7",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/release-control/RELEASE_CONTRACT.json",
+      "bytes": 4925,
+      "sha256": "84754a384507d852cc9eeba30d69b35f4f3aa074641d849e41c35a733a9660b4",
+      "git_blob_sha1": "65ae89c437c719c14ff5cacabfdd151f967c0b9c",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/release-control/build_release_control.py",
+      "bytes": 49516,
+      "sha256": "09351e1bae2e59e56e935e0d7143934a846a3d86da27dfa0c9e20bf6da76c813",
+      "git_blob_sha1": "d24344b4ce8b2a20b69a3337ac551d47cc0a4e6e",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/release-control/replay_p9_workflow.py",
+      "bytes": 7497,
+      "sha256": "bca0db7bf0bf5079ded1d397f93eb220152fafa361841249d5466122ab825b04",
+      "git_blob_sha1": "9cb588bf51a3c9b5b2fd3eb27320a029b9001310",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/release-control/review/M99-RB-DEC-012.json",
+      "bytes": 17558,
+      "sha256": "11d12b8b46c4989d2c59569d2074f7cef9efcbd9d47b2485b1609e79ea14ee6d",
+      "git_blob_sha1": "2d10ac14b5a58fe4f40caa20ebc6845a81a76b29",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/release-control/review/M99-RB-PKT-012.json",
+      "bytes": 17244,
+      "sha256": "a7e8a0021835262dc1cd8508cac501a9d4904e97e1605ee6738211dc9d9d20a5",
+      "git_blob_sha1": "dcfb3c70be3be8351a07b5cc49434b52b643addc",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/release-control/tests/test_release_control.py",
+      "bytes": 24816,
+      "sha256": "00d6ede10ff8f0599daf9ecab27ece31c9ea70e0445631f3f2bb28e9ce58aab8",
+      "git_blob_sha1": "7e6a1f155436800fd75fb68ee7f9413d34c397a3",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/roles/README.md",
+      "bytes": 4145,
+      "sha256": "18537287a4dc18e131ccca3bcd83b40f2a3480f39346ca8ce8b5c74b3b55eea7",
+      "git_blob_sha1": "5882c40cebdecb7049a49ab3e158a1e5e885408b",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/roles/RECOVERY_RECEIPT.json",
+      "bytes": 7597,
+      "sha256": "cc00d54b382d38c5c34387a8720d3c8b0d2157c5179a24f3d03168401bc599a7",
+      "git_blob_sha1": "254d940a8841650e590b348b272a60ac21d4f4ca",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/roles/ROLE_CONTRACT.json",
+      "bytes": 15849,
+      "sha256": "a064aba01b2b4c97e21e18bcda6544dc07d390762f232f938dea5e09c30be082",
+      "git_blob_sha1": "91a64e866430d1e55836d8c37e3a1dd1dfa74dbd",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/roles/build_roles.py",
+      "bytes": 30239,
+      "sha256": "35fe7744cd875efed52a89d58b106cae6c6e76f2a75ba41dd5961e0bdc9a844e",
+      "git_blob_sha1": "ff56d3f7c0067807145a668d8251a0753dd76129",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/roles/review/M99-RB-DEC-008.json",
+      "bytes": 17750,
+      "sha256": "86191eca66268643ad0a8a32043b533cb492b9fe2e753c4e5c6f5cfb1a714fe3",
+      "git_blob_sha1": "f3103222191dd3e787f899778e2b3247ac1b289a",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/roles/review/M99-RB-PKT-008.json",
+      "bytes": 15775,
+      "sha256": "1c1974871ad22cae831f7458bef3c188598401037814237a330728b50deab08c",
+      "git_blob_sha1": "bad23a278014a63f31f66366f9aa0140cdf0e778",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/roles/tests/test_roles.py",
+      "bytes": 16996,
+      "sha256": "a339b1bfad71ff7fcea8701ac012f263c105d4034c9c22107dcabbdd314dfc01",
+      "git_blob_sha1": "aa931044e12ee73fe9df08b3ff15e486280524aa",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/scripts/__init__.py",
+      "bytes": 50,
+      "sha256": "461be7ddd842936c949e4f4942b6bf5dc3e28f9e697f59dfc9b4a33fad70b4af",
+      "git_blob_sha1": "b15e33fa0bbf05692a58ad6c7906c26b2f0f27aa",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/scripts/acquire_foundation.py",
+      "bytes": 5795,
+      "sha256": "facafbef613d72a9d1cb3be0088b704e73619813ca2098229896390c7185cbf5",
+      "git_blob_sha1": "f52675eb23b9dab943c0a8fe18921e11cc6ac713",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/scripts/core.py",
+      "bytes": 8849,
+      "sha256": "5e12782c1c8add6c9968bf4045635144bbae4eb912db222c0286aaecbb461a97",
+      "git_blob_sha1": "e78c71f2a105317f2ffe49c21e760e74e52f33bc",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/scripts/spatial.py",
+      "bytes": 4455,
+      "sha256": "5fda5682701bd21d25fd2d8dfa94c35ed2b2ee99852e70111f7aee8e9cd586f1",
+      "git_blob_sha1": "722cdbbea696497b5595106ba7f0d6f084621cb8",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/scripts/street.py",
+      "bytes": 10947,
+      "sha256": "2b079da132b802e5e5a8c55be39e33a6fc88c00700073f3cea3b1d276ebc9d84",
+      "git_blob_sha1": "1410ccf66ddbfd4935e71777ca7051fffca2e1f6",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/scripts/validate_foundation.py",
+      "bytes": 4083,
+      "sha256": "f3979bfa2be6dd07b901ecbc9db989efd4fafdeb2b82c98e925f07f5bc6249aa",
+      "git_blob_sha1": "580b5eadfa1a67981b000dd04ceb64126aea048b",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/scripts/weather_fire.py",
+      "bytes": 5299,
+      "sha256": "62c20106dec703585b224493a8f2a127aa4c11cebc30fa351eaca9af099eff50",
+      "git_blob_sha1": "9d224538469ae8efc5a585262a49ff99f036f619",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/street-glide/AUTHORED_REGISTRATION_DEMO.json",
+      "bytes": 2650,
+      "sha256": "ea051cec8eceb38296e0ae73ea1fe408fdbe12f4e65107f688462307c34ad890",
+      "git_blob_sha1": "28fd5709755091bcc7ee439f4cbcc6a99d08e42c",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/street-glide/README.md",
+      "bytes": 5350,
+      "sha256": "7eb414f27c876e7a6f0cf97cf849d0f0e1c796e226d52a3308584c36752cc866",
+      "git_blob_sha1": "c75875a233c639a622f136420c586e7ed830246b",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/street-glide/STREET_GLIDE_CONTRACT.json",
+      "bytes": 10142,
+      "sha256": "a7d12d995209b622e60e98e5f158a7e6bdbd26f9f439ccaaa65cde72366828e5",
+      "git_blob_sha1": "eabc7ba1f7dbbf409f760026c9f7eefd80359319",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/street-glide/register_natural_border.py",
+      "bytes": 15271,
+      "sha256": "6512afa2da6c4797ecad2d8b7d094b1cef22ba890e62c5a6a2356fdc434324ec",
+      "git_blob_sha1": "dd94f444b8570f3127be612650e69239423d0115",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/street-glide/resolve_scene.py",
+      "bytes": 18387,
+      "sha256": "fc730342791462cadba1fb8f58aa3a772565ec6ad758169bf9f5bcffb28a88cc",
+      "git_blob_sha1": "58082867db0ad0519236c99d8361ad84347d8f96",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/street-glide/review/M99-RB-DEC-006.json",
+      "bytes": 24450,
+      "sha256": "2828119a19c0123c987b42f8610c8c470160426d1adc74fa0978eb404defb9af",
+      "git_blob_sha1": "03d9641e09910cd10ab9849b99dc7f7cbec08d9e",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/street-glide/review/M99-RB-PKT-006.json",
+      "bytes": 17122,
+      "sha256": "3cbeafdb37f3468c07f6d35a1051c656781d86252e7dec00252a2f53bdf9b7bb",
+      "git_blob_sha1": "7f54c8ec046a00c7a2746592668a0494c8760c63",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/street-glide/tests/test_street_glide.py",
+      "bytes": 15562,
+      "sha256": "e54da818c325ba65d76e2637e6f3f4ab05cfc432fd3f6a3165f96aba3f708307",
+      "git_blob_sha1": "9598dc146fccc277a24ff2825b1d46f7b27cdaa8",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita-next/tests/test_contracts.py",
+      "bytes": 4090,
+      "sha256": "54506166f3be956286ec6c3eb569e8709cb40e2ed1dc87cad8dbbdd8f4f00d70",
+      "git_blob_sha1": "33a7e6a87222d7c1182907abc9f4592709735068",
+      "scopes": [
+        "successor-source-tree"
+      ]
+    },
+    {
+      "path": "manzanita/QUALIFICATION.json",
+      "bytes": 3864,
+      "sha256": "2e748aeeab93630fb90e43e7a8b1fb9ad05ce9d9ced9d2ea42b08cba9ef19bc1",
+      "git_blob_sha1": "bf713a09d2a49ec1b9318cb3f2a544234b048e90",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/README.md",
+      "bytes": 2365,
+      "sha256": "9fe7a3cf54d885405bff7a5209bf4920cf8477c35372c79150c76043039f709e",
+      "git_blob_sha1": "e24982f6e6e78d50f59671356ce9b5392487589d",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/RELEASE_RECEIPT.json",
+      "bytes": 1412,
+      "sha256": "6b4b0fa0bf2f4c02ac9d601aa816b491df9875e538249a2b1d5a007042e63bf0",
+      "git_blob_sha1": "e3bd8ba4f9144d48f64f0f8dd1f5251a2afbc4e0",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/VISUAL_CONSTITUTION.md",
+      "bytes": 2160,
+      "sha256": "409dfee90dc588774c71ef93443ca2359a59bb6d492897a701380ca599b46346",
+      "git_blob_sha1": "eb8782cc6befb1d0a5be8ef5a3798dd736977f4f",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/app.js",
+      "bytes": 16318,
+      "sha256": "9dbf2337d279089ab74df37db312d7eaca5b6ca7aa8a31f3fe7ba6b799a5592a",
+      "git_blob_sha1": "79064b1dd50fe05d8a2f21b9479907379f06db54",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/assets/household.webp",
+      "bytes": 67534,
+      "sha256": "51bf4ef0c14cd2d1e174e24baf234455273425a333d7e3e58c32cfcd5ec395d6",
+      "git_blob_sha1": "131471e09fa64487615fe239bc2d6b118f6c5d54",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/assets/neighborhood.webp",
+      "bytes": 80784,
+      "sha256": "c11f1617f314dd08824b277f3d203a87748c89ba7408f5aa5932350c9224bf30",
+      "git_blob_sha1": "4a0a2cf975b968bd98d929af96f121ba961654ae",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/assets/plant.webp",
+      "bytes": 44620,
+      "sha256": "e6148cb9e0bbaf6b117dd5162f52bac2c805aa69e8f4b820fb7909dfece37a23",
+      "git_blob_sha1": "9501eab97dfb3c712e95661afde466a3d2f4696b",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/assets/property.webp",
+      "bytes": 60876,
+      "sha256": "6af8c147b3690e5d784dda46e10f980e6e0a4dfca416b3646e5a85277fcb8cc5",
+      "git_blob_sha1": "a8407476aae8c5304ad6e0284842f47dc77f6c66",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/assets/region.webp",
+      "bytes": 43964,
+      "sha256": "9f7049d0946da5b68680856c5a1bad0573f94ad579172a84368cc82c9ce94921",
+      "git_blob_sha1": "c2b3817785c2ec2207c90048c06092bccb9986ce",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/assets/scene-data.js",
+      "bytes": 11538,
+      "sha256": "78cb42adebcb7dbe376899174d84c23f23d2a12785a4b9fe1db4502cf8498a55",
+      "git_blob_sha1": "b7069db3af74b67664a67a7de9e27b3e00b974c0",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/assets/scene-data.json",
+      "bytes": 13320,
+      "sha256": "b3f8c6ba2c316a7042809b1eec01293864fd9f5aa1544f1720c81338eb03a036",
+      "git_blob_sha1": "eeab08442f5b5d9bc6351928da9b0f92f8d3ffcc",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/assets/stewardship.webp",
+      "bytes": 102242,
+      "sha256": "c064e47d67d10e93ff8ebea7d549f392123f64377d3a5e74892327727f1558ec",
+      "git_blob_sha1": "bdbd9263d024bde13fb8666c953a1344d6b2e00c",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/assets/street.webp",
+      "bytes": 45788,
+      "sha256": "59e1a3d4f59e28816421a43772f72ce450a3db7053bc888d5b4dc6352aa49212",
+      "git_blob_sha1": "c21257d8fe6f7473836898c35d9a086b3642fecd",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/index.html",
+      "bytes": 13333,
+      "sha256": "7d24129db8b7a81f6413ad5e14d34ead032f0870467ae5c99135e1d22ef50a9e",
+      "git_blob_sha1": "3ecd25da176bea917b0e310ab2e2a12aca75bbd1",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/style.css",
+      "bytes": 20421,
+      "sha256": "d2b66b55dc85a04832ca5799823674c68acc18ea620df03a52a4525a4b69f430",
+      "git_blob_sha1": "91bc843045011db3a1d42f68b849b3f446cf08aa",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/tests/browser_test.py",
+      "bytes": 5325,
+      "sha256": "e37631e61aae79fde225d04014dbc5d4f6d3a8f88a082be2027ee2ffa34555a0",
+      "git_blob_sha1": "88ee5c64eb6bc969770e7b48099d625887e5581d",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/tests/public_contract_test.py",
+      "bytes": 2845,
+      "sha256": "0c6b327ab3ecc48c4da67b183882166b44149e24d4534c3befb69e561eee4f27",
+      "git_blob_sha1": "bf9e06211d0de8719608f9255a3934ccdc5b3374",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "manzanita/theme-init.js",
+      "bytes": 263,
+      "sha256": "ef3a1e10e5d7708d722a70fe2fd872bcff56f404b482be0764129e18e40d4896",
+      "git_blob_sha1": "5e55ef4e40055006391b50e759fb97312d3dab4b",
+      "scopes": [
+        "historical-public-route"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/CUSTODY_CONTRACT.json",
+      "bytes": 10906,
+      "sha256": "5199afe9ea442ac04da4c2cfef329509bd41f5c255bc05696973507eab8d7e8d",
+      "git_blob_sha1": "f0947c475868c05342e9ac298d63c6786b6a07a5",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/DONOR_REGISTER.json",
+      "bytes": 18303,
+      "sha256": "2b45e3486710eed5327654b28a5e27f3d4792462a3e9c7e588f1252ab919e9ba",
+      "git_blob_sha1": "74045c75a88d51af877c1423c0dc1e1e929394ad",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json",
+      "bytes": 3015,
+      "sha256": "49b2b4d08bbb43bfc4bbbc73026eddd7a1466a82a3abcf6dd563a2716373ddd8",
+      "git_blob_sha1": "9d40ea2c6329bd0804ce742a964c1fc2480bc3b4",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/OBSERVED_EXECUTION_LEDGER.json",
+      "bytes": 8457,
+      "sha256": "4c038deed7a29a61acb2c5da81ebd3ef919465ac8131a35eb6cdd5003df92d9a",
+      "git_blob_sha1": "37cbf355a3309f6707109698a99b91e6fda84023",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/README.md",
+      "bytes": 4094,
+      "sha256": "335e38350c9a9f9fba29243eaa23fa25354d7c53617b0f9d0de39e836b6a9b3b",
+      "git_blob_sha1": "5a58397f97d3c6606de98cee600f40d75e59740d",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/SOURCE_FOUNDATION_ARTIFACT.json.gz.b64",
+      "bytes": 10497,
+      "sha256": "b3c18dc862e9bea4072b0a5cccdcf40935bfb1dd9f7341b3ff53c6ea245345ef",
+      "git_blob_sha1": "6cc5cd5c8741681fae83e1f4cfb06e6b5d2c50fa",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/audit_history.py",
+      "bytes": 3609,
+      "sha256": "d854fd5108289c128a0f49fa864190c58c37ebb03c6658393d94cc0fb6b4ae5c",
+      "git_blob_sha1": "cfcb23836f76cf584a4f1e2df4ea71f4d993aeeb",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/build_custody.py",
+      "bytes": 10330,
+      "sha256": "74b14be8138dc49509eb38892c2a312c8db7be2e9fd7742eb8709e291c0bcbab",
+      "git_blob_sha1": "3028dda91236c640e5a7b7eea053e67e580a260b",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/tests/test_custody.py",
+      "bytes": 15158,
+      "sha256": "27bea409f1aa1ff7b77b0ddcee1859cdc055597e75d5460f4e0fc2828bc85e65",
+      "git_blob_sha1": "6a6bba27aa66454bbc98ecbfe5b203fd0840ce38",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/tests/test_independent_archive.py",
+      "bytes": 4720,
+      "sha256": "2b090b339bd1cb95ed4aa01518d90d5770289d020477cc817ad54153a3fb4900",
+      "git_blob_sha1": "39ef6521c62b8fc852c16f6615f8dca9ea37b5fd",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/custody/validate_custody.py",
+      "bytes": 15480,
+      "sha256": "51f7c554359b8893044f93a86974a6a8bef052de0093c7b3c25b23df07810cb9",
+      "git_blob_sha1": "eef6a97cd44ce69bea59a4066a2187963c108558",
+      "scopes": [
+        "current-custody-source"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/recovery/README.md",
+      "bytes": 2191,
+      "sha256": "c1482d7ba386e2dc094e07e4a05aefd6e49d66e25ebeee6ce315c265c9493794",
+      "git_blob_sha1": "b48de041c20f481fe5ec8d0d5b7b50db32357c30",
+      "scopes": [
+        "constitutional-recovery"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/recovery/RECOVERY_FINDING.md",
+      "bytes": 7691,
+      "sha256": "7a60f66bf1385364869bfd82a3ae0ccd66cb30e8e7fbf6cf2ff75dd62bb2473d",
+      "git_blob_sha1": "2aff407430a5f5ac5a5e3353924e21231ad72b0c",
+      "scopes": [
+        "constitutional-recovery"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/recovery/RECOVERY_STATE.json",
+      "bytes": 6451,
+      "sha256": "d7949d2dfe69e700f32f28e23201e05cb791ea0b9163e2f75c9ac7fe44cda46f",
+      "git_blob_sha1": "f39e0f55b81ff7c521a1d675ff718b5e930f7b3b",
+      "scopes": [
+        "constitutional-recovery"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/recovery/audit_backlog.py",
+      "bytes": 22155,
+      "sha256": "e8c77ce992e4f5fa8672d018cdda63e0ee45551d9cd26903455cb927d5dd5d22",
+      "git_blob_sha1": "24d5512a55bac52aee9e922b81370b92636376af",
+      "scopes": [
+        "constitutional-recovery"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/review-board/ACTIVATION_STATE.json",
+      "bytes": 1970,
+      "sha256": "39a88b8690915a1c229b369c9ca55e866fc0d3c8d59ba71f1b8eea80362f5a36",
+      "git_blob_sha1": "2cd8ed4151e4b760f2f7912d746ce41d1be63246",
+      "scopes": [
+        "contained-review-board"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/review-board/BOARD_CHARTER.json",
+      "bytes": 17198,
+      "sha256": "dc11f9c6a66a731429ae736d5021b391d29ca9e243cba53e47ae4bed2140e9b5",
+      "git_blob_sha1": "24d3206161eff0da9adce9531295156da474175d",
+      "scopes": [
+        "contained-review-board"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/review-board/README.md",
+      "bytes": 4496,
+      "sha256": "1486e6276bcf4f7d4d13d9d57986f5be7dd318d7697a68f3ffce7df3bf86667a",
+      "git_blob_sha1": "67bac54abf16cb9112d37d2806be99015e849901",
+      "scopes": [
+        "contained-review-board"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/review-board/cases/M99-RB-DEC-001.json",
+      "bytes": 14155,
+      "sha256": "ca13bc0ab097d6b3c1ed8480dab60d495dbacc115caee9a77d158ec5fb84458d",
+      "git_blob_sha1": "7b97e714f8ba24d4c04db971cef8b2c7269bce27",
+      "scopes": [
+        "contained-review-board"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/review-board/cases/M99-RB-PKT-001.json",
+      "bytes": 10707,
+      "sha256": "50fd9ac4f146cf69213f54fd5374596800b9145f8b1ccf8a9c3c3afc292a228c",
+      "git_blob_sha1": "668c4c14e4e67dc374a31fa80a9ee757db993ec3",
+      "scopes": [
+        "contained-review-board"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/review-board/review-decision.schema.json",
+      "bytes": 8988,
+      "sha256": "9a112cdec007ac2a9e7448bd1791fb2a675f9639ec1abe5daef1ff7849a2fa66",
+      "git_blob_sha1": "acd2ea97cee276570a16fee3305227cdd70dbc54",
+      "scopes": [
+        "contained-review-board"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/review-board/review-packet.schema.json",
+      "bytes": 8151,
+      "sha256": "d0c04e05af6eb48c54a7dbdd28a2adccef7a73987b031f1139eb0b9c7e097275",
+      "git_blob_sha1": "03f126b6de91e571267189ff673153713f3f23e1",
+      "scopes": [
+        "contained-review-board"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/review-board/tests/test_review_board.py",
+      "bytes": 7127,
+      "sha256": "5815fe4e259ba1af9cb195705c0668e97d0b2f6b6e01ddb87bb867c3ae3318cd",
+      "git_blob_sha1": "8c2550834cf5f30420b2470658dc4df19d661e4c",
+      "scopes": [
+        "contained-review-board"
+      ]
+    },
+    {
+      "path": "programs/manzanita-99/review-board/validate_review_board.py",
+      "bytes": 31532,
+      "sha256": "b39db1492cff302cdbea54706c868274426a7fae86d398ed7e8c975e7168a769",
+      "git_blob_sha1": "a7106e641eb14e4631cffb89943a36dc50321478",
+      "scopes": [
+        "contained-review-board"
+      ]
+    },
+    {
+      "path": "resolution-backfill/README.md",
+      "bytes": 3111,
+      "sha256": "db0c5fe318e28079f4d93b1c5b7aef72214ab0a33df2977f5ff4387905baa9ae",
+      "git_blob_sha1": "b9a9c91d0e6c26beb518a0269fd7bb4f29e31297",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/RESOLUTION_LAW.md",
+      "bytes": 6232,
+      "sha256": "4c34c20f80f39f191e0b7977c1ea240a2d44311da697c96b0784f4efbe09f28a",
+      "git_blob_sha1": "177d77019f37e28b8007046729cddc9f890f5953",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/contracts/inventory.schema.json",
+      "bytes": 1084,
+      "sha256": "bec536df8b84bcb43b51b117e36dec1a9810ac20ad280c4357b78329de025a79",
+      "git_blob_sha1": "0afa0a4198aeaae74b59d733d0d542e59076d6ff",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/contracts/surface.schema.json",
+      "bytes": 4221,
+      "sha256": "031c4af98234a1a415529dfbf9890a67e4ecbd3543aa9b9e36934104086c68fa",
+      "git_blob_sha1": "23d21af31542946001b43573e53d83fe82b10ec0",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/index.html",
+      "bytes": 31330,
+      "sha256": "90c9e0ca0c2094b7aedc7981ddce8b1cba49dab6e375e73b6906f87cba9bdb13",
+      "git_blob_sha1": "59dd6e169cfb958cd228633be8a8e9cb0646c3bb",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/inventory.json",
+      "bytes": 1412,
+      "sha256": "9305104c71e2d33b6f5b6160f582667d4d799d6bc22326d1950d1e1b45baec95",
+      "git_blob_sha1": "a6ef0fc9f708704daefd0acba92794ac31a57a9b",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/scripts/audit.py",
+      "bytes": 18459,
+      "sha256": "0dc29440cb0643be3ed77b17ac0ec7631c435c0267320cbfefacdcc004310b46",
+      "git_blob_sha1": "21fadb97ef3ef710855abba3fe9015b3734d3c5c",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/surfaces/acceptance.json",
+      "bytes": 3361,
+      "sha256": "65d8eb15bda08f57421e1a069f2b7de62a0d44844dbc715aacb0fd369e127534",
+      "git_blob_sha1": "670a2d657174b40425e6737c5a2a57a76a49b27b",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/surfaces/breakout-parity.json",
+      "bytes": 3483,
+      "sha256": "070226928dc8d7998b4b22b8c40b5844f79979b113e5d3ce64e7e11e653ab882",
+      "git_blob_sha1": "1fb2cac010b5114815abdb7b1076cfb206c867ee",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/surfaces/clinical-site-fabric.json",
+      "bytes": 3860,
+      "sha256": "9801d541ecd57228a4c4972f8ae6b2ca798f2af5f01d8055d2e8355c89ef80a1",
+      "git_blob_sha1": "cfbb6bf794df5e24c6ce8eb74b33820c7a387f81",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/surfaces/essential-attention.json",
+      "bytes": 3801,
+      "sha256": "b596ee5a93f1a106f3b0b70ff393bba96097b49c455748794612ce596a184d43",
+      "git_blob_sha1": "573ec8adde86e0dcf0f7b0922b6ba529e4749fde",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/surfaces/identity.json",
+      "bytes": 3559,
+      "sha256": "964bae67440db7775adcf8ecee7b1c23feb555ce6e4f6d034ed31c155713f8a9",
+      "git_blob_sha1": "986133a88022bf889b3b16026b8eb4f82ad2959c",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/surfaces/manzanita.json",
+      "bytes": 4096,
+      "sha256": "b57aa94b3e546f0ac4defe460d2f6062a5887fc54faff4f3e80aeb60d0085fb5",
+      "git_blob_sha1": "c61789304e5f0fdddf76b3c2ef6bdbfd21e0243e",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/surfaces/organ-evolution.json",
+      "bytes": 4270,
+      "sha256": "ec43f9886bd301bb846bb712f7ee795f5d19bc414403e5cce50ff23ce772c215",
+      "git_blob_sha1": "baf1c7f8045c79ddfb67ffb881d22977a3ece574",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/surfaces/polybolos.json",
+      "bytes": 4154,
+      "sha256": "b920fb8d546fb03103642b524730cd788743306bfe2550b74310eb93bfc9c2dc",
+      "git_blob_sha1": "79209761e00b5057111e095f73cad1498104aeb7",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/surfaces/pta-tracker.json",
+      "bytes": 4466,
+      "sha256": "f8f1347fd6698fb5bf91ef339c7b12403e713754be5df64ef9cb89f424ecf349",
+      "git_blob_sha1": "69725f8f4f1f6c9278a95e89121312589f0089e5",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/surfaces/repository-shell.json",
+      "bytes": 3713,
+      "sha256": "d48c7aa6a6fcc5f24a8d5cbb881e2ee733ced2b9ce63b4d256b23d9dbd27a623",
+      "git_blob_sha1": "c9361615606a25aa23ff4b22415760f93271d136",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    },
+    {
+      "path": "resolution-backfill/tests/verify.mjs",
+      "bytes": 8729,
+      "sha256": "d396d83a28ef01c4cce8c2c6b9a68b00e8d56834c8e125deb474e8d911853781",
+      "git_blob_sha1": "5c77e8c1162000923bc44cc5c05188127f3bc789",
+      "scopes": [
+        "resolution-backfill"
+      ]
+    }
+  ],
+  "donor_anchors": [
+    {
+      "id": "manzanita-public-1.4.0",
+      "class": "historical_public_release",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "release": "1.4.0",
+        "qualification_blob": "a3cb3212c22a32b113929e079a331c5f9a9129dd",
+        "source_commit": "58c2ae1b8bfa00d65ecf5fa3a2436241547a3bfb",
+        "route_tree": "846132be374b1e1da5a9444dc67da877bbb32224"
+      }
+    },
+    {
+      "id": "manzanita-public-1.4.1",
+      "class": "historical_public_release",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "release": "1.4.1",
+        "supersedes": "1.4.0",
+        "route_tree": "f6ea68bd4c5e07919277a099039354a5920d7b2b",
+        "qualification_blob": "8446d993eba3582d2f37300769334924266d8ebd",
+        "release_receipt_blob": "768f086673b0b593b8bfbbbdd75c26152bbaa40e",
+        "source_commit": "750ad90f40462ab442a546bdbc2c7f02c81e2b27"
+      }
+    },
+    {
+      "id": "manzanita-public-1.6.0",
+      "class": "historical_public_release",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "release": "1.6.0",
+        "supersedes": "1.4.1",
+        "source_commit": "a763a074fab4ec8cf5fe60929a7a69c1e579385b",
+        "route_tree": "d17a3d232de59bf4ab3069165abfb43291dd1ef3",
+        "qualification_blob": "bf713a09d2a49ec1b9318cb3f2a544234b048e90",
+        "release_receipt_blob": "e3bd8ba4f9144d48f64f0f8dd1f5251a2afbc4e0",
+        "photographic_donor_commit": "507ace9af2d2121cb93614158809ee5ff88437f2"
+      }
+    },
+    {
+      "id": "p10-independent-archive-001",
+      "class": "independent_archive",
+      "custody_state": "archived_external",
+      "anchors": {
+        "receipt": "programs/manzanita-99/custody/INDEPENDENT_ARCHIVE_RECEIPT.json",
+        "release_head": "ed387ac8d27576484c71a13a7d0c8c8194f9b2ed",
+        "candidate_bytes": 696968,
+        "candidate_sha256": "73a222505b40ffd74c3c2464a0a313b0fc5c4ff7df9f9b6e996cba8be036e90b",
+        "evidence_bytes": 10247061,
+        "evidence_sha256": "d57f3878f9958b446d2ac55dfdd395ae3881cf9be44fffbfddffd7932cd47454",
+        "cold_recovery_manifest_sha256": "35a2b2ffc8be0d51191b40bd45cdd04cbf117cb2176829db91fe5f4402742a74"
+      }
+    },
+    {
+      "id": "pr-100-street_glide_kernel",
+      "class": "successor_source",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 100,
+        "qualified_head": "b37a24859cf924ef71cf7f77300cfb1e30b31fb2",
+        "merged_at": "2026-08-16T21:42:17Z"
+      }
+    },
+    {
+      "id": "pr-101-eight_overlays",
+      "class": "successor_source",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 101,
+        "qualified_head": "8ca8f1bc1881f7cc89eff56a4b1cc25f546a26fc",
+        "merged_at": "2026-08-16T21:57:33Z"
+      }
+    },
+    {
+      "id": "pr-102-five_roles_fab",
+      "class": "successor_source",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 102,
+        "qualified_head": "4150caa3ecc2e4859adc5ab7b4a5e5932b23252f",
+        "merged_at": "2026-08-17T00:57:43Z"
+      }
+    },
+    {
+      "id": "pr-103-whole_experience",
+      "class": "successor_source",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 103,
+        "qualified_head": "0d91b30f5d5997d1649e3f1c0fb3093f3f577c27",
+        "merged_at": "2026-08-17T03:57:31Z"
+      }
+    },
+    {
+      "id": "pr-104-automated_resilience",
+      "class": "qualification_receipt",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 104,
+        "qualified_head": "8d1a4e194d3ebc0106de3e41e057ddfd7916af97",
+        "merged_at": "2026-08-17T19:20:04Z"
+      }
+    },
+    {
+      "id": "pr-105-text_resize_repair",
+      "class": "qualification_receipt",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 105,
+        "qualified_head": "3be0ab6eeb710cdbf60be58b6fab2a95ecdcd84a",
+        "merged_at": "2026-08-17T18:55:53Z"
+      }
+    },
+    {
+      "id": "pr-106-focus_continuity_repair",
+      "class": "qualification_receipt",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 106,
+        "qualified_head": "485f46407aca619d31017d04760925908262bcc7",
+        "merged_at": "2026-08-17T20:12:16Z"
+      }
+    },
+    {
+      "id": "pr-107-p8_requalification",
+      "class": "qualification_receipt",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 107,
+        "qualified_head": "15823b4747fe9cf19a1ecebac1204dea17e16ed0",
+        "merged_at": "2026-08-17T20:19:38Z"
+      }
+    },
+    {
+      "id": "pr-108-estate_parity",
+      "class": "governance",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 108,
+        "qualified_head": "f818a611ea9cbbf3438a3e6182e7e5919b06b8d1",
+        "merged_at": "2026-08-17T21:21:47Z"
+      }
+    },
+    {
+      "id": "pr-109-release_control",
+      "class": "generated_candidate",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 109,
+        "qualified_head": "ed387ac8d27576484c71a13a7d0c8c8194f9b2ed",
+        "merged_at": "2026-08-17T23:18:15Z"
+      }
+    },
+    {
+      "id": "pr-111-external_campaign_runner",
+      "class": "governance",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 111,
+        "qualified_head": "0e446aa7d2dbb9ff35f854f8d1178f7c47106c3b",
+        "merged_at": "2026-08-18T05:12:36Z"
+      }
+    },
+    {
+      "id": "pr-90-source_foundation",
+      "class": "successor_source",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 90,
+        "qualified_head": "c7c5d96959cc3c51817cafea95b5c63eb5ea853b",
+        "merged_at": "2026-08-16T03:40:51Z"
+      }
+    },
+    {
+      "id": "pr-95-constitutional_recovery",
+      "class": "governance",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 95,
+        "qualified_head": "4c3d4eda122b1ed9fa3079ae95b809e0218088b9",
+        "merged_at": "2026-08-16T04:33:51Z"
+      }
+    },
+    {
+      "id": "pr-96-contained_review_board",
+      "class": "governance",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 96,
+        "qualified_head": "2c904e796060a1175bb14fe0ce69f5eb67dcd75e",
+        "merged_at": "2026-08-16T17:57:22Z"
+      }
+    },
+    {
+      "id": "pr-97-forkline_field",
+      "class": "design_constitution",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 97,
+        "qualified_head": "e0409cf414fdd6351985f53161c93314b033a925",
+        "merged_at": "2026-08-16T18:20:14Z"
+      }
+    },
+    {
+      "id": "pr-98-public_safe_demo",
+      "class": "successor_source",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 98,
+        "qualified_head": "b1d8d629b88f409f45d78679cba15c88a4c51998",
+        "merged_at": "2026-08-16T21:26:21Z"
+      }
+    },
+    {
+      "id": "pr-99-seven_apertures",
+      "class": "successor_source",
+      "custody_state": "archived_repo",
+      "anchors": {
+        "pull_request": 99,
+        "qualified_head": "f49421f26be443395f7bcc684a1ea932b5694c14",
+        "merged_at": "2026-08-16T21:35:13Z"
+      }
+    }
+  ],
+  "open_required_gaps": [
+    "M99-CUSTODY-GAP-001",
+    "M99-CUSTODY-GAP-003",
+    "M99-CUSTODY-GAP-004",
+    "M99-CUSTODY-GAP-005",
+    "M99-CUSTODY-GAP-006",
+    "M99-CUSTODY-GAP-007",
+    "M99-CUSTODY-GAP-008",
+    "M99-CUSTODY-GAP-009",
+    "M99-CUSTODY-GAP-010"
+  ],
+  "canonical_task_count_effect": "none",
+  "qualification_boundary": "A passing custody workflow proves the exact current photographic public route, every explicitly guarded predecessor release, repo-resident donors, observed successor records, and the open-gap ledger agree. It does not close JDB99-001, release the complete manzanita-next successor, prove external campaigns, or change canonical task counts.",
+  "payload_sha256": "2f5b25cbbe518c3a78509f69658005e90f96082d3f772dcbf07cfce86c20fc55"
+}
