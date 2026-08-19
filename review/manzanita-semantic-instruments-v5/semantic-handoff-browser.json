@@ -1,0 +1,231 @@
+{
+  "schema": "manzanita-works/semantic-handoff@5",
+  "release": "source-adaptive-semantic-v5",
+  "state": {
+    "aperture": "household",
+    "instrument": "water",
+    "mode": "reference",
+    "seat": "crew_steward",
+    "detail": "operate",
+    "providerScene": 0
+  },
+  "object": "Lived circulation, shade, tools, pets, water, and acceptance",
+  "source": "Retained public-safe demonstration photograph",
+  "asset_id": "14c3d4284b5a57e3c790e43a609f7bebbbe9bda424187bce44a7f8c520e974dc",
+  "source_mode": "REFERENCE",
+  "instrument": {
+    "id": "water",
+    "label": "Water",
+    "surface": "semantic_optional"
+  },
+  "semantic_receipt": {
+    "receipt_sha256": "3b797c5d12172e6c8c7cce0fa549f69b85d451feaa84ce13479d5a3aa966e597",
+    "coverage": "partial_visible_collection_surface_and_edge_inventory",
+    "features": [
+      {
+        "id": "household-roof-left-001",
+        "class": "roof_collection_surface",
+        "label": "Left roof collection surface",
+        "geometry": {
+          "type": "polygon",
+          "points": [
+            [
+              300,
+              505
+            ],
+            [
+              640,
+              505
+            ],
+            [
+              660,
+              455
+            ],
+            [
+              585,
+              315
+            ],
+            [
+              530,
+              315
+            ]
+          ]
+        },
+        "confidence": "high_visible_surface",
+        "evidence": "A sloped roof plane is visibly exposed to precipitation on the left side of the house.",
+        "label_point": [
+          500,
+          425
+        ],
+        "non_claim": "Does not establish roof condition, drainage performance, gutter connection, runoff volume, or ownership."
+      },
+      {
+        "id": "household-roof-front-left-001",
+        "class": "roof_collection_surface",
+        "label": "Front gable left plane",
+        "geometry": {
+          "type": "polygon",
+          "points": [
+            [
+              600,
+              465
+            ],
+            [
+              770,
+              285
+            ],
+            [
+              775,
+              485
+            ],
+            [
+              660,
+              505
+            ]
+          ]
+        },
+        "confidence": "high_visible_surface",
+        "evidence": "The left plane of the front gable roof is visibly distinguishable.",
+        "label_point": [
+          690,
+          405
+        ],
+        "non_claim": "Does not establish condition, connection, runoff volume, or drainage performance."
+      },
+      {
+        "id": "household-roof-front-right-001",
+        "class": "roof_collection_surface",
+        "label": "Front gable right plane",
+        "geometry": {
+          "type": "polygon",
+          "points": [
+            [
+              775,
+              285
+            ],
+            [
+              1085,
+              500
+            ],
+            [
+              1015,
+              515
+            ],
+            [
+              775,
+              485
+            ]
+          ]
+        },
+        "confidence": "high_visible_surface",
+        "evidence": "The right plane of the front gable roof is visibly distinguishable.",
+        "label_point": [
+          900,
+          405
+        ],
+        "non_claim": "Does not establish condition, connection, runoff volume, or drainage performance."
+      },
+      {
+        "id": "household-roof-porch-001",
+        "class": "roof_collection_surface",
+        "label": "Porch roof collection surface",
+        "geometry": {
+          "type": "polygon",
+          "points": [
+            [
+              180,
+              590
+            ],
+            [
+              670,
+              590
+            ],
+            [
+              605,
+              535
+            ],
+            [
+              250,
+              535
+            ]
+          ]
+        },
+        "confidence": "high_visible_surface",
+        "evidence": "A lower porch roof plane is visibly exposed to precipitation.",
+        "label_point": [
+          420,
+          560
+        ],
+        "non_claim": "Does not establish gutter connection, roof condition, runoff volume, or discharge path."
+      },
+      {
+        "id": "household-gutter-left-001",
+        "class": "eave_edge",
+        "label": "Left eave eave edge",
+        "geometry": {
+          "type": "polyline",
+          "points": [
+            [
+              300,
+              510
+            ],
+            [
+              640,
+              510
+            ]
+          ]
+        },
+        "confidence": "medium_visible_eave",
+        "evidence": "A visible roof-edge line is visible along the lower edge of the left roof plane.",
+        "label_point": [
+          470,
+          520
+        ],
+        "non_claim": "The image does not establish whether a gutter is present, continuous, connected, sized, or functional."
+      },
+      {
+        "id": "household-gutter-porch-001",
+        "class": "eave_edge",
+        "label": "Porch eave eave edge",
+        "geometry": {
+          "type": "polyline",
+          "points": [
+            [
+              180,
+              600
+            ],
+            [
+              670,
+              600
+            ]
+          ]
+        },
+        "confidence": "medium_visible_eave",
+        "evidence": "A visible roof-edge line is visible along the porch roof edge.",
+        "label_point": [
+          420,
+          610
+        ],
+        "non_claim": "The image does not establish whether a gutter is present, continuous, connected, sized, or functional."
+      }
+    ],
+    "unknowns": [
+      "Observed flow and moisture",
+      "Subsurface drainage and soil infiltration",
+      "Connection and discharge destination",
+      "Gutter and downspout condition",
+      "Ownership, utility, excavation, and work authority"
+    ]
+  },
+  "seat": {
+    "id": "crew_steward",
+    "label": "Crew / Steward",
+    "evidence": "Source receipts, image-specific registration, field holds, access, utilities, equipment, safety, scope, and affected-actor acceptance.",
+    "next_safe_action": "Use the visible collection and conveyance inventory to prepare a drainage verification question. Confirm rainfall, flow, connection, discharge, condition, utilities, access, and affected-actor authority before acting.",
+    "acceptance": "Scope, access, safety, execution, before-and-after evidence, refusal, and completion or hold are independently reviewable.",
+    "authority": "Read-only visual interpretation. No drainage finding, watering instruction, excavation, utility, entry, work, or completion authority.",
+    "handoff": "Return verified questions, an accepted proposal, a refusal, or a completion receipt to the resident and program operator."
+  },
+  "public_effect": "none",
+  "claim_boundary": "The receipt identifies only visible roof collection surfaces and roof-edge lines in the exact named image. It does not establish a gutter, downspout, observed flow, drainage performance, connection, discharge destination, ownership, or current condition."
+}

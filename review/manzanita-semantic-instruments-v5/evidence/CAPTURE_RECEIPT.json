@@ -1,0 +1,1558 @@
+{
+  "schema": "manzanita-works/semantic-instruments-review-captures@2",
+  "result": "PASS",
+  "captures": [
+    {
+      "name": "01-household-shade",
+      "file": "01-household-shade.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "household",
+        "instrument": "shade",
+        "mode": "reference",
+        "seat": "resident",
+        "detail": "evidence",
+        "providerScene": 0,
+        "asset_id": "14c3d4284b5a57e3c790e43a609f7bebbbe9bda424187bce44a7f8c520e974dc",
+        "registration_id": "88b72d654233fdcd33638faeb6053bf0e225a5ea9fbf79d8803e59823d630e9f",
+        "feature_count": 2,
+        "feature_ids": [
+          "household-canopy-dominant-001",
+          "household-canopy-right-001"
+        ],
+        "feature_classes": [
+          "visible_leaf_canopy"
+        ],
+        "geometry": [
+          {
+            "type": "polygon",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                1120,
+                0
+              ],
+              [
+                1150,
+                120
+              ],
+              [
+                1080,
+                190
+              ],
+              [
+                990,
+                245
+              ],
+              [
+                900,
+                285
+              ],
+              [
+                820,
+                310
+              ],
+              [
+                720,
+                330
+              ],
+              [
+                640,
+                360
+              ],
+              [
+                560,
+                410
+              ],
+              [
+                480,
+                445
+              ],
+              [
+                390,
+                460
+              ],
+              [
+                300,
+                500
+              ],
+              [
+                210,
+                535
+              ],
+              [
+                110,
+                570
+              ],
+              [
+                0,
+                590
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                1080,
+                0
+              ],
+              [
+                1600,
+                0
+              ],
+              [
+                1600,
+                570
+              ],
+              [
+                1510,
+                560
+              ],
+              [
+                1430,
+                520
+              ],
+              [
+                1360,
+                475
+              ],
+              [
+                1290,
+                430
+              ],
+              [
+                1220,
+                370
+              ],
+              [
+                1160,
+                310
+              ],
+              [
+                1110,
+                220
+              ]
+            ]
+          }
+        ]
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 1427052,
+      "sha256": "31c9f04a9919c3ba404ef808e98f2a7db642bb39a8611622062be5bb0f1d855f"
+    },
+    {
+      "name": "02-property-shade",
+      "file": "02-property-shade.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "property",
+        "instrument": "shade",
+        "mode": "reference",
+        "seat": "crew_steward",
+        "detail": "evidence",
+        "providerScene": 0,
+        "asset_id": "4f5f752e2c064fc65e364748b19c0f465bd8fbaabbe9113394f41226d9a8376a",
+        "registration_id": "94c7f4cfb397b548c2788a610ed1e1698c4e782b8b26ffb6581f8782b6207e97",
+        "feature_count": 3,
+        "feature_ids": [
+          "property-canopy-left-001",
+          "property-canopy-center-001",
+          "property-crown-right-001"
+        ],
+        "feature_classes": [
+          "seasonal_open_crown",
+          "visible_leaf_canopy"
+        ],
+        "geometry": [
+          {
+            "type": "polygon",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                520,
+                0
+              ],
+              [
+                530,
+                125
+              ],
+              [
+                500,
+                210
+              ],
+              [
+                470,
+                300
+              ],
+              [
+                430,
+                390
+              ],
+              [
+                380,
+                445
+              ],
+              [
+                310,
+                470
+              ],
+              [
+                230,
+                460
+              ],
+              [
+                150,
+                430
+              ],
+              [
+                70,
+                425
+              ],
+              [
+                0,
+                405
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                690,
+                330
+              ],
+              [
+                1040,
+                300
+              ],
+              [
+                1120,
+                365
+              ],
+              [
+                1135,
+                455
+              ],
+              [
+                1080,
+                550
+              ],
+              [
+                1005,
+                620
+              ],
+              [
+                900,
+                650
+              ],
+              [
+                810,
+                625
+              ],
+              [
+                735,
+                570
+              ],
+              [
+                700,
+                480
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                890,
+                0
+              ],
+              [
+                1600,
+                0
+              ],
+              [
+                1600,
+                500
+              ],
+              [
+                1500,
+                500
+              ],
+              [
+                1390,
+                460
+              ],
+              [
+                1280,
+                410
+              ],
+              [
+                1180,
+                340
+              ],
+              [
+                1100,
+                280
+              ],
+              [
+                1010,
+                190
+              ],
+              [
+                930,
+                120
+              ]
+            ]
+          }
+        ]
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 1290262,
+      "sha256": "4a235cb6684c4795f8e1945e1db98e67122a3566a79f3ce18e1fbb25f3bdb32a"
+    },
+    {
+      "name": "03-street-shade-reference",
+      "file": "03-street-shade-reference.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "street",
+        "instrument": "shade",
+        "mode": "reference",
+        "seat": "crew_steward",
+        "detail": "evidence",
+        "providerScene": 0,
+        "asset_id": "0130268b1ddf8d4de52341b8d5fb0ba0bf851a243e53a009f662fb09bd46652c",
+        "registration_id": "bd0e85087f0164f70558aeb673f69641454bd40898bb35043db7ee47b0b872dd",
+        "feature_count": 3,
+        "feature_ids": [
+          "street-ref-canopy-left-001",
+          "street-ref-crown-center-001",
+          "street-ref-canopy-right-001"
+        ],
+        "feature_classes": [
+          "seasonal_open_crown",
+          "visible_leaf_canopy"
+        ],
+        "geometry": [
+          {
+            "type": "polygon",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                370,
+                0
+              ],
+              [
+                370,
+                545
+              ],
+              [
+                325,
+                575
+              ],
+              [
+                270,
+                585
+              ],
+              [
+                210,
+                575
+              ],
+              [
+                145,
+                590
+              ],
+              [
+                75,
+                570
+              ],
+              [
+                0,
+                535
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                500,
+                0
+              ],
+              [
+                1420,
+                0
+              ],
+              [
+                1410,
+                480
+              ],
+              [
+                1320,
+                470
+              ],
+              [
+                1220,
+                430
+              ],
+              [
+                1120,
+                385
+              ],
+              [
+                1010,
+                410
+              ],
+              [
+                900,
+                455
+              ],
+              [
+                790,
+                450
+              ],
+              [
+                680,
+                405
+              ],
+              [
+                590,
+                310
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                1260,
+                80
+              ],
+              [
+                1600,
+                70
+              ],
+              [
+                1600,
+                485
+              ],
+              [
+                1520,
+                475
+              ],
+              [
+                1440,
+                435
+              ],
+              [
+                1370,
+                390
+              ],
+              [
+                1310,
+                320
+              ]
+            ]
+          }
+        ]
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 1288926,
+      "sha256": "c510e89ffa6a35e40244fa53aa534a985a8e125864c0a2d78a5726ca5f17ce6b"
+    },
+    {
+      "name": "04-street-shade-live-a",
+      "file": "04-street-shade-live-a.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "street",
+        "instrument": "shade",
+        "mode": "live",
+        "seat": "crew_steward",
+        "detail": "evidence",
+        "providerScene": 0,
+        "asset_id": "ac9121366f6210e1a552b850deddedf908055f7e0ae43aeddde6cdd18144fe08",
+        "registration_id": "59da4a914cce1e64f74767af3de1d619d414ba83915dd7ac4e75499cb0b74d5a",
+        "feature_count": 2,
+        "feature_ids": [
+          "street-a-canopy-dominant-001",
+          "street-a-canopy-right-001"
+        ],
+        "feature_classes": [
+          "visible_leaf_canopy"
+        ],
+        "geometry": [
+          {
+            "type": "polygon",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                1440,
+                0
+              ],
+              [
+                1430,
+                120
+              ],
+              [
+                1360,
+                190
+              ],
+              [
+                1280,
+                230
+              ],
+              [
+                1180,
+                265
+              ],
+              [
+                1070,
+                300
+              ],
+              [
+                950,
+                335
+              ],
+              [
+                820,
+                355
+              ],
+              [
+                680,
+                365
+              ],
+              [
+                540,
+                350
+              ],
+              [
+                410,
+                325
+              ],
+              [
+                280,
+                295
+              ],
+              [
+                145,
+                265
+              ],
+              [
+                0,
+                290
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                1230,
+                300
+              ],
+              [
+                1600,
+                270
+              ],
+              [
+                1600,
+                650
+              ],
+              [
+                1510,
+                650
+              ],
+              [
+                1430,
+                610
+              ],
+              [
+                1360,
+                565
+              ],
+              [
+                1300,
+                500
+              ],
+              [
+                1260,
+                420
+              ]
+            ]
+          }
+        ]
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 1224702,
+      "sha256": "6d23a5881088aa70435753266bd7f0312d3ac88f10ee00c4bcc5b0fdc5e843d2"
+    },
+    {
+      "name": "05-street-shade-live-b",
+      "file": "05-street-shade-live-b.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "street",
+        "instrument": "shade",
+        "mode": "live",
+        "seat": "crew_steward",
+        "detail": "evidence",
+        "providerScene": 1,
+        "asset_id": "2ef01e8c21b4a6e191e357faa4a1b0fa49f78d0a2259bbbdbcccd1a9f8b51b1e",
+        "registration_id": "b8ce7b2eef25bff95dcc1f64f50a2c0e95b61a94f488c060205c477a76c643cf",
+        "feature_count": 1,
+        "feature_ids": [
+          "street-b-canopy-continuous-001"
+        ],
+        "feature_classes": [
+          "visible_leaf_canopy"
+        ],
+        "geometry": [
+          {
+            "type": "polygon",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                1600,
+                0
+              ],
+              [
+                1600,
+                520
+              ],
+              [
+                1510,
+                505
+              ],
+              [
+                1410,
+                510
+              ],
+              [
+                1310,
+                480
+              ],
+              [
+                1210,
+                465
+              ],
+              [
+                1110,
+                455
+              ],
+              [
+                1010,
+                440
+              ],
+              [
+                910,
+                480
+              ],
+              [
+                810,
+                510
+              ],
+              [
+                710,
+                485
+              ],
+              [
+                610,
+                455
+              ],
+              [
+                510,
+                438
+              ],
+              [
+                410,
+                430
+              ],
+              [
+                310,
+                440
+              ],
+              [
+                210,
+                410
+              ],
+              [
+                100,
+                430
+              ],
+              [
+                0,
+                405
+              ]
+            ]
+          }
+        ]
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 1391892,
+      "sha256": "26d41c27ee048a7b605efceb07a7c62b2610479119d44e84f39affa7b3e459a8"
+    },
+    {
+      "name": "06-household-water",
+      "file": "06-household-water.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "household",
+        "instrument": "water",
+        "mode": "reference",
+        "seat": "resident",
+        "detail": "evidence",
+        "providerScene": 0,
+        "asset_id": "14c3d4284b5a57e3c790e43a609f7bebbbe9bda424187bce44a7f8c520e974dc",
+        "registration_id": "3b797c5d12172e6c8c7cce0fa549f69b85d451feaa84ce13479d5a3aa966e597",
+        "feature_count": 6,
+        "feature_ids": [
+          "household-roof-left-001",
+          "household-roof-front-left-001",
+          "household-roof-front-right-001",
+          "household-roof-porch-001",
+          "household-gutter-left-001",
+          "household-gutter-porch-001"
+        ],
+        "feature_classes": [
+          "eave_edge",
+          "roof_collection_surface"
+        ],
+        "geometry": [
+          {
+            "type": "polygon",
+            "points": [
+              [
+                300,
+                505
+              ],
+              [
+                640,
+                505
+              ],
+              [
+                660,
+                455
+              ],
+              [
+                585,
+                315
+              ],
+              [
+                530,
+                315
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                600,
+                465
+              ],
+              [
+                770,
+                285
+              ],
+              [
+                775,
+                485
+              ],
+              [
+                660,
+                505
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                775,
+                285
+              ],
+              [
+                1085,
+                500
+              ],
+              [
+                1015,
+                515
+              ],
+              [
+                775,
+                485
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                180,
+                590
+              ],
+              [
+                670,
+                590
+              ],
+              [
+                605,
+                535
+              ],
+              [
+                250,
+                535
+              ]
+            ]
+          },
+          {
+            "type": "polyline",
+            "points": [
+              [
+                300,
+                510
+              ],
+              [
+                640,
+                510
+              ]
+            ]
+          },
+          {
+            "type": "polyline",
+            "points": [
+              [
+                180,
+                600
+              ],
+              [
+                670,
+                600
+              ]
+            ]
+          }
+        ]
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 1348340,
+      "sha256": "01c4f29aeb11994121c7cddc88ff115ddd6d5bb2e7565627583f0b8fe91443cc"
+    },
+    {
+      "name": "07-property-water",
+      "file": "07-property-water.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "property",
+        "instrument": "water",
+        "mode": "reference",
+        "seat": "crew_steward",
+        "detail": "evidence",
+        "providerScene": 0,
+        "asset_id": "4f5f752e2c064fc65e364748b19c0f465bd8fbaabbe9113394f41226d9a8376a",
+        "registration_id": "6a17248ff3b4f9c03759ec3597c9140f644df1ad9ef23db85159607102e91a15",
+        "feature_count": 4,
+        "feature_ids": [
+          "property-roof-left-001",
+          "property-roof-center-001",
+          "property-roof-right-001",
+          "property-curb-gutter-001"
+        ],
+        "feature_classes": [
+          "curb_gutter",
+          "roof_collection_surface"
+        ],
+        "geometry": [
+          {
+            "type": "polygon",
+            "points": [
+              [
+                55,
+                550
+              ],
+              [
+                395,
+                535
+              ],
+              [
+                325,
+                475
+              ],
+              [
+                105,
+                500
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                365,
+                525
+              ],
+              [
+                760,
+                525
+              ],
+              [
+                650,
+                420
+              ],
+              [
+                520,
+                395
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                1020,
+                530
+              ],
+              [
+                1600,
+                505
+              ],
+              [
+                1450,
+                410
+              ],
+              [
+                1190,
+                430
+              ]
+            ]
+          },
+          {
+            "type": "polyline",
+            "points": [
+              [
+                0,
+                820
+              ],
+              [
+                260,
+                828
+              ],
+              [
+                520,
+                838
+              ],
+              [
+                780,
+                850
+              ],
+              [
+                1040,
+                865
+              ],
+              [
+                1300,
+                890
+              ],
+              [
+                1600,
+                925
+              ]
+            ]
+          }
+        ]
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 1287505,
+      "sha256": "2be69987298d601d29e13a74cdf862ba062b23bce572f5f659fd64fc29291b13"
+    },
+    {
+      "name": "08-street-access-live-b",
+      "file": "08-street-access-live-b.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "street",
+        "instrument": "access",
+        "mode": "live",
+        "seat": "crew_steward",
+        "detail": "evidence",
+        "providerScene": 1,
+        "asset_id": "2ef01e8c21b4a6e191e357faa4a1b0fa49f78d0a2259bbbdbcccd1a9f8b51b1e",
+        "registration_id": "ea96cf0c4fc109310ffbcf0d2f7ec1b00f633dfc63dbe1fdff6eb2aa7de9bfee",
+        "feature_count": 5,
+        "feature_ids": [
+          "provider-b-public-sidewalk-001",
+          "provider-b-entry-path-001",
+          "provider-b-entry-steps-001",
+          "provider-b-center-drive-001",
+          "provider-b-right-drive-001"
+        ],
+        "feature_classes": [
+          "driveway_crossing",
+          "entry_path",
+          "entry_steps",
+          "public_sidewalk"
+        ],
+        "geometry": [
+          {
+            "type": "polygon",
+            "points": [
+              [
+                0,
+                776
+              ],
+              [
+                180,
+                784
+              ],
+              [
+                360,
+                784
+              ],
+              [
+                540,
+                780
+              ],
+              [
+                720,
+                770
+              ],
+              [
+                900,
+                755
+              ],
+              [
+                1080,
+                742
+              ],
+              [
+                1260,
+                727
+              ],
+              [
+                1440,
+                713
+              ],
+              [
+                1600,
+                705
+              ],
+              [
+                1600,
+                770
+              ],
+              [
+                1440,
+                780
+              ],
+              [
+                1260,
+                792
+              ],
+              [
+                1080,
+                812
+              ],
+              [
+                900,
+                830
+              ],
+              [
+                720,
+                842
+              ],
+              [
+                540,
+                842
+              ],
+              [
+                360,
+                832
+              ],
+              [
+                180,
+                820
+              ],
+              [
+                0,
+                815
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                158,
+                675
+              ],
+              [
+                215,
+                690
+              ],
+              [
+                285,
+                713
+              ],
+              [
+                360,
+                742
+              ],
+              [
+                455,
+                780
+              ],
+              [
+                418,
+                805
+              ],
+              [
+                330,
+                772
+              ],
+              [
+                260,
+                745
+              ],
+              [
+                200,
+                718
+              ],
+              [
+                145,
+                700
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                76,
+                625
+              ],
+              [
+                282,
+                625
+              ],
+              [
+                290,
+                690
+              ],
+              [
+                170,
+                697
+              ],
+              [
+                92,
+                680
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                535,
+                676
+              ],
+              [
+                650,
+                688
+              ],
+              [
+                770,
+                716
+              ],
+              [
+                900,
+                750
+              ],
+              [
+                960,
+                778
+              ],
+              [
+                940,
+                832
+              ],
+              [
+                810,
+                816
+              ],
+              [
+                670,
+                790
+              ],
+              [
+                555,
+                754
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                1265,
+                673
+              ],
+              [
+                1415,
+                665
+              ],
+              [
+                1600,
+                666
+              ],
+              [
+                1600,
+                770
+              ],
+              [
+                1420,
+                782
+              ],
+              [
+                1280,
+                758
+              ]
+            ]
+          }
+        ]
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 1330548,
+      "sha256": "30c03eaa688905c2afeab80f33a6fc6a047f10f3d5bc482dcbf1bcf2eac83fe2"
+    },
+    {
+      "name": "09-neighborhood-water-held-geometry",
+      "file": "09-neighborhood-water-held-geometry.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "neighborhood",
+        "instrument": "water",
+        "mode": "reference",
+        "seat": "planner_program",
+        "detail": "evidence",
+        "providerScene": 0,
+        "asset_id": "5ec9252f1615e86a239384a76a508554b2bd9e9221d5e202abce109e804f29d8",
+        "registration_id": null,
+        "feature_count": 0,
+        "feature_ids": [],
+        "feature_classes": [],
+        "geometry": []
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 1361516,
+      "sha256": "21fd6278e142f4d59067d4c7a34ccf75c75f936aa174a9fa907eb046aea8b46d"
+    },
+    {
+      "name": "10-region-fire",
+      "file": "10-region-fire.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "region",
+        "instrument": "fire",
+        "mode": "reference",
+        "seat": "planner_program",
+        "detail": "operate",
+        "providerScene": 0,
+        "asset_id": "df79650c1622d3d8371797950167dcb38e5dc8870970260dcf4cc9846c9aef21",
+        "registration_id": null,
+        "feature_count": 0,
+        "feature_ids": [],
+        "feature_classes": [],
+        "geometry": []
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 1338803,
+      "sha256": "856fecf56fe90d782819c6af5906deb7c40e6b0b4d9f769314ed6c9944b763e7"
+    },
+    {
+      "name": "11-street-map-access",
+      "file": "11-street-map-access.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "street",
+        "instrument": "access",
+        "mode": "map",
+        "seat": "successor",
+        "detail": "evidence",
+        "providerScene": 0,
+        "asset_id": "a80485954f8c44f729a186f776aa6e7337e72e029290331781f9a50c18d5cb9e",
+        "registration_id": null,
+        "feature_count": 0,
+        "feature_ids": [],
+        "feature_classes": [],
+        "geometry": []
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 475446,
+      "sha256": "6569f749cb8f33425bced8b5dff6ecc2ef65b6117720fcf82cae33056876b07e"
+    },
+    {
+      "name": "12-household-held-water",
+      "file": "12-household-held-water.png",
+      "viewport": [
+        1600,
+        1000
+      ],
+      "state": {
+        "aperture": "household",
+        "instrument": "water",
+        "mode": "held",
+        "seat": "successor",
+        "detail": "operate",
+        "providerScene": 0,
+        "asset_id": null,
+        "registration_id": null,
+        "feature_count": 0,
+        "feature_ids": [],
+        "feature_classes": [],
+        "geometry": []
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 272778,
+      "sha256": "5648c9dbc17ec327bec2588a0a1593a6d4f631c70c7edc9423d7cfeef3bdb60f"
+    },
+    {
+      "name": "13-mobile-household-water",
+      "file": "13-mobile-household-water.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "state": {
+        "aperture": "household",
+        "instrument": "water",
+        "mode": "reference",
+        "seat": "resident",
+        "detail": "operate",
+        "providerScene": 0,
+        "asset_id": "14c3d4284b5a57e3c790e43a609f7bebbbe9bda424187bce44a7f8c520e974dc",
+        "registration_id": "3b797c5d12172e6c8c7cce0fa549f69b85d451feaa84ce13479d5a3aa966e597",
+        "feature_count": 6,
+        "feature_ids": [
+          "household-roof-left-001",
+          "household-roof-front-left-001",
+          "household-roof-front-right-001",
+          "household-roof-porch-001",
+          "household-gutter-left-001",
+          "household-gutter-porch-001"
+        ],
+        "feature_classes": [
+          "eave_edge",
+          "roof_collection_surface"
+        ],
+        "geometry": [
+          {
+            "type": "polygon",
+            "points": [
+              [
+                300,
+                505
+              ],
+              [
+                640,
+                505
+              ],
+              [
+                660,
+                455
+              ],
+              [
+                585,
+                315
+              ],
+              [
+                530,
+                315
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                600,
+                465
+              ],
+              [
+                770,
+                285
+              ],
+              [
+                775,
+                485
+              ],
+              [
+                660,
+                505
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                775,
+                285
+              ],
+              [
+                1085,
+                500
+              ],
+              [
+                1015,
+                515
+              ],
+              [
+                775,
+                485
+              ]
+            ]
+          },
+          {
+            "type": "polygon",
+            "points": [
+              [
+                180,
+                590
+              ],
+              [
+                670,
+                590
+              ],
+              [
+                605,
+                535
+              ],
+              [
+                250,
+                535
+              ]
+            ]
+          },
+          {
+            "type": "polyline",
+            "points": [
+              [
+                300,
+                510
+              ],
+              [
+                640,
+                510
+              ]
+            ]
+          },
+          {
+            "type": "polyline",
+            "points": [
+              [
+                180,
+                600
+              ],
+              [
+                670,
+                600
+              ]
+            ]
+          }
+        ]
+      },
+      "horizontal_overflow": 0,
+      "errors": [],
+      "bytes": 266821,
+      "sha256": "da3e7802154186b0e7b40cfbd909555ee21675fb09a21c5083dea13160f36eb8"
+    }
+  ],
+  "contact_sheet": {
+    "path": "contact-sheet.jpg",
+    "bytes": 1866423,
+    "sha256": "eb7228e49426c26bf8293f5497434724866646ae2d1121dd314f39c1bc8e938f"
+  },
+  "semantic_shade_proof": {
+    "path": "semantic-shade-proof.jpg",
+    "bytes": 764963,
+    "sha256": "f0a20fc88945f4d3cc8dca0d4846f3ca758baa81144b03392816713b762d6c07"
+  },
+  "semantic_water_proof": {
+    "path": "semantic-water-proof.jpg",
+    "bytes": 482476,
+    "sha256": "06ee64a6302d772dace673869322cd5dbb87b144b5d9ccee6a1856b67314996e"
+  },
+  "semantic_access_proof": {
+    "path": "semantic-access-proof.jpg",
+    "bytes": 262175,
+    "sha256": "8c3edbadb7c5a82de2818f1251ca9573059131c6e397e17c051a5b53770f3641"
+  },
+  "degraded_and_nonspatial_proof": {
+    "path": "degraded-and-nonspatial-proof.jpg",
+    "bytes": 377718,
+    "sha256": "df205c8d6f39d033752f57ca6d58f14d27235522247563e880f4ce0cc0eb91e5"
+  },
+  "public_route_effect": "none"
+}

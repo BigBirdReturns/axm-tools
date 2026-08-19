@@ -1,0 +1,19 @@
+{
+  "schema": "manzanita-works/semantic-instruments-review-contract@2",
+  "release": "source-adaptive-semantic-v5",
+  "classification": "review_evidence_not_public_release",
+  "required_laws": [
+    "Access geometry is available only in the Street aperture and only from exact-asset semantic receipts.",
+    "Shade geometry is available only where an exact scene receipt identifies visible leaf canopy or seasonal open crown.",
+    "Water geometry is available only where an exact scene receipt identifies visible roof collection or conveyance features.",
+    "Every semantic geometry object is bound to the SHA-256 identity of the exact displayed scene.",
+    "Occluded or unverified connections remain absent rather than being completed by interpolation.",
+    "Map-only and held states render zero image geometry.",
+    "Unsupported instruments and source modes refuse selection.",
+    "Care, Heat, Air, Fire, and Assistance do not borrow image geometry.",
+    "Export preserves exact asset identity, semantic receipt identity, feature inventory, seat, authority, and public-effect boundary."
+  ],
+  "public_route_effect": "none",
+  "successor_program_effect": "none",
+  "canonical_task_count_effect": "none"
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "manzanita-works/semantic-instruments-browser-audit@6",
+  "result": "PASS",
+  "valid_states_exercised": 117,
+  "invalid_controls_refused": 28,
+  "semantic_receipts_by_instrument": {
+    "access": 3,
+    "shade": 5,
+    "water": 2
+  },
+  "semantic_features_by_instrument": {
+    "access": 11,
+    "shade": 11,
+    "water": 10
+  },
+  "map_and_hold_geometry": 0,
+  "non_geometric_instrument_geometry": 0,
+  "functional_seats": 5,
+  "mobile_horizontal_overflow": 0,
+  "mobile_control_floor": 44,
+  "console_errors": [],
+  "page_errors": [],
+  "external_requests": [],
+  "public_route_effect": "none"
+}

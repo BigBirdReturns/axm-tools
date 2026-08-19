@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" data-release="source-adaptive-semantic-v5" data-visual-system="semantic-feature-registration">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="Manzanita source-adaptive aperture with image registrations bound to exact asset identities.">
+<title>Manzanita Works · Semantic Place Aperture</title>
+<link rel="stylesheet" href="style.css">
+<script>window.MANZANITA_V5=__MANZANITA_DATA__;</script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#stage">Skip to place aperture</a>
+<header class="topbar">
+  <a class="brand" href="#stage"><span class="mark">⌁</span><span><b>MANZANITA WORKS</b><small>SEMANTIC SOURCE-ADAPTIVE APERTURE · REVIEW</small></span></a>
+  <nav aria-label="Primary"><a href="#stage">PLACE</a><a href="#instruments">INSTRUMENTS</a><a href="#sourceReceipt">RECEIPT</a><a href="#handoff">HANDOFF</a></nav>
+  <button id="themeButton" type="button" class="utility" aria-pressed="false">LIGHT</button>
+</header>
+<main class="workspace">
+  <aside class="left-rail">
+    <div class="rail-head"><span>ONE PLACE</span><h2>Seven operating apertures</h2></div>
+    <div id="apertureList" class="aperture-list" role="tablist" aria-label="Place apertures"></div>
+    <div class="source-mode-panel">
+      <span>SOURCE STATE</span>
+      <div id="modeList" class="mode-list"></div>
+      <div id="providerScenePanel" class="provider-scene-panel" hidden>
+        <b>PROVIDER SCENE</b><div id="providerSceneList"></div>
+      </div>
+    </div>
+  </aside>
+  <section class="center-field">
+    <section class="stage" id="stage">
+      <svg id="sceneSvg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="stageTitle stageReading">
+        <image id="sceneImage" x="0" y="0" width="1600" height="1000" preserveAspectRatio="xMidYMid meet"></image>
+        <rect id="sceneVeil" x="0" y="0" width="1600" height="1000"></rect>
+        <g id="registeredGeometry"></g>
+        <g id="registeredAnchors"></g>
+      </svg>
+      <div id="instrumentStage" class="instrument-stage" aria-live="polite"></div>
+      <div id="holdPanel" class="hold-panel" hidden><span>NO ADMISSIBLE MEDIA OR GEOMETRY</span><h2>Preserve the hold.</h2><p id="holdText"></p></div>
+      <div class="stage-top"><span id="stageClass"></span><span id="stageSource"></span></div>
+      <div class="stage-copy"><p id="stageEyebrow"></p><h1 id="stageTitle"></h1><p id="stageReading"></p></div>
+      <aside id="instrumentCard" class="instrument-card"><span id="instrumentClass"></span><h2 id="instrumentTitle"></h2><p id="instrumentMechanism"></p><div id="instrumentSurface"></div></aside>
+    </section>
+    <div id="instruments" class="instrument-bar" role="group" aria-label="Evidence instruments"></div>
+  </section>
+  <aside class="right-rail">
+    <section class="seat-section"><span>FUNCTIONAL SEAT</span><div id="seatList" class="seat-list"></div></section>
+    <section class="object-section"><span id="objectClass"></span><h2 id="objectTitle"></h2></section>
+    <nav class="detail-tabs" aria-label="Detail views"><button type="button" data-detail="operate">OPERATE</button><button type="button" data-detail="evidence">EVIDENCE</button><button type="button" data-detail="handoff">HANDOFF</button></nav>
+    <div id="detailContent" class="detail-content"></div>
+    <section id="sourceReceipt" class="receipt-panel">
+      <span>EXACT ASSET / SEMANTIC RECEIPT</span>
+      <dl>
+        <div><dt>ASSET</dt><dd id="receiptAsset"></dd></div>
+        <div><dt>REGISTRATION</dt><dd id="receiptRegistration"></dd></div>
+        <div><dt>FEATURES</dt><dd id="receiptConfidence"></dd></div>
+        <div><dt>COVERAGE</dt><dd id="receiptDisplacement"></dd></div>
+      </dl>
+    </section>
+  </aside>
+</main>
+<section class="source-strip">
+  <div><span>APERTURE</span><b id="stripAperture"></b></div>
+  <div><span>SOURCE MODE</span><b id="stripMode"></b></div>
+  <div><span>ASSET ID</span><b id="stripAsset"></b></div>
+  <div><span>REGISTRATION</span><b id="stripRegistration"></b></div>
+  <div><span>GEOMETRY LAW</span><b id="stripGeometryLaw"></b></div>
+  <div><span>PUBLIC EFFECT</span><b>NONE</b></div>
+</section>
+<section id="handoff" class="handoff"><div><span>ESSENTIAL ATTENTION HANDOFF</span><h2>Export the exact source, receipt, actor, hold, and next review.</h2><p>Semantic geometry travels only with the exact asset identity and feature inventory named by its receipt. A new live scene without a semantic receipt arrives with no overlay.</p></div><button id="exportButton" type="button">EXPORT BOUNDED HANDOFF</button></section>
+<footer><span>REVIEW OBJECT · EXACT-ASSET SEMANTIC REGISTRATION</span><span>NO LIVE ROUTE EFFECT</span></footer>
+</body></html>
