@@ -1,0 +1,58 @@
+{
+  "authority": {
+    "credit_effect": "none",
+    "organizational_effect": "none",
+    "payment_effect": "none",
+    "source_system_writeback": "none"
+  },
+  "contracts": {
+    "browser_errors": 0,
+    "deployed_browser_replay": "PASS",
+    "exact_qualified_files": "PASS",
+    "fundraising_focus": "PASS",
+    "unexpected_external_requests": 0
+  },
+  "files": {
+    "README.md": {
+      "bytes": 2582,
+      "sha256": "ff234aeffb73cf81b5b3d2b50d4d48f3f47211b8cbe9d6e91ca39f8ceaf6b5f5"
+    },
+    "app.js": {
+      "bytes": 9543,
+      "sha256": "1a3d3df6424ae90a3cb086ebccd5353e0c89930ef43de8420d23f5c34db122cc"
+    },
+    "data.js": {
+      "bytes": 10073,
+      "sha256": "d8a6b11aa352e63dd86e8bb0b217e28d7dac7c5beeb8b347c20010218703ea0f"
+    },
+    "index.html": {
+      "bytes": 4768,
+      "sha256": "ff800f71f413db89115fc7b52a10a0baa42ca858e7a060c01e45ad3f7513228e"
+    },
+    "style.css": {
+      "bytes": 13782,
+      "sha256": "5eb239d7af4aa8acdde105c5d4e3898ac25215366751c8a2fe531673c65279d2"
+    },
+    "tests/browser_test.py": {
+      "bytes": 8317,
+      "sha256": "b92a7824b3e7f925f4e4186e2e8a4cb6f57c4db5130341c94894ab3a53caa9b4"
+    },
+    "tests/live_browser_test.py": {
+      "bytes": 3877,
+      "sha256": "d6ffcde9168cf76cbf61f10b61cb93a43a212b44a4691d871ebfc55262ea5e80"
+    },
+    "tests/public_contract_test.py": {
+      "bytes": 2771,
+      "sha256": "5a7b0956d8501dc1a2fdc737ba4aefa959a8960058414cd28be452a006f6400d"
+    }
+  },
+  "live_observation_run_id": 32291708463,
+  "observed_at": "2026-08-19T19:22:00.653582+00:00",
+  "pages_run_id": 32271637239,
+  "product_source_sha": "e6e4693d8141e94743bafd708a3b8d3a7fb8c7b5",
+  "public_route": "https://bigbirdreturns.github.io/axm-tools/manzanita-works/",
+  "release": "0.2.0",
+  "run_attempt": 1,
+  "schema": "manzanita-works/operating-dreamboard-live-observation@1",
+  "state": "PASS"
+}

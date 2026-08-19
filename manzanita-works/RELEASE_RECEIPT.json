@@ -5,13 +5,33 @@
     "payment_effect": "none",
     "source_system_writeback": "none"
   },
-  "deployment": "HOLD_UNTIL_MERGE_AND_LIVE_REPLAY",
+  "deployment": {
+    "deployed_at": "2026-08-19T16:40:11.886671+00:00",
+    "pages_run_id": 32271637239,
+    "product_source_sha": "e6e4693d8141e94743bafd708a3b8d3a7fb8c7b5",
+    "state": "PUBLIC_VERIFIED"
+  },
+  "live_observation": {
+    "artifact_id": 9380034345,
+    "artifact_sha256": "6e3f5b612bb7605931ef88837a6c808b1f1aa475e9c399ea8ede26f0d87bacb5",
+    "browser_errors": 0,
+    "deployed_browser_replay": "PASS",
+    "exact_qualified_files": "PASS",
+    "fundraising_focus": "PASS",
+    "observed_at": "2026-08-19T19:22:00.653582+00:00",
+    "receipt_path": ".github/manzanita-works-live-receipts/32291708463.json",
+    "run_attempt": 1,
+    "run_id": 32291708463,
+    "unexpected_external_requests": 0
+  },
   "public_route": "https://bigbirdreturns.github.io/axm-tools/manzanita-works/",
-  "qualified_source": {
+  "qualification": {
     "bytes": 1776,
-    "sha256": "daa622e26742fe48129f15275751b34f32545fd8bf02d4e1ddecab3de6294cf3"
+    "sha256": "daa622e26742fe48129f15275751b34f32545fd8bf02d4e1ddecab3de6294cf3",
+    "state": "PASS"
   },
   "release": "0.2.0",
-  "schema": "manzanita-works/operating-dreamboard-release-receipt@1",
-  "state": "CANDIDATE_PASS"
+  "release_class": "public_safe_interactive_institutional_dreamboard",
+  "schema": "manzanita-works/operating-dreamboard-release-receipt@2",
+  "state": "LIVE_PASS"
 }
