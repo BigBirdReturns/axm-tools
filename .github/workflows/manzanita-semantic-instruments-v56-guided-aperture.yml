@@ -1,0 +1,189 @@
+name: Manzanita semantic instruments v5.6 guided aperture
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths: [".github/workflows/manzanita-semantic-instruments-v56-guided-aperture.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  guided-aperture:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: agent/manzanita-semantic-instruments-v5
+      PR_NUMBER: "123"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-instruments-v5
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Add the context-aware guided operating path
+        run: |
+          set -euo pipefail
+          root=review/manzanita-semantic-instruments-v5
+          test -f "$root/v55-nonspatial.js"
+          python - <<'PY'
+          from pathlib import Path
+          import base64,mimetypes
+          root=Path('review/manzanita-semantic-instruments-v5')
+          html=(root/'index.html').read_text(encoding='utf-8')
+          if 'v56-guide.css' not in html:html=html.replace('</head>','<link rel="stylesheet" href="v56-guide.css">\n</head>',1)
+          marker='<script src="v55-nonspatial.js" defer></script>'
+          if 'v56-guide.js' not in html:
+              if marker not in html:raise SystemExit('v55 marker missing')
+              html=html.replace(marker,marker+'\n<script src="v56-guide.js" defer></script>',1)
+          (root/'index.html').write_text(html,encoding='utf-8')
+
+          css=r'''
+          .v56-guide-open{position:fixed;z-index:80;right:14px;top:68px;min-height:44px;border:1px solid rgba(241,236,223,.44);background:rgba(12,17,12,.92);color:#f1ecdf;padding:0 14px;font:800 8px/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.08em}.v56-guide{position:fixed;z-index:90;left:50%;bottom:16px;transform:translateX(-50%);width:min(920px,calc(100vw - 28px));display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px;background:rgba(12,17,12,.95);border:1px solid rgba(241,236,223,.38);border-left:4px solid #ff5b32;box-shadow:0 24px 90px rgba(0,0,0,.44);backdrop-filter:blur(16px);color:#f1ecdf}.v56-guide[hidden]{display:none}.v56-guide-step{width:64px;height:52px;display:grid;place-items:center;border:1px solid rgba(241,236,223,.25);font:800 18px/1 ui-monospace,monospace;color:#ff7450}.v56-guide-copy small{display:block;font:800 7px/1.2 ui-monospace,monospace;letter-spacing:.1em;color:#8d9387}.v56-guide-copy b{display:block;margin-top:5px;font:800 13px/1.25 ui-sans-serif,system-ui}.v56-guide-copy span{display:block;margin-top:5px;color:#b8bbb0;font-size:11px;line-height:1.4}.v56-guide-actions{display:flex;gap:6px}.v56-guide-actions button{min-height:44px;min-width:70px;border:1px solid rgba(241,236,223,.42);background:transparent;color:#f1ecdf;padding:0 10px;font:800 8px/1 ui-monospace,monospace;letter-spacing:.06em}.v56-guide-actions button[data-primary="true"]{background:#ff5b32;border-color:#ff5b32;color:#111510}.v56-guide-actions button:disabled{opacity:.28}.v56-guide-target{position:relative!important;z-index:78!important;outline:3px solid #ff5b32!important;outline-offset:3px!important;box-shadow:0 0 0 8px rgba(255,91,50,.17)!important}.v56-guide-dim::before{content:"";position:fixed;z-index:70;inset:0;background:rgba(4,7,4,.36);pointer-events:none}.v56-guide-progress{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(241,236,223,.14)}.v56-guide-progress i{display:block;height:100%;width:var(--progress);background:#ff5b32}.v56-guide-state{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.v56-guide-state i{font-style:normal;padding:4px 6px;border:1px solid rgba(241,236,223,.20);font:800 7px/1 ui-monospace,monospace;color:#d3d4cb}.v56-guide-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}@media(max-width:720px){.v56-guide-open{right:8px;top:64px}.v56-guide{left:8px;right:8px;bottom:8px;transform:none;width:auto;grid-template-columns:50px 1fr;padding:10px;gap:10px}.v56-guide-step{width:50px;height:48px}.v56-guide-actions{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr)}.v56-guide-actions button{min-width:0}.v56-guide-copy b{font-size:12px}.v56-guide-copy span{font-size:10px}}
+          '''
+          (root/'v56-guide.css').write_text(css,encoding='utf-8')
+
+          js=r'''
+          (()=>{
+            const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];let open=false,step=0,lastTarget=null;
+            const steps=[
+              {id:'place',label:'Choose the operating aperture',copy:'Move from the useful plant through household, property, street, neighborhood, region, and stewardship. Each aperture changes the represented object, evidence, authority, and handoff.',target:()=>$('.aperture-panel,#apertureRail,[aria-label*="aperture" i]')},
+              {id:'instrument',label:'Choose one supported instrument',copy:'Only instruments admitted for the selected aperture remain available. Unsupported instruments refuse instead of drawing a plausible substitute.',target:()=>$('#instrumentDeck,.instrument-deck,[aria-label*="instrument" i]')},
+              {id:'source',label:'Read the source envelope',copy:'Reference, provider, cached, map-only, held, blocked, and unknown states share one contract. Geometry follows the exact asset and disappears when its receipt is absent.',target:()=>$('#v54SourceToggle')},
+              {id:'seat',label:'Choose the accountable operating seat',copy:'Resident, Nursery/Grower, Crew/Steward, Planner/Program, and Successor receive distinct evidence, action, authority, acceptance, and handoff.',target:()=>$('#seatRail,.seat-switch,[aria-label*="seat" i]')},
+              {id:'evidence',label:'Inspect the feature or mechanism',copy:'Spatial instruments expose classified features and exact receipts. Nonspatial instruments expose attention, time, provider state, regional context, or workflow without local image geometry.',target:()=>document.querySelector('.v51-badge')||$('#v55Mechanism')||$('#v5SemanticLedger')},
+              {id:'action',label:'Review the next safe action and authority',copy:'The useful output is the smallest bounded action, hold, or verification step that the selected seat can actually perform.',target:()=>$('#actionText,#operating-action,[data-field="action"]')},
+              {id:'handoff',label:'Export a bounded handoff',copy:'Export preserves aperture, instrument, source envelope, exact receipt, seat, authority, corrections, and no-public-effect boundary.',target:()=>$('#exportBtn,#v52Export,#v55Export')}
+            ];
+            function active(kind){const n=$(`[data-${kind}][aria-pressed="true"],[data-${kind}][aria-selected="true"],[data-${kind}].active`);return n?.dataset?.[kind]||'UNSET';}
+            function ensure(){if($('#v56Guide'))return;const button=document.createElement('button');button.id='v56GuideOpen';button.className='v56-guide-open';button.type='button';button.setAttribute('aria-expanded','false');button.textContent='GUIDED APERTURE  ?';document.body.append(button);const guide=document.createElement('aside');guide.id='v56Guide';guide.className='v56-guide';guide.hidden=true;guide.setAttribute('aria-label','Guided aperture');guide.innerHTML='<div id="v56GuideStep" class="v56-guide-step"></div><div class="v56-guide-copy"><small id="v56GuideEyebrow"></small><b id="v56GuideLabel"></b><span id="v56GuideCopy"></span><div id="v56GuideState" class="v56-guide-state"></div></div><div class="v56-guide-actions"><button id="v56Back" type="button">BACK</button><button id="v56Next" type="button" data-primary="true">NEXT</button><button id="v56Exit" type="button">EXIT</button></div><div class="v56-guide-progress"><i id="v56Progress"></i></div><p id="v56GuideLive" class="v56-guide-live" aria-live="polite"></p>';document.body.append(guide);button.addEventListener('click',toggle);$('#v56Back').addEventListener('click',()=>move(-1));$('#v56Next').addEventListener('click',()=>move(1));$('#v56Exit').addEventListener('click',close);document.addEventListener('keydown',event=>{if(event.key==='?'&&!event.ctrlKey&&!event.metaKey){event.preventDefault();toggle()}if(open&&event.key==='Escape'){event.preventDefault();close()}if(open&&event.altKey&&event.key==='ArrowRight'){event.preventDefault();move(1)}if(open&&event.altKey&&event.key==='ArrowLeft'){event.preventDefault();move(-1)}});}
+            function toggle(){open?close():show()}
+            function show(){open=true;$('#v56Guide').hidden=false;$('#v56GuideOpen').setAttribute('aria-expanded','true');document.body.classList.add('v56-guide-dim');render()}
+            function close(){open=false;$('#v56Guide').hidden=true;$('#v56GuideOpen').setAttribute('aria-expanded','false');document.body.classList.remove('v56-guide-dim');clearTarget();$('#v54SourceDrawer')?.setAttribute('hidden','')}
+            function clearTarget(){lastTarget?.classList?.remove('v56-guide-target');lastTarget=null}
+            function targetFor(current){if(current.id==='evidence'&&['care','heat','air','fire','assistance'].includes(active('instrument')))return $('#v55Mechanism');return current.target()}
+            function render(){if(!open)return;clearTarget();const current=steps[step],target=targetFor(current);if(current.id==='source'){const drawer=$('#v54SourceDrawer'),toggle=$('#v54SourceToggle');if(drawer?.hidden)toggle?.click()}if(target){target.classList.add('v56-guide-target');lastTarget=target;target.scrollIntoView?.({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});setTimeout(()=>target.focus?.({preventScroll:true}),80)}$('#v56GuideStep').textContent=String(step+1).padStart(2,'0');$('#v56GuideEyebrow').textContent=`STEP ${step+1} OF ${steps.length} · ${current.id.toUpperCase()}`;$('#v56GuideLabel').textContent=current.label;$('#v56GuideCopy').textContent=current.copy;$('#v56GuideState').innerHTML=`<i>${active('aperture').toUpperCase()}</i><i>${active('instrument').toUpperCase()}</i><i>${active('mode').toUpperCase()}</i><i>${active('seat').toUpperCase()}</i>`;$('#v56Back').disabled=step===0;$('#v56Next').textContent=step===steps.length-1?'FINISH':'NEXT';$('#v56Progress').style.setProperty('--progress',`${((step+1)/steps.length)*100}%`);$('#v56Progress').style.width=`${((step+1)/steps.length)*100}%`;$('#v56GuideLive').textContent=`${current.label}. ${current.copy}`;window.__MANZANITA_GUIDE_V56__={open,step,step_id:current.id,target_found:Boolean(target),state:{aperture:active('aperture'),instrument:active('instrument'),mode:active('mode'),seat:active('seat')}};}
+            function move(delta){if(delta>0&&step===steps.length-1){close();return}step=Math.max(0,Math.min(steps.length-1,step+delta));render()}
+            function schedule(){if(open)setTimeout(render,45)}
+            document.addEventListener('click',event=>{if(!event.target.closest('#v56Guide,#v56GuideOpen'))schedule()},true);document.addEventListener('change',schedule,true);document.addEventListener('DOMContentLoaded',ensure);
+          })();
+          '''
+          (root/'v56-guide.js').write_text(js,encoding='utf-8')
+
+          standalone=(root/'index.html').read_text(encoding='utf-8')
+          styles=('style.css','v5-semantic.css','v5-registration-lock.css','v52-feature-grammar.css','v54-source-envelope.css','v55-nonspatial.css','v56-guide.css')
+          scripts=('app.js','v5-semantic.js','v5-registration-lock.js','v52-editor.js','v54-source-envelope.js','v55-nonspatial.js','v56-guide.js')
+          for name in styles:standalone=standalone.replace(f'<link rel="stylesheet" href="{name}">','<style>'+(root/name).read_text(encoding='utf-8')+'</style>')
+          for name in scripts:standalone=standalone.replace(f'<script src="{name}" defer></script>','<script>'+(root/name).read_text(encoding='utf-8')+'</script>')
+          for asset in sorted((root/'assets').iterdir()):
+              if asset.is_file():
+                  mime=mimetypes.guess_type(asset.name)[0] or 'application/octet-stream';uri='data:'+mime+';base64,'+base64.b64encode(asset.read_bytes()).decode('ascii');standalone=standalone.replace('assets/'+asset.name,uri)
+          (root/'STANDALONE.html').write_text(standalone,encoding='utf-8')
+          PY
+
+      - name: Install browser and image libraries
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+
+      - name: Exercise the guided path without hidden state mutation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification/guided-v56';out.mkdir(parents=True,exist_ok=True)
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+          report={'schema':'manzanita-works/guided-aperture-v56-browser@1','result':'HOLD','steps':[],'failures':[],'page_errors':[],'public_route_effect':'none'}
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome');page=browser.new_page(viewport={'width':1600,'height':1000});page.on('pageerror',lambda e:report['page_errors'].append(str(e)));page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle')
+                  before=page.evaluate('({a:document.querySelector("[data-aperture][aria-selected=true]")?.dataset.aperture,i:document.querySelector("[data-instrument][aria-pressed=true]")?.dataset.instrument,m:document.querySelector("[data-mode][aria-pressed=true]")?.dataset.mode,s:document.querySelector("[data-seat][aria-pressed=true]")?.dataset.seat})')
+                  page.locator('#v56GuideOpen').click();page.wait_for_timeout(70)
+                  for index in range(7):
+                      runtime=page.evaluate('window.__MANZANITA_GUIDE_V56__');target=page.locator('.v56-guide-target').count();report['steps'].append({'index':index,'runtime':runtime,'target_count':target,'source_drawer_visible':page.locator('#v54SourceDrawer').is_visible() if page.locator('#v54SourceDrawer').count() else False})
+                      if runtime.get('step')!=index or not runtime.get('target_found') or target!=1:report['failures'].append(f'guide step {index} lost one governed target')
+                      if index<6:page.locator('#v56Next').click();page.wait_for_timeout(70)
+                  after=page.evaluate('({a:document.querySelector("[data-aperture][aria-selected=true]")?.dataset.aperture,i:document.querySelector("[data-instrument][aria-pressed=true]")?.dataset.instrument,m:document.querySelector("[data-mode][aria-pressed=true]")?.dataset.mode,s:document.querySelector("[data-seat][aria-pressed=true]")?.dataset.seat})')
+                  if before!=after:report['failures'].append('guide mutated operating state')
+                  page.locator('#v56Exit').click();page.wait_for_timeout(30)
+                  if page.locator('#v56Guide').is_visible() or page.locator('.v56-guide-target').count():report['failures'].append('guide exit left active overlay or target')
+                  page.keyboard.press('?');page.wait_for_timeout(30);page.keyboard.press('Alt+ArrowRight');page.wait_for_timeout(30);runtime=page.evaluate('window.__MANZANITA_GUIDE_V56__');
+                  if runtime.get('step')!=1:report['failures'].append('guide keyboard navigation failed')
+                  page.keyboard.press('Escape');page.wait_for_timeout(30)
+                  if page.locator('#v56Guide').is_visible():report['failures'].append('Escape did not close guide')
+                  page.close()
+                  for label,w,h in [('mobile',390,844),('compact',320,720)]:
+                      p=browser.new_page(viewport={'width':w,'height':h});p.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle');p.locator('#v56GuideOpen').click();p.wait_for_timeout(50);ov=p.evaluate('Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-innerWidth');floor=p.evaluate('Math.min(...[...document.querySelectorAll("#v56Guide button,#v56GuideOpen")].filter(n=>{const b=n.getBoundingClientRect();return b.width>0&&b.height>0}).map(n=>n.getBoundingClientRect().height))');report['steps'].append({'viewport':label,'overflow':ov,'minimum_guide_target':floor,'visible':p.locator('#v56Guide').is_visible()});
+                      if ov>2 or floor<43.5 or not p.locator('#v56Guide').is_visible():report['failures'].append(f'{label} guided surface failed')
+                      p.close()
+                  p=browser.new_page(viewport={'width':1280,'height':900});p.goto(f'http://127.0.0.1:{port}/STANDALONE.html',wait_until='networkidle');p.locator('#v56GuideOpen').click();p.wait_for_timeout(40)
+                  if not p.locator('#v56Guide').is_visible():report['failures'].append('standalone lost guide')
+                  p.close();browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          if report['page_errors']:report['failures'].append('page errors present')
+          report['result']='PASS' if not report['failures'] else 'FAIL';(out/'BROWSER_AUDIT.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2));assert report['result']=='PASS',report['failures']
+          PY
+
+      - name: Render guided spatial and nonspatial paths
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,socket,threading
+          from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
+          from PIL import Image,ImageDraw,ImageOps
+          from playwright.sync_api import sync_playwright
+          root=Path('review/manzanita-semantic-instruments-v5').resolve();out=root/'qualification/guided-v56';
+          class Q(SimpleHTTPRequestHandler):
+              def log_message(self,*args):pass
+          class H(Q):
+              def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(root),**kwargs)
+          with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+          server=ThreadingHTTPServer(('127.0.0.1',port),H);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();captures=[]
+          states=[('place-step','street','access',0),('instrument-step','street','shade',1),('source-step','street','access',2),('seat-step','property','water',3),('spatial-evidence','street','access',4),('nonspatial-evidence','region','fire',4),('safe-action','household','care',5),('handoff','stewardship','assistance',6)]
+          try:
+              with sync_playwright() as pw:
+                  browser=pw.chromium.launch(channel='chrome')
+                  for name,ap,ins,target_step in states:
+                      page=browser.new_page(viewport={'width':1600,'height':1000});page.goto(f'http://127.0.0.1:{port}/index.html',wait_until='networkidle');page.locator(f'[data-aperture="{ap}"]').first.click();page.locator(f'[data-instrument="{ins}"]').first.click();page.locator('#v56GuideOpen').click();page.wait_for_timeout(40)
+                      for _ in range(target_step):page.locator('#v56Next').click();page.wait_for_timeout(45)
+                      path=out/f'{name}.png';page.screenshot(path=str(path),full_page=False);captures.append(path);page.close()
+                  browser.close()
+          finally:server.shutdown();thread.join(timeout=5)
+          tw,th,lh=800,500,56;sheet=Image.new('RGB',(1600,4*(th+lh)),'#101510');draw=ImageDraw.Draw(sheet)
+          for i,path in enumerate(captures):
+              with Image.open(path) as im:thumb=ImageOps.fit(im.convert('RGB'),(tw,th),Image.Resampling.LANCZOS)
+              x=(i%2)*tw;y=(i//2)*(th+lh);sheet.paste(thumb,(x,y));draw.rectangle((x,y+th,x+tw,y+th+lh),fill='#efe9da');draw.text((x+15,y+th+17),path.stem.upper(),fill='#111510')
+          sheet.save(out/'GUIDED_APERTURE_PATHS.jpg',quality=94);(out/'CAPTURE_RECEIPT.json').write_text(json.dumps({'result':'PASS','captures':[p.name for p in captures],'contact_sheet':'GUIDED_APERTURE_PATHS.jpg'},indent=2)+'\n')
+          PY
+
+      - name: Retain v5.6 and remove this actuator
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-semantic-instruments-v56-guided-aperture.yml
+          git config user.name "manzanita-guided-aperture-v56"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A review/manzanita-semantic-instruments-v5 .github/workflows/manzanita-semantic-instruments-v56-guided-aperture.yml
+          git diff --cached --check
+          git commit -m "Manzanita: add context-aware guided aperture v5.6 [skip ci]"
+          git push origin HEAD:"$BRANCH"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "The operating surface now includes a seven-step guided aperture that highlights one governed control at a time, explains the current object and refusal law, opens the source receipt at the source step, adapts evidence review to spatial or nonspatial instruments, preserves operating state, and works by button, keyboard, mobile, compact, and standalone paths."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-guided-aperture-v56-${{ github.sha }}
+          path: review/manzanita-semantic-instruments-v5/qualification/guided-v56
+          if-no-files-found: error
+          retention-days: 30
