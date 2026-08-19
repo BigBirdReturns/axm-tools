@@ -1,6 +1,6 @@
 {
   "schema": "axm-tools/manzanita-history-audit@1",
-  "repository_head": "a763a074fab4ec8cf5fe60929a7a69c1e579385b",
+  "repository_head": "a825d08e1b6a4a54b3c5cffa4f258186b0253e7e",
   "reachable_commit_count": 159,
   "unique_historical_public_route_tree_count": 27,
   "historical_public_route_trees": [
@@ -205,5 +205,5 @@
   ],
   "classification_boundary": "A reachable commit or unique tree is a custody candidate, not automatically an approved release, deployed artifact, visual golden, or public byte set.",
   "canonical_task_count_effect": "none",
-  "payload_sha256": "062cffbd1d5c61ff202e734a26362c7e2fbc4ffee78b621c63dccb1247748d6f"
+  "payload_sha256": "6d745f8de47228bc1a393adfba52b16e2e73138b8aac14a04a52b5ae3bd40076"
 }

@@ -4,8 +4,8 @@
   "status": "PARTIAL",
   "task_state": "in_progress",
   "generated_from": {
-    "git_commit": "a763a074fab4ec8cf5fe60929a7a69c1e579385b",
-    "git_tree": "46bb0c5fd63ecd1ec03799223e602d95f2a588bd",
+    "git_commit": "a825d08e1b6a4a54b3c5cffa4f258186b0253e7e",
+    "git_tree": "e5732cd050520c187bb39de975746684d0d9b2c1",
     "contract_path": "programs/manzanita-99/custody/CUSTODY_CONTRACT.json",
     "contract_sha256": "5199afe9ea442ac04da4c2cfef329509bd41f5c255bc05696973507eab8d7e8d",
     "register_path": "programs/manzanita-99/custody/DONOR_REGISTER.json",
@@ -14,8 +14,8 @@
     "observed_ledger_sha256": "4c038deed7a29a61acb2c5da81ebd3ef919465ac8131a35eb6cdd5003df92d9a"
   },
   "scope_count": 8,
-  "source_file_count": 211,
-  "source_bytes": 2689132,
+  "source_file_count": 197,
+  "source_bytes": 2584582,
   "scopes": [
     {
       "id": "constitutional-recovery",
@@ -66,9 +66,9 @@
       "id": "manzanita-workflows",
       "class": "qualification_receipt",
       "path": ".github/workflows",
-      "file_count": 35,
-      "bytes": 275772,
-      "sha256": "49b25e74dd3d6991f2693e7b26c113efd63fa1a949cd193f92e6a510e78b3874",
+      "file_count": 21,
+      "bytes": 171222,
+      "sha256": "3773329f2f33d0f0549daefbc5f1939d6a5ccb2c1b43cb2a8c2f3e3194935683",
       "required": true
     },
     {
@@ -120,99 +120,9 @@
     },
     {
       "path": ".github/workflows/manzanita-check.yml",
-      "bytes": 1622,
-      "sha256": "aca9246c1b22a4ac76d957fd43341fa9394b98b9057e07d4002bdb154fa06c51",
-      "git_blob_sha1": "fb7b9af550d5925f328319096693f5a7d288e595",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-convergence-build-v2.yml",
-      "bytes": 4141,
-      "sha256": "44ef1fe33f66d6d394eb62a71a02540aa79e3e4a5d14e233c17cfe3090787821",
-      "git_blob_sha1": "33a6fac0806764432caf3f3dcd9ef31779e3fe56",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-convergence-build-v3.yml",
-      "bytes": 4537,
-      "sha256": "d01d47ea67bbf0a5da0e1f1ff97e72b2aedbe539d50fc54884b19c9da98a943e",
-      "git_blob_sha1": "4ae39453327d7e9e015af999db7b4230a26a756c",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-convergence-build-v4.yml",
-      "bytes": 4702,
-      "sha256": "dad9ee91737ff2fcf34bb150159999687cef59b3af299502ee8ca83db18ece95",
-      "git_blob_sha1": "6a296542c8d31bf98cce0c23ffc0a235c7724bb1",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-convergence-build-v5.yml",
-      "bytes": 5656,
-      "sha256": "74adcd8156e72bd4fee739fafd95507dc101d9317a82d1c20a25d04d71bef8b4",
-      "git_blob_sha1": "fe4caafa13a02d943b5ac8f0e9d51e6bd1cecccc",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-convergence-build.yml",
-      "bytes": 14454,
-      "sha256": "288af70ceed3aeb59255793bb98aa6a35f641c14895d8a29801d0d020e6572e9",
-      "git_blob_sha1": "748d3a8ab4ca244f3c4e75eff7dab2a0640b9962",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-convergence-donor-compare-v2.yml",
-      "bytes": 6870,
-      "sha256": "b0d64d93bbd2cb02eada6047e28131977aa46250aa088fb579c1d19b358df0a4",
-      "git_blob_sha1": "fe5b285ce1ff0fb8af8352c681bc08b3e478712c",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-convergence-donor-compare.yml",
-      "bytes": 6704,
-      "sha256": "0b0d5d321056f475d1b2ec6f12f986d505b427446bc46de1466cbd854ce6a5a8",
-      "git_blob_sha1": "6664b8d42b6f102a97b8c1cfe1d6caa65f01ba44",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-convergence-materialize.yml",
-      "bytes": 7132,
-      "sha256": "56cf67e8b14886e195b12ff076208fb8f4aa16a881a666ac29844652d39a9d92",
-      "git_blob_sha1": "e76e8cdf7577befdc3e0790fe3d1cb63ad215b10",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-convergence-pr-status.yml",
-      "bytes": 5095,
-      "sha256": "e43684629bba01e12e0b99c80f9df4af68d784d4674c915c61a8cf1289b49654",
-      "git_blob_sha1": "fe8f1342e2aa49117963a6c78cc82270e5fcb0a9",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-convergence-review-publish.yml",
-      "bytes": 5846,
-      "sha256": "d7ea87b33c63e7fb47c005180508a17f73cba725fe83248c4882fc220f67d2fe",
-      "git_blob_sha1": "3529d36c92128c91137319ccaae3708cc499fd07",
+      "bytes": 2053,
+      "sha256": "88af7511c1778f866f44487d03da3502d7609311ad3f8ebba6f514cdbcbf7799",
+      "git_blob_sha1": "a437ee396cca199e4121c45307c23e2b39145e11",
       "scopes": [
         "manzanita-workflows"
       ]
@@ -281,15 +191,6 @@
       ]
     },
     {
-      "path": ".github/workflows/manzanita-final-admission.yml",
-      "bytes": 19881,
-      "sha256": "21ec908035aab3f68408be4e22a52330e47f86f6af1d60bc6836d12addb45678",
-      "git_blob_sha1": "8a4367b72cdd41723d73ff1526b4aac239488928",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
       "path": ".github/workflows/manzanita-five-roles.yml",
       "bytes": 16777,
       "sha256": "122293e7f1f72312aa945d579aba859360d845fb3c12fbb2cbccf2f629eda7d8",
@@ -299,28 +200,10 @@
       ]
     },
     {
-      "path": ".github/workflows/manzanita-live-browser-probe.yml",
-      "bytes": 8494,
-      "sha256": "bd72bc1ab03398b486fdb95091458c0be8ca359a331bbdbc91d9c05e7c73357c",
-      "git_blob_sha1": "046d358840f88761a30c605e46cd08db613a92a5",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
       "path": ".github/workflows/manzanita-live-check.yml",
-      "bytes": 8861,
-      "sha256": "88a4e4f1a0354e21d4c506afc7abdcab0dba464ef86d121316ea63ad953728bd",
-      "git_blob_sha1": "c60470f8d9331dd92afe2fc8ed5de67582a59b15",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-p10-recovery.yml",
-      "bytes": 10750,
-      "sha256": "d4c018e7c92e90ffce88978582009f1f8b727ffab0d50a678f4b1d0235257ae7",
-      "git_blob_sha1": "8c0b60a74adb639b5922f23490d60c3050329b80",
+      "bytes": 10256,
+      "sha256": "a180d851043ecb85aa141ae47cc2c57c5b70934a9669ed71574ee214fc7178fc",
+      "git_blob_sha1": "81a69d6e1d3bb8c420495581d3255e5e20e19ccb",
       "scopes": [
         "manzanita-workflows"
       ]
@@ -384,15 +267,6 @@
       "bytes": 12335,
       "sha256": "5b17bbb17b62b24ee3abebf93b00adc11c97bc8d607c4cda88980f046deb2eae",
       "git_blob_sha1": "ae0fa594fd942721c22c941c62c3177ceee9a597",
-      "scopes": [
-        "manzanita-workflows"
-      ]
-    },
-    {
-      "path": ".github/workflows/manzanita-visual-donor-export.yml",
-      "bytes": 2114,
-      "sha256": "f179bf6489108ded4ed34d30942fa98f58257d61f41c8936169f01b9baff2c22",
-      "git_blob_sha1": "c815097903d3ac5bf38088114d1d1528d261019a",
       "scopes": [
         "manzanita-workflows"
       ]
@@ -2228,5 +2102,5 @@
   ],
   "canonical_task_count_effect": "none",
   "qualification_boundary": "A passing custody workflow proves the exact current photographic public route, every explicitly guarded predecessor release, repo-resident donors, observed successor records, and the open-gap ledger agree. It does not close JDB99-001, release the complete manzanita-next successor, prove external campaigns, or change canonical task counts.",
-  "payload_sha256": "ed39cb0efa421b7b49a4cc109095be1c8b4bb48367e67ac89a6b6de5d8a14b81"
+  "payload_sha256": "2f5b25cbbe518c3a78509f69658005e90f96082d3f772dcbf07cfce86c20fc55"
 }
