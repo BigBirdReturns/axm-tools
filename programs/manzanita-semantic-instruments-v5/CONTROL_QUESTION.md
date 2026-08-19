@@ -1,0 +1,1 @@
+Can every visible Access, Shade, or Water feature identify the exact source image and semantic receipt that authorizes its geometry, state what it represents and does not represent, preserve occlusion and uncertainty, and disappear completely when that exact evidence is absent?
