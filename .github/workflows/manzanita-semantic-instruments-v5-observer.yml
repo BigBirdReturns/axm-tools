@@ -1,0 +1,105 @@
+name: Manzanita semantic instruments v5 observer
+
+on:
+  push:
+    branches: [agent/manzanita-semantic-instruments-v5]
+    paths: [".github/workflows/manzanita-semantic-instruments-v5-observer.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: agent/manzanita-semantic-instruments-v5
+      PR_NUMBER: "123"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-semantic-instruments-v5
+          fetch-depth: 0
+
+      - name: Wait for the latest semantic v5 bootstrap run
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 120); do
+            row=$(gh run list --repo "$GITHUB_REPOSITORY" \
+              --workflow manzanita-semantic-instruments-v5-bootstrap.yml \
+              --branch "$BRANCH" --limit 1 \
+              --json databaseId,status,conclusion,headSha,createdAt,updatedAt \
+              --jq '.[0] // empty')
+            if [ -n "$row" ]; then
+              status=$(printf '%s' "$row" | jq -r '.status')
+              if [ "$status" = completed ]; then
+                printf '%s\n' "$row" > /tmp/bootstrap-run.json
+                break
+              fi
+            fi
+            if [ "$attempt" = 120 ]; then
+              echo "Bootstrap did not complete in time"
+              exit 1
+            fi
+            sleep 10
+          done
+
+      - name: Wait for retained generated review on the branch
+        run: |
+          set -euo pipefail
+          conclusion=$(jq -r '.conclusion' /tmp/bootstrap-run.json)
+          if [ "$conclusion" != success ]; then
+            run_id=$(jq -r '.databaseId' /tmp/bootstrap-run.json)
+            gh run view "$run_id" --repo "$GITHUB_REPOSITORY" --log-failed > /tmp/bootstrap-failed.log || true
+            exit 1
+          fi
+          for attempt in $(seq 1 60); do
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/$BRANCH"
+            if test -f review/manzanita-semantic-instruments-v5/V5_BROWSER_AUDIT.json \
+              && test -f review/manzanita-semantic-instruments-v5/evidence/semantic-instruments-proof.jpg; then
+              break
+            fi
+            if [ "$attempt" = 60 ]; then
+              echo "Passing run did not retain the review output"
+              exit 1
+            fi
+            sleep 5
+          done
+
+      - name: Retain and report the exact observed result
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          run=json.loads(Path('/tmp/bootstrap-run.json').read_text())
+          audit=json.loads(Path('review/manzanita-semantic-instruments-v5/V5_BROWSER_AUDIT.json').read_text())
+          build=json.loads(Path('review/manzanita-semantic-instruments-v5/V5_BUILD_RECEIPT.json').read_text())
+          capture=json.loads(Path('review/manzanita-semantic-instruments-v5/evidence/CAPTURE_RECEIPT.json').read_text())
+          result={
+            'schema':'manzanita-works/semantic-instruments-v5-observation@1',
+            'result':'PASS' if run['conclusion']=='success' and audit['result']=='PASS' and capture['result']=='PASS' else 'FAIL',
+            'workflow_run':run,
+            'build':build,
+            'browser':audit,
+            'capture':capture,
+            'public_route_effect':'none',
+            'canonical_task_count_effect':'none'
+          }
+          target=Path('programs/manzanita-semantic-instruments-v5/WORKFLOW_STATUS.json')
+          target.write_text(json.dumps(result,indent=2)+'\n')
+          assert result['result']=='PASS'
+          PY
+          git config user.name "manzanita-semantic-v5-observer"
+          git config user.email "actions@users.noreply.github.com"
+          git add programs/manzanita-semantic-instruments-v5/WORKFLOW_STATUS.json
+          git commit -m "Manzanita: retain semantic instruments v5 workflow status [skip ci]"
+          git push origin HEAD:"$BRANCH"
+          run_id=$(jq -r '.databaseId' /tmp/bootstrap-run.json)
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Semantic instruments v5 exact-head review passed in workflow run \`$run_id\`. The branch now retains the browser audit, exact rendered proof sheet, self-contained review, and machine status. Public-route effect remains \`none\`."
