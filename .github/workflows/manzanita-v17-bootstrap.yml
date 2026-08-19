@@ -1,0 +1,133 @@
+name: Manzanita Works v1.7.0 exact promotion build
+
+on:
+  push:
+    branches: [release/manzanita-1.7.0-semantic-source-adaptive]
+    paths:
+      - ".github/workflows/manzanita-v17-bootstrap.yml"
+      - "programs/manzanita-1.7.0/build_release.py"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manzanita-v17-exact-promotion
+  cancel-in-progress: true
+
+jobs:
+  build-qualify-seal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      BRANCH: release/manzanita-1.7.0-semantic-source-adaptive
+      DONOR_BRANCH: agent/manzanita-semantic-instruments-v5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/manzanita-1.7.0-semantic-source-adaptive
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rebase the bounded promotion carrier onto current main
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main "$DONOR_BRANCH"
+          git rebase origin/main
+
+      - name: Recover and verify the exact sealed donor
+        run: |
+          set -euo pipefail
+          DONOR_SHA=$(git rev-parse "origin/$DONOR_BRANCH")
+          echo "DONOR_SHA=$DONOR_SHA" >> "$GITHUB_ENV"
+          rm -rf /tmp/manzanita-v17-donor
+          mkdir -p /tmp/manzanita-v17-donor
+          git archive "$DONOR_SHA" review/manzanita-semantic-instruments-v5 \
+            | tar -xf - -C /tmp/manzanita-v17-donor --strip-components=2
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          root=Path('/tmp/manzanita-v17-donor')
+          receipt=json.loads((root/'qualification/final-v57/RELEASE_CANDIDATE_RECEIPT.json').read_text())
+          browser=json.loads((root/'qualification/final-v57/FINAL_BROWSER_CAMPAIGN.json').read_text())
+          assert receipt['result']=='PASS'
+          assert receipt['candidate_release']=='1.7.0'
+          assert browser['result']=='PASS'
+          assert receipt['public_route_effect']=='none'
+          print(json.dumps({'donor_sha':os.environ['DONOR_SHA'],'candidate_release':receipt['candidate_release'],'valid_states':browser['valid_states'],'refused_states':browser['refused_states']},indent=2))
+          PY
+
+      - name: Build the exact public release projection
+        run: |
+          set -euo pipefail
+          python programs/manzanita-1.7.0/build_release.py \
+            --repo-root . \
+            --donor-root /tmp/manzanita-v17-donor \
+            --donor-commit "$DONOR_SHA"
+
+      - name: Install browser and image libraries
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+
+      - name: Qualify the exact release bytes and browser surface
+        run: |
+          set -euo pipefail
+          python manzanita/tests/public_contract_test.py
+          for file in manzanita/*.js; do node --check "$file"; done
+          rm -rf /tmp/manzanita-v17-browser
+          python manzanita/tests/browser_test.py --output /tmp/manzanita-v17-browser
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from PIL import Image,ImageDraw,ImageOps
+          root=Path('/tmp/manzanita-v17-browser')
+          report=json.loads((root/'BROWSER_CAMPAIGN.json').read_text())
+          assert report['result']=='PASS'
+          paths=[root/row['screenshot'] for row in report['captures']]
+          tw,th,lh=800,500,56
+          sheet=Image.new('RGB',(1600,2*(th+lh)),'#101510');draw=ImageDraw.Draw(sheet)
+          for i,path in enumerate(paths):
+              with Image.open(path) as im:thumb=ImageOps.fit(im.convert('RGB'),(tw,th),Image.Resampling.LANCZOS)
+              x=(i%2)*tw;y=(i//2)*(th+lh);sheet.paste(thumb,(x,y));draw.rectangle((x,y+th,x+tw,y+th+lh),fill='#efe9da');draw.text((x+15,y+th+17),path.stem.upper(),fill='#111510')
+          target=Path('programs/manzanita-1.7.0/evidence/PROMOTION_BROWSER_CONTACT_SHEET.jpg');target.parent.mkdir(parents=True,exist_ok=True);sheet.save(target,quality=95)
+          Path('programs/manzanita-1.7.0/evidence/PROMOTION_BROWSER_CAMPAIGN.json').write_text(json.dumps(report,indent=2)+'\n')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v1.7.0-exact-promotion-${{ env.DONOR_SHA }}
+          path: |
+            /tmp/manzanita-v17-browser
+            programs/manzanita-1.7.0/evidence
+            manzanita/QUALIFICATION.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Commit the exact product and permanent release machinery
+        run: |
+          set -euo pipefail
+          git config user.name "manzanita-v17-release-builder"
+          git config user.email "actions@users.noreply.github.com"
+          git add manzanita programs/manzanita-1.7.0 README.md index.html .github/workflows/manzanita-check.yml .github/workflows/manzanita-live-check.yml
+          git diff --cached --check
+          git commit -m "Manzanita: build semantic source-adaptive public release v1.7.0"
+          echo "PRODUCT_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Rebuild and falsify donor custody against the release transition
+        run: |
+          set -euo pipefail
+          python programs/manzanita-99/custody/build_custody.py --repo-root .
+          python programs/manzanita-99/custody/validate_custody.py --repo-root .
+          python -m unittest discover -s programs/manzanita-99/custody/tests -p 'test_*.py'
+          python programs/manzanita-99/custody/audit_history.py --repo-root .
+
+      - name: Seal custody and remove the one-shot promotion carrier
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/manzanita-v17-bootstrap.yml
+          git add -A programs/manzanita-99/custody .github/workflows/manzanita-v17-bootstrap.yml
+          git diff --cached --check
+          git commit -m "Manzanita: preserve v1.6.0 rollback and seal v1.7.0 custody"
+          git push --force-with-lease origin HEAD:"$BRANCH"
