@@ -5,7 +5,7 @@ on:
     branches: [agent/manzanita-semantic-instruments-v5]
     paths:
       - "programs/manzanita-semantic-instruments-v5/src/**"
-      - "programs/manzanita-semantic-instruments-v5/OPERATOR_SOURCE_BUNDLE.*"
+      - "programs/manzanita-semantic-instruments-v5/OPERATOR_SOURCE_BUNDLE.*.b64"
       - "programs/manzanita-semantic-instruments-v5/SOURCE_BUNDLE.*"
       - "programs/manzanita-semantic-instruments-v5/donors/**"
       - "programs/manzanita-semantic-instruments-v5/DONOR_REGISTER.json"
@@ -81,7 +81,7 @@ jobs:
             | base64 --decode \
             > "$operator_bundle"
 
-          cmp --silent "$operator_bundle" "$program/OPERATOR_SOURCE_BUNDLE.tgz"
+          test "$(sha256sum "$operator_bundle" | cut -d' ' -f1)" = "5c8e133bc8764020d003f24714b28563c9efb5dde0ec59d6e4fbd6693ab3f2e4"
           tar -tzf "$operator_bundle" > /tmp/manzanita-operator-source-members.txt
           tar -xzf "$operator_bundle" -C "$root"
 
