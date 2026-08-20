@@ -1,0 +1,67 @@
+{
+  "boundary": {
+    "live_flock_adapter": false,
+    "operational_cjis_deployment": false,
+    "pspd_identity_policy": false,
+    "public_route_role": "qualified demonstration bootstrap"
+  },
+  "compressed_payload": {
+    "bytes": 56493,
+    "encoding": "gzip+base64",
+    "parts": [
+      {
+        "bytes": 10001,
+        "name": "payload/part-00.b64",
+        "sha256": "c9c9e534768344cbf30da41db4be27e7097a1406d320d4a52409af9215c8aac8"
+      },
+      {
+        "bytes": 10001,
+        "name": "payload/part-01.b64",
+        "sha256": "6a59f47d46288b8e21ce0b2f8120b90d3d88c1d62d9dab430ed3a003d0c0828f"
+      },
+      {
+        "bytes": 10001,
+        "name": "payload/part-02.b64",
+        "sha256": "67bfd3ca2b0d5365e30317fbc5bf380d792f127e5bfaca8fa5236459c21661e8"
+      },
+      {
+        "bytes": 10001,
+        "name": "payload/part-03.b64",
+        "sha256": "ebf84f4cadfe67e9a353805f70bce9ec37cae0a2eaccfff01e33d4fa16304d9a"
+      },
+      {
+        "bytes": 10001,
+        "name": "payload/part-04.b64",
+        "sha256": "6bb12c90c86376082b1809316a56cd32063a00e3fd4e2794d87fb2e36e078bef"
+      },
+      {
+        "bytes": 10001,
+        "name": "payload/part-05.b64",
+        "sha256": "a3a335e9fc8f8330ef017ebe71b324520ee846d43ebf0d88a8f280a3cc5a60cd"
+      },
+      {
+        "bytes": 10001,
+        "name": "payload/part-06.b64",
+        "sha256": "37a748c0465437de1c2db12689da3112ec2035edab210be8d3209024e3281b46"
+      },
+      {
+        "bytes": 5325,
+        "name": "payload/part-07.b64",
+        "sha256": "14a72f6f8a2d723fb4839ba35047e6b302df747b6bd9fa27ecdf1731d09102a3"
+      }
+    ],
+    "sha256": "2cc12ebd5246c29be8c2299dbb17282a52e07746f2239855e6089ecd8fe2d741"
+  },
+  "created_at": "2026-08-20T00:00:00Z",
+  "format": "axm-witness-public-bootstrap@1",
+  "qualified_application": {
+    "bytes": 203066,
+    "sha256": "32d5f0ad39cd93f0ff8c551ad3d6f1db3e8714544bba37cded5a013ed8cb0e8e"
+  },
+  "release": "0.2.0",
+  "repository": {
+    "path": "witness/",
+    "publication_repository": "BigBirdReturns/axm-tools",
+    "source_release": "BigBirdReturns/axm-witness v0.2.0"
+  }
+}
