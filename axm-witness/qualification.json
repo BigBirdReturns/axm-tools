@@ -1,0 +1,118 @@
+{
+  "admitted_claim": {
+    "mechanism": "exact local source-byte retention, representative field recognition, frozen mapping, privacy commitments, signed custody sequence, verification, export, and hostile mutation replay",
+    "product_surface": "Flock-native first-run browser demonstrator for four representative municipal record families",
+    "usability_evidence": "automated first-use comprehension contract and responsive browser qualification"
+  },
+  "application": {
+    "bytes": 191793,
+    "certified_flock_adapter": false,
+    "external_runtime_requests": 0,
+    "filename": "AXM_Witness_Flock_Native_Demo_0.3.0_VERIFIED.html",
+    "live_flock_connection": false,
+    "runtime": "one_file_browser_local",
+    "sha256": "4adb272395448484229451a33048c2b6c975d7155f1b9fecb6300d3f93b5d8ce",
+    "title": "AXM Witness | Independent Flock Record Custody"
+  },
+  "browser_campaign": {
+    "controls": [
+      "flock_native_guided_boot",
+      "first_use_comprehension_contract",
+      "representative_sample_download",
+      "four_flock_native_views",
+      "public_receipt_download",
+      "portable_package_download",
+      "private_source_opt_in",
+      "verification_download",
+      "one_click_search_audit_import",
+      "local_privacy_alias_view",
+      "indexeddb_persistence",
+      "clean_offline_app_export",
+      "mutation_detection",
+      "mobile_render",
+      "runtime_isolation"
+    ],
+    "controls_passed": 15,
+    "controls_total": 15,
+    "receipt_sha256": "57353f188a9e04c7e8f7f9170fb1b967b7c84527329a59e62c64b74955ebf28d",
+    "status": "PASS"
+  },
+  "direct_file_opening": {
+    "page_errors": 0,
+    "receipt_sha256": "6d073d1856504071d5d7577ce607af3818234c0178777dec0946c91651ff2fa4",
+    "sample_download_bytes": 2227,
+    "scheme": "file",
+    "status": "PASS"
+  },
+  "engine_replay": {
+    "archive_replay": "PASS",
+    "campaign_checks_passed": 29,
+    "campaign_checks_total": 29,
+    "go_packages": 4,
+    "go_verifier_sha256": "f4b67bd1332d7b2de5ecb013c1cdf8f7b4e8782c1614e3991033679976e5332b",
+    "python_tests": 16,
+    "release": "axm-witness/0.1.0",
+    "retained_archive_sha256": "849953dc165ce8c948303e021d64e0c192437904ec6d60cbad1c7417f6946a41",
+    "retained_manifest_sha256": "22a7920ecedf9a9b59b6684e595bd8fefad3300034632fb6ac27d40da88e5ee2",
+    "retained_qualification_sha256": "72686031bd29bdb777b0f471f05cffafd831db4c15b75177beeb852db5cf3c2c",
+    "status": "PASS"
+  },
+  "failure_mode": "A representative export can establish custody and, when a coherent sequence denominator exists, expose delivery gaps inside the supplied stream. It cannot independently detect an event omitted before the city received any record of it.",
+  "first_use_comprehension_contract": {
+    "control": "first_use_comprehension_contract",
+    "human_usability_study": false,
+    "manual_mapping_default": "collapsed",
+    "status": "PASS",
+    "visible_control_questions": 4,
+    "visible_workflows": 4
+  },
+  "format": "axm-witness-flock-native-demo-qualification@1",
+  "public_contract": {
+    "byte_identical_mirrors": [
+      "demo/index.html",
+      "docs/index.html"
+    ],
+    "bytes": 191793,
+    "download_controls": 6,
+    "receipt_sha256": "7c2e5a78f383d36a116cea4e8bab0291129cadeb11084ee19112d044dcd4052d",
+    "record_families": 4,
+    "sha256": "4adb272395448484229451a33048c2b6c975d7155f1b9fecb6300d3f93b5d8ce",
+    "status": "PASS",
+    "views": 8
+  },
+  "qualified_at": "2026-08-20",
+  "release": "axm-witness-demo/0.3.0",
+  "rendering": {
+    "desktop": {
+      "filename": "AXM_Witness_Flock_Native_Demo_0.3.0_Desktop.png",
+      "image_dimensions": "1440x2496",
+      "sha256": "bc5cacba2df9cc0133d8e23a73722d6f5f013473d9113bd96c2c299c875249c0",
+      "viewport": "1440x1000"
+    },
+    "mobile": {
+      "filename": "AXM_Witness_Flock_Native_Demo_0.3.0_Mobile.png",
+      "image_dimensions": "390x6448",
+      "sha256": "8c324021c7a547ef6b3359f5f3d55c6e22fe9af1915eb4fb544b93784f7a7a42",
+      "viewport": "390x844"
+    }
+  },
+  "status": "PASS",
+  "transport_replay": {
+    "git_branch": "agent/flock-native-browser-demo-v0-3",
+    "git_bundle": "PASS",
+    "git_bundle_sha256": "fd21dfa7f746904af4122e02b4abc122e56c5a1a6f170842d16e837dd4a75ab3",
+    "git_commit": "07a74be51296193620894bc8048402fd052e0781",
+    "git_tag": "browser-demo-v0.3.0",
+    "source_archive": "PASS",
+    "source_archive_rebuilt_application_sha256": "4adb272395448484229451a33048c2b6c975d7155f1b9fecb6300d3f93b5d8ce",
+    "source_archive_sha256": "90f8e9eb0e948c044bceb4d9e7b23e327c3079b1f768a778ca14610335c19258"
+  },
+  "withheld": [
+    "observed usability session with Flock or PSPD personnel",
+    "certified Flock export schema or API adapter",
+    "live Flock capture, search, disclosure, inventory, pagination, event-ID, cursor, or high-water behavior",
+    "PSPD identity, purpose, case, approval, retention, redaction, disclosure, or public-records policy integration",
+    "city key ceremony, TPM-backed custody, appliance qualification, timestamp-authority trust, live camera denominator, or operational deployment",
+    "proof that a vendor-exclusive source omitted nothing before municipal custody"
+  ]
+}
