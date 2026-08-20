@@ -8,11 +8,11 @@
 <title>AXM Witness | Loading qualified application</title>
 <style>html,body{margin:0;min-height:100%;background:#080c10;color:#f3f0e8;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{min-height:100vh;display:grid;place-items:center;padding:28px;box-sizing:border-box}section{max-width:680px;border:1px solid #25313c;border-radius:14px;background:#0d141a;padding:28px;box-shadow:0 24px 80px rgba(0,0,0,.35)}b{display:block;color:#d8a84d;letter-spacing:.18em;font-size:12px;margin-bottom:14px}h1{font-size:30px;line-height:1.08;margin:0 0 12px}p{color:#aab4bd;line-height:1.55;margin:0}code{display:block;margin-top:18px;color:#739dad;font-size:11px;overflow-wrap:anywhere}</style>
 </head>
-<body><main><section><b>AXM WITNESS</b><h1>Opening the qualified Flock-native demonstrator.</h1><p>The application is reconstructing from four content-addressed transport parts. Source records remain in your browser after the application opens.</p><code>qualified inner SHA-256 4adb272395448484229451a33048c2b6c975d7155f1b9fecb6300d3f93b5d8ce</code></section></main>
+<body><main><section><b>AXM WITNESS</b><h1>Opening the qualified Flock-native demonstrator.</h1><p>The application is reconstructing from five content-addressed transport parts. Source records remain in your browser after the application opens.</p><code>qualified inner SHA-256 4adb272395448484229451a33048c2b6c975d7155f1b9fecb6300d3f93b5d8ce</code></section></main>
 <script>
 (async()=>{
   const expected="4adb272395448484229451a33048c2b6c975d7155f1b9fecb6300d3f93b5d8ce";
-  const parts=["payload/part-00.b64","payload/part-01.b64","payload/part-02.b64","payload/part-03.b64"];
+  const parts=["payload/part-00.b64","payload/part-01.b64","payload/part-02.b64","payload/part-03a.b64","payload/part-03b.b64"];
   try{
     const responses=await Promise.all(parts.map(path=>fetch(path,{cache:"no-store"})));
     if(responses.some(response=>!response.ok)) throw new Error("transport part unavailable");
