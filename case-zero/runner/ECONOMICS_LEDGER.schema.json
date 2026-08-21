@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/redcat/case-zero-economics-ledger-v0.1.schema.json",
+  "title": "Case Zero Economics Ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "currency", "actual", "counterfactual", "assumptions", "sensitivity"],
+  "properties": {
+    "schema": {"const": "redcat/case-zero-economics-ledger@0.1"},
+    "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+    "actual": {"$ref": "#/$defs/economics"},
+    "counterfactual": {"$ref": "#/$defs/economics"},
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "statement", "evidence_state", "effect_if_wrong"],
+        "properties": {
+          "id": {"type": "string"},
+          "statement": {"type": "string"},
+          "evidence_state": {"enum": ["observed", "derived", "inferred", "missing", "contradicted"]},
+          "effect_if_wrong": {"type": "string"}
+        }
+      }
+    },
+    "sensitivity": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["variable", "low", "base", "high", "outcome_effect"],
+        "properties": {
+          "variable": {"type": "string"},
+          "low": {"type": "number"},
+          "base": {"type": "number"},
+          "high": {"type": "number"},
+          "outcome_effect": {"type": "string"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["low", "high", "basis"],
+      "properties": {
+        "low": {"type": "number"},
+        "high": {"type": "number"},
+        "basis": {"enum": ["observed", "derived", "estimated", "missing"]}
+      }
+    },
+    "economics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scoping_hours", "delivery_hours", "rework_hours", "unpaid_hours", "time_to_quote_days", "estimate_error_percent", "acceptance_churn_events", "revenue", "direct_cost", "gross_margin"],
+      "properties": {
+        "scoping_hours": {"$ref": "#/$defs/range"},
+        "delivery_hours": {"$ref": "#/$defs/range"},
+        "rework_hours": {"$ref": "#/$defs/range"},
+        "unpaid_hours": {"$ref": "#/$defs/range"},
+        "time_to_quote_days": {"$ref": "#/$defs/range"},
+        "estimate_error_percent": {"$ref": "#/$defs/range"},
+        "acceptance_churn_events": {"$ref": "#/$defs/range"},
+        "revenue": {"$ref": "#/$defs/range"},
+        "direct_cost": {"$ref": "#/$defs/range"},
+        "gross_margin": {"$ref": "#/$defs/range"}
+      }
+    }
+  }
+}
