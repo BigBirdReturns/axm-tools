@@ -1,0 +1,44 @@
+{
+  "schema": "axm-witness/release-publishing-state@1",
+  "release": "AXM Witness Department Ledger 0.9.0",
+  "classification": "qualified local department-controlled export ledger pilot",
+  "state": "AWAITING_EXACT_RELEASE_BYTES",
+  "source_basis": "operator-supplied release report",
+  "public_route": "https://bigbirdreturns.github.io/axm-tools/axm-witness/",
+  "current_public_payload_may_be_relabelled": false,
+  "exact_package_sufficient_for_completion": "AXM_Witness_Department_Ledger_0.9.0_VERIFIED_Package.zip",
+  "required_objects": [
+    "AXM_Witness_Department_Ledger_0.9.0_VERIFIED.html",
+    "AXM_Witness_Department_Ledger_0.9.0_VERIFIED_Package.zip",
+    "AXM_Witness_Department_Ledger_0.9.0_Qualification.json",
+    "AXM_Witness_Department_Ledger_0.9.0_Package_Replay.json",
+    "AXM_Witness_Department_Ledger_0.9.0_FINAL_STATUS.json",
+    "AXM_Witness_Department_Ledger_0.9.0_Operator_Guide.md",
+    "AXM_Witness_Department_Ledger_0.9.0_Security_Boundary.md",
+    "AXM_Witness_Department_Ledger_0.9.0_Source.zip",
+    "AXM_Witness_Department_Ledger_0.9.0_Git.bundle",
+    "AXM_Witness_Department_Ledger_0.9.0_Transport_Replay.json",
+    "AXM_Witness_Department_Ledger_0.9.0_EXTERNAL_SHA256SUMS.txt",
+    "AXM_Witness_Department_Ledger_0.9.0_Workspace.png",
+    "AXM_Witness_Department_Ledger_0.9.0_Review.png",
+    "AXM_Witness_Department_Ledger_0.9.0_Backup.png",
+    "AXM_Witness_Department_Ledger_0.9.0_Mobile.png"
+  ],
+  "admission_requirements": [
+    "verify the package outer digest against the external SHA-256 ledger",
+    "verify every packaged payload checksum",
+    "reconstruct the standalone application from the source archive or Git bundle",
+    "require exact identity with the verified HTML",
+    "run the scoped browser and package replay gates",
+    "replace the public payload only after exact-byte qualification",
+    "add AXM Witness to the root directory and repository tool table",
+    "merge only after the public Pages route is independently read back"
+  ],
+  "nonclaims": [
+    "release bytes are not presently in repository custody",
+    "the existing AXM Witness public payload is not version 0.9.0",
+    "no PSPD production deployment is claimed",
+    "no municipal identity or retention authority is claimed",
+    "no upstream Flock completeness is claimed"
+  ]
+}
