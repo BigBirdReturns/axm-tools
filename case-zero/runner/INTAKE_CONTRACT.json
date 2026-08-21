@@ -1,0 +1,12 @@
+{
+  "schema": "redcat/case-zero-intake-contract@0.1",
+  "case_owner": "RedCat",
+  "client_relationship_owner": "RedCat",
+  "supported_custody_modes": ["redcat_local", "redacted_transfer", "supervised_readonly"],
+  "purpose": "retrospective external qualification",
+  "tier_desk_authority": ["reconstruct", "decompose", "verify", "report"],
+  "tier_desk_prohibited": ["contact_client", "represent_client", "set_price", "accept_delivery", "authorize_shadow_pilot"],
+  "model_authority": "candidate_analysis_only",
+  "forbidden_inputs": ["credentials", "production_secrets", "protected_health_information", "unnecessary_personal_data"],
+  "nonclaims": ["production_deployment", "client_contact", "substantive_conclusion_at_intake", "shadow_pilot_authorization"]
+}
