@@ -1,0 +1,86 @@
+name: Case Zero workbench qualification
+
+on:
+  push:
+    branches: [main, agent/case-zero-workbench-v0-1]
+    paths:
+      - "case-zero/**"
+      - "README.md"
+      - "index.html"
+      - "CONTINUITY.md"
+      - ".github/workflows/case-zero-check.yml"
+  pull_request:
+    paths:
+      - "case-zero/**"
+      - "README.md"
+      - "index.html"
+      - "CONTINUITY.md"
+      - ".github/workflows/case-zero-check.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: case-zero-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Build frozen release objects
+        run: python case-zero/scripts/build_release.py
+
+      - name: Integrate the tool into the public directory and continuity map
+        run: python case-zero/scripts/integrate_root.py
+
+      - name: Run deterministic static qualification
+        run: python case-zero/tests/validate.py
+
+      - name: Parse the one-file browser runtime
+        run: node --check /tmp/case-zero-inline.js
+
+      - name: Run the local runner regression suite
+        run: python -m unittest discover -s case-zero/runner -p 'test_casezero.py' -v
+
+      - name: Install Playwright and Chromium
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+
+      - name: Drive the real workbench in Chromium
+        run: python case-zero/tests/browser_test.py
+
+      - name: Reject malformed diffs
+        run: git diff --check
+
+      - name: Require generated state to be committed
+        if: github.event_name != 'push' || github.ref_name != 'agent/case-zero-workbench-v0-1'
+        run: git diff --exit-code
+
+      - name: Seal generated release and root integration on the publication branch
+        if: github.event_name == 'push' && github.ref_name == 'agent/case-zero-workbench-v0-1'
+        run: |
+          git config user.name "case-zero-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add README.md index.html CONTINUITY.md case-zero
+          if git diff --cached --quiet; then
+            echo "Generated state is already current."
+          else
+            git commit -m "case-zero: seal public qualification release"
+            git push
+          fi

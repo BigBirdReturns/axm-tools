@@ -1,0 +1,26 @@
+{
+  "schema": "redcat/case-zero-output-contract@0.1",
+  "case_disposition": ["PASS", "HOLD", "REFUSE"],
+  "required_outputs": [
+    {"id": "CZ-OUT-01", "name": "SOURCE_REGISTER.json", "acceptance": "Every admitted source has a stable identity, role, custody mode, and SHA-256."},
+    {"id": "CZ-OUT-02", "name": "ENGAGEMENT_TIMELINE.json", "acceptance": "Events are source-addressed and distinguish observed time from inferred order."},
+    {"id": "CZ-OUT-03", "name": "PROMISE_SCOPE_LEDGER.json", "acceptance": "Quoted commitments, assumptions, client expectations, and later changes remain distinct."},
+    {"id": "CZ-OUT-04", "name": "ACCEPTANCE_LEDGER.json", "acceptance": "Each deliverable has observed, missing, moved, or contradicted acceptance."},
+    {"id": "CZ-OUT-05", "name": "WORK_ECONOMICS_LEDGER.json", "acceptance": "Actual and estimated effort, paid and unpaid work, rework, and uncertainty are separated."},
+    {"id": "CZ-OUT-06", "name": "FAILURE_MECHANISM.md", "acceptance": "Actors, decisions, evidence gaps, and causal mechanism are named without retrospective invention."},
+    {"id": "CZ-OUT-07", "name": "COUNTERFACTUAL_POC.json", "acceptance": "The PoC uses historically available information and defines claim, limits, tests, pass, hold, and refusal."},
+    {"id": "CZ-OUT-08", "name": "IMPLEMENTATION_PACKAGES.json", "acceptance": "Each package has owner, inputs, outputs, interfaces, tests, dependencies, exclusions, and acceptance."},
+    {"id": "CZ-OUT-09", "name": "ECONOMIC_COMPARISON.json", "acceptance": "Actual and counterfactual economics disclose ranges, assumptions, and sensitivity."},
+    {"id": "CZ-OUT-10", "name": "ARCHITECT_CHALLENGE_LEDGER.json", "acceptance": "Every gate records PASS, HOLD, or REFUSE with evidence and repair condition."},
+    {"id": "CZ-OUT-11", "name": "SHADOW_PILOT_CONTRACT.md", "acceptance": "One live engagement can be shadowed without changing RedCat's ordinary client process."}
+  ],
+  "prohibited_shortcuts": [
+    "aggregate score that hides a failed gate",
+    "model narrative without source coordinates",
+    "hindsight imported into historical decisions",
+    "Tier Desk client ownership",
+    "automatic client contact",
+    "credential or protected-health-information transfer as a prerequisite",
+    "successful process exit treated as acceptance"
+  ]
+}
