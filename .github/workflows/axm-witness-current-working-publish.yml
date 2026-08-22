@@ -1,0 +1,325 @@
+name: Publish physically verified AXM Witness 0.8.0
+
+on:
+  push:
+    branches:
+      - release/axm-witness-project-editor-v0-8-0
+    paths:
+      - ".github/workflows/axm-witness-current-working-publish.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: axm-witness-current-working-publish
+  cancel-in-progress: false
+
+jobs:
+  materialize-and-qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/axm-witness-project-editor-v0-8-0
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Acquire the exact operator-supplied package
+        env:
+          TRANSPORT_URL: https://axm-witness-7bc27e0a.serveo.net/AXM_Witness_CURRENT_WORKING_FILES.zip
+          EXPECTED_ZIP_SHA256: 90a731fb53334d9613e8467a6cbdfa9ca15deafb8bc151d9715fabb0634aa60c
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/axm-witness-acquisition"
+          curl --fail --location --retry 20 --retry-delay 3 --retry-all-errors \
+            --connect-timeout 15 --max-time 600 \
+            "$TRANSPORT_URL" \
+            -o "$RUNNER_TEMP/axm-witness-acquisition/current-working.zip"
+          echo "$EXPECTED_ZIP_SHA256  $RUNNER_TEMP/axm-witness-acquisition/current-working.zip" | sha256sum --check --strict
+
+      - name: Materialize the exact release and retained QA
+        env:
+          EXPECTED_HTML_SHA256: 7bc27e0a228dbb19c34aca874882046be8272057b72fb8fc0efc8221e6b2f3a5
+          EXPECTED_HTML_BYTES: "462156"
+          EXPECTED_ZIP_SHA256: 90a731fb53334d9613e8467a6cbdfa9ca15deafb8bc151d9715fabb0634aa60c
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import os
+          import shutil
+          import zipfile
+          from pathlib import Path
+
+          root = Path.cwd()
+          archive = Path(os.environ["RUNNER_TEMP"]) / "axm-witness-acquisition" / "current-working.zip"
+          extracted = Path(os.environ["RUNNER_TEMP"]) / "axm-witness-acquisition" / "extracted"
+          if extracted.exists():
+              shutil.rmtree(extracted)
+          extracted.mkdir(parents=True)
+
+          with zipfile.ZipFile(archive) as zf:
+              bad = zf.testzip()
+              if bad is not None:
+                  raise SystemExit(f"ZIP CRC failure: {bad}")
+              for member in zf.infolist():
+                  path = Path(member.filename)
+                  if path.is_absolute() or ".." in path.parts:
+                      raise SystemExit(f"unsafe ZIP member: {member.filename}")
+              zf.extractall(extracted)
+
+          def one(name: str) -> Path:
+              matches = [p for p in extracted.rglob(name) if p.is_file()]
+              if len(matches) != 1:
+                  raise SystemExit(f"expected exactly one {name}, found {len(matches)}")
+              return matches[0]
+
+          app = one("AXM_Witness_Project_Editor_0.8.0_VERIFIED.html")
+          app_bytes = app.read_bytes()
+          app_sha = hashlib.sha256(app_bytes).hexdigest()
+          if len(app_bytes) != int(os.environ["EXPECTED_HTML_BYTES"]):
+              raise SystemExit(f"HTML byte mismatch: {len(app_bytes)}")
+          if app_sha != os.environ["EXPECTED_HTML_SHA256"]:
+              raise SystemExit(f"HTML SHA mismatch: {app_sha}")
+
+          release_root = root / "axm-witness" / "releases" / "0.8.0"
+          package_root = release_root / "current-working-files"
+          downloads = root / "axm-witness" / "downloads"
+          for path in (release_root, downloads):
+              path.mkdir(parents=True, exist_ok=True)
+          if package_root.exists():
+              shutil.rmtree(package_root)
+          shutil.copytree(extracted, package_root)
+
+          # The public route is the exact verified application, byte for byte.
+          (root / "axm-witness" / "index.html").write_bytes(app_bytes)
+          (downloads / "AXM_Witness_CURRENT_WORKING.html").write_bytes(app_bytes)
+          shutil.copy2(archive, downloads / "AXM_Witness_CURRENT_WORKING_FILES.zip")
+
+          # Retire all older transport payloads so the tree has one current app.
+          for old in (
+              root / "axm-witness" / "payload",
+              root / "axm-witness" / "payload-v0.8.0",
+              root / "axm-witness" / "payload-v0.8.0-v2",
+          ):
+              if old.exists():
+                  shutil.rmtree(old)
+
+          inventory = []
+          for path in sorted(package_root.rglob("*")):
+              if path.is_file():
+                  payload = path.read_bytes()
+                  inventory.append({
+                      "path": path.relative_to(package_root).as_posix(),
+                      "bytes": len(payload),
+                      "sha256": hashlib.sha256(payload).hexdigest(),
+                  })
+
+          manifest = {
+              "schema": "axm-witness/current-working-manifest@1",
+              "release": "axm-witness-project-editor/0.8.0",
+              "classification": "QUALIFIED_LOCAL_DEMONSTRATOR",
+              "application": {
+                  "path": "index.html",
+                  "bytes": len(app_bytes),
+                  "sha256": app_sha,
+                  "source_name": app.name,
+              },
+              "current_working_files_zip": {
+                  "path": "downloads/AXM_Witness_CURRENT_WORKING_FILES.zip",
+                  "bytes": archive.stat().st_size,
+                  "sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
+              },
+              "retained_package_inventory": inventory,
+              "qualification": {
+                  "browser_controls_passed": 18,
+                  "browser_controls_failed": 0,
+                  "exact_source_tamper_detection": True,
+                  "workflow_action_tamper_detection": False,
+                  "review_state_tamper_detection": False,
+                  "encrypted_full_ledger_backup_restore": False,
+                  "explicit_search_audit_packets_admitted": 1,
+                  "explicit_search_audit_rows_quarantined": 2,
+              },
+              "nonclaims": [
+                  "not AXM Witness Department Ledger 0.9.0",
+                  "not a controlled department-owned pilot",
+                  "not a live PSPD deployment",
+                  "not an upstream completeness proof",
+              ],
+          }
+          (root / "axm-witness" / "CURRENT_WORKING_MANIFEST.json").write_text(
+              json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+          )
+
+          qualification = {
+              "schema": "axm-witness/publication-qualification@1",
+              "release": "axm-witness-project-editor/0.8.0",
+              "classification": "QUALIFIED_LOCAL_DEMONSTRATOR",
+              "application": manifest["application"],
+              "current_working_files_zip": manifest["current_working_files_zip"],
+              "source_qualification": {
+                  "browser_controls_passed": 18,
+                  "browser_controls_failed": 0,
+                  "direct_file_boot": "PASS",
+                  "zero_runtime_network_requests": "PASS",
+                  "mobile_no_horizontal_overflow": "PASS",
+              },
+              "qa_findings": manifest["qualification"],
+              "claim_boundary": (
+                  "Independent local demonstrator. No live Flock API, official current Flock schema, "
+                  "PSPD authentication or authority, approved city policy, negotiated completeness "
+                  "denominator, independent origin witness, signed decision continuity, or encrypted "
+                  "same-key full-ledger restoration is claimed."
+              ),
+          }
+          (root / "axm-witness" / "qualification.json").write_text(
+              json.dumps(qualification, indent=2) + "\n", encoding="utf-8"
+          )
+
+          readme = f"""# AXM Witness Project Editor 0.8.0
+
+          The public route serves the last physically verified AXM Witness build supplied by the operator.
+
+          ```text
+          release         axm-witness-project-editor/0.8.0
+          classification  QUALIFIED_LOCAL_DEMONSTRATOR
+          application     {len(app_bytes):,} bytes
+          SHA-256         {app_sha}
+          ```
+
+          This is **0.8.0 plus its physically present QA artifacts**. It is not AXM Witness Department Ledger 0.9.0, a department-owned operational pilot, or a live PSPD deployment.
+
+          ## Downloads and evidence
+
+          - [Open the exact verified application](index.html)
+          - [Download the exact one-file application](downloads/AXM_Witness_CURRENT_WORKING.html)
+          - [Download the complete current working files](downloads/AXM_Witness_CURRENT_WORKING_FILES.zip)
+          - [Read the verification manifest](CURRENT_WORKING_MANIFEST.json)
+          - [Inspect the complete retained QA package](releases/0.8.0/current-working-files/)
+
+          ## Exact boundary
+
+          The 18-control browser campaign passed. Exact source-byte alteration was detected. Direct workflow-action and review-state alteration were not detected in the audited 0.8 path. Encrypted full-ledger backup and same-key restoration are absent. The explicit search-audit fixture admitted one packet and quarantined two unsupported rows.
+
+          Browser-selected records remain local and never enter this repository. The 0.8 release objects are immutable; a changed application requires a new release identity.
+          """
+          (root / "axm-witness" / "README.md").write_text(
+              "\n".join(line.lstrip() for line in readme.splitlines()) + "\n",
+              encoding="utf-8",
+          )
+
+          checksums = []
+          for path in sorted((root / "axm-witness").rglob("*")):
+              if path.is_file() and path.name != "SHA256SUMS":
+                  payload = path.read_bytes()
+                  checksums.append(
+                      f"{hashlib.sha256(payload).hexdigest()}  {path.relative_to(root / 'axm-witness').as_posix()}"
+                  )
+          (root / "axm-witness" / "SHA256SUMS").write_text(
+              "\n".join(checksums) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(manifest, indent=2))
+          PY
+
+      - name: Verify exact bytes, scripts, and retained package
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, re, subprocess, tempfile, zipfile
+          from pathlib import Path
+
+          root = Path("axm-witness")
+          manifest = json.loads((root / "CURRENT_WORKING_MANIFEST.json").read_text())
+          app = (root / "index.html").read_bytes()
+          assert len(app) == 462156
+          assert hashlib.sha256(app).hexdigest() == "7bc27e0a228dbb19c34aca874882046be8272057b72fb8fc0efc8221e6b2f3a5"
+          archive = root / "downloads" / "AXM_Witness_CURRENT_WORKING_FILES.zip"
+          assert archive.stat().st_size == 1507475
+          assert hashlib.sha256(archive.read_bytes()).hexdigest() == "90a731fb53334d9613e8467a6cbdfa9ca15deafb8bc151d9715fabb0634aa60c"
+          with zipfile.ZipFile(archive) as zf:
+              assert zf.testzip() is None
+          text = app.decode("utf-8")
+          scripts = re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>", text, re.I | re.S)
+          assert scripts, "no inline scripts found"
+          with tempfile.TemporaryDirectory() as td:
+              for index, script in enumerate(scripts):
+                  path = Path(td) / f"inline-{index:02d}.js"
+                  path.write_text(script, encoding="utf-8")
+                  subprocess.run(["node", "--check", str(path)], check=True)
+          assert manifest["release"] == "axm-witness-project-editor/0.8.0"
+          assert manifest["classification"] == "QUALIFIED_LOCAL_DEMONSTRATOR"
+          assert "0.9.0" not in text
+          print(f"AXM_WITNESS_STATIC_OK scripts={len(scripts)}")
+          PY
+
+      - name: Install Chromium qualification runtime
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+
+      - name: Run real browser smoke and mobile reflow
+        run: |
+          set -euo pipefail
+          python -m http.server 8766 --bind 127.0.0.1 >/tmp/axm-witness-http.log 2>&1 &
+          server=$!
+          trap 'kill "$server" || true' EXIT
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+
+          external = []
+          console_errors = []
+          page_errors = []
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              context = browser.new_context(viewport={"width": 1440, "height": 1000})
+              page = context.new_page()
+              page.on("request", lambda request: external.append(request.url) if not request.url.startswith("http://127.0.0.1:8766/") else None)
+              page.on("console", lambda message: console_errors.append(message.text) if message.type == "error" else None)
+              page.on("pageerror", lambda error: page_errors.append(str(error)))
+              response = page.goto("http://127.0.0.1:8766/axm-witness/", wait_until="networkidle")
+              assert response and response.ok
+              assert "AXM Witness" in page.title()
+              assert not external, external
+              assert not console_errors, console_errors
+              assert not page_errors, page_errors
+              context.close()
+
+              mobile = browser.new_context(viewport={"width": 390, "height": 844}, device_scale_factor=1)
+              mobile_page = mobile.new_page()
+              mobile_errors = []
+              mobile_page.on("pageerror", lambda error: mobile_errors.append(str(error)))
+              mobile_page.goto("http://127.0.0.1:8766/axm-witness/", wait_until="networkidle")
+              dimensions = mobile_page.evaluate("() => ({client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth})")
+              assert dimensions["scroll"] <= dimensions["client"], dimensions
+              assert not mobile_errors, mobile_errors
+              browser.close()
+          print("AXM_WITNESS_BROWSER_OK")
+          PY
+
+      - name: Commit exact release to the publication branch
+        run: |
+          set -euo pipefail
+          rm -f axm-witness/releases/0.8.0/UPLOAD_SOURCE_REFERENCE.txt
+          rm -f axm-witness/releases/0.8.0/UPLOAD_PROBE*.txt
+          git config user.name "axm-witness-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A axm-witness
+          if git diff --cached --quiet; then
+            echo "Exact 0.8.0 release already materialized."
+          else
+            git commit -m "axm-witness: materialize physically verified 0.8.0 [skip ci]"
+            git push origin HEAD:release/axm-witness-project-editor-v0-8-0
+          fi
