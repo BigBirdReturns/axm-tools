@@ -1,0 +1,392 @@
+name: AXM Witness Department Ledger 0.9.2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/scripts/patch_axm_witness_theme_092.py"
+      - ".github/workflows/axm-witness-0.9.2.yml"
+      - ".github/workflows/axm-witness-0.9.1.yml"
+      - ".github/receipts/axm-witness-theme-0.9.2.json"
+      - "axm-witness/**"
+      - "README.md"
+      - "index.html"
+      - "CONTINUITY.md"
+  push:
+    branches: [main]
+    paths:
+      - ".github/scripts/patch_axm_witness_theme_092.py"
+      - ".github/workflows/axm-witness-0.9.2.yml"
+      - ".github/receipts/axm-witness-theme-0.9.2.json"
+      - "axm-witness/**"
+      - "README.md"
+      - "index.html"
+      - "CONTINUITY.md"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: github.event_name == 'pull_request' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Apply the governed theme patch
+        run: |
+          set -euo pipefail
+          python -m py_compile .github/scripts/patch_axm_witness_theme_092.py
+          python .github/scripts/patch_axm_witness_theme_092.py
+
+      - name: Commit the 0.9.2 release transaction
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'axm-witness-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'Theme patch already materialized'
+          else
+            git commit -m 'axm-witness: publish persistent light and dark theme 0.9.2'
+            git push origin HEAD:${{ github.head_ref }}
+          fi
+
+  qualify:
+    needs: materialize
+    if: always() && (needs.materialize.result == 'success' || needs.materialize.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify release identity, storage compatibility, and inline runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path('.')
+          app = root / 'axm-witness' / 'index.html'
+          receipt_path = root / '.github' / 'receipts' / 'axm-witness-theme-0.9.2.json'
+          receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+          body = app.read_bytes()
+          html = body.decode('utf-8')
+          expected = receipt['patched_application']
+
+          assert len(body) == expected['bytes'], (len(body), expected['bytes'])
+          assert hashlib.sha256(body).hexdigest() == expected['sha256']
+          assert receipt['release'] == 'axm-witness-department-ledger/0.9.2'
+          assert receipt['theme']['default'] == 'dark'
+          assert receipt['theme']['options'] == ['dark', 'light']
+          assert receipt['theme']['preference_key'] == 'axm-witness-theme'
+          assert receipt['storage_compatibility']['indexeddb_name'] == 'axm-witness-department-ledger-v0-9-1'
+          assert receipt['storage_compatibility']['changed'] is False
+
+          markers = [
+              'id="axm-theme-boot"',
+              'id="axm-v092-theme"',
+              'id="themeToggle"',
+              'id="axm-theme-toggle-runtime"',
+              'content="axm-witness-department-ledger/0.9.2"',
+              'const RELEASE = "axm-witness-department-ledger/0.9.2";',
+              'const DB_NAME = "axm-witness-department-ledger-v0-9-1";',
+              'localStorage.setItem(key, theme)',
+          ]
+          for marker in markers:
+              assert html.count(marker) == 1, (marker, html.count(marker))
+
+          assert '<meta name="color-scheme" content="dark light">' in html
+          assert 'aria-label="Switch to light theme"' in html
+          assert not re.search(r'<(?:script|link)[^>]+(?:src|href)=["\'](?:https?:)?//', html, re.I)
+          assert not (root / '.github' / 'workflows' / 'axm-witness-0.9.1.yml').exists()
+
+          for path in (root / 'README.md', root / 'index.html', root / 'CONTINUITY.md'):
+              rendered = path.read_text(encoding='utf-8')
+              assert 'AXM Witness Department Ledger 0.9.2' in rendered, path
+          assert 'persistent light/dark theme toggle' in (root / 'index.html').read_text(encoding='utf-8')
+
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, flags=re.I | re.S)
+          assert scripts, 'inline runtime missing'
+          Path('/tmp/axm-witness-inline.js').write_text('\n;\n'.join(scripts), encoding='utf-8')
+          print(json.dumps({'application': expected, 'inline_scripts': len(scripts)}, indent=2))
+          PY
+          node --check /tmp/axm-witness-inline.js
+
+      - name: Install browser qualification tools
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+
+      - name: Qualify dark default, theme persistence, accessibility, and mobile control
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import threading
+          from contextlib import contextmanager
+          from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+          from pathlib import Path
+
+          from playwright.sync_api import sync_playwright
+
+          root = Path('.').resolve()
+
+          class Quiet(SimpleHTTPRequestHandler):
+              def log_message(self, format, *args):
+                  pass
+
+          @contextmanager
+          def serve():
+              handler = lambda *args, **kwargs: Quiet(*args, directory=str(root), **kwargs)
+              server = ThreadingHTTPServer(('127.0.0.1', 0), handler)
+              thread = threading.Thread(target=server.serve_forever, daemon=True)
+              thread.start()
+              try:
+                  yield f'http://127.0.0.1:{server.server_port}'
+              finally:
+                  server.shutdown()
+                  thread.join(timeout=5)
+                  server.server_close()
+
+          with serve() as origin, sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              context = browser.new_context(viewport={'width': 1440, 'height': 1000}, color_scheme='light')
+              page = context.new_page()
+              external = []
+              page_errors = []
+              console_errors = []
+              page.on('request', lambda request: external.append(request.url) if not request.url.startswith(origin + '/') and not request.url.startswith(('data:', 'blob:', 'about:')) else None)
+              page.on('pageerror', lambda error: page_errors.append(str(error)))
+              page.on('console', lambda message: console_errors.append(message.text) if message.type == 'error' else None)
+
+              response = page.goto(origin + '/axm-witness/?qa=theme-092', wait_until='domcontentloaded')
+              assert response and response.ok, response.status if response else None
+              page.wait_for_selector('body.replit-v08')
+              page.wait_for_selector('#themeToggle', state='visible')
+              page.wait_for_timeout(250)
+
+              def snapshot():
+                  return page.evaluate('''() => {
+                    const button = document.querySelector('#themeToggle');
+                    const rect = button.getBoundingClientRect();
+                    return {
+                      theme: document.documentElement.dataset.theme,
+                      stored: localStorage.getItem('axm-witness-theme'),
+                      bodyBackground: getComputedStyle(document.body).backgroundColor,
+                      topbarBackground: getComputedStyle(document.querySelector('.topbar')).backgroundColor,
+                      pressed: button.getAttribute('aria-pressed'),
+                      label: button.getAttribute('aria-label'),
+                      width: rect.width,
+                      height: rect.height,
+                      visible: !!(rect.width && rect.height),
+                      scrollWidth: document.documentElement.scrollWidth,
+                      clientWidth: document.documentElement.clientWidth
+                    };
+                  }''')
+
+              dark_initial = snapshot()
+              assert dark_initial['theme'] == 'dark', dark_initial
+              assert dark_initial['stored'] is None, dark_initial
+              assert dark_initial['pressed'] == 'true', dark_initial
+              assert dark_initial['label'] == 'Switch to light theme', dark_initial
+              page.screenshot(path='/tmp/axm-witness-theme-dark.png')
+
+              page.click('#themeToggle')
+              page.wait_for_function("document.documentElement.dataset.theme === 'light'")
+              page.wait_for_timeout(250)
+              light = snapshot()
+              assert light['stored'] == 'light', light
+              assert light['pressed'] == 'false', light
+              assert light['label'] == 'Switch to dark theme', light
+              assert light['bodyBackground'] != dark_initial['bodyBackground'], (dark_initial, light)
+              page.screenshot(path='/tmp/axm-witness-theme-light.png')
+
+              page.reload(wait_until='domcontentloaded')
+              page.wait_for_selector('#themeToggle', state='visible')
+              light_reload = snapshot()
+              assert light_reload['theme'] == 'light' and light_reload['stored'] == 'light', light_reload
+
+              before_contrast = page.get_attribute('#contrastToggle', 'aria-pressed')
+              page.click('#contrastToggle')
+              after_contrast = page.get_attribute('#contrastToggle', 'aria-pressed')
+              assert before_contrast != after_contrast, (before_contrast, after_contrast)
+
+              page.click('#themeToggle')
+              page.wait_for_function("document.documentElement.dataset.theme === 'dark'")
+              page.reload(wait_until='domcontentloaded')
+              page.wait_for_selector('#themeToggle', state='visible')
+              dark_reload = snapshot()
+              assert dark_reload['theme'] == 'dark' and dark_reload['stored'] == 'dark', dark_reload
+
+              page.set_viewport_size({'width': 390, 'height': 844})
+              page.wait_for_timeout(250)
+              mobile = snapshot()
+              assert mobile['visible'], mobile
+              assert mobile['width'] >= 40 and mobile['height'] >= 40, mobile
+              assert mobile['scrollWidth'] <= mobile['clientWidth'] + 1, mobile
+
+              assert not external, external
+              assert not page_errors, page_errors
+              assert not console_errors, console_errors
+
+              result = {
+                  'browser': browser.version,
+                  'dark_initial': dark_initial,
+                  'light': light,
+                  'light_reload': light_reload,
+                  'dark_reload': dark_reload,
+                  'mobile': mobile,
+                  'external_requests': len(external),
+                  'page_errors': page_errors,
+                  'console_errors': console_errors,
+              }
+              Path('/tmp/axm-theme-browser.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
+              print(json.dumps(result, indent=2))
+              browser.close()
+          PY
+
+      - name: Retain the passing theme qualification receipt
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('.github/receipts/axm-witness-theme-0.9.2.json')
+          receipt = json.loads(path.read_text(encoding='utf-8'))
+          if 'controls' not in receipt:
+              browser = json.loads(Path('/tmp/axm-theme-browser.json').read_text(encoding='utf-8'))
+              receipt['controls'] = {
+                  'release_identity': 'PASS',
+                  'storage_schema_unchanged': 'PASS',
+                  'inline_runtime_parse': 'PASS',
+                  'dark_first_run_default': 'PASS',
+                  'light_theme_toggle': 'PASS',
+                  'preference_reload_persistence': 'PASS',
+                  'dark_theme_restore': 'PASS',
+                  'high_contrast_control_preserved': 'PASS',
+                  'mobile_40px_control_floor': 'PASS',
+                  'no_external_runtime_requests': 'PASS',
+                  'browser_page_errors': 'PASS',
+                  'browser_console_errors': 'PASS'
+              }
+              receipt['browser_observation'] = {
+                  'engine': browser['browser'],
+                  'dark_background': browser['dark_initial']['bodyBackground'],
+                  'light_background': browser['light']['bodyBackground'],
+                  'mobile_toggle': {
+                      'width': browser['mobile']['width'],
+                      'height': browser['mobile']['height']
+                  }
+              }
+              path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+          PY
+          git config user.name 'axm-witness-qualification-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add .github/receipts/axm-witness-theme-0.9.2.json
+          if git diff --cached --quiet; then
+            echo 'Qualification receipt already sealed'
+          else
+            git commit -m 'axm-witness: seal 0.9.2 theme qualification receipt'
+            git push origin HEAD:${{ github.head_ref }}
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: axm-witness-theme-0.9.2-browser
+          path: |
+            /tmp/axm-theme-browser.json
+            /tmp/axm-witness-theme-dark.png
+            /tmp/axm-witness-theme-light.png
+          if-no-files-found: warn
+          retention-days: 14
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: qualify
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  verify-live:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the deployed route back at the sealed identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_sha="$(python -c 'import json; print(json.load(open(".github/receipts/axm-witness-theme-0.9.2.json"))["patched_application"]["sha256"])')"
+          expected_bytes="$(python -c 'import json; print(json.load(open(".github/receipts/axm-witness-theme-0.9.2.json"))["patched_application"]["bytes"])')"
+          app_url='https://bigbirdreturns.github.io/axm-tools/axm-witness/'
+          root_url='https://bigbirdreturns.github.io/axm-tools/'
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent --show-error --location --header 'Cache-Control: no-cache' "${app_url}?release=0.9.2&sha=${GITHUB_SHA}&attempt=${attempt}" -o /tmp/live-index.html; then
+              bytes="$(wc -c </tmp/live-index.html)"
+              sha="$(sha256sum /tmp/live-index.html | awk '{print $1}')"
+              if [ "$bytes" = "$expected_bytes" ] && [ "$sha" = "$expected_sha" ]; then
+                break
+              fi
+            fi
+            sleep 5
+          done
+          test "$(wc -c </tmp/live-index.html)" = "$expected_bytes"
+          test "$(sha256sum /tmp/live-index.html | awk '{print $1}')" = "$expected_sha"
+          grep -F 'id="themeToggle"' /tmp/live-index.html
+          grep -F 'content="axm-witness-department-ledger/0.9.2"' /tmp/live-index.html
+          curl --fail --silent --show-error --location --header 'Cache-Control: no-cache' "${root_url}?release=0.9.2&sha=${GITHUB_SHA}" -o /tmp/root-index.html
+          grep -F 'AXM Witness Department Ledger 0.9.2' /tmp/root-index.html
