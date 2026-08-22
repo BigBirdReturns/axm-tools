@@ -7,6 +7,12 @@ on:
     paths:
       - ".github/bootstrap/manzanita-custody-history-part-*.b64"
       - ".github/workflows/manzanita-custody-history-bootstrap.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/bootstrap/manzanita-custody-history-part-*.b64"
+      - ".github/workflows/manzanita-custody-history-bootstrap.yml"
 
 permissions:
   contents: write
