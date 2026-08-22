@@ -58,9 +58,8 @@ jobs:
               "programs/manzanita-99/custody/history/tests/test_history_sweep.py",
           }
           with tarfile.open("/tmp/manzanita-custody-history.tar.gz", "r:gz") as archive:
-              members = archive.getmembers()
               observed = set()
-              for member in members:
+              for member in archive.getmembers():
                   path = PurePosixPath(member.name)
                   normalized = path.as_posix().removeprefix("./")
                   if path.is_absolute() or ".." in path.parts:
@@ -102,88 +101,273 @@ jobs:
             --contract programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json \
             --output programs/manzanita-99/custody/history/out \
             | tee /tmp/manzanita-history-sweep-summary.json
-          python -m json.tool \
-            programs/manzanita-99/custody/history/out/HISTORICAL_RELEASE_REGISTER.json \
-            > /dev/null
-          python -m json.tool \
-            programs/manzanita-99/custody/history/out/HISTORY_SWEEP_RECEIPT.json \
-            > /dev/null
 
-      - name: Build exact source and sweep artifact
+      - name: Materialize exact bytes for every reachable route tree
         env:
+          PYTHONDONTWRITEBYTECODE: "1"
           SOURCE_TARBALL_SHA256: 5db9b20306efd09a31bb97a11c524126d326a7a93e29c8573ff105ccbfbdeac5
         run: |
-          rm -rf /tmp/manzanita-custody-history-sweep
-          mkdir -p \
-            /tmp/manzanita-custody-history-sweep/.github/workflows \
-            /tmp/manzanita-custody-history-sweep/programs/manzanita-99/custody/history/tests \
-            /tmp/manzanita-custody-history-sweep/programs/manzanita-99/custody/history/out
-          cp --preserve=mode,timestamps \
-            .github/workflows/manzanita-custody-history.yml \
-            /tmp/manzanita-custody-history-sweep/.github/workflows/
-          cp --preserve=mode,timestamps \
-            programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json \
-            programs/manzanita-99/custody/history/README.md \
-            programs/manzanita-99/custody/history/history_sweep.py \
-            /tmp/manzanita-custody-history-sweep/programs/manzanita-99/custody/history/
-          cp --preserve=mode,timestamps \
-            programs/manzanita-99/custody/history/tests/test_history_sweep.py \
-            /tmp/manzanita-custody-history-sweep/programs/manzanita-99/custody/history/tests/
-          cp --preserve=mode,timestamps \
-            programs/manzanita-99/custody/history/out/HISTORICAL_RELEASE_REGISTER.json \
-            programs/manzanita-99/custody/history/out/HISTORY_SWEEP_RECEIPT.json \
-            /tmp/manzanita-custody-history-sweep/programs/manzanita-99/custody/history/out/
-          cp /tmp/manzanita-history-sweep-summary.json \
-            /tmp/manzanita-custody-history-sweep/HISTORY_SWEEP_SUMMARY.json
+          rm -rf /tmp/manzanita-route-tree-vault
           python - <<'PY'
           import hashlib
           import json
           import os
-          from pathlib import Path
+          import stat
+          import subprocess
+          from pathlib import Path, PurePosixPath
 
-          root = Path('/tmp/manzanita-custody-history-sweep')
-          files = []
-          for path in sorted(p for p in root.rglob('*') if p.is_file()):
-              payload = path.read_bytes()
-              rel = path.relative_to(root).as_posix()
-              files.append({
-                  'path': rel,
-                  'bytes': len(payload),
-                  'sha256': hashlib.sha256(payload).hexdigest(),
-                  'git_blob_sha1': hashlib.sha1(
-                      f'blob {len(payload)}\0'.encode('ascii') + payload
-                  ).hexdigest(),
-                  'executable': bool(path.stat().st_mode & 0o111),
+          repo = Path.cwd()
+          register_path = repo / 'programs/manzanita-99/custody/history/out/HISTORICAL_RELEASE_REGISTER.json'
+          sweep_receipt_path = repo / 'programs/manzanita-99/custody/history/out/HISTORY_SWEEP_RECEIPT.json'
+          contract_path = repo / 'programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json'
+          register = json.loads(register_path.read_text(encoding='utf-8'))
+          sweep_receipt = json.loads(sweep_receipt_path.read_text(encoding='utf-8'))
+
+          root = Path('/tmp/manzanita-route-tree-vault')
+          blob_root = root / 'blobs' / 'sha1'
+          tree_root = root / 'trees'
+          view_root = root / 'views'
+          evidence_root = root / 'evidence'
+          tooling_root = root / 'tooling'
+          for directory in (blob_root, tree_root, view_root, evidence_root, tooling_root):
+              directory.mkdir(parents=True, exist_ok=True)
+
+          def sha256(payload: bytes) -> str:
+              return hashlib.sha256(payload).hexdigest()
+
+          def git_blob_sha1(payload: bytes) -> str:
+              return hashlib.sha1(
+                  f'blob {len(payload)}\0'.encode('ascii') + payload
+              ).hexdigest()
+
+          def clean_path(value: str) -> PurePosixPath:
+              path = PurePosixPath(value)
+              if not value or path.is_absolute() or '..' in path.parts:
+                  raise SystemExit(f'Unsafe historical path: {value!r}')
+              return path
+
+          unique_blobs = {}
+          tree_index = []
+          regular_view_files = 0
+          symlink_payloads = 0
+          total_tree_blob_bytes = 0
+
+          for tree in register['trees']:
+              tree_sha = tree['tree_sha']
+              manifest_files = []
+              for row in tree['files']:
+                  if row['object_type'] != 'blob':
+                      raise SystemExit(
+                          f"Unexpected non-blob in route tree {tree_sha}: {row}"
+                      )
+                  path = clean_path(row['path'])
+                  object_sha = row['object_sha']
+                  payload = subprocess.run(
+                      ['git', 'cat-file', 'blob', object_sha],
+                      cwd=repo,
+                      check=True,
+                      capture_output=True,
+                  ).stdout
+                  observed_git_sha = git_blob_sha1(payload)
+                  observed_sha256 = sha256(payload)
+                  if observed_git_sha != object_sha:
+                      raise SystemExit(
+                          f'Git blob identity mismatch: {tree_sha}:{path}'
+                      )
+                  if len(payload) != row['bytes']:
+                      raise SystemExit(
+                          f'Byte-count mismatch: {tree_sha}:{path}'
+                      )
+                  if observed_sha256 != row['sha256']:
+                      raise SystemExit(
+                          f'SHA-256 mismatch: {tree_sha}:{path}'
+                      )
+
+                  blob_path = blob_root / object_sha[:2] / object_sha
+                  blob_path.parent.mkdir(parents=True, exist_ok=True)
+                  if blob_path.exists():
+                      if blob_path.read_bytes() != payload:
+                          raise SystemExit(f'Conflicting blob vault entry: {object_sha}')
+                  else:
+                      blob_path.write_bytes(payload)
+                      blob_path.chmod(0o444)
+                      unique_blobs[object_sha] = {
+                          'object_sha': object_sha,
+                          'bytes': len(payload),
+                          'sha256': observed_sha256,
+                          'vault_path': blob_path.relative_to(root).as_posix(),
+                      }
+
+                  view_path = None
+                  if row['file_kind'] in {'regular_file', 'executable_file'}:
+                      destination = view_root / tree_sha / path.as_posix()
+                      destination.parent.mkdir(parents=True, exist_ok=True)
+                      destination.write_bytes(payload)
+                      destination.chmod(
+                          0o555 if row['file_kind'] == 'executable_file' else 0o444
+                      )
+                      view_path = destination.relative_to(root).as_posix()
+                      regular_view_files += 1
+                  elif row['file_kind'] == 'symbolic_link':
+                      destination = (
+                          view_root / tree_sha / '__symlink_payloads__' /
+                          (path.as_posix().replace('/', '__') + '.txt')
+                      )
+                      destination.parent.mkdir(parents=True, exist_ok=True)
+                      destination.write_bytes(payload)
+                      destination.chmod(0o444)
+                      view_path = destination.relative_to(root).as_posix()
+                      symlink_payloads += 1
+                  else:
+                      raise SystemExit(
+                          f"Unknown file kind {row['file_kind']}: {tree_sha}:{path}"
+                      )
+
+                  manifest_files.append({
+                      **row,
+                      'blob_vault_path': blob_path.relative_to(root).as_posix(),
+                      'materialized_view_path': view_path,
+                  })
+                  total_tree_blob_bytes += len(payload)
+
+              tree_manifest = {
+                  'schema': 'axm-tools/manzanita-reachable-route-tree@1',
+                  'tree_sha': tree_sha,
+                  'classification': tree['classification'],
+                  'approval_state': tree['approval_state'],
+                  'deployment_state': tree['deployment_state'],
+                  'release_claim': tree['release_claim'],
+                  'file_count': tree['file_count'],
+                  'blob_count': tree['blob_count'],
+                  'total_blob_bytes': tree['total_blob_bytes'],
+                  'file_manifest_sha256': tree['file_manifest_sha256'],
+                  'register_payload_sha256': tree['payload_sha256'],
+                  'release_markers': tree['release_markers'],
+                  'route_change_commits': tree['route_change_commits'],
+                  'reachable_refs': tree['reachable_refs'],
+                  'files': manifest_files,
+                  'public_effect': 'none',
+                  'release_authorized': False,
+              }
+              manifest_path = tree_root / tree_sha / 'TREE_MANIFEST.json'
+              manifest_path.parent.mkdir(parents=True, exist_ok=True)
+              manifest_path.write_text(
+                  json.dumps(tree_manifest, indent=2, sort_keys=True) + '\n',
+                  encoding='utf-8',
+              )
+              manifest_path.chmod(0o444)
+              tree_index.append({
+                  'tree_sha': tree_sha,
+                  'classification': tree['classification'],
+                  'declared_release_values': tree['release_markers'].get(
+                      'declared_release_values', []
+                  ),
+                  'file_count': tree['file_count'],
+                  'total_blob_bytes': tree['total_blob_bytes'],
+                  'reachable_ref_count': len(tree['reachable_refs']),
+                  'route_change_commit_count': len(tree['route_change_commits']),
+                  'manifest_path': manifest_path.relative_to(root).as_posix(),
+                  'view_root': (view_root / tree_sha).relative_to(root).as_posix(),
               })
-          receipt = {
-              'schema': 'axm-tools/manzanita-custody-history-sweep-artifact@1',
+
+          for source, destination in (
+              (register_path, evidence_root / 'HISTORICAL_RELEASE_REGISTER.json'),
+              (sweep_receipt_path, evidence_root / 'HISTORY_SWEEP_RECEIPT.json'),
+              (contract_path, evidence_root / 'HISTORY_SWEEP_CONTRACT.json'),
+              (repo / 'programs/manzanita-99/custody/history/history_sweep.py', tooling_root / 'history_sweep.py'),
+              (repo / 'programs/manzanita-99/custody/history/tests/test_history_sweep.py', tooling_root / 'test_history_sweep.py'),
+              (repo / '.github/workflows/manzanita-custody-history.yml', tooling_root / 'manzanita-custody-history.yml'),
+          ):
+              destination.parent.mkdir(parents=True, exist_ok=True)
+              destination.write_bytes(source.read_bytes())
+              destination.chmod(0o444)
+
+          index = {
+              'schema': 'axm-tools/manzanita-reachable-route-tree-index@1',
               'source_tarball_sha256': os.environ['SOURCE_TARBALL_SHA256'],
-              'source_branch': os.environ['GITHUB_HEAD_REF'] or os.environ['GITHUB_REF_NAME'],
               'source_commit': os.environ['GITHUB_SHA'],
-              'file_count_before_receipt': len(files),
-              'files_before_receipt': files,
-              'public_route_effect': 'none',
+              'sweep_register_sha256': hashlib.sha256(
+                  register_path.read_bytes()
+              ).hexdigest(),
+              'sweep_receipt_sha256': hashlib.sha256(
+                  sweep_receipt_path.read_bytes()
+              ).hexdigest(),
+              'unique_tree_count': len(tree_index),
+              'unique_blob_count': len(unique_blobs),
+              'deduplicated_blob_bytes': sum(
+                  row['bytes'] for row in unique_blobs.values()
+              ),
+              'tree_referenced_blob_bytes': total_tree_blob_bytes,
+              'regular_view_file_count': regular_view_files,
+              'symlink_payload_count': symlink_payloads,
+              'route_event_count': register['route_event_count'],
+              'route_absent_event_count': register['route_absent_event_count'],
+              'reference_count': register['reference_count'],
+              'current_guard_tree': register['current_guard_tree'],
+              'current_guard_present': register['current_guard_present'],
+              'trees': sorted(tree_index, key=lambda row: row['tree_sha']),
+              'public_effect': 'none',
               'constitutional_count_effect': 'none',
               'release_authorized': False,
           }
-          (root / 'ARTIFACT_RECEIPT.json').write_text(
+          (root / 'TREE_VAULT_INDEX.json').write_text(
+              json.dumps(index, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+
+          receipt = {
+              'schema': 'axm-tools/manzanita-route-tree-vault-receipt@1',
+              'result': 'PASS',
+              'source_commit': os.environ['GITHUB_SHA'],
+              'source_tarball_sha256': os.environ['SOURCE_TARBALL_SHA256'],
+              'unique_tree_count': index['unique_tree_count'],
+              'unique_blob_count': index['unique_blob_count'],
+              'deduplicated_blob_bytes': index['deduplicated_blob_bytes'],
+              'tree_referenced_blob_bytes': index['tree_referenced_blob_bytes'],
+              'regular_view_file_count': regular_view_files,
+              'symlink_payload_count': symlink_payloads,
+              'current_guard_tree': index['current_guard_tree'],
+              'current_guard_present': index['current_guard_present'],
+              'sweep_receipt_payload_sha256': sweep_receipt['payload_sha256'],
+              'public_effect': 'none',
+              'constitutional_count_effect': 'none',
+              'release_authorized': False,
+              'qualification_boundary': (
+                  'This receipt proves exact materialization of every route-tree blob '
+                  'identified by the reachable-history sweep. Reachability and exact '
+                  'bytes do not establish approval, deployment, public serving, rollback, '
+                  'or whole-product release.'
+              ),
+          }
+          receipt['payload_sha256'] = hashlib.sha256(
+              json.dumps(
+                  receipt,
+                  sort_keys=True,
+                  separators=(',', ':'),
+              ).encode('utf-8')
+          ).hexdigest()
+          (root / 'TREE_VAULT_RECEIPT.json').write_text(
               json.dumps(receipt, indent=2, sort_keys=True) + '\n',
               encoding='utf-8',
           )
+
+          for path in root.rglob('*'):
+              if path.is_file() and path.stat().st_mode & 0o222:
+                  path.chmod(0o444)
           PY
           (
-            cd /tmp/manzanita-custody-history-sweep
+            cd /tmp/manzanita-route-tree-vault
             find . -type f ! -name SHA256SUMS.txt -print0 \
               | sort -z \
               | xargs -0 sha256sum \
               > SHA256SUMS.txt
           )
 
-      - name: Upload exact historical custody sweep
+      - name: Upload exact reachable route-tree vault
         uses: actions/upload-artifact@v4
         with:
-          name: manzanita-custody-history-sweep
-          path: /tmp/manzanita-custody-history-sweep
+          name: manzanita-reachable-route-tree-vault
+          path: /tmp/manzanita-route-tree-vault
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 7
