@@ -3,7 +3,7 @@ name: Bootstrap Manzanita history custody
 on:
   push:
     branches:
-      - agent/manzanita-custody-history-003
+      - agent/manzanita-custody-history-004
     paths:
       - ".github/bootstrap/manzanita-custody-history-part-*.b64"
       - ".github/workflows/manzanita-custody-history-bootstrap.yml"
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: agent/manzanita-custody-history-003
+          ref: agent/manzanita-custody-history-004
           fetch-depth: 0
           persist-credentials: true
 
@@ -98,4 +98,4 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add -A
           git commit -m "Manzanita: materialize historical route custody sweep"
-          git push origin HEAD:agent/manzanita-custody-history-003
+          git push origin HEAD:agent/manzanita-custody-history-004
