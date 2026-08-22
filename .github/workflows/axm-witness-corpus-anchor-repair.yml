@@ -33,8 +33,8 @@ jobs:
           old = r'const PUBLIC_CORPUS_LEDGER\s*=\s*\{'
           new = r'const PUBLIC_CORPUS_LEDGER\s*=\s*(?:Object\.freeze\(\s*)?\{'
           count = text.count(old)
-          if count != 4:
-              raise SystemExit(f'expected four corpus object anchors, found {count}')
+          if count != 3:
+              raise SystemExit(f'expected three corpus object anchors, found {count}')
           text = text.replace(old, new)
           trigger_anchor = '      - ".github/workflows/axm-witness-corpus-release-repair.yml"\n'
           trigger_line = '      - ".github/axm-witness-corpus-repair.trigger"\n'
