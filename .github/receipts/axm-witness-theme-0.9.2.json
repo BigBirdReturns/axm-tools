@@ -7,8 +7,8 @@
     "sha256": "d5d1f33f6cb2981497489f24468939f752cc5de39e66ebcf4ff11838ad1843f7"
   },
   "patched_application": {
-    "bytes": 503569,
-    "sha256": "3c15a79a3d452ec1992039a516c00d5e735a458b6747cd9e207ed8f2a20da7b5"
+    "bytes": 503601,
+    "sha256": "8fe1a5846c3588e0d5c65008cd99fd6b82a282d47023f6372bb8d25247ee0ab2"
   },
   "theme": {
     "default": "dark",
@@ -24,9 +24,9 @@
   "storage_compatibility": {
     "indexeddb_name": "axm-witness-department-ledger-v0-9-1",
     "changed": false,
-    "reason": "Theme patch must retain existing department-ledger origin storage."
+    "reason": "Theme and release-metadata patches retain the existing department-ledger origin storage."
   },
-  "qualification_boundary": "The 0.9.1 native 30/30 campaign remains evidence for the unchanged custody and workflow engine. The 0.9.2 workflow separately qualifies the additive theme boot, toggle, persistence, accessibility, mobile visibility, inline-script parsing, and live static route.",
+  "qualification_boundary": "The 0.9.1 native 30/30 campaign remains evidence for the unchanged custody and workflow engine. The 0.9.2 campaign separately qualifies the additive theme boot, toggle, persistence, accessibility, mobile visibility, inline-script parsing, downloadable corpus-ledger release identity, and static-host route.",
   "controls": {
     "release_identity": "PASS",
     "storage_schema_unchanged": "PASS",
@@ -39,7 +39,8 @@
     "mobile_40px_control_floor": "PASS",
     "no_external_runtime_requests": "PASS",
     "browser_page_errors": "PASS",
-    "browser_console_errors": "PASS"
+    "browser_console_errors": "PASS",
+    "public_corpus_release_identity": "PASS"
   },
   "browser_observation": {
     "engine": "143.0.7499.4",
@@ -48,6 +49,23 @@
     "mobile_toggle": {
       "width": 40,
       "height": 40
+    }
+  },
+  "corpus_ledger": {
+    "download_release": "0.9.2",
+    "corpus_source_release": "0.9.1",
+    "download_filename": "axm-witness-public-corpus-ledger-v0.9.2.json",
+    "identity_alignment": "PASS",
+    "browser_smoke": {
+      "engine": "143.0.7499.4",
+      "download_release": "0.9.2",
+      "corpus_source_release": "0.9.1",
+      "theme_first_run": "dark",
+      "light_reload_persistence": "PASS",
+      "dark_restore": "PASS",
+      "runtime_network_requests": 0,
+      "page_errors": 0,
+      "console_errors": 0
     }
   }
 }
