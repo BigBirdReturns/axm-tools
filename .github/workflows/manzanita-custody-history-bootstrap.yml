@@ -5,369 +5,399 @@ on:
     branches:
       - agent/manzanita-custody-history-004
     paths:
-      - ".github/bootstrap/manzanita-custody-history-part-*.b64"
       - ".github/workflows/manzanita-custody-history-bootstrap.yml"
   pull_request:
     branches:
       - main
     paths:
-      - ".github/bootstrap/manzanita-custody-history-part-*.b64"
       - ".github/workflows/manzanita-custody-history-bootstrap.yml"
 
 permissions:
   contents: read
 
 concurrency:
-  group: manzanita-custody-history-bootstrap
+  group: manzanita-full-object-history-sweep
   cancel-in-progress: false
 
 jobs:
   materialize:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
           ref: agent/manzanita-custody-history-004
           fetch-depth: 0
+          fetch-tags: true
           persist-credentials: false
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Reconstruct and validate the exact source package
+      - name: Fetch every remote ref
         run: |
-          cat .github/bootstrap/manzanita-custody-history-part-00.b64 \
-              .github/bootstrap/manzanita-custody-history-part-01.b64 \
-              .github/bootstrap/manzanita-custody-history-part-02.b64 \
-              > /tmp/manzanita-custody-history.b64
-          base64 --decode /tmp/manzanita-custody-history.b64 \
-            > /tmp/manzanita-custody-history.tar.gz
-          test "$(sha256sum /tmp/manzanita-custody-history.tar.gz | cut -d' ' -f1)" \
-            = "5db9b20306efd09a31bb97a11c524126d326a7a93e29c8573ff105ccbfbdeac5"
+          git fetch --prune --tags origin \
+            '+refs/heads/*:refs/remotes/origin/*'
+
+      - name: Sweep the complete local Git object database
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          rm -rf /tmp/manzanita-full-object-history-sweep
+          mkdir -p /tmp/manzanita-full-object-history-sweep/blobs/sha1
           python - <<'PY'
-          import tarfile
-          from pathlib import PurePosixPath
+          from __future__ import annotations
 
-          expected = {
-              ".github/workflows/manzanita-custody-history.yml",
-              "programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json",
-              "programs/manzanita-99/custody/history/README.md",
-              "programs/manzanita-99/custody/history/history_sweep.py",
-              "programs/manzanita-99/custody/history/tests/test_history_sweep.py",
-          }
-          with tarfile.open("/tmp/manzanita-custody-history.tar.gz", "r:gz") as archive:
-              observed = set()
-              for member in archive.getmembers():
-                  path = PurePosixPath(member.name)
-                  normalized = path.as_posix().removeprefix("./")
-                  if path.is_absolute() or ".." in path.parts:
-                      raise SystemExit(f"Unsafe archive member: {member.name}")
-                  if not member.isfile():
-                      raise SystemExit(f"Non-regular archive member: {member.name}")
-                  if normalized in observed:
-                      raise SystemExit(f"Duplicate archive member: {normalized}")
-                  observed.add(normalized)
-              if observed != expected:
-                  raise SystemExit(
-                      f"Archive member drift: missing={sorted(expected-observed)} "
-                      f"unexpected={sorted(observed-expected)}"
-                  )
-          PY
-          tar -xzf /tmp/manzanita-custody-history.tar.gz -C .
-
-      - name: Prove the materialized source
-        env:
-          PYTHONDONTWRITEBYTECODE: "1"
-        run: |
-          python -m py_compile \
-            programs/manzanita-99/custody/history/history_sweep.py \
-            programs/manzanita-99/custody/history/tests/test_history_sweep.py
-          python -m json.tool \
-            programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json \
-            > /dev/null
-          python -m unittest discover \
-            -s programs/manzanita-99/custody/history/tests \
-            -p "test_*.py"
-
-      - name: Sweep every reachable historical Manzanita route tree
-        env:
-          PYTHONDONTWRITEBYTECODE: "1"
-        run: |
-          rm -rf programs/manzanita-99/custody/history/out
-          python programs/manzanita-99/custody/history/history_sweep.py \
-            --repo-root . \
-            --contract programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json \
-            --output programs/manzanita-99/custody/history/out \
-            | tee /tmp/manzanita-history-sweep-summary.json
-
-      - name: Materialize exact bytes for every reachable route tree
-        env:
-          PYTHONDONTWRITEBYTECODE: "1"
-          SOURCE_TARBALL_SHA256: 5db9b20306efd09a31bb97a11c524126d326a7a93e29c8573ff105ccbfbdeac5
-        run: |
-          rm -rf /tmp/manzanita-route-tree-vault
-          python - <<'PY'
           import hashlib
           import json
           import os
-          import stat
+          import re
           import subprocess
+          from collections import defaultdict
           from pathlib import Path, PurePosixPath
 
-          repo = Path.cwd()
-          register_path = repo / 'programs/manzanita-99/custody/history/out/HISTORICAL_RELEASE_REGISTER.json'
-          sweep_receipt_path = repo / 'programs/manzanita-99/custody/history/out/HISTORY_SWEEP_RECEIPT.json'
-          contract_path = repo / 'programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json'
-          register = json.loads(register_path.read_text(encoding='utf-8'))
-          sweep_receipt = json.loads(sweep_receipt_path.read_text(encoding='utf-8'))
+          OUT = Path('/tmp/manzanita-full-object-history-sweep')
+          BLOBS = OUT / 'blobs' / 'sha1'
+          TARGET = {
+              'filename': 'Household_Habitat_Street_Glide_Archive_Volume_04.zip',
+              'bytes': 138_499_571,
+              'sha256': 'e90d18e2e58686547bdd0f0eed8bde6812b7ad28473e37bbd9077fb06edf1f18',
+              'natural_border_expected_names': [
+                  'Street_Glide_v10_1_Natural_Borders.zip',
+                  'Street_Glide_v10_1_Natural_Borders_Standalone.html',
+                  'Street_Glide_v10_1_Natural_Border_Snap_Standalone.html',
+                  'Street_Glide_v10_1_Natural_Border_Snap.html',
+              ],
+          }
+          TEXT_EXTENSIONS = {
+              '.html', '.htm', '.json', '.md', '.txt', '.js', '.css', '.py',
+              '.yaml', '.yml', '.xml', '.svg', '.csv', '.toml', '.ini', '.sh',
+              '.ps1', '.cmd', '.ts', '.tsx', '.jsx', '.mjs', '.cjs',
+          }
+          PATH_CONTEXT = (
+              'manzanita', 'street_glide', 'street-glide', 'household_habitat',
+              'household-habitat', 'natural', 'border', 'landscape', 'occupancy',
+              'photo_twin', 'photo-twin', 'archive_volume_04', 'volume_04',
+          )
+          STRONG_PATH = (
+              'volume_04', 'volume-04', 'v10_1', 'v10-1', 'natural_border',
+              'natural-border', 'natural borders', 'border_snap', 'border-snap',
+          )
+          STRONG_MARKERS = (
+              b'natural border snap', b'natural borders', b'street_glide_v10_1',
+              b'street glide v10.1', b'street_glide_v10.1',
+              b'household_habitat_street_glide_archive_volume_04',
+              b'household habitat street glide archive volume 04',
+          )
+          WEAK_MARKERS = (
+              b'mow edge', b'bed lip', b'hedge face', b'canopy silhouette',
+              b'driveway edge', b'curb line', b'walk edge',
+          )
 
-          root = Path('/tmp/manzanita-route-tree-vault')
-          blob_root = root / 'blobs' / 'sha1'
-          tree_root = root / 'trees'
-          view_root = root / 'views'
-          evidence_root = root / 'evidence'
-          tooling_root = root / 'tooling'
-          for directory in (blob_root, tree_root, view_root, evidence_root, tooling_root):
-              directory.mkdir(parents=True, exist_ok=True)
+          def run(*args: str, check: bool = True) -> str:
+              result = subprocess.run(
+                  list(args), check=check, capture_output=True, text=True,
+              )
+              return result.stdout
 
           def sha256(payload: bytes) -> str:
               return hashlib.sha256(payload).hexdigest()
 
-          def git_blob_sha1(payload: bytes) -> str:
-              return hashlib.sha1(
-                  f'blob {len(payload)}\0'.encode('ascii') + payload
-              ).hexdigest()
-
-          def clean_path(value: str) -> PurePosixPath:
-              path = PurePosixPath(value)
-              if not value or path.is_absolute() or '..' in path.parts:
-                  raise SystemExit(f'Unsafe historical path: {value!r}')
-              return path
-
-          unique_blobs = {}
-          tree_index = []
-          regular_view_files = 0
-          symlink_payloads = 0
-          total_tree_blob_bytes = 0
-
-          for tree in register['trees']:
-              tree_sha = tree['tree_sha']
-              manifest_files = []
-              for row in tree['files']:
-                  if row['object_type'] != 'blob':
-                      raise SystemExit(
-                          f"Unexpected non-blob in route tree {tree_sha}: {row}"
-                      )
-                  path = clean_path(row['path'])
-                  object_sha = row['object_sha']
-                  payload = subprocess.run(
-                      ['git', 'cat-file', 'blob', object_sha],
-                      cwd=repo,
-                      check=True,
-                      capture_output=True,
-                  ).stdout
-                  observed_git_sha = git_blob_sha1(payload)
-                  observed_sha256 = sha256(payload)
-                  if observed_git_sha != object_sha:
-                      raise SystemExit(
-                          f'Git blob identity mismatch: {tree_sha}:{path}'
-                      )
-                  if len(payload) != row['bytes']:
-                      raise SystemExit(
-                          f'Byte-count mismatch: {tree_sha}:{path}'
-                      )
-                  if observed_sha256 != row['sha256']:
-                      raise SystemExit(
-                          f'SHA-256 mismatch: {tree_sha}:{path}'
-                      )
-
-                  blob_path = blob_root / object_sha[:2] / object_sha
-                  blob_path.parent.mkdir(parents=True, exist_ok=True)
-                  if blob_path.exists():
-                      if blob_path.read_bytes() != payload:
-                          raise SystemExit(f'Conflicting blob vault entry: {object_sha}')
-                  else:
-                      blob_path.write_bytes(payload)
-                      blob_path.chmod(0o444)
-                      unique_blobs[object_sha] = {
-                          'object_sha': object_sha,
-                          'bytes': len(payload),
-                          'sha256': observed_sha256,
-                          'vault_path': blob_path.relative_to(root).as_posix(),
-                      }
-
-                  view_path = None
-                  if row['file_kind'] in {'regular_file', 'executable_file'}:
-                      destination = view_root / tree_sha / path.as_posix()
-                      destination.parent.mkdir(parents=True, exist_ok=True)
-                      destination.write_bytes(payload)
-                      destination.chmod(
-                          0o555 if row['file_kind'] == 'executable_file' else 0o444
-                      )
-                      view_path = destination.relative_to(root).as_posix()
-                      regular_view_files += 1
-                  elif row['file_kind'] == 'symbolic_link':
-                      destination = (
-                          view_root / tree_sha / '__symlink_payloads__' /
-                          (path.as_posix().replace('/', '__') + '.txt')
-                      )
-                      destination.parent.mkdir(parents=True, exist_ok=True)
-                      destination.write_bytes(payload)
-                      destination.chmod(0o444)
-                      view_path = destination.relative_to(root).as_posix()
-                      symlink_payloads += 1
-                  else:
-                      raise SystemExit(
-                          f"Unknown file kind {row['file_kind']}: {tree_sha}:{path}"
-                      )
-
-                  manifest_files.append({
-                      **row,
-                      'blob_vault_path': blob_path.relative_to(root).as_posix(),
-                      'materialized_view_path': view_path,
+          refs = []
+          for line in run(
+              'git', 'for-each-ref',
+              '--format=%(refname)\t%(objectname)\t%(objecttype)\t%(creatordate:iso-strict)',
+          ).splitlines():
+              parts = line.split('\t')
+              if len(parts) >= 3:
+                  refs.append({
+                      'ref': parts[0],
+                      'object': parts[1],
+                      'object_type': parts[2],
+                      'created_at': parts[3] if len(parts) > 3 else None,
                   })
-                  total_tree_blob_bytes += len(payload)
 
-              tree_manifest = {
-                  'schema': 'axm-tools/manzanita-reachable-route-tree@1',
-                  'tree_sha': tree_sha,
-                  'classification': tree['classification'],
-                  'approval_state': tree['approval_state'],
-                  'deployment_state': tree['deployment_state'],
-                  'release_claim': tree['release_claim'],
-                  'file_count': tree['file_count'],
-                  'blob_count': tree['blob_count'],
-                  'total_blob_bytes': tree['total_blob_bytes'],
-                  'file_manifest_sha256': tree['file_manifest_sha256'],
-                  'register_payload_sha256': tree['payload_sha256'],
-                  'release_markers': tree['release_markers'],
-                  'route_change_commits': tree['route_change_commits'],
-                  'reachable_refs': tree['reachable_refs'],
-                  'files': manifest_files,
-                  'public_effect': 'none',
-                  'release_authorized': False,
-              }
-              manifest_path = tree_root / tree_sha / 'TREE_MANIFEST.json'
-              manifest_path.parent.mkdir(parents=True, exist_ok=True)
-              manifest_path.write_text(
-                  json.dumps(tree_manifest, indent=2, sort_keys=True) + '\n',
-                  encoding='utf-8',
-              )
-              manifest_path.chmod(0o444)
-              tree_index.append({
-                  'tree_sha': tree_sha,
-                  'classification': tree['classification'],
-                  'declared_release_values': tree['release_markers'].get(
-                      'declared_release_values', []
-                  ),
-                  'file_count': tree['file_count'],
-                  'total_blob_bytes': tree['total_blob_bytes'],
-                  'reachable_ref_count': len(tree['reachable_refs']),
-                  'route_change_commit_count': len(tree['route_change_commits']),
-                  'manifest_path': manifest_path.relative_to(root).as_posix(),
-                  'view_root': (view_root / tree_sha).relative_to(root).as_posix(),
+          reachable_paths: dict[str, set[str]] = defaultdict(set)
+          for line in run('git', 'rev-list', '--objects', '--all').splitlines():
+              if not line.strip():
+                  continue
+              sha, *rest = line.split(' ', 1)
+              if rest and rest[0]:
+                  reachable_paths[sha].add(rest[0])
+
+          object_rows = []
+          for line in run(
+              'git', 'cat-file', '--batch-all-objects',
+              '--batch-check=%(objectname)\t%(objecttype)\t%(objectsize)',
+          ).splitlines():
+              parts = line.split('\t')
+              if len(parts) != 3:
+                  continue
+              object_rows.append({
+                  'sha': parts[0],
+                  'type': parts[1],
+                  'bytes': int(parts[2]),
               })
 
-          for source, destination in (
-              (register_path, evidence_root / 'HISTORICAL_RELEASE_REGISTER.json'),
-              (sweep_receipt_path, evidence_root / 'HISTORY_SWEEP_RECEIPT.json'),
-              (contract_path, evidence_root / 'HISTORY_SWEEP_CONTRACT.json'),
-              (repo / 'programs/manzanita-99/custody/history/history_sweep.py', tooling_root / 'history_sweep.py'),
-              (repo / 'programs/manzanita-99/custody/history/tests/test_history_sweep.py', tooling_root / 'test_history_sweep.py'),
-              (repo / '.github/workflows/manzanita-custody-history.yml', tooling_root / 'manzanita-custody-history.yml'),
-          ):
-              destination.parent.mkdir(parents=True, exist_ok=True)
-              destination.write_bytes(source.read_bytes())
-              destination.chmod(0o444)
+          blob_rows = [row for row in object_rows if row['type'] == 'blob']
+          blob_sha_set = {row['sha'] for row in blob_rows}
+          reachable_blob_shas = set(reachable_paths) & blob_sha_set
+          unreachable_blob_shas = blob_sha_set - reachable_blob_shas
 
-          index = {
-              'schema': 'axm-tools/manzanita-reachable-route-tree-index@1',
-              'source_tarball_sha256': os.environ['SOURCE_TARBALL_SHA256'],
-              'source_commit': os.environ['GITHUB_SHA'],
-              'sweep_register_sha256': hashlib.sha256(
-                  register_path.read_bytes()
-              ).hexdigest(),
-              'sweep_receipt_sha256': hashlib.sha256(
-                  sweep_receipt_path.read_bytes()
-              ).hexdigest(),
-              'unique_tree_count': len(tree_index),
-              'unique_blob_count': len(unique_blobs),
-              'deduplicated_blob_bytes': sum(
-                  row['bytes'] for row in unique_blobs.values()
+          scan_shas = []
+          preliminary: dict[str, dict] = {}
+          for row in blob_rows:
+              sha = row['sha']
+              size = row['bytes']
+              paths = sorted(reachable_paths.get(sha, set()))
+              lower_paths = [path.lower() for path in paths]
+              reasons = []
+              exact_name_paths = [
+                  path for path in paths
+                  if PurePosixPath(path).name == TARGET['filename']
+                  or PurePosixPath(path).name in TARGET['natural_border_expected_names']
+              ]
+              if exact_name_paths:
+                  reasons.append('exact_expected_filename')
+              if size == TARGET['bytes']:
+                  reasons.append('exact_volume_04_byte_count')
+              if any(any(token in path for token in STRONG_PATH) for path in lower_paths):
+                  reasons.append('strong_path_marker')
+              context_path = any(
+                  any(token in path for token in PATH_CONTEXT)
+                  for path in lower_paths
+              )
+              text_path = any(
+                  PurePosixPath(path).suffix.lower() in TEXT_EXTENSIONS
+                  for path in paths
+              )
+              should_scan = (
+                  size == TARGET['bytes']
+                  or bool(reasons)
+                  or (context_path and text_path and size <= 16 * 1024 * 1024)
+                  or (sha in unreachable_blob_shas and size <= 2 * 1024 * 1024)
+              )
+              if should_scan:
+                  scan_shas.append(sha)
+                  preliminary[sha] = {
+                      'sha1': sha,
+                      'bytes': size,
+                      'paths': paths,
+                      'reachable': sha in reachable_blob_shas,
+                      'preliminary_reasons': reasons,
+                  }
+
+          candidates = []
+          batch = subprocess.Popen(
+              ['git', 'cat-file', '--batch'],
+              stdin=subprocess.PIPE,
+              stdout=subprocess.PIPE,
+              stderr=subprocess.PIPE,
+          )
+          assert batch.stdin is not None and batch.stdout is not None
+          for sha in scan_shas:
+              batch.stdin.write((sha + '\n').encode('ascii'))
+              batch.stdin.flush()
+              header = batch.stdout.readline().decode('utf-8', errors='replace').strip()
+              parts = header.split(' ')
+              if len(parts) < 3 or parts[1] != 'blob':
+                  raise SystemExit(f'Unexpected batch header for {sha}: {header}')
+              size = int(parts[2])
+              payload = batch.stdout.read(size)
+              batch.stdout.read(1)
+              lower = payload.lower()
+              strong_hits = [
+                  marker.decode('utf-8')
+                  for marker in STRONG_MARKERS if marker in lower
+              ]
+              weak_hits = [
+                  marker.decode('utf-8')
+                  for marker in WEAK_MARKERS if marker in lower
+              ]
+              row = preliminary[sha]
+              reasons = list(row['preliminary_reasons'])
+              if strong_hits:
+                  reasons.append('strong_content_marker')
+              if len(weak_hits) >= 3:
+                  reasons.append('multi_feature_natural_border_vocabulary')
+              is_lfs_pointer = lower.startswith(b'version https://git-lfs.github.com/spec/v1')
+              if is_lfs_pointer:
+                  reasons.append('git_lfs_pointer')
+              if reasons:
+                  observed_sha256 = sha256(payload)
+                  exact_volume_04 = (
+                      len(payload) == TARGET['bytes']
+                      and observed_sha256 == TARGET['sha256']
+                  )
+                  destination = BLOBS / sha
+                  destination.write_bytes(payload)
+                  commits = run(
+                      'git', 'log', '--all', '--find-object=' + sha,
+                      '--format=%H\t%aI\t%s', '--reverse', check=False,
+                  ).splitlines()[:200]
+                  candidates.append({
+                      **row,
+                      'sha256': observed_sha256,
+                      'reasons': sorted(set(reasons)),
+                      'strong_content_hits': strong_hits,
+                      'weak_content_hits': weak_hits,
+                      'is_lfs_pointer': is_lfs_pointer,
+                      'exact_volume_04_match': exact_volume_04,
+                      'materialized_path': destination.relative_to(OUT).as_posix(),
+                      'commit_contexts': commits,
+                  })
+          batch.stdin.close()
+          batch.wait(timeout=120)
+          if batch.returncode not in (0, None):
+              stderr = batch.stderr.read().decode('utf-8', errors='replace') if batch.stderr else ''
+              raise SystemExit(f'git cat-file --batch failed: {stderr}')
+
+          commit_pattern = re.compile(
+              r'natural[ _-]?border|v10[._-]?1|volume[ _-]?04|mow edge|bed lip|hedge face|canopy silhouette',
+              re.IGNORECASE,
+          )
+          commit_message_hits = []
+          raw_log = run(
+              'git', 'log', '--all',
+              '--format=%H%x09%aI%x09%s%x09%b%x1e',
+          )
+          for record in raw_log.split('\x1e'):
+              if not record.strip() or not commit_pattern.search(record):
+                  continue
+              parts = record.strip().split('\t', 3)
+              commit_message_hits.append({
+                  'commit': parts[0] if parts else None,
+                  'authored_at': parts[1] if len(parts) > 1 else None,
+                  'subject': parts[2] if len(parts) > 2 else None,
+                  'body': parts[3] if len(parts) > 3 else None,
+              })
+          ref_hits = [row for row in refs if commit_pattern.search(row['ref'])]
+
+          fsck = subprocess.run(
+              ['git', 'fsck', '--full', '--no-reflogs', '--unreachable', '--no-progress'],
+              capture_output=True, text=True,
+          )
+          unreachable_lines = sorted(
+              line for line in (fsck.stdout + '\n' + fsck.stderr).splitlines()
+              if line.strip()
+          )
+          (OUT / 'UNREACHABLE_OBJECTS.txt').write_text(
+              '\n'.join(unreachable_lines) + ('\n' if unreachable_lines else ''),
+              encoding='utf-8',
+          )
+
+          candidate_register = {
+              'schema': 'axm-tools/manzanita-full-object-candidate-register@1',
+              'target': TARGET,
+              'candidate_count': len(candidates),
+              'exact_volume_04_match_count': sum(
+                  1 for row in candidates if row['exact_volume_04_match']
               ),
-              'tree_referenced_blob_bytes': total_tree_blob_bytes,
-              'regular_view_file_count': regular_view_files,
-              'symlink_payload_count': symlink_payloads,
-              'route_event_count': register['route_event_count'],
-              'route_absent_event_count': register['route_absent_event_count'],
-              'reference_count': register['reference_count'],
-              'current_guard_tree': register['current_guard_tree'],
-              'current_guard_present': register['current_guard_present'],
-              'trees': sorted(tree_index, key=lambda row: row['tree_sha']),
-              'public_effect': 'none',
-              'constitutional_count_effect': 'none',
-              'release_authorized': False,
+              'candidate_total_bytes': sum(row['bytes'] for row in candidates),
+              'candidates': sorted(candidates, key=lambda row: row['sha1']),
           }
-          (root / 'TREE_VAULT_INDEX.json').write_text(
-              json.dumps(index, indent=2, sort_keys=True) + '\n',
+          (OUT / 'CANDIDATE_REGISTER.json').write_text(
+              json.dumps(candidate_register, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          (OUT / 'REF_HITS.json').write_text(
+              json.dumps({'refs': ref_hits}, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          (OUT / 'COMMIT_MESSAGE_HITS.json').write_text(
+              json.dumps({'commits': commit_message_hits}, indent=2, sort_keys=True) + '\n',
               encoding='utf-8',
           )
 
           receipt = {
-              'schema': 'axm-tools/manzanita-route-tree-vault-receipt@1',
-              'result': 'PASS',
-              'source_commit': os.environ['GITHUB_SHA'],
-              'source_tarball_sha256': os.environ['SOURCE_TARBALL_SHA256'],
-              'unique_tree_count': index['unique_tree_count'],
-              'unique_blob_count': index['unique_blob_count'],
-              'deduplicated_blob_bytes': index['deduplicated_blob_bytes'],
-              'tree_referenced_blob_bytes': index['tree_referenced_blob_bytes'],
-              'regular_view_file_count': regular_view_files,
-              'symlink_payload_count': symlink_payloads,
-              'current_guard_tree': index['current_guard_tree'],
-              'current_guard_present': index['current_guard_present'],
-              'sweep_receipt_payload_sha256': sweep_receipt['payload_sha256'],
-              'public_effect': 'none',
+              'schema': 'axm-tools/manzanita-full-object-history-sweep@1',
+              'source_branch': os.environ.get('GITHUB_HEAD_REF') or os.environ.get('GITHUB_REF_NAME'),
+              'source_commit': os.environ.get('GITHUB_SHA'),
+              'target': TARGET,
+              'coverage': {
+                  'references': len(refs),
+                  'all_objects': len(object_rows),
+                  'all_blobs': len(blob_rows),
+                  'reachable_blobs': len(reachable_blob_shas),
+                  'unreachable_blobs_present_locally': len(unreachable_blob_shas),
+                  'blobs_content_scanned': len(scan_shas),
+                  'candidate_blobs_materialized': len(candidates),
+                  'commit_message_hits': len(commit_message_hits),
+                  'reference_name_hits': len(ref_hits),
+                  'fsck_unreachable_lines': len(unreachable_lines),
+              },
+              'results': {
+                  'exact_volume_04_match_count': candidate_register['exact_volume_04_match_count'],
+                  'natural_border_candidate_count': sum(
+                      1 for row in candidates
+                      if 'strong_content_marker' in row['reasons']
+                      or 'strong_path_marker' in row['reasons']
+                      or 'exact_expected_filename' in row['reasons']
+                  ),
+                  'git_lfs_pointer_candidate_count': sum(
+                      1 for row in candidates if row['is_lfs_pointer']
+                  ),
+              },
+              'public_route_effect': 'none',
               'constitutional_count_effect': 'none',
               'release_authorized': False,
-              'qualification_boundary': (
-                  'This receipt proves exact materialization of every route-tree blob '
-                  'identified by the reachable-history sweep. Reachability and exact '
-                  'bytes do not establish approval, deployment, public serving, rollback, '
-                  'or whole-product release.'
+              'step_004_authorized': False,
+              'claim_boundary': (
+                  'This sweep proves only what exists in the complete local Git object database '
+                  'after fetching every remote branch and tag. It does not prove absence from '
+                  'external archives, File Library bytes, deleted server objects not transferred '
+                  'by Git, or any non-Git storage system.'
               ),
           }
-          receipt['payload_sha256'] = hashlib.sha256(
-              json.dumps(
-                  receipt,
-                  sort_keys=True,
-                  separators=(',', ':'),
-              ).encode('utf-8')
-          ).hexdigest()
-          (root / 'TREE_VAULT_RECEIPT.json').write_text(
+          (OUT / 'FULL_OBJECT_SWEEP_RECEIPT.json').write_text(
               json.dumps(receipt, indent=2, sort_keys=True) + '\n',
               encoding='utf-8',
           )
 
-          for path in root.rglob('*'):
-              if path.is_file() and path.stat().st_mode & 0o222:
-                  path.chmod(0o444)
+          files = []
+          for path in sorted(p for p in OUT.rglob('*') if p.is_file()):
+              payload = path.read_bytes()
+              files.append({
+                  'path': path.relative_to(OUT).as_posix(),
+                  'bytes': len(payload),
+                  'sha256': sha256(payload),
+                  'git_blob_sha1': hashlib.sha1(
+                      f'blob {len(payload)}\0'.encode('ascii') + payload
+                  ).hexdigest(),
+              })
+          (OUT / 'ARTIFACT_RECEIPT.json').write_text(
+              json.dumps({
+                  'schema': 'axm-tools/manzanita-full-object-history-artifact@1',
+                  'source_branch': receipt['source_branch'],
+                  'source_commit': receipt['source_commit'],
+                  'file_count_before_receipt': len(files),
+                  'files_before_receipt': files,
+                  'public_route_effect': 'none',
+                  'release_authorized': False,
+              }, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+
+          print(json.dumps({
+              'result': 'PASS',
+              **receipt['coverage'],
+              **receipt['results'],
+          }, indent=2, sort_keys=True))
           PY
           (
-            cd /tmp/manzanita-route-tree-vault
+            cd /tmp/manzanita-full-object-history-sweep
             find . -type f ! -name SHA256SUMS.txt -print0 \
               | sort -z \
               | xargs -0 sha256sum \
               > SHA256SUMS.txt
           )
 
-      - name: Upload exact reachable route-tree vault
+      - name: Upload full object history sweep
         uses: actions/upload-artifact@v4
         with:
-          name: manzanita-reachable-route-tree-vault
-          path: /tmp/manzanita-route-tree-vault
+          name: manzanita-full-object-history-sweep
+          path: /tmp/manzanita-full-object-history-sweep
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 7
