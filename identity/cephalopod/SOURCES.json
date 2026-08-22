@@ -1,0 +1,133 @@
+{
+  "schema": "axm.design-residue.sources.v2",
+  "captured_at": "2026-07-12",
+  "capture_scope": "source-specific visual construction residue, not third-party asset redistribution",
+  "sources": [
+    {
+      "id": "tsr-launch-octopus",
+      "title": "Launch Octopus — Mega Man X",
+      "platform": "SNES",
+      "publisher": "The Spriters Resource",
+      "url": "https://www.spriters-resource.com/snes/mmx/asset/3126/",
+      "credit": "Freedom Fighter",
+      "dimensions_px": [715, 649],
+      "format": "GIF",
+      "observed_visual_residue": [
+        "dense pose field",
+        "independent tentacle articulation",
+        "radial, compressed, horizontal, and airborne silhouettes",
+        "palette-isolated pale hit/death state row"
+      ],
+      "transfer": ["pose-space diversity", "persistent limb identity", "state-family palette separation"],
+      "reject": ["robot anatomy", "missiles", "franchise silhouette", "copied pose"],
+      "binary_mirrored": false
+    },
+    {
+      "id": "tsr-gwg4-octopus-classic",
+      "title": "Octopus (Classic) — Game & Watch Gallery 4",
+      "platform": "Game Boy Advance",
+      "publisher": "The Spriters Resource",
+      "url": "https://www.spriters-resource.com/game_boy_advance/gnwgal4/asset/21287/",
+      "uploaded_by": "Eddo",
+      "dimensions_px": [565, 547],
+      "format": "PNG",
+      "observed_visual_residue": [
+        "flat black silhouette",
+        "large action frames plus temporal mini-frames",
+        "recognition through negative-space channels",
+        "very little internal texture"
+      ],
+      "transfer": ["silhouette economy", "arm-band separation", "temporal state comparison"],
+      "reject": ["Nintendo character silhouette", "diver interaction", "LCD proportions"],
+      "binary_mirrored": false
+    },
+    {
+      "id": "tsr-sonic2-badniks",
+      "title": "Badniks — Sonic the Hedgehog 2",
+      "platform": "Sega Genesis",
+      "publisher": "The Spriters Resource",
+      "url": "https://www.spriters-resource.com/sega_genesis/sonicth2/asset/10398/",
+      "uploaded_by": "Paraemon",
+      "dimensions_px": [1036, 1240],
+      "format": "PNG",
+      "observed_visual_residue": [
+        "enemy families grouped by zone",
+        "state rows",
+        "detached and reusable modules",
+        "palette strips",
+        "notes on flipping and omitted tiles"
+      ],
+      "transfer": ["family grouping", "module boundaries", "tile reuse", "palette-role accounting"],
+      "reject": ["robot anatomy", "enemy coding", "Sonic palette", "Badnik silhouette"],
+      "binary_mirrored": false
+    },
+    {
+      "id": "tsr-simcity-budget",
+      "title": "Budget Screen — SimCity",
+      "platform": "SNES",
+      "publisher": "The Spriters Resource",
+      "url": "https://www.spriters-resource.com/snes/simcity/asset/175788/",
+      "uploaded_by": "BossCrafty",
+      "additional_credit": "Crafty++",
+      "dimensions_px": [686, 518],
+      "format": "PNG",
+      "observed_visual_residue": [
+        "assembled screen beside extracted modules",
+        "nested panel states",
+        "number/alphabet strips",
+        "repeated arrows",
+        "pointer graphics",
+        "key-color field"
+      ],
+      "transfer": ["parts-to-assembly ledger", "repeated controls", "glyph strips", "ordered module coexistence"],
+      "reject": ["literal fiscal UI", "beveled window copying", "mandatory magenta palette"],
+      "binary_mirrored": false
+    },
+    {
+      "id": "tsr-simcity-index",
+      "title": "SimCity — SNES asset index",
+      "platform": "SNES",
+      "publisher": "The Spriters Resource",
+      "url": "https://www.spriters-resource.com/snes/simcity/",
+      "observed_visual_residue": [
+        "separate asset families for roads, rails, power lines, pollution, UI screens, text, and icons",
+        "screen and terrain are archived as modular systems"
+      ],
+      "transfer": ["planar routes", "junctions", "overlays", "gaps", "module families"],
+      "reject": ["masonry wall metaphor"],
+      "binary_mirrored": false
+    },
+    {
+      "id": "simcity-debug-screen",
+      "title": "SimCity SNES hidden debug screen",
+      "publisher": "retro-v.games",
+      "url": "https://retro-v.games/wp-content/uploads/2024/02/sfc-simcity-debug.png",
+      "dimensions_px": [256, 224],
+      "format": "PNG",
+      "observed_visual_residue": [
+        "cobalt field",
+        "bounded residual graphic window",
+        "separate Japanese message panel",
+        "monospaced menu rows",
+        "intact incompatible modules coexist"
+      ],
+      "transfer": ["layer collision", "wrong state composition", "rigid alignment"],
+      "reject": ["particle cloud", "scanline smear", "body corruption"],
+      "binary_mirrored": false,
+      "research_only": true,
+      "capture_note": "visual relationship preserved as an original analytical trace in index.html; source binary not mirrored"
+    },
+    {
+      "id": "tsr-terms",
+      "title": "The Spriters Resource Terms of Use",
+      "publisher": "The Spriters Resource",
+      "url": "https://www.spriters-resource.com/page/tou/",
+      "last_updated_observed": "2025-03-31",
+      "observed_restrictions": [
+        "original-format redistribution without consent or credit is treated as theft",
+        "content may not be used in commercial works"
+      ],
+      "effect_on_capture": "store metadata and original analytical traces, not full source sheets"
+    }
+  ]
+}
