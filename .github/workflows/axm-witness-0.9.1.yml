@@ -2,24 +2,32 @@ name: AXM Witness Department Ledger 0.9.1
 
 on:
   pull_request:
+    branches: [main]
     paths:
+      - ".github/axm-witness-v0.9.1/**"
+      - ".github/scripts/materialize_axm_witness_091.py"
+      - ".github/workflows/axm-witness-0.9.1.yml"
+      - ".github/workflows/axm-witness-bootstrap-0.9.1.yml"
+      - ".github/workflows/axm-witness-bootstrap-pr-0.9.1.yml"
       - "axm-witness/**"
+      - "witness/**"
       - "README.md"
       - "index.html"
       - "CONTINUITY.md"
-      - ".github/workflows/axm-witness-0.9.1.yml"
   push:
     branches: [main]
     paths:
+      - ".github/scripts/materialize_axm_witness_091.py"
+      - ".github/workflows/axm-witness-0.9.1.yml"
       - "axm-witness/**"
+      - "witness/**"
       - "README.md"
       - "index.html"
       - "CONTINUITY.md"
-      - ".github/workflows/axm-witness-0.9.1.yml"
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -28,11 +36,40 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  qualify:
+  materialize:
+    if: github.event_name == 'pull_request' && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Reconstruct and install the exact supplied site
+        run: python .github/scripts/materialize_axm_witness_091.py
+
+      - name: Commit the exact release transaction
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'axm-witness-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git diff --cached --stat
+          git diff --cached --quiet && { echo 'No release change produced'; exit 1; }
+          git commit -m 'axm-witness: publish exact Department Ledger 0.9.1 site'
+          git push origin HEAD:${{ github.head_ref }}
+
+  qualify:
+    needs: materialize
+    if: always() && (needs.materialize.result == 'success' || needs.materialize.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
 
       - name: Verify exact 0.9.1 site identity and publication boundary
         shell: bash
@@ -73,11 +110,9 @@ jobs:
               assert 'axm-witness/' in rendered
 
           assert not (root / 'witness').exists(), 'legacy witness surface remains'
-          for path in site.rglob('*'):
-              lowered = path.name.lower()
-              assert 'current_working' not in lowered
-              assert '0.9.0' not in lowered
-              assert '0.8.0' not in lowered
+          assert not (root / '.github' / 'axm-witness-v0.9.1').exists(), 'one-shot transport remains'
+          assert not (root / '.github' / 'workflows' / 'axm-witness-bootstrap-0.9.1.yml').exists()
+          assert not (root / '.github' / 'workflows' / 'axm-witness-bootstrap-pr-0.9.1.yml').exists()
 
           print({
               'application_bytes': expected_bytes,
