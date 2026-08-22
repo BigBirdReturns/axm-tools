@@ -1,0 +1,30 @@
+{
+  "schema": "axm-witness/live-readback@1",
+  "release": "axm-witness-department-ledger/0.9.2",
+  "result": "PASS",
+  "deployed_at": "2026-08-22T08:09:19Z",
+  "source_sha": "43e117d1f001b348bcbb6e75a857f00db160af7c",
+  "page_url": "https://bigbirdreturns.github.io/axm-tools/axm-witness/",
+  "deployment_page_url": "https://bigbirdreturns.github.io/axm-tools/",
+  "application": {
+    "bytes": 503601,
+    "sha256": "8fe1a5846c3588e0d5c65008cd99fd6b82a282d47023f6372bb8d25247ee0ab2"
+  },
+  "public_corpus_ledger": {
+    "release": "0.9.2",
+    "corpus_source_release": "0.9.1",
+    "download_filename": "axm-witness-public-corpus-ledger-v0.9.2.json"
+  },
+  "storage_compatibility": {
+    "indexeddb_name": "axm-witness-department-ledger-v0-9-1",
+    "changed": false
+  },
+  "checks": {
+    "live_bytes": "PASS",
+    "live_sha256": "PASS",
+    "application_release": "PASS",
+    "public_corpus_release": "PASS",
+    "corpus_source_provenance": "PASS",
+    "root_directory_listing": "PASS"
+  }
+}
