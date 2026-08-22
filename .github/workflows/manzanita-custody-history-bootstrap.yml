@@ -15,7 +15,7 @@ on:
       - ".github/workflows/manzanita-custody-history-bootstrap.yml"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: manzanita-custody-history-bootstrap
@@ -30,7 +30,7 @@ jobs:
         with:
           ref: agent/manzanita-custody-history-004
           fetch-depth: 0
-          persist-credentials: true
+          persist-credentials: false
 
       - uses: actions/setup-python@v5
         with:
@@ -92,16 +92,73 @@ jobs:
             -s programs/manzanita-99/custody/history/tests \
             -p "test_*.py"
 
-      - name: Remove transport and seal the permanent candidate
+      - name: Build exact source artifact and receipt
+        env:
+          SOURCE_TARBALL_SHA256: 5db9b20306efd09a31bb97a11c524126d326a7a93e29c8573ff105ccbfbdeac5
         run: |
-          rm -f \
-            .github/bootstrap/manzanita-custody-history-part-00.b64 \
-            .github/bootstrap/manzanita-custody-history-part-01.b64 \
-            .github/bootstrap/manzanita-custody-history-part-02.b64 \
-            .github/workflows/manzanita-custody-history-bootstrap.yml
-          find . -type d -name __pycache__ -prune -exec rm -rf {} +
-          git config user.name "manzanita-history-custody-bootstrap"
-          git config user.email "actions@users.noreply.github.com"
-          git add -A
-          git commit -m "Manzanita: materialize historical route custody sweep"
-          git push origin HEAD:agent/manzanita-custody-history-004
+          rm -rf /tmp/manzanita-custody-history-source
+          mkdir -p \
+            /tmp/manzanita-custody-history-source/.github/workflows \
+            /tmp/manzanita-custody-history-source/programs/manzanita-99/custody/history/tests
+          cp --preserve=mode,timestamps \
+            .github/workflows/manzanita-custody-history.yml \
+            /tmp/manzanita-custody-history-source/.github/workflows/
+          cp --preserve=mode,timestamps \
+            programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json \
+            programs/manzanita-99/custody/history/README.md \
+            programs/manzanita-99/custody/history/history_sweep.py \
+            /tmp/manzanita-custody-history-source/programs/manzanita-99/custody/history/
+          cp --preserve=mode,timestamps \
+            programs/manzanita-99/custody/history/tests/test_history_sweep.py \
+            /tmp/manzanita-custody-history-source/programs/manzanita-99/custody/history/tests/
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path('/tmp/manzanita-custody-history-source')
+          files = []
+          for path in sorted(p for p in root.rglob('*') if p.is_file()):
+              payload = path.read_bytes()
+              rel = path.relative_to(root).as_posix()
+              files.append({
+                  'path': rel,
+                  'bytes': len(payload),
+                  'sha256': hashlib.sha256(payload).hexdigest(),
+                  'git_blob_sha1': hashlib.sha1(
+                      f'blob {len(payload)}\0'.encode('ascii') + payload
+                  ).hexdigest(),
+                  'executable': bool(path.stat().st_mode & 0o111),
+              })
+          receipt = {
+              'schema': 'axm-tools/manzanita-custody-history-source-receipt@1',
+              'source_tarball_sha256': os.environ['SOURCE_TARBALL_SHA256'],
+              'source_branch': os.environ['GITHUB_HEAD_REF'] or os.environ['GITHUB_REF_NAME'],
+              'source_commit': os.environ['GITHUB_SHA'],
+              'file_count': len(files),
+              'files': files,
+              'public_route_effect': 'none',
+              'release_authorized': False,
+          }
+          (root / 'SOURCE_PACKAGE_RECEIPT.json').write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          PY
+          (
+            cd /tmp/manzanita-custody-history-source
+            find . -type f ! -name SHA256SUMS.txt -print0 \
+              | sort -z \
+              | xargs -0 sha256sum \
+              > SHA256SUMS.txt
+          )
+
+      - name: Upload exact materialized source
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-custody-history-source
+          path: /tmp/manzanita-custody-history-source
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
