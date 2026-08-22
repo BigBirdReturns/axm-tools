@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 
 ROOT = Path.cwd()
@@ -167,8 +168,10 @@ def patch_app() -> tuple[int, str]:
             raise SystemExit(f"unexpected base application: bytes={len(raw)} sha256={sha256(raw)}")
 
         text = replace_once(text, '<meta name="color-scheme" content="light">', '<meta name="color-scheme" content="dark light">', "color-scheme meta")
-        csp = '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\'; style-src \'unsafe-inline\'; img-src data: blob:; connect-src \'none\'; object-src \'none\'; base-uri \'none\'; form-action \'none\'; frame-src \'none\'; worker-src \'none\'>'
-        text = replace_once(text, csp, csp + "\n" + THEME_BOOT, "theme boot insertion")
+        csp_pattern = r'(<meta http-equiv="Content-Security-Policy"[^>]*>)'
+        text, csp_count = re.subn(csp_pattern, lambda match: match.group(1) + "\n" + THEME_BOOT, text, count=1)
+        if csp_count != 1:
+            raise SystemExit(f"theme boot insertion: expected one CSP meta element, found {csp_count}")
         text = replace_once(text, '<meta name="axm-release" content="axm-witness-department-ledger/0.9.1">', '<meta name="axm-release" content="axm-witness-department-ledger/0.9.2">', "release meta")
         text = replace_once(text, '<meta name="axm-native-acceptance" content="qualified-system-chromium-file-static-host-native-indexeddb-webcrypto-crash-recovery">', '<meta name="axm-native-acceptance" content="qualified-0.9.1-core-plus-0.9.2-persistent-theme-toggle">', "acceptance meta")
         text = replace_once(text, '/* 0.9.1 retains the light conversation-and-preview workbench. The custody engine and\n   application objects below remain the same. */', '/* 0.9.2 adds a persistent light/dark theme while preserving the conversation-and-preview workbench.\n   The custody engine, IndexedDB name, and application objects below remain the same. */', "theme style comment")
