@@ -1,0 +1,245 @@
+name: Repair AXM Witness 0.9.2 corpus release identity v2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/axm-witness-corpus-release-repair-v2.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  repair-and-smoke:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Correct the public corpus release metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import re
+          from pathlib import Path
+
+          app_path = Path('axm-witness/index.html')
+          receipt_path = Path('.github/receipts/axm-witness-theme-0.9.2.json')
+
+          app = app_path.read_bytes()
+          receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+          expected = receipt['patched_application']
+          actual_sha = hashlib.sha256(app).hexdigest()
+          assert len(app) == expected['bytes'], (len(app), expected['bytes'])
+          assert actual_sha == expected['sha256'], (actual_sha, expected['sha256'])
+
+          text = app.decode('utf-8')
+          start = text.index('PUBLIC_CORPUS_LEDGER')
+          tail = text[start:]
+          end_candidates = [value for value in (tail.find('});'), tail.find('};')) if value >= 0]
+          if not end_candidates:
+              raise SystemExit('PUBLIC_CORPUS_LEDGER closing boundary was not found')
+          end = start + min(end_candidates) + 3
+          segment = text[start:end]
+
+          if 'corpus_source_release' not in segment:
+              pattern = re.compile(r'(?m)^(?P<indent>[ \t]*)(?:"release"|release)\s*:\s*"0\.9\.1",')
+              match = pattern.search(segment)
+              if not match:
+                  raise SystemExit('PUBLIC_CORPUS_LEDGER release 0.9.1 field was not found inside the object')
+              indent = match.group('indent')
+              replacement = indent + 'release: "0.9.2",\n' + indent + 'corpus_source_release: "0.9.1",'
+              segment = segment[:match.start()] + replacement + segment[match.end():]
+              text = text[:start] + segment + text[end:]
+              app_path.write_text(text, encoding='utf-8', newline='\n')
+
+          final = app_path.read_bytes()
+          final_text = final.decode('utf-8')
+          final_start = final_text.index('PUBLIC_CORPUS_LEDGER')
+          final_tail = final_text[final_start:]
+          final_end_candidates = [value for value in (final_tail.find('});'), final_tail.find('};')) if value >= 0]
+          final_segment = final_text[final_start:final_start + min(final_end_candidates) + 3]
+          assert re.search(r'(?m)^\s*release:\s*"0\.9\.2",', final_segment)
+          assert re.search(r'(?m)^\s*corpus_source_release:\s*"0\.9\.1",', final_segment)
+          assert 'axm-witness-public-corpus-ledger-v0.9.2.json' in final_text
+          assert 'const DB_NAME = "axm-witness-department-ledger-v0-9-1";' in final_text
+
+          receipt['patched_application'] = {
+              'bytes': len(final),
+              'sha256': hashlib.sha256(final).hexdigest(),
+          }
+          receipt['corpus_ledger'] = {
+              'download_release': '0.9.2',
+              'corpus_source_release': '0.9.1',
+              'download_filename': 'axm-witness-public-corpus-ledger-v0.9.2.json',
+              'identity_alignment': 'PASS',
+          }
+          receipt.setdefault('controls', {})['public_corpus_release_identity'] = 'PENDING_BROWSER_SMOKE'
+          receipt_path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+
+          print(json.dumps({
+              'application_bytes': len(final),
+              'application_sha256': hashlib.sha256(final).hexdigest(),
+              'release': '0.9.2',
+              'corpus_source_release': '0.9.1',
+              'indexeddb_name': 'axm-witness-department-ledger-v0-9-1',
+          }, indent=2))
+          PY
+
+      - name: Parse the complete inline runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path('axm-witness/index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', html, flags=re.I | re.S)
+          assert scripts
+          Path('/tmp/axm-witness-inline.js').write_text('\n;\n'.join(scripts), encoding='utf-8')
+          PY
+          node --check /tmp/axm-witness-inline.js
+
+      - name: Install Chromium smoke tools
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+
+      - name: Run the theme and downloadable-release smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import threading
+          from contextlib import contextmanager
+          from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+          from pathlib import Path
+
+          from playwright.sync_api import sync_playwright
+
+          root = Path('.').resolve()
+
+          class Quiet(SimpleHTTPRequestHandler):
+              def log_message(self, format, *args):
+                  pass
+
+          @contextmanager
+          def serve():
+              handler = lambda *args, **kwargs: Quiet(*args, directory=str(root), **kwargs)
+              server = ThreadingHTTPServer(('127.0.0.1', 0), handler)
+              thread = threading.Thread(target=server.serve_forever, daemon=True)
+              thread.start()
+              try:
+                  yield f'http://127.0.0.1:{server.server_port}'
+              finally:
+                  server.shutdown()
+                  thread.join(timeout=5)
+                  server.server_close()
+
+          with serve() as origin, sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              context = browser.new_context(viewport={'width': 1280, 'height': 900}, accept_downloads=True)
+              page = context.new_page()
+              page_errors = []
+              console_errors = []
+              external_requests = []
+              page.on('pageerror', lambda error: page_errors.append(str(error)))
+              page.on('console', lambda message: console_errors.append(message.text) if message.type == 'error' else None)
+              page.on('request', lambda request: external_requests.append(request.url) if not request.url.startswith(origin + '/') and not request.url.startswith(('data:', 'blob:', 'about:')) else None)
+
+              response = page.goto(origin + '/axm-witness/?qa=corpus-release-identity', wait_until='domcontentloaded')
+              assert response and response.ok
+              page.wait_for_function('window.__AXM_WITNESS_READY__ === true')
+              assert page.locator('meta[name="axm-release"]').get_attribute('content') == 'axm-witness-department-ledger/0.9.2'
+              assert page.evaluate('document.documentElement.dataset.theme') == 'dark'
+
+              page.click('#themeToggle')
+              page.wait_for_function("document.documentElement.dataset.theme === 'light'")
+              page.reload(wait_until='domcontentloaded')
+              page.wait_for_function('window.__AXM_WITNESS_READY__ === true')
+              assert page.evaluate('document.documentElement.dataset.theme') == 'light'
+              assert page.evaluate("localStorage.getItem('axm-witness-theme')") == 'light'
+
+              page.click('#themeToggle')
+              page.wait_for_function("document.documentElement.dataset.theme === 'dark'")
+              page.click('button[data-go="corpus"]')
+              page.wait_for_selector('#downloadCorpusLedger', state='visible')
+              with page.expect_download() as download_info:
+                  page.click('#downloadCorpusLedger')
+              download = download_info.value
+              assert download.suggested_filename == 'axm-witness-public-corpus-ledger-v0.9.2.json'
+              target = Path('/tmp') / download.suggested_filename
+              download.save_as(str(target))
+              corpus = json.loads(target.read_text(encoding='utf-8'))
+              assert corpus['release'] == '0.9.2', corpus
+              assert corpus['corpus_source_release'] == '0.9.1', corpus
+
+              assert not page_errors, page_errors
+              assert not console_errors, console_errors
+              assert not external_requests, external_requests
+
+              result = {
+                  'browser': browser.version,
+                  'theme_first_run': 'dark',
+                  'light_reload_persistence': 'PASS',
+                  'dark_restore': 'PASS',
+                  'download_filename': download.suggested_filename,
+                  'download_release': corpus['release'],
+                  'corpus_source_release': corpus['corpus_source_release'],
+                  'page_errors': page_errors,
+                  'console_errors': console_errors,
+                  'external_requests': external_requests,
+              }
+              Path('/tmp/axm-witness-corpus-release-smoke.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
+              print(json.dumps(result, indent=2))
+              browser.close()
+          PY
+
+      - name: Seal the corrected receipt and commit application artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          receipt_path = Path('.github/receipts/axm-witness-theme-0.9.2.json')
+          receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+          smoke = json.loads(Path('/tmp/axm-witness-corpus-release-smoke.json').read_text(encoding='utf-8'))
+          receipt['controls']['public_corpus_release_identity'] = 'PASS'
+          receipt['corpus_ledger']['browser_smoke'] = {
+              'engine': smoke['browser'],
+              'download_release': smoke['download_release'],
+              'corpus_source_release': smoke['corpus_source_release'],
+              'theme_first_run': smoke['theme_first_run'],
+              'light_reload_persistence': smoke['light_reload_persistence'],
+              'dark_restore': smoke['dark_restore'],
+              'runtime_network_requests': len(smoke['external_requests']),
+              'page_errors': len(smoke['page_errors']),
+              'console_errors': len(smoke['console_errors']),
+          }
+          receipt_path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+          PY
+          git config user.name 'axm-witness-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add axm-witness/index.html .github/receipts/axm-witness-theme-0.9.2.json
+          git diff --cached --stat
+          git commit -m 'axm-witness: align public corpus ledger release identity'
+          git push origin HEAD:${{ github.head_ref }}
