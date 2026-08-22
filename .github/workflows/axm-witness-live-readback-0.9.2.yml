@@ -1,0 +1,171 @@
+name: Seal AXM Witness 0.9.2 live readback
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/axm-witness-live-readback-0.9.2.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/axm-witness-live-readback-0.9.2.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify the exact application and release metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import re
+          from pathlib import Path
+
+          app = Path('axm-witness/index.html').read_bytes()
+          html = app.decode('utf-8')
+          receipt = json.loads(Path('.github/receipts/axm-witness-theme-0.9.2.json').read_text(encoding='utf-8'))
+          expected = receipt['patched_application']
+
+          assert len(app) == expected['bytes'] == 503601
+          assert hashlib.sha256(app).hexdigest() == expected['sha256'] == '8fe1a5846c3588e0d5c65008cd99fd6b82a282d47023f6372bb8d25247ee0ab2'
+          assert receipt['controls']['public_corpus_release_identity'] == 'PASS'
+          assert receipt['corpus_ledger']['download_release'] == '0.9.2'
+          assert receipt['corpus_ledger']['corpus_source_release'] == '0.9.1'
+          assert 'const DB_NAME = "axm-witness-department-ledger-v0-9-1";' in html
+          start = html.index('PUBLIC_CORPUS_LEDGER')
+          segment = html[start:start + 1800]
+          assert re.search(r'(?m)^\s*release:\s*"0\.9\.2",', segment)
+          assert re.search(r'(?m)^\s*corpus_source_release:\s*"0\.9\.1",', segment)
+          assert 'axm-witness-public-corpus-ledger-v0.9.2.json' in html
+          print(json.dumps({'bytes': len(app), 'sha256': hashlib.sha256(app).hexdigest()}, indent=2))
+          PY
+
+  deploy-and-seal:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: qualify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Read the deployed application back at the sealed identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          app_url='https://bigbirdreturns.github.io/axm-tools/axm-witness/'
+          root_url='https://bigbirdreturns.github.io/axm-tools/'
+          expected_bytes='503601'
+          expected_sha='8fe1a5846c3588e0d5c65008cd99fd6b82a282d47023f6372bb8d25247ee0ab2'
+
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent --show-error --location --header 'Cache-Control: no-cache' "${app_url}?release=0.9.2&source=${GITHUB_SHA}&attempt=${attempt}" -o /tmp/live-index.html; then
+              bytes="$(wc -c </tmp/live-index.html)"
+              sha="$(sha256sum /tmp/live-index.html | awk '{print $1}')"
+              if [ "$bytes" = "$expected_bytes" ] && [ "$sha" = "$expected_sha" ]; then
+                break
+              fi
+            fi
+            sleep 5
+          done
+
+          test "$(wc -c </tmp/live-index.html)" = "$expected_bytes"
+          test "$(sha256sum /tmp/live-index.html | awk '{print $1}')" = "$expected_sha"
+          grep -F 'content="axm-witness-department-ledger/0.9.2"' /tmp/live-index.html
+          grep -F 'release: "0.9.2"' /tmp/live-index.html
+          grep -F 'corpus_source_release: "0.9.1"' /tmp/live-index.html
+          grep -F 'const DB_NAME = "axm-witness-department-ledger-v0-9-1";' /tmp/live-index.html
+          curl --fail --silent --show-error --location --header 'Cache-Control: no-cache' "${root_url}?release=0.9.2&source=${GITHUB_SHA}" -o /tmp/root-index.html
+          grep -F 'AXM Witness Department Ledger 0.9.2' /tmp/root-index.html
+
+      - name: Record the successful live readback on main
+        shell: bash
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          export SOURCE_SHA="$GITHUB_SHA"
+          export DEPLOYED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+
+          test "$(wc -c <axm-witness/index.html)" = '503601'
+          test "$(sha256sum axm-witness/index.html | awk '{print $1}')" = '8fe1a5846c3588e0d5c65008cd99fd6b82a282d47023f6372bb8d25247ee0ab2'
+
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          receipt = {
+              'schema': 'axm-witness/live-readback@1',
+              'release': 'axm-witness-department-ledger/0.9.2',
+              'result': 'PASS',
+              'deployed_at': os.environ['DEPLOYED_AT'],
+              'source_sha': os.environ['SOURCE_SHA'],
+              'page_url': 'https://bigbirdreturns.github.io/axm-tools/axm-witness/',
+              'deployment_page_url': os.environ.get('PAGE_URL', ''),
+              'application': {
+                  'bytes': 503601,
+                  'sha256': '8fe1a5846c3588e0d5c65008cd99fd6b82a282d47023f6372bb8d25247ee0ab2',
+              },
+              'public_corpus_ledger': {
+                  'release': '0.9.2',
+                  'corpus_source_release': '0.9.1',
+                  'download_filename': 'axm-witness-public-corpus-ledger-v0.9.2.json',
+              },
+              'storage_compatibility': {
+                  'indexeddb_name': 'axm-witness-department-ledger-v0-9-1',
+                  'changed': False,
+              },
+              'checks': {
+                  'live_bytes': 'PASS',
+                  'live_sha256': 'PASS',
+                  'application_release': 'PASS',
+                  'public_corpus_release': 'PASS',
+                  'corpus_source_provenance': 'PASS',
+                  'root_directory_listing': 'PASS',
+              },
+          }
+          path = Path('.github/receipts/axm-witness-live-0.9.2.json')
+          path.parent.mkdir(parents=True, exist_ok=True)
+          path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+          PY
+
+          git config user.name 'axm-witness-live-readback-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add .github/receipts/axm-witness-live-0.9.2.json
+          git commit -m 'axm-witness: seal 0.9.2 live Pages readback'
+          git push origin main
