@@ -88,6 +88,7 @@ are touching tells you how much care to take.
   evidence, motive, authority, migration, and succession; guarded by
   `organ-evolution/scripts/validate.py` and
   `tests/pages/verify_organ_evolution.mjs`.
+- `axm-witness/` — AXM Witness Department Ledger 0.9.1: an exact-byte, department-controlled local export-ledger pilot for authorized Flock-shaped exports, qualified 30/30 under native browser storage and WebCrypto. It proves department custody and decisions after receipt; vendor-declared completeness and pre-delivery origin remain external boundaries.
 - `pta-tracker/` — the living tool: nightly legislation fetch for a K-6
   PTA, relevance filter, board report, offline PWA. Its README is the
   operating manual.
