@@ -96,7 +96,7 @@ html[data-theme="dark"] body.replit-v08 input,
 html[data-theme="dark"] body.replit-v08 select,
 html[data-theme="dark"] body.replit-v08 textarea { color-scheme: dark; }
 @media (max-width: 700px) {
-  body.replit-v08 .topbar-actions .theme-toggle { display: grid !important; width: 40px !important; min-width: 40px !important; height: 40px !important; min-height: 40px !important; }
+  body.replit-v08 .topbar-actions .icon-button.theme-toggle:not(.guide-toggle) { display: grid !important; width: 40px !important; min-width: 40px !important; height: 40px !important; min-height: 40px !important; }
 }
 @media (prefers-reduced-motion: reduce) {
   body.replit-v08,
