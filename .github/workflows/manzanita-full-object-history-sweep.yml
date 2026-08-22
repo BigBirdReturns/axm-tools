@@ -1,0 +1,410 @@
+name: Manzanita full object history sweep
+
+on:
+  push:
+    branches:
+      - agent/manzanita-custody-history-004
+    paths:
+      - ".github/workflows/manzanita-full-object-history-sweep.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/manzanita-full-object-history-sweep.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manzanita-full-object-history-sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/manzanita-custody-history-004
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch every remote ref
+        run: |
+          git fetch --prune --tags origin \
+            '+refs/heads/*:refs/remotes/origin/*'
+
+      - name: Sweep the complete local Git object database
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          rm -rf /tmp/manzanita-full-object-history-sweep
+          mkdir -p /tmp/manzanita-full-object-history-sweep/blobs/sha1
+          python - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import os
+          import re
+          import subprocess
+          from collections import defaultdict
+          from pathlib import Path, PurePosixPath
+
+          OUT = Path('/tmp/manzanita-full-object-history-sweep')
+          BLOBS = OUT / 'blobs' / 'sha1'
+          TARGET = {
+              'filename': 'Household_Habitat_Street_Glide_Archive_Volume_04.zip',
+              'bytes': 138_499_571,
+              'sha256': 'e90d18e2e58686547bdd0f0eed8bde6812b7ad28473e37bbd9077fb06edf1f18',
+              'natural_border_expected_names': [
+                  'Street_Glide_v10_1_Natural_Borders.zip',
+                  'Street_Glide_v10_1_Natural_Borders_Standalone.html',
+                  'Street_Glide_v10_1_Natural_Border_Snap_Standalone.html',
+                  'Street_Glide_v10_1_Natural_Border_Snap.html',
+              ],
+          }
+          TEXT_EXTENSIONS = {
+              '.html', '.htm', '.json', '.md', '.txt', '.js', '.css', '.py',
+              '.yaml', '.yml', '.xml', '.svg', '.csv', '.toml', '.ini', '.sh',
+              '.ps1', '.cmd', '.ts', '.tsx', '.jsx', '.mjs', '.cjs',
+          }
+          PATH_CONTEXT = (
+              'manzanita', 'street_glide', 'street-glide', 'household_habitat',
+              'household-habitat', 'natural', 'border', 'landscape', 'occupancy',
+              'photo_twin', 'photo-twin', 'archive_volume_04', 'volume_04',
+          )
+          STRONG_PATH = (
+              'volume_04', 'volume-04', 'v10_1', 'v10-1', 'natural_border',
+              'natural-border', 'natural borders', 'border_snap', 'border-snap',
+          )
+          STRONG_MARKERS = (
+              b'natural border snap', b'natural borders', b'street_glide_v10_1',
+              b'street glide v10.1', b'street_glide_v10.1',
+              b'household_habitat_street_glide_archive_volume_04',
+              b'household habitat street glide archive volume 04',
+          )
+          WEAK_MARKERS = (
+              b'mow edge', b'bed lip', b'hedge face', b'canopy silhouette',
+              b'driveway edge', b'curb line', b'walk edge',
+          )
+
+          def run(*args: str, check: bool = True) -> str:
+              result = subprocess.run(
+                  list(args), check=check, capture_output=True, text=True,
+              )
+              return result.stdout
+
+          def sha256(payload: bytes) -> str:
+              return hashlib.sha256(payload).hexdigest()
+
+          refs = []
+          for line in run(
+              'git', 'for-each-ref',
+              '--format=%(refname)\t%(objectname)\t%(objecttype)\t%(creatordate:iso-strict)',
+          ).splitlines():
+              parts = line.split('\t')
+              if len(parts) >= 3:
+                  refs.append({
+                      'ref': parts[0],
+                      'object': parts[1],
+                      'object_type': parts[2],
+                      'created_at': parts[3] if len(parts) > 3 else None,
+                  })
+
+          reachable_paths: dict[str, set[str]] = defaultdict(set)
+          for line in run('git', 'rev-list', '--objects', '--all').splitlines():
+              if not line.strip():
+                  continue
+              sha, *rest = line.split(' ', 1)
+              if rest and rest[0]:
+                  reachable_paths[sha].add(rest[0])
+
+          object_rows = []
+          for line in run(
+              'git', 'cat-file', '--batch-all-objects',
+              '--batch-check=%(objectname)\t%(objecttype)\t%(objectsize)',
+          ).splitlines():
+              parts = line.split('\t')
+              if len(parts) != 3:
+                  continue
+              object_rows.append({
+                  'sha': parts[0],
+                  'type': parts[1],
+                  'bytes': int(parts[2]),
+              })
+
+          blob_rows = [row for row in object_rows if row['type'] == 'blob']
+          reachable_blob_shas = set(reachable_paths) & {row['sha'] for row in blob_rows}
+          unreachable_blob_shas = {row['sha'] for row in blob_rows} - reachable_blob_shas
+
+          scan_shas = []
+          preliminary: dict[str, dict] = {}
+          for row in blob_rows:
+              sha = row['sha']
+              size = row['bytes']
+              paths = sorted(reachable_paths.get(sha, set()))
+              lower_paths = [path.lower() for path in paths]
+              reasons = []
+              exact_name_paths = [
+                  path for path in paths
+                  if PurePosixPath(path).name == TARGET['filename']
+                  or PurePosixPath(path).name in TARGET['natural_border_expected_names']
+              ]
+              if exact_name_paths:
+                  reasons.append('exact_expected_filename')
+              if size == TARGET['bytes']:
+                  reasons.append('exact_volume_04_byte_count')
+              if any(any(token in path for token in STRONG_PATH) for path in lower_paths):
+                  reasons.append('strong_path_marker')
+              context_path = any(
+                  any(token in path for token in PATH_CONTEXT)
+                  for path in lower_paths
+              )
+              text_path = any(
+                  PurePosixPath(path).suffix.lower() in TEXT_EXTENSIONS
+                  for path in paths
+              )
+              should_scan = (
+                  size == TARGET['bytes']
+                  or bool(reasons)
+                  or (context_path and text_path and size <= 16 * 1024 * 1024)
+                  or (sha in unreachable_blob_shas and size <= 2 * 1024 * 1024)
+              )
+              if should_scan:
+                  scan_shas.append(sha)
+                  preliminary[sha] = {
+                      'sha1': sha,
+                      'bytes': size,
+                      'paths': paths,
+                      'reachable': sha in reachable_blob_shas,
+                      'preliminary_reasons': reasons,
+                  }
+
+          candidates = []
+          batch = subprocess.Popen(
+              ['git', 'cat-file', '--batch'],
+              stdin=subprocess.PIPE,
+              stdout=subprocess.PIPE,
+              stderr=subprocess.PIPE,
+          )
+          assert batch.stdin is not None and batch.stdout is not None
+          for sha in scan_shas:
+              batch.stdin.write((sha + '\n').encode('ascii'))
+              batch.stdin.flush()
+              header = batch.stdout.readline().decode('utf-8', errors='replace').strip()
+              parts = header.split(' ')
+              if len(parts) < 3 or parts[1] != 'blob':
+                  raise SystemExit(f'Unexpected batch header for {sha}: {header}')
+              size = int(parts[2])
+              payload = batch.stdout.read(size)
+              batch.stdout.read(1)
+              lower = payload.lower()
+              strong_hits = [
+                  marker.decode('utf-8')
+                  for marker in STRONG_MARKERS if marker in lower
+              ]
+              weak_hits = [
+                  marker.decode('utf-8')
+                  for marker in WEAK_MARKERS if marker in lower
+              ]
+              row = preliminary[sha]
+              reasons = list(row['preliminary_reasons'])
+              if strong_hits:
+                  reasons.append('strong_content_marker')
+              if len(weak_hits) >= 3:
+                  reasons.append('multi_feature_natural_border_vocabulary')
+              is_lfs_pointer = lower.startswith(b'version https://git-lfs.github.com/spec/v1')
+              if is_lfs_pointer:
+                  reasons.append('git_lfs_pointer')
+              observed_sha256 = None
+              exact_volume_04 = False
+              if reasons:
+                  observed_sha256 = sha256(payload)
+                  exact_volume_04 = (
+                      len(payload) == TARGET['bytes']
+                      and observed_sha256 == TARGET['sha256']
+                  )
+                  destination = BLOBS / sha
+                  destination.write_bytes(payload)
+                  commits = run(
+                      'git', 'log', '--all', '--find-object=' + sha,
+                      '--format=%H\t%aI\t%s', '--reverse', check=False,
+                  ).splitlines()[:200]
+                  candidate = {
+                      **row,
+                      'sha256': observed_sha256,
+                      'reasons': sorted(set(reasons)),
+                      'strong_content_hits': strong_hits,
+                      'weak_content_hits': weak_hits,
+                      'is_lfs_pointer': is_lfs_pointer,
+                      'exact_volume_04_match': exact_volume_04,
+                      'materialized_path': destination.relative_to(OUT).as_posix(),
+                      'commit_contexts': commits,
+                  }
+                  candidates.append(candidate)
+          batch.stdin.close()
+          batch.wait(timeout=120)
+          if batch.returncode not in (0, None):
+              stderr = batch.stderr.read().decode('utf-8', errors='replace') if batch.stderr else ''
+              raise SystemExit(f'git cat-file --batch failed: {stderr}')
+
+          commit_message_hits = []
+          commit_patterns = re.compile(
+              r'natural[ _-]?border|v10[._-]?1|volume[ _-]?04|mow edge|bed lip|hedge face|canopy silhouette',
+              re.IGNORECASE,
+          )
+          raw_log = run(
+              'git', 'log', '--all',
+              '--format=%H%x09%aI%x09%s%x09%b%x1e',
+          )
+          for record in raw_log.split('\x1e'):
+              if not record.strip() or not commit_patterns.search(record):
+                  continue
+              parts = record.strip().split('\t', 3)
+              commit_message_hits.append({
+                  'commit': parts[0] if parts else None,
+                  'authored_at': parts[1] if len(parts) > 1 else None,
+                  'subject': parts[2] if len(parts) > 2 else None,
+                  'body': parts[3] if len(parts) > 3 else None,
+              })
+
+          ref_hits = [
+              row for row in refs
+              if commit_patterns.search(row['ref'])
+          ]
+
+          fsck = subprocess.run(
+              ['git', 'fsck', '--full', '--no-reflogs', '--unreachable', '--no-progress'],
+              capture_output=True, text=True,
+          )
+          unreachable_lines = sorted(
+              line for line in (fsck.stdout + '\n' + fsck.stderr).splitlines()
+              if line.strip()
+          )
+          (OUT / 'UNREACHABLE_OBJECTS.txt').write_text(
+              '\n'.join(unreachable_lines) + ('\n' if unreachable_lines else ''),
+              encoding='utf-8',
+          )
+
+          candidate_register = {
+              'schema': 'axm-tools/manzanita-full-object-candidate-register@1',
+              'target': TARGET,
+              'candidate_count': len(candidates),
+              'exact_volume_04_match_count': sum(
+                  1 for row in candidates if row['exact_volume_04_match']
+              ),
+              'candidate_total_bytes': sum(row['bytes'] for row in candidates),
+              'candidates': sorted(candidates, key=lambda row: row['sha1']),
+          }
+          (OUT / 'CANDIDATE_REGISTER.json').write_text(
+              json.dumps(candidate_register, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          (OUT / 'REF_HITS.json').write_text(
+              json.dumps({'refs': ref_hits}, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          (OUT / 'COMMIT_MESSAGE_HITS.json').write_text(
+              json.dumps({'commits': commit_message_hits}, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+
+          receipt = {
+              'schema': 'axm-tools/manzanita-full-object-history-sweep@1',
+              'source_branch': os.environ.get('GITHUB_HEAD_REF') or os.environ.get('GITHUB_REF_NAME'),
+              'source_commit': os.environ.get('GITHUB_SHA'),
+              'target': TARGET,
+              'coverage': {
+                  'references': len(refs),
+                  'all_objects': len(object_rows),
+                  'all_blobs': len(blob_rows),
+                  'reachable_blobs': len(reachable_blob_shas),
+                  'unreachable_blobs_present_locally': len(unreachable_blob_shas),
+                  'blobs_content_scanned': len(scan_shas),
+                  'candidate_blobs_materialized': len(candidates),
+                  'commit_message_hits': len(commit_message_hits),
+                  'reference_name_hits': len(ref_hits),
+                  'fsck_unreachable_lines': len(unreachable_lines),
+              },
+              'results': {
+                  'exact_volume_04_match_count': candidate_register['exact_volume_04_match_count'],
+                  'natural_border_candidate_count': sum(
+                      1 for row in candidates
+                      if 'strong_content_marker' in row['reasons']
+                      or 'strong_path_marker' in row['reasons']
+                      or 'exact_expected_filename' in row['reasons']
+                  ),
+                  'git_lfs_pointer_candidate_count': sum(
+                      1 for row in candidates if row['is_lfs_pointer']
+                  ),
+              },
+              'public_route_effect': 'none',
+              'constitutional_count_effect': 'none',
+              'release_authorized': False,
+              'step_004_authorized': False,
+              'claim_boundary': (
+                  'This sweep proves only what exists in the complete local Git object database '
+                  'after fetching every remote branch and tag. It does not prove absence from '
+                  'external archives, File Library bytes, deleted server objects not transferred '
+                  'by Git, or any non-Git storage system.'
+              ),
+          }
+          (OUT / 'FULL_OBJECT_SWEEP_RECEIPT.json').write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+
+          files = []
+          for path in sorted(p for p in OUT.rglob('*') if p.is_file()):
+              payload = path.read_bytes()
+              files.append({
+                  'path': path.relative_to(OUT).as_posix(),
+                  'bytes': len(payload),
+                  'sha256': sha256(payload),
+                  'git_blob_sha1': hashlib.sha1(
+                      f'blob {len(payload)}\0'.encode('ascii') + payload
+                  ).hexdigest(),
+              })
+          (OUT / 'ARTIFACT_RECEIPT.json').write_text(
+              json.dumps({
+                  'schema': 'axm-tools/manzanita-full-object-history-artifact@1',
+                  'source_branch': receipt['source_branch'],
+                  'source_commit': receipt['source_commit'],
+                  'file_count_before_receipt': len(files),
+                  'files_before_receipt': files,
+                  'public_route_effect': 'none',
+                  'release_authorized': False,
+              }, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+
+          print(json.dumps({
+              'result': 'PASS',
+              **receipt['coverage'],
+              **receipt['results'],
+          }, indent=2, sort_keys=True))
+          PY
+          (
+            cd /tmp/manzanita-full-object-history-sweep
+            find . -type f ! -name SHA256SUMS.txt -print0 \
+              | sort -z \
+              | xargs -0 sha256sum \
+              > SHA256SUMS.txt
+          )
+
+      - name: Upload full object history sweep
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-full-object-history-sweep
+          path: /tmp/manzanita-full-object-history-sweep
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 7
+          compression-level: 0
