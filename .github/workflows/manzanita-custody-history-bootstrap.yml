@@ -92,32 +92,56 @@ jobs:
             -s programs/manzanita-99/custody/history/tests \
             -p "test_*.py"
 
-      - name: Build exact source artifact and receipt
+      - name: Sweep every reachable historical Manzanita route tree
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          rm -rf programs/manzanita-99/custody/history/out
+          python programs/manzanita-99/custody/history/history_sweep.py \
+            --repo-root . \
+            --contract programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json \
+            --output programs/manzanita-99/custody/history/out \
+            | tee /tmp/manzanita-history-sweep-summary.json
+          python -m json.tool \
+            programs/manzanita-99/custody/history/out/HISTORICAL_RELEASE_REGISTER.json \
+            > /dev/null
+          python -m json.tool \
+            programs/manzanita-99/custody/history/out/HISTORY_SWEEP_RECEIPT.json \
+            > /dev/null
+
+      - name: Build exact source and sweep artifact
         env:
           SOURCE_TARBALL_SHA256: 5db9b20306efd09a31bb97a11c524126d326a7a93e29c8573ff105ccbfbdeac5
         run: |
-          rm -rf /tmp/manzanita-custody-history-source
+          rm -rf /tmp/manzanita-custody-history-sweep
           mkdir -p \
-            /tmp/manzanita-custody-history-source/.github/workflows \
-            /tmp/manzanita-custody-history-source/programs/manzanita-99/custody/history/tests
+            /tmp/manzanita-custody-history-sweep/.github/workflows \
+            /tmp/manzanita-custody-history-sweep/programs/manzanita-99/custody/history/tests \
+            /tmp/manzanita-custody-history-sweep/programs/manzanita-99/custody/history/out
           cp --preserve=mode,timestamps \
             .github/workflows/manzanita-custody-history.yml \
-            /tmp/manzanita-custody-history-source/.github/workflows/
+            /tmp/manzanita-custody-history-sweep/.github/workflows/
           cp --preserve=mode,timestamps \
             programs/manzanita-99/custody/history/HISTORY_SWEEP_CONTRACT.json \
             programs/manzanita-99/custody/history/README.md \
             programs/manzanita-99/custody/history/history_sweep.py \
-            /tmp/manzanita-custody-history-source/programs/manzanita-99/custody/history/
+            /tmp/manzanita-custody-history-sweep/programs/manzanita-99/custody/history/
           cp --preserve=mode,timestamps \
             programs/manzanita-99/custody/history/tests/test_history_sweep.py \
-            /tmp/manzanita-custody-history-source/programs/manzanita-99/custody/history/tests/
+            /tmp/manzanita-custody-history-sweep/programs/manzanita-99/custody/history/tests/
+          cp --preserve=mode,timestamps \
+            programs/manzanita-99/custody/history/out/HISTORICAL_RELEASE_REGISTER.json \
+            programs/manzanita-99/custody/history/out/HISTORY_SWEEP_RECEIPT.json \
+            /tmp/manzanita-custody-history-sweep/programs/manzanita-99/custody/history/out/
+          cp /tmp/manzanita-history-sweep-summary.json \
+            /tmp/manzanita-custody-history-sweep/HISTORY_SWEEP_SUMMARY.json
           python - <<'PY'
           import hashlib
           import json
           import os
           from pathlib import Path
 
-          root = Path('/tmp/manzanita-custody-history-source')
+          root = Path('/tmp/manzanita-custody-history-sweep')
           files = []
           for path in sorted(p for p in root.rglob('*') if p.is_file()):
               payload = path.read_bytes()
@@ -132,33 +156,35 @@ jobs:
                   'executable': bool(path.stat().st_mode & 0o111),
               })
           receipt = {
-              'schema': 'axm-tools/manzanita-custody-history-source-receipt@1',
+              'schema': 'axm-tools/manzanita-custody-history-sweep-artifact@1',
               'source_tarball_sha256': os.environ['SOURCE_TARBALL_SHA256'],
               'source_branch': os.environ['GITHUB_HEAD_REF'] or os.environ['GITHUB_REF_NAME'],
               'source_commit': os.environ['GITHUB_SHA'],
-              'file_count': len(files),
-              'files': files,
+              'file_count_before_receipt': len(files),
+              'files_before_receipt': files,
               'public_route_effect': 'none',
+              'constitutional_count_effect': 'none',
               'release_authorized': False,
           }
-          (root / 'SOURCE_PACKAGE_RECEIPT.json').write_text(
+          (root / 'ARTIFACT_RECEIPT.json').write_text(
               json.dumps(receipt, indent=2, sort_keys=True) + '\n',
               encoding='utf-8',
           )
           PY
           (
-            cd /tmp/manzanita-custody-history-source
+            cd /tmp/manzanita-custody-history-sweep
             find . -type f ! -name SHA256SUMS.txt -print0 \
               | sort -z \
               | xargs -0 sha256sum \
               > SHA256SUMS.txt
           )
 
-      - name: Upload exact materialized source
+      - name: Upload exact historical custody sweep
         uses: actions/upload-artifact@v4
         with:
-          name: manzanita-custody-history-source
-          path: /tmp/manzanita-custody-history-source
+          name: manzanita-custody-history-sweep
+          path: /tmp/manzanita-custody-history-sweep
           if-no-files-found: error
+          include-hidden-files: true
           retention-days: 7
           compression-level: 0
