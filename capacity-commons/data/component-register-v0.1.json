@@ -1,0 +1,217 @@
+{
+  "schema": "manzanita-works/component-register@0.1",
+  "release_date": "2026-08-18",
+  "decision_vocabulary": {
+    "adopt": "Use substantially as-is under its own authority.",
+    "adapt": "Use the model or workflow while implementing a bounded local form.",
+    "wrap": "Keep the system in service behind a replaceable adapter.",
+    "donor": "Harvest patterns, vocabulary, tests, and failure cases without importing runtime code.",
+    "hold": "Do not operationalize until the named qualification gap is closed.",
+    "build": "Implement only the thin capability that remains uniquely Manzanita's."
+  },
+  "components": [
+    {
+      "id": "component-myturn",
+      "name": "MyTurn",
+      "layer": "physical custody",
+      "kind": "operating vendor service",
+      "decision": "wrap",
+      "current_use": "Essential Tools inventory, membership, reservations, checkout, and return workflow.",
+      "canonical_for": [
+        "physical item identity",
+        "checkout and return status",
+        "condition and custody where recorded"
+      ],
+      "never_canonical_for": [
+        "cross-program capacity ontology",
+        "Essential Minute balances",
+        "pilotage standing",
+        "collective matching"
+      ],
+      "admission_note": "Public API coverage is a subset and subscription-dependent; exports remain part of the replacement path.",
+      "evidence": [
+        "https://myturn.com/api-docs/",
+        "https://support.myturn.com/hc/en-us/articles/206389507-Loan-User-and-Financial-Reports"
+      ],
+      "replacement_test": "The commons can preserve people, projects, intents, commitments, receipts, and credit history if MyTurn is replaced."
+    },
+    {
+      "id": "component-stripe",
+      "name": "Stripe",
+      "layer": "money rail",
+      "kind": "processor used through vendor platforms",
+      "decision": "wrap",
+      "current_use": "Optional card processing where MyTurn or a fundraising platform requires it.",
+      "canonical_for": [
+        "processor transaction receipt when used"
+      ],
+      "never_canonical_for": [
+        "membership meaning",
+        "project standing",
+        "capacity credit",
+        "organizational identity"
+      ],
+      "admission_note": "Avoidance is not a launch requirement. Replaceability and export are requirements.",
+      "evidence": [
+        "https://support.myturn.com/hc/en-us/articles/217693467-Accept-Credit-Debit-Cards-and-Online-Payments-with-Stripe"
+      ],
+      "replacement_test": "A processor change does not alter the capacity model or erase nonfinancial participation."
+    },
+    {
+      "id": "component-valueflows",
+      "name": "ValueFlows",
+      "layer": "ontology",
+      "kind": "open vocabulary donor",
+      "decision": "adapt",
+      "current_use": "Semantics for agents, resources, intents, commitments, and observed events.",
+      "canonical_for": [],
+      "never_canonical_for": [
+        "Manzanita policy",
+        "seat authority",
+        "local evidence standing"
+      ],
+      "admission_note": "Adopt compatible meanings where they reduce reinvention; retain Manzanita-specific policy and receipt law.",
+      "evidence": [
+        "https://www.valueflo.ws/concepts/flows/",
+        "https://www.valueflo.ws/specification/all_vf/"
+      ],
+      "replacement_test": "The local JSON remains intelligible without a ValueFlows runtime."
+    },
+    {
+      "id": "component-timeoverflow",
+      "name": "TimeOverflow",
+      "layer": "time-bank workflow",
+      "kind": "open-source donor",
+      "decision": "donor",
+      "current_use": "Study member, offer, demand, accounting, and offline-administration workflows.",
+      "canonical_for": [],
+      "never_canonical_for": [
+        "Manzanita production runtime until license and fit admission"
+      ],
+      "admission_note": "AGPL-3.0 code. Pattern harvesting is admitted; code incorporation requires an explicit license and architecture decision.",
+      "evidence": [
+        "https://github.com/coopdevs/timeoverflow",
+        "https://www.timeoverflow.org/pages/about"
+      ],
+      "replacement_test": "No TimeOverflow code is required for the v0.1 operating slice."
+    },
+    {
+      "id": "component-civicrm",
+      "name": "CiviCRM / CiviVolunteer",
+      "layer": "constituent and volunteer administration",
+      "kind": "open-source adoption candidate",
+      "decision": "donor",
+      "current_use": "Study contact, project, opportunity, signup, contribution, and actual-hours workflows.",
+      "canonical_for": [],
+      "never_canonical_for": [
+        "credit issuance policy",
+        "physical custody",
+        "cross-domain canonical model"
+      ],
+      "admission_note": "Potentially useful when six people become sixty and local packet exchange stops being sufficient.",
+      "evidence": [
+        "https://docs.civicrm.org/volunteer/en/latest/opportunities/",
+        "https://docs.civicrm.org/volunteer/en/latest/logging-hours/"
+      ],
+      "replacement_test": "The v0.1 tool does not require a CRM or server."
+    },
+    {
+      "id": "component-credit-commons",
+      "name": "Credit Commons",
+      "layer": "federation",
+      "kind": "protocol donor",
+      "decision": "hold",
+      "current_use": "Study independent-ledger federation after one local ledger is honestly operated.",
+      "canonical_for": [],
+      "never_canonical_for": [
+        "v0.1 local credit policy",
+        "production financial security"
+      ],
+      "admission_note": "The reference implementation identifies itself as proof of concept; federation is downstream of a proven local exchange.",
+      "evidence": [
+        "https://creditcommons.org/"
+      ],
+      "replacement_test": "No federation dependency exists in the pilot."
+    },
+    {
+      "id": "component-hyperswitch",
+      "name": "Hyperswitch",
+      "layer": "payment orchestration",
+      "kind": "open-source future candidate",
+      "decision": "hold",
+      "current_use": "None. Revisit only if multi-processor routing becomes an actual requirement.",
+      "canonical_for": [],
+      "never_canonical_for": [
+        "capacity model",
+        "credit policy",
+        "member record"
+      ],
+      "admission_note": "Apache-2.0 and multi-processor by design, but far beyond the needs of the first six-person pilot.",
+      "evidence": [
+        "https://github.com/juspay/hyperswitch"
+      ],
+      "replacement_test": "The pilot does not deploy payment orchestration."
+    },
+    {
+      "id": "component-givebutter",
+      "name": "Givebutter",
+      "layer": "fundraising",
+      "kind": "mentioned candidate",
+      "decision": "hold",
+      "current_use": "None in this release.",
+      "canonical_for": [],
+      "never_canonical_for": [
+        "community capacity ledger",
+        "time credit",
+        "tool custody"
+      ],
+      "admission_note": "Qualify export, API, processor dependency, data rights, fees, and termination path before adoption.",
+      "evidence": [
+        "Mila Cavala email, 2026-08-18"
+      ],
+      "replacement_test": "Fundraising remains one view and one adapter, never the operating core."
+    },
+    {
+      "id": "component-network-for-good",
+      "name": "Network for Good",
+      "layer": "fundraising",
+      "kind": "mentioned candidate",
+      "decision": "hold",
+      "current_use": "None in this release.",
+      "canonical_for": [],
+      "never_canonical_for": [
+        "community capacity ledger",
+        "time credit",
+        "tool custody"
+      ],
+      "admission_note": "The reported internal transaction or ledger capability remains unqualified until exact product terms and export behavior are inspected.",
+      "evidence": [
+        "Mila Cavala email, 2026-08-18"
+      ],
+      "replacement_test": "A fundraising platform can disappear without erasing participation history."
+    },
+    {
+      "id": "component-manzanita-thin-layer",
+      "name": "Manzanita Essential Capacity",
+      "layer": "canonical substrate",
+      "kind": "unique local implementation",
+      "decision": "build",
+      "current_use": "Own the cross-domain identities, projects, intents, commitments, accepted events, credits, evidence, policy, adapter registry, and portable handoff.",
+      "canonical_for": [
+        "cross-domain relationships",
+        "local credit receipts",
+        "policy and authority",
+        "portable continuity"
+      ],
+      "never_canonical_for": [
+        "physical checkout unless receipted by custody system",
+        "processor settlement"
+      ],
+      "admission_note": "This is the thin layer that other systems do not supply together.",
+      "evidence": [
+        "mw-essential-capacity-v0.1.0"
+      ],
+      "replacement_test": "All state exports as plain JSON and can be reconstructed without this interface."
+    }
+  ]
+}
