@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-22T13:07:50.724189Z",
+  "generated": "2026-08-23T13:09:04.808101Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -10,8 +10,8 @@
     {
       "source": "Google News",
       "scope": "district",
-      "ok": true,
-      "kept": 1
+      "ok": false,
+      "error": "HTTP Error 503: Service Unavailable"
     },
     {
       "source": "Holly Avenue News",
@@ -34,8 +34,8 @@
     {
       "source": "Google News",
       "scope": "state",
-      "ok": true,
-      "kept": 14
+      "ok": false,
+      "error": "HTTP Error 503: Service Unavailable"
     },
     {
       "source": "AUSD board schedule",
