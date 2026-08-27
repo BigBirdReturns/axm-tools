@@ -1,6 +1,6 @@
 {
-  "schema": "manzanita/useful-plant-v30-source-replay-payload@1",
-  "generated_at": "2026-08-27T00:02:34+00:00",
+  "schema": "manzanita/useful-plant-v30-source-replay-payload@2",
+  "generated_at": "2026-08-27T00:18:00+00:00",
   "member_count": 71,
   "tar_bytes": 552960,
   "tar_sha256": "acfe3a47188945a92dfd186270feb1d59a7411dc68e18e3eb91822cff556d8e7",
@@ -43,5 +43,48 @@
   "pages_deployment_effect": "none",
   "release_authorized": false,
   "external_effect": "none",
-  "claim_boundary": "The payload transports the complete 71-file text source carrier. It does not transport the locally rendered binary carrier and cannot establish byte identity with that local object unless independently reproduced and proven."
+  "claim_boundary": "The eight-part payload transports the complete 71-file text source carrier. Concatenated non-whitespace bytes reproduce the measured Base64 payload exactly. It does not transport the locally rendered binary carrier and cannot establish byte identity with that local object unless independently reproduced and proven.",
+  "carrier_parts": [
+    {
+      "path": "SOURCE_PAYLOAD.tar.xz.b64.part01",
+      "bytes": 11486,
+      "sha256": "f12fb076560917d4d7aa26417f5668d4ba758418c333ef171ea1c23ea6baf9c6"
+    },
+    {
+      "path": "SOURCE_PAYLOAD.tar.xz.b64.part02",
+      "bytes": 11486,
+      "sha256": "665bd494daf61b8d7af63cc91a0d1a2518916a9c11060c2ebb313c3fead24288"
+    },
+    {
+      "path": "SOURCE_PAYLOAD.tar.xz.b64.part03",
+      "bytes": 11486,
+      "sha256": "af7f95de227e3e5dd2912c7efed14c82a7fdc2ee6a2c5377240b4fa92e6562b2"
+    },
+    {
+      "path": "SOURCE_PAYLOAD.tar.xz.b64.part04",
+      "bytes": 11486,
+      "sha256": "6cbb3bda7146c7d1914b807ba41f08bd409c72b1ead7dc5017ec407049d334d0"
+    },
+    {
+      "path": "SOURCE_PAYLOAD.tar.xz.b64.part05",
+      "bytes": 11486,
+      "sha256": "30acb313bbd93fd5da3cc8327dafb39e16d7a2f03e5483ceb4a628cb1a0f71ed"
+    },
+    {
+      "path": "SOURCE_PAYLOAD.tar.xz.b64.part06",
+      "bytes": 11486,
+      "sha256": "01be9a061a1538d6da2d54beef017666064ef793769c6abf53369d2fdbb777fa"
+    },
+    {
+      "path": "SOURCE_PAYLOAD.tar.xz.b64.part07",
+      "bytes": 11486,
+      "sha256": "4ce5779bf66bd05401ec41845eb641674b5804a2a21c4fb86e444e4399baa7b9"
+    },
+    {
+      "path": "SOURCE_PAYLOAD.tar.xz.b64.part08",
+      "bytes": 11486,
+      "sha256": "89528bbcb55a03ca9e5bedd7036ff960d315f65f590ba8e83839894bbdba2606"
+    }
+  ],
+  "carrier_part_count": 8
 }
