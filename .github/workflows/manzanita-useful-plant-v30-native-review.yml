@@ -51,7 +51,8 @@ jobs:
             manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
             manzanita-next/review/useful-plant-v30-native/test_v29_parent_admission.py \
             manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
-            manzanita-next/review/useful-plant-v30-native/test_plant_donor_admission.py
+            manzanita-next/review/useful-plant-v30-native/test_plant_donor_admission.py \
+            manzanita-next/review/useful-plant-v30-native/recover_historical_archive.py
           python -m json.tool \
             manzanita-next/review/useful-plant-v30-native/V29_PARENT_ADMISSION_CONTRACT.json \
             >/dev/null
@@ -149,116 +150,14 @@ jobs:
             > "$TRANSPORT/manzanita-independent-archive-source.tar.gz"
           echo "a1c4c12053066c1c579111c9bea16a6acd50e4a0c6cf21120afc944d46e43b46  $TRANSPORT/manzanita-independent-archive-source.tar.gz" \
             | sha256sum --check --strict
-          tar -xzf "$TRANSPORT/manzanita-independent-archive-source.tar.gz" \
-            -C "$EXTRACTED"
 
-          TARGET="$TARGET" HISTORICAL_COMMIT="$HISTORICAL_COMMIT" HISTORICAL_TREE="$HISTORICAL_TREE" python - <<'PY'
-          from __future__ import annotations
-
-          import hashlib
-          import json
-          import os
-          import subprocess
-          from datetime import datetime, timezone
-          from pathlib import Path
-
-          target = Path(os.environ["TARGET"])
-          transport = target / "transport"
-          extracted = target / "extracted"
-          commit = os.environ["HISTORICAL_COMMIT"]
-          tree = os.environ["HISTORICAL_TREE"]
-
-          def digest(path: Path) -> dict:
-              payload = path.read_bytes()
-              return {
-                  "path": path.relative_to(target).as_posix(),
-                  "bytes": len(payload),
-                  "sha256": hashlib.sha256(payload).hexdigest(),
-              }
-
-          parts = []
-          for part in range(1, 10):
-              path = transport / f"manzanita-independent-archive-source-part-{part:02d}.b64"
-              repo_path = f".github/bootstrap/{path.name}"
-              blob = subprocess.run(
-                  ["git", "rev-parse", f"{commit}:{repo_path}"],
-                  check=True,
-                  text=True,
-                  capture_output=True,
-              ).stdout.strip()
-              entry = digest(path)
-              entry["historical_path"] = repo_path
-              entry["git_blob_sha1"] = blob
-              parts.append(entry)
-
-          members = [digest(path) for path in sorted(extracted.rglob("*")) if path.is_file()]
-          expected_members = {
-              ".github/workflows/manzanita-independent-archive.yml",
-              ".github/workflows/manzanita-release-control.yml",
-              "manzanita-next/release-control/README.md",
-              "manzanita-next/release-control/RELEASE_CONTRACT.json",
-              "manzanita-next/release-control/EXTERNAL_CAMPAIGN_LEDGER.json",
-              "manzanita-next/release-control/tests/test_release_control.py",
-              "manzanita-next/release-control/review/M99-RB-PKT-012.json",
-              "manzanita-next/release-control/review/M99-RB-DEC-012.json",
-              "manzanita-next/release-control/archive-campaign/README.md",
-              "manzanita-next/release-control/archive-campaign/M99-PHYS-ARCHIVE-001-RECEIPT.json",
-              "manzanita-next/release-control/archive-campaign/verify_archive_campaign.py",
-              "manzanita-next/release-control/archive-campaign/tests/test_archive_campaign.py",
-          }
-          observed_members = {
-              path.relative_to(extracted).as_posix()
-              for path in extracted.rglob("*")
-              if path.is_file()
-          }
-          if observed_members != expected_members:
-              raise SystemExit(
-                  f"historical source member mismatch: missing={sorted(expected_members - observed_members)} "
-                  f"extra={sorted(observed_members - expected_members)}"
-              )
-
-          receipt_path = extracted / "manzanita-next/release-control/archive-campaign/M99-PHYS-ARCHIVE-001-RECEIPT.json"
-          campaign_receipt = json.loads(receipt_path.read_text())
-          workflow_text = (
-              extracted / ".github/workflows/manzanita-independent-archive.yml"
-          ).read_text()
-          discovery_terms = [
-              line.strip()
-              for line in workflow_text.splitlines()
-              if any(term in line.casefold() for term in ("drive", "selector", "folder", "archive", "file_id", "provider"))
-          ]
-
-          result = {
-              "schema": "manzanita/useful-plant-v30-historical-archive-source-recovery@1",
-              "generated_at": datetime.now(timezone.utc).isoformat(),
-              "result": "PASS_HISTORICAL_ARCHIVE_SOURCE_RECOVERED",
-              "source_commit": commit,
-              "source_tree": tree,
-              "transport_parts": parts,
-              "combined_base64": digest(transport / "manzanita-independent-archive-source.b64"),
-              "source_archive": digest(transport / "manzanita-independent-archive-source.tar.gz"),
-              "source_archive_expected_sha256": "a1c4c12053066c1c579111c9bea16a6acd50e4a0c6cf21120afc944d46e43b46",
-              "member_count": len(members),
-              "members": members,
-              "campaign_receipt": campaign_receipt,
-              "workflow_discovery_lines": discovery_terms,
-              "operator_visual_acceptance": "ABSENT",
-              "merge_authorized": False,
-              "release_authorized": False,
-              "public_route_effect": "none",
-              "pages_deployment_effect": "none",
-              "external_effect": "none",
-          }
-          (target / "HISTORICAL_ARCHIVE_SOURCE_RECOVERY_RECEIPT.json").write_text(
-              json.dumps(result, indent=2, sort_keys=True) + "\n"
-          )
-          print(json.dumps({
-              "result": result["result"],
-              "source_commit": commit,
-              "member_count": len(members),
-              "campaign_id": campaign_receipt.get("campaign_id") or campaign_receipt.get("id"),
-          }, indent=2))
-          PY
+          python manzanita-next/review/useful-plant-v30-native/recover_historical_archive.py \
+            --commit "$HISTORICAL_COMMIT" \
+            --tree "$HISTORICAL_TREE" \
+            --transport-dir "$TRANSPORT" \
+            --source-archive "$TRANSPORT/manzanita-independent-archive-source.tar.gz" \
+            --extracted-dir "$EXTRACTED" \
+            --output "$TARGET/HISTORICAL_ARCHIVE_SOURCE_RECOVERY_RECEIPT.json"
 
       - name: Install bounded browser runtime
         run: |
