@@ -1,0 +1,50 @@
+{
+  "schema": "manzanita/useful-plant-v30-bootstrap-manifest@1",
+  "generated_at": "2026-08-27T00:03:44+00:00",
+  "coverage": {
+    "file_count": 8,
+    "total_bytes": 103827
+  },
+  "entries": [
+    {
+      "path": ".github/workflows/manzanita-useful-plant-v30-continuation-review.yml",
+      "bytes": 2876,
+      "sha256": "b95cf4b465f6ee4c43f630c2458cb7f6146654503f727efbc578c5c61f1ee19d"
+    },
+    {
+      "path": "manzanita-next/review/mw-habitat-live-photo-030-continuation/.gitattributes",
+      "bytes": 71,
+      "sha256": "d5c14d66f57f3fedcb8038a4b61b1b1281b5a2e1b10ccb04e5fc21df35545f2f"
+    },
+    {
+      "path": "manzanita-next/review/mw-habitat-live-photo-030-continuation/CARRIER_CONTRACT.json",
+      "bytes": 1670,
+      "sha256": "c68999a517909c2c731632c6c2e9fb86562dc2b27807cd6395ee743bf173687b"
+    },
+    {
+      "path": "manzanita-next/review/mw-habitat-live-photo-030-continuation/PAYLOAD_RECEIPT.json",
+      "bytes": 1845,
+      "sha256": "79569bd164e138bfeccf8635759b668e1691c6841ca1a699ec86ca35fb33331f"
+    },
+    {
+      "path": "manzanita-next/review/mw-habitat-live-photo-030-continuation/README.md",
+      "bytes": 1124,
+      "sha256": "7e45b160c79760c71c2502a8cb53ca77c314ba04d6c993ab03d55b674d0f5158"
+    },
+    {
+      "path": "manzanita-next/review/mw-habitat-live-photo-030-continuation/SOURCE_PAYLOAD.tar.xz.b64",
+      "bytes": 91881,
+      "sha256": "013481cb98d0632df64c1216aa0930782fcab0f5845089271890bf17ecbaa0fe"
+    },
+    {
+      "path": "manzanita-next/review/mw-habitat-live-photo-030-continuation/unpack_source.py",
+      "bytes": 2822,
+      "sha256": "18c92519061e510fe3d93284318be76728011e1a39332b89aa4626fffc0ade42"
+    },
+    {
+      "path": "manzanita-next/review/mw-habitat-live-photo-030-continuation/verify_scope.py",
+      "bytes": 1538,
+      "sha256": "59b6cf90e48be62ad9e07236b0db5137bcf1dfcf55f58ae6019e6a17f3e581b6"
+    }
+  ]
+}
