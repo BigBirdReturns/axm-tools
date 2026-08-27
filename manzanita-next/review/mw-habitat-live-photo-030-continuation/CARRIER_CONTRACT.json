@@ -1,0 +1,37 @@
+{
+  "schema": "manzanita/useful-plant-v30-source-replay-bootstrap@1",
+  "carrier_id": "MW-USEFUL-PLANT-V30-SOURCE-REPLAY-BOOTSTRAP-001",
+  "generated_at": "2026-08-27T00:02:34+00:00",
+  "object_class": "BOUNDED_SOURCE_REPLAY_BOOTSTRAP",
+  "target_repository": "BigBirdReturns/axm-tools",
+  "target_path": "manzanita-next/review/mw-habitat-live-photo-030-continuation",
+  "payload": "SOURCE_PAYLOAD.tar.xz.b64",
+  "payload_receipt": "PAYLOAD_RECEIPT.json",
+  "expanded_member_count": 71,
+  "expanded_object_class": "SOURCE_REPLAY_REPOSITORY_REVIEW_CARRIER",
+  "allowed_changed_paths": [
+    "manzanita-next/review/mw-habitat-live-photo-030-continuation/**",
+    ".github/workflows/manzanita-useful-plant-v30-continuation-review.yml"
+  ],
+  "prohibited_paths": [
+    "manzanita/**",
+    "index.html",
+    "README.md",
+    "CONTINUITY.md",
+    "PROJECT_ESTATE.json"
+  ],
+  "workflow_effect": "Decodes the exact text payload into an isolated runner workspace, reruns the complete source-carrier and browser campaign, creates a measured runtime artifact, and uploads it. No repository file is rewritten and no deployment action exists.",
+  "public_route_effect": "none",
+  "pages_deployment_effect": "none",
+  "operator_visual_acceptance": "ABSENT",
+  "release_authorized": false,
+  "external_effect": "none",
+  "blocking_holds": [
+    "exact v29 archive not mounted",
+    "exact retained Plant origin SVG not mounted",
+    "exact retained cached Plant WebP not mounted",
+    "inherited rendered parent locks not executed",
+    "operator visual acceptance absent",
+    "expanded runtime output is not preclaimed as byte-identical with the local exact rendered carrier"
+  ]
+}
