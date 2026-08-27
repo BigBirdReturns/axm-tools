@@ -54,6 +54,8 @@ jobs:
             manzanita-next/review/useful-plant-v30-native/test_plant_donor_admission.py \
             manzanita-next/review/useful-plant-v30-native/classify_historical_carrier.py \
             manzanita-next/review/useful-plant-v30-native/test_historical_carrier_classification.py \
+            manzanita-next/review/useful-plant-v30-native/recover_exact_git_objects.py \
+            manzanita-next/review/useful-plant-v30-native/test_recover_exact_git_objects.py \
             manzanita-next/review/useful-plant-v30-native/recover_historical_archive.py
           python -m json.tool \
             manzanita-next/review/useful-plant-v30-native/V29_PARENT_ADMISSION_CONTRACT.json \
@@ -62,6 +64,7 @@ jobs:
             manzanita-next/review/useful-plant-v30-native/PLANT_DONOR_ADMISSION_CONTRACT.json \
             >/dev/null
           python manzanita-next/review/useful-plant-v30-native/test_historical_carrier_classification.py
+          python manzanita-next/review/useful-plant-v30-native/test_recover_exact_git_objects.py
 
       - name: Verify source, custody, and changed-path scope
         run: |
@@ -70,23 +73,75 @@ jobs:
             --head '${{ steps.refs.outputs.head }}' \
             --output "$RUNNER_TEMP/useful-plant-v30-source-receipt.json"
 
-      - name: Prove exact v29 parent gate fails closed while unmounted
+      - name: Recover exact parent and Plant objects from all local Git objects
+        shell: bash
         run: |
           set -euo pipefail
-          python manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
-            --archive "$RUNNER_TEMP/mw-habitat-live-photo-029.zip" \
-            --expect-missing \
-            --output "$RUNNER_TEMP/V29_PARENT_ADMISSION_RECEIPT.json"
+          python manzanita-next/review/useful-plant-v30-native/recover_exact_git_objects.py \
+            --repo . \
+            --output-dir "$RUNNER_TEMP/useful-plant-v30-exact-git-recovery"
+
+      - name: Apply exact v29 parent admission gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          RECOVERY="$RUNNER_TEMP/useful-plant-v30-exact-git-recovery"
+          ARCHIVE="$RECOVERY/mw-habitat-live-photo-029.zip"
+          OUTPUT="$RUNNER_TEMP/V29_PARENT_ADMISSION_RECEIPT.json"
+          if [[ -f "$ARCHIVE" ]]; then
+            python manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
+              --archive "$ARCHIVE" \
+              --output "$OUTPUT"
+          else
+            python manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
+              --archive "$ARCHIVE" \
+              --expect-missing \
+              --output "$OUTPUT"
+          fi
           python manzanita-next/review/useful-plant-v30-native/test_v29_parent_admission.py
 
-      - name: Prove exact Plant donor gate fails closed while unmounted
+      - name: Apply exact Plant donor admission gate
+        shell: bash
         run: |
           set -euo pipefail
-          python manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
-            --origin "$RUNNER_TEMP/plant-origin.svg" \
-            --cached "$RUNNER_TEMP/plant-derived-reference.webp" \
-            --expect-missing \
-            --output "$RUNNER_TEMP/PLANT_DONOR_ADMISSION_RECEIPT.json"
+          RECOVERY="$RUNNER_TEMP/useful-plant-v30-exact-git-recovery"
+          ORIGIN="$RECOVERY/plant-origin.svg"
+          CACHED="$RECOVERY/plant-derived-reference.webp"
+          OUTPUT="$RUNNER_TEMP/PLANT_DONOR_ADMISSION_RECEIPT.json"
+          if [[ -f "$ORIGIN" && -f "$CACHED" ]]; then
+            python manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
+              --origin "$ORIGIN" \
+              --cached "$CACHED" \
+              --output "$OUTPUT"
+          elif [[ ! -f "$ORIGIN" && ! -f "$CACHED" ]]; then
+            python manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
+              --origin "$ORIGIN" \
+              --cached "$CACHED" \
+              --expect-missing \
+              --output "$OUTPUT"
+          else
+            set +e
+            python manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
+              --origin "$ORIGIN" \
+              --cached "$CACHED" \
+              --output "$OUTPUT"
+            status=$?
+            set -e
+            test "$status" -eq 1
+            python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          receipt = json.loads(
+              (Path(os.environ["RUNNER_TEMP"]) / "PLANT_DONOR_ADMISSION_RECEIPT.json").read_text()
+          )
+          assert receipt["result"] == "HOLD_EXACT_PLANT_DONORS_PARTIAL"
+          assert receipt["admission_state"] == "HOLD"
+          assert receipt["donors_admitted"] is False
+          assert receipt["blocking_holds"]
+          PY
+          fi
           python manzanita-next/review/useful-plant-v30-native/test_plant_donor_admission.py
 
       - name: Classify historical independent-archive carrier
@@ -101,6 +156,15 @@ jobs:
             --commit "$HISTORICAL_COMMIT" \
             --tree "$HISTORICAL_TREE" \
             --output-dir "$TARGET"
+
+      - name: Retain exact Git-object recovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-useful-plant-v30-exact-git-object-recovery
+          path: ${{ runner.temp }}/useful-plant-v30-exact-git-recovery/
+          retention-days: 30
+          if-no-files-found: warn
 
       - name: Retain historical carrier classification
         if: always()
@@ -135,6 +199,7 @@ jobs:
           receipts = {
               'source': json.loads((root / 'useful-plant-v30-source-receipt.json').read_text()),
               'browser': json.loads((root / 'useful-plant-v30-browser-review/BROWSER_REVIEW_RECEIPT.json').read_text()),
+              'recovery': json.loads((root / 'useful-plant-v30-exact-git-recovery/EXACT_GIT_OBJECT_RECOVERY_RECEIPT.json').read_text()),
               'parent': json.loads((root / 'V29_PARENT_ADMISSION_RECEIPT.json').read_text()),
               'plant': json.loads((root / 'PLANT_DONOR_ADMISSION_RECEIPT.json').read_text()),
               'historical': json.loads((root / 'manzanita-independent-archive-history/HISTORICAL_CARRIER_CLASSIFICATION_RECEIPT.json').read_text()),
@@ -142,12 +207,33 @@ jobs:
 
           assert receipts['source']['result'] == 'PASS'
           assert receipts['browser']['result'] == 'PASS'
-          assert receipts['parent']['result'] == 'HOLD_PARENT_ARCHIVE_UNMOUNTED'
-          assert receipts['parent']['admission_state'] == 'HOLD'
-          assert receipts['parent']['archive_admitted'] is False
-          assert receipts['plant']['result'] == 'HOLD_EXACT_PLANT_DONORS_UNMOUNTED'
-          assert receipts['plant']['admission_state'] == 'HOLD'
-          assert receipts['plant']['donors_admitted'] is False
+          recovery = receipts['recovery']
+          assert recovery['result'] == 'PASS_EXACT_GIT_OBJECT_SCAN_COMPLETE'
+
+          parent = receipts['parent']
+          if recovery['v29_archive_recovered']:
+              assert parent['result'] == 'PASS_EXACT_V29_PARENT_ADMITTED'
+              assert parent['admission_state'] == 'ADMITTED'
+              assert parent['archive_admitted'] is True
+          else:
+              assert parent['result'] == 'HOLD_PARENT_ARCHIVE_UNMOUNTED'
+              assert parent['admission_state'] == 'HOLD'
+              assert parent['archive_admitted'] is False
+
+          plant = receipts['plant']
+          recovered = recovery['recovered']
+          if recovery['plant_pair_recovered']:
+              assert plant['result'] == 'PASS_EXACT_PLANT_DONORS_ADMITTED'
+              assert plant['admission_state'] == 'ADMITTED'
+              assert plant['donors_admitted'] is True
+          elif recovered['plant_origin'] or recovered['plant_cached']:
+              assert plant['result'] == 'HOLD_EXACT_PLANT_DONORS_PARTIAL'
+              assert plant['admission_state'] == 'HOLD'
+              assert plant['donors_admitted'] is False
+          else:
+              assert plant['result'] == 'HOLD_EXACT_PLANT_DONORS_UNMOUNTED'
+              assert plant['admission_state'] == 'HOLD'
+              assert plant['donors_admitted'] is False
 
           historical = receipts['historical']
           assert historical['result'] in {
