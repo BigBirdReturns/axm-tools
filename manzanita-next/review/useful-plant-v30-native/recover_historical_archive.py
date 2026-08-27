@@ -4,9 +4,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import subprocess
 import tarfile
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 
@@ -182,25 +182,57 @@ def main() -> int:
         )
 
     with tarfile.open(args.source_archive, mode="r:gz") as archive:
-        members = archive.getmembers()
-        names = [member.name for member in members]
-        duplicate_names = sorted({name for name in names if names.count(name) > 1})
-        unsafe_names = sorted(name for name in names if not safe_member_name(name))
+        all_members = archive.getmembers()
+        unsafe_names = sorted(
+            member.name for member in all_members if not safe_member_name(member.name)
+        )
+        unsupported = [
+            member.name
+            for member in all_members
+            if not (
+                member.isdir()
+                or member.isfile()
+                or member.issym()
+                or member.islnk()
+            )
+        ]
+        payload_members = [
+            member
+            for member in all_members
+            if member.isfile() or member.issym() or member.islnk()
+        ]
+        names = [member.name for member in payload_members]
+        counts = Counter(names)
+        duplicate_names = sorted(name for name, count in counts.items() if count > 1)
         observed_members = set(names)
-        if duplicate_names or unsafe_names or observed_members != EXPECTED_MEMBERS:
+        if (
+            duplicate_names
+            or unsafe_names
+            or unsupported
+            or observed_members != EXPECTED_MEMBERS
+        ):
             raise SystemExit(
                 "historical source member mismatch: "
                 f"duplicates={duplicate_names} unsafe={unsafe_names} "
+                f"unsupported={unsupported} "
                 f"missing={sorted(EXPECTED_MEMBERS - observed_members)} "
                 f"extra={sorted(observed_members - EXPECTED_MEMBERS)}"
             )
 
-        by_name = {member.name: member for member in members}
+        directory_entries = [
+            {
+                "path": member.name,
+                "mode": oct(member.mode),
+            }
+            for member in all_members
+            if member.isdir()
+        ]
+        by_name = {member.name: member for member in payload_members}
         payloads: dict[str, bytes] = {}
         member_receipts: list[dict] = []
         link_receipts: list[dict] = []
 
-        for member in members:
+        for member in payload_members:
             entry = {
                 "path": member.name,
                 "type": member.type.decode("ascii", errors="replace")
@@ -255,7 +287,7 @@ def main() -> int:
 
     combined_b64 = args.transport_dir / "manzanita-independent-archive-source.b64"
     result = {
-        "schema": "manzanita/useful-plant-v30-historical-archive-source-recovery@2",
+        "schema": "manzanita/useful-plant-v30-historical-archive-source-recovery@3",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "result": "PASS_HISTORICAL_ARCHIVE_SOURCE_RECOVERED",
         "source_commit": args.commit,
@@ -267,6 +299,9 @@ def main() -> int:
         ),
         "source_archive": source_digest,
         "source_archive_expected_sha256": expected_source_sha,
+        "tar_member_count": len(all_members),
+        "directory_count": len(directory_entries),
+        "directories": directory_entries,
         "member_count": len(member_receipts),
         "members": member_receipts,
         "links": link_receipts,
@@ -286,6 +321,8 @@ def main() -> int:
             {
                 "result": result["result"],
                 "source_commit": args.commit,
+                "tar_member_count": result["tar_member_count"],
+                "directory_count": result["directory_count"],
                 "member_count": result["member_count"],
                 "link_count": len(link_receipts),
                 "campaign_receipt_materialized": campaign_receipt_provenance[
