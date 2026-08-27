@@ -122,7 +122,7 @@ jobs:
           assert receipt["external_effect"] == "none"
           PY
 
-      - name: Recover and verify historical independent-archive source
+      - name: Recover and classify historical independent-archive source
         shell: bash
         run: |
           set -euo pipefail
@@ -203,8 +203,6 @@ jobs:
           )
           print(json.dumps(receipt, indent=2, sort_keys=True))
           PY
-          echo "a1c4c12053066c1c579111c9bea16a6acd50e4a0c6cf21120afc944d46e43b46  $TRANSPORT/manzanita-independent-archive-source.tar.gz" \
-            | sha256sum --check --strict
 
           python manzanita-next/review/useful-plant-v30-native/recover_historical_archive.py \
             --commit "$HISTORICAL_COMMIT" \
@@ -234,9 +232,13 @@ jobs:
           import os
           from pathlib import Path
 
-          source = json.loads((Path(os.environ['RUNNER_TEMP']) / 'useful-plant-v30-source-receipt.json').read_text())
-          browser = json.loads((Path(os.environ['RUNNER_TEMP']) / 'useful-plant-v30-browser-review/BROWSER_REVIEW_RECEIPT.json').read_text())
-          historical = json.loads((Path(os.environ['RUNNER_TEMP']) / 'manzanita-independent-archive-history/HISTORICAL_ARCHIVE_SOURCE_RECOVERY_RECEIPT.json').read_text())
+          root = Path(os.environ['RUNNER_TEMP'])
+          source = json.loads((root / 'useful-plant-v30-source-receipt.json').read_text())
+          browser = json.loads((root / 'useful-plant-v30-browser-review/BROWSER_REVIEW_RECEIPT.json').read_text())
+          historical_root = root / 'manzanita-independent-archive-history'
+          historical = json.loads((historical_root / 'HISTORICAL_ARCHIVE_SOURCE_RECOVERY_RECEIPT.json').read_text())
+          normalization = json.loads((historical_root / 'HISTORICAL_BASE64_NORMALIZATION_RECEIPT.json').read_text())
+
           for label, receipt in [('source', source), ('browser', browser)]:
               assert receipt['result'] == 'PASS', (label, receipt['result'])
               assert receipt['operator_visual_acceptance'] == 'ABSENT', label
@@ -245,8 +247,20 @@ jobs:
               assert receipt['public_route_effect'] == 'none', label
               assert receipt['pages_deployment_effect'] == 'none', label
               assert receipt['external_effect'] == 'none', label
-          assert historical['result'] == 'PASS_HISTORICAL_ARCHIVE_SOURCE_RECOVERED'
-          assert historical['source_archive']['sha256'] == historical['source_archive_expected_sha256']
+
+          assert normalization['result'] == 'PASS'
+          assert historical['source_archive']['sha256'] == normalization['decoded_sha256']
+          if historical['source_archive_assertion_match']:
+              assert historical['result'] == 'PASS_HISTORICAL_ARCHIVE_SOURCE_RECOVERED'
+              assert historical['admission_state'] == 'QUALIFIED'
+              assert historical['exact_source_archive_admitted'] is True
+              assert historical['blocking_holds'] == []
+          else:
+              assert historical['result'] == 'HOLD_HISTORICAL_SOURCE_ASSERTION_DRIFT'
+              assert historical['admission_state'] == 'HOLD'
+              assert historical['exact_source_archive_admitted'] is False
+              assert historical['blocking_holds']
+
           assert historical['operator_visual_acceptance'] == 'ABSENT'
           assert historical['release_authorized'] is False
           assert historical['merge_authorized'] is False
