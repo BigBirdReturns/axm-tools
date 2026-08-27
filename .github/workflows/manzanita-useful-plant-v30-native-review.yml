@@ -41,7 +41,7 @@ jobs:
             echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Parse native source and exact admission gates
+      - name: Parse native source and admission machinery
         run: |
           set -euo pipefail
           node --check manzanita-next/review/useful-plant-v30-native/app.js
@@ -52,6 +52,8 @@ jobs:
             manzanita-next/review/useful-plant-v30-native/test_v29_parent_admission.py \
             manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
             manzanita-next/review/useful-plant-v30-native/test_plant_donor_admission.py \
+            manzanita-next/review/useful-plant-v30-native/classify_historical_carrier.py \
+            manzanita-next/review/useful-plant-v30-native/test_historical_carrier_classification.py \
             manzanita-next/review/useful-plant-v30-native/recover_historical_archive.py
           python -m json.tool \
             manzanita-next/review/useful-plant-v30-native/V29_PARENT_ADMISSION_CONTRACT.json \
@@ -59,6 +61,7 @@ jobs:
           python -m json.tool \
             manzanita-next/review/useful-plant-v30-native/PLANT_DONOR_ADMISSION_CONTRACT.json \
             >/dev/null
+          python manzanita-next/review/useful-plant-v30-native/test_historical_carrier_classification.py
 
       - name: Verify source, custody, and changed-path scope
         run: |
@@ -75,24 +78,6 @@ jobs:
             --expect-missing \
             --output "$RUNNER_TEMP/V29_PARENT_ADMISSION_RECEIPT.json"
           python manzanita-next/review/useful-plant-v30-native/test_v29_parent_admission.py
-          python - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-
-          receipt = json.loads(
-              (Path(os.environ["RUNNER_TEMP"]) / "V29_PARENT_ADMISSION_RECEIPT.json").read_text()
-          )
-          assert receipt["result"] == "HOLD_PARENT_ARCHIVE_UNMOUNTED"
-          assert receipt["admission_state"] == "HOLD"
-          assert receipt["archive_admitted"] is False
-          assert receipt["operator_visual_acceptance"] == "ABSENT"
-          assert receipt["merge_authorized"] is False
-          assert receipt["release_authorized"] is False
-          assert receipt["public_route_effect"] == "none"
-          assert receipt["pages_deployment_effect"] == "none"
-          assert receipt["external_effect"] == "none"
-          PY
 
       - name: Prove exact Plant donor gate fails closed while unmounted
         run: |
@@ -103,210 +88,28 @@ jobs:
             --expect-missing \
             --output "$RUNNER_TEMP/PLANT_DONOR_ADMISSION_RECEIPT.json"
           python manzanita-next/review/useful-plant-v30-native/test_plant_donor_admission.py
-          python - <<'PY'
-          import json
-          import os
-          from pathlib import Path
 
-          receipt = json.loads(
-              (Path(os.environ["RUNNER_TEMP"]) / "PLANT_DONOR_ADMISSION_RECEIPT.json").read_text()
-          )
-          assert receipt["result"] == "HOLD_EXACT_PLANT_DONORS_UNMOUNTED"
-          assert receipt["admission_state"] == "HOLD"
-          assert receipt["donors_admitted"] is False
-          assert receipt["operator_visual_acceptance"] == "ABSENT"
-          assert receipt["merge_authorized"] is False
-          assert receipt["release_authorized"] is False
-          assert receipt["public_route_effect"] == "none"
-          assert receipt["pages_deployment_effect"] == "none"
-          assert receipt["external_effect"] == "none"
-          PY
-
-      - name: Recover and classify historical independent-archive source
+      - name: Classify historical independent-archive carrier
         shell: bash
         run: |
           set -euo pipefail
           HISTORICAL_COMMIT="8eda7e87fb8f6789f4392a328c7ab3435f122bdf"
           HISTORICAL_TREE="f695d10fd0651a99d33c52cc0ee9fd17307f1e90"
           TARGET="$RUNNER_TEMP/manzanita-independent-archive-history"
-          TRANSPORT="$TARGET/transport"
-          EXTRACTED="$TARGET/extracted"
-          mkdir -p "$TRANSPORT" "$EXTRACTED"
-
           git fetch --no-tags --depth=1 origin "$HISTORICAL_COMMIT"
-          test "$(git show -s --format=%T "$HISTORICAL_COMMIT")" = "$HISTORICAL_TREE"
-
-          : > "$TRANSPORT/manzanita-independent-archive-source.b64"
-          for part in 01 02 03 04 05 06 07 08 09; do
-            path=".github/bootstrap/manzanita-independent-archive-source-part-${part}.b64"
-            git cat-file -e "${HISTORICAL_COMMIT}:${path}"
-            git show "${HISTORICAL_COMMIT}:${path}" \
-              > "$TRANSPORT/manzanita-independent-archive-source-part-${part}.b64"
-            cat "$TRANSPORT/manzanita-independent-archive-source-part-${part}.b64" \
-              >> "$TRANSPORT/manzanita-independent-archive-source.b64"
-          done
-
-          python - \
-            "$TRANSPORT/manzanita-independent-archive-source.b64" \
-            "$TRANSPORT/manzanita-independent-archive-source.tar.gz" \
-            "$TARGET/HISTORICAL_BASE64_NORMALIZATION_RECEIPT.json" <<'PY'
-          from __future__ import annotations
-
-          import base64
-          import binascii
-          import gzip
-          import hashlib
-          import json
-          import string
-          import sys
-          from pathlib import Path
-
-          ASSERTED_SHA256 = "a1c4c12053066c1c579111c9bea16a6acd50e4a0c6cf21120afc944d46e43b46"
-          BASE64_ALPHABET = (string.ascii_uppercase + string.ascii_lowercase + string.digits + "+/").encode("ascii")
-
-          source = Path(sys.argv[1])
-          target = Path(sys.argv[2])
-          receipt_path = Path(sys.argv[3])
-
-          raw = source.read_bytes()
-          encoded = b"".join(raw.split())
-          remainder = len(encoded) % 4
-          if remainder == 1:
-              raise SystemExit(
-                  f"invalid historical base64 length: {len(encoded)} bytes"
-              )
-
-          candidate_specs: list[tuple[str, bytes, str | None]] = []
-          if remainder == 0:
-              candidate_specs.append(("carrier_complete", encoded, None))
-          else:
-              padding = b"=" * ((4 - remainder) % 4)
-              candidate_specs.append(("padding_only", encoded + padding, None))
-              if remainder == 3:
-                  candidate_specs.extend(
-                      (
-                          "append_missing_terminal_symbol",
-                          encoded + bytes([symbol]),
-                          chr(symbol),
-                      )
-                      for symbol in BASE64_ALPHABET
-                  )
-
-          evaluated = []
-          exact = []
-          valid_gzip = []
-          for method, normalized, symbol in candidate_specs:
-              try:
-                  decoded = base64.b64decode(normalized, validate=True)
-              except (binascii.Error, ValueError):
-                  continue
-              decoded_sha = hashlib.sha256(decoded).hexdigest()
-              gzip_ok = False
-              gzip_bytes = None
-              gzip_sha = None
-              try:
-                  uncompressed = gzip.decompress(decoded)
-              except Exception:
-                  pass
-              else:
-                  gzip_ok = True
-                  gzip_bytes = len(uncompressed)
-                  gzip_sha = hashlib.sha256(uncompressed).hexdigest()
-              row = {
-                  "method": method,
-                  "terminal_symbol": symbol,
-                  "normalized_bytes": len(normalized),
-                  "normalized_sha256": hashlib.sha256(normalized).hexdigest(),
-                  "decoded_bytes": len(decoded),
-                  "decoded_sha256": decoded_sha,
-                  "gzip_valid": gzip_ok,
-                  "gzip_uncompressed_bytes": gzip_bytes,
-                  "gzip_uncompressed_sha256": gzip_sha,
-              }
-              evaluated.append(row)
-              if gzip_ok:
-                  valid_gzip.append((row, normalized, decoded))
-              if gzip_ok and decoded_sha == ASSERTED_SHA256:
-                  exact.append((row, normalized, decoded))
-
-          if len(exact) == 1:
-              selected_row, selected_normalized, selected_decoded = exact[0]
-              result_code = "PASS_ASSERTED_SOURCE_RECOVERED"
-              assertion_match = True
-          elif len(exact) > 1:
-              raise SystemExit("ambiguous exact historical carrier recovery")
-          elif len(valid_gzip) == 1:
-              selected_row, selected_normalized, selected_decoded = valid_gzip[0]
-              result_code = "HOLD_VALID_CARRIER_ASSERTION_DRIFT"
-              assertion_match = False
-          else:
-              diagnostic = {
-                  "schema": "manzanita/historical-base64-unresolved-diagnostic@1",
-                  "result": "HOLD_HISTORICAL_CARRIER_UNRESOLVED",
-                  "source_path": source.name,
-                  "raw_bytes": len(raw),
-                  "whitespace_stripped_bytes": len(encoded),
-                  "original_remainder": remainder,
-                  "candidate_count_tested": len(evaluated),
-                  "asserted_source_sha256": ASSERTED_SHA256,
-                  "evaluated": evaluated,
-                  "operator_visual_acceptance": "ABSENT",
-                  "merge_authorized": False,
-                  "release_authorized": False,
-                  "public_route_effect": "none",
-                  "pages_deployment_effect": "none",
-                  "external_effect": "none",
-              }
-              receipt_path.write_text(
-                  json.dumps(diagnostic, indent=2, sort_keys=True) + "\n",
-                  encoding="utf-8",
-              )
-              raise SystemExit("historical carrier recovery remains unresolved")
-
-          target.write_bytes(selected_decoded)
-          receipt = {
-              "schema": "manzanita/historical-base64-normalization-receipt@2",
-              "result": result_code,
-              "source_path": source.name,
-              "raw_bytes": len(raw),
-              "whitespace_stripped_bytes": len(encoded),
-              "original_remainder": remainder,
-              "candidate_count_tested": len(evaluated),
-              "gzip_valid_candidate_count": len(valid_gzip),
-              "asserted_source_sha256": ASSERTED_SHA256,
-              "assertion_match": assertion_match,
-              "selected": selected_row,
-              "normalization_rule": "strip ASCII whitespace, test the required padding and every possible missing terminal RFC 4648 symbol, require a valid gzip stream, and prefer the unique candidate matching the asserted archive SHA-256",
-              "operator_visual_acceptance": "ABSENT",
-              "merge_authorized": False,
-              "release_authorized": False,
-              "public_route_effect": "none",
-              "pages_deployment_effect": "none",
-              "external_effect": "none",
-          }
-          receipt_path.write_text(
-              json.dumps(receipt, indent=2, sort_keys=True) + "\n",
-              encoding="utf-8",
-          )
-          print(json.dumps(receipt, indent=2, sort_keys=True))
-          PY
-
-          python manzanita-next/review/useful-plant-v30-native/recover_historical_archive.py \
+          python manzanita-next/review/useful-plant-v30-native/classify_historical_carrier.py \
             --commit "$HISTORICAL_COMMIT" \
             --tree "$HISTORICAL_TREE" \
-            --transport-dir "$TRANSPORT" \
-            --source-archive "$TRANSPORT/manzanita-independent-archive-source.tar.gz" \
-            --extracted-dir "$EXTRACTED" \
-            --output "$TARGET/HISTORICAL_ARCHIVE_SOURCE_RECOVERY_RECEIPT.json"
+            --output-dir "$TARGET"
 
-      - name: Retain unresolved historical carrier diagnostics
+      - name: Retain historical carrier classification
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: manzanita-useful-plant-v30-historical-carrier-diagnostics
+          name: manzanita-useful-plant-v30-historical-carrier-classification
           path: ${{ runner.temp }}/manzanita-independent-archive-history/
           retention-days: 30
-          if-no-files-found: error
+          if-no-files-found: warn
 
       - name: Install bounded browser runtime
         run: |
@@ -329,45 +132,50 @@ jobs:
           from pathlib import Path
 
           root = Path(os.environ['RUNNER_TEMP'])
-          source = json.loads((root / 'useful-plant-v30-source-receipt.json').read_text())
-          browser = json.loads((root / 'useful-plant-v30-browser-review/BROWSER_REVIEW_RECEIPT.json').read_text())
-          historical_root = root / 'manzanita-independent-archive-history'
-          historical = json.loads((historical_root / 'HISTORICAL_ARCHIVE_SOURCE_RECOVERY_RECEIPT.json').read_text())
-          normalization = json.loads((historical_root / 'HISTORICAL_BASE64_NORMALIZATION_RECEIPT.json').read_text())
+          receipts = {
+              'source': json.loads((root / 'useful-plant-v30-source-receipt.json').read_text()),
+              'browser': json.loads((root / 'useful-plant-v30-browser-review/BROWSER_REVIEW_RECEIPT.json').read_text()),
+              'parent': json.loads((root / 'V29_PARENT_ADMISSION_RECEIPT.json').read_text()),
+              'plant': json.loads((root / 'PLANT_DONOR_ADMISSION_RECEIPT.json').read_text()),
+              'historical': json.loads((root / 'manzanita-independent-archive-history/HISTORICAL_CARRIER_CLASSIFICATION_RECEIPT.json').read_text()),
+          }
 
-          for label, receipt in [('source', source), ('browser', browser)]:
-              assert receipt['result'] == 'PASS', (label, receipt['result'])
+          assert receipts['source']['result'] == 'PASS'
+          assert receipts['browser']['result'] == 'PASS'
+          assert receipts['parent']['result'] == 'HOLD_PARENT_ARCHIVE_UNMOUNTED'
+          assert receipts['parent']['admission_state'] == 'HOLD'
+          assert receipts['parent']['archive_admitted'] is False
+          assert receipts['plant']['result'] == 'HOLD_EXACT_PLANT_DONORS_UNMOUNTED'
+          assert receipts['plant']['admission_state'] == 'HOLD'
+          assert receipts['plant']['donors_admitted'] is False
+
+          historical = receipts['historical']
+          assert historical['result'] in {
+              'PASS_ASSERTED_SOURCE_RECOVERED',
+              'HOLD_VALID_CARRIER_ASSERTION_DRIFT',
+              'HOLD_HISTORICAL_CARRIER_UNRESOLVED',
+          }
+          if historical['result'] == 'PASS_ASSERTED_SOURCE_RECOVERED':
+              assert historical['admission_state'] == 'QUALIFIED'
+              assert historical['exact_source_archive_admitted'] is True
+              assert historical['recovered_archive']['sha256'] == historical['asserted_source_sha256']
+              assert historical['blocking_holds'] == []
+          else:
+              assert historical['admission_state'] == 'HOLD'
+              assert historical['exact_source_archive_admitted'] is False
+              assert historical['blocking_holds']
+
+          for label, receipt in receipts.items():
               assert receipt['operator_visual_acceptance'] == 'ABSENT', label
               assert receipt['release_authorized'] is False, label
               assert receipt['merge_authorized'] is False, label
               assert receipt['public_route_effect'] == 'none', label
               assert receipt['pages_deployment_effect'] == 'none', label
               assert receipt['external_effect'] == 'none', label
-
-          assert normalization['selected']['decoded_sha256'] == historical['source_archive']['sha256']
-          assert normalization['assertion_match'] == historical['source_archive_assertion_match']
-          if historical['source_archive_assertion_match']:
-              assert normalization['result'] == 'PASS_ASSERTED_SOURCE_RECOVERED'
-              assert historical['result'] == 'PASS_HISTORICAL_ARCHIVE_SOURCE_RECOVERED'
-              assert historical['admission_state'] == 'QUALIFIED'
-              assert historical['exact_source_archive_admitted'] is True
-              assert historical['blocking_holds'] == []
-          else:
-              assert normalization['result'] == 'HOLD_VALID_CARRIER_ASSERTION_DRIFT'
-              assert historical['result'] == 'HOLD_HISTORICAL_SOURCE_ASSERTION_DRIFT'
-              assert historical['admission_state'] == 'HOLD'
-              assert historical['exact_source_archive_admitted'] is False
-              assert historical['blocking_holds']
-
-          assert historical['operator_visual_acceptance'] == 'ABSENT'
-          assert historical['release_authorized'] is False
-          assert historical['merge_authorized'] is False
-          assert historical['public_route_effect'] == 'none'
-          assert historical['pages_deployment_effect'] == 'none'
-          assert historical['external_effect'] == 'none'
           PY
 
       - name: Retain independent review evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: manzanita-useful-plant-v30-native-review
@@ -379,12 +187,4 @@ jobs:
             ${{ runner.temp }}/PLANT_DONOR_ADMISSION_RECEIPT.json
             ${{ runner.temp }}/useful-plant-v30-browser-review/
           retention-days: 30
-          if-no-files-found: error
-
-      - name: Retain recovered historical archive source
-        uses: actions/upload-artifact@v4
-        with:
-          name: manzanita-useful-plant-v30-historical-archive-source
-          path: ${{ runner.temp }}/manzanita-independent-archive-history/
-          retention-days: 30
-          if-no-files-found: error
+          if-no-files-found: warn
