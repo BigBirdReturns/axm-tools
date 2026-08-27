@@ -1,11 +1,20 @@
 {
-  "schema": "manzanita/useful-plant-v30-source-replay-bootstrap@1",
+  "schema": "manzanita/useful-plant-v30-source-replay-bootstrap@2",
   "carrier_id": "MW-USEFUL-PLANT-V30-SOURCE-REPLAY-BOOTSTRAP-001",
-  "generated_at": "2026-08-27T00:02:34+00:00",
+  "generated_at": "2026-08-27T00:18:00+00:00",
   "object_class": "BOUNDED_SOURCE_REPLAY_BOOTSTRAP",
   "target_repository": "BigBirdReturns/axm-tools",
   "target_path": "manzanita-next/review/mw-habitat-live-photo-030-continuation",
-  "payload": "SOURCE_PAYLOAD.tar.xz.b64",
+  "payload_parts": [
+    "SOURCE_PAYLOAD.tar.xz.b64.part01",
+    "SOURCE_PAYLOAD.tar.xz.b64.part02",
+    "SOURCE_PAYLOAD.tar.xz.b64.part03",
+    "SOURCE_PAYLOAD.tar.xz.b64.part04",
+    "SOURCE_PAYLOAD.tar.xz.b64.part05",
+    "SOURCE_PAYLOAD.tar.xz.b64.part06",
+    "SOURCE_PAYLOAD.tar.xz.b64.part07",
+    "SOURCE_PAYLOAD.tar.xz.b64.part08"
+  ],
   "payload_receipt": "PAYLOAD_RECEIPT.json",
   "expanded_member_count": 71,
   "expanded_object_class": "SOURCE_REPLAY_REPOSITORY_REVIEW_CARRIER",
@@ -20,7 +29,7 @@
     "CONTINUITY.md",
     "PROJECT_ESTATE.json"
   ],
-  "workflow_effect": "Decodes the exact text payload into an isolated runner workspace, reruns the complete source-carrier and browser campaign, creates a measured runtime artifact, and uploads it. No repository file is rewritten and no deployment action exists.",
+  "workflow_effect": "Concatenates eight fixed text parts, decodes the exact payload into an isolated runner workspace, reruns the complete source-carrier and browser campaign, creates a measured runtime artifact, and uploads it. No repository file is rewritten and no deployment action exists.",
   "public_route_effect": "none",
   "pages_deployment_effect": "none",
   "operator_visual_acceptance": "ABSENT",
