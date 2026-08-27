@@ -20,6 +20,20 @@ python manzanita-next/review/useful-plant-v30-native/browser_review.py \
   --output /tmp/useful-plant-v30-review
 ```
 
+## Exact v29 parent admission
+
+`V29_PARENT_ADMISSION_CONTRACT.json` binds the only admissible parent archive to its exact filename, byte count, SHA-256 digest, exact governing members, qualification receipt, identity-continuity receipt, and seal ledger. `verify_v29_parent.py` reads the archive without extracting it, rejects archive or member drift, unsafe paths, case collisions, symlinks, semantic authority escalation, and seal-ledger disagreement, and emits either an exact admission receipt or a fail-closed hold.
+
+The current workflow intentionally invokes the gate against an unmounted runner path with `--expect-missing`. A successful workflow result therefore proves that absence produces `HOLD_PARENT_ARCHIVE_UNMOUNTED`; it does not claim parent admission. The seven adversarial tests separately prove exact synthetic admission, absent-archive hold, archive drift rejection, member drift rejection, authority-escalation rejection, traversal rejection, and case-collision rejection.
+
+Exact replay after the retained archive is supplied:
+
+```bash
+python manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
+  --archive /path/to/mw-habitat-live-photo-029.zip \
+  --output /tmp/V29_PARENT_ADMISSION_RECEIPT.json
+```
+
 ## Retained holds
 
 The exact v29 archive, exact retained Plant origin SVG, exact retained cached Plant WebP, inherited Household, Street, and Property rendered locks, operator acceptance, public-route assembly, release authority, and merge authority remain separate requirements. A successful source or browser campaign establishes only that this review object is reproducible and internally bounded.

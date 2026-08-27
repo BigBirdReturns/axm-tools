@@ -41,13 +41,18 @@ jobs:
             echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Parse native source
+      - name: Parse native source and parent gate
         run: |
           set -euo pipefail
           node --check manzanita-next/review/useful-plant-v30-native/app.js
           python -m py_compile \
             manzanita-next/review/useful-plant-v30-native/verify.py \
-            manzanita-next/review/useful-plant-v30-native/browser_review.py
+            manzanita-next/review/useful-plant-v30-native/browser_review.py \
+            manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
+            manzanita-next/review/useful-plant-v30-native/test_v29_parent_admission.py
+          python -m json.tool \
+            manzanita-next/review/useful-plant-v30-native/V29_PARENT_ADMISSION_CONTRACT.json \
+            >/dev/null
 
       - name: Verify source, custody, and changed-path scope
         run: |
@@ -55,6 +60,33 @@ jobs:
             --base '${{ steps.refs.outputs.base }}' \
             --head '${{ steps.refs.outputs.head }}' \
             --output "$RUNNER_TEMP/useful-plant-v30-source-receipt.json"
+
+      - name: Prove exact v29 parent gate fails closed while unmounted
+        run: |
+          set -euo pipefail
+          python manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
+            --archive "$RUNNER_TEMP/mw-habitat-live-photo-029.zip" \
+            --expect-missing \
+            --output "$RUNNER_TEMP/V29_PARENT_ADMISSION_RECEIPT.json"
+          python manzanita-next/review/useful-plant-v30-native/test_v29_parent_admission.py
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          receipt = json.loads(
+              (Path(os.environ["RUNNER_TEMP"]) / "V29_PARENT_ADMISSION_RECEIPT.json").read_text()
+          )
+          assert receipt["result"] == "HOLD_PARENT_ARCHIVE_UNMOUNTED"
+          assert receipt["admission_state"] == "HOLD"
+          assert receipt["archive_admitted"] is False
+          assert receipt["operator_visual_acceptance"] == "ABSENT"
+          assert receipt["merge_authorized"] is False
+          assert receipt["release_authorized"] is False
+          assert receipt["public_route_effect"] == "none"
+          assert receipt["pages_deployment_effect"] == "none"
+          assert receipt["external_effect"] == "none"
+          PY
 
       - name: Install bounded browser runtime
         run: |
@@ -96,6 +128,7 @@ jobs:
             manzanita-next/review/useful-plant-v30-native/
             manzanita/assets/plant.webp
             ${{ runner.temp }}/useful-plant-v30-source-receipt.json
+            ${{ runner.temp }}/V29_PARENT_ADMISSION_RECEIPT.json
             ${{ runner.temp }}/useful-plant-v30-browser-review/
           retention-days: 30
           if-no-files-found: error
