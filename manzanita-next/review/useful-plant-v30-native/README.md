@@ -34,6 +34,21 @@ python manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
   --output /tmp/V29_PARENT_ADMISSION_RECEIPT.json
 ```
 
+## Exact Plant donor admission
+
+`PLANT_DONOR_ADMISSION_CONTRACT.json` binds the Reference origin plate and Cached derived reference as a two-object custody requirement. `verify_plant_donors.py` requires both files together, verifies exact filenames, bytes, SHA-256 digests, 1600 × 1000 media dimensions, passive SVG structure, and a valid WebP container, and records the current public `manzanita/assets/plant.webp` photograph as an explicit non-substitute. A missing pair produces `HOLD_EXACT_PLANT_DONORS_UNMOUNTED`; a partial mount produces `HOLD_EXACT_PLANT_DONORS_PARTIAL`; any drift or unsafe media structure fails admission.
+
+The workflow intentionally invokes this gate against two absent runner paths with `--expect-missing`. Its successful result proves that the unavailable File Library references do not acquire byte standing through prose or lineage. Eight adversarial tests cover exact synthetic admission, both-missing hold, partial hold, origin drift, cached drift, invalid WebP structure, active SVG content, and dimension mismatch.
+
+Exact replay after both retained media objects are mounted:
+
+```bash
+python manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
+  --origin /path/to/plant-origin.svg \
+  --cached /path/to/plant-derived-reference.webp \
+  --output /tmp/PLANT_DONOR_ADMISSION_RECEIPT.json
+```
+
 ## Retained holds
 
 The exact v29 archive, exact retained Plant origin SVG, exact retained cached Plant WebP, inherited Household, Street, and Property rendered locks, operator acceptance, public-route assembly, release authority, and merge authority remain separate requirements. A successful source or browser campaign establishes only that this review object is reproducible and internally bounded.

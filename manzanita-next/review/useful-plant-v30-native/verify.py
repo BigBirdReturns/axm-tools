@@ -41,6 +41,12 @@ def main() -> int:
         HERE / "app.js",
         HERE / "browser_review.py",
         HERE / "verify.py",
+        HERE / "V29_PARENT_ADMISSION_CONTRACT.json",
+        HERE / "verify_v29_parent.py",
+        HERE / "test_v29_parent_admission.py",
+        HERE / "PLANT_DONOR_ADMISSION_CONTRACT.json",
+        HERE / "verify_plant_donors.py",
+        HERE / "test_plant_donor_admission.py",
         ROOT / WORKFLOW,
         ROOT / "manzanita/assets/plant.webp",
     ]
@@ -62,6 +68,20 @@ def main() -> int:
     check("three household stops", len(contract["household_stop_authority"]) == 3)
     check("five firewall clauses", len(contract["firewall"]) == 5)
     check("exact donor substitution denied", contract["source_donor"]["substitution_allowed"] is False)
+
+    parent_gate = json.loads((HERE / "V29_PARENT_ADMISSION_CONTRACT.json").read_text(encoding="utf-8"))
+    plant_gate = json.loads((HERE / "PLANT_DONOR_ADMISSION_CONTRACT.json").read_text(encoding="utf-8"))
+    parent_authority = parent_gate["authority"]
+    plant_authority = plant_gate["authority"]
+    check("parent gate binds v29", parent_gate["parent_release_id"] == "mw-habitat-live-photo-029")
+    check("parent gate exact archive hash", parent_gate["required_archive"]["sha256"] == "1bfa88922381650bc4b16b27c1ed8d728abba6f16e1159c85e0b1d294acc3ce6")
+    check("parent gate exact archive bytes", parent_gate["required_archive"]["bytes"] == 56875424)
+    check("parent gate authority held", parent_authority == review)
+    check("Plant gate exact origin hash", plant_gate["required_donors"]["origin"]["sha256"] == "2a531b108dfbfba5f7bfc1064c2adfa44d29649ea9fa3654ac3092fbe9a8bb03")
+    check("Plant gate exact cached hash", plant_gate["required_donors"]["cached"]["sha256"] == "dd2d3b7f5683ec8c785c6baac8b0036ae7ad043767463b963d8c132201817a02")
+    check("Plant gate requires both donors", set(plant_gate["required_donors"]) == {"origin", "cached"})
+    check("Plant gate authority held", plant_authority == review)
+    check("Plant gate current photograph non-substitute", any(row.get("path") == "manzanita/assets/plant.webp" and row.get("classification") == "ADMITTED_PUBLIC_PHOTOGRAPHIC_DONOR_NOT_EXACT_RETAINED_PLANT_MEDIA" for row in plant_gate["explicit_non_substitutes"]))
 
     html = (HERE / "index.html").read_text(encoding="utf-8")
     css = (HERE / "style.css").read_text(encoding="utf-8")
@@ -90,6 +110,8 @@ def main() -> int:
     header = donor.read_bytes()[:12]
     check("donor has WebP container", header[:4] == b"RIFF" and header[8:12] == b"WEBP", header.hex())
     check("donor has photographic substance floor", donor_measurement["bytes"] >= 40_000, donor_measurement)
+    excluded_public_donor = next(row for row in plant_gate["explicit_non_substitutes"] if row.get("path") == "manzanita/assets/plant.webp")
+    check("public donor remains exact declared non-substitute", donor_measurement == {"bytes": excluded_public_donor["bytes"], "sha256": excluded_public_donor["sha256"]}, donor_measurement)
 
     changed_paths: list[str] = []
     rejected_paths: list[str] = []
