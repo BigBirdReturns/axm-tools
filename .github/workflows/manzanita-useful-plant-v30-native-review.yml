@@ -146,8 +146,63 @@ jobs:
               >> "$TRANSPORT/manzanita-independent-archive-source.b64"
           done
 
-          base64 --decode "$TRANSPORT/manzanita-independent-archive-source.b64" \
-            > "$TRANSPORT/manzanita-independent-archive-source.tar.gz"
+          python - \
+            "$TRANSPORT/manzanita-independent-archive-source.b64" \
+            "$TRANSPORT/manzanita-independent-archive-source.tar.gz" \
+            "$TARGET/HISTORICAL_BASE64_NORMALIZATION_RECEIPT.json" <<'PY'
+          from __future__ import annotations
+
+          import base64
+          import binascii
+          import hashlib
+          import json
+          import sys
+          from pathlib import Path
+
+          source = Path(sys.argv[1])
+          target = Path(sys.argv[2])
+          receipt_path = Path(sys.argv[3])
+
+          raw = source.read_bytes()
+          encoded = b"".join(raw.split())
+          remainder = len(encoded) % 4
+          if remainder == 1:
+              raise SystemExit(
+                  f"invalid historical base64 length: {len(encoded)} bytes"
+              )
+          padding_added = (4 - remainder) % 4
+          normalized = encoded + (b"=" * padding_added)
+          try:
+              decoded = base64.b64decode(normalized, validate=True)
+          except (binascii.Error, ValueError) as exc:
+              raise SystemExit(f"historical base64 decode failed: {exc}") from exc
+
+          target.write_bytes(decoded)
+          receipt = {
+              "schema": "manzanita/historical-base64-normalization-receipt@1",
+              "result": "PASS",
+              "source_path": source.name,
+              "raw_bytes": len(raw),
+              "whitespace_stripped_bytes": len(encoded),
+              "padding_added": padding_added,
+              "normalized_bytes": len(normalized),
+              "normalized_sha256": hashlib.sha256(normalized).hexdigest(),
+              "decoded_bytes": len(decoded),
+              "decoded_sha256": hashlib.sha256(decoded).hexdigest(),
+              "normalization_rule": "strip ASCII whitespace, append only required RFC 4648 padding, then validate every remaining base64 character",
+              "operator_visual_acceptance": "ABSENT",
+              "merge_authorized": False,
+              "release_authorized": False,
+              "public_route_effect": "none",
+              "pages_deployment_effect": "none",
+              "external_effect": "none",
+          }
+          receipt_path.write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(receipt, indent=2, sort_keys=True))
+          PY
           echo "a1c4c12053066c1c579111c9bea16a6acd50e4a0c6cf21120afc944d46e43b46  $TRANSPORT/manzanita-independent-archive-source.tar.gz" \
             | sha256sum --check --strict
 
