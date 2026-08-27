@@ -1,0 +1,28 @@
+{
+  "schema": "manzanita/useful-plant-v30-bootstrap-seal@1",
+  "generated_at": "2026-08-27T00:03:44+00:00",
+  "carrier_id": "MW-USEFUL-PLANT-V30-SOURCE-REPLAY-BOOTSTRAP-001",
+  "manifest": {
+    "path": "manzanita-next/review/mw-habitat-live-photo-030-continuation/BOOTSTRAP_MANIFEST.json",
+    "bytes": 1894,
+    "sha256": "26f340645c092d07ba0c86762cf5c0aadbb40acf19cb200f99de3113bf112244",
+    "covered_file_count": 8,
+    "covered_total_bytes": 103827
+  },
+  "payload_sha256": "72a0bfd3579ea9d37ac0c44e42f020720ffa598763d19086d2500333e5063d42",
+  "payload_member_count": 71,
+  "result": "PASS_BOUNDED_SOURCE_REPLAY_BOOTSTRAP_READY",
+  "public_route_effect": "none",
+  "pages_deployment_effect": "none",
+  "operator_visual_acceptance": "ABSENT",
+  "release_authorized": false,
+  "external_effect": "none",
+  "blocking_holds": [
+    "exact v29 archive not mounted",
+    "exact retained Plant origin SVG not mounted",
+    "exact retained cached Plant WebP not mounted",
+    "inherited rendered parent locks not executed",
+    "operator visual acceptance absent",
+    "expanded runtime output is not preclaimed as byte-identical with the local exact rendered carrier"
+  ]
+}
