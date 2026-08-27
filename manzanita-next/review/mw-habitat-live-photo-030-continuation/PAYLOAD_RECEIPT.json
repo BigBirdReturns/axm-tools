@@ -1,0 +1,47 @@
+{
+  "schema": "manzanita/useful-plant-v30-source-replay-payload@1",
+  "generated_at": "2026-08-27T00:02:34+00:00",
+  "member_count": 71,
+  "tar_bytes": 552960,
+  "tar_sha256": "acfe3a47188945a92dfd186270feb1d59a7411dc68e18e3eb91822cff556d8e7",
+  "xz_bytes": 68908,
+  "xz_sha256": "72a0bfd3579ea9d37ac0c44e42f020720ffa598763d19086d2500333e5063d42",
+  "base64_bytes": 91880,
+  "base64_sha256": "9a9f6a3fda8f6daf7cd31e80eaf871bb082f48cc3200681c37c772d0ffacb86a",
+  "source_commit_file_count": 71,
+  "source_package_zip": {
+    "bytes": 170602,
+    "sha256": "7bdb6404e7eeb413eef9e0ca2ea8e4789a0430a02090c2d2940219ad2824d3c7",
+    "entries": 71
+  },
+  "local_source_qualification": {
+    "passed": 132,
+    "total": 132
+  },
+  "local_runtime_archive": {
+    "path": "mw-habitat-live-photo-030-source-replay-runtime.zip",
+    "bytes": 5076324,
+    "sha256": "f38b3292dc0130cacef7ee4dc9574e0e70d5b6572430d59e987a33312e4a8cd4",
+    "entries": 56
+  },
+  "local_exact_rendered_candidate": {
+    "bytes": 5079619,
+    "sha256": "317d6e3017ddc4e5696eb68a733b556bf0f7f0c49608213d0544ada05aec63ea",
+    "entries": 55,
+    "transported_in_payload": false
+  },
+  "local_exact_binary_review_carrier": {
+    "bytes": 10907365,
+    "sha256": "fd71d2e83517c9e767bc301f64aa958bc2972b6cb3a28e21258c1496de58d50f",
+    "entries": 39,
+    "transported_in_payload": false
+  },
+  "operator_visual_acceptance": "ABSENT",
+  "parent_exact_mounted": false,
+  "plant_assets_exact_mounted": false,
+  "public_route_effect": "none",
+  "pages_deployment_effect": "none",
+  "release_authorized": false,
+  "external_effect": "none",
+  "claim_boundary": "The payload transports the complete 71-file text source carrier. It does not transport the locally rendered binary carrier and cannot establish byte identity with that local object unless independently reproduced and proven."
+}
