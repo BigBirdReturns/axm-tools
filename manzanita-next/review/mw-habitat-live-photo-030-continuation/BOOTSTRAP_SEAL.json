@@ -1,28 +1,38 @@
 {
-  "schema": "manzanita/useful-plant-v30-bootstrap-seal@1",
-  "generated_at": "2026-08-27T00:03:44+00:00",
+  "schema": "manzanita/useful-plant-v30-bootstrap-seal@2",
+  "generated_at": "2026-08-27T03:15:00+00:00",
   "carrier_id": "MW-USEFUL-PLANT-V30-SOURCE-REPLAY-BOOTSTRAP-001",
   "manifest": {
     "path": "manzanita-next/review/mw-habitat-live-photo-030-continuation/BOOTSTRAP_MANIFEST.json",
-    "bytes": 1894,
-    "sha256": "26f340645c092d07ba0c86762cf5c0aadbb40acf19cb200f99de3113bf112244",
-    "covered_file_count": 8,
-    "covered_total_bytes": 103827
+    "bytes": 3622,
+    "sha256": "763c51145f4aca38da04e9f86800a4e11dd9e8c84bda61c9b159c7738d0fc696",
+    "covered_file_count": 15,
+    "covered_total_bytes": 85696
   },
-  "payload_sha256": "72a0bfd3579ea9d37ac0c44e42f020720ffa598763d19086d2500333e5063d42",
-  "payload_member_count": 71,
+  "payload": {
+    "tar_sha256": "911ee957181292cf33c1e3816245d2236dde6eff716dbc64818bbed3bfa1bae2",
+    "xz_sha256": "853c65f996fb666745e6835b20944436e28a665fa5be63b0730e0afd151a318e",
+    "base64_sha256": "80cd3ebdde0157c32efd0d4359ea70070a5aec975cd96f4654314ce9cf87b4ec",
+    "part_count": 8,
+    "member_count": 39
+  },
+  "local_replay": {
+    "source_verification": "PASS 202/202",
+    "runtime_materialization": "PASS 75/75",
+    "operator_browser_review": "PASS 15/15"
+  },
   "result": "PASS_BOUNDED_SOURCE_REPLAY_BOOTSTRAP_READY",
-  "public_route_effect": "none",
-  "pages_deployment_effect": "none",
   "operator_visual_acceptance": "ABSENT",
   "release_authorized": false,
+  "merge_authorized": false,
+  "public_route_effect": "none",
+  "pages_deployment_effect": "none",
   "external_effect": "none",
   "blocking_holds": [
     "exact v29 archive not mounted",
     "exact retained Plant origin SVG not mounted",
     "exact retained cached Plant WebP not mounted",
-    "inherited rendered parent locks not executed",
-    "operator visual acceptance absent",
-    "expanded runtime output is not preclaimed as byte-identical with the local exact rendered carrier"
+    "Household, Street, and Property rendered parent locks not executed against exact v29 bytes",
+    "operator visual acceptance absent"
   ]
 }

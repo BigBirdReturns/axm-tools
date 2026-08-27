@@ -1,90 +1,119 @@
 {
-  "schema": "manzanita/useful-plant-v30-source-replay-payload@2",
-  "generated_at": "2026-08-27T00:18:00+00:00",
-  "member_count": 71,
-  "tar_bytes": 552960,
-  "tar_sha256": "acfe3a47188945a92dfd186270feb1d59a7411dc68e18e3eb91822cff556d8e7",
-  "xz_bytes": 68908,
-  "xz_sha256": "72a0bfd3579ea9d37ac0c44e42f020720ffa598763d19086d2500333e5063d42",
-  "base64_bytes": 91880,
-  "base64_sha256": "9a9f6a3fda8f6daf7cd31e80eaf871bb082f48cc3200681c37c772d0ffacb86a",
-  "source_commit_file_count": 71,
-  "source_package_zip": {
-    "bytes": 170602,
-    "sha256": "7bdb6404e7eeb413eef9e0ca2ea8e4789a0430a02090c2d2940219ad2824d3c7",
-    "entries": 71
+  "schema": "manzanita/useful-plant-v30-source-replay-payload@3",
+  "generated_at": "2026-08-27T03:12:00+00:00",
+  "source_manifest": {
+    "path": "SOURCE_MANIFEST.json",
+    "covered_file_count": 38,
+    "covered_total_bytes": 305245,
+    "bytes": 6984,
+    "sha256": "14d8eaf0809b76fd7019b3d334c03e2bf671d1ec2724b54962c62aeabaa87e0c"
   },
-  "local_source_qualification": {
-    "passed": 132,
-    "total": 132
-  },
-  "local_runtime_archive": {
-    "path": "mw-habitat-live-photo-030-source-replay-runtime.zip",
-    "bytes": 5076324,
-    "sha256": "f38b3292dc0130cacef7ee4dc9574e0e70d5b6572430d59e987a33312e4a8cd4",
-    "entries": 56
-  },
-  "local_exact_rendered_candidate": {
-    "bytes": 5079619,
-    "sha256": "317d6e3017ddc4e5696eb68a733b556bf0f7f0c49608213d0544ada05aec63ea",
-    "entries": 55,
-    "transported_in_payload": false
-  },
-  "local_exact_binary_review_carrier": {
-    "bytes": 10907365,
-    "sha256": "fd71d2e83517c9e767bc301f64aa958bc2972b6cb3a28e21258c1496de58d50f",
-    "entries": 39,
-    "transported_in_payload": false
-  },
-  "operator_visual_acceptance": "ABSENT",
-  "parent_exact_mounted": false,
-  "plant_assets_exact_mounted": false,
-  "public_route_effect": "none",
-  "pages_deployment_effect": "none",
-  "release_authorized": false,
-  "external_effect": "none",
-  "claim_boundary": "The eight-part payload transports the complete 71-file text source carrier. Concatenated non-whitespace bytes reproduce the measured Base64 payload exactly. It does not transport the locally rendered binary carrier and cannot establish byte identity with that local object unless independently reproduced and proven.",
+  "member_count": 39,
+  "tar_bytes": 348160,
+  "tar_sha256": "911ee957181292cf33c1e3816245d2236dde6eff716dbc64818bbed3bfa1bae2",
+  "xz_bytes": 49400,
+  "xz_sha256": "853c65f996fb666745e6835b20944436e28a665fa5be63b0730e0afd151a318e",
+  "base64_bytes": 65868,
+  "base64_sha256": "80cd3ebdde0157c32efd0d4359ea70070a5aec975cd96f4654314ce9cf87b4ec",
+  "carrier_part_count": 8,
   "carrier_parts": [
     {
       "path": "SOURCE_PAYLOAD.tar.xz.b64.part01",
-      "bytes": 11486,
-      "sha256": "f12fb076560917d4d7aa26417f5668d4ba758418c333ef171ea1c23ea6baf9c6"
+      "payload_bytes": 8234,
+      "bytes": 8235,
+      "sha256": "deded26434247bfae21c4a632c774cb07b67352723abbace3bb068c1aba8924f"
     },
     {
       "path": "SOURCE_PAYLOAD.tar.xz.b64.part02",
-      "bytes": 11486,
-      "sha256": "665bd494daf61b8d7af63cc91a0d1a2518916a9c11060c2ebb313c3fead24288"
+      "payload_bytes": 8234,
+      "bytes": 8235,
+      "sha256": "63c3ed2db1e3b8e55c13259e1f2d444d7bf28114ad9cbf9d39110db77b0f1d01"
     },
     {
       "path": "SOURCE_PAYLOAD.tar.xz.b64.part03",
-      "bytes": 11486,
-      "sha256": "af7f95de227e3e5dd2912c7efed14c82a7fdc2ee6a2c5377240b4fa92e6562b2"
+      "payload_bytes": 8234,
+      "bytes": 8235,
+      "sha256": "cc748cceb3a4ea2a0e86821f3142ff54ac4e60f766923f21b30bbd90974e507f"
     },
     {
       "path": "SOURCE_PAYLOAD.tar.xz.b64.part04",
-      "bytes": 11486,
-      "sha256": "6cbb3bda7146c7d1914b807ba41f08bd409c72b1ead7dc5017ec407049d334d0"
+      "payload_bytes": 8234,
+      "bytes": 8235,
+      "sha256": "23999f0bba37a6266869237e7abc8a2199d270136c5bec346a1a03d3eb19c60c"
     },
     {
       "path": "SOURCE_PAYLOAD.tar.xz.b64.part05",
-      "bytes": 11486,
-      "sha256": "30acb313bbd93fd5da3cc8327dafb39e16d7a2f03e5483ceb4a628cb1a0f71ed"
+      "payload_bytes": 8234,
+      "bytes": 8235,
+      "sha256": "a201502f9fc4cc6c851f3f627ea59f247ebcb0fb3c8d8c941856da59827e70d3"
     },
     {
       "path": "SOURCE_PAYLOAD.tar.xz.b64.part06",
-      "bytes": 11486,
-      "sha256": "01be9a061a1538d6da2d54beef017666064ef793769c6abf53369d2fdbb777fa"
+      "payload_bytes": 8234,
+      "bytes": 8235,
+      "sha256": "47d2657aa601bc9a88ee3092be8db4a916897c8b09cba7ec664c0885e68420ff"
     },
     {
       "path": "SOURCE_PAYLOAD.tar.xz.b64.part07",
-      "bytes": 11486,
-      "sha256": "4ce5779bf66bd05401ec41845eb641674b5804a2a21c4fb86e444e4399baa7b9"
+      "payload_bytes": 8234,
+      "bytes": 8235,
+      "sha256": "0f0ee0d6d1785ca3dcb25171e6964d99dcaa15768a39c3fab128492641cf22c2"
     },
     {
       "path": "SOURCE_PAYLOAD.tar.xz.b64.part08",
-      "bytes": 11486,
-      "sha256": "89528bbcb55a03ca9e5bedd7036ff960d315f65f590ba8e83839894bbdba2606"
+      "payload_bytes": 8230,
+      "bytes": 8231,
+      "sha256": "75872b010962a29305903c8f973c34647e838773a3d13fa7bdd62fab57bbcdc5"
     }
   ],
-  "carrier_part_count": 8
+  "local_source_verification": {
+    "result": "PASS",
+    "passed": 202,
+    "total": 202
+  },
+  "local_runtime_materialization": {
+    "result": "PASS",
+    "passed": 75,
+    "total": 75,
+    "render_count": 8,
+    "runtime_archive": {
+      "path": "mw-habitat-live-photo-030-source-replay-runtime.zip",
+      "entries": 50,
+      "bytes": 7222019,
+      "sha256": "721620a6069acf64c9908237efd16a093a34b1be1a0ec378c9153d7411d0f4e6"
+    }
+  },
+  "local_operator_browser_review": {
+    "result": "PASS",
+    "passed": 15,
+    "total": 15
+  },
+  "expected_exact_parent": {
+    "release_id": "mw-habitat-live-photo-029",
+    "bytes": 56875424,
+    "sha256": "1bfa88922381650bc4b16b27c1ed8d728abba6f16e1159c85e0b1d294acc3ce6",
+    "mounted": false
+  },
+  "expected_exact_plant_assets": {
+    "origin": {
+      "bytes": 3425,
+      "sha256": "2a531b108dfbfba5f7bfc1064c2adfa44d29649ea9fa3654ac3092fbe9a8bb03",
+      "mounted": false
+    },
+    "cached_detail": {
+      "bytes": 255932,
+      "sha256": "dd2d3b7f5683ec8c785c6baac8b0036ae7ad043767463b963d8c132201817a02",
+      "dimensions": [
+        1600,
+        1000
+      ],
+      "mounted": false
+    }
+  },
+  "operator_visual_acceptance": "ABSENT",
+  "release_authorized": false,
+  "public_route_effect": "none",
+  "pages_deployment_effect": "none",
+  "external_effect": "none",
+  "claim_boundary": "The multipart text payload transports the complete source replay carrier and its source manifest. It reproduces a review artifact in an isolated runner. It does not transport or establish the exact v29 parent, the exact retained Plant media, operator acceptance, release authority, merge authority, or public-route effect."
 }

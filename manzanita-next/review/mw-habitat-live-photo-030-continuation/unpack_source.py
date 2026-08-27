@@ -1,38 +1,158 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse,base64,datetime as dt,hashlib,io,json,lzma,shutil,sys,tarfile
-from pathlib import Path
-root=Path(__file__).resolve().parent
-parser=argparse.ArgumentParser();parser.add_argument('--destination',type=Path,required=True);parser.add_argument('--receipt',type=Path);a=parser.parse_args()
-expected=json.loads((root/'PAYLOAD_RECEIPT.json').read_text());part_paths=sorted(root.glob('SOURCE_PAYLOAD.tar.xz.b64.part*'));checks=[]
-def check(n,c,d=''):checks.append({'name':n,'pass':bool(c),'detail':d})
-def sh(b):return hashlib.sha256(b).hexdigest()
-expected_parts=expected.get('carrier_parts',[]);check('carrier part count',len(part_paths)==expected.get('carrier_part_count'),len(part_paths))
-for idx,p in enumerate(part_paths):
- e=expected_parts[idx] if idx<len(expected_parts) else {};raw=p.read_bytes();check(f'part {idx+1:02d} path',p.name==e.get('path'),p.name);check(f'part {idx+1:02d} bytes',len(raw)==e.get('bytes'),len(raw));check(f'part {idx+1:02d} sha256',sh(raw)==e.get('sha256'),sh(raw))
-raw_b64=b''.join(p.read_bytes().strip() for p in part_paths);check('base64 bytes',len(raw_b64)==expected['base64_bytes'],len(raw_b64));check('base64 sha256',sh(raw_b64)==expected['base64_sha256'],sh(raw_b64))
-try:xz=base64.b64decode(raw_b64,validate=True)
-except Exception as e:xz=b'';check('base64 decode',False,str(e))
-else:check('base64 decode',True)
-check('xz bytes',len(xz)==expected['xz_bytes'],len(xz));check('xz sha256',sh(xz)==expected['xz_sha256'],sh(xz))
-try:tar_raw=lzma.decompress(xz,format=lzma.FORMAT_XZ)
-except Exception as e:tar_raw=b'';check('xz decode',False,str(e))
-else:check('xz decode',True)
-check('tar bytes',len(tar_raw)==expected['tar_bytes'],len(tar_raw));check('tar sha256',sh(tar_raw)==expected['tar_sha256'],sh(tar_raw))
-unsafe=[];special=[];members=[]
-if tar_raw:
- with tarfile.open(fileobj=io.BytesIO(tar_raw),mode='r:') as t:
-  members=t.getmembers();seen=set()
-  for m in members:
-   p=Path(m.name);key=m.name.casefold()
-   if p.is_absolute() or '..' in p.parts or ':' in p.parts[0]:unsafe.append(m.name)
-   if key in seen:unsafe.append('duplicate:'+m.name)
-   seen.add(key)
-   if not m.isfile():special.append(m.name)
-  check('member count',len(members)==expected['member_count'],len(members));check('safe paths',not unsafe,unsafe);check('regular files only',not special,special)
-  if all(c['pass'] for c in checks):
-   shutil.rmtree(a.destination,ignore_errors=True);a.destination.mkdir(parents=True)
-   for m in members:
-    target=a.destination/m.name;target.parent.mkdir(parents=True,exist_ok=True);f=t.extractfile(m);target.write_bytes(f.read() if f else b'');target.chmod(m.mode)
-result={'schema':'manzanita/useful-plant-v30-source-replay-unpack@2','generated_at':dt.datetime.now(dt.timezone.utc).isoformat(),'result':'PASS' if all(c['pass'] for c in checks) else 'FAIL','checks_passed':sum(c['pass'] for c in checks),'checks_total':len(checks),'checks':checks,'destination':str(a.destination),'part_count':len(part_paths),'member_count':len(members),'public_route_effect':'none','release_authorized':False,'external_effect':'none'}
-out=a.receipt or root/'UNPACK_RECEIPT.json';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2));sys.exit(0 if result['result']=='PASS' else 1)
+
+import argparse
+import base64
+import datetime as dt
+import hashlib
+import io
+import json
+import lzma
+import shutil
+import sys
+import tarfile
+from pathlib import Path, PurePosixPath
+
+ROOT = Path(__file__).resolve().parent
+EXPECTED_PREFIX = PurePosixPath(
+    "manzanita-next/review/mw-habitat-live-photo-030-continuation"
+)
+
+
+def sha256(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--destination", type=Path, required=True)
+    parser.add_argument("--receipt", type=Path)
+    args = parser.parse_args()
+
+    expected = json.loads((ROOT / "PAYLOAD_RECEIPT.json").read_text())
+    expected_parts = expected.get("carrier_parts", [])
+    part_paths = [ROOT / item["path"] for item in expected_parts]
+    checks: list[dict] = []
+
+    def check(name: str, condition: bool, detail="") -> None:
+        checks.append({"name": name, "pass": bool(condition), "detail": detail})
+
+    check(
+        "carrier part count",
+        len(part_paths) == expected.get("carrier_part_count"),
+        len(part_paths),
+    )
+    on_disk = sorted(ROOT.glob("SOURCE_PAYLOAD.tar.xz.b64.part*"))
+    check(
+        "no undeclared payload parts",
+        [path.name for path in on_disk] == [item["path"] for item in expected_parts],
+        [path.name for path in on_disk],
+    )
+
+    chunks: list[bytes] = []
+    for index, (path, item) in enumerate(zip(part_paths, expected_parts), start=1):
+        exists = path.is_file()
+        check(f"part {index:02d} exists", exists, path.name)
+        raw = path.read_bytes() if exists else b""
+        check(f"part {index:02d} bytes", len(raw) == item["bytes"], len(raw))
+        check(f"part {index:02d} sha256", sha256(raw) == item["sha256"], sha256(raw))
+        chunks.append(raw.strip())
+
+    raw_b64 = b"".join(chunks)
+    check("base64 bytes", len(raw_b64) == expected["base64_bytes"], len(raw_b64))
+    check("base64 sha256", sha256(raw_b64) == expected["base64_sha256"], sha256(raw_b64))
+
+    try:
+        xz_raw = base64.b64decode(raw_b64, validate=True)
+        check("base64 decode", True)
+    except Exception as exc:
+        xz_raw = b""
+        check("base64 decode", False, str(exc))
+
+    check("xz bytes", len(xz_raw) == expected["xz_bytes"], len(xz_raw))
+    check("xz sha256", sha256(xz_raw) == expected["xz_sha256"], sha256(xz_raw))
+
+    try:
+        tar_raw = lzma.decompress(xz_raw, format=lzma.FORMAT_XZ)
+        check("xz decode", True)
+    except Exception as exc:
+        tar_raw = b""
+        check("xz decode", False, str(exc))
+
+    check("tar bytes", len(tar_raw) == expected["tar_bytes"], len(tar_raw))
+    check("tar sha256", sha256(tar_raw) == expected["tar_sha256"], sha256(tar_raw))
+
+    members: list[tarfile.TarInfo] = []
+    unsafe: list[str] = []
+    special: list[str] = []
+    duplicate: list[str] = []
+    payloads: dict[str, bytes] = {}
+
+    if tar_raw:
+        try:
+            with tarfile.open(fileobj=io.BytesIO(tar_raw), mode="r:") as archive:
+                members = archive.getmembers()
+                seen: set[str] = set()
+                for member in members:
+                    pure = PurePosixPath(member.name)
+                    key = member.name.casefold()
+                    if (
+                        pure.is_absolute()
+                        or ".." in pure.parts
+                        or not pure.parts
+                        or PurePosixPath(*pure.parts[: len(EXPECTED_PREFIX.parts)])
+                        != EXPECTED_PREFIX
+                    ):
+                        unsafe.append(member.name)
+                    if key in seen:
+                        duplicate.append(member.name)
+                    seen.add(key)
+                    if not member.isfile():
+                        special.append(member.name)
+                    stream = archive.extractfile(member) if member.isfile() else None
+                    payloads[member.name] = stream.read() if stream else b""
+                check("tar parse", True)
+        except Exception as exc:
+            check("tar parse", False, str(exc))
+
+    check("member count", len(members) == expected["member_count"], len(members))
+    check("safe bounded paths", not unsafe, unsafe)
+    check("regular files only", not special, special)
+    check("no duplicate paths", not duplicate, duplicate)
+    required_manifest = (EXPECTED_PREFIX / "SOURCE_MANIFEST.json").as_posix()
+    check("source manifest present", required_manifest in payloads, required_manifest)
+
+    passed = all(item["pass"] for item in checks)
+    if passed:
+        shutil.rmtree(args.destination, ignore_errors=True)
+        args.destination.mkdir(parents=True)
+        for name in sorted(payloads):
+            target = args.destination / Path(*PurePosixPath(name).parts)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(payloads[name])
+            target.chmod(0o644)
+
+    result = {
+        "schema": "manzanita/useful-plant-v30-source-replay-unpack@3",
+        "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "result": "PASS" if passed else "FAIL",
+        "checks_passed": sum(item["pass"] for item in checks),
+        "checks_total": len(checks),
+        "checks": checks,
+        "destination": str(args.destination),
+        "part_count": len(part_paths),
+        "member_count": len(members),
+        "operator_visual_acceptance": "ABSENT",
+        "release_authorized": False,
+        "public_route_effect": "none",
+        "external_effect": "none",
+    }
+    receipt = args.receipt or ROOT / "UNPACK_RECEIPT.json"
+    receipt.parent.mkdir(parents=True, exist_ok=True)
+    receipt.write_text(json.dumps(result, indent=2) + "\n")
+    print(json.dumps(result, indent=2))
+    return 0 if passed else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

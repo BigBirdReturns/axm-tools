@@ -28,7 +28,8 @@ jobs:
             BASE="${{ github.event.pull_request.base.sha }}"
             HEAD="${{ github.event.pull_request.head.sha }}"
           else
-            BASE="$(git rev-parse HEAD^)"
+            git fetch origin main
+            BASE="$(git merge-base HEAD origin/main)"
             HEAD="$(git rev-parse HEAD)"
           fi
           python manzanita-next/review/mw-habitat-live-photo-030-continuation/verify_scope.py --base "$BASE" --head "$HEAD"
@@ -54,6 +55,8 @@ jobs:
             ${{ runner.temp }}/mw-unpack-receipt.json
             manzanita-next/review/mw-habitat-live-photo-030-continuation/CARRIER_CONTRACT.json
             manzanita-next/review/mw-habitat-live-photo-030-continuation/PAYLOAD_RECEIPT.json
+            manzanita-next/review/mw-habitat-live-photo-030-continuation/BOOTSTRAP_MANIFEST.json
+            manzanita-next/review/mw-habitat-live-photo-030-continuation/BOOTSTRAP_SEAL.json
             manzanita-next/review/mw-habitat-live-photo-030-continuation/BOOTSTRAP_SCOPE_RECEIPT.json
           retention-days: 30
           if-no-files-found: error
