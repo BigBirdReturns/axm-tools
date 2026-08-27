@@ -154,10 +154,15 @@ jobs:
 
           import base64
           import binascii
+          import gzip
           import hashlib
           import json
+          import string
           import sys
           from pathlib import Path
+
+          ASSERTED_SHA256 = "a1c4c12053066c1c579111c9bea16a6acd50e4a0c6cf21120afc944d46e43b46"
+          BASE64_ALPHABET = (string.ascii_uppercase + string.ascii_lowercase + string.digits + "+/").encode("ascii")
 
           source = Path(sys.argv[1])
           target = Path(sys.argv[2])
@@ -170,26 +175,99 @@ jobs:
               raise SystemExit(
                   f"invalid historical base64 length: {len(encoded)} bytes"
               )
-          padding_added = (4 - remainder) % 4
-          normalized = encoded + (b"=" * padding_added)
-          try:
-              decoded = base64.b64decode(normalized, validate=True)
-          except (binascii.Error, ValueError) as exc:
-              raise SystemExit(f"historical base64 decode failed: {exc}") from exc
 
-          target.write_bytes(decoded)
+          candidate_specs: list[tuple[str, bytes, str | None]] = []
+          if remainder == 0:
+              candidate_specs.append(("carrier_complete", encoded, None))
+          else:
+              padding = b"=" * ((4 - remainder) % 4)
+              candidate_specs.append(("padding_only", encoded + padding, None))
+              if remainder == 3:
+                  candidate_specs.extend(
+                      (
+                          "append_missing_terminal_symbol",
+                          encoded + bytes([symbol]),
+                          chr(symbol),
+                      )
+                      for symbol in BASE64_ALPHABET
+                  )
+
+          evaluated = []
+          exact = []
+          valid_gzip = []
+          for method, normalized, symbol in candidate_specs:
+              try:
+                  decoded = base64.b64decode(normalized, validate=True)
+              except (binascii.Error, ValueError):
+                  continue
+              decoded_sha = hashlib.sha256(decoded).hexdigest()
+              gzip_ok = False
+              gzip_bytes = None
+              gzip_sha = None
+              try:
+                  uncompressed = gzip.decompress(decoded)
+              except Exception:
+                  pass
+              else:
+                  gzip_ok = True
+                  gzip_bytes = len(uncompressed)
+                  gzip_sha = hashlib.sha256(uncompressed).hexdigest()
+              row = {
+                  "method": method,
+                  "terminal_symbol": symbol,
+                  "normalized_bytes": len(normalized),
+                  "normalized_sha256": hashlib.sha256(normalized).hexdigest(),
+                  "decoded_bytes": len(decoded),
+                  "decoded_sha256": decoded_sha,
+                  "gzip_valid": gzip_ok,
+                  "gzip_uncompressed_bytes": gzip_bytes,
+                  "gzip_uncompressed_sha256": gzip_sha,
+              }
+              evaluated.append(row)
+              if gzip_ok:
+                  valid_gzip.append((row, normalized, decoded))
+              if gzip_ok and decoded_sha == ASSERTED_SHA256:
+                  exact.append((row, normalized, decoded))
+
+          if len(exact) == 1:
+              selected_row, selected_normalized, selected_decoded = exact[0]
+              result_code = "PASS_ASSERTED_SOURCE_RECOVERED"
+              assertion_match = True
+          elif len(exact) > 1:
+              raise SystemExit("ambiguous exact historical carrier recovery")
+          elif len(valid_gzip) == 1:
+              selected_row, selected_normalized, selected_decoded = valid_gzip[0]
+              result_code = "HOLD_VALID_CARRIER_ASSERTION_DRIFT"
+              assertion_match = False
+          else:
+              summary = [
+                  {
+                      "method": row["method"],
+                      "terminal_symbol": row["terminal_symbol"],
+                      "decoded_sha256": row["decoded_sha256"],
+                      "gzip_valid": row["gzip_valid"],
+                  }
+                  for row in evaluated
+              ]
+              raise SystemExit(
+                  "historical carrier recovery is unresolved: "
+                  + json.dumps(summary, sort_keys=True)
+              )
+
+          target.write_bytes(selected_decoded)
           receipt = {
-              "schema": "manzanita/historical-base64-normalization-receipt@1",
-              "result": "PASS",
+              "schema": "manzanita/historical-base64-normalization-receipt@2",
+              "result": result_code,
               "source_path": source.name,
               "raw_bytes": len(raw),
               "whitespace_stripped_bytes": len(encoded),
-              "padding_added": padding_added,
-              "normalized_bytes": len(normalized),
-              "normalized_sha256": hashlib.sha256(normalized).hexdigest(),
-              "decoded_bytes": len(decoded),
-              "decoded_sha256": hashlib.sha256(decoded).hexdigest(),
-              "normalization_rule": "strip ASCII whitespace, append only required RFC 4648 padding, then validate every remaining base64 character",
+              "original_remainder": remainder,
+              "candidate_count_tested": len(evaluated),
+              "gzip_valid_candidate_count": len(valid_gzip),
+              "asserted_source_sha256": ASSERTED_SHA256,
+              "assertion_match": assertion_match,
+              "selected": selected_row,
+              "normalization_rule": "strip ASCII whitespace, test the required padding and every possible missing terminal RFC 4648 symbol, require a valid gzip stream, and prefer the unique candidate matching the asserted archive SHA-256",
               "operator_visual_acceptance": "ABSENT",
               "merge_authorized": False,
               "release_authorized": False,
@@ -248,14 +326,16 @@ jobs:
               assert receipt['pages_deployment_effect'] == 'none', label
               assert receipt['external_effect'] == 'none', label
 
-          assert normalization['result'] == 'PASS'
-          assert historical['source_archive']['sha256'] == normalization['decoded_sha256']
+          assert normalization['selected']['decoded_sha256'] == historical['source_archive']['sha256']
+          assert normalization['assertion_match'] == historical['source_archive_assertion_match']
           if historical['source_archive_assertion_match']:
+              assert normalization['result'] == 'PASS_ASSERTED_SOURCE_RECOVERED'
               assert historical['result'] == 'PASS_HISTORICAL_ARCHIVE_SOURCE_RECOVERED'
               assert historical['admission_state'] == 'QUALIFIED'
               assert historical['exact_source_archive_admitted'] is True
               assert historical['blocking_holds'] == []
           else:
+              assert normalization['result'] == 'HOLD_VALID_CARRIER_ASSERTION_DRIFT'
               assert historical['result'] == 'HOLD_HISTORICAL_SOURCE_ASSERTION_DRIFT'
               assert historical['admission_state'] == 'HOLD'
               assert historical['exact_source_archive_admitted'] is False
