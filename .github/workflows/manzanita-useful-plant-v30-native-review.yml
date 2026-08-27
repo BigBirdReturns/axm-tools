@@ -240,19 +240,28 @@ jobs:
               result_code = "HOLD_VALID_CARRIER_ASSERTION_DRIFT"
               assertion_match = False
           else:
-              summary = [
-                  {
-                      "method": row["method"],
-                      "terminal_symbol": row["terminal_symbol"],
-                      "decoded_sha256": row["decoded_sha256"],
-                      "gzip_valid": row["gzip_valid"],
-                  }
-                  for row in evaluated
-              ]
-              raise SystemExit(
-                  "historical carrier recovery is unresolved: "
-                  + json.dumps(summary, sort_keys=True)
+              diagnostic = {
+                  "schema": "manzanita/historical-base64-unresolved-diagnostic@1",
+                  "result": "HOLD_HISTORICAL_CARRIER_UNRESOLVED",
+                  "source_path": source.name,
+                  "raw_bytes": len(raw),
+                  "whitespace_stripped_bytes": len(encoded),
+                  "original_remainder": remainder,
+                  "candidate_count_tested": len(evaluated),
+                  "asserted_source_sha256": ASSERTED_SHA256,
+                  "evaluated": evaluated,
+                  "operator_visual_acceptance": "ABSENT",
+                  "merge_authorized": False,
+                  "release_authorized": False,
+                  "public_route_effect": "none",
+                  "pages_deployment_effect": "none",
+                  "external_effect": "none",
+              }
+              receipt_path.write_text(
+                  json.dumps(diagnostic, indent=2, sort_keys=True) + "\n",
+                  encoding="utf-8",
               )
+              raise SystemExit("historical carrier recovery remains unresolved")
 
           target.write_bytes(selected_decoded)
           receipt = {
@@ -289,6 +298,15 @@ jobs:
             --source-archive "$TRANSPORT/manzanita-independent-archive-source.tar.gz" \
             --extracted-dir "$EXTRACTED" \
             --output "$TARGET/HISTORICAL_ARCHIVE_SOURCE_RECOVERY_RECEIPT.json"
+
+      - name: Retain unresolved historical carrier diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-useful-plant-v30-historical-carrier-diagnostics
+          path: ${{ runner.temp }}/manzanita-independent-archive-history/
+          retention-days: 30
+          if-no-files-found: error
 
       - name: Install bounded browser runtime
         run: |
