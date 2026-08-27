@@ -1,0 +1,88 @@
+{
+  "schema": "manzanita/useful-plant-v30-native-review@1",
+  "object_id": "MW-USEFUL-PLANT-V30-NATIVE-REVIEW-001",
+  "object_class": "REPOSITORY_NATIVE_OPERATOR_REVIEW_SURFACE",
+  "aperture": "useful_plant",
+  "generated_at": "2026-08-27T01:00:00Z",
+  "source_donor": {
+    "path": "manzanita/assets/plant.webp",
+    "class": "admitted_public_photographic_donor",
+    "measurement": "computed_by_review_workflow",
+    "substitution_allowed": false,
+    "claim_boundary": "The review references the admitted repository asset in place. It does not relabel that asset as the missing exact v29 Plant donor."
+  },
+  "actors": [
+    {
+      "id": "household",
+      "authority": "sets purpose, privacy, effort ceiling, and stop state"
+    },
+    {
+      "id": "grower",
+      "authority": "proposes placement, care, harvest, and return actions"
+    },
+    {
+      "id": "neighbor",
+      "authority": "coordinates shared edge conditions without acquiring household control"
+    },
+    {
+      "id": "ecologist",
+      "authority": "interprets habitat function and evidence limits"
+    },
+    {
+      "id": "responder",
+      "authority": "uses bounded condition evidence for assistance-first triage"
+    }
+  ],
+  "use_loop": [
+    "recognize",
+    "place",
+    "tend",
+    "observe",
+    "use",
+    "return"
+  ],
+  "evidence_tiers": [
+    "direct_visual_observation",
+    "household_observation",
+    "source_linked_provenance",
+    "bounded_recommendation"
+  ],
+  "conditions": [
+    "water",
+    "heat",
+    "wind",
+    "smoke",
+    "pests",
+    "access",
+    "readiness",
+    "continuity"
+  ],
+  "household_stop_authority": [
+    "pause_recommendation",
+    "keep_private",
+    "reject_substitution"
+  ],
+  "firewall": [
+    "no_automatic_insurance_denial",
+    "no_unrelated_property_scoring",
+    "no_resident_ranking",
+    "no_punitive_enforcement",
+    "no_external_action_adapter"
+  ],
+  "review_contract": {
+    "operator_visual_acceptance": "ABSENT",
+    "release_authorized": false,
+    "merge_authorized": false,
+    "public_route_effect": "none",
+    "pages_deployment_effect": "none",
+    "external_effect": "none"
+  },
+  "blocking_holds": [
+    "exact v29 archive not mounted",
+    "exact retained Plant origin SVG not mounted",
+    "exact retained cached Plant WebP not mounted",
+    "inherited Household, Street, and Property rendered locks not executed",
+    "operator visual acceptance absent",
+    "public-route assembly not authorized"
+  ]
+}
