@@ -41,7 +41,7 @@ jobs:
             echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Parse native source and parent gate
+      - name: Parse native source and exact admission gates
         run: |
           set -euo pipefail
           node --check manzanita-next/review/useful-plant-v30-native/app.js
@@ -49,9 +49,14 @@ jobs:
             manzanita-next/review/useful-plant-v30-native/verify.py \
             manzanita-next/review/useful-plant-v30-native/browser_review.py \
             manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
-            manzanita-next/review/useful-plant-v30-native/test_v29_parent_admission.py
+            manzanita-next/review/useful-plant-v30-native/test_v29_parent_admission.py \
+            manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
+            manzanita-next/review/useful-plant-v30-native/test_plant_donor_admission.py
           python -m json.tool \
             manzanita-next/review/useful-plant-v30-native/V29_PARENT_ADMISSION_CONTRACT.json \
+            >/dev/null
+          python -m json.tool \
+            manzanita-next/review/useful-plant-v30-native/PLANT_DONOR_ADMISSION_CONTRACT.json \
             >/dev/null
 
       - name: Verify source, custody, and changed-path scope
@@ -80,6 +85,34 @@ jobs:
           assert receipt["result"] == "HOLD_PARENT_ARCHIVE_UNMOUNTED"
           assert receipt["admission_state"] == "HOLD"
           assert receipt["archive_admitted"] is False
+          assert receipt["operator_visual_acceptance"] == "ABSENT"
+          assert receipt["merge_authorized"] is False
+          assert receipt["release_authorized"] is False
+          assert receipt["public_route_effect"] == "none"
+          assert receipt["pages_deployment_effect"] == "none"
+          assert receipt["external_effect"] == "none"
+          PY
+
+      - name: Prove exact Plant donor gate fails closed while unmounted
+        run: |
+          set -euo pipefail
+          python manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
+            --origin "$RUNNER_TEMP/plant-origin.svg" \
+            --cached "$RUNNER_TEMP/plant-derived-reference.webp" \
+            --expect-missing \
+            --output "$RUNNER_TEMP/PLANT_DONOR_ADMISSION_RECEIPT.json"
+          python manzanita-next/review/useful-plant-v30-native/test_plant_donor_admission.py
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          receipt = json.loads(
+              (Path(os.environ["RUNNER_TEMP"]) / "PLANT_DONOR_ADMISSION_RECEIPT.json").read_text()
+          )
+          assert receipt["result"] == "HOLD_EXACT_PLANT_DONORS_UNMOUNTED"
+          assert receipt["admission_state"] == "HOLD"
+          assert receipt["donors_admitted"] is False
           assert receipt["operator_visual_acceptance"] == "ABSENT"
           assert receipt["merge_authorized"] is False
           assert receipt["release_authorized"] is False
@@ -129,6 +162,7 @@ jobs:
             manzanita/assets/plant.webp
             ${{ runner.temp }}/useful-plant-v30-source-receipt.json
             ${{ runner.temp }}/V29_PARENT_ADMISSION_RECEIPT.json
+            ${{ runner.temp }}/PLANT_DONOR_ADMISSION_RECEIPT.json
             ${{ runner.temp }}/useful-plant-v30-browser-review/
           retention-days: 30
           if-no-files-found: error
