@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import subprocess
@@ -29,6 +30,9 @@ RECEIPT_MEMBER = (
     "M99-PHYS-ARCHIVE-001-RECEIPT.json"
 )
 WORKFLOW_MEMBER = ".github/workflows/manzanita-independent-archive.yml"
+ASSERTED_SOURCE_SHA256 = (
+    "a1c4c12053066c1c579111c9bea16a6acd50e4a0c6cf21120afc944d46e43b46"
+)
 
 
 def sha256(payload: bytes) -> str:
@@ -99,6 +103,7 @@ def find_campaign_receipt(
             provenance["materialized"] = True
             provenance["bytes"] = len(payload)
             provenance["sha256"] = sha256(payload)
+            provenance["resolution_method"] = "direct_or_resolved_tar_member"
             return receipt, provenance
 
     candidates: list[tuple[str, dict, bytes]] = []
@@ -173,13 +178,16 @@ def main() -> int:
     source_digest = digest_bytes(
         args.source_archive.relative_to(args.output.parent).as_posix(), source_payload
     )
-    expected_source_sha = (
-        "a1c4c12053066c1c579111c9bea16a6acd50e4a0c6cf21120afc944d46e43b46"
-    )
-    if source_digest["sha256"] != expected_source_sha:
-        raise SystemExit(
-            f"historical source archive mismatch: {source_digest['sha256']}"
-        )
+    source_assertion_match = source_digest["sha256"] == ASSERTED_SOURCE_SHA256
+
+    try:
+        uncompressed_payload = gzip.decompress(source_payload)
+    except Exception as exc:
+        raise SystemExit(f"historical carrier gzip validation failed: {exc}") from exc
+    uncompressed_digest = {
+        "bytes": len(uncompressed_payload),
+        "sha256": sha256(uncompressed_payload),
+    }
 
     with tarfile.open(args.source_archive, mode="r:gz") as archive:
         all_members = archive.getmembers()
@@ -286,10 +294,29 @@ def main() -> int:
         )
 
     combined_b64 = args.transport_dir / "manzanita-independent-archive-source.b64"
+    if source_assertion_match:
+        result_code = "PASS_HISTORICAL_ARCHIVE_SOURCE_RECOVERED"
+        admission_state = "QUALIFIED"
+        exact_source_archive_admitted = True
+        blocking_holds: list[str] = []
+        receipt_classification = "SOURCE_BOUND_HISTORICAL_RECEIPT"
+    else:
+        result_code = "HOLD_HISTORICAL_SOURCE_ASSERTION_DRIFT"
+        admission_state = "HOLD"
+        exact_source_archive_admitted = False
+        blocking_holds = [
+            "decoded historical carrier SHA-256 differs from the source archive SHA-256 asserted by the bootstrap workflow",
+            "no independently mounted byte-identical source archive at the asserted SHA-256 is available",
+        ]
+        receipt_classification = "HISTORICAL_EMBEDDED_CLAIM_NOT_REQUALIFIED"
+
     result = {
-        "schema": "manzanita/useful-plant-v30-historical-archive-source-recovery@3",
+        "schema": "manzanita/useful-plant-v30-historical-archive-source-recovery@4",
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "result": "PASS_HISTORICAL_ARCHIVE_SOURCE_RECOVERED",
+        "result": result_code,
+        "admission_state": admission_state,
+        "exact_source_archive_admitted": exact_source_archive_admitted,
+        "blocking_holds": blocking_holds,
         "source_commit": args.commit,
         "source_tree": args.tree,
         "transport_parts": transport_parts,
@@ -298,7 +325,9 @@ def main() -> int:
             combined_b64.read_bytes(),
         ),
         "source_archive": source_digest,
-        "source_archive_expected_sha256": expected_source_sha,
+        "source_archive_asserted_sha256": ASSERTED_SOURCE_SHA256,
+        "source_archive_assertion_match": source_assertion_match,
+        "gzip_uncompressed": uncompressed_digest,
         "tar_member_count": len(all_members),
         "directory_count": len(directory_entries),
         "directories": directory_entries,
@@ -307,6 +336,7 @@ def main() -> int:
         "links": link_receipts,
         "campaign_receipt": campaign_receipt,
         "campaign_receipt_provenance": campaign_receipt_provenance,
+        "campaign_receipt_classification": receipt_classification,
         "workflow_discovery_lines": discovery_terms,
         "operator_visual_acceptance": "ABSENT",
         "merge_authorized": False,
@@ -320,7 +350,11 @@ def main() -> int:
         json.dumps(
             {
                 "result": result["result"],
+                "admission_state": result["admission_state"],
                 "source_commit": args.commit,
+                "source_archive_observed_sha256": source_digest["sha256"],
+                "source_archive_asserted_sha256": ASSERTED_SOURCE_SHA256,
+                "source_archive_assertion_match": source_assertion_match,
                 "tar_member_count": result["tar_member_count"],
                 "directory_count": result["directory_count"],
                 "member_count": result["member_count"],
