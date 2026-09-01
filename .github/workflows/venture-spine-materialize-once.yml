@@ -17,7 +17,7 @@ jobs:
           ref: venture-spine-1.0.0
           fetch-depth: 0
 
-      - name: Decode and apply the staged Venture Spine overlay
+      - name: Decode, integrate, build, and qualify Venture Spine
         run: |
           python - <<'PY'
           from __future__ import annotations
@@ -29,7 +29,7 @@ jobs:
           if not parts:
               raise SystemExit('No Venture Spine overlay parts found')
 
-          encoded = ''.join(p.read_text(encoding='utf-8').strip() for p in parts)
+          encoded = ''.join(path.read_text(encoding='utf-8').strip() for path in parts)
           payload = base64.b64decode(encoded, validate=True)
           print(f'decoded {len(parts)} parts into {len(payload)} bytes; magic={payload[:16]!r}')
 
@@ -46,34 +46,30 @@ jobs:
 
           def extract_tar(blob: bytes) -> bool:
               try:
-                  with tarfile.open(fileobj=io.BytesIO(blob), mode='r:*') as tf:
-                      members = tf.getmembers()
+                  with tarfile.open(fileobj=io.BytesIO(blob), mode='r:*') as archive:
+                      members = archive.getmembers()
                       if not members:
                           return False
                       for member in members:
                           safe_target(stage, member.name)
                           if member.issym() or member.islnk():
                               raise ValueError(f'links forbidden in overlay: {member.name}')
-                      tf.extractall(stage)
+                      archive.extractall(stage)
                       print('overlay format: tar; members:', len(members))
-                      for member in members:
-                          print(' member:', member.name)
                       return True
               except tarfile.TarError:
                   return False
 
           def extract_zip(blob: bytes) -> bool:
               try:
-                  with zipfile.ZipFile(io.BytesIO(blob)) as zf:
-                      names = zf.namelist()
+                  with zipfile.ZipFile(io.BytesIO(blob)) as archive:
+                      names = archive.namelist()
                       if not names:
                           return False
                       for name in names:
                           safe_target(stage, name)
-                      zf.extractall(stage)
+                      archive.extractall(stage)
                       print('overlay format: zip; members:', len(names))
-                      for name in names:
-                          print(' member:', name)
                       return True
               except zipfile.BadZipFile:
                   return False
@@ -97,13 +93,10 @@ jobs:
                       items = ((row['path'], row['content']) for row in files)
                   else:
                       raise ValueError('unknown JSON overlay shape')
-                  count = 0
                   for name, content in items:
-                      dest = safe_target(stage, name)
-                      dest.parent.mkdir(parents=True, exist_ok=True)
-                      dest.write_text(content, encoding='utf-8')
-                      count += 1
-                  print('overlay format: JSON file map; members:', count)
+                      destination = safe_target(stage, name)
+                      destination.parent.mkdir(parents=True, exist_ok=True)
+                      destination.write_text(content, encoding='utf-8')
                   extracted = True
               elif stripped.startswith('diff --git ') or stripped.startswith('*** Begin Patch'):
                   patch = root / '.venture-spine-overlay.patch'
@@ -114,30 +107,22 @@ jobs:
               else:
                   raise ValueError(f'unrecognized overlay payload: {decoded[:80]!r}')
 
-          build_candidates = [
-              path for path in stage.rglob('build.py')
-              if path.parts[-3:] == ('venture-spine', 'scripts', 'build.py')
-          ]
-          if len(build_candidates) != 1:
-              print('extracted tree:')
-              for path in sorted(stage.rglob('*')):
-                  print(' ', path.relative_to(stage))
-              raise SystemExit(f'expected one staged Venture Spine build.py, found {len(build_candidates)}')
-
-          # Strip exactly the wrapper above venture-spine, whatever it is.
-          source = build_candidates[0].parents[2]
-          print('copy source root:', source.relative_to(stage) if source != stage else '.')
           copied = 0
-          for src in source.rglob('*'):
-              rel = src.relative_to(source)
-              dest = safe_target(root, str(rel))
-              if src.is_dir():
-                  dest.mkdir(parents=True, exist_ok=True)
+          for source in stage.rglob('*'):
+              relative = source.relative_to(stage)
+              destination = safe_target(root, str(relative))
+              if source.is_dir():
+                  destination.mkdir(parents=True, exist_ok=True)
               else:
-                  dest.parent.mkdir(parents=True, exist_ok=True)
-                  shutil.copy2(src, dest)
+                  destination.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copy2(source, destination)
                   copied += 1
-          print('copied overlay files:', copied)
+          print('copied staged files:', copied)
+
+          integrator = root / '.github' / 'bootstrap' / 'venture-spine-integrate.py'
+          if not integrator.exists():
+              raise SystemExit('staged integration script is missing')
+          subprocess.run(['python', str(integrator)], check=True)
 
           template = root / 'venture-spine' / 'index.template.html'
           if template.exists():
@@ -153,7 +138,7 @@ jobs:
           validate = root / 'venture-spine' / 'tests' / 'validate.py'
           for required in (build, qualify, validate):
               if not required.exists():
-                  raise SystemExit(f'overlay did not materialize required file: {required.relative_to(root)}')
+                  raise SystemExit(f'integration did not create required file: {required.relative_to(root)}')
 
           subprocess.run(['python', str(build)], check=True)
           subprocess.run(['python', str(qualify), '--write'], check=True)
@@ -161,6 +146,8 @@ jobs:
 
           for part in parts:
               part.unlink()
+          if integrator.exists():
+              integrator.unlink()
           if part_dir.exists() and not any(part_dir.iterdir()):
               part_dir.rmdir()
           shutil.rmtree(stage)
