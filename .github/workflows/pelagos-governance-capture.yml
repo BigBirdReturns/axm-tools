@@ -2,7 +2,8 @@ name: Pelagos Governance Layer materialize and qualify
 
 on:
   push:
-    branches: [feat/pelagos-governance-layer]
+    branches:
+      - feat/pelagos-governance-layer
   workflow_dispatch: {}
 
 permissions:
@@ -17,142 +18,16 @@ jobs:
         with:
           ref: feat/pelagos-governance-layer
           fetch-depth: 0
-
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-
+          python-version: '3.12'
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
-
-      - name: Reconstruct exact v0.3.0 source tree
-        shell: bash
+          node-version: '22'
+      - name: Materialize and qualify Pelagos Governance Layer v0.3.0
+        run: python .github/pelagos-v030/materialize.py
+      - name: Commit qualified release
         run: |
-          set -euo pipefail
-          cat .github/pelagos-v030/pelagos-v030-source-part-*.b64 \
-            | tr -d '\n\r\t ' \
-            | base64 --decode > /tmp/pelagos-v030-source.tar.gz
-          echo "4db9cc0391d33d69d2ebfb810ea97f7011c58ba5cf54e80be0cbf97e9a169eeb  /tmp/pelagos-v030-source.tar.gz" | sha256sum --check -
-          rm -rf /tmp/pelagos-v030 pelagos-governance
-          tar -xzf /tmp/pelagos-v030-source.tar.gz -C /tmp
-          mv /tmp/pelagos-v030 pelagos-governance
-          rm -rf pelagos-governance/node_modules
-          python pelagos-governance/scripts/build_standalone.py
-
-      - name: Run deterministic qualification
-        shell: bash
-        run: |
-          set -euo pipefail
-          python pelagos-governance/scripts/validate.py
-          for f in pelagos-governance/app/*.js pelagos-governance/data/parts/*.js; do
-            node --check "$f"
-          done
-
-      - name: Run native browser campaign
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd pelagos-governance
-          npm install --no-save --package-lock=false playwright@1.55.0
-          npx playwright install --with-deps chromium
-          node tests/verify.mjs
-          rm -rf node_modules
-
-      - name: Register tool and continuity law
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          readme = Path('README.md')
-          text = readme.read_text(encoding='utf-8')
-          row = '| [`pelagos-governance/`](pelagos-governance/) | Founder-controlled local-first company-state runtime for hard-tech relationships, instruments, claims, evidence, rights, authority, decisions, receipts, and succession. The embedded Pelagos cartridge is public-safe; private files remain local in the browser. | [Pelagos Governance Layer v0.3.0](https://bigbirdreturns.github.io/axm-tools/pelagos-governance/) — public-safe inspection; save `standalone.html` for private company state |\n'
-          if 'pelagos-governance/' not in text:
-              marker = '| [`acceptance.html`](acceptance.html) |'
-              at = text.index(marker)
-              readme.write_text(text[:at] + row + text[at:], encoding='utf-8')
-
-          index = Path('index.html')
-          text = index.read_text(encoding='utf-8')
-          card = '''<div class="tool">
-  <div class="title"><a href="pelagos-governance/">Pelagos Governance Layer 0.3.0</a></div>
-  <div class="desc">A founder-controlled local-first company-state runtime for Pelagos. It reconstructs the public relationship, instrument, claim, evidence, rights, and authority surfaces already in motion, then admits private source hashes and successor states under one named custodian. No source upload, shared-cloud dependency, or external-effect adapter.</div>
-  <a class="open" href="pelagos-governance/">Open the governance layer →</a>
-</div>
-
-'''
-          if 'href="pelagos-governance/"' not in text:
-              marker = '<div class="tool">\n  <div class="title"><a href="acceptance.html">'
-              at = text.index(marker)
-              index.write_text(text[:at] + card + text[at:], encoding='utf-8')
-
-          continuity = Path('CONTINUITY.md')
-          text = continuity.read_text(encoding='utf-8')
-          bullet = '- `pelagos-governance/` — founder-controlled local-first company-state runtime. The public cartridge is inspectable; private operation starts only after a named Pelagos decision owner, technical owner, communications owner, and custodian admit the working copy. It has no external-effect adapter and preserves successor state rather than overwriting prior records.\n'
-          if '`pelagos-governance/`' not in text:
-              marker = '- `axm-witness/`'
-              at = text.index(marker)
-              continuity.write_text(text[:at] + bullet + text[at:], encoding='utf-8')
-          PY
-
-          cat > .github/workflows/pelagos-governance-check.yml <<'YAML'
-          name: Pelagos Governance Layer qualification
-
-          on:
-            push:
-              paths:
-                - 'pelagos-governance/**'
-                - '.github/workflows/pelagos-governance-check.yml'
-            pull_request:
-              paths:
-                - 'pelagos-governance/**'
-                - '.github/workflows/pelagos-governance-check.yml'
-            workflow_dispatch: {}
-
-          permissions:
-            contents: read
-
-          jobs:
-            qualify:
-              runs-on: ubuntu-latest
-              timeout-minutes: 30
-              steps:
-                - uses: actions/checkout@v4
-                - uses: actions/setup-python@v5
-                  with:
-                    python-version: '3.12'
-                - uses: actions/setup-node@v4
-                  with:
-                    node-version: '22'
-                - name: Rebuild and verify frozen release
-                  run: |
-                    python pelagos-governance/scripts/build_standalone.py
-                    git diff --exit-code -- pelagos-governance/standalone.html
-                    python pelagos-governance/scripts/validate.py
-                    git diff --exit-code -- pelagos-governance/QUALIFICATION.json
-                    for f in pelagos-governance/app/*.js pelagos-governance/data/parts/*.js; do node --check "$f"; done
-                - name: Install disposable browser harness
-                  working-directory: pelagos-governance
-                  run: |
-                    npm install --no-save --package-lock=false playwright@1.55.0
-                    npx playwright install --with-deps chromium
-                - name: Run browser campaign
-                  working-directory: pelagos-governance
-                  run: node tests/verify.mjs
-          YAML
-
-      - name: Remove staging residue and self-destruct
-        shell: bash
-        run: |
-          rm -rf .github/pelagos-v030
-          rm -f .github/workflows/pelagos-governance-capture.yml
-          rm -f .github/workflows/pelagos-governance-materialize.yml
-
-      - name: Commit qualified tool
-        shell: bash
-        run: |
-          set -euo pipefail
           git config user.name "BigBirdReturns"
           git config user.email "bigbirdreturns@proton.me"
           git add -A
