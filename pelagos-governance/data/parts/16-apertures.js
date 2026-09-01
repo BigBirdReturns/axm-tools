@@ -1,0 +1,3 @@
+'use strict';
+window.__PELAGOS_PUBLIC_PARTS__ = window.__PELAGOS_PUBLIC_PARTS__ || {};
+window.__PELAGOS_PUBLIC_PARTS__["apertures"] = [{"id":"internal","label":"Internal working view","description":"Public baseline plus all locally admitted records, receipts and corrections."},{"id":"public","label":"Public-safe projection","description":"Immutable public cartridge plus explicitly public local amendments only."},{"id":"diligence","label":"Diligence projection","description":"Claims, instruments, evidence, rights and source-receipt metadata without private narrative bodies."},{"id":"counsel","label":"Counsel residue","description":"Privileged/confidential facts and concrete unresolved questions requiring legal judgment."}];
