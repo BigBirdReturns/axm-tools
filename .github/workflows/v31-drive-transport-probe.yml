@@ -1,0 +1,31 @@
+name: V31 Drive transport probe
+
+on:
+  push:
+    branches:
+      - agent/manzanita-v31-bootstrap-v3-r1-windows-platform-replay
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe exact private Drive transport
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $target = Join-Path $env:RUNNER_TEMP 'MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip'
+          $url = 'https://drive.usercontent.google.com/download?id=1tX9hAVhNdThVUq6ozuIfrqn5vAhgSxU3&export=download&confirm=t'
+          & curl.exe -fL --retry 2 --connect-timeout 20 --max-time 180 -o $target $url
+          if ($LASTEXITCODE -ne 0) { throw "curl failed: $LASTEXITCODE" }
+          $bytes = (Get-Item -LiteralPath $target).Length
+          $sha = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash.ToLowerInvariant()
+          Write-Host "bytes=$bytes"
+          Write-Host "sha256=$sha"
+          if ($bytes -ne 553074) { throw "wrong byte count: $bytes" }
+          if ($sha -ne '2c4437c2f3c0cd7599b790ddc1a31315751db751daa3a81e4245e2a32b5f3738') { throw "wrong SHA-256: $sha" }
