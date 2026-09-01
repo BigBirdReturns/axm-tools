@@ -1,0 +1,167 @@
+name: Venture Spine one-time materialization
+
+on:
+  push:
+    branches: [venture-spine-1.0.0]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: venture-spine-1.0.0
+          fetch-depth: 0
+
+      - name: Decode and apply the staged Venture Spine overlay
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+          import base64, gzip, io, json, os, pathlib, shutil, subprocess, tarfile, zipfile
+
+          root = pathlib.Path.cwd().resolve()
+          part_dir = root / '.github' / 'bootstrap'
+          parts = sorted(part_dir.glob('venture-spine-overlay-part-*.b64'))
+          if not parts:
+              raise SystemExit('No Venture Spine overlay parts found')
+
+          encoded = ''.join(p.read_text(encoding='utf-8').strip() for p in parts)
+          payload = base64.b64decode(encoded, validate=True)
+          print(f'decoded {len(parts)} parts into {len(payload)} bytes; magic={payload[:16]!r}')
+
+          stage = root / '.venture-spine-materialize'
+          if stage.exists():
+              shutil.rmtree(stage)
+          stage.mkdir()
+
+          def safe_target(base: pathlib.Path, name: str) -> pathlib.Path:
+              target = (base / name).resolve()
+              if target != base and base not in target.parents:
+                  raise ValueError(f'unsafe overlay path: {name}')
+              return target
+
+          def extract_tar(blob: bytes) -> bool:
+              try:
+                  with tarfile.open(fileobj=io.BytesIO(blob), mode='r:*') as tf:
+                      members = tf.getmembers()
+                      if not members:
+                          return False
+                      for m in members:
+                          safe_target(stage, m.name)
+                          if m.issym() or m.islnk():
+                              raise ValueError(f'links forbidden in overlay: {m.name}')
+                      tf.extractall(stage)
+                      print('overlay format: tar; members:', len(members))
+                      return True
+              except tarfile.TarError:
+                  return False
+
+          def extract_zip(blob: bytes) -> bool:
+              try:
+                  with zipfile.ZipFile(io.BytesIO(blob)) as zf:
+                      names = zf.namelist()
+                      if not names:
+                          return False
+                      for name in names:
+                          safe_target(stage, name)
+                      zf.extractall(stage)
+                      print('overlay format: zip; members:', len(names))
+                      return True
+              except zipfile.BadZipFile:
+                  return False
+
+          extracted = extract_tar(payload) or extract_zip(payload)
+          decoded = payload
+          if not extracted and payload.startswith(b'\x1f\x8b'):
+              decoded = gzip.decompress(payload)
+              print(f'gzip payload expanded to {len(decoded)} bytes; inner magic={decoded[:32]!r}')
+              extracted = extract_tar(decoded) or extract_zip(decoded)
+
+          if not extracted:
+              text = decoded.decode('utf-8')
+              stripped = text.lstrip()
+              if stripped.startswith('{') or stripped.startswith('['):
+                  obj = json.loads(text)
+                  files = obj.get('files', obj) if isinstance(obj, dict) else obj
+                  if isinstance(files, dict):
+                      items = files.items()
+                  elif isinstance(files, list):
+                      items = ((row['path'], row['content']) for row in files)
+                  else:
+                      raise ValueError('unknown JSON overlay shape')
+                  count = 0
+                  for name, content in items:
+                      dest = safe_target(stage, name)
+                      dest.parent.mkdir(parents=True, exist_ok=True)
+                      dest.write_text(content, encoding='utf-8')
+                      count += 1
+                  print('overlay format: JSON file map; members:', count)
+                  extracted = True
+              elif stripped.startswith('diff --git ') or stripped.startswith('*** Begin Patch'):
+                  patch = root / '.venture-spine-overlay.patch'
+                  patch.write_text(text, encoding='utf-8')
+                  subprocess.run(['git', 'apply', '--index', str(patch)], check=True)
+                  patch.unlink()
+                  extracted = True
+              else:
+                  raise ValueError(f'unrecognized overlay payload: {decoded[:80]!r}')
+
+          if any(stage.iterdir()):
+              children = list(stage.iterdir())
+              source = children[0] if len(children) == 1 and children[0].is_dir() and children[0].name in {'overlay','repo','axm-tools'} else stage
+              copied = 0
+              for src in source.rglob('*'):
+                  rel = src.relative_to(source)
+                  dest = safe_target(root, str(rel))
+                  if src.is_dir():
+                      dest.mkdir(parents=True, exist_ok=True)
+                  else:
+                      dest.parent.mkdir(parents=True, exist_ok=True)
+                      shutil.copy2(src, dest)
+                      copied += 1
+              print('copied overlay files:', copied)
+
+          template = root / 'venture-spine' / 'index.template.html'
+          if template.exists():
+              text = template.read_text(encoding='utf-8')
+              old = "rationale:'Align claim language to current evidence state and retain superseded version.'"
+              new = "rationale:'Correction supersedes; it does not erase. Align claim language to current evidence state and retain the superseded version.'"
+              if old in text:
+                  template.write_text(text.replace(old, new), encoding='utf-8')
+                  print('patched correction-lineage language')
+
+          build = root / 'venture-spine' / 'scripts' / 'build.py'
+          qualify = root / 'venture-spine' / 'scripts' / 'qualify.py'
+          validate = root / 'venture-spine' / 'tests' / 'validate.py'
+          for required in (build, qualify, validate):
+              if not required.exists():
+                  raise SystemExit(f'overlay did not materialize required file: {required.relative_to(root)}')
+
+          subprocess.run(['python', str(build)], check=True)
+          subprocess.run(['python', str(qualify), '--write'], check=True)
+          subprocess.run(['python', str(validate)], check=True)
+
+          for p in parts:
+              p.unlink()
+          if part_dir.exists() and not any(part_dir.iterdir()):
+              part_dir.rmdir()
+          shutil.rmtree(stage)
+          pathlib.Path('.github/workflows/venture-spine-materialize-once.yml').unlink()
+
+          print('materialized files:')
+          for p in sorted((root / 'venture-spine').rglob('*')):
+              if p.is_file():
+                  print(' ', p.relative_to(root), p.stat().st_size)
+          PY
+
+      - name: Commit the materialized tool
+        run: |
+          git config user.name "BigBirdReturns"
+          git config user.email "bigbirdreturns@proton.me"
+          git add -A
+          git commit -m "venture-spine: materialize qualified 1.0.0 runtime"
+          git push origin HEAD:venture-spine-1.0.0
