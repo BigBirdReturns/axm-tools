@@ -1,0 +1,70 @@
+name: Manzanita v31 self-hosted Windows recovery execution
+
+on:
+  push:
+    branches:
+      - agent/manzanita-v31-origin-host-recovery-execution-v1
+    paths:
+      - 'manzanita-next/recovery/v31-origin-host-recovery-execution-v1/**'
+      - '.github/workflows/manzanita-v31-origin-host-recovery-execution-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manzanita-v31-origin-host-recovery-execution-v1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  execute-self-hosted-windows-recovery:
+    runs-on: [self-hosted, Windows]
+    timeout-minutes: 180
+    env:
+      SUMMARY_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.json
+      RETURN_PATH: ${{ runner.temp }}\MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip
+      VALIDATION_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.validation.json
+      SOURCE_RECEIPT: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_SOURCE_VERIFICATION_RECEIPT_V1.json
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Verify bounded source and privacy contract
+        shell: powershell
+        run: >-
+          & '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\verify_origin_host_execution_source.ps1'
+          -OutputPath $env:SOURCE_RECEIPT
+
+      - name: Execute exact V3 R1 recovery campaign and deterministic collection
+        id: execution
+        continue-on-error: true
+        shell: powershell
+        run: >-
+          & '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\run_origin_host_recovery.ps1'
+          -SummaryPath $env:SUMMARY_PATH
+          -ReturnPath $env:RETURN_PATH
+
+      - name: Validate execution summary, return envelope, privacy, and authority holds
+        if: always()
+        shell: powershell
+        run: >-
+          & '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\validate_origin_host_execution_summary.ps1'
+          -SummaryPath $env:SUMMARY_PATH
+          -ReturnPath $env:RETURN_PATH
+          -OutputPath $env:VALIDATION_PATH
+
+      - name: Retain privacy-bounded self-hosted recovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-origin-host-recovery-execution-v1
+          path: |
+            ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.json
+            ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.validation.json
+            ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_SOURCE_VERIFICATION_RECEIPT_V1.json
+            ${{ runner.temp }}\MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip
+          retention-days: 1
+          if-no-files-found: warn
