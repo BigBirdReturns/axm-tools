@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "venture-spine/cartridge@1",
+  "title": "Venture Spine Cartridge",
+  "type": "object",
+  "required": [
+    "schema",
+    "cartridge_id",
+    "release",
+    "title",
+    "as_of",
+    "classification",
+    "authority",
+    "boundary",
+    "founder_decisions",
+    "invariants",
+    "state_model",
+    "counterparties",
+    "instruments",
+    "claims",
+    "evidence",
+    "rights",
+    "exceptions",
+    "sources",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {"const": "venture-spine/cartridge@1"},
+    "cartridge_id": {"type": "string", "minLength": 1},
+    "release": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "subtitle": {"type": "string"},
+    "as_of": {"type": "string", "format": "date"},
+    "classification": {"type": "string"},
+    "status": {"type": "string"},
+    "brand": {"type": "object"},
+    "authority": {"type": "object"},
+    "boundary": {
+      "type": "object",
+      "required": ["source_bytes_embedded", "external_effect_adapters", "runtime_network_requests", "private_email_embedded"],
+      "properties": {
+        "source_bytes_embedded": {"const": 0},
+        "external_effect_adapters": {"const": 0},
+        "runtime_network_requests": {"const": 0},
+        "private_email_embedded": {"const": false}
+      }
+    },
+    "founder_decisions": {"type": "array", "items": {"type": "object"}},
+    "invariants": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+    "state_model": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+    "counterparties": {"type": "array", "items": {"type": "object"}},
+    "instruments": {"type": "array", "items": {"type": "object"}},
+    "claims": {"type": "array", "items": {"type": "object"}},
+    "evidence": {"type": "array", "items": {"type": "object"}},
+    "rights": {"type": "array", "items": {"type": "object"}},
+    "exceptions": {"type": "array", "items": {"type": "object"}},
+    "sources": {"type": "array", "items": {"type": "object"}},
+    "starter_intake": {"type": "array", "items": {"type": "object"}},
+    "stress_scenarios": {"type": "array", "items": {"type": "object"}},
+    "integrity": {
+      "type": "object",
+      "required": ["algorithm", "digest"],
+      "properties": {
+        "algorithm": {"const": "SHA-256"},
+        "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  },
+  "additionalProperties": true
+}

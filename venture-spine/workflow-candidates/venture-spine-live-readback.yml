@@ -1,0 +1,124 @@
+name: Venture Spine live readback 1.0.0
+
+on:
+  workflow_run:
+    workflows: ["PTA tracker fetch + deploy"]
+    types: [completed]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: venture-spine-live-readback
+  cancel-in-progress: false
+
+jobs:
+  readback:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Compare cache-bypassed live bytes with committed release
+        env:
+          LIVE_URL: https://bigbirdreturns.github.io/axm-tools/venture-spine/
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+          import hashlib, json, os, time, urllib.request
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          committed_path = Path('venture-spine/index.html')
+          committed = committed_path.read_bytes()
+          committed_sha = hashlib.sha256(committed).hexdigest()
+          base = os.environ['LIVE_URL']
+          last_error = None
+          live = b''
+
+          for attempt in range(8):
+              url = f"{base}?readback={committed_sha[:16]}-{int(time.time())}-{attempt}"
+              req = urllib.request.Request(
+                  url,
+                  headers={
+                      'Cache-Control': 'no-cache, no-store, max-age=0',
+                      'Pragma': 'no-cache',
+                      'User-Agent': 'axm-tools-venture-spine-readback/1.0',
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as response:
+                      live = response.read()
+                  if hashlib.sha256(live).hexdigest() == committed_sha:
+                      break
+                  last_error = RuntimeError(
+                      f"digest mismatch on attempt {attempt + 1}: "
+                      f"live={hashlib.sha256(live).hexdigest()} committed={committed_sha}"
+                  )
+              except Exception as exc:
+                  last_error = exc
+              time.sleep(min(60, 5 * (attempt + 1)))
+          else:
+              raise SystemExit(f"live readback failed: {last_error}")
+
+          text = live.decode('utf-8')
+          required = [
+              'venture-spine/1.0.0',
+              'CARTRIDGE VERIFIED',
+              'ZERO NETWORK',
+              'ZERO SOURCE BYTES',
+              'NO EXTERNAL EFFECTS',
+              'Dependable DaVincis · A Robi Sen Collaboration',
+          ]
+          missing = [marker for marker in required if marker not in text]
+          if missing:
+              raise SystemExit(f"live release markers missing: {missing}")
+
+          receipt_path = Path('.github/receipts/venture-spine-live-1.0.0.json')
+          prior = {}
+          if receipt_path.exists():
+              try:
+                  prior = json.loads(receipt_path.read_text(encoding='utf-8'))
+              except Exception:
+                  prior = {}
+
+          receipt = {
+              'schema': 'venture-spine/live-readback@1',
+              'release': '1.0.0',
+              'result': 'PASS',
+              'verified_at': datetime.now(timezone.utc).isoformat(),
+              'url': base,
+              'artifact_path': committed_path.as_posix(),
+              'artifact_bytes': len(committed),
+              'committed_sha256': committed_sha,
+              'live_bytes': len(live),
+              'live_sha256': hashlib.sha256(live).hexdigest(),
+              'source_commit': os.environ['GITHUB_SHA'],
+              'triggering_deploy_run_id': os.environ.get('GITHUB_RUN_ID', ''),
+              'cache_bypassed': True,
+              'exact_byte_parity': True,
+              'runtime_network_claim': 'No application request occurs after its own files load; this workflow is an external release readback.',
+          }
+          receipt_path.parent.mkdir(parents=True, exist_ok=True)
+          receipt_path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+
+          if prior.get('committed_sha256') == committed_sha and prior.get('result') == 'PASS':
+              Path('/tmp/venture-spine-receipt-unchanged').write_text('1')
+          print(f"VENTURE_SPINE_LIVE_READBACK_PASS bytes={len(live)} sha256={committed_sha}")
+          PY
+
+      - name: Commit a new release receipt only when artifact identity changes
+        run: |
+          if [ -f /tmp/venture-spine-receipt-unchanged ]; then
+            echo "Artifact identity already has a PASS receipt; no commit needed."
+            exit 0
+          fi
+          git config user.name "venture-spine-readback-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add .github/receipts/venture-spine-live-1.0.0.json
+          git commit -m "venture-spine: record live 1.0.0 readback"
+          git push

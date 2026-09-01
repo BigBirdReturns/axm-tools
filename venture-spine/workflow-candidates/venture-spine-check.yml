@@ -1,0 +1,80 @@
+name: Venture Spine 1.0.0
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "venture-spine/**"
+      - ".github/workflows/venture-spine-check.yml"
+      - "README.md"
+      - "index.html"
+      - "CONTINUITY.md"
+  push:
+    branches: [main]
+    paths:
+      - "venture-spine/**"
+      - ".github/workflows/venture-spine-check.yml"
+      - "README.md"
+      - "index.html"
+      - "CONTINUITY.md"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Rebuild standalone artifact
+        run: python venture-spine/scripts/build.py
+      - name: Verify no release drift
+        run: git diff --exit-code -- venture-spine/index.html
+      - name: Static, public-boundary, and fixture qualification
+        run: |
+          python venture-spine/scripts/validate.py
+          python venture-spine/tests/public_contract_test.py
+          python venture-spine/tests/fixture_test.py
+      - name: Verify executable JavaScript syntax
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          page=Path('venture-spine/index.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script>(.*?)</script>',page,re.I|re.S)
+          assert len(scripts)==1
+          Path('/tmp/venture-spine.js').write_text(scripts[0],encoding='utf-8')
+          PY
+          node --check /tmp/venture-spine.js
+      - name: Install disposable browser qualification tools
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Run browser qualification
+        env:
+          VENTURE_SPINE_BROWSER_RESULT: /tmp/venture-spine-browser.json
+        run: python venture-spine/tests/browser_test.py
+      - name: Confirm committed qualification contract
+        run: |
+          python - <<'PY'
+          import json
+          q=json.load(open('venture-spine/QUALIFICATION.json'))
+          assert q['result']=='PASS'
+          assert q['static_checks']['passed']==188
+          assert q['public_contract_checks']['passed']==47
+          assert q['fixture_checks']['passed']==12
+          assert q['browser_checks']['passed']>=71
+          assert q['embedded_selftest_cells']==72
+          assert q['contracts']['runtime_network_requests']==0
+          assert q['contracts']['external_effect_adapters']==0
+          assert q['contracts']['source_bytes_embedded']==0
+          assert q['live_readback']['state']=='NOT_RUN'
+          PY

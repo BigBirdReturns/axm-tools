@@ -1,0 +1,165 @@
+{
+  "schema": "venture-spine/qualification@1",
+  "release": "1.0.0",
+  "result": "PASS",
+  "qualified_at": "2026-09-01T06:11:41.865068+00:00",
+  "release_class": "public_safe_local_external_state_governance_runtime",
+  "entrypoint": "venture-spine/index.html",
+  "proposed_public_route": "https://bigbirdreturns.github.io/axm-tools/venture-spine/",
+  "static_checks": {
+    "passed": 188,
+    "total": 188
+  },
+  "public_contract_checks": {
+    "passed": 47,
+    "total": 47
+  },
+  "fixture_checks": {
+    "passed": 12,
+    "total": 12
+  },
+  "browser_checks": {
+    "passed": 71,
+    "total": 71
+  },
+  "embedded_selftest_cells": 72,
+  "cartridge_counts": {
+    "founder_decisions": 10,
+    "invariants": 40,
+    "state_model": 44,
+    "counterparties": 17,
+    "instruments": 14,
+    "claims": 54,
+    "evidence": 12,
+    "rights": 9,
+    "exceptions": 27,
+    "sources": 12,
+    "starter_intake": 3,
+    "stress_scenarios": 12
+  },
+  "contracts": {
+    "standalone": "PASS",
+    "desktop": "PASS",
+    "mobile_390": "PASS",
+    "mobile_320_text_200": "PASS",
+    "reduced_motion": "PASS",
+    "theme_persistence": "PASS",
+    "print_contract": "PASS",
+    "runtime_network_requests": 0,
+    "external_effect_adapters": 0,
+    "source_bytes_embedded": 0,
+    "source_bytes_retained_by_intake": 0,
+    "public_packet_private_state_stripped": "PASS",
+    "encrypted_backup": "AES-GCM + PBKDF2-SHA-256/250000",
+    "duplicate_refusal": "PASS",
+    "tamper_refusal": "PASS",
+    "cold_successor_replay": "PASS",
+    "stress_total_score": "NONE"
+  },
+  "live_readback": {
+    "state": "NOT_RUN",
+    "reason": "Candidate has not yet been committed and deployed to GitHub Pages. A live-byte receipt must be produced after deployment."
+  },
+  "files": [
+    {
+      "path": "venture-spine/BROWSER_QUALIFICATION.json",
+      "bytes": 3106,
+      "sha256": "25e1c075718c071335f8262f209b47877e6340fe952a11171faf58888dd703a7"
+    },
+    {
+      "path": "venture-spine/CONSTITUTION.md",
+      "bytes": 3980,
+      "sha256": "31374b4185ae72b11be262703e9684e06ea885c4504ddc9b7154712448a6ccec"
+    },
+    {
+      "path": "venture-spine/ESTATE_COMPARISON.md",
+      "bytes": 3244,
+      "sha256": "1588d7f2eb2c60052c2daeafade5e66a0b8344f1367509281fc63a4fa7fef0b0"
+    },
+    {
+      "path": "venture-spine/LESSONS_APPLIED.md",
+      "bytes": 4153,
+      "sha256": "2991fdf6c21b29a675e190e28d89e0aeec0fd722b8fdfb7733644538c9e1384f"
+    },
+    {
+      "path": "venture-spine/README.md",
+      "bytes": 7673,
+      "sha256": "b4870d739dc0062ffbad035c05c07d88c8fdcbfaf7ac11c9e60155b6b4e86a44"
+    },
+    {
+      "path": "venture-spine/RELEASE_NOTES.md",
+      "bytes": 1449,
+      "sha256": "a772be0fd31e361ba514dc7117427707b2d1a137bdcd0700f8c7b43e67023222"
+    },
+    {
+      "path": "venture-spine/data/fixtures/sample-investor-offer.csv",
+      "bytes": 248,
+      "sha256": "a67f136c5bacc4d7fabab04db74d1c3914fed7cf3c90b20bc98d864470d2dc60"
+    },
+    {
+      "path": "venture-spine/data/fixtures/sample-sensitive-note.txt",
+      "bytes": 127,
+      "sha256": "b31f883b841f77c3de3fe9a93ea593d8e55f62b68d0319a77261b1d2d6040bb8"
+    },
+    {
+      "path": "venture-spine/data/fixtures/sample-technical-evidence.ndjson",
+      "bytes": 347,
+      "sha256": "94a4b3e30857a7892b39163d57e0eb05be13c408fca080d144fa5042042475b7"
+    },
+    {
+      "path": "venture-spine/data/observed.json",
+      "bytes": 401,
+      "sha256": "c141aac23c47152e9e6b2d96e7b8c9bf3fb4b0f1be662fa8dd7fc371fe3466cc"
+    },
+    {
+      "path": "venture-spine/data/pelagos-public-cartridge.json",
+      "bytes": 143273,
+      "sha256": "862832a5fde5a0a39d6b9ae528f3fb6695dbd6dd89dc73c4f490589fdffc9a01"
+    },
+    {
+      "path": "venture-spine/data/schema.json",
+      "bytes": 2472,
+      "sha256": "ac9d778cf1ce5358077239708333a8e415b2cfb9ab377486c7bb269194d59999"
+    },
+    {
+      "path": "venture-spine/index.html",
+      "bytes": 203431,
+      "sha256": "4f42d04f4159af2d8a710002846217e6d3e1a8961017ff72cc623a67f51f4bc9"
+    },
+    {
+      "path": "venture-spine/index.template.html",
+      "bytes": 85477,
+      "sha256": "fc05d1451cd01b1536f1c2b65916a8f772b4c9c58d2162d4e77a76754f905937"
+    },
+    {
+      "path": "venture-spine/scripts/build.py",
+      "bytes": 1202,
+      "sha256": "67336856ee7312e7c92aadde0ba7d9fda4e4890b0c3443ec717e225b51714d51"
+    },
+    {
+      "path": "venture-spine/scripts/qualify.py",
+      "bytes": 5022,
+      "sha256": "2af42723b12e9dfa606160967e2f680020943d64a7f679ebd8bf4ebba6438a7c"
+    },
+    {
+      "path": "venture-spine/scripts/validate.py",
+      "bytes": 14303,
+      "sha256": "57082a3ef16e34b9efc7f52ab5326c292d75c5493882c74362962d8cdde37087"
+    },
+    {
+      "path": "venture-spine/tests/browser_test.py",
+      "bytes": 16060,
+      "sha256": "ad155b789b7350091f30b9c3725b73ac5b78c5f87b3a836afdf3feba96e6d85b"
+    },
+    {
+      "path": "venture-spine/tests/fixture_test.py",
+      "bytes": 1856,
+      "sha256": "abdcb058f0ae0c9e3f32ee41344640bb2e31afbf2d67f889480d63ed579b7ba9"
+    },
+    {
+      "path": "venture-spine/tests/public_contract_test.py",
+      "bytes": 3628,
+      "sha256": "0381b676928da074a28877a42e660b8a708be1d15f683aeebb4dddfc2e820683"
+    }
+  ]
+}

@@ -1,0 +1,3032 @@
+{
+  "schema": "venture-spine/cartridge@1",
+  "cartridge_id": "pelagos-public-2026-08-31",
+  "release": "1.0.0",
+  "title": "Pelagos Public Baseline",
+  "subtitle": "External-state governance for a micro-AUV company crossing from prototype to multi-counterparty institution",
+  "as_of": "2026-08-31",
+  "classification": "PUBLIC-SAFE",
+  "status": "CANDIDATE — NOT ADMITTED BY PELAGOS",
+  "brand": {
+    "studio": "DEPENDABLE DAVINCIS",
+    "endorsement": "A ROBI SEN COLLABORATION",
+    "tool": "VENTURE SPINE"
+  },
+  "authority": {
+    "proposed_decision_authority": "Samuel Scrivens",
+    "technical_owner_candidate": "Shrey Naphade",
+    "communications_owner_candidate": "Daniel Scrivens",
+    "binding_authority": "OPEN — exact legal entities and signer thresholds require Pelagos correction",
+    "runtime_authority": "NONE — this tool records and prepares; it cannot send, sign, pay, publish, schedule, accept, appoint, represent, or transfer controlled data"
+  },
+  "boundary": {
+    "purpose": "Reconstruct public company state, expose collisions among claims, evidence, instruments, rights, authority, and settlement, and provide a local intake and decision path reusable across hard-technology companies.",
+    "not_legal_advice": true,
+    "public_evidence_rule": "A public statement is evidence that the statement was made. It is not independent proof of performance, funding, legal effectiveness, ownership, or authority.",
+    "source_bytes_embedded": 0,
+    "external_effect_adapters": 0,
+    "runtime_network_requests": 0,
+    "private_email_embedded": false
+  },
+  "founder_decisions": [
+    {
+      "ID": "D-01",
+      "Decision": "Confirm legal entities and who may bind each one",
+      "Exception": "EX-001",
+      "Owner": "Samuel",
+      "Default": "STOP until confirmed"
+    },
+    {
+      "ID": "D-02",
+      "Decision": "Verify SAFE signature, issuer, side rights, and cleared funds",
+      "Exception": "EX-002",
+      "Owner": "Samuel",
+      "Default": "HOLD external funding language"
+    },
+    {
+      "ID": "D-03",
+      "Decision": "Approve a technical maturity owner and claims owner",
+      "Exception": "EX-004; EX-005; EX-021",
+      "Owner": "Samuel / Shrey / Daniel",
+      "Default": "CORRECT current claim boundaries"
+    },
+    {
+      "ID": "D-04",
+      "Decision": "Load Nurjana, TEKMARA, OBJEXIS, and Tech Unified instruments",
+      "Exception": "EX-007 to EX-010",
+      "Owner": "Samuel / Shrey",
+      "Default": "HOLD integrated-capability upgrades"
+    },
+    {
+      "ID": "D-05",
+      "Decision": "Resolve advisor agreements and speaking/conflict boundaries",
+      "Exception": "EX-011",
+      "Owner": "Samuel / Shrey",
+      "Default": "HOLD implied authority"
+    },
+    {
+      "ID": "D-06",
+      "Decision": "Create one record per US government conversation",
+      "Exception": "EX-012",
+      "Owner": "Samuel",
+      "Default": "CORRECT procurement language"
+    },
+    {
+      "ID": "D-07",
+      "Decision": "Create one record per customer requirement and opportunity",
+      "Exception": "EX-013",
+      "Owner": "Samuel / Shrey",
+      "Default": "HOLD endorsement/customer claims"
+    },
+    {
+      "ID": "D-08",
+      "Decision": "Route inbox relationships into governed intake",
+      "Exception": "EX-014; EX-024",
+      "Owner": "Samuel",
+      "Default": "PROCEED"
+    },
+    {
+      "ID": "D-09",
+      "Decision": "Install claim correction, expiry, and publication receipts",
+      "Exception": "EX-015; EX-020",
+      "Owner": "Daniel / Samuel",
+      "Default": "PROCEED"
+    },
+    {
+      "ID": "D-10",
+      "Decision": "Name the private-source admission authority and authorize internal reconstruction",
+      "Exception": "EX-028",
+      "Owner": "Samuel",
+      "Default": "HOLD private intake until authority, classification, custody, and acceptance are explicit"
+    }
+  ],
+  "invariants": [
+    {
+      "Invariant ID": "INV-001",
+      "Domain": "Authority",
+      "Rule": "Maturity is separate from authority.",
+      "Failure Mode": "A technically mature object is treated as authorized for every audience or decision.",
+      "Enforced At": "Every claim, instrument, capability, and contribution",
+      "Default": "Fail closed"
+    },
+    {
+      "Invariant ID": "INV-002",
+      "Domain": "Transaction",
+      "Rule": "Offered is not accepted.",
+      "Failure Mode": "An introduction or proposal becomes a company obligation.",
+      "Enforced At": "Intake and counterparty record",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-003",
+      "Domain": "Transaction",
+      "Rule": "Signed is not automatically effective, funded, or performed.",
+      "Failure Mode": "A signature is reported as cash, delivery, or integrated capability.",
+      "Enforced At": "Instrument register",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-004",
+      "Domain": "Evidence",
+      "Rule": "Payment cannot make a claim true.",
+      "Failure Mode": "Investor or customer participation substitutes for technical proof.",
+      "Enforced At": "Claims and evidence",
+      "Default": "Reject upgrade"
+    },
+    {
+      "Invariant ID": "INV-005",
+      "Domain": "Relationship",
+      "Rule": "A non-binding MOU is not a customer, award, exclusivity grant, or integrated product.",
+      "Failure Mode": "Exploratory relationship language becomes traction or capability.",
+      "Enforced At": "Instruments and external communications",
+      "Default": "Correct"
+    },
+    {
+      "Invariant ID": "INV-006",
+      "Domain": "Relationship",
+      "Rule": "An invitation is not attendance, endorsement, selection, or procurement.",
+      "Failure Mode": "Event access becomes government validation.",
+      "Enforced At": "Event and government records",
+      "Default": "Correct"
+    },
+    {
+      "Invariant ID": "INV-007",
+      "Domain": "Relationship",
+      "Rule": "Program selection is not a customer contract or product acceptance.",
+      "Failure Mode": "Accelerator/build-week selection becomes market validation.",
+      "Enforced At": "Program records",
+      "Default": "Correct"
+    },
+    {
+      "Invariant ID": "INV-008",
+      "Domain": "Integration",
+      "Rule": "A development agreement is not a completed integration.",
+      "Failure Mode": "Future work becomes current capability.",
+      "Enforced At": "Partner work packages",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-009",
+      "Domain": "Integration",
+      "Rule": "Partner capability is not Pelagos capability until integration is evidenced and admitted.",
+      "Failure Mode": "Market access, charging, C2, sensing, or air capability is absorbed into Vantage.",
+      "Enforced At": "Claims and evidence",
+      "Default": "Correct"
+    },
+    {
+      "Invariant ID": "INV-010",
+      "Domain": "Maturity",
+      "Rule": "Simulation is not hardware demonstration.",
+      "Failure Mode": "SITL results become physical-system proof.",
+      "Enforced At": "Evidence register",
+      "Default": "Reject upgrade"
+    },
+    {
+      "Invariant ID": "INV-011",
+      "Domain": "Maturity",
+      "Rule": "Hardware-in-the-loop is not a mission in water.",
+      "Failure Mode": "Closed-loop bench/HIL behavior becomes field autonomy.",
+      "Enforced At": "Evidence register",
+      "Default": "Reject upgrade"
+    },
+    {
+      "Invariant ID": "INV-012",
+      "Domain": "Maturity",
+      "Rule": "One successful test is not repeatability.",
+      "Failure Mode": "A single run becomes general readiness.",
+      "Enforced At": "Evidence register",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-013",
+      "Domain": "Maturity",
+      "Rule": "Prototype is not pilot-ready.",
+      "Failure Mode": "V0 behavior becomes V1/customer deployment status.",
+      "Enforced At": "Product state",
+      "Default": "Correct"
+    },
+    {
+      "Invariant ID": "INV-014",
+      "Domain": "Maturity",
+      "Rule": "Design intent is not current specification.",
+      "Failure Mode": "Target depth, endurance, sensors, or deployment become present tense.",
+      "Enforced At": "Claims register",
+      "Default": "Correct"
+    },
+    {
+      "Invariant ID": "INV-015",
+      "Domain": "Maturity",
+      "Rule": "A target capability or date is not a delivery commitment.",
+      "Failure Mode": "Roadmap language becomes warranty or promise.",
+      "Enforced At": "Claims and contracts",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-016",
+      "Domain": "Evidence",
+      "Rule": "Component proof is not system proof.",
+      "Failure Mode": "Seal, propulsion, controller, sensor, or console evidence proves the whole platform.",
+      "Enforced At": "Evidence register",
+      "Default": "Reject upgrade"
+    },
+    {
+      "Invariant ID": "INV-017",
+      "Domain": "Evidence",
+      "Rule": "Operational means a declared environment, configuration, procedure, pass criteria, and authority.",
+      "Failure Mode": "'Operational' becomes a mood rather than a testable state.",
+      "Enforced At": "Claims and evidence",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-018",
+      "Domain": "Claims",
+      "Rule": "Every material claim has an exact source and evidence tier.",
+      "Failure Mode": "Narrative confidence fills missing facts.",
+      "Enforced At": "Claims register",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-019",
+      "Domain": "Claims",
+      "Rule": "Every material claim has one accountable Pelagos owner.",
+      "Failure Mode": "Nobody can correct or stop an unsupported statement.",
+      "Enforced At": "Claims register",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-020",
+      "Domain": "Claims",
+      "Rule": "Every claim has an approved audience.",
+      "Failure Mode": "Investor, government, partner, customer, public, and technical audiences receive the same unbounded statement.",
+      "Enforced At": "Claims register",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-021",
+      "Domain": "Claims",
+      "Rule": "Every claim has a review trigger or expiry.",
+      "Failure Mode": "Old evidence silently supports changed hardware or relationships.",
+      "Enforced At": "Claims register",
+      "Default": "Review"
+    },
+    {
+      "Invariant ID": "INV-022",
+      "Domain": "Claims",
+      "Rule": "Corrections, withdrawals, and superseded states remain recorded.",
+      "Failure Mode": "The company loses the provenance of what changed and why.",
+      "Enforced At": "Claims and receipts",
+      "Default": "Retain"
+    },
+    {
+      "Invariant ID": "INV-023",
+      "Domain": "Authority",
+      "Rule": "Public affiliation does not grant speaking, signing, or decision authority.",
+      "Failure Mode": "Advisor, partner, introducer, or event host appears to bind Pelagos.",
+      "Enforced At": "Authority matrix",
+      "Default": "Stop"
+    },
+    {
+      "Invariant ID": "INV-024",
+      "Domain": "Authority",
+      "Rule": "Silence is unresolved, not consent or approval.",
+      "Failure Mode": "No response becomes permission or obligation.",
+      "Enforced At": "All transitions",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-025",
+      "Domain": "Authority",
+      "Rule": "Every transition has one named decision owner and one fallback.",
+      "Failure Mode": "Shared founder awareness substitutes for accountability.",
+      "Enforced At": "All registers",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-026",
+      "Domain": "Continuity",
+      "Rule": "Founder memory cannot be the sole system of record.",
+      "Failure Mode": "Departure, overload, or disagreement destroys company state.",
+      "Enforced At": "All material objects",
+      "Default": "Stop"
+    },
+    {
+      "Invariant ID": "INV-027",
+      "Domain": "Consideration",
+      "Rule": "In-kind support is not free until value, burden, rights, maintenance, and exit are explicit.",
+      "Failure Mode": "Factory, tooling, labor, compute, introductions, or facilities create hidden encumbrances.",
+      "Enforced At": "Rights and intake",
+      "Default": "Stop"
+    },
+    {
+      "Invariant ID": "INV-028",
+      "Domain": "Rights",
+      "Rule": "Background IP, foreground IP, data, publicity, exclusivity, geography, manufacturing, license, and termination are explicit.",
+      "Failure Mode": "A relationship creates silent rights.",
+      "Enforced At": "Rights register",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-029",
+      "Domain": "Rights",
+      "Rule": "An introduction, contribution, or public post does not create rights absent an instrument.",
+      "Failure Mode": "Social proximity becomes ownership or authority.",
+      "Enforced At": "Counterparties and instruments",
+      "Default": "Reject"
+    },
+    {
+      "Invariant ID": "INV-030",
+      "Domain": "Corporate",
+      "Rule": "The legal entity and signatory authority must match the instrument.",
+      "Failure Mode": "The brand signs, the wrong entity promises, or an unauthorized person binds the company.",
+      "Enforced At": "Instrument register",
+      "Default": "Stop"
+    },
+    {
+      "Invariant ID": "INV-031",
+      "Domain": "Government",
+      "Rule": "Every government interaction is normalized to a procurement state.",
+      "Failure Mode": "Conversation becomes endorsement, opportunity becomes award, or SME discussion becomes program status.",
+      "Enforced At": "Government opportunity record",
+      "Default": "Correct"
+    },
+    {
+      "Invariant ID": "INV-032",
+      "Domain": "Legal",
+      "Rule": "Counsel receives the exact unresolved legal residue tied to a concrete decision.",
+      "Failure Mode": "Counsel is asked to reconstruct business facts repeatedly or the team self-answers legal questions.",
+      "Enforced At": "Exception queue",
+      "Default": "Escalate"
+    },
+    {
+      "Invariant ID": "INV-033",
+      "Domain": "Data",
+      "Rule": "Every data flow has source, purpose, class, access, retention, export, deletion, and prohibited inference.",
+      "Failure Mode": "Deal, technical, customer, government, or partner data leaks across audiences.",
+      "Enforced At": "Intake and rights",
+      "Default": "Stop"
+    },
+    {
+      "Invariant ID": "INV-034",
+      "Domain": "Process",
+      "Rule": "Every new material object enters the same intake and state model.",
+      "Failure Mode": "New opportunities create parallel spreadsheets, inbox state, or private founder memory.",
+      "Enforced At": "Intake",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-035",
+      "Domain": "Continuity",
+      "Rule": "Rejected, revoked, expired, and superseded objects remain visible.",
+      "Failure Mode": "The team repeats failed work or misstates current status.",
+      "Enforced At": "All registers",
+      "Default": "Retain"
+    },
+    {
+      "Invariant ID": "INV-036",
+      "Domain": "Tooling",
+      "Rule": "The control surface records authority; it does not become authority.",
+      "Failure Mode": "A CRM, workbook, model, or consultant silently decides for Pelagos.",
+      "Enforced At": "Control layer",
+      "Default": "Reject"
+    },
+    {
+      "Invariant ID": "INV-037",
+      "Domain": "Portability",
+      "Rule": "The operating record remains exportable and vendor-neutral.",
+      "Failure Mode": "Pelagos becomes dependent on a platform before its process stabilizes.",
+      "Enforced At": "All sheets",
+      "Default": "Reject lock-in"
+    },
+    {
+      "Invariant ID": "INV-038",
+      "Domain": "Receipts",
+      "Rule": "Every material decision records actor, authority, object, reason, date, disposition, and evidence.",
+      "Failure Mode": "The team cannot reconstruct why a state changed.",
+      "Enforced At": "Decision receipt",
+      "Default": "Hold"
+    },
+    {
+      "Invariant ID": "INV-039",
+      "Domain": "Claims",
+      "Rule": "Marketing cannot upgrade a claim without new admitted evidence.",
+      "Failure Mode": "A stronger adjective or partner announcement creates maturity.",
+      "Enforced At": "Claims workflow",
+      "Default": "Reject upgrade"
+    },
+    {
+      "Invariant ID": "INV-040",
+      "Domain": "Projection",
+      "Rule": "Private evidence, internal authority, and public projection remain separate.",
+      "Failure Mode": "Sensitive source material or uncertainty reaches the wrong audience.",
+      "Enforced At": "Claims, rights, and data",
+      "Default": "Stop"
+    }
+  ],
+  "state_model": [
+    {
+      "Track": "Relationship",
+      "State": "Discovered",
+      "Meaning": "A person or organization is known to exist",
+      "Minimum Receipt": "Source and identity only",
+      "Permitted Next State": "Introduced"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Introduced",
+      "Meaning": "A trusted or untrusted introduction occurred",
+      "Minimum Receipt": "Introducer, parties, purpose, date, no implied obligation",
+      "Permitted Next State": "Contacted"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Contacted",
+      "Meaning": "A direct communication exists",
+      "Minimum Receipt": "Source thread and owner",
+      "Permitted Next State": "Exploratory"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Exploratory",
+      "Meaning": "Potential fit is being discussed",
+      "Minimum Receipt": "Purpose, what each side offers/asks, no commitment",
+      "Permitted Next State": "Diligence"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Diligence",
+      "Meaning": "Evidence and terms are being evaluated",
+      "Minimum Receipt": "Requested/returned materials and unresolved risks",
+      "Permitted Next State": "Offered"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Offered",
+      "Meaning": "A concrete offer exists",
+      "Minimum Receipt": "Exact offer, expiry, authority, consideration",
+      "Permitted Next State": "Negotiating"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Negotiating",
+      "Meaning": "Terms are being changed",
+      "Minimum Receipt": "Redlines, owner, open points, deadline",
+      "Permitted Next State": "Signed non-binding or Signed binding"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Signed non-binding",
+      "Meaning": "Instrument expresses intent without binding commercial obligation",
+      "Minimum Receipt": "Instrument, term, termination, representation limits",
+      "Permitted Next State": "Performing or Closed"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Signed binding",
+      "Meaning": "Authorized parties executed binding terms",
+      "Minimum Receipt": "Entity, signatures, effectiveness conditions, rights",
+      "Permitted Next State": "Effective"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Effective",
+      "Meaning": "Conditions to begin have been satisfied",
+      "Minimum Receipt": "Effective date, budget/access, owner",
+      "Permitted Next State": "Performing"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Performing",
+      "Meaning": "Obligations or work are underway",
+      "Minimum Receipt": "Work package, evidence gates, issues, payments",
+      "Permitted Next State": "Completed or Breach/Withdrawn"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Completed",
+      "Meaning": "Declared obligations closed",
+      "Minimum Receipt": "Acceptance and terminal receipt",
+      "Permitted Next State": "Superseded / archived"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Superseded",
+      "Meaning": "Replaced by a later object",
+      "Minimum Receipt": "Successor link and retained history",
+      "Permitted Next State": "Archived"
+    },
+    {
+      "Track": "Relationship",
+      "State": "Withdrawn / Rejected",
+      "Meaning": "No current path",
+      "Minimum Receipt": "Reason, authority, continuing obligations",
+      "Permitted Next State": "Archived"
+    },
+    {
+      "Track": "Capital",
+      "State": "Interest",
+      "Meaning": "Potential investor interest exists",
+      "Minimum Receipt": "Identity, source, no amount counted",
+      "Permitted Next State": "Diligence"
+    },
+    {
+      "Track": "Capital",
+      "State": "Diligence",
+      "Meaning": "Investor reviews company and company reviews investor",
+      "Minimum Receipt": "Data access, questions, authority, conflicts",
+      "Permitted Next State": "Terms proposed"
+    },
+    {
+      "Track": "Capital",
+      "State": "Terms proposed",
+      "Meaning": "Economic/legal terms exist",
+      "Minimum Receipt": "Instrument version, expiry, decision owner",
+      "Permitted Next State": "Signed"
+    },
+    {
+      "Track": "Capital",
+      "State": "Signed",
+      "Meaning": "Instrument executed",
+      "Minimum Receipt": "Entity, signatures, conditions, side rights",
+      "Permitted Next State": "Funded"
+    },
+    {
+      "Track": "Capital",
+      "State": "Funded",
+      "Meaning": "Cash cleared into authorized account",
+      "Minimum Receipt": "Bank receipt and restrictions",
+      "Permitted Next State": "Conditions satisfied / deployed"
+    },
+    {
+      "Track": "Capital",
+      "State": "Deployed",
+      "Meaning": "Funds tied to approved work or runway",
+      "Minimum Receipt": "Budget, work package, evidence",
+      "Permitted Next State": "Reported / closed"
+    },
+    {
+      "Track": "Capability",
+      "State": "Declared",
+      "Meaning": "Claim or intent exists",
+      "Minimum Receipt": "Owner and target only",
+      "Permitted Next State": "Simulated"
+    },
+    {
+      "Track": "Capability",
+      "State": "Simulated",
+      "Meaning": "Behavior demonstrated in a defined simulation",
+      "Minimum Receipt": "Model/runtime/scenario/result",
+      "Permitted Next State": "Bench-tested or HIL"
+    },
+    {
+      "Track": "Capability",
+      "State": "Bench-tested",
+      "Meaning": "Component or subsystem tested under controlled conditions",
+      "Minimum Receipt": "Configuration, procedure, result",
+      "Permitted Next State": "Integrated / HIL"
+    },
+    {
+      "Track": "Capability",
+      "State": "Hardware-in-the-loop",
+      "Meaning": "Control/software operates against physical hardware or representative interfaces",
+      "Minimum Receipt": "Configuration, interfaces, limitations",
+      "Permitted Next State": "Integrated"
+    },
+    {
+      "Track": "Capability",
+      "State": "Integrated",
+      "Meaning": "Required components compose on the physical system",
+      "Minimum Receipt": "Interface and configuration evidence",
+      "Permitted Next State": "Pool-tested"
+    },
+    {
+      "Track": "Capability",
+      "State": "Pool-tested",
+      "Meaning": "Behavior demonstrated in pool environment",
+      "Minimum Receipt": "Environment, procedure, result",
+      "Permitted Next State": "Open-water demonstrated"
+    },
+    {
+      "Track": "Capability",
+      "State": "Open-water demonstrated",
+      "Meaning": "Behavior demonstrated in declared open-water environment",
+      "Minimum Receipt": "Exact claims and limits",
+      "Permitted Next State": "Repeatable"
+    },
+    {
+      "Track": "Capability",
+      "State": "Repeatable",
+      "Meaning": "Independent or repeated runs meet acceptance criteria",
+      "Minimum Receipt": "Run set and error distribution",
+      "Permitted Next State": "Pilot-ready"
+    },
+    {
+      "Track": "Capability",
+      "State": "Pilot-ready",
+      "Meaning": "Configuration, operator, safety, support, and evidence package are ready for a bounded pilot",
+      "Minimum Receipt": "Pilot plan and acceptance authority",
+      "Permitted Next State": "Customer accepted"
+    },
+    {
+      "Track": "Capability",
+      "State": "Customer accepted",
+      "Meaning": "Authorized customer accepts declared delivery or test",
+      "Minimum Receipt": "Acceptance receipt",
+      "Permitted Next State": "Operational"
+    },
+    {
+      "Track": "Capability",
+      "State": "Operational",
+      "Meaning": "Qualified capability is authorized in a declared context",
+      "Minimum Receipt": "Authority, maintenance, incident, withdrawal",
+      "Permitted Next State": "Revoked / superseded"
+    },
+    {
+      "Track": "Claim",
+      "State": "Draft",
+      "Meaning": "Language exists but is not approved",
+      "Minimum Receipt": "Author and source candidate",
+      "Permitted Next State": "Evidence-linked"
+    },
+    {
+      "Track": "Claim",
+      "State": "Evidence-linked",
+      "Meaning": "Exact evidence and tier attached",
+      "Minimum Receipt": "Source, limitations, invalidation",
+      "Permitted Next State": "Reviewed"
+    },
+    {
+      "Track": "Claim",
+      "State": "Reviewed",
+      "Meaning": "Technical, commercial, legal, and audience checks completed as required",
+      "Minimum Receipt": "Reviewer receipts",
+      "Permitted Next State": "Approved for audience"
+    },
+    {
+      "Track": "Claim",
+      "State": "Approved for audience",
+      "Meaning": "Named authority permits use for one audience and period",
+      "Minimum Receipt": "Audience, owner, expiry",
+      "Permitted Next State": "Published"
+    },
+    {
+      "Track": "Claim",
+      "State": "Published",
+      "Meaning": "External statement released",
+      "Minimum Receipt": "Publication link and timestamp",
+      "Permitted Next State": "Corrected / superseded / withdrawn"
+    },
+    {
+      "Track": "Authority",
+      "State": "Observe",
+      "Meaning": "May see a bounded object",
+      "Minimum Receipt": "Access grant",
+      "Permitted Next State": "Draft"
+    },
+    {
+      "Track": "Authority",
+      "State": "Draft",
+      "Meaning": "May prepare language or terms",
+      "Minimum Receipt": "No approval or binding power",
+      "Permitted Next State": "Recommend"
+    },
+    {
+      "Track": "Authority",
+      "State": "Recommend",
+      "Meaning": "May propose a decision",
+      "Minimum Receipt": "Decision owner remains separate",
+      "Permitted Next State": "Review"
+    },
+    {
+      "Track": "Authority",
+      "State": "Review",
+      "Meaning": "May verify within declared domain",
+      "Minimum Receipt": "Cannot bind unless separately granted",
+      "Permitted Next State": "Approve"
+    },
+    {
+      "Track": "Authority",
+      "State": "Approve",
+      "Meaning": "May authorize a scoped action or claim",
+      "Minimum Receipt": "Scope and threshold",
+      "Permitted Next State": "Bind / Publish"
+    },
+    {
+      "Track": "Authority",
+      "State": "Bind",
+      "Meaning": "May create company obligation within threshold",
+      "Minimum Receipt": "Entity and signing authority",
+      "Permitted Next State": "Receipt"
+    },
+    {
+      "Track": "Authority",
+      "State": "Publish",
+      "Meaning": "May release approved language to an audience",
+      "Minimum Receipt": "Approved claim and channel",
+      "Permitted Next State": "Receipt"
+    },
+    {
+      "Track": "Authority",
+      "State": "Revoke",
+      "Meaning": "May stop or withdraw a scoped authority",
+      "Minimum Receipt": "Reason and successor",
+      "Permitted Next State": "Receipt"
+    }
+  ],
+  "counterparties": [
+    {
+      "ID": "CP-001",
+      "Name": "Pelagos Frontier Technologies",
+      "Type": "Company / operating object",
+      "Geography": "Canada and United States surfaces",
+      "Role / Value": "Builds Vantage; website and public communications issuer",
+      "Relationship State": "Active",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "Binding legal entity and jurisdiction unverified",
+      "Data Access": "Company source of public claims",
+      "Next Decision": "Confirm exact legal entities, registrations, bank/cap-table ownership, and signing authority",
+      "Risk": "Critical",
+      "Sources": "S-001; S-010; S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-002",
+      "Name": "Samuel Scrivens",
+      "Type": "Founder / CEO",
+      "Geography": "Canada / United States",
+      "Role / Value": "Founder, CEO, public spokesperson, proposed company decision authority",
+      "Relationship State": "Active",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "Public CEO title; legal signing thresholds unverified",
+      "Data Access": "Likely high access; confirm",
+      "Next Decision": "Accept or correct public baseline; name decision thresholds",
+      "Risk": "Critical",
+      "Sources": "S-001; S-010; S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-003",
+      "Name": "Shrey Naphade",
+      "Type": "Co-Founder / CTO",
+      "Geography": "Canada",
+      "Role / Value": "Vehicle architecture, manufacturing, technical leadership",
+      "Relationship State": "Active",
+      "Proposed Owner": "Shrey Naphade",
+      "Authority State": "Technical authority public; binding and publishing authority unverified",
+      "Data Access": "Likely technical source; confirm",
+      "Next Decision": "Own technical maturity and evidence approvals",
+      "Risk": "High",
+      "Sources": "S-001; S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-004",
+      "Name": "Daniel Scrivens",
+      "Type": "Co-Founder / Lead Creative",
+      "Geography": "Canada",
+      "Role / Value": "Creative and communications surface",
+      "Relationship State": "Active",
+      "Proposed Owner": "Daniel Scrivens",
+      "Authority State": "Public title only; claim approval authority unverified",
+      "Data Access": "Likely communications access; confirm",
+      "Next Decision": "Own draft/publication workflow without becoming evidence authority",
+      "Risk": "High",
+      "Sources": "S-001; S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-005",
+      "Name": "Strategic SAFE investor (unnamed)",
+      "Type": "Investor",
+      "Geography": "Unknown",
+      "Role / Value": "US$50k strategic SAFE; possible follow-on under discussion",
+      "Relationship State": "Agreement reported finalized",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "Identity, entity, funding, side rights, and information rights unknown",
+      "Data Access": "Unknown",
+      "Next Decision": "Confirm identity, instrument, cleared funds, side letters, rights, deadlines",
+      "Risk": "Critical",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-006",
+      "Name": "Nurjana Technologies & Space",
+      "Type": "Strategic partner / market-access partner",
+      "Geography": "Europe / NATO market surface",
+      "Role / Value": "Non-binding MOU; market and customer-path development",
+      "Relationship State": "Non-binding MOU plus reported activity",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "No binding Pelagos authority unless separately granted",
+      "Data Access": "Unknown",
+      "Next Decision": "Confirm scope, representation rights, exclusivity, customer ownership, data, publicity, expiry",
+      "Risk": "Critical",
+      "Sources": "S-001; S-010; S-011; S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-007",
+      "Name": "Pietro Andronico",
+      "Type": "Strategic Advisor / Nurjana CEO",
+      "Geography": "Europe",
+      "Role / Value": "Strategic advisor and counterparty principal",
+      "Relationship State": "Active public appointment",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "Advisor authority, conflicts, compensation, and speaking rights unknown",
+      "Data Access": "Unknown",
+      "Next Decision": "Confirm advisor instrument, conflicts, confidentiality, equity, publicity, and limits",
+      "Risk": "High",
+      "Sources": "S-001; S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-008",
+      "Name": "TEKMARA",
+      "Type": "Development partner",
+      "Geography": "United States / international",
+      "Role / Value": "Agreement to develop underwater recharging using AquaGuard infrastructure",
+      "Relationship State": "Signed agreement reported; development beginning",
+      "Proposed Owner": "Shrey Naphade",
+      "Authority State": "No Pelagos authority unless separately granted",
+      "Data Access": "Unknown",
+      "Next Decision": "Confirm IP, test data, cost, integration ownership, acceptance criteria, publicity, termination",
+      "Risk": "Critical",
+      "Sources": "S-001; S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-009",
+      "Name": "Todd Kleperis",
+      "Type": "TEKMARA principal",
+      "Geography": "United States",
+      "Role / Value": "Named counterparty lead",
+      "Relationship State": "Active development contact",
+      "Proposed Owner": "Shrey Naphade",
+      "Authority State": "No Pelagos authority unless separately granted",
+      "Data Access": "Unknown",
+      "Next Decision": "Confirm role and decision authority under TEKMARA agreement",
+      "Risk": "Medium",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-010",
+      "Name": "OBJEXIS AI",
+      "Type": "Multi-domain technical partner",
+      "Geography": "Canada",
+      "Role / Value": "Working toward air-subsea compatibility across autonomy, hardware, avionics, mission software, and C2",
+      "Relationship State": "Exploratory / development",
+      "Proposed Owner": "Shrey Naphade",
+      "Authority State": "No Pelagos authority unless separately granted",
+      "Data Access": "Unknown",
+      "Next Decision": "Confirm governing instrument, interface boundary, shared claims, data, IP, demo rights, acceptance tests",
+      "Risk": "Critical",
+      "Sources": "S-001; S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-011",
+      "Name": "Tech Unified Foundation",
+      "Type": "Multi-domain infrastructure collaborator",
+      "Geography": "Unknown",
+      "Role / Value": "Website claims connected systems integration, joint pilots, and strategic defense programs",
+      "Relationship State": "Declared collaboration",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "Formal instrument and authority unknown",
+      "Data Access": "Unknown",
+      "Next Decision": "Confirm entity, instrument, role, consideration, rights, and public-language approval",
+      "Risk": "High",
+      "Sources": "S-001",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-012",
+      "Name": "David Russell",
+      "Type": "Senior Technical Advisor",
+      "Geography": "United States",
+      "Role / Value": "Advises autonomy architecture, operational reasoning, system design, distributed systems",
+      "Relationship State": "Active public appointment",
+      "Proposed Owner": "Shrey Naphade",
+      "Authority State": "Advisor authority, equity, confidentiality, conflicts, and speaking rights unknown",
+      "Data Access": "Unknown",
+      "Next Decision": "Confirm advisor instrument and boundaries with founders and partners",
+      "Risk": "High",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-013",
+      "Name": "Wilbe / Maritime Build Week",
+      "Type": "Program / event",
+      "Geography": "United Kingdom",
+      "Role / Value": "Pelagos selected for Maritime Build Week",
+      "Relationship State": "Selected / program participation",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "No endorsement, procurement, or customer authority implied",
+      "Data Access": "Likely limited",
+      "Next Decision": "Record selection terms, deliverables, publicity rights, and expiry",
+      "Risk": "Low",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-014",
+      "Name": "IFC / Republic of Singapore Navy Shared Awareness Meeting",
+      "Type": "Government-hosted event",
+      "Geography": "Singapore",
+      "Role / Value": "Invitation to attend a future Shared Awareness Meeting",
+      "Relationship State": "Invited / not yet attended",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "Invitation is not endorsement, selection, or procurement",
+      "Data Access": "Likely none",
+      "Next Decision": "Record invitation source, date, attendance status, permitted public wording",
+      "Risk": "Medium",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-015",
+      "Name": "United States defense-procurement / SME counterparts (unnamed)",
+      "Type": "Government / procurement",
+      "Geography": "United States",
+      "Role / Value": "Reported procurement conversations and dedicated SME discussion",
+      "Relationship State": "Exploratory / unnamed",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "No award or program authority established",
+      "Data Access": "Unknown",
+      "Next Decision": "Resolve agency, office, person, stage, authority, export/data limits, next gate",
+      "Risk": "Critical",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-016",
+      "Name": "Prospective commercial customers (unnamed)",
+      "Type": "Customer prospects",
+      "Geography": "Multiple",
+      "Role / Value": "Customer requirements reportedly shaping V1",
+      "Relationship State": "Requirements input reported; identities and commercial state open",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "No customer commitment established",
+      "Data Access": "Unknown",
+      "Next Decision": "Create one private record per actual prospect; do not infer customer status or reference rights",
+      "Risk": "High",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "CP-020",
+      "Name": "Carleton University",
+      "Type": "Founder-alumni / roots",
+      "Geography": "Canada",
+      "Role / Value": "Listed as founder-alumni root",
+      "Relationship State": "Historical affiliation",
+      "Proposed Owner": "Samuel Scrivens",
+      "Authority State": "No partnership or endorsement implied",
+      "Data Access": "None known",
+      "Next Decision": "Keep affiliation language distinct from current institutional support",
+      "Risk": "Low",
+      "Sources": "S-001",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    }
+  ],
+  "instruments": [
+    {
+      "ID": "IN-001",
+      "Instrument": "Website Terms of Service",
+      "Parties": "Pelagos / site users",
+      "Type": "Public terms",
+      "Binding State": "Binding for site use",
+      "Effective / Performance State": "Effective 2026-07-31",
+      "What Public Evidence Establishes": "Design intent and no-warranty boundary",
+      "Critical Unknowns": "No internal claim-approval workflow stated",
+      "Proposed Owner": "Daniel Scrivens",
+      "Next Control": "Retain; project boundary adjacent to high-risk claims",
+      "Sources": "S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-002",
+      "Instrument": "Website Privacy Policy",
+      "Parties": "Pelagos / site visitors",
+      "Type": "Public privacy policy",
+      "Binding State": "Public policy",
+      "Effective / Performance State": "Effective 2026-07-31",
+      "What Public Evidence Establishes": "Inquiry email collection, use, retention, deletion request",
+      "Critical Unknowns": "No structured relationship/commitment retention schema stated",
+      "Proposed Owner": "Samuel Scrivens",
+      "Next Control": "Map inbox to governed intake and deletion/correction path",
+      "Sources": "S-003",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-003",
+      "Instrument": "US$50k strategic SAFE",
+      "Parties": "Pelagos / unnamed investor",
+      "Type": "SAFE",
+      "Binding State": "Reported agreement finalized",
+      "Effective / Performance State": "Effectiveness and funding unknown",
+      "What Public Evidence Establishes": "Capital instrument exists in some form",
+      "Critical Unknowns": "Issuer entity, investor, date, valuation/cap/discount, MFN, pro rata, information rights, side letters, funds cleared",
+      "Proposed Owner": "Samuel Scrivens",
+      "Next Control": "Internal verification before any 'raised' or 'funded' language",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-004",
+      "Instrument": "Potential follow-on up to US$100k",
+      "Parties": "Pelagos / unnamed investor",
+      "Type": "Possible follow-on capital",
+      "Binding State": "Under discussion",
+      "Effective / Performance State": "Not signed or funded on public evidence",
+      "What Public Evidence Establishes": "Existence of discussion only",
+      "Critical Unknowns": "Terms, probability, conditions, timing, decision owner",
+      "Proposed Owner": "Samuel Scrivens",
+      "Next Control": "Keep as discussion; do not aggregate into committed capital",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-005",
+      "Instrument": "Nurjana non-binding MOU",
+      "Parties": "Pelagos / Nurjana",
+      "Type": "Memorandum of Understanding",
+      "Binding State": "Explicitly non-binding",
+      "Effective / Performance State": "Publicly announced",
+      "What Public Evidence Establishes": "Exploratory collaboration areas",
+      "Critical Unknowns": "Term, termination, exclusivity, geography, customer ownership, publicity, IP/data, representation rights",
+      "Proposed Owner": "Samuel Scrivens",
+      "Next Control": "Obtain instrument and normalize all downstream activity against it",
+      "Sources": "S-011",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-006",
+      "Instrument": "Nurjana market/customer-path activity",
+      "Parties": "Pelagos / Nurjana",
+      "Type": "Performance under relationship",
+      "Binding State": "Reported active",
+      "Effective / Performance State": "Unknown",
+      "What Public Evidence Establishes": "Reported movement into market and customer-path development",
+      "Critical Unknowns": "Which customers, whose pipeline, authority to represent, compensation, success fees, data, exclusivity",
+      "Proposed Owner": "Samuel Scrivens",
+      "Next Control": "Create opportunity subrecords; do not let MOU language absorb them",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-007",
+      "Instrument": "TEKMARA development agreement",
+      "Parties": "Pelagos / TEKMARA",
+      "Type": "Development agreement",
+      "Binding State": "Signed agreement reported",
+      "Effective / Performance State": "Technical work beginning",
+      "What Public Evidence Establishes": "Intent to develop Vantage recharging using AquaGuard",
+      "Critical Unknowns": "Commercial terms, background/foreground IP, interface ownership, test data, liability, acceptance, publicity, termination",
+      "Proposed Owner": "Shrey Naphade",
+      "Next Control": "Obtain agreement; create work packages and evidence gates",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-008",
+      "Instrument": "OBJEXIS collaboration",
+      "Parties": "Pelagos / OBJEXIS AI",
+      "Type": "Unknown instrument",
+      "Binding State": "Publicly announced collaboration",
+      "Effective / Performance State": "Unknown",
+      "What Public Evidence Establishes": "Work toward compatibility across respective systems",
+      "Critical Unknowns": "Whether any binding agreement exists; scope, data, IP, acceptance, demo rights, customer ownership",
+      "Proposed Owner": "Shrey Naphade",
+      "Next Control": "Resolve instrument before integrated-system claims",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-009",
+      "Instrument": "Tech Unified Foundation collaboration",
+      "Parties": "Pelagos / Tech Unified Foundation",
+      "Type": "Unknown instrument",
+      "Binding State": "Website-declared collaboration",
+      "Effective / Performance State": "Unknown",
+      "What Public Evidence Establishes": "Multi-domain infrastructure, joint pilots, strategic defense programs",
+      "Critical Unknowns": "Entity, agreement, consideration, authority, pilot status, customer/government references",
+      "Proposed Owner": "Samuel Scrivens",
+      "Next Control": "Resolve or downgrade public wording",
+      "Sources": "S-001",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-010",
+      "Instrument": "David Russell advisor appointment",
+      "Parties": "Pelagos / David Russell",
+      "Type": "Advisor agreement",
+      "Binding State": "Public appointment",
+      "Effective / Performance State": "Unknown",
+      "What Public Evidence Establishes": "Defined public advisory domain",
+      "Critical Unknowns": "Agreement, compensation/equity, confidentiality, conflicts, IP, publication/speaking authority, termination",
+      "Proposed Owner": "Shrey Naphade",
+      "Next Control": "Normalize advisor authority separately from technical credibility",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-011",
+      "Instrument": "Pietro Andronico advisor appointment",
+      "Parties": "Pelagos / Pietro Andronico",
+      "Type": "Advisor agreement",
+      "Binding State": "Public appointment",
+      "Effective / Performance State": "Unknown",
+      "What Public Evidence Establishes": "Strategic advisor title",
+      "Critical Unknowns": "Agreement, dual-role conflicts, compensation/equity, confidentiality, representation, publicity",
+      "Proposed Owner": "Samuel Scrivens",
+      "Next Control": "Resolve dual-role boundary with Nurjana",
+      "Sources": "S-001; S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-012",
+      "Instrument": "Wilbe Maritime Build Week selection",
+      "Parties": "Pelagos / Wilbe",
+      "Type": "Program participation",
+      "Binding State": "Selected",
+      "Effective / Performance State": "Unknown",
+      "What Public Evidence Establishes": "Selection and participation opportunity",
+      "Critical Unknowns": "Selection terms, deliverables, IP, publicity, costs, attendance/completion status",
+      "Proposed Owner": "Samuel Scrivens",
+      "Next Control": "Record as program selection, not customer validation",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-013",
+      "Instrument": "Shared Awareness Meeting invitation",
+      "Parties": "Pelagos / IFC / RSN event ecosystem",
+      "Type": "Invitation",
+      "Binding State": "Invited",
+      "Effective / Performance State": "Future attendance",
+      "What Public Evidence Establishes": "Invitation to attend future event",
+      "Critical Unknowns": "Date, invitation holder, permitted publicity, security/access, attendance status",
+      "Proposed Owner": "Samuel Scrivens",
+      "Next Control": "Keep invitation distinct from attendance and endorsement",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "ID": "IN-014",
+      "Instrument": "US defense procurement / SME conversations",
+      "Parties": "Pelagos / unnamed government actors",
+      "Type": "Conversation / possible pre-procurement activity",
+      "Binding State": "Reported advancing",
+      "Effective / Performance State": "Unknown",
+      "What Public Evidence Establishes": "Existence of conversations",
+      "Critical Unknowns": "Agency, office, authority, procurement stage, controlled information, representation, next decision",
+      "Proposed Owner": "Samuel Scrivens",
+      "Next Control": "Create one record per government opportunity",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    }
+  ],
+  "claims": [
+    {
+      "Claim ID": "CL-001",
+      "Domain": "Product",
+      "Claim / Public Proposition": "Vantage is in active development.",
+      "Normalized State": "Verified public primary",
+      "Evidence / Maturity Class": "Program state",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "Vantage is in active development.",
+      "Prohibited Upgrade": "Do not present all site specifications as current delivered capability.",
+      "Proposed Owner": "Samuel / Shrey",
+      "Review Trigger": "Change in program or terms",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-002",
+      "Domain": "Product",
+      "Claim / Public Proposition": "100 m+ operational depth.",
+      "Normalized State": "Development target",
+      "Evidence / Maturity Class": "Target capability",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Targeting 100 m+ operational depth.",
+      "Prohibited Upgrade": "Vantage currently operates at 100 m+.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Qualified depth test and accepted report",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-003",
+      "Domain": "Product",
+      "Claim / Public Proposition": "Multi-hour mission endurance.",
+      "Normalized State": "Development target",
+      "Evidence / Maturity Class": "Target capability",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Targeting multi-hour mission endurance.",
+      "Prohibited Upgrade": "Multi-hour endurance is currently demonstrated.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Repeatable endurance test in declared environment",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-004",
+      "Domain": "Deployment",
+      "Claim / Public Proposition": "Single-operator launch and recovery.",
+      "Normalized State": "Partially demonstrated",
+      "Evidence / Maturity Class": "Pool/open-water handling",
+      "Authority State": "Publicly stated",
+      "Risk": "Medium",
+      "Allowed External Language": "V0 has been carried and recovered by one operator in pool/open-water test activity; full mission handling remains to be qualified.",
+      "Prohibited Upgrade": "Single-operator end-to-end field deployment is fully proven.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Timed end-to-end mission rehearsal",
+      "Sources": "S-001; S-004; S-005",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-005",
+      "Domain": "Deployment",
+      "Claim / Public Proposition": "Entire system fits in a standard field pack.",
+      "Normalized State": "Development target",
+      "Evidence / Maturity Class": "Design intent",
+      "Authority State": "Approval unknown",
+      "Risk": "Medium",
+      "Allowed External Language": "Designed for backpack-portable deployment.",
+      "Prohibited Upgrade": "The complete operational system currently fits in a standard field pack.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Packed-system manifest, dimensions, weight, operator test",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-006",
+      "Domain": "Deployment",
+      "Claim / Public Proposition": "No support vessel is required.",
+      "Normalized State": "Development target",
+      "Evidence / Maturity Class": "Operational concept",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Designed for waterside deployment without a dedicated support vessel.",
+      "Prohibited Upgrade": "No support vessel is required for all missions and environments.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Declared mission envelope and repeated field tests",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-007",
+      "Domain": "Autonomy",
+      "Claim / Public Proposition": "Full autonomy, one screen; the drone does the work.",
+      "Normalized State": "Development target / marketing",
+      "Evidence / Maturity Class": "System capability",
+      "Authority State": "Approval unknown",
+      "Risk": "Critical",
+      "Allowed External Language": "The target operating concept is autonomous mission execution from one operator console.",
+      "Prohibited Upgrade": "Vantage currently performs full autonomous missions from one screen.",
+      "Proposed Owner": "Shrey / Daniel",
+      "Review Trigger": "Closed-loop mission completion in water with evidence",
+      "Sources": "S-001; S-002; S-004",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-008",
+      "Domain": "Autonomy",
+      "Claim / Public Proposition": "Real autonomy, not remote control.",
+      "Normalized State": "Mixed / boundary conflict",
+      "Evidence / Maturity Class": "System capability",
+      "Authority State": "Publicly stated",
+      "Risk": "Critical",
+      "Allowed External Language": "Pelagos has demonstrated model-based control in simulation and hardware-in-the-loop; V0 wet testing also used wireless command response while development advances toward full closed-loop control.",
+      "Prohibited Upgrade": "Vantage is already a fully autonomous fielded system rather than a remotely commanded prototype.",
+      "Proposed Owner": "Shrey / Daniel",
+      "Review Trigger": "Autonomous mission evidence and claim review",
+      "Sources": "S-001; S-004; S-006; S-008",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-009",
+      "Domain": "Autonomy",
+      "Claim / Public Proposition": "SLAM, perception, and advanced control algorithms run on edge compute.",
+      "Normalized State": "Partially evidenced",
+      "Evidence / Maturity Class": "Architecture / target",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Model-based control, external navigation, and state estimation have been reported in SITL/HIL; other autonomy components remain to be evidenced publicly.",
+      "Prohibited Upgrade": "The complete SLAM and perception stack is proven on the current vehicle.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Component and system evidence package",
+      "Sources": "S-001; S-006; S-008",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-010",
+      "Domain": "Sensors",
+      "Claim / Public Proposition": "Pressure-tolerant hull with imaging sonar, 4K vision, and IMU.",
+      "Normalized State": "Development target",
+      "Evidence / Maturity Class": "Design intent",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Vantage is designed around a pressure-tolerant hull and professional sensor package including imaging sonar, 4K vision, and IMU.",
+      "Prohibited Upgrade": "Those sensors and depth performance are currently integrated and qualified.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "BOM, integration evidence, calibration, environmental qualification",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-011",
+      "Domain": "Platform",
+      "Claim / Public Proposition": "Open API and payload bay; existing tools work on day one.",
+      "Normalized State": "Development target",
+      "Evidence / Maturity Class": "Integration promise",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Designed with an open API and payload bay for custom integrations.",
+      "Prohibited Upgrade": "Any existing tool will work on day one.",
+      "Proposed Owner": "Shrey / Daniel",
+      "Review Trigger": "Published interface contract and completed integration test",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-012",
+      "Domain": "Applications",
+      "Claim / Public Proposition": "Autonomous harbor sweeps, hull inspection, pier security, and mine-like object detection.",
+      "Normalized State": "Use-case target",
+      "Evidence / Maturity Class": "Application",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Target applications include harbor survey, hull inspection, pier security, and mine-like object detection.",
+      "Prohibited Upgrade": "These missions are currently demonstrated or customer accepted.",
+      "Proposed Owner": "Samuel / Shrey",
+      "Review Trigger": "Mission-specific evidence and customer acceptance",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-013",
+      "Domain": "Applications",
+      "Claim / Public Proposition": "Backpack-deployable swarms replace diver teams with faster, safer, repeatable coverage.",
+      "Normalized State": "Unsupported comparative claim / target",
+      "Evidence / Maturity Class": "Application outcome",
+      "Authority State": "Approval unknown",
+      "Risk": "Critical",
+      "Allowed External Language": "The long-term concept is multi-vehicle coverage that may reduce diver exposure for suitable tasks.",
+      "Prohibited Upgrade": "Swarms currently replace diver teams or are proven faster and safer.",
+      "Proposed Owner": "Samuel / Shrey / Daniel",
+      "Review Trigger": "Comparative trial, safety case, multi-vehicle proof",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-014",
+      "Domain": "Applications",
+      "Claim / Public Proposition": "Autonomous offshore foundation inspection and subsea cable monitoring.",
+      "Normalized State": "Use-case target",
+      "Evidence / Maturity Class": "Application",
+      "Authority State": "Approval unknown",
+      "Risk": "Medium",
+      "Allowed External Language": "Target applications include offshore foundation and subsea cable inspection.",
+      "Prohibited Upgrade": "Current commercial inspection capability or completed customer work.",
+      "Proposed Owner": "Samuel / Shrey",
+      "Review Trigger": "Mission trial and customer evidence",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-015",
+      "Domain": "Autonomy",
+      "Claim / Public Proposition": "Multi-AUV coordinated surveys from a single console.",
+      "Normalized State": "Development target",
+      "Evidence / Maturity Class": "Target capability",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Targeting multi-vehicle coordination from a single console.",
+      "Prohibited Upgrade": "Coordinated multi-AUV operations are currently demonstrated.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Two-or-more-vehicle test with shared mission evidence",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-016",
+      "Domain": "Autonomy",
+      "Claim / Public Proposition": "Autonomous navigation in GPS-denied water.",
+      "Normalized State": "Development target",
+      "Evidence / Maturity Class": "Target capability",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Targeting autonomous navigation in GPS-denied water.",
+      "Prohibited Upgrade": "GPS-denied navigation is currently qualified.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Declared environment, ground truth, repeatable test",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-017",
+      "Domain": "Applications",
+      "Claim / Public Proposition": "Covert operations.",
+      "Normalized State": "Use-case target / sensitive",
+      "Evidence / Maturity Class": "Application",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Potential defense use cases may include low-signature reconnaissance, subject to customer and legal controls.",
+      "Prohibited Upgrade": "Vantage is currently qualified for covert operations.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Customer authority, legal review, mission evidence",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-018",
+      "Domain": "Mapping",
+      "Claim / Public Proposition": "High-resolution sonar SLAM builds detailed 3D maps.",
+      "Normalized State": "Development target",
+      "Evidence / Maturity Class": "Target capability",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Targeting sonar-SLAM-based 3D mapping.",
+      "Prohibited Upgrade": "Current Vantage hardware produces qualified 3D maps.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Public or NDA evidence packet with ground truth",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-019",
+      "Domain": "Deployment",
+      "Claim / Public Proposition": "Mission-ready in minutes.",
+      "Normalized State": "Development target",
+      "Evidence / Maturity Class": "Operational concept",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Designed to move from pack to water rapidly.",
+      "Prohibited Upgrade": "Mission-ready in minutes is currently repeatable.",
+      "Proposed Owner": "Shrey / Daniel",
+      "Review Trigger": "Timed rehearsal with complete system and operator",
+      "Sources": "S-001; S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-020",
+      "Domain": "Test",
+      "Claim / Public Proposition": "Vantage V0 ran roughly one hour untethered in salt water.",
+      "Normalized State": "Demonstrated once",
+      "Evidence / Maturity Class": "Open-water test",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "V0 completed an approximately one-hour untethered salt-water test.",
+      "Prohibited Upgrade": "Repeatable endurance, autonomous mission, or production readiness.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Repeat test or changed configuration",
+      "Sources": "S-004",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-021",
+      "Domain": "Test",
+      "Claim / Public Proposition": "V0 stayed powered and responsive for the full wet-test run.",
+      "Normalized State": "Demonstrated once",
+      "Evidence / Maturity Class": "Open-water test",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "During Wet Test 002, V0 remained powered and responsive for the full reported run.",
+      "Prohibited Upgrade": "Mission autonomy, sensor performance, or depth qualification.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Repeat test or evidence correction",
+      "Sources": "S-004",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-022",
+      "Domain": "Test",
+      "Claim / Public Proposition": "Wet Test 002 demonstrated wireless command response.",
+      "Normalized State": "Demonstrated once",
+      "Evidence / Maturity Class": "Open-water test",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "Wet Test 002 demonstrated wireless command response.",
+      "Prohibited Upgrade": "This alone is autonomous mission execution.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Autonomous operation evidence",
+      "Sources": "S-004",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-023",
+      "Domain": "Test",
+      "Claim / Public Proposition": "Wet Test 002 demonstrated forward and reverse propulsion.",
+      "Normalized State": "Demonstrated once",
+      "Evidence / Maturity Class": "Open-water test",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "Wet Test 002 demonstrated forward and reverse propulsion.",
+      "Prohibited Upgrade": "Complete maneuvering envelope or mission capability.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Expanded maneuver test",
+      "Sources": "S-004",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-024",
+      "Domain": "Test",
+      "Claim / Public Proposition": "Wet Test 002 demonstrated transient attitude correction.",
+      "Normalized State": "Demonstrated once",
+      "Evidence / Maturity Class": "Open-water test",
+      "Authority State": "Publicly stated",
+      "Risk": "Medium",
+      "Allowed External Language": "Wet Test 002 demonstrated transient attitude correction.",
+      "Prohibited Upgrade": "Stable closed-loop navigation across a mission envelope.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Quantified control-performance report",
+      "Sources": "S-004",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-025",
+      "Domain": "Test",
+      "Claim / Public Proposition": "Wet Test 002 demonstrated positive-buoyancy recovery.",
+      "Normalized State": "Demonstrated once",
+      "Evidence / Maturity Class": "Open-water test",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "Wet Test 002 demonstrated positive-buoyancy recovery.",
+      "Prohibited Upgrade": "Complete recovery safety case across environments.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Declared recovery envelope and repetitions",
+      "Sources": "S-004",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-026",
+      "Domain": "Product",
+      "Claim / Public Proposition": "The core vehicle architecture is proven in water.",
+      "Normalized State": "Company inference",
+      "Evidence / Maturity Class": "Program claim",
+      "Authority State": "Publicly stated",
+      "Risk": "High",
+      "Allowed External Language": "Core propulsion, power, command responsiveness, attitude correction, and recovery were exercised in one reported salt-water run.",
+      "Prohibited Upgrade": "The entire vehicle architecture, autonomy stack, sensors, depth, endurance, and mission system are qualified.",
+      "Proposed Owner": "Shrey / Daniel",
+      "Review Trigger": "Define architecture boundary or narrow wording",
+      "Sources": "S-004",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-027",
+      "Domain": "Program",
+      "Claim / Public Proposition": "Development is advancing toward full closed-loop control and pilot-ready V1.",
+      "Normalized State": "Declared future state",
+      "Evidence / Maturity Class": "Roadmap",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "Development is advancing toward full closed-loop control and a pilot-ready V1.",
+      "Prohibited Upgrade": "V1 is pilot-ready now or has a committed delivery date.",
+      "Proposed Owner": "Samuel / Shrey",
+      "Review Trigger": "V1 gate or roadmap change",
+      "Sources": "S-004",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-028",
+      "Domain": "Control",
+      "Claim / Public Proposition": "Vantage is under closed-loop control on assembled hardware in HIL.",
+      "Normalized State": "Demonstrated HIL",
+      "Evidence / Maturity Class": "Hardware-in-the-loop",
+      "Authority State": "Publicly stated",
+      "Risk": "Medium",
+      "Allowed External Language": "Closed-loop multi-axis control has been reported on assembled V0 hardware-in-the-loop.",
+      "Prohibited Upgrade": "Closed-loop autonomous mission execution in water.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Water-mission test",
+      "Sources": "S-006",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-029",
+      "Domain": "Hull",
+      "Claim / Public Proposition": "V0 rear seal passed a leak test with no reported ingress.",
+      "Normalized State": "Demonstrated component test",
+      "Evidence / Maturity Class": "Bench / HIL",
+      "Authority State": "Publicly stated",
+      "Risk": "Medium",
+      "Allowed External Language": "The rear enclosure passed the reported rear-seal leak test.",
+      "Prohibited Upgrade": "The full hull is qualified to 100 m or for repeated operational cycles.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Pressure/depth qualification",
+      "Sources": "S-006",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-030",
+      "Domain": "Test",
+      "Claim / Public Proposition": "Bench testing was complete under controlled conditions as of April 2026.",
+      "Normalized State": "Demonstrated bench",
+      "Evidence / Maturity Class": "Bench test",
+      "Authority State": "Publicly stated",
+      "Risk": "Medium",
+      "Allowed External Language": "Pelagos reported completion of controlled-condition bench testing before assembly.",
+      "Prohibited Upgrade": "Current configuration or whole-system performance is qualified.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Configuration change or test package review",
+      "Sources": "S-007",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-031",
+      "Domain": "Test",
+      "Claim / Public Proposition": "Pool sessions validated trim, handling, and recovery routines.",
+      "Normalized State": "Demonstrated pool",
+      "Evidence / Maturity Class": "Pool test",
+      "Authority State": "Publicly stated",
+      "Risk": "Medium",
+      "Allowed External Language": "Pool sessions exercised trim, handling, and recovery routines.",
+      "Prohibited Upgrade": "Open-water repeatability, mission autonomy, or complete safety case.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Test report or configuration change",
+      "Sources": "S-005",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-032",
+      "Domain": "Autonomy",
+      "Claim / Public Proposition": "Custom model-based control ran in SITL with navigation and state estimation in the loop.",
+      "Normalized State": "Demonstrated simulation",
+      "Evidence / Maturity Class": "SITL",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "The control architecture ran in software-in-the-loop with external navigation and state estimation.",
+      "Prohibited Upgrade": "Physical-water performance or production readiness.",
+      "Proposed Owner": "Shrey",
+      "Review Trigger": "Model/runtime change or physical validation",
+      "Sources": "S-008",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-033",
+      "Domain": "C2",
+      "Claim / Public Proposition": "Operator console demonstrates mission control and after-action concepts.",
+      "Normalized State": "Simulated demo",
+      "Evidence / Maturity Class": "Concept / simulated replay",
+      "Authority State": "Publicly stated",
+      "Risk": "Medium",
+      "Allowed External Language": "The public console is a simulated mission replay illustrating the intended information and control surface.",
+      "Prohibited Upgrade": "A live operational console, actual mission telemetry, or real detection output.",
+      "Proposed Owner": "Shrey / Daniel",
+      "Review Trigger": "Replace simulation with live evidence or preserve visible label",
+      "Sources": "S-009",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-034",
+      "Domain": "Partnership",
+      "Claim / Public Proposition": "Pelagos and Nurjana signed a non-binding MOU to explore collaboration.",
+      "Normalized State": "Verified public primary",
+      "Evidence / Maturity Class": "Non-binding instrument",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "A non-binding MOU exists to explore specified collaboration areas.",
+      "Prohibited Upgrade": "Binding partnership, revenue, exclusivity, integrated product, or customer contract.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Instrument change or expiry",
+      "Sources": "S-011",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-035",
+      "Domain": "Partnership",
+      "Claim / Public Proposition": "Nurjana collaboration is moving into active market and customer-path development.",
+      "Normalized State": "Founder-reported",
+      "Evidence / Maturity Class": "Relationship activity",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Pelagos reports active market and customer-path development with Nurjana.",
+      "Prohibited Upgrade": "Customer commitment, revenue, exclusive channel, or authority to bind Pelagos.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Named opportunity record and rights review",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-036",
+      "Domain": "Partnership",
+      "Claim / Public Proposition": "Pelagos signed an agreement with TEKMARA to develop underwater recharging.",
+      "Normalized State": "Company-reported",
+      "Evidence / Maturity Class": "Development agreement",
+      "Authority State": "Publicly stated",
+      "Risk": "Medium",
+      "Allowed External Language": "Pelagos reports a signed agreement to develop Vantage recharging using AquaGuard infrastructure.",
+      "Prohibited Upgrade": "Operational recharging, persistent autonomy, completed integration, or customer acceptance.",
+      "Proposed Owner": "Samuel / Shrey",
+      "Review Trigger": "Agreement review and work-package evidence",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-037",
+      "Domain": "Partnership",
+      "Claim / Public Proposition": "Persistent operations: deploy, execute, return, recharge, redeploy.",
+      "Normalized State": "Future objective",
+      "Evidence / Maturity Class": "System-of-systems target",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "The TEKMARA relationship targets persistent underwater operations.",
+      "Prohibited Upgrade": "That cycle is currently demonstrated or operational.",
+      "Proposed Owner": "Shrey / Daniel",
+      "Review Trigger": "Integrated cycle test",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-038",
+      "Domain": "Partnership",
+      "Claim / Public Proposition": "Pelagos and OBJEXIS will work toward compatibility across their systems.",
+      "Normalized State": "Company-reported",
+      "Evidence / Maturity Class": "Exploratory / development",
+      "Authority State": "Publicly stated",
+      "Risk": "Medium",
+      "Allowed External Language": "The parties publicly state they are working toward compatibility.",
+      "Prohibited Upgrade": "Compatibility, integration, joint product, or fielded multi-domain operation already exists.",
+      "Proposed Owner": "Samuel / Shrey",
+      "Review Trigger": "Instrument and interface acceptance evidence",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-039",
+      "Domain": "Partnership",
+      "Claim / Public Proposition": "Coordinated multi-domain autonomy and joint defense development with OBJEXIS.",
+      "Normalized State": "Website target / partner-supplied",
+      "Evidence / Maturity Class": "System-of-systems target",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "OBJEXIS is presented as a collaborator for future coordinated multi-domain work.",
+      "Prohibited Upgrade": "A current integrated air-subsea system or joint defense program exists.",
+      "Proposed Owner": "Samuel / Shrey / Daniel",
+      "Review Trigger": "Joint evidence and mutual approval",
+      "Sources": "S-001; S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-040",
+      "Domain": "Partnership",
+      "Claim / Public Proposition": "Tech Unified Foundation supports multi-domain infrastructure, joint pilots, and strategic defense programs.",
+      "Normalized State": "Website-declared / unverified instrument",
+      "Evidence / Maturity Class": "Relationship claim",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "The website names Tech Unified Foundation as a strategic collaboration.",
+      "Prohibited Upgrade": "A signed agreement, active pilot, customer, or government program exists.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Entity and instrument verification",
+      "Sources": "S-001",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-041",
+      "Domain": "Capital",
+      "Claim / Public Proposition": "Agreement finalized on a US$50k strategic SAFE.",
+      "Normalized State": "Founder-reported",
+      "Evidence / Maturity Class": "Capital instrument",
+      "Authority State": "Approval unknown",
+      "Risk": "Critical",
+      "Allowed External Language": "Pelagos reports that a US$50k strategic SAFE agreement was finalized.",
+      "Prohibited Upgrade": "The company has received or can spend the funds; no side rights exist; all conditions are satisfied.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Instrument and bank receipt review",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-042",
+      "Domain": "Capital",
+      "Claim / Public Proposition": "Potential follow-on capital up to US$100k is under discussion.",
+      "Normalized State": "Founder-reported",
+      "Evidence / Maturity Class": "Capital discussion",
+      "Authority State": "Publicly stated",
+      "Risk": "Medium",
+      "Allowed External Language": "Potential follow-on capital of up to US$100k is under discussion.",
+      "Prohibited Upgrade": "Committed, signed, or funded capital.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Term sheet or withdrawal",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-043",
+      "Domain": "Government",
+      "Claim / Public Proposition": "Pelagos is advancing U.S. defense-procurement conversations and preparing for a dedicated SME discussion.",
+      "Normalized State": "Founder-reported",
+      "Evidence / Maturity Class": "Exploratory government activity",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Pelagos reports U.S. defense-procurement conversations and preparation for an SME discussion.",
+      "Prohibited Upgrade": "Solicitation, selection, award, contract, program-of-record status, or endorsement.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Named opportunity and procurement stage",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-044",
+      "Domain": "Government",
+      "Claim / Public Proposition": "Procurement conversations are becoming concrete.",
+      "Normalized State": "Broad founder narrative",
+      "Evidence / Maturity Class": "Unbounded maturity claim",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Government conversations are progressing, according to the founder.",
+      "Prohibited Upgrade": "A specific procurement gate has been passed.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Name office, stage, action, and evidence",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-045",
+      "Domain": "Customer",
+      "Claim / Public Proposition": "Customer requirements are shaping V1.",
+      "Normalized State": "Founder-reported",
+      "Evidence / Maturity Class": "Customer input",
+      "Authority State": "Approval unknown",
+      "Risk": "High",
+      "Allowed External Language": "Pelagos reports that customer requirements are informing V1.",
+      "Prohibited Upgrade": "Customer identity, contract, acceptance, endorsement, or consent to reference.",
+      "Proposed Owner": "Samuel / Shrey",
+      "Review Trigger": "Named internal requirement source and consent boundary",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-046",
+      "Domain": "Capital",
+      "Claim / Public Proposition": "Capital is accelerating engineering.",
+      "Normalized State": "Founder causal claim",
+      "Evidence / Maturity Class": "Causal narrative",
+      "Authority State": "Approval unknown",
+      "Risk": "Medium",
+      "Allowed External Language": "New financing activity is being directed toward engineering, according to the founder.",
+      "Prohibited Upgrade": "A quantified causal effect or funds already deployed.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Budget and delivery evidence",
+      "Sources": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-047",
+      "Domain": "Program",
+      "Claim / Public Proposition": "Pelagos was selected for Wilbe Maritime Build Week.",
+      "Normalized State": "Company-reported",
+      "Evidence / Maturity Class": "Program selection",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "Pelagos was selected for Maritime Build Week.",
+      "Prohibited Upgrade": "Customer validation, procurement selection, investment, or award.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Program completion or changed status",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-048",
+      "Domain": "Event",
+      "Claim / Public Proposition": "Pelagos was invited to attend a future 50th Shared Awareness Meeting.",
+      "Normalized State": "Company-reported",
+      "Evidence / Maturity Class": "Invitation",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "Pelagos reports an invitation to attend a future Shared Awareness Meeting.",
+      "Prohibited Upgrade": "Attendance, Republic of Singapore Navy endorsement, procurement interest, or selection.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Attendance or invitation withdrawal",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-049",
+      "Domain": "Event",
+      "Claim / Public Proposition": "Pelagos attended Airshow London and formed new relationships.",
+      "Normalized State": "Company-reported",
+      "Evidence / Maturity Class": "Event participation",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "Pelagos attended Airshow London and reports new relationships.",
+      "Prohibited Upgrade": "Specific opportunities, commitments, or partnerships.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Create records for any material follow-on",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-050",
+      "Domain": "Company",
+      "Claim / Public Proposition": "Pelagos is a privately held 2026 company with public locations in Waterloo and Indian Creek and three listed employees.",
+      "Normalized State": "Public directory",
+      "Evidence / Maturity Class": "Company identity surface",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "LinkedIn lists the company as privately held, founded in 2026, with public locations and three employees.",
+      "Prohibited Upgrade": "Exact legal entities, registration status, cap table, tax residence, or signing authority.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Entity documentation",
+      "Sources": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-051",
+      "Domain": "Advisors",
+      "Claim / Public Proposition": "Pietro Andronico and David Russell are public advisors.",
+      "Normalized State": "Public website/company post",
+      "Evidence / Maturity Class": "Advisor appointments",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "Pelagos publicly lists Pietro Andronico and David Russell as advisors.",
+      "Prohibited Upgrade": "Their contractual authority, equity, conflicts, speaking rights, or confidentiality terms.",
+      "Proposed Owner": "Samuel / Shrey",
+      "Review Trigger": "Advisor agreements",
+      "Sources": "S-001; S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-052",
+      "Domain": "Data",
+      "Claim / Public Proposition": "Inquiry emails remain in Pelagos inbox while relevant to an ongoing conversation or business relationship.",
+      "Normalized State": "Verified public primary",
+      "Evidence / Maturity Class": "Data-handling policy",
+      "Authority State": "Publicly stated",
+      "Risk": "High",
+      "Allowed External Language": "Inquiry email is retained while relevant and can be deleted on request.",
+      "Prohibited Upgrade": "A complete CRM, commitment ledger, access model, legal hold, or structured deletion workflow exists.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Install governed intake and retention fields",
+      "Sources": "S-003",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-053",
+      "Domain": "Communications",
+      "Claim / Public Proposition": "Site specifications and performance figures are design intent, not an offer, warranty, or delivery commitment.",
+      "Normalized State": "Verified public legal boundary",
+      "Evidence / Maturity Class": "Communications control",
+      "Authority State": "Publicly stated",
+      "Risk": "Low",
+      "Allowed External Language": "Pelagos expressly disclaims current-performance and delivery commitments for site specifications and figures.",
+      "Prohibited Upgrade": "The disclaimer cures every adjacent claim, audience interpretation, investor statement, or partner statement.",
+      "Proposed Owner": "Samuel / Daniel",
+      "Review Trigger": "Claim-by-claim registry and review",
+      "Sources": "S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Claim ID": "CL-054",
+      "Domain": "Company",
+      "Claim / Public Proposition": "Exact legal entities, registrations, and binding authority are not established by the reviewed public record.",
+      "Normalized State": "Open / requires internal evidence",
+      "Evidence / Maturity Class": "Authority foundation",
+      "Authority State": "Unassigned",
+      "Risk": "Critical",
+      "Allowed External Language": "Public materials should use a verified legal name and authorized speaker/signatory for each instrument.",
+      "Prohibited Upgrade": "Assume the brand name, LinkedIn locations, or founder title identifies the contracting entity.",
+      "Proposed Owner": "Samuel",
+      "Review Trigger": "Corporate documents and authority matrix",
+      "Sources": "S-001; S-010; S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    }
+  ],
+  "evidence": [
+    {
+      "Evidence ID": "EV-001",
+      "Object": "Digital twin SITL",
+      "Class": "Simulation",
+      "Date": "2026-03-01",
+      "Venue": "SITL / public build log",
+      "What It Proves": "Custom model-based controller with external navigation and state estimation in the loop",
+      "What It Does Not Prove": "Physical-water autonomy, sensor performance, operational mission, customer acceptance",
+      "Reproducibility / Limits": "Repeatable only if model/runtime/configuration and scenario are retained",
+      "Proposed Custodian": "Shrey / technical repository",
+      "Source": "S-008",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-002",
+      "Object": "Bench test",
+      "Class": "Bench",
+      "Date": "2026-04-02",
+      "Venue": "Controlled bench",
+      "What It Proves": "Bench testing reported complete before full assembly",
+      "What It Does Not Prove": "Whole-system operation, water performance, field readiness",
+      "Reproducibility / Limits": "Unknown from public record",
+      "Proposed Custodian": "Shrey / technical repository",
+      "Source": "S-007",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-003",
+      "Object": "Closed-loop HIL",
+      "Class": "Hardware-in-the-loop",
+      "Date": "2026-06-23",
+      "Venue": "Assembled V0 / HIL",
+      "What It Proves": "Multi-axis closed-loop control on assembled hardware; rear-seal leak test",
+      "What It Does Not Prove": "Autonomous mission in water, whole-hull pressure qualification",
+      "Reproducibility / Limits": "Unknown from public record",
+      "Proposed Custodian": "Shrey / technical repository",
+      "Source": "S-006",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-004",
+      "Object": "Pool trials",
+      "Class": "Pool",
+      "Date": "2026-07-14",
+      "Venue": "Pool",
+      "What It Proves": "Trim, handling, recovery routines; one-person carry",
+      "What It Does Not Prove": "Complete mission handling, open-water repeatability, autonomy",
+      "Reproducibility / Limits": "Unknown from public record",
+      "Proposed Custodian": "Shrey / technical repository",
+      "Source": "S-005",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-005",
+      "Object": "Wet Test 002",
+      "Class": "Open water",
+      "Date": "2026-07-16",
+      "Venue": "Salt water, untethered",
+      "What It Proves": "Reported one-hour operation, power/responsiveness, wireless command, propulsion, transient attitude correction, positive buoyancy recovery",
+      "What It Does Not Prove": "Full autonomy, 100 m depth, multi-hour endurance, SLAM, sensing, swarming, pilot readiness",
+      "Reproducibility / Limits": "Single public test; configuration and raw data not public",
+      "Proposed Custodian": "Shrey / technical repository",
+      "Source": "S-004",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-006",
+      "Object": "Operator console replay",
+      "Class": "Simulation / concept",
+      "Date": "Current",
+      "Venue": "Public web demo",
+      "What It Proves": "Intended operator-console and after-action information model",
+      "What It Does Not Prove": "Live vehicle link, actual detections, production C2, real mission results",
+      "Reproducibility / Limits": "Public demo labels itself simulated",
+      "Proposed Custodian": "Shrey / Daniel",
+      "Source": "S-009",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-007",
+      "Object": "Website terms boundary",
+      "Class": "Legal-public",
+      "Date": "2026-07-31",
+      "Venue": "Website",
+      "What It Proves": "Explicit active-development and design-intent boundary",
+      "What It Does Not Prove": "Internal approval, investor statements, partner statements, or oral claims",
+      "Reproducibility / Limits": "Stable public page; version history unknown",
+      "Proposed Custodian": "Samuel / Daniel",
+      "Source": "S-002",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-008",
+      "Object": "Website privacy boundary",
+      "Class": "Legal-public",
+      "Date": "2026-07-31",
+      "Venue": "Website",
+      "What It Proves": "Inquiry email intake, retention, deletion request",
+      "What It Does Not Prove": "Structured deal state, permissions, legal holds, claim/commitment governance",
+      "Reproducibility / Limits": "Stable public page; operational controls unknown",
+      "Proposed Custodian": "Samuel",
+      "Source": "S-003",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-009",
+      "Object": "Nurjana MOU announcement",
+      "Class": "Instrument report",
+      "Date": "Public post",
+      "Venue": "LinkedIn",
+      "What It Proves": "Non-binding MOU and declared areas of exploration",
+      "What It Does Not Prove": "Binding rights, exclusivity, revenue, integrated capability, customers",
+      "Reproducibility / Limits": "Instrument itself not reviewed",
+      "Proposed Custodian": "Samuel",
+      "Source": "S-011",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-010",
+      "Object": "TEKMARA announcement",
+      "Class": "Instrument report",
+      "Date": "August 2026",
+      "Venue": "LinkedIn",
+      "What It Proves": "Signed agreement reported to develop recharging integration",
+      "What It Does Not Prove": "Operational recharging, persistent mission cycle, IP and commercial terms",
+      "Reproducibility / Limits": "Instrument itself not reviewed",
+      "Proposed Custodian": "Samuel / Shrey",
+      "Source": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-011",
+      "Object": "OBJEXIS announcement",
+      "Class": "Relationship report",
+      "Date": "August 2026",
+      "Venue": "LinkedIn",
+      "What It Proves": "Intent to work toward compatibility across systems",
+      "What It Does Not Prove": "Completed compatibility, integrated demo, contract, customer or program",
+      "Reproducibility / Limits": "Instrument and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "Source": "S-010",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Evidence ID": "EV-012",
+      "Object": "Strategic SAFE update",
+      "Class": "Capital report",
+      "Date": "August 2026",
+      "Venue": "Founder LinkedIn",
+      "What It Proves": "Agreement on US$50k SAFE reported finalized; follow-on discussion reported",
+      "What It Does Not Prove": "Funds cleared, issuer entity, terms, side rights, cap table effect",
+      "Reproducibility / Limits": "Instrument and bank receipt not reviewed",
+      "Proposed Custodian": "Samuel",
+      "Source": "S-012",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    }
+  ],
+  "rights": [
+    {
+      "Rights ID": "RT-001",
+      "Object": "US$50k strategic SAFE",
+      "Counterparty / Instrument": "CP-005 / IN-003",
+      "Equity": "Unknown",
+      "Background IP": "Unknown",
+      "Foreground IP": "Unknown",
+      "Data": "Unknown",
+      "Publicity": "Unknown",
+      "Geography": "Unknown",
+      "Exclusivity": "Unknown",
+      "Manufacturing / Capacity": "Unknown",
+      "Termination": "Unknown",
+      "State": "Open - critical",
+      "Proposed Owner": "Samuel",
+      "Stop Condition": "Do not describe as funded or aggregate into cash until instrument and receipt are verified",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Rights ID": "RT-002",
+      "Object": "Nurjana MOU and market development",
+      "Counterparty / Instrument": "CP-006 / IN-005; IN-006",
+      "Equity": "Unknown",
+      "Background IP": "Unknown",
+      "Foreground IP": "Unknown",
+      "Data": "Unknown",
+      "Publicity": "Unknown",
+      "Geography": "European/NATO role referenced; boundaries unknown",
+      "Exclusivity": "Unknown",
+      "Manufacturing / Capacity": "Unknown",
+      "Termination": "Unknown",
+      "State": "Open - critical",
+      "Proposed Owner": "Samuel",
+      "Stop Condition": "Hold any exclusivity, customer-ownership, or representation assumption",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Rights ID": "RT-003",
+      "Object": "TEKMARA recharging development",
+      "Counterparty / Instrument": "CP-008 / IN-007",
+      "Equity": "Unknown",
+      "Background IP": "Unknown",
+      "Foreground IP": "Unknown",
+      "Data": "Unknown",
+      "Publicity": "Unknown",
+      "Geography": "Unknown",
+      "Exclusivity": "Unknown",
+      "Manufacturing / Capacity": "Unknown",
+      "Termination": "Unknown",
+      "State": "Open - critical",
+      "Proposed Owner": "Shrey / Samuel",
+      "Stop Condition": "No persistent-autonomy or integrated-system claim until work, rights, and acceptance are evidenced",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Rights ID": "RT-004",
+      "Object": "OBJEXIS compatibility work",
+      "Counterparty / Instrument": "CP-010 / IN-008",
+      "Equity": "Unknown",
+      "Background IP": "Unknown",
+      "Foreground IP": "Unknown",
+      "Data": "Unknown",
+      "Publicity": "Unknown",
+      "Geography": "Unknown",
+      "Exclusivity": "Unknown",
+      "Manufacturing / Capacity": "Unknown",
+      "Termination": "Unknown",
+      "State": "Open - critical",
+      "Proposed Owner": "Shrey / Samuel",
+      "Stop Condition": "No joint-product, joint-program, or integrated-capability claim without mutual instrument and proof",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Rights ID": "RT-005",
+      "Object": "Tech Unified Foundation collaboration",
+      "Counterparty / Instrument": "CP-011 / IN-009",
+      "Equity": "Unknown",
+      "Background IP": "Unknown",
+      "Foreground IP": "Unknown",
+      "Data": "Unknown",
+      "Publicity": "Unknown",
+      "Geography": "Unknown",
+      "Exclusivity": "Unknown",
+      "Manufacturing / Capacity": "Unknown",
+      "Termination": "Unknown",
+      "State": "Open - high",
+      "Proposed Owner": "Samuel",
+      "Stop Condition": "Resolve entity and instrument or downgrade website language",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Rights ID": "RT-006",
+      "Object": "David Russell advisor relationship",
+      "Counterparty / Instrument": "CP-012 / IN-010",
+      "Equity": "Unknown",
+      "Background IP": "Unknown",
+      "Foreground IP": "Unknown",
+      "Data": "Unknown",
+      "Publicity": "Unknown",
+      "Geography": "Unknown",
+      "Exclusivity": "Unknown",
+      "Manufacturing / Capacity": "Unknown",
+      "Termination": "Unknown",
+      "State": "Open - high",
+      "Proposed Owner": "Shrey / Samuel",
+      "Stop Condition": "Separate advice, approval, speaking authority, IP contribution, and conflict treatment",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Rights ID": "RT-007",
+      "Object": "Pietro Andronico advisor and Nurjana dual role",
+      "Counterparty / Instrument": "CP-007 / IN-011",
+      "Equity": "Unknown",
+      "Background IP": "Unknown",
+      "Foreground IP": "Unknown",
+      "Data": "Unknown",
+      "Publicity": "Unknown",
+      "Geography": "European/NATO relationship overlaps partner role",
+      "Exclusivity": "Unknown",
+      "Manufacturing / Capacity": "Unknown",
+      "Termination": "Unknown",
+      "State": "Open - high",
+      "Proposed Owner": "Samuel",
+      "Stop Condition": "Record conflicts, compensation, representation, and which principal he acts for in each decision",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Rights ID": "RT-009",
+      "Object": "US government conversations",
+      "Counterparty / Instrument": "CP-015 / IN-014",
+      "Equity": "N/A",
+      "Background IP": "Background IP exposure possible",
+      "Foreground IP": "Foreground work unknown",
+      "Data": "Controlled information unknown",
+      "Publicity": "Publicity restricted/unknown",
+      "Geography": "N/A",
+      "Exclusivity": "N/A",
+      "Manufacturing / Capacity": "Data/software rights unknown",
+      "Termination": "Withdrawal/closure unknown",
+      "State": "Open - critical",
+      "Proposed Owner": "Samuel",
+      "Stop Condition": "Create one opportunity record per agency/office and route legal/export/procurement residue",
+      "_record_class": "PUBLIC_BASELINE",
+      "_authority": "CANDIDATE"
+    },
+    {
+      "Rights ID": "RT-010",
+      "Object": "Prospective commercial program, or integrate      "Object"C_BASELINEs2y": "Unknown",Rhority": "-derreportegquity": "N/A",
+      "Back    "_auensind IP exposure possible",
+     Rd IP": "/unknown",
+      "Geograpnown",
+      nown",
+     "Data": "Unknown",
+      "PublP,
+    /INE",
+ "Unknown",
+   "Data": "Unknow
+      "Publicity": "PubliciLritnse/rted eparrity",
+      "Geography": "N/A",
+   hy": "N/A","N/A",
+      "Manufacturing / Capa: "Unknown",
+      "Manufacturing / Ca    "Reproducibilitnknown",
+      "Ter": "Approvamay "Clae V1wner": "Sc/clon": "atibility": "Open - customer requir"Complete IP": "/unknow    "Stop Condition": "Create one opportunity record per agency/office and route l
+Sources":x / S      S-010; S-012",
+  x / S   : "S-010X_class": "PUBLSnd dency/offity": "Data/softwecord_class" founderper agency     "_record_class" controln": "Unknomployees.",
+     ": "Unknow
+C_BAnis,
+  Fail    progralt wauthorized aim IDer/signatorstattion" for ea  "Cla"
+    },
+  yn US$
+    wed External Lquir"Claed Esintak": "Slass": "th Nurjana.",
+    E "S-001; Snce ID":   "Stantity, t; "UDATE     "Claim Ientifies the     absl Language": "D     "S er": "Ad"BackgrfirmE"
+    },
+    {
+ jPubsdiator-con public loc- critrs/th publiconcleary": "Open -nknomployeesed Esintakohibited Upgrade": "Assume the brand name, LiDefaulass": "    },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_cl2ss": "PUBLSnd dency/offity": "Data/softwecord_class": "PUBLIC_BASELIC_BASELINE",
+   t",
+ t Pro": "Unknow
+C_BAnis,
+  Fail    pro'DIDATE"
+    },
+    'amay beed shipn",
+   s rais   "Stavailic l;r"Compleoint defed "Whion"uthoreement ,
+   s  "Samternal Lq      "ProhibiteE "S-001; Sn"Object"pe ID": "EVanguage": "D     "S er": "Ad"BacformaySamternal Lon US$50es": "Explage": aly stdProvelized.",
+ , cleared, issd finallet   s,": "BackgrouOwne-ry reMFN/unknowohibited Upgrade": "Assume the brand name, LiDefaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_cl3ss": "PUBLSnd dency/of "Evidence / Mecord_class": "PUBLIC_BASELIC_BASELINE",cly s "Objectts, or partnerships.
+C_BAnis,
+  Fail    proD   "Venue" statedsil TEKMAate": "Opden - cral Langullow-on capital of E "S-001; Sn"Object"pe ID": "EV sayated",
+      "Risk": "Medium"D     "S er": "Ad"BacMas": ioval     "Venue"  "Pro},
+    {
+d,
+     ;Sc/cloe produc {
+d,next
+      "Sohibited Upgrade": "Assume the brand name, LiDefaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c,
+      "_reSnd dency/offity": "Data/softwecord_classboundary",
+    IC_BASELINommand, proputionsaloutines; one-person
+C_BAnis,
+  Fail    pro "PUBLICsayat"202/nsaloutines; ty Stat "PUBLIC_BAS: "Public  "Venue": "Salt 026-07- stated""Legal-pubionship"2026-the-loop",
+      "capital of E "S-001; Sn "PUBLIreported wet-ultiect": "Dig": "Medium"D     "S er": "Ad"BacState"e  becomin",
+         g concret: "SITntifiefor si;horiineoutines;ous-reported: "OuN/A","oint defohibited Upgrade": "Assume theresults",
+      "ReprodDefaulass":Ct Prov  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c,5ss": "PUBLSnd dency/of "Evidence / Mecord_classboundary",
+    IC_BASELINHeaes":   "Allowed ExtervsC_BASELent-perforone-person
+C_BAnis,
+  Fail    proion, +ent attitude, "2026-ler with externantifrit-casgh",
+         mensty Sta": "O-ullic Pro    
+  p ty Stat"Cla"
+    E",
+        "AmoOpen  hy":s/fooOprcapital of E "S-001; Sn "PUBLIantifT     "ProhibiteD     "S er": "Ad"Bac",
+   wed pe ID":sed Ow- ct Proveoint def,ry": "nts for si: "Shrevery com26, wicle liohibited Upgrade": "Assume th",
+       "ReproducibiliDefaulass":Ct Prov  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c,6      "_reSnd dency/offity": "Data/softwecord_class": "PUBLIC_BASELINE"cord_class"
+           "Propo     "Authori" contro     "Propone-person
+C_BAnis,
+  Fail    pro_authoriINE",
+  while,rget",
+       "Domain": " "PUBLIC_ir/ter-ntifT  "PUBLIC_BA     "Pro     stated    horire uBJEXIS i" controiticalcapital of E "S-001; Sn "PUBLIa    "_authorisop rechasition":   "ProhibiteD     "S er": "Ad"Bacon": "Unk" contr,d multi-domain au": "Intent tr-ntifordinatt Pron": "nd del    Publi26-03-01"ed Upgrade": "The disclaimer cures every adjaceeresults",
+      "ReprodDefaulass":Ct Prov  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c,7      "_reSnd dency/offity": "Data/softwecord_class": "PUBLIC_BASELINE"cord_class": "PUBLIC_BASEL    "Statpath/unknow    "Stop 
+C_BAnis,
+  Fail    pro_ "Class": ""Date": "Punversmovpden - c: "Bench",   "Statpath/Domain": "Partne: "S  "Objecown",
+    ue": "e": "Open - h"Unknown",
+  IC_Batibility": "Opencapital of E "S-001; SnIC_B "EV ntiforDate":  "EVanguage": "D     "S er": "Ad"BacnkedIn amternal L;Sc/cloe re u   "State":nknown",
+  ;t: "SITwhoamay : "e": "OTwhomhigh",
+oty":s  wed blic Proposition": "Inqgrade": "Assume the brand name, LiDefaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c,8      "_reSnd dency/offity": "Data/softwecord_clasIPss their systems.",
+    rd_class": "PUBLIC_IDATE"
+ tnerships.
+C_BAnis,
+  Fail    proD "Legal-publIDATE"
+  ohibitectt IP,uensivelisr": "eports thatin operatiy": "Open -liared areaord_ulla si: "Shrty": "N/A","a: "N/A",
+ capital of E "S-001; Sn and thr_BASELINE",
+anguage": "D     "S er": "Ad"BacnkedIn lIDATE"
+  nknomin ten - cld, or st   "Epack   s"Risk":Stopnt co  "Prohibited Upgrade": "Their contractual authority, Defaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c,9      "_reSnd dency/offity": "Data/softwecord_clasIgust 2026",
+      "Vcord_class": "PUBLIC  "_authority": "CAND
+C_BAnis,
+  Fail    pro'm orent",
+ hil' nkno're ureporte'  sta: "run   "Aumuel",
+      measuron diIC_BASELINE",capital of E "S-001; Sn and thr_BASELINE",
+high","PUBLIanguage": "D     "S er": "Ad"Bacnkminatiamternal Lon n operatitoward comvehics  pe,uensi/IP,uhrey / thority     "Stated compatibility, integ "Prohibited Upgrade": "Their contractual authority, Defaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c,
+      "_reSnd dency/of "Evidence / Mecord_class": "PUBLIC_BASELINE"cord_class": "PUBLIC_BASELINE",
+        "_authority": "C
+C_BAnis,
+  Fail    pro "PUBLIC"e": "Os"Partnership"
+      "Claim / Public Proposit; ID":   },
+  y,iamternal Loned comnames rategic int defeain": "C  "Objcapital of E "S-001; Sn "PUBLIanguage": "D     "S er": "Ad"BacformaySon": "Unknown",
+      "State": "Op/"Amomesw": "Metion": "Inqgrade": "Assume the brand name, LiDefaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c1ass": "PUBLSnd dency/of "Evidence / Mecord_class": "PUBLIC_BASELIcord_class speaking     "Domaer": "Shreyw    "Stop 
+C_BAnis,
+  Fail    proce ID":natorstattion"ompany",
+l as advisors.", lists PieIP,u: "Shrey
+      "State": "Ope  IC_ty": "N/A","unknowohibited UpE "S-001; Sn "PUBLIantifchasition":   "ProhibiteD     "S er": "Ad"Baclegal ent  wed aspeaking rights,
+     n": "Unknownstements aove": chasitio      "Ss.",
+      "Prohibited Upgrade": "Exact legalactual authority, Defaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c,2ss": "PUBLSnd dency/offity": "Data/softwecord_class": "PUBLIC_BASELINEcord_class": pTE"
+    },
+    {
+      "    "Stop 
+C_BAnis,
+  Fail    proGe "E   figures ,
+       statede specifiuthori"PUBLIC_BASwareness Mlowed Extern: "Pelagos  "Sam: " formTE"
+    }, "ProhibiteE "S-001; Sn"Object"pe ID": "EVanguage": "D     "S er": "Ad"BacC/cloe re u   "State": "Open - critiRisk"ific prnt to ,n - high",
+ cground IP": "Backgrou,,next
+gProveed coaturity ,
+     tion": "Inqgrade": "Assume the brand name, LiDefaulass":Ct Prov  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c13ss": "PUBLSnd dency/of "Evidence / Mecord_class": "PUBLIC_BASELIrd_class": rity State": "Approva"Claim ID"    "Stop 
+C_BAnis,
+  Fail    proer": "Approvamay ted   lectt nt to rLanguage": "Psl Lone- high",
+ cgrShrey
+  Unkno/ensin/ Samuel""a: "N/A",
+ capital of E "S-001; Sn"Object"pe ID": "EVanguage": "D     "S er": "Ad"BacC/cloe nt, or conseopportun n": "Undove":  customer req "Pelagos reports thatalt 02 IP": "/unknow "Prohibited Upgrade": "Exact legalactual authority, Defaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c1
+      "_reSnd dency/offity": "Data/softwecord_clas    act, permissBLIC_BASELIcord_classIim ID",
+ t to ropn,
+ th    "Stop 
+C_BAnis,
+  Fail    procurr inbox whiSELINonshipl as aASELe": "PubliANDIDATE"
+    },
+    {
+ "Claaim I,ty Statpe ID":sand thr_Bm IDer/sigNE",
+ s"uthoreow-on ,d multi-,i"PUBLIC_BA,",   "Statpath,stated""Legal-pubih    rsmov: "Augd muoate"capital of E "S-001; Snits":sed Owner": "Sanguage": "D     "S er": "Ad"Baclegal hoaeleted on reructure   "Stal "Strw- ctt to r "Clasy Statpe": rvLINE",     ",  while,rIt Proves": tate"
+   -intatt Prontion": "Inqgrade": "Assume the brand name, LiDefaulass":graceei  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c15ss": "PUBLSnd dency/of "Evidence / Mecord_class": "PUBLIC_BASELINE",
+ cord_class" ct00 m dthorityment, orority": "C
+C_BAnis,
+  Fail    pro "PUBLI,ect": "Dig, IDer/sigpisr": chasition":  -developmen":  -d    Owner": "  "Authorit sta",
+     dif IP":t investo        "Authoricapital of E "S-001; SnOb: rvutho "Datepe ID": employ  "ProhibiteD     "S er": "Ad"BacUic CLAIMSD",
+   "tt to rfic advrovpde ,
+     ;u   "State ID"kgrou,,It Proves": sunknoemation igh",  "Exclusohibited Upgrade": "Assume th",
+        brand name, LiDefaulass":graceei  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c16      "_reSnd dency/of "Evidence / Mecord_clasE "S-001;
+      "Vcord_class"nemulti  stateAute ge "E   fStop Condition
+C_BAnis,
+  Fail    pro "PUBLIC_BAS:vrovp   } becomins"PU   behavisto o si;hbroad Pro    
+  p t staabsteb  ten - cw     "What I     "Whaohibited UpE "S-001; Sn "t-ultie int defeagh","PUBLIanguage": "D     "S er": "Ad"BacAttwed "UDATEour endurance - cviroIC_BA,"paue":, integ,AM, /sumle r ed nfagos lDoeshorized aim inlowed ExteBLICatioohibited Upgrade": "Assume theresuuthority, Defaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c17      "_reSnd dency/of "Evidence / Mecord_clasDtor console rrd_class":  detecti_BASELINEmay ted    horirhat It Pro    "Stop 
+C_BAnis,
+  Fail    procurrBASELINEiicle limins detecti,ectt sole and a-likemullmer or part     "Date":  ,
+       stasti hob urep    ana.",
+    E "S-001; Snce ID":vehianguage": "D     "S er": "Ad"BacKeep  },agreement sNDIDATE"
+ 26, wi;Lenton":u",
+li hu "Claiverkflow ove": ,
+  August 2026"s     measurminlowuontion": "Inqgrade": "Assume th",
+       "ReproducibiliDefaulass":Ct Prov  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c18      "_reSnd dency/offity": "Data/softwecord_clasEosed    "
+   LIC_BASELIrd_class": "Dat-b ac,
+  Public/utines; tLICatio"    "Stop 
+C_BAnis,
+  Fail    proCanadg,AUS, n",
+    "Fo,an invitat,/ Public Pro"
+    },routines;  strictedh externaensive"Shrtyy / LimiIC  "_authoriEmay c/cloe proed h es torized secugh",
+ lobbyigned ro"
+    },rowhiSELI Meetincugh"ch inICatio"ana.",
+    E "S-001; Snce ID":  round IP": map; nobinding aucbecs   map omain auanguage": "D     "S er": "Ad"BacC/cloe nICatioontract
+     nndomy, sunrkminat"Unassigel",
+   titrw- c },
+ifiu Date":sw- cardwareti_BAecs   "Prohibited Upgrade": "Exact legalactCAecs  roducibiliDefaulass":EsLimPro": "UnknowSnvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c19      "_reSnd dency/offity": "Data/softwecord_clasIPss t": "PUBLIC_BArd_class": "Dat-evelopment to ralt 0nknownmAnif: "2026-07-31
+C_BAnis,
+  Fail    proce ID":    "_authorisoshor06-23",
+ ,6-ler with ter-shoo rive buoyaes": "SignedsNDIDATE"
+ompatibilitpathsve"Shrtyy / Liminown",ohibited UpE "S-001; Sn "PUBLIantifn":   "ProhibiteD     "S er": "Ad"Bacerminatnt to ,nbram, or inte, ID2y": "Unkno,uensivelritnseported c   usepopible",
+ ,i"own",
+  , "Unknown",
+      "dy,Publi26 te"Allowed blic Proposition": "Inqgrade": "Assume the branactual authority, Defaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c2
+      "_reSnd dency/of "Evidence / Mecord_class": "PUBLIC_BASELINE",
+ cord_class" cIt Proves"Publi26oduc path2026-07-31
+C_BAnis,
+  Fail    proce ID": hority lt 02round IP": le linkhavn":  vibjectty": "nt26oduc Meetiunknoematioposition": "Exact E "S-001; Snce ID": employ  "ProhibiteD     "S er": "Ad"BacAdtantity, nICationt26odukgrou,,It Proves"  ,
+     atalt 02uthoritiunknoematiop stateme- cowed  horiohibited Upgrade": "Assume th",
+        brand name, LiDefaulass":graceei  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c2ass": "PUBLSnd dency/of "Evidence / Mecord_clasOw"PUBLIC_BASELINE"cord_class"o legadty": "e"Allowed ered",hority": "CAND
+C_BAnis,
+  Fail    pro"Object""DatsD": "CL-051,ectt mitmenttoward compow-on ,d"PUBLIC_BA," multi-,i"Shrtyy / Limiered",horiseain": "Cvibjecity },
+   capital of E "S-001; Snits"1sed Owner": "Sanguage": "D     "S er": "Ad"BacA },
+  re u      "Ssy": "eandomyerkallbrame"Allowed oord_c type; nobsheport"mbend    "Prohibited Upgrade": "Exact legald name, LiDefaulass":graceei  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c23ss": "PUBLSnd dency/of "Evidence / Mecord_clasPrategic/"nd LIC_BASELINEcord_classS "Pelago aim inleshoriz": "],
+  "evidence":
+C_BAnis,
+  Fail    pro ilteds "Pelagos SAM inleshoriz,Publi2v
+      nndbilitystateAute lowed Extern customer req atibili,ty acro"
+    },
+ ,
+     tion": "InqE "S-001; Sn and thrn":   "ProhibiteD     "S er": "Ad"BacKeep  n": "Unknegal entitt Pron"part dvrovpdephraoemow",
+  "Pelau": "vit tr-nt": "Siomvehin  "Clatr-nnshi tr-ntiftoward c  capital of sclaimer cures every adjacent claim, audienDefaulass":Ct Prov  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c2
+      "_reSnd dency/of "Evidence / Mecord_class"ntinuency     "_record_class"Object"mehidel  p: "Sncrority": "C
+C_BAnis,
+  Fail    proA sml hochasitioystakeep td Owneu01"ed Upown"inalry adjantiferesul  "ProvinomNEmakespositnleted A","ox",
+ 
+  A "Sam "Objectcapital of E "S-001; Sn"Object- as aASIP": "BacklProves":  "ProhibiteD     "S er": "Ad"BacEwed on",
+    oord_c neei   }duron diand acprnt to s": "Iny": "ntnext
+      "S: "Shrty": "Nlred, iss "Prohibited Upgrade": "Exact legald name, LiDefaulass":graceei  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c25ss": "PUBLSnd dency/ofMediumidence / Mecord_clasToos": y     "_record_classP},
+ ly stp],
+"Bacwautk-i"evidence":
+C_BAnis,
+  Fail    proBuyyees. CRM"Date": oriinyeesoord_cs ntiforDd",horisewAutho6-23- adat"Clawroeesontologr part dtacl dec lecthi  capital of E "S-001; SnArchieraty st: "IP": " "ProhibiteD     "S er": "Ad"BacUic t st proed on diauthropose2",
+ D",
+   "vrov   "Sions, lega: employ; mitent omy, s     ing, reeifri    rate  s"uton dian": "Approv "Prohibited Upgrade": "Exact legald name, LiDefaulass":graceei  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c26      "_reSnd dency/of "Evidence / Mecord_clasce ID": hori"PUBLIC_BArd_class": CANDIDA whilat Ierolnghorer": y     "_re
+C_BAnis,
+  Fail    proCari l  ,
+       staam , s
+   s omer anerv tr-unrkmIP": "F,     measuron y 026-07-jectts, acrossWhaohibited UpE "S-001; Sn"Object"pe ID": "EVanguage": "D     "S er": "Ad"Bac: "S itioysANDID-to-lnghorer": :sed Ow- c
+      am   },ectdinatoatu"kgrou,,   "Epack   ,stated",
+  DATEint defohibited Upgrade": "Assume the brand name, LiDefaulass":Ct Prov  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c27      "_reSnd dency/of "Evidence / Mecord_clasce ID": hori"PUBLIC_BArd_class": e": archieraty stvrovposed-loop     "Stop 
+C_BAnis,
+  Fail    procurrphraoe  statedd shipn",
+  ass],
+"Bac,6-ler with exteignedransiencorrection,    meported:Stopnt IhsignBAn
+   " becominbehavisto ulti  capital of E "S-001; SnWet-ultiect": "Dig": "Medium"D     "S er": "Ad"BacDriineo   "'ce": archieraty s' E",
+      critilaitiRisk"   ""UDATEbehavisto vehin  "Clatohibited Upgrade": "Assume theresults",
+      "ReprodDefaulass":Ct Prov  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance criteria unknown",
+      "Proposed Custodian": "Samuel / Shrey",
+      "x / S   : "S-010X_c28      "_reSnd dency/of "Evidence / Mecord_clasPriv   -nt to radmeporte"PUBLIC_BArd_class":    "Whatositnleted A",".",
+     ": "Unknow
+C_BAnis,
+  Fail    proAS  "Objecaoes":  c_BAStdsil TEKMAteAute    "Authoriu   "Sta "Samgltiepriv   ng rights,": ch  },
+      {
+ tyy / Limind nfagosign-icground IP"ensinrtne: "Sa legadte- high",
+ cptanlowed Ext ru loc    "dy path,stateompatibilitultin": "Exact E "S-001; Snce ID":cnd ridge E",
+     tateobsl Lepriv   nopportu "ProhibiteD     "S er": "Ad"Baclate    "    "Dae- highztrw- cadmeLepriv   nnt to s;horiineouaturitycptan {
+ cap tables,  while,rIt Proves": al-public",proed h ed compatibility, integ "Prohibited Upgrade": "Their contruthority, Defaulass":nati  },
+    {Snvestming / C  "Geographrdinat
+      "  "Geograperminosed  erner":   "  "Geograp and acceptance cARCHITECTURE_BOUNDARY",
+      "Proposed Custodian": "Samuel /
+Sources"nt to s" S-010; S-012",
+ roduci: "S-01S_class": "PUBLSoduci:Typ1; SnO cri    wObject": "WebsitIUS$50; Snc controFr"ntisig": "nolog  {uthority, D   n/ facturing ID": " hutep     tifn],
+"Bacw boundary",
+       rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /swarming, pilot rn",
+    Empany",
+   "Cl ID": " Pro    
+"Reporonigned    "_authorisy emad "Open -ordinat     "Pro   edranloy  },
+ boundary",
+    n",
+      "What IEmpany",
+"BacD "Whion"bynal rechate"e BJEXIS ityy / Limi   "Backce": "Slass": ",
+      "nknow    "Stop URL It u"kgrou"Bachttps://p contrfr"ntisi.Aut/amuel / Shrey",
+      roduci: "S-01S_cl2ss": "PUBLSoduci:Typ1; SnT    c   S rvLct": "WebsitIUS$50; Snc controFr"ntisig": "nolog  {uthority, D   n/ facturingEcussi
+  Avidence ID": "EV-008   rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /slDIDATE"
+    },
+    {
+n",
+    Empany",
+   "ClVanfic Eiiciovasi
+  Ad""Legal-pu;  "Allowed Exte,aam   s: aljectsve"Shr   "Backce": endutsD": ",
+      "Date"tated""Legal-pubirdinadary",
+    n",
+      "What IEmpany",
+"BacD "Whion"rkminat thor wed ExdiSouu01"INE",
+": :sed Ow   "Aity, t ic advrovpd    "Stop URL It u"kgrou"Bachttps://p contrfr"ntisi.Aut/      htmlamuel / Shrey",
+      roduci: "S-01S_cl3ss": "PUBLSoduci:Typ1; SnPhiSELINPnship": "WebsitIUS$50; Snc controFr"ntisig": "nolog  {uthority, D   n/ facturingEcussi
+  Avidence ID": "EV-008   rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /slDIDATE"
+    },
+    {
+n",
+    Empany",
+   "ClIANDIDATE"
+    },
+    {
+ "Claaim Isy State": "Publ- ca  rego": :s "  "Author: "Slus "Wha       "_authority": "Cn",
+      "What IEmpany",
+"BacD "Whion"ompany",
+laeleted on rech  },
+    ,
+ cgon, deleke, retesign-i
+      "D   "ftur    "Stop URL It u"kgrou"Bachttps://p contrfr"ntisi.Aut/whiSELI htmlamuel / Shrey",
+      roduci: "S-01S_cl4ss": "PUBLSoduci:Typ1; Sn "PUBLIC_BAS": "WebsitIUS$50; Snc controFr"ntisig": "nolog  {uthority, D   n/ facturingvidence 16      "_re   rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /styy / LimTE"
+    },
+    {
+n",
+    Empany",
+   "ClStatexion",KMAoneitudel  "eIhsitittalt-loop  run;
+"Rw "nt026-07-jvpoile,r  "Venue": "Salted ropul  "S: orDd",
+      ituderIt Proves": "Reporve-buoykceiu   "  DAority": "Cn",
+      "What IEmpany",
+"BacD "Whion"ate"e "2026-ler with eonar SLAM, ion, dransient attitudencorrection,swa": "ned shipI     "Wha - critiensi "Propone-personURL It u"kgrou"Bachttps://p contrfr"ntisi.Aut/NE",
+ s/wet-ulti_cl2 htmlamuel / Shrey",
+      roduci: "S-01S_cl5ss": "PUBLSoduci:Typ1; SnPoomier   s": "WebsitIUS$50; Snc controFr"ntisig": "nolog  {uthority, D   n/ facturingvidence 14      "_re   rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /styy / LimTE"
+    },
+    {
+n",
+    Empany",
+   "ClS00 m -rhat In-icarry;
+"Roropose teBLICm,Proves": atalt 02 "  DA",
+   "Whority": "Cn",
+      "What IEmpany",
+"BacD "Whion"ate"e "2026meportedlaunch/02 "  DAported cranloy  },
+timeign-in/ C-loop  meported:  "Backce"one-personURL It u"kgrou"Bachttps://p contrfr"ntisi.Aut/NE",
+ s/"Ror-er   s htmlamuel / Shrey",
+      roduci: "S-01S_cl6ss": "PUBLSoduci:Typ1; SnCthe-loop",
+      "edsND - c:  "Data/softwIUS$50; Snc controFr"ntisig": "nolog  {uthority, D   n/ facturingvidenc6-23ss": "PUBL   rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /styy / LimTE"
+    },
+    {
+n",
+    Empany",
+   "ClCthe-loop",
+t attiaxisns, lega:runnyees6-23",
+ -in-Ihsoop",
+   "Premb IP"V0;u  ar-s  leemakmulti : "Bench"pauender LinkedIn",
+      "What IEmpany",
+"BacD "Whion"ate"e utines;ous meportedexecuoriz": -loop gn-iw     h2026ransicardwarec,
+  "evidence":URL It u"kgrou"Bachttps://p contrfr"ntisi.Aut/NE",
+ s/-the-loop",-      "chtmlamuel / Shrey",
+      roduci: "S-01S_cl7ss": "PUBLSoduci:Typ1; SnVanfic Et "Openphys Limi"BacData/softwIUS$50; Snc controFr"ntisig": "nolog  {uthority, D   n/ facturingvidenc4-AS": "Websit   rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /styy / LimTE"
+    },
+    {
+n",
+    Empany",
+   "ClB",
+ Dulti": :s       "Wbject"cground IP"lized.",
+ ; "202-vehicle "Premb yWbjectway   gnBA,
+timeer LinkedIn",
+      "What IEmpany",
+"BacD "Whion"ate"e subsequent sWhat -l""Led:  "Backce"one-personURL It u"kgrou"Bachttps://p contrfr"ntisi.Aut/NE",
+ s/cad-2",
+ chtmlamuel / Shrey",
+      roduci: "S-01S_cl8ss": "PUBLSoduci:Typ1; SnDigNDIDAtwin their systems.",
+    IUS$50; Snc controFr"ntisig": "nolog  {uthority, D   n/ facturingvidenc3-0D": "EV-008   rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /styy / LimTE"
+    },
+    {
+n",
+    Empany",
+   "ClCatibi mo
+  -caoed"cground I"SamuSITLiRisk"26-03-01"navigalago aim ed Upolti"mhoriz": t"Cla"oohority": "Cn",
+      "What IEmpany",
+"BacSNDIDATE"
+ iWhion"anphys Lim-loop  vehin  "Clhor: "Spatibilitompatibilione-personURL It u"kgrou"Bachttps://p contrfr"ntisi.Aut/NE",
+ s/digNDID-twinchtmlamuel / Shrey",
+      roduci: "S-01S_cl9ss": "PUBLSoduci:Typ1; SnOhat In-icASELINEdtor console rIUS$50; Snc controFr"ntisig": "nolog  {uthority, D   n/ facturing ID": "ary",
+       rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /swarmin-dtor console rn",
+    Empany",
+   "ClSns detecti meporteditilay     "Stpgraderhat In--BASELINEi "Backgrounmo
+  er LinkedIn",
+      "What IEmpany",
+"BacD "Whion"ate"e u ,
+  Aranloyti meporte,Owneu01"deteator-con ID": " Pro    E"
+ 2trictedh n-in/ t It Pro C2one-personURL It u"kgrou"Bachttps://p contrfr"ntisi.Aut/vehiahtmlamuel / Shrey",
+      roduci: "S-01S_c,
+      "_reSoduci:Typ1; Sn: "Strat chasition     tifNE",
+ s console rIUS$50; Snc contruthority, D   n/ facturing ID": "ary",
+       rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /schasiti-: "Founder LinkedIn",
+    Empany",
+   "ClChasitiosize wauthorized IDer/sisve"E",
+     ASELINE",
+ -developmIP": le
+     att",
+ le
+     at2v
+        ropo
+  "evidence":n",
+      "What IEmpany",
+"BacCuthoriu  "Fou: "AuWhion"in  p: "Sntmuel",
+ed Ext offtoward ciscussijvpoile,rpayC_BA,"   "Backce" - crinknow    "Stop URL It u"kgrou"Bachttps://ca.l "StrincAut/chasiti/p contrfr"ntisiamuel / Shrey",
+      roduci: "S-01S_c,ass": "PUBLSoduci:Typ1; Sn": "PUBLIC_BASASELINE",
+ console rIUS$50; Snc contro    bran Scrrepnruthority, D   n/ facturingPe ID": "EVary",
+       rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /schasiti-: "Founder LinkedIn",
+    Empany",
+   "Cl_ "Class": "IC_B- coDate"e   "Claim /IC  "_authoriE: tsubsea6-ler with le itime ISR,      "Domain":nmoniIn-": atalt n",
+      "ForINE",
+  whileority": "Cn",
+      "What IEmpany",
+"BacD "Whion"ompany",
+l"Unknown",
+      "Sta cgon, deleke,r2v
+ ue": "Intent to     "Prop,ty ac  "Backce"one-personURL It u"kgrou"Bachttps://www.l "StrincAut/n":  /s bran-hatv
+ -scrrepnr-87862b186_Proud-to-see-p contr-ctur-t st-hatp-Risk"Daten",
+-7478803849898549248-n8Yvamuel / Shrey",
+      roduci: "S-01S_c,2ss": "PUBLSoduci:Typ1; SnAwhilat IoriE/forDate": NE",
+  console rIUS$50; Sn  bran Scrrepnruthority, D   n/ facturingPe ID": "EV, Aug   Avideary",
+       rind d"Bacvidenc8 ID": "EV-008"Source":Ti50; Sncrile r /sIDer/si-: "Founder LinkedIn",
+    Empany",
+   "ClE",
+     "Claim /t",
+ aIDATE"
+    },
+    ;s "ObjecttE",cly ss, or parted",
+      "Risk; ": pTE"
+    },
+    {
+      ";",   "Statpath/Domain": "P; V1w"Claim ority": "Cn",
+      "What IEmpany",
+"BacD "Whion"ompany",
+l
+   s eement ,iamternal Leported "
+    },
+  yed ro"
+    },"ific pr    "Sta Language": "Slass": "s, or partnerships.URL It u"kgrou"Bachttps://www.l "StrincAut/n":  /s bran-hatv
+ -scrrepnr-87862b186_P contr-has-seen-me"e-orDate":-in-Ihsoo "D"Daten",
+-7491487402453069824-_   amuel /
+Sources"nt   er_ructur" S-010; S-012",
+ erminat "S-01SYN-INT_class": "PUBLRanerv t   "  "GeograpSub Lang0; Sn ynIhs  rs": "Expl"PUBLIC_BArd_cla:Typ1; SnCCANDIDAof IP"PUBLIC_BA    },
+    { "ClEn for eaiIP":  "Expl"PUBLIC_BAPurpgralts"     "St SnO c{
+  NEB- c,cly,000tsubrd_c to   lig defeagh"mil"Exp"Whority": "Cn",
+ They O c{
+; SnPoObjecttc": "PUBLIC_BASELn",
+ They er":: "2"ClIA"Backgroun0nknown{
+d,
+ ty stv    ropo
+  "evidence":    "Rightn/ foduci; Sn ynIhs  rsscene ir console rNegal entitfacturing f IP"d —hion"u,
+   ,c
+     ": "SunrkmIP": "F console rAm   }ringclyyyy"PUBLIC_BA ID": c{ "ClESD": "EV-008"sts Pcity":NDIDAcurememing / C  "GeograpIPss     acurememing / C  "Geograpn",
+      "ss nown",
+       / C  "Geograp "Foregrou/ Rd IP": "/curememingNmyer  "ProoDatregr  "Geographyy / Limisboun Iasi_class"on  console rs": "PUBLIu/ Eosed  TICatiolass"o"ProhibiteD     "S ": "TheirCEO /scCANDIDA ",
+     ": "UnknowFallbrame": "TheirNegadtsuwhileotate": "Ad"ProhibiteD aes":    "  "GeograpDis"Reporon   "nati  },
+    {Snvestming ynIhs  rss": "PUBLSoduci:: "S It u"kgrou"BacN ctt to rby
+ s console rD     "S / Next
+Acgrou"Bacer":: """UDATEamternal Lon26oduc Mlized.",
+ , 0nknow -nknomettl   },"path2026-07-31erner":t "S-01 console rNet   "ClTrainyeesrowomy, ;hion"an" contro    },
+    {
+n-inf IP"PUBLIC_BA and acceptance cSYNTHETICroute legal/export/procrminat "S-01SYN-INT_cl2ss": "PUBLRanerv t   "  "GeograpSub Lang0; Sn ynIhs  rsfagoidel  "Propos"PUBLIC_BArd_cla:Typ1; SnIn-k,
+  omaied "PUBLIC_BA    },
+    { "ClEn for eaiIP"m      "Puel"PUBLIC_BAPurpgralts"     "St SnO c{
+  fagoidel while,rtoos": ign-ic": "Publrity": "Cn",
+ They O c{
+; SnPro    E"
+  whilePubli2nghorer": :timeer LinkedIn",
+ They er":: "2"ClUned Updevidence":    "Rightn/ foduci; Sn ynIhs  rsscene ir console rNegal entitfacturing f IP"d —hBASE foralago aim unknown",rkminat" console rAm   }ring"PUBLIC_BA ID": c{ "Cl": "EV-008"sts Pcity":NDIDAcurememing / C  "GeograpIPss     acurememing / C  "Geograpn",
+      "ss nown",
+       / C  "Geograp "Foregrou/ Rd IP": "/curememing / C  "Geographyy / Limisboun Iasi_classCAuthob urep    D",
+ ncuged Pro    E"
+ console rs": "PUBLIu/ Eosed  TICatiolassP"Object"C_BASELIND     "S ": "TheirCEO +ityy / Limiy": "": "UnknowFallbrame": "TheirNegadtsuwhileotate": "Ad"ProhibiteD aes":    "  "GeograpDis"Reporon   " "    },
+    {Snvestming ynIhs  rss": "PUBLSoduci:: "S It u"kgrou"BacN ctt to rby
+ s console rD     "S / Next
+Acgrou"Bacerminat lowuo,ic": "Pub,iy": "Open -toos": igord_ulla si: pible",
+ ,iamtrection,    26 teDate": ompatibilione-personerner":t "S-01 console rNet   "ClTrainyeesrowomy, ;hion"an" contro  "ProposoP"PUBLIC_BA and acceptance cSYNTHETICroute legal/export/procrminat "S-01SYN-INT_cl3ss": "PUBLRanerv t   "  "GeograpSub Lang0; Sn ynIhs  rs"PUBLIC_BASELItacIC_BASELINEcord_c:Typ1; SnGPUBLIC_BASELINE",
+    "PUBLIC_BA    },
+    { "ClEn for eaiIP" "Openc- crit"PUBLIC_BAPurpgralts"     "St Sner":: "ePub SME      "Risklrity": "Cn",
+ They O c{
+; SnC "  "Author:ntifn":bjecttte": "ApprovaELItexter LinkedIn",
+ They er":: "2"Clhyy / Limi     "Risklrity": "C    "Rightn/ foduci; Sn ynIhs  rsscene ir console rNegal entitfacturingCLItacI —hion" customer reqs "Pelagos nnshinttoward com, acrossam 26, wi console rAm   }ring"PUBLIC_BA ID": c{ "Cl": "EV-008"sts Pcity":NDIDAcurememing": "ProspectiIPss     acurememingkground IP-ensinE",
+      / C  "Geograpn",
+      "ss nown",
+      ": "Prospecti "Foregrou/ Rd IP": "/curememingNmyerrtne: "SwrLangn      "St  "Geographyy / Limisboun Iasi_class"oacromo E"
+ console rs": "PUBLIu/ Eosed  TICatiolassY s console rD     "S ": "TheirCEO /s"PUBLIC_BASy": "": "UnknowFallbrame": "TheirNegadtsuwhileotate": "Ad"ProhibiteD aes":    "  "GeograpDis"Reporon   "nati  },
+    {Snvestming ynIhs  rss": "PUBLSoduci:: "S It u"kgrou"BacN ctt to rby
+ s console rD     "S / Next
+Acgrou"Baclate - critone- high",
+ s for si: ensineptaned ro"
+    },"ific prntiftoecs  oposed  nICatioone-personerner":t "S-01 console rNet   "ClTrainyeesrowomy, ;hion"an" contro"PUBLIC_BASwarena  E"
+ console r and acceptance cSYNTHETICroute l
+Sources"ntsWha_scene irs" S-010; S-012",
+ id"BacoT_class": "PUBLlega"Bac"Object"unavailic lss": "PUBLtICatiolassPrile r IDer/sigis"unavailic lts, a30 enyssy Stat,
+  Ao c{
+  26odufohibited Updimenesto " S-010; ed Up ",
+     ": "Unkno Upc"ntinuency     "_r Upinknow    "Stop Upc": "PUBLIC_BAS  "Stop]ibited Upox",: "F   "nOLD itioorDd",horinrtne: "Sa legadtkallbrameubli26oed on di ID": " ed Upohibited Upinloriant " S-010; ed UpINV_c2ass": "PUB UpINV_c24ss": "PUB UpINV_c30ss": "PUB UpINV_c34S  "Stop]oute legal/export/proid"BacoT_cl2ss": "PUBLlega"Bac"
+      PUBL hority     "Propone-persontICatiolassAdevelopmenuny",
+  gnBA,
+an: "Intent to"What Iis"rted minbete": Partneulti": ohibited Updimenesto " S-010; ed Up boundary",
+    Upo "S-001;
+      " Up ",
+     ": "Unkno Upc" Proves"S  "Stop]ibited Upox",: "F   "CORRECT    "Aitmentpe": rvstvriuir"Complhoriz,PutProposedevelopme     "Prop,talt 02": "A Partneultiradmeporteohibited Upinloriant " S-010; ed UpINV_cl9ss": "PUB UpINV_c,2ss": "PUB UpINV_c,4ss": "PUB UpINV_c28S  "Stop]oute legal/export/proid"BacoT_cl3ss": "PUBLlega"BacS,
+    ctt ion"
+     one-persontICatiolassAdt",
+ is"s,
+    ctt 
+   s havn": t eement ohibited Updimenesto " S-010; ed Up ": "PUBLIC_BASE Upin  "RightBLIC_BASE Upmettl   },BLIC_BASE Uppible",
+ S  "Stop]ibited Upox",: "F   "Keep SIGNEDtalt FUNDEDt n": "Un; intatrunway     rais  -cCANDIDA ,
+     tion": "Inqinloriant " S-010; ed UpINV_cl3ss": "PUB UpINV_c,6ss": "PUB UpINV_c,7S  "Stop]oute legal/export/proid"BacoT_cl4ss": "PUBLlega"BacGPUBLIC_BASELItacI": "],
+  "evidence":tICatiolassAb SME cl hoio vescrrbeli26-03-01city o"PUBLIC_BASs "Pelago IC_tna  E"
+ohibited Updimenesto " S-010; ed Upg": "PUBLIC_BASELIN Up boundary",
+    Up ",
+     ": "Unkno Uppible",
+ S  "Stop]ibited Upox",: "F   "Rnd dc to CONTACT / SME DISCUSSIONtalt 02": "A py": portedbete": leg": :the - crittion": "Inqinloriant " S-010; ed UpINV_cl6ss": "PUB UpINV_c27      "_r UpINV_c29S  "Stop]oute legal/export/proid"BacoT_cl5ss": "PUBLlega"BacIn-k,
+  fagoidelnf IP"PUBLIC_BAtICatiolassAdfagoidelnf IPs-toos": rntift": "Pubnrtne: "Sed U": rwBA,
+it ox",: iciovretur
+ohibited Updimenesto " S-010; ed UpBASE foralagoBLIC_BASE UpipC_BASELIN Up ": "Publrity": " UpoxitS  "Stop]ibited Upox",: "F   "STOPcompatibilit  "Provowuo,i0nknow -cthi  igord_ulla si: amtrection,pible",
+ ,i    26 te": "oDatregrtion": "Inqinloriant " S-010; ed UpINV_cl2ss": "PUB UpINV_c20ss": "PUB UpINV_c26ss": "PUB UpINV_c36S  "Stop]oute legal/export/proid"BacoT_cl6ss": "PUBLlega"Bac speakinuu01""Datevidence":tICatiolassAb "E",
+    lso emad   }evelopmentifn    ropo
+on": "ao      "Ss.cussij: :that}evelopmohibited Updimenesto " S-010; ed UpBASShreyary",
+    Up ",
+     ": "Unkno Upt": "PUBLIC_B Upiecri lS  "Stop]ibited Upox",: "F   "Sn": "Unk"Dats,Lent-pose    "AurShrey
+ s "Pell  "Propos,u   "Staiecri l king     "Do: tate"Does  whiletion": "Inqinloriant " S-010; ed UpINV_c18      "_r UpINV_c19ss": "PUB UpINV_c23S  "Stop]oute legal/export/proid"BacoT_cl7ss": "PUBLlega"Bac "Dat-b ac,
+ tyy / Limiered" IP"PUBLIC_BAtICatiolassAdfe":    ,
+      "r":: "ePCADroutines;   ada,AM,  meportedensivekinmo
+  ind nfagosohibited Updimenesto " S-010; ed Up26oed ": "Unkno Upt": "PUBLIC_B UpipC_BASELIN Ups for siS  "Stop]ibited Upox",: "F   "nOLD ered" IPt  "ProjurisdicExtern cu user: ensineptaned0nknow -cbecs   nICationtpart dvrovpdes for si omer an ac,dohibited Upinloriant " S-010; ed UpINV_c22ss": "PUB UpINV_c32ss": "PUB UpINV_c35S  "Stop]oute legal/export/proid"BacoT_cl8ss": "PUBLlega"BacTenfntataim "Unkloa one-persontICatiolassI  "Expl," multi-,i atibili,tpart"PUBLIC_BASwa": "ion": c/clse 10×": "myerreekohibited Updimenesto " S-010; ed Upructur"s": "PUB Upow"PUBLIC_BASELINE Uppriui   ": "Unkno Upc"ntinuency  "Stop]ibited Upox",: "F   "C/cloe re unegal entitoord_c pI"Samm "Unkiat ;",
+   omy, sex / S   sw- cg     "Do; nobinbox-my, sed Upohibited Upinloriant " S-010; ed UpINV_c2ass": "PUB UpINV_c24ss": "PUB UpINV_c30ss": "PUB UpINV_c39S  "Stop]oute legal/export/proid"BacoT_cl9ss": "PUBLlega"BacBrowspmend Upopossone-persontICatiolasscurrrhat In-ile  s"   " rowspmevrofStatn-i
+ wn",ohibited Updimenesto " S-010; ed UpB   "dylrity": " Upoxoed ": "Unkno Upitilay"PUBLIC_B Upiec"  DAo  "Stop]ibited Upox",: "F   "RnExpleove": amuel",
+ed Ped on dipacke  "Str srypt tobramup;iauthrSxplic Eiic: t    "duron diand acohibited Upinloriant " S-010; ed UpINV_c30ss": "PUB UpINV_c3ass": "PUB UpINV_c34S  "Stop]oute legal/export/proid"BacoT_c,
+      "_relega"BacSt to r,  "Exclr: "Sp" Prov  one-persontICatiolassAdpe ID": velopmen": oio ve    "Wor on",
+   lySp" Prov  ohibited Updimenesto " S-010; ed Uptt to ss": "PUB Ups": ic C_BASELIN Up boundary",
+    Upc" Proves"S  "Stop]ibited Upox",: "F   "R2utho
+   "vriuirtt to red, iss
+    etifto Proves"/sunknoemation igh"and mp   o.cussiitycptundohibited Upinloriant " S-010; ed UpINV_c25ss": "PUB UpINV_c28      "_r UpINV_c3as  "Stop]oute legal/export/proid"BacoT_c,ass": "PUBLlega"BacCuthonprovalowed E  ":,
+   ounvrovpoone-persontICatiolassVehicle,i : "Sli,tpler with igh"C2schasonprova wed pose  n": "UnKMAttt ind dhorire u,
+   ohibited Updimenesto " S-010; ed Uprucst 2026",
+      " Upo "S-001;
+      " Upfail    _BASELIN Upsmpatibilio  "Stop]ibited Upox",: "F   "Keep ,
+   odian": "S; 02": "A "UDATEour endurance - cd-to-lnddexecuoriz, fail   eultid aim in  p: "Sntmsmpatibilition": "Inqinloriant " S-010; ed UpINV_cl8      "_r UpINV_cl9ss": "PUB UpINV_c,ass": "PUB UpINV_c13S  "Stop]oute legal/export/proid"BacoT_c12ss": "PUBLlega"Bac rity State IP": "/ur":: "2ne-persontICatiolassAdp"Da",: horksn" controto lega aioIhsigorganizuthor:n   }Batibilityr}evelopmohibited Updimenesto " S-010; ed Uppible",
+ Sry",
+    Up ",
+     ": "Unkno Up      "_authority": " Upo "S-001;  "Stop]ibited Upox",: "F   "R2": "A wrLangn te IP": "/pible",
+ n0nknown{
+d,"UDATE02round IP": nd Up; nobsoi    atexio,
+ nup: "Option": "Inqinloriant " S-010; ed UpINV_cl5ss": "PUB UpINV_cl6ss": "PUB UpINV_c19ss": "PUB UpINV_c29S  "Stop]oute l
+Sources"libit" Sxport/"snd dency/o-010; edffity": "Data/softw "Evidence / MMediumidence / MLowS  "St]ibited"snvestmin-010; edf / C  "GeograpI  erity,  "GeograpAdvrovpd    "Stop Cthe-lss": "PUBLSunknoe   one-personW  "ExclrS  "St]ibited"dis"Reporon   -010; edf "    },
+    {nati  },
+    {graceei  },
+    {EsLimPro": "UnknowCt Prov  },
+    {W  "ExclS  "St]ibited"o: "Thei-010; edf  bran Scrrepnruthority, eresulNaph"Oputhority, ",
+    Scrrepnruthority, CAecs  roducibilis": eri    emad  },
+    {E6-03-01"archierat  },
+    {Uny },
+   S  "St]ibited"oord_c_typ1; S["GeograpI tro    E"
+ console rI  "Explcity":NDID  },
+    {gvelopm  },
+    {GPUBLIC_BASOaied unropone-persons": eri    Oaied unropone-personIn-k,
+  C "ProposE"
+ console r speaki console rhyy / Limisboun console rhy: oE "S-001;
+      "VPe ID":factuE",
+ console rgrafematioimiS rvLcts er":: "2console rOIhsiS  "St]ibited"02round IP":_sacturin["GeograpDisc"  Dpdevidence":  tro   pd    "Stop CLItacIei  },
+    {EDate" In-authority, D lig def2console rOf IP"d2console rNegoti U": uthority, e,
+    n "Class": uthority, e,
+    lass": uthority, Ecussi
+   console rg  "Bac": uthority, C       "ss": "PUBLSunknoe   one-personW  "Exclru/ Rdjrov  one-personS  pe/ur":: "  S  "St]ibited"s for siS S["GeograpI t03-01 console rI  "Expl  },
+    {GPUBLIC_BA  },
+    {gvelopm  },
+    {s": "PUBLIC_BASELIP"
+    },
+    {
+CAecs  r  "St]ibited"cID": c{ "C["GeograpESD": "EV-008CAD": "EV-008"UR  },
+    {GBP2console rOIhsiS  "St]
+e legalprucst ency/oxport/"alg    hm"BacoHA-256ss": "P"caio/ Limizuthor"BacJSON UTF-8h eoench"key": chasict  n": "Uoisverucst encorted c  Lang one-per"dig: "2"Cl2134bd65ae6afeb630265453f85c5b6af2981548d3aab2b9c3ff00a6403a33ebS  "}
+}
+                                                                                       ./v
+     -sp": /RELEASE_NO

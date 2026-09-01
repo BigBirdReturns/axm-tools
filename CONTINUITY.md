@@ -89,6 +89,7 @@ are touching tells you how much care to take.
   `organ-evolution/scripts/validate.py` and
   `tests/pages/verify_organ_evolution.mjs`.
 - `axm-witness/` — AXM Witness Department Ledger 0.9.2: an exact-byte, department-controlled local export-ledger pilot for authorized Flock-shaped exports, qualified 30/30 under native browser storage and WebCrypto. It proves department custody and decisions after receipt; vendor-declared completeness and pre-delivery origin remain external boundaries.
+- `venture-spine/` — the local external-state governance workbench for hard-technology companies. It separates counterparties, instruments, claims, evidence, rights, authority, decisions, settlement, correction, and succession; retains no source bytes; has no runtime network request or external-effect adapter; and uses a public-safe Pelagos cartridge that neither quotes nor relies on the private introduction thread. Its release contract is guarded by static, public-boundary, fixture, browser, embedded self-test, and cache-bypassed live-readback receipts.
 - `pta-tracker/` — the living tool: nightly legislation fetch for a K-6
   PTA, relevance filter, board report, offline PWA. Its README is the
   operating manual.
