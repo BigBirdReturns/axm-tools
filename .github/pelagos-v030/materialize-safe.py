@@ -24,8 +24,8 @@ def harden_csp_styles(release: pathlib.Path) -> None:
     """Move static HTML style attributes into the self-hosted stylesheet.
 
     The runtime CSP deliberately keeps ``style-src 'self'`` and does not grant
-    ``unsafe-inline``.  The staged source used a handful of static style
-    attributes inside HTML template strings.  Those are presentation only, so
+    ``unsafe-inline``. The staged source used a handful of static style
+    attributes inside HTML template strings. Those are presentation only, so
     translate them deterministically into data attributes backed by app.css.
     Dynamic style expressions are refused rather than guessed.
     """
@@ -65,6 +65,25 @@ def harden_csp_styles(release: pathlib.Path) -> None:
         stylesheet.write_text(css, encoding="utf-8")
 
     print(f"CSP style hardening: {len(rules)} unique static declarations externalized")
+
+
+def stage_reviewed_workflow_candidate(release: pathlib.Path) -> None:
+    """Keep CI from granting itself workflow authority.
+
+    register() writes the proposed long-lived qualification workflow. GitHub
+    correctly refuses a normal Actions token that tries to install workflow
+    authority. Move that exact reviewed YAML into the release as a candidate;
+    the repository authority installs it separately after the bytes qualify.
+    """
+
+    generated = ROOT / ".github" / "workflows" / "pelagos-governance-check.yml"
+    candidate_dir = release / "workflow-candidates"
+    candidate_dir.mkdir(parents=True, exist_ok=True)
+    candidate = candidate_dir / "pelagos-governance-check.yml"
+    if not generated.exists():
+        raise SystemExit("register() did not produce the expected qualification workflow candidate")
+    shutil.move(str(generated), str(candidate))
+    print("qualification workflow staged for separate repository-authority installation")
 
 
 parts = sorted(STAGE.glob("pelagos-v030-source-part-*.b64"))
@@ -107,5 +126,8 @@ shutil.rmtree(release / "node_modules", ignore_errors=True)
 harden_csp_styles(release)
 materializer.qualify(release)
 materializer.register()
-materializer.cleanup()
+stage_reviewed_workflow_candidate(release)
+# Deliberately do not call materializer.cleanup() here. CI owns release-byte
+# generation only; repository authority cleans bootstrap and installs the
+# long-lived workflow after the qualified bytes are committed.
 print("Pelagos Governance Layer v0.3.0 safely materialized and qualified")
