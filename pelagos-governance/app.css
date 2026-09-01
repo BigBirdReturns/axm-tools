@@ -15,3 +15,17 @@ progress{width:100%;height:12px;accent-color:var(--orange)}dialog{border:1px sol
 @media(max-width:380px){main{padding:8px}.metric-grid{grid-template-columns:1fr}.record{padding:10px}.head{padding:11px}.head-controls select{max-width:100%}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 @media print{header,aside,.toolbar,.btn,dialog{display:none!important}.app{display:block}main{padding:0}.card,.record{box-shadow:none;break-inside:avoid}body{background:white;color:black}}
+
+/* v0.3.0 private working-copy controls */
+a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.source-picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:7px}
+.check{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:6px;padding:8px;background:var(--panel2);font:600 12px/1.35 var(--sans);color:var(--bone);text-transform:none;letter-spacing:0}
+.check input{margin-top:2px;accent-color:var(--ember)}
+.workspace-admission{border-left:6px solid var(--gold)}
+@media(max-width:700px){.source-picks{grid-template-columns:1fr}}
+
+/* CSP-hardening: generated from static release presentation attributes. */
+[data-csp-style="csp-0ee7f66ad9c0"]{margin-top:12px}
+[data-csp-style="csp-c53ea1da2385"]{margin-top:14px}
+[data-csp-style="csp-cf94127bceda"]{margin:7px 0}
+[data-csp-style="csp-df928149c547"]{margin-top:10px}

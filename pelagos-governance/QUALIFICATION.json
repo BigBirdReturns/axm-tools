@@ -1,0 +1,392 @@
+{
+  "boundary": "Static qualification proves the committed candidate and its local operating mechanics. It does not create Pelagos admission, validate private instruments, or authorize external effects.",
+  "checks": [
+    {
+      "detail": "",
+      "name": "all index resources exist",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "all JavaScript parses",
+      "status": "PASS"
+    },
+    {
+      "detail": "loaded=['meta', 'founder_decisions', 'invariants', 'state_model', 'counterparties', 'instruments', 'claims', 'evidence', 'rights', 'exceptions', 'intake', 'sources', 'lists', 'schema', 'role_profiles', 'apertures', 'stress_scenarios', 'lineage', 'qualification_plans']",
+      "name": "all required public parts load",
+      "status": "PASS"
+    },
+    {
+      "detail": "['meta', 'founder_decisions', 'invariants', 'state_model', 'counterparties', 'instruments', 'claims', 'evidence', 'rights', 'exceptions', 'intake', 'sources', 'lists', 'schema', 'role_profiles', 'apertures', 'stress_scenarios', 'lineage', 'qualification_plans']",
+      "name": "schema declares exact required parts",
+      "status": "PASS"
+    },
+    {
+      "detail": "{\"architect\": \"Jonathan Sandhu / Dependable DaVincis\", \"artifact_id\": \"DDV-PEL-003\", \"as_of\": \"2026-08-31\", \"boundary\": \"Outside-in public reconstruction plus a private, local-first operating workbench. It is not legal advice, does not contain the private introduction thread, and cannot create company, investment, procurement, technical, speaking, or external-effect authority.\", \"collaboration\": \"A Robi Sen Collaboration\", \"decision_authority\": \"Pelagos authority not supplied; Samuel Scrivens is proposed from the public CEO role\", \"external_effect_adapters\": 0, \"public_release\": true, \"single_writer_default\": true, \"source_bytes_committed\": 0, \"status\": \"PUBLIC-SAFE CANDIDATE \\u2014 OPERATOR-QUALIFIED; PELAGOS ADMISSION REQUIRED\", \"supersedes\": \"DDV-PEL-002/0.2.0 incomplete candidate branch\", \"title\": \"Pelagos Governance Layer\", \"version\": \"0.3.0\"}",
+      "name": "release identity exact",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "zero external-effect adapters declared",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "zero committed private source bytes",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=10 actual=10",
+      "name": "founder_decisions count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=40 actual=40",
+      "name": "invariants count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=44 actual=44",
+      "name": "state_model count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=18 actual=18",
+      "name": "counterparties count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=14 actual=14",
+      "name": "instruments count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=54 actual=54",
+      "name": "claims count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=13 actual=13",
+      "name": "evidence count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=10 actual=10",
+      "name": "rights count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=28 actual=28",
+      "name": "exceptions count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=0 actual=0",
+      "name": "intake count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=14 actual=14",
+      "name": "sources count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=7 actual=7",
+      "name": "role_profiles count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=4 actual=4",
+      "name": "apertures count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=10 actual=10",
+      "name": "stress_scenarios count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=13 actual=13",
+      "name": "lineage count",
+      "status": "PASS"
+    },
+    {
+      "detail": "expected=26 actual=26",
+      "name": "qualification_plans count",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "every high/critical claim has a prospective qualification plan",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "every claim carries complete publication boundary",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "private introduction and email bodies are absent",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "runtime actively disables network APIs",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "no send, beacon, socket, or mail adapter",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "successor-state intake is present",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "workspace admission is present",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "authority-attributed local object requires authority and source",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "single-writer boundary is explicit",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "standalone bundle has no local resource dependencies",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "standalone bundle identifies exact release",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "standalone CSP blocks network",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "operator manual states readiness and admission boundary",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "constitution preserves successor states",
+      "status": "PASS"
+    }
+  ],
+  "checks_passed": 37,
+  "checks_total": 37,
+  "files": [
+    {
+      "bytes": 4906,
+      "path": "CONSTITUTION.md",
+      "sha256": "22be8a361ff503d300a5be45bbe1e11553ecd9409b6b0085f8457e677954be14"
+    },
+    {
+      "bytes": 4009,
+      "path": "LINEAGE.md",
+      "sha256": "0c4d1fea1a4323c91a17374400a6522fca483a3838c6100f2d55a5c0f91dbd46"
+    },
+    {
+      "bytes": 9613,
+      "path": "README.md",
+      "sha256": "b4aad295711bff64ae598f6299a42203ef7473f43fb7685253468bea3e0ec03c"
+    },
+    {
+      "bytes": 12547,
+      "path": "app/01-runtime.js",
+      "sha256": "7b090260c6db8f040b44793900a48827d3842fac5a343214780b81c28942025e"
+    },
+    {
+      "bytes": 11175,
+      "path": "app/02-runtime.js",
+      "sha256": "7f274fefadb6cdb25fa725f3b41fef39ae4621d45189065e6b7c6a2d402361c1"
+    },
+    {
+      "bytes": 9816,
+      "path": "app/03-runtime.js",
+      "sha256": "298a3c72d765abf2277f16bf0e8f77324e98942b5b65e80171fe82967bd17a91"
+    },
+    {
+      "bytes": 15780,
+      "path": "app/04-runtime.js",
+      "sha256": "cfc0db6d2871bdf30a3e3969590f3dc4c317b016e00bf14fc99b6ab4d906ff91"
+    },
+    {
+      "bytes": 7443,
+      "path": "app/05-runtime.js",
+      "sha256": "9d1cc7a4d85f8076f90f9da9ac9d2b8ab9df77bb819d09a67110fc9ebf652e7a"
+    },
+    {
+      "bytes": 12338,
+      "path": "app.css",
+      "sha256": "3b040c37617d0017490008a6c268a5fcf525beb7df110acd85db2b1cecb6b78a"
+    },
+    {
+      "bytes": 961,
+      "path": "data/parts/01-meta.js",
+      "sha256": "d821315a3d439b61f55dc0b5e77585d9d721f77841f9b5e6ee0d284b92b5eaae"
+    },
+    {
+      "bytes": 2086,
+      "path": "data/parts/02-founder-decisions.js",
+      "sha256": "e4adba87b640810b457a155972b7789d9e0e082dabb25292e6b98a4eee10f786"
+    },
+    {
+      "bytes": 9383,
+      "path": "data/parts/03-invariants-01.js",
+      "sha256": "978e0c6016d0e2d57fdf8359cac647443fdada7c75d9b9036ce30dc125bfbd3d"
+    },
+    {
+      "bytes": 2074,
+      "path": "data/parts/03-invariants-02.js",
+      "sha256": "70d18a4833952d913c5acf9e69d8ecfdbf64abb68340c966a516f40bc6aaf9b5"
+    },
+    {
+      "bytes": 9560,
+      "path": "data/parts/04-state-model.js",
+      "sha256": "af547e67b1f492882e9404d9603e4e3bba32235e7493030c1209cacc1aa98572"
+    },
+    {
+      "bytes": 9712,
+      "path": "data/parts/05-counterparties.js",
+      "sha256": "382a804024d3f7ab7c93c3a2680ee761ac793930183117bbbaa3dba19da9038f"
+    },
+    {
+      "bytes": 7963,
+      "path": "data/parts/06-instruments.js",
+      "sha256": "cc3e66776674a225456cc5e6e0225b4a217c697273717d9a5a727da80c4faa08"
+    },
+    {
+      "bytes": 9469,
+      "path": "data/parts/07-claims-01.js",
+      "sha256": "5a8965d924eafa1b68f79475a693400a84d50ebde0b0dc2cc35a7d5103c6e943"
+    },
+    {
+      "bytes": 9200,
+      "path": "data/parts/07-claims-02.js",
+      "sha256": "a167a55266d7f2f054f21ff671d2ea6486dd2eb43147bff6ae1f0803723bee91"
+    },
+    {
+      "bytes": 9404,
+      "path": "data/parts/07-claims-03.js",
+      "sha256": "b673dc2438e4fca00cfa96e7b0b12c99758b47134c1ac2c32e2d3c5dbf14ba0b"
+    },
+    {
+      "bytes": 5248,
+      "path": "data/parts/07-claims-04.js",
+      "sha256": "bb8c9547c919fd0ff754c27238edf8cb780d6069678a517d11ef2987758e4665"
+    },
+    {
+      "bytes": 6514,
+      "path": "data/parts/08-evidence.js",
+      "sha256": "dbdfa52d49d3fc659c6b4ca4227a65fbad3b6953a33128a6bfca273bd6ae0a08"
+    },
+    {
+      "bytes": 5645,
+      "path": "data/parts/09-rights.js",
+      "sha256": "5260360c18cb3074bfae299a5f1668c49c3c2dd31b2c32631ada98b4ca6082ca"
+    },
+    {
+      "bytes": 9043,
+      "path": "data/parts/10-exceptions-01.js",
+      "sha256": "19da1e7c4010d27ecab340dd9436d51a633e75eb5df2fada05487eea2914b296"
+    },
+    {
+      "bytes": 7068,
+      "path": "data/parts/10-exceptions-02.js",
+      "sha256": "e0a50c76e28d80ec90b6122972ef22bb3d527bdccc40f9de3e87e853fe809a94"
+    },
+    {
+      "bytes": 135,
+      "path": "data/parts/11-intake.js",
+      "sha256": "5668baeca6d579968e512093ec4b5a472798165d4ccc0d6f8a86a6636408f5c5"
+    },
+    {
+      "bytes": 5083,
+      "path": "data/parts/12-sources.js",
+      "sha256": "6fd7b2a903c68e4e4d5f6c2787c6494fe54186a1f234d0a54fb42a76f31aa251"
+    },
+    {
+      "bytes": 1055,
+      "path": "data/parts/13-lists.js",
+      "sha256": "325e0e6a1b3e1f106194e4d725af31c85f6e23c050e2f8a5fb75d8b2c81700d4"
+    },
+    {
+      "bytes": 976,
+      "path": "data/parts/14-schema.js",
+      "sha256": "f6380d233409a425c52ddf78aad314871a7fbc3624477212e03a6e1a762b9a7f"
+    },
+    {
+      "bytes": 1721,
+      "path": "data/parts/15-role-profiles.js",
+      "sha256": "245be7ea63b147f338f531c11a62d6e307272221ac744d8c54d5f562efd1fb8b"
+    },
+    {
+      "bytes": 733,
+      "path": "data/parts/16-apertures.js",
+      "sha256": "880b87c86cac965b401a8769a00145d623ef99f05eb2dc0fc7626d6e223804b6"
+    },
+    {
+      "bytes": 2877,
+      "path": "data/parts/17-stress-scenarios.js",
+      "sha256": "2fba55433e0c1857b4781fdb25a854bfbf38cb0704b27935f1dd30ce6c2d5cc7"
+    },
+    {
+      "bytes": 4265,
+      "path": "data/parts/18-lineage.js",
+      "sha256": "d9520c4efebf38f25ef72af8d501df4cdab1197961d09a8aa4f86c6d62812ff9"
+    },
+    {
+      "bytes": 13027,
+      "path": "data/parts/19-qualification-plans.js",
+      "sha256": "b14982fdd1fa0b14ce56af35ed9b660165f604128da3c035ec991c040bebf215"
+    },
+    {
+      "bytes": 52,
+      "path": "data/parts/bootstrap.js",
+      "sha256": "aca98502ea009f16bbd4a6ca36a8368749e8ea6273b089f7a57271deee0d0e02"
+    },
+    {
+      "bytes": 3730,
+      "path": "index.html",
+      "sha256": "a7105592daf34b329a8a94d701fd54d029bb7ec50b434f202f486874664c8a6c"
+    },
+    {
+      "bytes": 1787,
+      "path": "scripts/build_standalone.py",
+      "sha256": "a2d1d8f1354d8105b0f9b070e68274972d56c896a14ad18ce674bc62a1ec6e8c"
+    },
+    {
+      "bytes": 9611,
+      "path": "scripts/validate.py",
+      "sha256": "88bfec8b360cea4538a9c6b25fa4fb3fa0fea7a015f90df06df85fa80b1c275a"
+    },
+    {
+      "bytes": 206455,
+      "path": "standalone.html",
+      "sha256": "0da3235e621899adc56f7081f93547b29f250576783f784ef3acbadd0b597f5d"
+    },
+    {
+      "bytes": 15317,
+      "path": "tests/verify.mjs",
+      "sha256": "649a1c86c1635f22604f0d6f2a2642c559c10358f979456054c72d7583800338"
+    }
+  ],
+  "release": "DDV-PEL-003/0.3.0",
+  "schema": "ddv/pelagos-governance-qualification@1",
+  "status": "PASS"
+}
