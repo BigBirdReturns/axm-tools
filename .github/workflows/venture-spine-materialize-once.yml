@@ -21,7 +21,7 @@ jobs:
         run: |
           python - <<'PY'
           from __future__ import annotations
-          import base64, gzip, io, json, os, pathlib, shutil, subprocess, tarfile, zipfile
+          import base64, gzip, io, json, pathlib, shutil, subprocess, tarfile, zipfile
 
           root = pathlib.Path.cwd().resolve()
           part_dir = root / '.github' / 'bootstrap'
@@ -50,10 +50,10 @@ jobs:
                       members = tf.getmembers()
                       if not members:
                           return False
-                      for m in members:
-                          safe_target(stage, m.name)
-                          if m.issym() or m.islnk():
-                              raise ValueError(f'links forbidden in overlay: {m.name}')
+                      for member in members:
+                          safe_target(stage, member.name)
+                          if member.issym() or member.islnk():
+                              raise ValueError(f'links forbidden in overlay: {member.name}')
                       tf.extractall(stage)
                       print('overlay format: tar; members:', len(members))
                       return True
@@ -112,7 +112,9 @@ jobs:
 
           if any(stage.iterdir()):
               children = list(stage.iterdir())
-              source = children[0] if len(children) == 1 and children[0].is_dir() and children[0].name in {'overlay','repo','axm-tools'} else stage
+              # The staged archive has one wrapper directory. Strip any single
+              # wrapper name instead of recognizing only a small allow-list.
+              source = children[0] if len(children) == 1 and children[0].is_dir() else stage
               copied = 0
               for src in source.rglob('*'):
                   rel = src.relative_to(source)
@@ -145,17 +147,17 @@ jobs:
           subprocess.run(['python', str(qualify), '--write'], check=True)
           subprocess.run(['python', str(validate)], check=True)
 
-          for p in parts:
-              p.unlink()
+          for part in parts:
+              part.unlink()
           if part_dir.exists() and not any(part_dir.iterdir()):
               part_dir.rmdir()
           shutil.rmtree(stage)
           pathlib.Path('.github/workflows/venture-spine-materialize-once.yml').unlink()
 
           print('materialized files:')
-          for p in sorted((root / 'venture-spine').rglob('*')):
-              if p.is_file():
-                  print(' ', p.relative_to(root), p.stat().st_size)
+          for path in sorted((root / 'venture-spine').rglob('*')):
+              if path.is_file():
+                  print(' ', path.relative_to(root), path.stat().st_size)
           PY
 
       - name: Commit the materialized tool
