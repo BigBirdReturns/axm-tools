@@ -98,13 +98,6 @@ function Resolve-V31Python {
   return [pscustomobject]@{result='HOLD_NO_SUPPORTED_PYTHON_RUNTIME_FOUND';selected=$null;observations=@($observations)}
 }
 
-function ConvertTo-V31CmdQuoted {
-  [CmdletBinding()]
-  param([Parameter(Mandatory=$true)][string]$Value)
-  if($Value.Contains('"')){throw 'double quote is not permitted in a runtime executable path'}
-  return '"' + $Value.Replace('%','%%') + '"'
-}
-
 function Install-V31PythonShims {
   [CmdletBinding()]
   param(
@@ -114,13 +107,31 @@ function Install-V31PythonShims {
   if($Runtime.result -ne 'PASS_SUPPORTED_PYTHON_RUNTIME_RESOLVED'){throw 'runtime is not admitted'}
   if(Test-Path -LiteralPath $ShimRoot){Remove-Item -LiteralPath $ShimRoot -Recurse -Force}
   New-Item -ItemType Directory -Path $ShimRoot -Force | Out-Null
-  $exe=ConvertTo-V31CmdQuoted -Value ([string]$Runtime.selected.path)
-  $prefix=@($Runtime.selected.prefix) -join ' '
-  $normal=('@echo off' + "`r`n" + 'setlocal EnableExtensions DisableDelayedExpansion' + "`r`n" + $exe + $(if($prefix){' '+$prefix}else{''}) + ' %*' + "`r`n" + 'exit /b %ERRORLEVEL%' + "`r`n")
-  $py=('@echo off' + "`r`n" + 'setlocal EnableExtensions DisableDelayedExpansion' + "`r`n" + 'if "%~1"=="-3" shift' + "`r`n" + $exe + $(if($prefix){' '+$prefix}else{''}) + ' %*' + "`r`n" + 'exit /b %ERRORLEVEL%' + "`r`n")
+  $env:V31_PYTHON_EXE=[string]$Runtime.selected.path
+  $env:V31_PYTHON_PREFIX=(@($Runtime.selected.prefix) -join [char]31)
+  $driver=@'
+[CmdletBinding()]
+param(
+  [switch]$StripPy3,
+  [Parameter(ValueFromRemainingArguments=$true)][AllowEmptyCollection()][string[]]$Arguments
+)
+Set-StrictMode -Version Latest
+$ErrorActionPreference='Stop'
+$argsList=[System.Collections.Generic.List[string]]::new()
+foreach($arg in @($Arguments)){$argsList.Add([string]$arg)}
+if($StripPy3 -and $argsList.Count -gt 0 -and $argsList[0] -eq '-3'){$argsList.RemoveAt(0)}
+$prefix=@()
+if(-not [string]::IsNullOrWhiteSpace($env:V31_PYTHON_PREFIX)){$prefix=@($env:V31_PYTHON_PREFIX -split [char]31)}
+& $env:V31_PYTHON_EXE @prefix @argsList
+exit $LASTEXITCODE
+'@
+  $driverPath=Join-Path $ShimRoot 'Invoke-ResolvedPython.ps1'
+  Set-Content -LiteralPath $driverPath -Value $driver -Encoding UTF8
+  $py='@echo off'+"`r`n"+'setlocal EnableExtensions DisableDelayedExpansion'+"`r`n"+'powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "%~dp0Invoke-ResolvedPython.ps1" -StripPy3 %*'+"`r`n"+'exit /b %ERRORLEVEL%'+"`r`n"
+  $python='@echo off'+"`r`n"+'setlocal EnableExtensions DisableDelayedExpansion'+"`r`n"+'powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "%~dp0Invoke-ResolvedPython.ps1" %*'+"`r`n"+'exit /b %ERRORLEVEL%'+"`r`n"
   [IO.File]::WriteAllText((Join-Path $ShimRoot 'py.cmd'),$py,[Text.Encoding]::ASCII)
-  [IO.File]::WriteAllText((Join-Path $ShimRoot 'python.cmd'),$normal,[Text.Encoding]::ASCII)
-  [IO.File]::WriteAllText((Join-Path $ShimRoot 'python3.cmd'),$normal,[Text.Encoding]::ASCII)
+  [IO.File]::WriteAllText((Join-Path $ShimRoot 'python.cmd'),$python,[Text.Encoding]::ASCII)
+  [IO.File]::WriteAllText((Join-Path $ShimRoot 'python3.cmd'),$python,[Text.Encoding]::ASCII)
   $env:PATH=$ShimRoot+';'+$env:PATH
-  return [pscustomobject]@{root=$ShimRoot;aliases=@('py.cmd','python.cmd','python3.cmd');path_scope='current_process_only'}
+  return [pscustomobject]@{root=$ShimRoot;driver='Invoke-ResolvedPython.ps1';aliases=@('py.cmd','python.cmd','python3.cmd');path_scope='current_process_only'}
 }
