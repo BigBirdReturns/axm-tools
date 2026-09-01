@@ -1,0 +1,77 @@
+name: Pelagos governance qualified production promotion
+
+on:
+  push:
+    branches: [feat/pelagos-governance-layer]
+    paths: [.github/workflows/pelagos-governance-promote-once-v2.yml]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pelagos-governance-production-promotion
+  cancel-in-progress: false
+
+jobs:
+  qualify-and-promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/pelagos-governance-layer
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build and qualify static release
+        run: |
+          python pelagos-governance/scripts/build_offline.py
+          python pelagos-governance/scripts/validate.py --write
+          for f in pelagos-governance/app/*.js pelagos-governance/data/parts/*.js; do
+            node --check "$f"
+          done
+          git diff --exit-code -- pelagos-governance/offline.html pelagos-governance/QUALIFICATION.json
+
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright@1 >/tmp/pelagos-npm-install.log 2>&1
+          npx playwright install --with-deps chromium >/tmp/pelagos-browser-install.log 2>&1
+
+      - name: Browser qualification
+        run: node pelagos-governance/tests/browser_test.mjs . | tee /tmp/Pelagos_Browser_Qualification.json
+
+      - name: Verify public and authority boundaries
+        run: |
+          test -f pelagos-governance/RELEASE.json
+          test -f pelagos-governance/QUALIFICATION.json
+          test -f pelagos-governance/offline.html
+          ! grep -Rqi 'samuel@pelagosfrontier.com\|jvssandhu@gmail.com\|EOC002_Pelagos_Phase_1_Delivery_Ready' pelagos-governance
+          grep -q 'pelagos-governance/' README.md
+          grep -q 'pelagos-governance/' index.html
+          grep -q 'QUALIFIED PUBLIC-SAFE DEMONSTRATOR' pelagos-governance/data/parts/01-meta.js
+
+      - name: Remove one-time release machinery
+        run: |
+          rm -f .github/workflows/pelagos-governance-promote-once-v2.yml
+          rm -f .github/workflows/pelagos-governance-autoland-once.yml
+          rm -f .github/workflows/pelagos-governance-materialize-once.yml
+          rm -f .github/workflows/pelagos-governance-capture.yml
+          git config user.name 'pelagos-governance-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'pelagos-governance: remove one-time release machinery' || true
+          git push origin HEAD:feat/pelagos-governance-layer
+
+      - name: Merge exact qualified branch to main
+        run: |
+          git fetch origin main feat/pelagos-governance-layer
+          git checkout -B main origin/main
+          git merge --no-ff origin/feat/pelagos-governance-layer -m 'Merge Venture Spine 1.0.0 Pelagos Governance Layer'
+          git push origin main

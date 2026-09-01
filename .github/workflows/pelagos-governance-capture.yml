@@ -1,0 +1,35 @@
+name: Pelagos Governance Layer materialize and qualify
+
+on:
+  push:
+    branches:
+      - feat/pelagos-governance-layer
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/pelagos-governance-layer
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Materialize and qualify Pelagos Governance Layer v0.3.0
+        run: python .github/pelagos-v030/materialize.py
+      - name: Commit qualified release
+        run: |
+          git config user.name "BigBirdReturns"
+          git config user.email "bigbirdreturns@proton.me"
+          git add -A
+          git commit -m "pelagos-governance: materialize operator-qualified 0.3.0 release"
+          git push origin HEAD:feat/pelagos-governance-layer

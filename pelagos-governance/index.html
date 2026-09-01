@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src data:; font-src 'none'; connect-src 'none'; media-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>DDV-PEL-002 · Pelagos Governance Layer</title>
+<meta name="description" content="Public-safe, local-first governance, claims, evidence, rights, authority, and continuity workbench for Pelagos Frontier Technologies.">
+<link rel="stylesheet" href="app.css">
+</head>
+<body data-ready="booting">
+<a class="skip" href="#main">Skip to work surface</a>
+<header>
+  <div class="head">
+    <div><div class="kicker">DDV-PEL-002 · Mission-governed company state</div><h1>Pelagos Governance Layer</h1></div>
+    <div class="head-controls">
+      <label class="sr" for="roleSelect">Role</label><select id="roleSelect" aria-label="Role"></select>
+      <label class="sr" for="apertureSelect">Aperture</label><select id="apertureSelect" aria-label="Aperture"></select>
+      <button id="themeButton" type="button">Light / dark</button>
+    </div>
+  </div>
+  <div class="statusline" id="statusline"></div>
+</header>
+<div class="app">
+  <aside><nav id="nav" aria-label="Primary"></nav><div class="nav-boundary"><strong>No external effects</strong><span id="boundaryText"></span></div></aside>
+  <main id="main" tabindex="-1"><div id="view" aria-live="polite"></div><div class="footer" id="footer"></div></main>
+</div>
+<input id="sourceFiles" type="file" multiple hidden>
+<input id="importFile" type="file" accept="application/json,.json" hidden>
+<input id="restoreFile" type="file" accept="application/json,.json" hidden>
+<dialog id="formDialog"><div class="dialog-head"><h3 id="dialogTitle">Record</h3><button class="btn small" data-close-dialog type="button">Close</button></div><div class="dialog-body" id="dialogBody"></div><div class="dialog-actions" id="dialogActions"></div></dialog>
+<div id="toast" role="status" aria-live="polite" class="sr"></div>
+<script src="data/parts/bootstrap.js"></script>
+<script src="data/parts/01-meta.js"></script>
+<script src="data/parts/02-founder-decisions.js"></script>
+<script src="data/parts/03-invariants-01.js"></script>
+<script src="data/parts/03-invariants-02.js"></script>
+<script src="data/parts/04-state-model.js"></script>
+<script src="data/parts/05-counterparties.js"></script>
+<script src="data/parts/06-instruments.js"></script>
+<script src="data/parts/07-claims-01.js"></script>
+<script src="data/parts/07-claims-02.js"></script>
+<script src="data/parts/07-claims-03.js"></script>
+<script src="data/parts/07-claims-04.js"></script>
+<script src="data/parts/08-evidence.js"></script>
+<script src="data/parts/09-rights.js"></script>
+<script src="data/parts/10-exceptions-01.js"></script>
+<script src="data/parts/10-exceptions-02.js"></script>
+<script src="data/parts/11-intake.js"></script>
+<script src="data/parts/12-sources.js"></script>
+<script src="data/parts/13-lists.js"></script>
+<script src="data/parts/14-schema.js"></script>
+<script src="data/parts/15-role-profiles.js"></script>
+<script src="data/parts/16-apertures.js"></script>
+<script src="data/parts/17-stress-scenarios.js"></script>
+<script src="data/parts/18-lineage.js"></script>
+<script src="data/parts/19-qualification-plans.js"></script>
+<script src="app/01-runtime.js"></script>
+<script src="app/02-runtime.js"></script>
+<script src="app/03-runtime.js"></script>
+<script src="app/04-runtime.js"></script>
+<script src="app/05-runtime.js"></script>
+</body>
+</html>
