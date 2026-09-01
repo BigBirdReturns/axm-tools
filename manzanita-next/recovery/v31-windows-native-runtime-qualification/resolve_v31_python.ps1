@@ -109,29 +109,30 @@ function Install-V31PythonShims {
   New-Item -ItemType Directory -Path $ShimRoot -Force | Out-Null
   $env:V31_PYTHON_EXE=[string]$Runtime.selected.path
   $env:V31_PYTHON_PREFIX=(@($Runtime.selected.prefix) -join [char]31)
+  $env:V31_PYTHON_PREFIX_CMD=(@($Runtime.selected.prefix) -join ' ')
   $driver=@'
-[CmdletBinding()]
-param(
-  [switch]$StripPy3,
-  [Parameter(ValueFromRemainingArguments=$true)][AllowEmptyCollection()][string[]]$Arguments
-)
-Set-StrictMode -Version Latest
-$ErrorActionPreference='Stop'
-$argsList=[System.Collections.Generic.List[string]]::new()
-foreach($arg in @($Arguments)){$argsList.Add([string]$arg)}
-if($StripPy3 -and $argsList.Count -gt 0 -and $argsList[0] -eq '-3'){$argsList.RemoveAt(0)}
-$prefix=@()
-if(-not [string]::IsNullOrWhiteSpace($env:V31_PYTHON_PREFIX)){$prefix=@($env:V31_PYTHON_PREFIX -split [char]31)}
-& $env:V31_PYTHON_EXE @prefix @argsList
-exit $LASTEXITCODE
+from __future__ import annotations
+
+import os
+import subprocess
+import sys
+
+mode = sys.argv[1] if len(sys.argv) > 1 else "--keep"
+arguments = list(sys.argv[2:])
+if mode == "--strip-py3" and arguments[:1] == ["-3"]:
+    arguments = arguments[1:]
+executable = os.environ["V31_PYTHON_EXE"]
+prefix = [item for item in os.environ.get("V31_PYTHON_PREFIX", "").split("\x1f") if item]
+completed = subprocess.run([executable, *prefix, *arguments], check=False)
+raise SystemExit(completed.returncode)
 '@
-  $driverPath=Join-Path $ShimRoot 'Invoke-ResolvedPython.ps1'
-  Set-Content -LiteralPath $driverPath -Value $driver -Encoding UTF8
-  $py='@echo off'+"`r`n"+'setlocal EnableExtensions DisableDelayedExpansion'+"`r`n"+'powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "%~dp0Invoke-ResolvedPython.ps1" -StripPy3 %*'+"`r`n"+'exit /b %ERRORLEVEL%'+"`r`n"
-  $python='@echo off'+"`r`n"+'setlocal EnableExtensions DisableDelayedExpansion'+"`r`n"+'powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "%~dp0Invoke-ResolvedPython.ps1" %*'+"`r`n"+'exit /b %ERRORLEVEL%'+"`r`n"
+  $driverPath=Join-Path $ShimRoot 'Invoke-ResolvedPython.py'
+  [IO.File]::WriteAllText($driverPath,$driver,[Text.UTF8Encoding]::new($false))
+  $py='@echo off'+"`r`n"+'setlocal EnableExtensions DisableDelayedExpansion'+"`r`n"+'"%V31_PYTHON_EXE%" %V31_PYTHON_PREFIX_CMD% -I -B "%~dp0Invoke-ResolvedPython.py" --strip-py3 %*'+"`r`n"+'exit /b %ERRORLEVEL%'+"`r`n"
+  $python='@echo off'+"`r`n"+'setlocal EnableExtensions DisableDelayedExpansion'+"`r`n"+'"%V31_PYTHON_EXE%" %V31_PYTHON_PREFIX_CMD% -I -B "%~dp0Invoke-ResolvedPython.py" --keep %*'+"`r`n"+'exit /b %ERRORLEVEL%'+"`r`n"
   [IO.File]::WriteAllText((Join-Path $ShimRoot 'py.cmd'),$py,[Text.Encoding]::ASCII)
   [IO.File]::WriteAllText((Join-Path $ShimRoot 'python.cmd'),$python,[Text.Encoding]::ASCII)
   [IO.File]::WriteAllText((Join-Path $ShimRoot 'python3.cmd'),$python,[Text.Encoding]::ASCII)
   $env:PATH=$ShimRoot+';'+$env:PATH
-  return [pscustomobject]@{root=$ShimRoot;driver='Invoke-ResolvedPython.ps1';aliases=@('py.cmd','python.cmd','python3.cmd');path_scope='current_process_only'}
+  return [pscustomobject]@{root=$ShimRoot;driver='Invoke-ResolvedPython.py';aliases=@('py.cmd','python.cmd','python3.cmd');path_scope='current_process_only'}
 }
