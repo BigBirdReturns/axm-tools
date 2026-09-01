@@ -1,0 +1,27 @@
+name: Pelagos governance capture
+
+on:
+  push:
+    branches: [feat/pelagos-governance-layer]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/pelagos-governance-layer
+      - name: Inventory candidate
+        run: |
+          find pelagos-governance -type f -print | sort
+          for f in pelagos-governance/app/*.js pelagos-governance/data/parts/*.js; do node --check "$f"; done
+      - name: Upload candidate tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: pelagos-governance-candidate
+          path: pelagos-governance
+          if-no-files-found: error
