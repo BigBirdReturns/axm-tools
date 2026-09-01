@@ -3,7 +3,7 @@ Set-StrictMode -Version Latest
 function Add-V31PythonCandidate {
   [CmdletBinding()]
   param(
-    [Parameter(Mandatory=$true)][System.Collections.Generic.List[object]]$Rows,
+    [Parameter(Mandatory=$true)][AllowEmptyCollection()][System.Collections.Generic.List[object]]$Rows,
     [Parameter(Mandatory=$true)][string]$Path,
     [string[]]$Prefix=@(),
     [Parameter(Mandatory=$true)][string]$Source
