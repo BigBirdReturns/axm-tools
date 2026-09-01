@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - feat/pelagos-governance-layer
+    paths:
+      - '.github/pelagos-v030/**'
+      - '.github/workflows/pelagos-governance-capture.yml'
   workflow_dispatch: {}
 
 permissions:
@@ -26,10 +29,10 @@ jobs:
           node-version: '22'
       - name: Safely materialize and qualify Pelagos Governance Layer v0.3.0
         run: python .github/pelagos-v030/materialize-safe.py
-      - name: Commit qualified release
+      - name: Commit qualified release bytes only
         run: |
           git config user.name "BigBirdReturns"
           git config user.email "bigbirdreturns@proton.me"
-          git add -A
+          git add pelagos-governance README.md index.html CONTINUITY.md
           git commit -m "pelagos-governance: materialize operator-qualified 0.3.0 release"
           git push origin HEAD:feat/pelagos-governance-layer
