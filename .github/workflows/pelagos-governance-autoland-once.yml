@@ -1,0 +1,86 @@
+name: Pelagos governance one-time autoland
+
+on:
+  push:
+    branches: [feat/pelagos-governance-layer]
+    paths: [.github/workflows/pelagos-governance-autoland-once.yml]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pelagos-governance-autoland
+  cancel-in-progress: false
+
+jobs:
+  qualify-and-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/pelagos-governance-layer
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build and qualify static release
+        run: |
+          python pelagos-governance/scripts/build_offline.py
+          python pelagos-governance/scripts/validate.py --write
+          for f in pelagos-governance/app/*.js pelagos-governance/data/parts/*.js; do
+            node --check "$f"
+          done
+          git diff --exit-code -- pelagos-governance/offline.html pelagos-governance/QUALIFICATION.json
+
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright@1 >/tmp/pelagos-npm-install.log 2>&1
+          npx playwright install --with-deps chromium >/tmp/pelagos-browser-install.log 2>&1
+
+      - name: Browser qualification
+        run: node pelagos-governance/tests/browser_test.mjs . | tee /tmp/Pelagos_Browser_Qualification.json
+
+      - name: Verify release boundary
+        run: |
+          test -f pelagos-governance/RELEASE.json
+          test -f pelagos-governance/QUALIFICATION.json
+          test -f pelagos-governance/offline.html
+          ! grep -Rqi 'samuel@pelagosfrontier.com\|jvssandhu@gmail.com\|EOC002_Pelagos_Phase_1_Delivery_Ready' pelagos-governance
+          grep -q 'pelagos-governance/' README.md
+          grep -q 'pelagos-governance/' index.html
+
+      - name: Remove this one-time workflow from the candidate
+        run: |
+          rm .github/workflows/pelagos-governance-autoland-once.yml
+          git config user.name 'pelagos-governance-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'pelagos-governance: remove one-time autoland' || true
+          git push origin HEAD:feat/pelagos-governance-layer
+
+      - name: Create or locate pull request
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh pr list --repo "$GITHUB_REPOSITORY" --head feat/pelagos-governance-layer --base main --state open --json number --jq '.[0].number // empty')
+          if [ -z "$number" ]; then
+            gh pr create --repo "$GITHUB_REPOSITORY" --base main --head feat/pelagos-governance-layer \
+              --title 'Venture Spine 1.0.0: Pelagos Governance Layer' \
+              --body 'Qualified public-safe Pelagos company-state demonstrator. Local private intake, evidence hashing, claim and authority gates, rights, decisions, receipts, stress, encrypted backup, cold succession, and zero external-effect adapters. Pelagos acceptance and private state are not claimed.'
+            number=$(gh pr list --repo "$GITHUB_REPOSITORY" --head feat/pelagos-governance-layer --base main --state open --json number --jq '.[0].number')
+          fi
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
+      - name: Merge qualified candidate to production
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr merge "${{ steps.pr.outputs.number }}" --repo "$GITHUB_REPOSITORY" --merge --delete-branch=false
