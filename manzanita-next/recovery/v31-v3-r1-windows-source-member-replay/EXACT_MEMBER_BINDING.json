@@ -1,0 +1,61 @@
+{
+  "schema": "manzanita/v31-v3-r1-exact-member-binding@1",
+  "object_id": "MW_V31_V3_R1_EXACT_SOURCE_MEMBER_WINDOWS_REPLAY_V1",
+  "source_package": {
+    "filename": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip",
+    "bytes": 553074,
+    "sha256": "2c4437c2f3c0cd7599b790ddc1a31315751db751daa3a81e4245e2a32b5f3738"
+  },
+  "members": {
+    "OPERATOR_EXECUTION_BOOTSTRAP_CONTRACT.json": {
+      "archive_path": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1/OPERATOR_EXECUTION_BOOTSTRAP_CONTRACT.json",
+      "bytes": 4821,
+      "sha256": "8d9a8c4f7f26d19dec12965153561d3042eb5d61c38e0c1eaab6d92fdff8f623",
+      "carrier_parts": ["carrier/contract.b64"]
+    },
+    "bootstrap_v31_operator_v3_r1.py": {
+      "archive_path": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1/bootstrap_v31_operator_v3_r1.py",
+      "bytes": 23352,
+      "sha256": "71c584d8a2de1e88b182c6df0ba3f010f059538e103b13a59ee3a42b1c7393c6",
+      "carrier_parts": [
+        "carrier/bootstrap.part-00.b64",
+        "carrier/bootstrap.part-01.b64",
+        "carrier/bootstrap.part-02.b64"
+      ]
+    },
+    "resolve_and_run.cmd": {
+      "archive_path": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1/resolve_and_run.cmd",
+      "bytes": 2752,
+      "sha256": "e16b55854479365b8c1749f7fafecd7226ec68dbcb370879971cabdce32815bc",
+      "carrier_parts": ["carrier/resolve_and_run.b64"]
+    },
+    "RUN_DIAGNOSE.cmd": {
+      "archive_path": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1/RUN_DIAGNOSE.cmd",
+      "bytes": 141,
+      "sha256": "a5af78b0556e894a244e501dd900b756f8efb27dd9a2a5b2338b97b84203ff4c",
+      "carrier_parts": ["carrier/RUN_DIAGNOSE.b64"]
+    }
+  },
+  "scope": {
+    "windows_runtime_resolver": true,
+    "process_local_alias_driver": true,
+    "deterministic_return_collector": true,
+    "zip_safety_primitives": true,
+    "exact_nested_dependency_materialized": false,
+    "complete_package_windows_replay": false,
+    "operator_workstation_execution": false,
+    "operator_storage_search": false,
+    "production_inputs_materialized": 0,
+    "production_admission_invoked": false,
+    "product_mutation": false
+  },
+  "success_result": "PASS_V31_V3_R1_EXACT_SOURCE_MEMBERS_WINDOWS_REPLAY",
+  "authority": {
+    "operator_visual_acceptance": "ABSENT",
+    "merge_authorized": false,
+    "release_authorized": false,
+    "public_route_effect": "none",
+    "pages_effect": "none",
+    "external_effect": "none"
+  }
+}
