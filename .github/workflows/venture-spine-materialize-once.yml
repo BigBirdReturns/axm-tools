@@ -65,22 +65,30 @@ jobs:
           integrator = root / '.github' / 'bootstrap' / 'venture-spine-integrate.py'
           subprocess.run(['python', str(integrator)], check=True)
 
+          # GITHUB_TOKEN may not create new workflow files. Preserve the exact
+          # generated workflows inside the tool, then install them through the
+          # repository write connector in the next reviewed commit.
+          candidates = root / 'venture-spine' / 'workflow-candidates'
+          candidates.mkdir(parents=True, exist_ok=True)
+          for name in ['venture-spine-check.yml', 'venture-spine-live-readback.yml']:
+              source = root / '.github' / 'workflows' / name
+              if not source.exists():
+                  raise SystemExit(f'generated workflow missing: {name}')
+              shutil.move(str(source), str(candidates / name))
+
           required = [
               root / 'venture-spine' / 'QUALIFICATION.json',
               root / 'venture-spine' / 'ESTATE_COMPARISON.md',
               root / 'venture-spine' / 'LESSONS_APPLIED.md',
               root / 'venture-spine' / 'data' / 'schema.json',
               root / 'venture-spine' / 'data' / 'pelagos-public-cartridge.json',
-              root / '.github' / 'workflows' / 'venture-spine-check.yml',
-              root / '.github' / 'workflows' / 'venture-spine-live-readback.yml',
+              candidates / 'venture-spine-check.yml',
+              candidates / 'venture-spine-live-readback.yml',
           ]
           missing = [str(p.relative_to(root)) for p in required if not p.exists()]
           if missing:
               raise SystemExit('foundation missing: ' + ', '.join(missing))
 
-          # Validate the machine contracts that are known-good in the staged
-          # foundation. The cartridge is replaced by a normalized release file
-          # in the next commit and is deliberately not admitted here.
           for path in [
               root / 'venture-spine' / 'QUALIFICATION.json',
               root / 'venture-spine' / 'data' / 'observed.json',
