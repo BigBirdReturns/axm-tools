@@ -56,6 +56,8 @@ jobs:
                               raise ValueError(f'links forbidden in overlay: {member.name}')
                       tf.extractall(stage)
                       print('overlay format: tar; members:', len(members))
+                      for member in members:
+                          print(' member:', member.name)
                       return True
               except tarfile.TarError:
                   return False
@@ -70,6 +72,8 @@ jobs:
                           safe_target(stage, name)
                       zf.extractall(stage)
                       print('overlay format: zip; members:', len(names))
+                      for name in names:
+                          print(' member:', name)
                       return True
               except zipfile.BadZipFile:
                   return False
@@ -110,22 +114,30 @@ jobs:
               else:
                   raise ValueError(f'unrecognized overlay payload: {decoded[:80]!r}')
 
-          if any(stage.iterdir()):
-              children = list(stage.iterdir())
-              # The staged archive has one wrapper directory. Strip any single
-              # wrapper name instead of recognizing only a small allow-list.
-              source = children[0] if len(children) == 1 and children[0].is_dir() else stage
-              copied = 0
-              for src in source.rglob('*'):
-                  rel = src.relative_to(source)
-                  dest = safe_target(root, str(rel))
-                  if src.is_dir():
-                      dest.mkdir(parents=True, exist_ok=True)
-                  else:
-                      dest.parent.mkdir(parents=True, exist_ok=True)
-                      shutil.copy2(src, dest)
-                      copied += 1
-              print('copied overlay files:', copied)
+          build_candidates = [
+              path for path in stage.rglob('build.py')
+              if path.parts[-3:] == ('venture-spine', 'scripts', 'build.py')
+          ]
+          if len(build_candidates) != 1:
+              print('extracted tree:')
+              for path in sorted(stage.rglob('*')):
+                  print(' ', path.relative_to(stage))
+              raise SystemExit(f'expected one staged Venture Spine build.py, found {len(build_candidates)}')
+
+          # Strip exactly the wrapper above venture-spine, whatever it is.
+          source = build_candidates[0].parents[2]
+          print('copy source root:', source.relative_to(stage) if source != stage else '.')
+          copied = 0
+          for src in source.rglob('*'):
+              rel = src.relative_to(source)
+              dest = safe_target(root, str(rel))
+              if src.is_dir():
+                  dest.mkdir(parents=True, exist_ok=True)
+              else:
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copy2(src, dest)
+                  copied += 1
+          print('copied overlay files:', copied)
 
           template = root / 'venture-spine' / 'index.template.html'
           if template.exists():
