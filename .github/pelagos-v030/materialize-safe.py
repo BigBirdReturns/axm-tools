@@ -4,6 +4,7 @@ import base64
 import hashlib
 import importlib.util
 import pathlib
+import re
 import shutil
 import tarfile
 
@@ -17,6 +18,54 @@ if spec is None or spec.loader is None:
     raise SystemExit("could not load staged materializer")
 materializer = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(materializer)
+
+
+def harden_csp_styles(release: pathlib.Path) -> None:
+    """Move static HTML style attributes into the self-hosted stylesheet.
+
+    The runtime CSP deliberately keeps ``style-src 'self'`` and does not grant
+    ``unsafe-inline``.  The staged source used a handful of static style
+    attributes inside HTML template strings.  Those are presentation only, so
+    translate them deterministically into data attributes backed by app.css.
+    Dynamic style expressions are refused rather than guessed.
+    """
+
+    targets = [release / "index.html", *sorted((release / "app").glob("*.js"))]
+    double = re.compile(r'\sstyle="([^"]*)"')
+    single = re.compile(r"\sstyle='([^']*)'")
+    rules: dict[str, str] = {}
+
+    def replacement(match: re.Match[str]) -> str:
+        declaration = match.group(1).strip()
+        if not declaration:
+            return ""
+        if "${" in declaration or "`" in declaration:
+            raise SystemExit(f"dynamic inline style refused: {declaration}")
+        key = "csp-" + hashlib.sha256(declaration.encode("utf-8")).hexdigest()[:12]
+        prior = rules.get(key)
+        if prior is not None and prior != declaration:
+            raise SystemExit(f"CSP style digest collision for {key}")
+        rules[key] = declaration
+        return f' data-csp-style="{key}"'
+
+    for path in targets:
+        text = path.read_text(encoding="utf-8")
+        text = double.sub(replacement, text)
+        text = single.sub(replacement, text)
+        if re.search(r"\sstyle\s*=", text, flags=re.IGNORECASE):
+            raise SystemExit(f"unconverted inline style remains in {path.relative_to(release)}")
+        path.write_text(text, encoding="utf-8")
+
+    stylesheet = release / "app.css"
+    css = stylesheet.read_text(encoding="utf-8").rstrip()
+    if rules:
+        css += "\n\n/* CSP-hardening: generated from static release presentation attributes. */\n"
+        for key, declaration in sorted(rules.items()):
+            css += f'[data-csp-style="{key}"]{{{declaration}}}\n'
+        stylesheet.write_text(css, encoding="utf-8")
+
+    print(f"CSP style hardening: {len(rules)} unique static declarations externalized")
+
 
 parts = sorted(STAGE.glob("pelagos-v030-source-part-*.b64"))
 if len(parts) != 8:
@@ -55,6 +104,7 @@ if release.exists():
 shutil.move(str(unpack), str(release))
 shutil.rmtree(release / "node_modules", ignore_errors=True)
 
+harden_csp_styles(release)
 materializer.qualify(release)
 materializer.register()
 materializer.cleanup()
