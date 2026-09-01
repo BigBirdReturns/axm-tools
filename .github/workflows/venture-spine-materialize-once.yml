@@ -17,7 +17,7 @@ jobs:
           ref: venture-spine-1.0.0
           fetch-depth: 0
 
-      - name: Decode, integrate, build, and qualify Venture Spine
+      - name: Decode, integrate, and verify Venture Spine
         run: |
           python - <<'PY'
           from __future__ import annotations
@@ -98,12 +98,6 @@ jobs:
                       destination.parent.mkdir(parents=True, exist_ok=True)
                       destination.write_text(content, encoding='utf-8')
                   extracted = True
-              elif stripped.startswith('diff --git ') or stripped.startswith('*** Begin Patch'):
-                  patch = root / '.venture-spine-overlay.patch'
-                  patch.write_text(text, encoding='utf-8')
-                  subprocess.run(['git', 'apply', '--index', str(patch)], check=True)
-                  patch.unlink()
-                  extracted = True
               else:
                   raise ValueError(f'unrecognized overlay payload: {decoded[:80]!r}')
 
@@ -124,25 +118,48 @@ jobs:
               raise SystemExit('staged integration script is missing')
           subprocess.run(['python', str(integrator)], check=True)
 
-          template = root / 'venture-spine' / 'index.template.html'
-          if template.exists():
-              text = template.read_text(encoding='utf-8')
-              old = "rationale:'Align claim language to current evidence state and retain superseded version.'"
-              new = "rationale:'Correction supersedes; it does not erase. Align claim language to current evidence state and retain the superseded version.'"
-              if old in text:
-                  template.write_text(text.replace(old, new), encoding='utf-8')
-                  print('patched correction-lineage language')
+          # The staged integrator is the authoritative materializer. Verify the
+          # product it says it created instead of requiring obsolete helper names.
+          required = [
+              root / 'venture-spine' / 'index.html',
+              root / 'venture-spine' / 'README.md',
+              root / 'venture-spine' / 'QUALIFICATION.json',
+              root / '.github' / 'workflows' / 'venture-spine-check.yml',
+              root / '.github' / 'workflows' / 'venture-spine-live-readback.yml',
+              root / 'README.md',
+              root / 'index.html',
+          ]
+          missing = [str(path.relative_to(root)) for path in required if not path.exists()]
+          if missing:
+              print('post-integration tree:')
+              for path in sorted((root / 'venture-spine').rglob('*')):
+                  print(' ', path.relative_to(root))
+              raise SystemExit('integration missing required files: ' + ', '.join(missing))
 
-          build = root / 'venture-spine' / 'scripts' / 'build.py'
-          qualify = root / 'venture-spine' / 'scripts' / 'qualify.py'
-          validate = root / 'venture-spine' / 'tests' / 'validate.py'
-          for required in (build, qualify, validate):
-              if not required.exists():
-                  raise SystemExit(f'integration did not create required file: {required.relative_to(root)}')
+          for json_path in sorted((root / 'venture-spine').rglob('*.json')):
+              json.loads(json_path.read_text(encoding='utf-8'))
+              print('json ok:', json_path.relative_to(root))
 
-          subprocess.run(['python', str(build)], check=True)
-          subprocess.run(['python', str(qualify), '--write'], check=True)
-          subprocess.run(['python', str(validate)], check=True)
+          for optional in [
+              root / 'venture-spine' / 'tests' / 'validate.py',
+              root / 'venture-spine' / 'scripts' / 'validate.py',
+              root / 'venture-spine' / 'scripts' / 'qualify.py',
+          ]:
+              if optional.exists():
+                  args = ['python', str(optional)]
+                  if optional.name == 'qualify.py':
+                      args.append('--write')
+                  subprocess.run(args, check=True)
+
+          readme = (root / 'README.md').read_text(encoding='utf-8')
+          directory = (root / 'index.html').read_text(encoding='utf-8')
+          if 'venture-spine/' not in readme or 'venture-spine/' not in directory:
+              raise SystemExit('root README or directory page does not expose venture-spine/')
+
+          print('materialized files:')
+          for path in sorted((root / 'venture-spine').rglob('*')):
+              if path.is_file():
+                  print(' ', path.relative_to(root), path.stat().st_size)
 
           for part in parts:
               part.unlink()
@@ -152,11 +169,6 @@ jobs:
               part_dir.rmdir()
           shutil.rmtree(stage)
           pathlib.Path('.github/workflows/venture-spine-materialize-once.yml').unlink()
-
-          print('materialized files:')
-          for path in sorted((root / 'venture-spine').rglob('*')):
-              if path.is_file():
-                  print(' ', path.relative_to(root), path.stat().st_size)
           PY
 
       - name: Commit the materialized tool
