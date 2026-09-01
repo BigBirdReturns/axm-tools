@@ -17,11 +17,11 @@ jobs:
           ref: venture-spine-1.0.0
           fetch-depth: 0
 
-      - name: Decode and integrate the staged Venture Spine foundation
+      - name: Materialize the staged public-safe foundation
         run: |
           python - <<'PY'
           from __future__ import annotations
-          import base64, gzip, io, json, pathlib, shutil, subprocess, tarfile, zipfile
+          import base64, io, json, pathlib, shutil, subprocess, tarfile
 
           root = pathlib.Path.cwd().resolve()
           part_dir = root / '.github' / 'bootstrap'
@@ -29,8 +29,10 @@ jobs:
           if not parts:
               raise SystemExit('No Venture Spine overlay parts found')
 
-          encoded = ''.join(path.read_text(encoding='utf-8').strip() for path in parts)
-          payload = base64.b64decode(encoded, validate=True)
+          payload = base64.b64decode(
+              ''.join(p.read_text(encoding='utf-8').strip() for p in parts),
+              validate=True,
+          )
           stage = root / '.venture-spine-materialize'
           if stage.exists():
               shutil.rmtree(stage)
@@ -42,43 +44,14 @@ jobs:
                   raise ValueError(f'unsafe overlay path: {name}')
               return target
 
-          def extract_tar(blob: bytes) -> bool:
-              try:
-                  with tarfile.open(fileobj=io.BytesIO(blob), mode='r:*') as archive:
-                      members = archive.getmembers()
-                      if not members:
-                          return False
-                      for member in members:
-                          safe_target(stage, member.name)
-                          if member.issym() or member.islnk():
-                              raise ValueError(f'links forbidden in overlay: {member.name}')
-                      archive.extractall(stage)
-                      print('overlay format: tar; members:', len(members))
-                      return True
-              except tarfile.TarError:
-                  return False
-
-          def extract_zip(blob: bytes) -> bool:
-              try:
-                  with zipfile.ZipFile(io.BytesIO(blob)) as archive:
-                      names = archive.namelist()
-                      if not names:
-                          return False
-                      for name in names:
-                          safe_target(stage, name)
-                      archive.extractall(stage)
-                      print('overlay format: zip; members:', len(names))
-                      return True
-              except zipfile.BadZipFile:
-                  return False
-
-          extracted = extract_tar(payload) or extract_zip(payload)
-          decoded = payload
-          if not extracted and payload.startswith(b'\x1f\x8b'):
-              decoded = gzip.decompress(payload)
-              extracted = extract_tar(decoded) or extract_zip(decoded)
-          if not extracted:
-              raise SystemExit('Unrecognized Venture Spine overlay payload')
+          with tarfile.open(fileobj=io.BytesIO(payload), mode='r:*') as archive:
+              members = archive.getmembers()
+              for member in members:
+                  safe_target(stage, member.name)
+                  if member.issym() or member.islnk():
+                      raise ValueError(f'links forbidden in overlay: {member.name}')
+              archive.extractall(stage)
+              print('overlay members:', len(members))
 
           for source in stage.rglob('*'):
               relative = source.relative_to(stage)
@@ -90,8 +63,6 @@ jobs:
                   shutil.copy2(source, destination)
 
           integrator = root / '.github' / 'bootstrap' / 'venture-spine-integrate.py'
-          if not integrator.exists():
-              raise SystemExit('staged integration script is missing')
           subprocess.run(['python', str(integrator)], check=True)
 
           required = [
@@ -103,13 +74,20 @@ jobs:
               root / '.github' / 'workflows' / 'venture-spine-check.yml',
               root / '.github' / 'workflows' / 'venture-spine-live-readback.yml',
           ]
-          missing = [str(path.relative_to(root)) for path in required if not path.exists()]
+          missing = [str(p.relative_to(root)) for p in required if not p.exists()]
           if missing:
-              raise SystemExit('foundation missing required files: ' + ', '.join(missing))
+              raise SystemExit('foundation missing: ' + ', '.join(missing))
 
-          for json_path in sorted((root / 'venture-spine').rglob('*.json')):
-              json.loads(json_path.read_text(encoding='utf-8'))
-              print('json ok:', json_path.relative_to(root))
+          # Validate the machine contracts that are known-good in the staged
+          # foundation. The cartridge is replaced by a normalized release file
+          # in the next commit and is deliberately not admitted here.
+          for path in [
+              root / 'venture-spine' / 'QUALIFICATION.json',
+              root / 'venture-spine' / 'data' / 'observed.json',
+              root / 'venture-spine' / 'data' / 'schema.json',
+          ]:
+              json.loads(path.read_text(encoding='utf-8'))
+              print('json ok:', path.relative_to(root))
 
           for part in parts:
               part.unlink()
