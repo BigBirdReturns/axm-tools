@@ -1,0 +1,78 @@
+name: Manzanita V31 producer-lineage repository bundle
+
+on:
+  push:
+    branches: [agent/manzanita-v31-historical-custody-graph-v1]
+    paths:
+      - ".github/workflows/manzanita-v31-producer-lineage-repository-bundle-v1.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manzanita-v31-producer-lineage-repository-bundle-v1
+  cancel-in-progress: false
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch all advertised historical refs
+        run: |
+          set -euo pipefail
+          git fetch --force --prune --tags origin \
+            '+refs/heads/*:refs/remotes/origin/*' \
+            '+refs/tags/*:refs/tags/*'
+          git fetch --force origin \
+            '+refs/pull/*/head:refs/remotes/origin/pull/*'
+      - name: Build and verify exact all-ref repository bundle
+        run: |
+          set -euo pipefail
+          root=/tmp/manzanita-v31-producer-lineage-repository-bundle-v1
+          rm -rf "$root"
+          mkdir -p "$root"
+          git for-each-ref --format='%(refname) %(objectname)' | LC_ALL=C sort > "$root/REFS.txt"
+          git count-objects -vH > "$root/COUNT_OBJECTS.txt"
+          git fsck --full --no-reflogs --unreachable > "$root/FSCK.txt" 2>&1 || true
+          git bundle create "$root/axm-tools-v31-producer-lineage-all-refs.bundle" --all
+          git bundle verify "$root/axm-tools-v31-producer-lineage-all-refs.bundle" > "$root/BUNDLE_VERIFY.txt" 2>&1
+          sha256sum "$root/axm-tools-v31-producer-lineage-all-refs.bundle" > "$root/SHA256SUMS.txt"
+          python - <<'PY'
+          import hashlib, json, subprocess
+          from pathlib import Path
+          root=Path('/tmp/manzanita-v31-producer-lineage-repository-bundle-v1')
+          bundle=root/'axm-tools-v31-producer-lineage-all-refs.bundle'
+          refs=(root/'REFS.txt').read_text(encoding='utf-8').splitlines()
+          receipt={
+            'schema':'manzanita/v31-producer-lineage-repository-bundle@1',
+            'source_repository':'BigBirdReturns/axm-tools',
+            'source_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            'bundle':{
+              'filename':bundle.name,
+              'bytes':bundle.stat().st_size,
+              'sha256':hashlib.sha256(bundle.read_bytes()).hexdigest(),
+            },
+            'ref_count':len(refs),
+            'bundle_verify':'PASS',
+            'standing':'READ_ONLY_PUBLIC_REPOSITORY_OBJECT_CUSTODY_FOR_PRODUCER_LINEAGE',
+            'authority':{
+              'product_files_modified':0,
+              'merge_authorized':False,
+              'release_authorized':False,
+              'pages_effect':'none',
+              'external_effect':'none',
+            },
+          }
+          (root/'V31_PRODUCER_LINEAGE_REPOSITORY_BUNDLE_RECEIPT_V1.json').write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\n',encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-producer-lineage-repository-bundle-v1
+          path: /tmp/manzanita-v31-producer-lineage-repository-bundle-v1
+          if-no-files-found: error
+          retention-days: 30
