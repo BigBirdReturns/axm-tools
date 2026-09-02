@@ -1,10 +1,6 @@
 name: Manzanita V31 producer lineage
 
 on:
-  push:
-    branches: [agent/manzanita-v31-historical-custody-graph-v1]
-    paths:
-      - ".github/workflows/manzanita-v31-producer-lineage-v1.yml"
   workflow_dispatch: {}
 
 permissions:
