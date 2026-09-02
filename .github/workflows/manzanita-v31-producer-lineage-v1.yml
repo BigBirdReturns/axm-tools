@@ -1,0 +1,62 @@
+name: Manzanita V31 producer lineage
+
+on:
+  push:
+    branches: [agent/manzanita-v31-historical-custody-graph-v1]
+    paths:
+      - ".github/workflows/manzanita-v31-producer-lineage-v1.yml"
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: manzanita-v31-producer-lineage-v1
+  cancel-in-progress: false
+
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      V31_LINEAGE_OUT: /tmp/v31-producer-lineage-v1
+      V31_LINEAGE_FROM: "2026-08-22T00:00:00Z"
+      V31_LINEAGE_TO: "2026-09-01T23:59:59Z"
+      V31_MAX_LOG_RUNS: "260"
+      V31_MAX_LOG_BYTES: "900000000"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile lineage tracer
+        run: python -m py_compile tools/manzanita/trace_v31_producer_lineage_v1.py
+      - name: Trace exact producer lineage
+        run: python tools/manzanita/trace_v31_producer_lineage_v1.py
+      - name: Verify outputs
+        run: |
+          set -euo pipefail
+          test -s /tmp/v31-producer-lineage-v1/V31_PRODUCER_LINEAGE_CENSUS_V1.json
+          test -s /tmp/v31-producer-lineage-v1/V31_PRODUCER_LINEAGE_EXECUTION_RECEIPT_V1.json
+          test -s /tmp/v31-producer-lineage-v1/V31_PRODUCER_LINEAGE_RELEASE_STATUS_V1.md
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('/tmp/v31-producer-lineage-v1')
+          c=json.loads((root/'V31_PRODUCER_LINEAGE_CENSUS_V1.json').read_text())
+          assert c['schema']=='manzanita/v31-producer-lineage-census@1'
+          assert c['result']
+          print(c['result'])
+          print(c['counts'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-producer-lineage-v1
+          path: /tmp/v31-producer-lineage-v1
+          if-no-files-found: error
+          retention-days: 14
