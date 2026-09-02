@@ -1,0 +1,60 @@
+name: Manzanita V31 continuation payload recovery
+
+on:
+  push:
+    branches:
+      - agent/manzanita-v31-continuation-payload-recovery-v1
+    paths:
+      - .github/workflows/manzanita-v31-continuation-payload-recovery.yml
+      - manzanita-next/review/v31-continuation-payload-recovery/**
+      - manzanita-next/review/mw-habitat-live-photo-030-continuation/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manzanita-v31-continuation-payload-recovery-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact recovery branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch all advertised heads and tags
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin \
+            '+refs/heads/*:refs/remotes/origin/*' \
+            '+refs/tags/*:refs/tags/*' \
+            --force --prune
+          git rev-parse HEAD
+          git count-objects -vH
+
+      - name: Execute bounded object scan and part recovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 manzanita-next/review/v31-continuation-payload-recovery/recover_continuation_payload.py \
+            --repo "$GITHUB_WORKSPACE" \
+            --carrier manzanita-next/review/mw-habitat-live-photo-030-continuation \
+            --output _temp/v31-continuation-payload-recovery
+
+      - name: Preserve recovery receipts and exact recovered bytes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-continuation-payload-recovery-${{ github.sha }}
+          path: |
+            _temp/v31-continuation-payload-recovery/**
+            manzanita-next/review/mw-habitat-live-photo-030-continuation/BOOTSTRAP_MANIFEST.json
+            manzanita-next/review/mw-habitat-live-photo-030-continuation/PAYLOAD_RECEIPT.json
+          if-no-files-found: error
+          retention-days: 90
