@@ -1,0 +1,169 @@
+{
+  "authority": {
+    "external_effect": "none",
+    "merge_authorized": false,
+    "pages_effect": "none",
+    "product_files_modified": 0,
+    "public_route_effect": "none",
+    "release_authorized": false
+  },
+  "corrected_finding": {
+    "failure_mechanism": [
+      "the tracer scanned its own target constants",
+      "the tracer accepted generic numeric token 2038",
+      "producer standing collapsed to bool(git_observation or log_observation)"
+    ],
+    "missing_required_targets": [
+      "accepted_parent_archive",
+      "public_convergence",
+      "admission_source",
+      "neighborhood_reference",
+      "neighborhood_map"
+    ],
+    "missing_target_complete_input_trees_available": 0,
+    "missing_target_producers_available": 0,
+    "raw_exact_targets": [
+      "neighborhood_cached"
+    ],
+    "regeneration_eligible_missing_targets": 0,
+    "superseded_actions_run": 33678010810,
+    "superseded_result": "PASS_PRODUCER_LINEAGE_OBSERVED_REGENERATION_CANDIDATES_EMITTED"
+  },
+  "exclusions": [
+    "no production input bytes",
+    "no all-ref Git bundle",
+    "no restricted evidence carrier",
+    "no product files"
+  ],
+  "next_execution_item": {
+    "admission_rule": "A returned object must be observed as complete ordered raw bytes and match its registered byte count and SHA-256 before V2 intake.",
+    "class": "RAW_FILE_LIBRARY_EXPORT_OR_EXACT_HISTORICAL_RUNTIME_SNAPSHOT"
+  },
+  "observed_at": "2026-09-02T20:53:58Z",
+  "publication_class": "PUBLIC_SAFE_EVIDENCE_ONLY_FROM_CLEAN_MAIN_BASE",
+  "queue": {
+    "advanced": false,
+    "controlling_state": "V14_REMAINS_GOVERNED_HOLD",
+    "terminal_pair_retained": false,
+    "v15_created": false,
+    "v2_intake_invoked": false
+  },
+  "remote_controls": {
+    "acceptance_runs": [
+      {
+        "conclusion": "success",
+        "head": "201f94a983d47149c2109913f5cf42dfd3de32e0",
+        "id": 33681084397
+      },
+      {
+        "conclusion": "success",
+        "head": "9ba81e748dd9a8c40eff3d24464714c471e00224",
+        "id": 33681124188
+      },
+      {
+        "conclusion": "success",
+        "head": "a62fec8713edc84b879eeec3df268a513d01267c",
+        "id": 33681632690
+      }
+    ],
+    "automatic_bundle_replay_retirement": {
+      "commit": "9ba81e748dd9a8c40eff3d24464714c471e00224",
+      "result": "PASS"
+    },
+    "automatic_lineage_replay_retirement": {
+      "commit": "201f94a983d47149c2109913f5cf42dfd3de32e0",
+      "result": "PASS"
+    },
+    "base": {
+      "branch": "main",
+      "sha": "0199e0074e59ffed85a42195a1ee169db38749f2",
+      "tree": "ff73027ae81751cf37e5771bd1925dc6a8fd783b"
+    },
+    "bundle_replay_after_retirement": false,
+    "control_branch": {
+      "branch": "agent/manzanita-v31-historical-custody-graph-v1",
+      "closure_head": "a62fec8713edc84b879eeec3df268a513d01267c"
+    },
+    "future_manual_tracer_fail_closed": {
+      "blob": "c841a31dfcbabf5ac450d9f4ba61546767dc4afa",
+      "commit": "a62fec8713edc84b879eeec3df268a513d01267c",
+      "result": "HOLD_SUPERSEDED_BY_V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_V1"
+    },
+    "lineage_replay_after_retirement": false
+  },
+  "result": "HOLD_PRODUCER_LINEAGE_FALSE_POSITIVES_SUPERSEDED_MISSING_V31_OBJECTS_NOT_REGENERABLE_FROM_REACHABLE_HISTORY",
+  "schema": "manzanita/v31-producer-lineage-false-positive-correction-remote-publication@1",
+  "source_transaction": {
+    "aggregate_validation": "PASS_15_OF_15",
+    "classification": "HOLD_PRODUCER_LINEAGE_FALSE_POSITIVES_SUPERSEDED_MISSING_V31_OBJECTS_NOT_REGENERABLE_FROM_REACHABLE_HISTORY",
+    "deterministic_rebuild": "PASS_14_OF_14",
+    "identities": [
+      {
+        "bytes": 1748,
+        "filename": "V31_PRODUCER_LINEAGE_CORRECTED_GIT_SCAN_SUMMARY_V1.json",
+        "sha256": "9cffffc74222db8a1376b6515b5334ad6aaa84159ddd98092e4cd7ae80dcd7bc"
+      },
+      {
+        "bytes": 7512,
+        "filename": "V31_PRODUCER_LINEAGE_CORRECTED_LOCAL_ARTIFACT_SCAN_SUMMARY_V1.json",
+        "sha256": "0fc062cfdddc4b22c1df195aef139a4708ac2ca59ed57c135dfa9d101e179dfb"
+      },
+      {
+        "bytes": 5132,
+        "filename": "V31_PRODUCER_LINEAGE_CHRONOLOGY_SUMMARY_V1.json",
+        "sha256": "23ce58a15d37b054f9141bf157de2381f8a8b67b7b49fe221947cba93cf2e70a"
+      },
+      {
+        "bytes": 2452,
+        "filename": "V31_PRODUCER_LINEAGE_WORKFLOW_RETIREMENT_REMOTE_OBSERVATION_V1.json",
+        "sha256": "9a77d8620014ed5edeee5e4235e564e5fc7ba8b91f83e93a9e1dbb392b1b3a82"
+      },
+      {
+        "bytes": 64181,
+        "filename": "V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_CENSUS_V1.json",
+        "sha256": "3c140d7540f249d73e04d33e6458595b058f936cd711b8203f29b60661a00ae0"
+      },
+      {
+        "bytes": 5737,
+        "filename": "V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_RECEIPT_V1.json",
+        "sha256": "1e07aa1af15fab4a991ccc91d22437bbdbcaa7c920279fb5220e21f32bb284fd"
+      },
+      {
+        "bytes": 13788,
+        "filename": "V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_RECEIPT_V1.validation.json",
+        "sha256": "6e513328fd2331eb1a67e1d0aae722bec04752af4685ebfe802eb77a3d5f4bd3"
+      },
+      {
+        "bytes": 1603,
+        "filename": "V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_PUBLIC_SUMMARY_V1.json",
+        "sha256": "0e576a80d0154a49708a809b0a5ad342384aa5ab626ea60d50b3babd808948fb"
+      },
+      {
+        "bytes": 4664,
+        "filename": "V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_V1_RELEASE_STATUS.md",
+        "sha256": "ca309970719f3b32f81d271634eabeb9e4adc1d40abc2c36293d97613f3df120"
+      },
+      {
+        "bytes": 310158,
+        "filename": "MW_V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_EVIDENCE_V1.zip",
+        "sha256": "c2989a38830496d3a6eb951addd4ce8dc2f77c98c7538dec25541f450729b8e3"
+      },
+      {
+        "bytes": 344638,
+        "filename": "MW_V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_V1_FINAL_PACKET.zip",
+        "sha256": "6223b037d7d0789d8db6ed52cea41727df1870bbb9e84d8388757ee69b650a01"
+      },
+      {
+        "bytes": 5309,
+        "filename": "V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_V1_FINAL_VALIDATION.json",
+        "sha256": "d1ead041ef6d6027c25da30327a1b6b6344dc1917f325abc1715cbef79012027"
+      },
+      {
+        "bytes": 5583,
+        "filename": "V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_REBUILD_REPLAY_V1.json",
+        "sha256": "8ea0a686031aee56ba464cf51f622bec8469e0a90c97d50d92034aed69d40a97"
+      }
+    ],
+    "validation": "PASS_70_OF_70"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "checks": [
+    {
+      "actual": null,
+      "expected": null,
+      "name": "source correction receipt exact",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "source correction validation exact",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "source final packet exact",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "source evidence carrier exact",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "source rebuild replay PASS",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "clean main base bound",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "false run superseded",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "only cached target retained",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "missing target regeneration ineligible",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "automatic lineage replay retired",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "automatic bundle replay retired",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "future manual tracer fail closed",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "three acceptance runs passed",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "V2 not invoked",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "terminal pair absent",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "V14 retained",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "V15 absent",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "no product mutation",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "no merge authority",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "no release authority",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "no route effect",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "no Pages effect",
+      "pass": true
+    },
+    {
+      "actual": null,
+      "expected": null,
+      "name": "no external effect",
+      "pass": true
+    }
+  ],
+  "checks_failed": 0,
+  "checks_passed": 23,
+  "checks_total": 23,
+  "observed_at": "2026-09-02T20:53:58Z",
+  "receipt": {
+    "bytes": 6427,
+    "filename": "V31_PRODUCER_LINEAGE_FALSE_POSITIVE_CORRECTION_REMOTE_PUBLICATION_RECEIPT_V1.json",
+    "sha256": "822cff564e9e2aaeb8bc02be885b8954f2381683876ecd3c78dc47ba6e0044e4"
+  },
+  "result": "PASS",
+  "schema": "manzanita/v31-producer-lineage-false-positive-correction-remote-publication-validation@1"
+}

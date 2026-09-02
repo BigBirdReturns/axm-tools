@@ -1,0 +1,31 @@
+{
+  "clean_main_base": {
+    "branch": "main",
+    "sha": "0199e0074e59ffed85a42195a1ee169db38749f2",
+    "tree": "ff73027ae81751cf37e5771bd1925dc6a8fd783b"
+  },
+  "controlling_state": "V14_REMAINS_GOVERNED_HOLD",
+  "external_effect": "none",
+  "false_tracer_superseded": true,
+  "future_manual_tracer_fail_closed": true,
+  "merge_authorized": false,
+  "missing_required_targets": [
+    "accepted_parent_archive",
+    "public_convergence",
+    "admission_source",
+    "neighborhood_reference",
+    "neighborhood_map"
+  ],
+  "observed_at": "2026-09-02T20:53:58Z",
+  "pages_effect": "none",
+  "product_files_modified": 0,
+  "raw_exact_targets": [
+    "neighborhood_cached"
+  ],
+  "regeneration_eligible_missing_targets": 0,
+  "release_authorized": false,
+  "result": "HOLD_PRODUCER_LINEAGE_FALSE_POSITIVES_SUPERSEDED_MISSING_V31_OBJECTS_NOT_REGENERABLE_FROM_REACHABLE_HISTORY",
+  "schema": "manzanita/v31-producer-lineage-false-positive-correction-remote-public-summary@1",
+  "v15_created": false,
+  "v2_intake_invoked": false
+}
