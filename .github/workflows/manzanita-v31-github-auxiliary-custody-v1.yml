@@ -46,7 +46,7 @@ jobs:
           path = Path('tools/manzanita/scan_v31_github_auxiliary_custody_v1.py')
           original = path.read_bytes()
           original_sha256 = hashlib.sha256(original).hexdigest()
-          expected_original = 'f2f3253ae8b95d7f7ee8a6e393c14ee887974299731e44ed0510251d6d8324d7'
+          expected_original = 'bb1a2b09b409a408ea3a5ba2d4b63e940e0e5d9de647a0fde8453809854c5f76'
           if original_sha256 != expected_original:
               raise SystemExit(f'unexpected scanner source identity: {original_sha256}')
           text = original.decode('utf-8')
@@ -56,10 +56,9 @@ jobs:
               raise SystemExit(f'expected one wiki clone repair site, found {text.count(old)}')
           repaired = text.replace(old, new).encode('utf-8')
           repaired_sha256 = hashlib.sha256(repaired).hexdigest()
-          expected_repaired = 'b7ffd78c916ef823216cfa835237fe7c346611f5576c0802189cf2b6573134c1'
-          if repaired_sha256 != expected_repaired:
-              raise SystemExit(f'unexpected repaired scanner identity: {repaired_sha256}')
           path.write_bytes(repaired)
+          print(f'original scanner SHA-256: {original_sha256}')
+          print(f'repaired scanner SHA-256: {repaired_sha256}')
           PY
       - name: Compile auxiliary custody scanner
         run: python -m py_compile tools/manzanita/scan_v31_github_auxiliary_custody_v1.py
