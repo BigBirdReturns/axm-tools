@@ -1,0 +1,64 @@
+name: Manzanita V31 historical custody graph
+
+on:
+  push:
+    branches: [agent/manzanita-v31-historical-custody-graph-v1]
+    paths:
+      - ".github/workflows/manzanita-v31-historical-custody-graph-v1.yml"
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: manzanita-v31-historical-custody-graph-v1
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      V31_OUTPUT_ROOT: /tmp/v31-historical-custody-graph-v1
+      V31_ARTIFACT_SINCE: "2026-08-13T00:00:00Z"
+      V31_MAX_ARTIFACT_DOWNLOAD_BYTES: "3500000000"
+      V31_MAX_RELEASE_DOWNLOAD_BYTES: "1000000000"
+      V31_MAX_SINGLE_REMOTE_BYTES: "550000000"
+      V31_MAX_ARTIFACT_COUNT: "350"
+      V31_MAX_RELEASE_ASSET_COUNT: "100"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile scanner
+        run: python -m py_compile tools/manzanita/scan_v31_historical_custody_graph_v1.py
+      - name: Scan historical remote custody graph
+        run: python tools/manzanita/scan_v31_historical_custody_graph_v1.py
+      - name: Verify scanner outputs
+        run: |
+          set -euo pipefail
+          test -s /tmp/v31-historical-custody-graph-v1/V31_HISTORICAL_CUSTODY_GRAPH_CENSUS_V1.json
+          test -s /tmp/v31-historical-custody-graph-v1/V31_HISTORICAL_CUSTODY_GRAPH_EXECUTION_RECEIPT_V1.json
+          test -s /tmp/v31-historical-custody-graph-v1/V31_HISTORICAL_CUSTODY_GRAPH_EXACT_HITS_MANIFEST_V1.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('/tmp/v31-historical-custody-graph-v1')
+          census = json.loads((root / 'V31_HISTORICAL_CUSTODY_GRAPH_CENSUS_V1.json').read_text())
+          assert census['schema'] == 'manzanita/v31-historical-custody-graph-scan@1'
+          assert census['result']
+          print(census['result'])
+          print(census['exact_targets'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-historical-custody-graph-v1
+          path: /tmp/v31-historical-custody-graph-v1
+          if-no-files-found: error
+          retention-days: 7
