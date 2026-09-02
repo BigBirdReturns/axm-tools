@@ -27,7 +27,7 @@ jobs:
       V31_MAX_ARTIFACT_DOWNLOAD_BYTES: "3500000000"
       V31_MAX_RELEASE_DOWNLOAD_BYTES: "1000000000"
       V31_MAX_SINGLE_REMOTE_BYTES: "550000000"
-      V31_MAX_ARTIFACT_COUNT: "350"
+      V31_MAX_ARTIFACT_COUNT: "800"
       V31_MAX_RELEASE_ASSET_COUNT: "100"
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +36,48 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Compile scanner
+      - name: Apply bounded exact-hit retention repair
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/v31-historical-custody-graph-v1
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          path = Path('tools/manzanita/scan_v31_historical_custody_graph_v1.py')
+          original = path.read_bytes()
+          original_sha256 = hashlib.sha256(original).hexdigest()
+          expected_original = '3ad4b0b33a75c49a174415548893e136da74342c6193897d0a9ac1c166fb3b14'
+          if original_sha256 != expected_original:
+              raise SystemExit(f'Unexpected scanner source identity: {original_sha256}')
+          text = original.decode('utf-8')
+          old = "p=s.h/k/T[k][0]"
+          new = "p=s.h/k/T[k][0][0]"
+          if text.count(old) != 1:
+              raise SystemExit(f'Expected one bounded repair site, found {text.count(old)}')
+          repaired = text.replace(old, new).encode('utf-8')
+          repaired_sha256 = hashlib.sha256(repaired).hexdigest()
+          expected_repaired = '736c61a24e897c66806fc6120b16044542ca2ebea0c6cf4f574da248d4b4d2e1'
+          if repaired_sha256 != expected_repaired:
+              raise SystemExit(f'Unexpected repaired scanner identity: {repaired_sha256}')
+          path.write_bytes(repaired)
+          receipt = {
+              'schema': 'manzanita/v31-historical-custody-graph-scanner-repair@1',
+              'reason': 'Run 33601567032 identified two exact Git blob identities but filename retention attempted to join a Path with the target filename list rather than its first string member.',
+              'source_path': path.as_posix(),
+              'original_sha256': original_sha256,
+              'repaired_sha256': repaired_sha256,
+              'replacement_count': 1,
+              'scope': 'exact-hit output filename selection only',
+              'target_contract_unchanged': True,
+              'scan_scope_expanded_only_by_artifact_count_limit': {'from': 350, 'to': 800},
+          }
+          Path('/tmp/v31-historical-custody-graph-v1/V31_HISTORICAL_CUSTODY_GRAPH_SCANNER_REPAIR_RECEIPT_V1.json').write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          PY
+      - name: Compile repaired scanner
         run: python -m py_compile tools/manzanita/scan_v31_historical_custody_graph_v1.py
       - name: Scan historical remote custody graph
         run: python tools/manzanita/scan_v31_historical_custody_graph_v1.py
@@ -46,6 +87,7 @@ jobs:
           test -s /tmp/v31-historical-custody-graph-v1/V31_HISTORICAL_CUSTODY_GRAPH_CENSUS_V1.json
           test -s /tmp/v31-historical-custody-graph-v1/V31_HISTORICAL_CUSTODY_GRAPH_EXECUTION_RECEIPT_V1.json
           test -s /tmp/v31-historical-custody-graph-v1/V31_HISTORICAL_CUSTODY_GRAPH_EXACT_HITS_MANIFEST_V1.json
+          test -s /tmp/v31-historical-custody-graph-v1/V31_HISTORICAL_CUSTODY_GRAPH_SCANNER_REPAIR_RECEIPT_V1.json
           python - <<'PY'
           import json
           from pathlib import Path
