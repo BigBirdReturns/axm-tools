@@ -47,6 +47,14 @@ jobs:
             --carrier manzanita-next/review/mw-habitat-live-photo-030-continuation \
             --output _temp/v31-continuation-payload-recovery
 
+      - name: Independently verify exact recovered payload and source manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 manzanita-next/review/v31-continuation-payload-recovery/verify_recovered_payload.py \
+            --recovery-dir _temp/v31-continuation-payload-recovery \
+            --output _temp/v31-continuation-payload-recovery/V31_CONTINUATION_PAYLOAD_INDEPENDENT_VERIFICATION.json
+
       - name: Preserve recovery receipts and exact recovered bytes
         if: always()
         uses: actions/upload-artifact@v4
