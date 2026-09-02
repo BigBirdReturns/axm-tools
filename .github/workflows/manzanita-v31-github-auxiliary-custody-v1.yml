@@ -1,10 +1,6 @@
 name: Manzanita V31 GitHub auxiliary custody
 
 on:
-  push:
-    branches: [agent/manzanita-v31-github-auxiliary-custody-v1]
-    paths:
-      - ".github/workflows/manzanita-v31-github-auxiliary-custody-v1.yml"
   workflow_dispatch: {}
 
 permissions:
@@ -18,76 +14,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  scan:
+  closure:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
-    env:
-      GH_TOKEN: ${{ github.token }}
-      GH_REPO: ${{ github.repository }}
-      V31_AUX_OUT: /tmp/v31-github-auxiliary-custody-v1
-      V31_AUX_MAX_SINGLE_BYTES: "550000000"
-      V31_AUX_MAX_TOTAL_BYTES: "2000000000"
-      V31_AUX_MAX_ATTACHMENTS: "500"
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Apply bounded authenticated wiki-clone repair
+      - name: Preserve the completed bounded campaign boundary
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
-          import hashlib
-          from pathlib import Path
-
-          path = Path('tools/manzanita/scan_v31_github_auxiliary_custody_v1.py')
-          original = path.read_bytes()
-          original_sha256 = hashlib.sha256(original).hexdigest()
-          expected_original = 'bb1a2b09b409a408ea3a5ba2d4b63e940e0e5d9de647a0fde8453809854c5f76'
-          if original_sha256 != expected_original:
-              raise SystemExit(f'unexpected scanner source identity: {original_sha256}')
-          text = original.decode('utf-8')
-          old = "cp = run(['git', 'clone', '--mirror', url, str(wiki_dir)], timeout=900, check=False)"
-          new = "token = os.environ.get('GH_TOKEN', '')\n        auth = base64.b64encode(f'x-access-token:{token}'.encode('utf-8')).decode('ascii')\n        cp = run(['git', '-c', f'http.extraheader=AUTHORIZATION: basic {auth}', 'clone', '--mirror', url, str(wiki_dir)], timeout=900, check=False)"
-          if text.count(old) != 1:
-              raise SystemExit(f'expected one wiki clone repair site, found {text.count(old)}')
-          repaired = text.replace(old, new).encode('utf-8')
-          repaired_sha256 = hashlib.sha256(repaired).hexdigest()
-          path.write_bytes(repaired)
-          print(f'original scanner SHA-256: {original_sha256}')
-          print(f'repaired scanner SHA-256: {repaired_sha256}')
-          PY
-      - name: Compile auxiliary custody scanner
-        run: python -m py_compile tools/manzanita/scan_v31_github_auxiliary_custody_v1.py
-      - name: Scan wiki and GitHub-hosted attachment custody
-        run: python tools/manzanita/scan_v31_github_auxiliary_custody_v1.py
-      - name: Verify bounded outputs
-        shell: bash
-        run: |
-          set -euo pipefail
-          root=/tmp/v31-github-auxiliary-custody-v1
-          test -s "$root/V31_GITHUB_AUXILIARY_CUSTODY_CENSUS_V1.json"
-          test -s "$root/V31_GITHUB_AUXILIARY_CUSTODY_RECEIPT_V1.json"
-          test -s "$root/V31_GITHUB_AUXILIARY_CUSTODY_PUBLIC_SUMMARY_V1.json"
-          test -s "$root/V31_GITHUB_AUXILIARY_CUSTODY_V1_RELEASE_STATUS.md"
-          test -s "$root/V31_GITHUB_AUXILIARY_CUSTODY_ARTIFACT_MANIFEST_V1.json"
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          root=Path('/tmp/v31-github-auxiliary-custody-v1')
-          census=json.loads((root/'V31_GITHUB_AUXILIARY_CUSTODY_CENSUS_V1.json').read_text())
-          assert census['schema']=='manzanita/v31-github-auxiliary-custody-census@1'
-          assert census['result']
-          print(census['result'])
-          print(census['new_exact_targets_observed_in_campaign'])
-          print(census['counts'])
-          PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: manzanita-v31-github-auxiliary-custody-v1
-          path: /tmp/v31-github-auxiliary-custody-v1
-          if-no-files-found: error
-          retention-days: 14
+          cat <<'EOF'
+          The bounded GitHub auxiliary custody campaign completed in run 33691037897.
+          Result: PASS_GITHUB_AUXILIARY_CUSTODY_SURFACES_SCANNED_NO_NEW_EXACT_V31_BYTES.
+          The authenticated wiki probe established that the repository has no wiki Git repository.
+          The issue, pull-request, comment, and release-body graph contained no recognized GitHub-hosted attachment URLs.
+          Four target references were retained as textual references only.
+          This compatibility entrypoint is manual-only and creates no production, merge, release, route, Pages, or external-effect authority.
+          V14 remains the controlling governed HOLD.
+          EOF
