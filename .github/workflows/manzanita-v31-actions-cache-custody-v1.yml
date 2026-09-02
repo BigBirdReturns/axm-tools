@@ -1,0 +1,224 @@
+name: Manzanita V31 Actions cache custody inventory
+
+on:
+  push:
+    branches: [agent/manzanita-v31-actions-cache-custody-v1]
+    paths:
+      - ".github/workflows/manzanita-v31-actions-cache-custody-v1.yml"
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: manzanita-v31-actions-cache-custody-v1
+  cancel-in-progress: false
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      OUT: /tmp/v31-actions-cache-custody-v1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Query the complete repository Actions cache inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$OUT"
+          mkdir -p "$OUT"
+          gh api --paginate --slurp "repos/${GH_REPO}/actions/caches?per_page=100" > "$OUT/CACHE_API_PAGES.json"
+
+      - name: Classify exact cache metadata against the V31 blocker contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import datetime as dt
+          import hashlib
+          import json
+          import os
+          import re
+          from collections import Counter
+          from pathlib import Path
+
+          out = Path(os.environ['OUT'])
+          pages = json.loads((out / 'CACHE_API_PAGES.json').read_text(encoding='utf-8'))
+          caches = []
+          for page in pages:
+              if isinstance(page, dict):
+                  caches.extend(page.get('actions_caches', []))
+
+          targets = {
+              'accepted_parent_archive': {'bytes': 82813564, 'sha256': '8a480a3bd05afb6cdcc007d98b0ef63e80576fb1912763c147a3739647299f91'},
+              'v20_archive': {'bytes': 146305044, 'sha256': '98b81d0f3f56a8aa6a12613fe7ae06b8b9e860f82ddaa02aa48e6f66547c25bd'},
+              'public_convergence': {'bytes': 127413, 'sha256': 'fd9dfd98532a21759754cb8969b2ad2d7a94fedce78ea8a428e584bf14aea1d9'},
+              'admission_source': {'bytes': 38969, 'sha256': 'c3eed78862ae53a975d13b94f2cf82eeea832466a46bdb3e771fd798bd12534a'},
+              'neighborhood_reference': {'bytes': 2797021, 'sha256': 'ae49e0308b302e5bdce1cdb5913b009c2743d1043ddcb8c2e29b6934e1353b9b'},
+              'neighborhood_cached': {'bytes': 500586, 'sha256': '5ec9252f1615e86a239384a76a508554b2bd9e9221d5e202abce109e804f29d8'},
+              'neighborhood_map': {'bytes': 2038, 'sha256': '2d1d6abe37845ed2b65070a9198d301c3e6e4df779139003499eb8ff406d6e3b'},
+          }
+          by_size = {}
+          for name, spec in targets.items():
+              by_size.setdefault(spec['bytes'], []).append(name)
+
+          strong = re.compile(
+              r'(?i)(?:^|[^a-z0-9])(?:manzanita|mw[-_ ]?habitat|live[-_ ]?photo|public[-_ ]?convergence|neighborhood|v31|v30|v20)(?:[^a-z0-9]|$)'
+          )
+          rows = []
+          candidates = []
+          seen_ids = set()
+          for raw in caches:
+              cache_id = int(raw['id'])
+              if cache_id in seen_ids:
+                  raise SystemExit(f'duplicate cache id across pagination: {cache_id}')
+              seen_ids.add(cache_id)
+              key = str(raw.get('key') or '')
+              size = int(raw.get('size_in_bytes') or 0)
+              row = {
+                  'id': cache_id,
+                  'ref': raw.get('ref'),
+                  'key': key,
+                  'version': raw.get('version'),
+                  'size_in_bytes': size,
+                  'created_at': raw.get('created_at'),
+                  'last_accessed_at': raw.get('last_accessed_at'),
+                  'strong_key_match': bool(strong.search(key)),
+                  'exact_target_size_matches': sorted(by_size.get(size, [])),
+              }
+              row['candidate'] = bool(row['strong_key_match'] or row['exact_target_size_matches'])
+              rows.append(row)
+              if row['candidate']:
+                  candidates.append(row)
+
+          rows.sort(key=lambda row: (str(row['ref']), str(row['key']), row['id']))
+          candidates.sort(key=lambda row: (not row['strong_key_match'], str(row['ref']), str(row['key']), row['id']))
+          result = (
+              'PASS_NO_ACTIONS_CACHES_RETAINED'
+              if not rows else
+              'HOLD_RELEVANT_ACTIONS_CACHE_METADATA_PRESENT_REQUIRES_REF_SCOPED_RAW_RESTORE'
+              if candidates else
+              'PASS_ACTIONS_CACHE_INVENTORY_CONTAINS_NO_V31_KEY_OR_EXACT_SIZE_CANDIDATE'
+          )
+          observed = dt.datetime.now(dt.timezone.utc).isoformat().replace('+00:00', 'Z')
+          receipt = {
+              'schema': 'manzanita/v31-actions-cache-custody-inventory@1',
+              'observed_at': observed,
+              'repository': os.environ['GH_REPO'],
+              'workflow_ref': os.environ.get('GITHUB_REF'),
+              'workflow_sha': os.environ.get('GITHUB_SHA'),
+              'result': result,
+              'target_contract': targets,
+              'counts': {
+                  'api_pages': len(pages),
+                  'caches': len(rows),
+                  'candidate_caches': len(candidates),
+                  'strong_key_matches': sum(1 for row in rows if row['strong_key_match']),
+                  'exact_target_size_matches': sum(1 for row in rows if row['exact_target_size_matches']),
+                  'total_cache_bytes': sum(row['size_in_bytes'] for row in rows),
+              },
+              'refs': dict(sorted(Counter(str(row['ref']) for row in rows).items())),
+              'caches': rows,
+              'candidate_caches': candidates,
+              'scope': {
+                  'performed': 'GitHub REST repository Actions cache metadata enumeration across every returned page',
+                  'not_performed': [
+                      'cache archive restoration',
+                      'cache archive download',
+                      'production input admission',
+                      'V2 receiving intake',
+                  ],
+                  'restore_boundary': 'Cache archives are branch/ref scoped. Any raw restore must execute from an authorized ref context and must be re-hashed against the registered target identities.',
+              },
+              'queue': {
+                  'controlling_state': 'V14_REMAINS_GOVERNED_HOLD',
+                  'advanced': False,
+                  'v15_created': False,
+                  'terminal_pair_retained': False,
+              },
+              'authority': {
+                  'product_files_modified': 0,
+                  'merge_authorized': False,
+                  'release_authorized': False,
+                  'public_route_effect': 'none',
+                  'pages_effect': 'none',
+                  'external_effect': 'none',
+              },
+          }
+          receipt_path = out / 'V31_ACTIONS_CACHE_CUSTODY_INVENTORY_RECEIPT_V1.json'
+          receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
+          summary = {
+              'schema': 'manzanita/v31-actions-cache-custody-inventory-public-summary@1',
+              'observed_at': observed,
+              'result': result,
+              'counts': receipt['counts'],
+              'refs': receipt['refs'],
+              'candidate_caches': candidates,
+              'queue': receipt['queue'],
+              'authority': receipt['authority'],
+          }
+          (out / 'V31_ACTIONS_CACHE_CUSTODY_INVENTORY_PUBLIC_SUMMARY_V1.json').write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+
+          checks = []
+          def add(name, passed, actual=None, expected=None):
+              checks.append({'name': name, 'pass': bool(passed), 'actual': actual, 'expected': expected})
+          add('schema exact', receipt['schema'] == 'manzanita/v31-actions-cache-custody-inventory@1')
+          add('all API rows unique by cache id', len(rows) == len(seen_ids), len(rows), len(seen_ids))
+          add('candidate count exact', len(candidates) == receipt['counts']['candidate_caches'])
+          add('cache count exact', len(rows) == receipt['counts']['caches'])
+          add('total bytes exact', sum(row['size_in_bytes'] for row in rows) == receipt['counts']['total_cache_bytes'])
+          add('V2 not invoked', 'V2 receiving intake' in receipt['scope']['not_performed'])
+          add('V14 retained', receipt['queue']['controlling_state'] == 'V14_REMAINS_GOVERNED_HOLD')
+          add('queue held', receipt['queue']['advanced'] is False)
+          add('V15 absent', receipt['queue']['v15_created'] is False)
+          add('no product mutation', receipt['authority']['product_files_modified'] == 0)
+          add('no merge authority', receipt['authority']['merge_authorized'] is False)
+          add('no release authority', receipt['authority']['release_authorized'] is False)
+          add('no route effect', receipt['authority']['public_route_effect'] == 'none')
+          add('no Pages effect', receipt['authority']['pages_effect'] == 'none')
+          add('no external effect', receipt['authority']['external_effect'] == 'none')
+          validation = {
+              'schema': 'manzanita/v31-actions-cache-custody-inventory-validation@1',
+              'result': 'PASS' if all(row['pass'] for row in checks) else 'FAIL',
+              'passed': sum(1 for row in checks if row['pass']),
+              'total': len(checks),
+              'checks': checks,
+              'receipt_sha256': hashlib.sha256(receipt_path.read_bytes()).hexdigest(),
+          }
+          (out / 'V31_ACTIONS_CACHE_CUSTODY_INVENTORY_RECEIPT_V1.validation.json').write_text(
+              json.dumps(validation, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          if validation['result'] != 'PASS':
+              raise SystemExit(json.dumps(validation, indent=2))
+
+          status = f'''# V31 Actions cache custody inventory\n\nResult: `{result}`\n\nThe repository Actions cache metadata API returned {len(rows)} retained cache object(s) across {len(pages)} page payload(s), totaling {receipt['counts']['total_cache_bytes']} bytes. {len(candidates)} object(s) matched either a strong V31/Manzanita cache-key token or an exact registered target byte count. No cache archive was restored in this inventory transaction.\n\nThe controlling state remains `V14_REMAINS_GOVERNED_HOLD`. V2 intake was not invoked, neither terminal PASS string was retained, V15 was not created, and no product, route, Pages, merge, release, or external-effect authority changed.\n'''
+          (out / 'V31_ACTIONS_CACHE_CUSTODY_INVENTORY_V1_RELEASE_STATUS.md').write_text(status, encoding='utf-8')
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - name: Verify and retain the inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$OUT/V31_ACTIONS_CACHE_CUSTODY_INVENTORY_RECEIPT_V1.json"
+          test -s "$OUT/V31_ACTIONS_CACHE_CUSTODY_INVENTORY_RECEIPT_V1.validation.json"
+          test -s "$OUT/V31_ACTIONS_CACHE_CUSTODY_INVENTORY_PUBLIC_SUMMARY_V1.json"
+          test -s "$OUT/V31_ACTIONS_CACHE_CUSTODY_INVENTORY_V1_RELEASE_STATUS.md"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-actions-cache-custody-inventory-v1
+          path: /tmp/v31-actions-cache-custody-v1
+          if-no-files-found: error
+          retention-days: 14
