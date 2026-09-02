@@ -1,0 +1,68 @@
+name: Manzanita V31 GitHub auxiliary custody
+
+on:
+  push:
+    branches: [agent/manzanita-v31-github-auxiliary-custody-v1]
+    paths:
+      - ".github/workflows/manzanita-v31-github-auxiliary-custody-v1.yml"
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  contents: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: manzanita-v31-github-auxiliary-custody-v1
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      V31_AUX_OUT: /tmp/v31-github-auxiliary-custody-v1
+      V31_AUX_MAX_SINGLE_BYTES: "550000000"
+      V31_AUX_MAX_TOTAL_BYTES: "2000000000"
+      V31_AUX_MAX_ATTACHMENTS: "500"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile auxiliary custody scanner
+        run: python -m py_compile tools/manzanita/scan_v31_github_auxiliary_custody_v1.py
+      - name: Scan wiki and GitHub-hosted attachment custody
+        run: python tools/manzanita/scan_v31_github_auxiliary_custody_v1.py
+      - name: Verify bounded outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=/tmp/v31-github-auxiliary-custody-v1
+          test -s "$root/V31_GITHUB_AUXILIARY_CUSTODY_CENSUS_V1.json"
+          test -s "$root/V31_GITHUB_AUXILIARY_CUSTODY_RECEIPT_V1.json"
+          test -s "$root/V31_GITHUB_AUXILIARY_CUSTODY_PUBLIC_SUMMARY_V1.json"
+          test -s "$root/V31_GITHUB_AUXILIARY_CUSTODY_V1_RELEASE_STATUS.md"
+          test -s "$root/V31_GITHUB_AUXILIARY_CUSTODY_ARTIFACT_MANIFEST_V1.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('/tmp/v31-github-auxiliary-custody-v1')
+          census=json.loads((root/'V31_GITHUB_AUXILIARY_CUSTODY_CENSUS_V1.json').read_text())
+          assert census['schema']=='manzanita/v31-github-auxiliary-custody-census@1'
+          assert census['result']
+          print(census['result'])
+          print(census['new_exact_targets_observed_in_campaign'])
+          print(census['counts'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-github-auxiliary-custody-v1
+          path: /tmp/v31-github-auxiliary-custody-v1
+          if-no-files-found: error
+          retention-days: 14
