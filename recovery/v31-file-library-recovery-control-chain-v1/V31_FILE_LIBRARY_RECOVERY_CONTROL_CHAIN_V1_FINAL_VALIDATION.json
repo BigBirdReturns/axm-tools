@@ -1,0 +1,151 @@
+{
+  "authority": {
+    "controlling_state": "V14_REMAINS_GOVERNED_HOLD",
+    "external_effect": "none",
+    "merge_authorized": false,
+    "pages_effect": "none",
+    "product_files_modified": 0,
+    "public_route_effect": "none",
+    "queue_advanced": false,
+    "release_authorized": false,
+    "v15_successor_created": false
+  },
+  "checks": [
+    {
+      "detail": "PASS",
+      "name": "receipt validation PASS",
+      "pass": true
+    },
+    {
+      "detail": "PASS",
+      "name": "evidence package validation PASS",
+      "pass": true
+    },
+    {
+      "detail": "PASS",
+      "name": "final packet validation PASS",
+      "pass": true
+    },
+    {
+      "detail": "V31_REMAINING_BLOCKER_DISTINCT_CUSTODY_ACQUISITION_V1.validation.json   OK\nNo errors detected in compressed data of /mnt/data/MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_EVIDENCE_V1.zip.\n\nreturncode=0\n",
+      "name": "evidence external unzip test returns zero",
+      "pass": true
+    },
+    {
+      "detail": "31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_EVIDENCE_V1_UNZIP_TEST.txt   OK\nNo errors detected in compressed data of /mnt/data/MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_FINAL_PACKET.zip.\n\nreturncode=0\n",
+      "name": "final packet external unzip test returns zero",
+      "pass": true
+    },
+    {
+      "detail": [
+        "V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_CENSUS_V1.json",
+        "V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_RECEIPT_V1.json",
+        "V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_RECEIPT_V1.validation.json",
+        "V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_PUBLIC_SUMMARY_V1.json",
+        "V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_RELEASE_STATUS.md",
+        "MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_EVIDENCE_V1.zip",
+        "MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_EVIDENCE_V1.zip.validation.json",
+        "MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_EVIDENCE_V1_UNZIP_TEST.txt",
+        "MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_FINAL_PACKET.zip",
+        "MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_FINAL_PACKET.zip.validation.json",
+        "MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_FINAL_PACKET_UNZIP_TEST.txt",
+        "build_v31_file_library_recovery_control_chain_v1.py"
+      ],
+      "name": "checksum ledger paths unique",
+      "pass": true
+    },
+    {
+      "detail": "MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_EVIDENCE_V1.zip: OK\nMW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_EVIDENCE_V1.zip.validation.json: OK\nMW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_EVIDENCE_V1_UNZIP_TEST.txt: OK\nMW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_FINAL_PACKET.zip: OK\nMW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_FINAL_PACKET.zip.validation.json: OK\nMW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_FINAL_PACKET_UNZIP_TEST.txt: OK\nV31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_CENSUS_V1.json: OK\nV31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_PUBLIC_SUMMARY_V1.json: OK\nV31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_RECEIPT_V1.json: OK\nV31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_RECEIPT_V1.validation.json: OK\nV31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_RELEASE_STATUS.md: OK\nbuild_v31_file_library_recovery_control_chain_v1.py: OK\n",
+      "name": "checksum replay all OK",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "classification remains governed hold",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "one exact production target retained",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "no exact control package retained",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "complete set absent",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "V2 intake withheld",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "queue not advanced",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "V15 not created",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "product files unmodified",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "merge authority held",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "release authority held",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "no external effect",
+      "pass": true
+    }
+  ],
+  "checks_failed": 0,
+  "checks_passed": 18,
+  "checks_total": 18,
+  "observed_at_utc": "2026-09-02T18:22:00Z",
+  "result": "PASS",
+  "schema": "manzanita/v31-file-library-recovery-control-chain-final-validation@1",
+  "subjects": {
+    "checksum_ledger": {
+      "bytes": 1566,
+      "path": "V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1.SHA256SUMS",
+      "sha256": "d891fd4a3cb455c13bd9350cacdd006c6cbb632fe77a7966bd415acb57335569"
+    },
+    "checksum_replay": {
+      "bytes": 822,
+      "path": "V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_SHA256_REPLAY_EXTERNAL.txt",
+      "sha256": "0a2d430e9992cf18fcecc6fa4265826b545be6108e882599e9c278329b1dfc49"
+    },
+    "evidence_carrier": {
+      "bytes": 141589,
+      "path": "MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_EVIDENCE_V1.zip",
+      "sha256": "12604cf7b38819d63a826af2ff2adf4dd8d8ada4fb947732d25e78281e9dac6e"
+    },
+    "final_packet": {
+      "bytes": 170861,
+      "path": "MW_V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_V1_FINAL_PACKET.zip",
+      "sha256": "16057ebcb7de6cee13842e2b23402737ace95fd607333f4009de1e31d08b6ade"
+    },
+    "receipt": {
+      "bytes": 6261,
+      "path": "V31_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_RECEIPT_V1.json",
+      "sha256": "19110de3063a0a3cf67dbaa51786a406061a148e9ba9d2401c0faf275763b2b3"
+    }
+  }
+}
