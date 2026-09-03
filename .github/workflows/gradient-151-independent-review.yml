@@ -1,0 +1,170 @@
+name: NEVER MERGE Gradient 151 independent cross-platform review
+
+on:
+  push:
+    branches:
+      - review/gradient-151-independent-88a958-20260903
+  pull_request:
+    branches:
+      - feature/home-lab-gradient-linux-observation-20260902
+    paths:
+      - "review/gradient_151_independent_audit.py"
+      - ".github/workflows/gradient-151-independent-review.yml"
+      - "home-lab-gradient/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gradient-151-independent-review-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONUTF8: "1"
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  audit:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+        python:
+          - "3.10"
+          - "3.12"
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+
+    steps:
+      - name: Configure the Estate Windows checkout policy before materialization
+        shell: bash
+        run: git config --global core.autocrlf true
+
+      - name: Check out the exact audit head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Run exact candidate denominator and adversarial review
+        shell: bash
+        run: |
+          python review/gradient_151_independent_audit.py \
+            --out gradient-151-independent-audit.json
+
+      - name: Parse the unchanged Windows collector on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $source = Get-Content -LiteralPath 'home-lab-gradient/scripts/collect-windows.ps1' -Raw
+          [void][scriptblock]::Create($source)
+          Write-Host 'WINDOWS_COLLECTOR_PARSE_PASS'
+
+      - name: Upload the body-free audit receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradient-151-independent-${{ matrix.os }}-py${{ matrix.python }}
+          path: gradient-151-independent-audit.json
+          if-no-files-found: error
+          retention-days: 14
+
+  compare:
+    name: Compare all four independent audit legs
+    if: always()
+    needs:
+      - audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Download all audit receipts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: gradient-151-independent-*
+          path: audits
+
+      - name: Require four matching HOLD receipts
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          paths = sorted(Path("audits").rglob("gradient-151-independent-audit.json"))
+          if len(paths) != 4:
+              raise SystemExit(f"expected four audit receipts, observed {len(paths)}")
+
+          rows = [json.loads(path.read_text(encoding="utf-8")) for path in paths]
+          expected_status = "HOLD_REVIEW_FINDINGS_REPRODUCED"
+          if any(row.get("status") != expected_status for row in rows):
+              raise SystemExit(
+                  "one or more audit legs did not reach the expected HOLD: "
+                  + repr([row.get("status") for row in rows])
+              )
+
+          finding_sets = [
+              tuple(item["id"] for item in row.get("findings", []))
+              for row in rows
+          ]
+          if len(set(finding_sets)) != 1:
+              raise SystemExit(f"audit finding denominators differ: {finding_sets}")
+
+          source_sets = [
+              (
+                  row["candidate_source"]["candidate"],
+                  row["candidate_source"]["candidate_tree"],
+                  row["candidate_source"]["base"],
+                  row["candidate_source"]["seed_id"],
+              )
+              for row in rows
+          ]
+          if len(set(source_sets)) != 1:
+              raise SystemExit(f"audit source coordinates differ: {source_sets}")
+
+          aggregate = {
+              "schema": "axm-tools/gradient-151-independent-audit-comparison@1",
+              "status": expected_status,
+              "legs": len(rows),
+              "source": {
+                  "candidate": source_sets[0][0],
+                  "tree": source_sets[0][1],
+                  "base": source_sets[0][2],
+                  "seed_id": source_sets[0][3],
+              },
+              "finding_ids": list(finding_sets[0]),
+              "receipt_sha256": [
+                  hashlib.sha256(path.read_bytes()).hexdigest()
+                  for path in paths
+              ],
+              "physical_host_contacted": False,
+              "physical_observation_generated": False,
+              "provider_calls": 0,
+              "model_calls": 0,
+              "authority": "none",
+          }
+          Path("GRADIENT-151-INDEPENDENT-AUDIT-COMPARISON.json").write_text(
+              json.dumps(aggregate, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+              newline="\n",
+          )
+          print(json.dumps(aggregate, sort_keys=True))
+          PY
+
+      - name: Upload the comparison receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradient-151-independent-comparison
+          path: GRADIENT-151-INDEPENDENT-AUDIT-COMPARISON.json
+          if-no-files-found: error
+          retention-days: 14
