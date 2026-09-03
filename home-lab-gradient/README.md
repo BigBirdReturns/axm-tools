@@ -63,7 +63,7 @@ Use `--state-dir` before the subcommand to select a different directory. Observa
 
 ## Easy win 1: identify the estate
 
-Run the collector once on each Windows host with the declared host identity:
+Run the collector on each Windows host with the declared host identity:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/collect-windows.ps1 `
@@ -71,14 +71,41 @@ powershell -ExecutionPolicy Bypass -File scripts/collect-windows.ps1 `
   -OutFile "$env:LOCALAPPDATA\AXM\home-lab-gradient\observations\control-host.json"
 ```
 
-Repeat with `heavy-host-a` and `heavy-host-b`, then gather the three JSON files on the control host and qualify them:
+For Linux hosts, run the standard-library collector instead:
+
+```bash
+python3 scripts/collect-linux.py \
+  --host-id heavy-host-b \
+  --out-file "$HOME/.local/state/axm/home-lab-gradient/observations/heavy-host-b.json"
+```
+
+Both collectors require no elevation, install nothing, open no socket, and
+publish by atomic rename. Repeat for each host, then gather the three JSON
+files on the control host and qualify them:
 
 ```bash
 python scripts/lab.py qualify-estate \
   control-host.json heavy-host-a.json heavy-host-b.json
 ```
 
-The collector uses built-in Windows and NVIDIA interfaces when present. It records CPU, RAM, physical storage, display adapters, NVIDIA UUIDs, PCI bus identities, driver versions, physical network link properties, runtime presence, wall-clock samples, and monotonic timer frequency. It deliberately omits serial numbers, MAC addresses, IP addresses, and the Windows machine GUID.
+The collector uses platform-native interfaces when present. It records CPU, RAM, physical storage, display adapters, NVIDIA UUIDs, PCI bus identities, driver versions, physical network link properties, runtime presence, wall-clock samples, and monotonic timer frequency. It deliberately omits serial numbers, MAC addresses, IP addresses, and the machine GUID.
+
+Windows observations use `axm-community-lab/windows-host-observation@1`; Linux observations use the platform-neutral `axm-community-lab/host-observation@2`, which carries an explicit `platform` field. The qualifier joins both. Retained `@1` bytes stay admissible exactly as they were written: they are normalized in memory only, never rewritten or republished as `@2`.
+
+The required runtime denominator is closed on every platform — `python`, `git`, `ollama`, `docker`, `wsl`, `nvidia-smi` — and a platform-inapplicable runtime does not disappear. On native Linux, `wsl` stays present as an explicit inapplicable row with `disabled_reason` `"not applicable on a native Linux host"`.
+
+### Running the Linux collector on a host with no clone
+
+`seed/` is a self-contained, content-addressed bundle for exactly that case: collector, POSIX launcher, schema, deterministic validator, manifest, checksums, self-verifier, and a reconstruction script. It carries no credential, host secret, or private address, and opens no callback.
+
+```bash
+python3 seed/verify.py --root .          # verify the bundle before collecting
+./scripts/collect-linux --host-id heavy-host-b --out-file <path>/heavy-host-b.json
+python3 seed/collect-linux.validator.py <path>/heavy-host-b.json
+python3 seed/reconstruct.py --root .     # prove byte-identical reconstruction
+```
+
+The launcher self-verifies before it collects, so a tampered bundle refuses rather than producing an observation. See `seed/README.md` for the execution, return, and boundary contract.
 
 A complete receipt promotes `host_inventory` and `device_identity` to `observed`. A partial receipt can promote host inventory while leaving unresolved accelerator identities explicit. It cannot admit workers, measure topology, or establish cross-host clock precision.
 

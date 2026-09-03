@@ -26,21 +26,99 @@ from typing import Any, Iterable, Mapping, Sequence
 
 from evidence import (
     EVIDENCE_SCHEMA,
+    canonical_receipt_id,
     ingest_receipts,
     load_json,
     make_receipt,
     sha256_file,
     write_json,
 )
-from planner import PlannerError, build_plan, parse_inputs, read_json, sha256_json
+from planner import PlannerError, build_plan, parse_inputs, read_json, sha256_json, canonical_bytes
 from render import write_page
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 
+WINDOWS_HOST_SCHEMA = "axm-community-lab/windows-host-observation@1"
+LINUX_HOST_SCHEMA = "axm-community-lab/host-observation@2"
+COLLECTOR_SCHEMA = "axm-community-lab/host-observation-collector@1"
+REQUIRED_RUNTIME_NAMES = ("python", "git", "ollama", "docker", "wsl", "nvidia-smi")
+PROHIBITED_FIELD_MARKERS = (
+    "serial",
+    "machine_guid",
+    "machine-id",
+    "mac_address",
+    "ip_address",
+    "credential",
+    "private_key",
+    "tailscale",
+    "token",
+)
+MAC_RE = re.compile(r"(?:[0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}")
+IPV4_RE = re.compile(r"\b(?:25[0-5]|2[0-4]\d|1?\d?\d)(?:\.(?:25[0-5]|2[0-4]\d|1?\d?\d)){3}\b")
+# Textual IPv6 always has either all eight groups or a "::" compression.
+# Requiring one of those avoids false refusals on PCI bus ids (0000:01:00.0)
+# and wall-clock timestamps (01:00:00), which share the shorter hex:hex shape.
+# The boundary guards matter as much as the shape: without them a "::" after
+# any hex-ish letter matches, so ordinary prose ("Usage::") reads as an address
+# and would refuse a clean observation.
+IPV6_RE = re.compile(
+    r"(?<![0-9A-Za-z:])"
+    r"(?:"
+    r"(?:[0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}"
+    r"|::(?:[0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4}"
+    r"|(?:[0-9A-Fa-f]{1,4}:){2,7}:(?![0-9A-Za-z])"
+    r"|(?:[0-9A-Fa-f]{1,4}:){1,6}:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4}){0,4}"
+    r")"
+    r"(?![0-9A-Za-z:])"
+)
 
 def utc_now() -> str:
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def observation_digest(observation: Mapping[str, Any]) -> str:
+    normalized = {k: v for k, v in observation.items() if k != "observation_sha256"}
+    return hashlib.sha256(canonical_bytes(normalized)).hexdigest()
+
+
+def retains_value(value: Any) -> bool:
+    """True when a prohibited-marker field actually carries an identifier.
+
+    A collector declares its refusals explicitly (``"serial_numbers_collected":
+    false``, ``"machine_guid": null``), so an empty or negative declaration is
+    compliance, not retention. Membership in a set literal cannot express this:
+    ``[]`` and ``{}`` are unhashable.
+    """
+    if value is None or value is False:
+        return False
+    if isinstance(value, (str, bytes, list, tuple, dict, set)):
+        return bool(value)
+    return True
+
+
+def collect_private_identifier_failures(payload: Any, host_id: str, *, path: str = "observation") -> list[str]:
+    failures: list[str] = []
+    if isinstance(payload, Mapping):
+        for key, value in payload.items():
+            label = f"{path}.{key}"
+            lower = str(key).lower()
+            if any(marker in lower for marker in PROHIBITED_FIELD_MARKERS) and retains_value(value):
+                failures.append(f"{host_id}: prohibited private field retained at {label}")
+            failures.extend(collect_private_identifier_failures(value, host_id, path=label))
+        return failures
+    if isinstance(payload, list):
+        for index, item in enumerate(payload):
+            failures.extend(collect_private_identifier_failures(item, host_id, path=f"{path}[{index}]"))
+        return failures
+    if isinstance(payload, str):
+        if MAC_RE.search(payload):
+            failures.append(f"{host_id}: prohibited MAC pattern retained")
+        if IPV4_RE.search(payload):
+            failures.append(f"{host_id}: prohibited IP pattern retained")
+        if IPV6_RE.search(payload):
+            failures.append(f"{host_id}: prohibited IPv6 pattern retained")
+    return failures
 
 
 def stamp(value: str) -> str:
@@ -461,26 +539,32 @@ def classify_adapter(adapter: Mapping[str, Any]) -> str:
 
 
 def disabled_with_reason_failures(
-    observation: Mapping[str, Any], host_id: str
+    observation: Mapping[str, Any],
+    host_id: str,
+    *,
+    required_rows: tuple[str, ...] = REQUIRED_RUNTIME_NAMES,
+    platform: str = "unknown",
 ) -> list[str]:
     runtime = observation.get("runtime")
     if not isinstance(runtime, list):
         return [f"{host_id}: runtime inventory missing"]
     failures: list[str] = []
-    seen: set[str] = set()
-    required = {"python", "git", "ollama", "docker", "wsl", "nvidia-smi"}
+    seen: list[str] = []
+    row_by_name: dict[str, Mapping[str, Any]] = {}
+    required = {str(item).lower() for item in required_rows}
     for index, raw in enumerate(runtime):
         if not isinstance(raw, Mapping):
             failures.append(f"{host_id}: runtime[{index}] is not an object")
             continue
-        name = str(raw.get("name") or "").strip()
+        name = str(raw.get("name") or "").strip().lower()
         label = name or f"runtime[{index}]"
         if not name:
             failures.append(f"{host_id}: runtime[{index}] name missing")
-        elif name in seen:
-            failures.append(f"{host_id}: duplicate runtime identity: {name}")
         else:
-            seen.add(name)
+            row_by_name[name] = raw
+            seen.append(name)
+            if name in seen[:-1]:
+                failures.append(f"{host_id}: duplicate runtime identity: {name}")
         present = raw.get("present")
         disabled = raw.get("disabled")
         reason = raw.get("disabled_reason")
@@ -501,10 +585,152 @@ def disabled_with_reason_failures(
                 failures.append(f"{host_id}: {label} is disabled but still declares a path")
         else:
             failures.append(f"{host_id}: {label} present must be boolean")
-    missing = sorted(required - seen)
+    if platform == "linux":
+        wsl = row_by_name.get("wsl")
+        if wsl is None:
+            failures.append(f"{host_id}: wsl runtime row missing")
+        else:
+            disabled_reason = wsl.get("disabled_reason")
+            if wsl.get("present") is not False:
+                failures.append(f"{host_id}: wsl must be explicitly absent on native Linux hosts")
+            if wsl.get("disabled") is not True:
+                failures.append(f"{host_id}: wsl must be explicitly disabled on native Linux hosts")
+            if not isinstance(disabled_reason, str) or disabled_reason.strip() != "not applicable on a native Linux host":
+                failures.append(f"{host_id}: wsl disabled_reason must be \"not applicable on a native Linux host\"")
+    seen_set = set(seen)
+    extra = sorted(seen_set - required)
+    if extra:
+        failures.append(f"{host_id}: unexpected runtime identities: {', '.join(extra)}")
+    missing = sorted(required - seen_set)
     if missing:
         failures.append(f"{host_id}: runtime identities missing: {', '.join(missing)}")
+    if len(seen_set) != len(required):
+        failures.append(f"{host_id}: runtime denominator incomplete or duplicate: {len(seen)} of {len(required)} required identities")
     return failures
+
+
+def observe_platform(host_observation: Mapping[str, Any]) -> str:
+    """Resolve the platform an observation was taken on, never inferring it.
+
+    The retained Windows ``@1`` schema predates the platform field, so its
+    platform comes from the schema itself: that is the backward-compatibility
+    seam, and it is why those bytes stay admissible unchanged. ``@2`` carries an
+    explicit ``platform`` and gets no such courtesy — an absent field resolves
+    to nothing and refuses, because a platform-neutral schema that guesses its
+    own platform is not platform-neutral.
+    """
+    schema = str(host_observation.get("schema") or "")
+    if schema == WINDOWS_HOST_SCHEMA:
+        return "windows"
+    if schema == LINUX_HOST_SCHEMA:
+        return str(host_observation.get("platform") or "").lower()
+    return ""
+
+
+def classify_observation_discovery(host_observation: Mapping[str, Any], expected: Mapping[str, Any], *, host_id: str) -> tuple[list[str], list[str]]:
+    failures: list[str] = []
+    discovery_failures: list[str] = []
+    if not host_observation.get("host_id"):
+        failures.append(f"{host_id}: host_id missing")
+    platform = observe_platform(host_observation)
+    if not platform:
+        failures.append(f"{host_id}: unsupported observation schema")
+    elif platform != "windows" and platform != "linux":
+        failures.append(f"{host_id}: unsupported platform {platform}")
+
+    system = host_observation.get("system", {})
+    memory = host_observation.get("memory", {})
+    storage = host_observation.get("storage", {})
+    cpu = host_observation.get("cpu", [])
+    if not isinstance(system, Mapping):
+        failures.append(f"{host_id}: system missing")
+    if not isinstance(memory, Mapping):
+        failures.append(f"{host_id}: memory missing")
+    else:
+        if not memory.get("total_bytes"):
+            failures.append(f"{host_id}: memory.total_bytes missing")
+    if not isinstance(storage, Mapping):
+        failures.append(f"{host_id}: storage missing")
+    else:
+        if not storage.get("physical_disks"):
+            discovery_failures.append(f"{host_id}: physical disk inventory incomplete")
+    if not isinstance(cpu, list):
+        failures.append(f"{host_id}: cpu missing")
+    if platform == "windows":
+        if not system.get("computer_name"):
+            failures.append(f"{host_id}: windows computer_name missing")
+        if not system.get("os_caption") and not system.get("os_version"):
+            failures.append(f"{host_id}: windows OS identity incomplete")
+    elif platform == "linux":
+        if not system.get("hostname"):
+            failures.append(f"{host_id}: linux hostname missing")
+        if not system.get("kernel") and not system.get("os_release"):
+            failures.append(f"{host_id}: linux OS/kernel identity incomplete")
+        if not system.get("architecture"):
+            failures.append(f"{host_id}: linux architecture missing")
+
+    return failures, discovery_failures
+
+
+SHA256_HEX_RE = re.compile(r"^[0-9a-f]{64}$")
+
+
+def admitted_linux_collector_sha256() -> str | None:
+    source = ROOT / "scripts" / "collect-linux.py"
+    try:
+        return sha256_file(source)
+    except OSError:
+        return None
+
+
+def validate_linux_observation_identity(host_observation: Mapping[str, Any], *, host_id: str) -> list[str]:
+    failures: list[str] = []
+    collector = host_observation.get("collector")
+    if not isinstance(collector, Mapping):
+        return [f"{host_id}: collector identity missing"]
+    if str(collector.get("schema") or "") != COLLECTOR_SCHEMA:
+        failures.append(f"{host_id}: collector schema missing or invalid")
+    if str(collector.get("platform") or "").lower() != "linux":
+        failures.append(f"{host_id}: collector platform not linux")
+    source_sha256 = str(collector.get("source_sha256") or "").lower()
+    if not SHA256_HEX_RE.match(source_sha256):
+        failures.append(f"{host_id}: collector source_identity digest missing")
+    elif not collector.get("source_path"):
+        failures.append(f"{host_id}: collector source_identity path missing")
+    else:
+        admitted = admitted_linux_collector_sha256()
+        if admitted is None:
+            failures.append(f"{host_id}: admitted collector source_identity unreadable")
+        elif source_sha256 != admitted:
+            failures.append(f"{host_id}: collector source_identity digest mismatch")
+    python_identity = collector.get("python_executable")
+    if not isinstance(python_identity, Mapping):
+        failures.append(f"{host_id}: collector python identity missing")
+    else:
+        if not python_identity.get("path"):
+            failures.append(f"{host_id}: collector python executable path missing")
+        if not SHA256_HEX_RE.match(str(python_identity.get("sha256") or "").lower()):
+            failures.append(f"{host_id}: collector python executable digest missing")
+    return failures
+
+
+def normalize_host_observation_for_aggregate(host_observation: Mapping[str, Any], host_id: str) -> dict[str, Any]:
+    system = host_observation.get("system", {})
+    if not isinstance(system, Mapping):
+        system = {}
+    return {
+        "host_id": host_id,
+        "source_sha256": host_observation.get("observation_sha256"),
+        "schema": host_observation.get("schema"),
+        "platform": observe_platform(host_observation),
+        "computer_name": system.get("computer_name") or system.get("hostname"),
+        "cpu": host_observation.get("cpu", []),
+        "memory": host_observation.get("memory", {}),
+        "storage": host_observation.get("storage", {}),
+        "clock": host_observation.get("clock"),
+        "network": host_observation.get("network", {}),
+        "observed_at": host_observation.get("observed_at"),
+    }
 
 
 def qualify_estate(
@@ -528,9 +754,25 @@ def qualify_estate(
     loaded: dict[str, dict[str, Any]] = {}
     copied: list[Path] = []
     failures: list[str] = []
+    private_failures: list[str] = []
+    digest_failures: list[str] = []
+    source_failures: list[str] = []
+    inventory_failures: list[str] = []
+    device_failures: list[str] = []
+    disabled_reason_failures: list[str] = []
     for source in observations:
         item = load_json(source)
-        if item.get("schema") != "axm-community-lab/windows-host-observation@1":
+        schema = str(item.get("schema") or "")
+        platform = observe_platform(item)
+        if schema == WINDOWS_HOST_SCHEMA:
+            pass
+        elif schema == LINUX_HOST_SCHEMA:
+            if platform != "linux":
+                failures.append(
+                    f"{source.name}: platform must be explicit: observed {platform or 'no platform field'}"
+                )
+                continue
+        else:
             failures.append(f"{source.name}: unsupported schema")
             continue
         host_id = str(item.get("host_id") or "")
@@ -540,7 +782,24 @@ def qualify_estate(
         if host_id in loaded:
             failures.append(f"duplicate host_id: {host_id}")
             continue
+        if platform == "linux":
+            source_failures.extend(validate_linux_observation_identity(item, host_id=host_id))
+        disabled_reason_failures.extend(
+            disabled_with_reason_failures(
+                item,
+                host_id,
+                required_rows=REQUIRED_RUNTIME_NAMES,
+                platform=platform,
+            )
+        )
+
         target = inputs_dir / f"{host_id}.json"
+        copied_digest = observation_digest(item)
+        if str(item.get("observation_sha256") or "").lower() != copied_digest:
+            digest_failures.append(f"{host_id}: observation_sha256 mismatch")
+        if not item.get("observation_sha256"):
+            digest_failures.append(f"{host_id}: observation_sha256 missing")
+        private_failures.extend(collect_private_identifier_failures(item, host_id))
         shutil.copy2(source, target)
         loaded[host_id] = item
         copied.append(target)
@@ -555,9 +814,6 @@ def qualify_estate(
         failures.append(f"unexpected hosts: {', '.join(extra_hosts)}")
 
     host_rows: list[dict[str, Any]] = []
-    inventory_failures: list[str] = []
-    disabled_reason_failures: list[str] = []
-    device_failures: list[str] = []
     resolved_domains = 0
     expected_domains = 0
     for host_id, expected in expected_hosts.items():
@@ -569,15 +825,17 @@ def qualify_estate(
             inventory_failures.append(f"{host_id}: observation missing")
             device_failures.append(f"{host_id}: accelerator observation missing")
             continue
-        disabled_reason_failures.extend(
-            disabled_with_reason_failures(observation, host_id)
-        )
         system = observation.get("system", {})
         cpu = observation.get("cpu", [])
         memory = observation.get("memory", {})
         storage = observation.get("storage", {})
-        if not system.get("computer_name") or not cpu or not memory.get("total_bytes") or not storage.get("physical_disks"):
-            inventory_failures.append(f"{host_id}: CPU, memory, OS, or physical disk identity incomplete")
+        discovery_failures, observed_failures = classify_observation_discovery(
+            observation,
+            expected,
+            host_id=host_id,
+        )
+        inventory_failures.extend(discovery_failures)
+        inventory_failures.extend(observed_failures)
         graphics = observation.get("graphics", {})
         adapters = graphics.get("adapters", []) if isinstance(graphics, Mapping) else []
         nvidia = graphics.get("nvidia", []) if isinstance(graphics, Mapping) else []
@@ -591,34 +849,26 @@ def qualify_estate(
             device_failures.append(f"{host_id}: expected {expected_dgpu} dGPU UUID(s), observed {len(dgpus)}")
         else:
             resolved_domains += expected_dgpu
-        host_rows.append(
-            {
-                "host_id": host_id,
-                "source_sha256": sha256_file(inputs_dir / f"{host_id}.json"),
-                "computer_name": system.get("computer_name"),
-                "cpu": cpu,
-                "memory": memory,
-                "physical_disks": storage.get("physical_disks", []),
-                "network_adapters": observation.get("network", {}).get("adapters", []),
-                "igpu_candidates": igpus,
-                "dgpu_identities": dgpus,
-                "clock": observation.get("clock"),
-            }
-        )
+        host_rows.append(normalize_host_observation_for_aggregate(observation, host_id))
 
     aggregate = {
         "schema": "axm-community-lab/estate-observation@1",
         "estate_id": estate.get("estate_id"),
+        "platform_rows": {host_id: observe_platform(observation) for host_id, observation in sorted(loaded.items())},
         "generated_at": generated_at,
         "host_count_expected": len(expected_hosts),
         "host_count_observed": len(loaded),
         "accelerator_domains_expected": expected_domains,
         "accelerator_domains_resolved": resolved_domains,
         "hosts": host_rows,
+        "source_digests": {host_id: observation_digest(item) for host_id, item in sorted(loaded.items())},
         "unresolved": {
             "general": failures,
             "host_inventory": inventory_failures,
             "disabled_with_reason": disabled_reason_failures,
+            "observation_digests": digest_failures,
+            "source_identity": source_failures,
+            "privacy": private_failures,
             "device_identity": device_failures,
         },
         "claim_boundary": "This aggregate records read-only host observations and explicit identity resolution. It does not admit workers, measure path cost, prove clock synchronization, or infer missing accelerator roles.",
@@ -631,6 +881,9 @@ def qualify_estate(
         not failures
         and not inventory_failures
         and not disabled_reason_failures
+        and not digest_failures
+        and not source_failures
+        and not private_failures
         and len(loaded) == len(expected_hosts)
     )
     device_identity_ok = host_inventory_ok and not device_failures and resolved_domains == expected_domains
@@ -681,6 +934,8 @@ def qualify_estate(
             "observation_sha256": aggregate["observation_sha256"],
         },
     )
+    receipt["unresolved"] = aggregate["unresolved"]
+    receipt["receipt_sha256"] = canonical_receipt_id(receipt)
     receipt_path = run_dir / "experiment.receipt.json"
     write_json(receipt_path, receipt)
     if supports and ingest:
@@ -752,7 +1007,7 @@ def validate_source() -> dict[str, Any]:
     checks.append({"id": "standalone-index", "pass": "id=\"embedded-data\"" in html_text and "fetch(" not in html_text})
     checks.append({"id": "no-external-runtime-assets", "pass": "<script src=" not in html_text and "<link rel=\"stylesheet\"" not in html_text})
     commands = [command for experiment in experiments["experiments"] for command in experiment.get("commands", [])]
-    checks.append({"id": "authoritative-runner", "pass": all("scripts/lab.py" in command or "collect-windows.ps1" in command for command in commands)})
+    checks.append({"id": "authoritative-runner", "pass": all("scripts/lab.py" in command or "collect-windows.ps1" in command or "collect-linux.py" in command for command in commands)})
     failures = [check["id"] for check in checks if not check["pass"]]
     return {
         "schema": "axm-community-lab/source-validation@1",
@@ -810,7 +1065,7 @@ def command_main(argv: Sequence[str] | None = None) -> int:
     qualify_function_parser.add_argument("--now", default=None)
     qualify_function_parser.add_argument("--no-ingest", action="store_true")
 
-    qualify_estate_parser = sub.add_parser("qualify-estate", help="aggregate three read-only Windows host observations")
+    qualify_estate_parser = sub.add_parser("qualify-estate", help="aggregate three read-only host observations (Windows @1 and/or Linux @2)")
     qualify_estate_parser.add_argument("observations", type=Path, nargs="+")
     qualify_estate_parser.add_argument("--now", default=None)
     qualify_estate_parser.add_argument("--no-ingest", action="store_true")
@@ -903,3 +1158,6 @@ def command_main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(command_main())
+
+
+

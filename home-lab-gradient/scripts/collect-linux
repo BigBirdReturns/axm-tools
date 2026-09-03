@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+# Optional POSIX launcher for the read-only Linux host observation collector.
+#
+# When the bundle root carries a seed (seed/verify.py and seed/sha256sums.txt),
+# the seed verifies its own bytes before any collection happens. A tampered or
+# truncated seed refuses here rather than producing an observation.
+#
+# Set PYTHON to override the interpreter. Nothing is installed and no network
+# transport is used.
+set -eu
+
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+BUNDLE_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
+PYTHON=${PYTHON:-python3}
+
+if ! command -v "$PYTHON" >/dev/null 2>&1; then
+    echo "collect-linux: python interpreter not found: $PYTHON" >&2
+    exit 3
+fi
+
+if [ -f "$BUNDLE_ROOT/seed/verify.py" ] && [ -f "$BUNDLE_ROOT/seed/sha256sums.txt" ]; then
+    "$PYTHON" "$BUNDLE_ROOT/seed/verify.py" --root "$BUNDLE_ROOT"
+fi
+
+exec "$PYTHON" "$SCRIPT_DIR/collect-linux.py" "$@"

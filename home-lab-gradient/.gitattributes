@@ -1,0 +1,9 @@
+# The Linux seed is content-addressed: seed/sha256sums.txt binds the exact
+# bytes of these files and the POSIX launcher must keep a bare LF shebang, so
+# they have to check out identically on every platform regardless of
+# core.autocrlf. Digests are computed over exact bytes, never text-mode reads.
+scripts/collect-linux text eol=lf
+scripts/collect-linux.py text eol=lf
+seed/** text eol=lf
+tests/test_collect_linux.py text eol=lf
+tests/test_seed.py text eol=lf

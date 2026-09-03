@@ -1,0 +1,51 @@
+{
+  "schema": "axm-community-lab/gradient-seed-manifest@1",
+  "program": "EOC007 / GRADIENT-LINUX-SEED-151-DISPATCH",
+  "controlling_issue": "BigBirdReturns/axm-tools#151",
+  "seed_root": "home-lab-gradient",
+  "seed_identity": {
+    "sum_file": "seed/sha256sums.txt",
+    "definition": "The seed identity is the SHA-256 of the exact bytes of seed/sha256sums.txt, which binds every other seed file. No seed file contains its own digest."
+  },
+  "observation": {
+    "schema": "axm-community-lab/host-observation@2",
+    "collector_schema": "axm-community-lab/host-observation-collector@1",
+    "platform": "linux",
+    "expected_output_name": "<host-id>.json",
+    "expected_output_path_contract": "The operator passes a writable host-local path ending in <host-id>.json as --out-file. The collector writes only that path and a same-directory temporary file named .<host-id>.json.tmp.",
+    "declared_host_ids": ["control-host", "heavy-host-a", "heavy-host-b"]
+  },
+  "collector": {
+    "source": "scripts/collect-linux.py",
+    "launcher": "scripts/collect-linux",
+    "schema_file": "seed/collect-linux-host-observation-2.schema.json",
+    "validator": "seed/collect-linux.validator.py",
+    "self_verifier": "seed/verify.py",
+    "reconstruction": "seed/reconstruct.py"
+  },
+  "required_runtime_denominator": ["python", "git", "ollama", "docker", "wsl", "nvidia-smi"],
+  "read_surfaces": [
+    "/etc/os-release",
+    "uname",
+    "/proc/cpuinfo",
+    "/proc/meminfo",
+    "/sys/class/dmi/id",
+    "/sys/class/net",
+    "/sys/firmware/dmi/tables/DMI (readability only)",
+    "lsblk",
+    "lspci",
+    "nvidia-smi"
+  ],
+  "authority_boundary": "Read-only evidence collection only. The seed requires no sudo, installs nothing, opens no socket or listener, makes no network request, starts no daemon, alters no system state, contains no credential, host secret, or private address, and opens no callback. It requires no clone of the axm-tools repository on the target host.",
+  "claim_boundary": "A returned observation is read-only evidence about one host at one moment. It admits no worker, measures no path cost, proves no cross-host clock relation, and cannot substitute for a declared estate inventory. A synthetic or fixture observation cannot establish a physical host execution.",
+  "files": [
+    "scripts/collect-linux",
+    "scripts/collect-linux.py",
+    "seed/README.md",
+    "seed/collect-linux-host-observation-2.schema.json",
+    "seed/collect-linux.validator.py",
+    "seed/reconstruct.py",
+    "seed/seed-manifest.json",
+    "seed/verify.py"
+  ]
+}
