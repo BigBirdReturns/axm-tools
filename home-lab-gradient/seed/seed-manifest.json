@@ -12,8 +12,28 @@
     "collector_schema": "axm-community-lab/host-observation-collector@1",
     "platform": "linux",
     "expected_output_name": "<host-id>.json",
-    "expected_output_path_contract": "The operator passes a writable host-local path ending in <host-id>.json as --out-file. The collector writes only that path and a same-directory temporary file named .<host-id>.json.tmp.",
-    "declared_host_ids": ["control-host", "heavy-host-a", "heavy-host-b"]
+    "expected_output_path_contract": "The operator passes a writable host-local path whose basename is exactly <host-id>.json as --out-file. Both the host id and that basename are validated against this manifest before any host surface is read and before any directory or temporary file is created, so a substituted coordinate never reaches a filesystem. The collector then writes exactly two files, both in that directory: the observation <host-id>.json and the body-free receipt <host-id>.receipt.json. Each is published through a freshly created, exclusively opened, unpredictably named same-directory temporary, fsynced, atomically renamed, and followed by a directory fsync where the platform exposes one. No deterministic temporary name is ever written through, and a symbolic link, hard link, or reparse point at either output name or at the historical deterministic temporary name refuses the run instead of being acted on.",
+    "declared_host_ids": [
+      "control-host",
+      "heavy-host-a",
+      "heavy-host-b"
+    ],
+    "coordinate_authority": "This manifest is the immutable declaration the collector validates against. seed/sha256sums.txt binds its exact bytes and the seed identity is the digest of that sum file, so the declared host ids cannot be widened without producing a different seed.",
+    "receipt": {
+      "schema": "axm-community-lab/host-observation-receipt@1",
+      "schema_file": "seed/host-observation-receipt-1.schema.json",
+      "producer": "scripts/collect-linux.py",
+      "expected_output_name": "<host-id>.receipt.json",
+      "purpose": "Issue #151 requires the N01 result to return as a body-contained observation plus a body-free receipt for the W01 join. The receipt binds identities and digests only, so the join can be recorded in the open while the observed body stays on the host that produced it.",
+      "body_free_join_coordinates": [
+        "schema",
+        "platform",
+        "host_id",
+        "observed_at",
+        "observation_sha256"
+      ],
+      "body_free_contract": "Apart from the declared join coordinates and the collector and Python executable digests, no value from the observation body may appear in the receipt. seed/collect-linux.validator.py --receipt enforces this, not prose."
+    }
   },
   "collector": {
     "source": "scripts/collect-linux.py",
@@ -21,9 +41,17 @@
     "schema_file": "seed/collect-linux-host-observation-2.schema.json",
     "validator": "seed/collect-linux.validator.py",
     "self_verifier": "seed/verify.py",
-    "reconstruction": "seed/reconstruct.py"
+    "reconstruction": "seed/reconstruct.py",
+    "receipt_schema_file": "seed/host-observation-receipt-1.schema.json"
   },
-  "required_runtime_denominator": ["python", "git", "ollama", "docker", "wsl", "nvidia-smi"],
+  "required_runtime_denominator": [
+    "python",
+    "git",
+    "ollama",
+    "docker",
+    "wsl",
+    "nvidia-smi"
+  ],
   "read_surfaces": [
     "/etc/os-release",
     "uname",
@@ -44,8 +72,23 @@
     "seed/README.md",
     "seed/collect-linux-host-observation-2.schema.json",
     "seed/collect-linux.validator.py",
+    "seed/host-observation-receipt-1.schema.json",
     "seed/reconstruct.py",
     "seed/seed-manifest.json",
     "seed/verify.py"
-  ]
+  ],
+  "physical_identity": {
+    "fingerprint_schema": "axm-community-lab/observed-host-fingerprint@1",
+    "definition": "A digest over permitted hardware and platform fields already admitted into the observation body: computer name or hostname, system manufacturer and model, OS identity, architecture, firmware identity, CPU rows, total memory, physical disk model and size, display adapter name and bus identity, and accelerator identities. It introduces no new identifier and retains no prohibited one.",
+    "excluded_on_purpose": [
+      "host_id",
+      "observed_at",
+      "clock",
+      "collector",
+      "runtime",
+      "surfaces",
+      "privacy"
+    ],
+    "law": "Three declared host_id strings prove three labels. The qualifier admits a three-host denominator only when the three observed fingerprints are distinct and no accelerator identity, NVIDIA UUID included, appears under more than one host."
+  }
 }

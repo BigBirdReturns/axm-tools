@@ -9,7 +9,8 @@ credentials from it.
 | `scripts/collect-linux.py` | Read-only collector source (standard library only) |
 | `scripts/collect-linux` | Optional POSIX launcher; verifies the seed, then collects |
 | `seed/collect-linux-host-observation-2.schema.json` | `axm-community-lab/host-observation@2` output schema |
-| `seed/collect-linux.validator.py` | Deterministic local validator for a returned observation |
+| `seed/host-observation-receipt-1.schema.json` | `axm-community-lab/host-observation-receipt@1` body-free receipt schema |
+| `seed/collect-linux.validator.py` | Deterministic local validator for a returned observation and receipt |
 | `seed/verify.py` | Seed self-verification against `seed/sha256sums.txt` |
 | `seed/reconstruct.py` | Deterministic reconstruction and byte-identity proof |
 | `seed/seed-manifest.json` | File manifest, contracts, and boundaries |
@@ -52,11 +53,23 @@ Requirements and guarantees:
 
 - **No sudo.** If a surface needs elevation, its absence is recorded instead.
 - `--host-id` must be a declared estate id: `control-host`, `heavy-host-a`, or
-  `heavy-host-b`.
-- **Output-name contract:** `--out-file` must end in `<host-id>.json`. The
-  collector writes exactly two paths: that file, and a same-directory temporary
-  `.<host-id>.json.tmp`. The temporary file is flushed, `fsync`ed, and published
-  by atomic `rename`, so a partial write can never appear as the final output.
+  `heavy-host-b`. This is **enforced, not documented**: the collector reads the
+  declared ids from `seed/seed-manifest.json`, whose exact bytes are bound by
+  `seed/sha256sums.txt`, and refuses with exit code `2` before it reads any host
+  surface and before it creates any directory or temporary file.
+- **Output-name contract:** the basename of `--out-file` must be exactly
+  `<host-id>.json`, and it is checked at the same moment, for the same reason.
+- **Output boundary.** The collector writes exactly two files, both in the
+  directory you name: the observation `<host-id>.json` and the body-free receipt
+  `<host-id>.receipt.json`. Each is written to a **fresh, unpredictably named,
+  exclusively created** same-directory temporary, flushed, `fsync`ed, published
+  by atomic `rename`, and followed by a directory `fsync` where the platform
+  exposes one. No predictable temporary name is ever written through, so a
+  pre-existing alias at a guessable path can never be the inode that gets
+  truncated. A symbolic link, hard link, or reparse point at either output name
+  or at the historical deterministic temporary name `.<host-id>.json.tmp`
+  **refuses the run** with exit code `1`: nothing is written, and nothing that
+  the operator did not name is removed.
 - Surfaces read, all read-only and only when available: `/etc/os-release`,
   `uname`, `/proc/cpuinfo`, `/proc/meminfo`, `/sys/class/dmi/id`,
   `/sys/class/net`, `lsblk`, `lspci`, `nvidia-smi`.
@@ -69,26 +82,56 @@ Requirements and guarantees:
   explicitly under `surfaces`.
 
 **Exit codes:** `0` published; `1` a required field was missing or
-contradictory and nothing was published; `2` invalid arguments; `3` the host is
-not POSIX.
+contradictory, or an output name was an alias for something else, and nothing
+was published; `2` invalid arguments, including an undeclared `--host-id` or an
+`--out-file` basename that is not `<host-id>.json`; `3` the host is not POSIX.
 
-## 3. Validate the returned observation locally
+## 3. Validate the returned observation and receipt locally
 
 ```bash
 python3 seed/collect-linux.validator.py \
-  "$HOME/.local/state/axm/home-lab-gradient/observations/heavy-host-b.json"
+  "$HOME/.local/state/axm/home-lab-gradient/observations/heavy-host-b.json" \
+  --receipt "$HOME/.local/state/axm/home-lab-gradient/observations/heavy-host-b.receipt.json"
 ```
 
 The validator recomputes the observation digest over canonical body bytes,
 checks the closed runtime denominator and the WSL inapplicability reason,
 checks collector and Python executable identity, and refuses any retained
-private identifier. It only reads; it creates and deletes nothing.
+private identifier. With `--receipt` it additionally proves the receipt binds
+this exact observation -- its body digest, its exact file bytes and size, its
+recomputed observed-host fingerprint and accelerator identity digests -- and
+that the receipt is genuinely body-free: apart from the declared join
+coordinates and the collector and Python executable digests, no value from the
+observation body may appear in it. It only reads; it creates and deletes
+nothing.
 
 ## 4. Return
 
-Return **only** the single `<host-id>.json` observation file. Nothing else from
-the host is requested, and nothing is sent anywhere by the seed: the transfer
-is entirely holder-selected and manual.
+Return the two files the collector wrote, and nothing else:
+
+| File | Contains | Publishable |
+| --- | --- | --- |
+| `<host-id>.json` | the observation body | no: keep it private to the join |
+| `<host-id>.receipt.json` | identities and digests only | yes |
+
+Issue #151 requires the result to return as a **body-contained observation plus
+a body-free receipt for the W01 join**. The receipt is the artifact that can be
+quoted in an issue, a pull request, or a review without publishing anything
+about the machine: it carries the schema, the declared role, the timestamp, the
+observation body digest, the exact observation file digest and size, the
+observed-host fingerprint digest, one digest per accelerator identity, the
+collector and Python executable digests, and the seed identity. It carries no
+host name, device name, model, capacity, path, kernel string, or accelerator
+identifier, and `carries_observation_body` is `false`.
+
+The observed-host fingerprint is what lets the qualifier tell three machines
+from three labels without ever seeing three bodies: it is derived only from
+permitted hardware and platform fields, and the qualifier refuses a census
+whose fingerprints are not distinct or whose accelerator identities appear
+under more than one host.
+
+Nothing else from the host is requested, and nothing is sent anywhere by the
+seed: the transfer is entirely holder-selected and manual.
 
 On the control host the observation joins the estate census:
 

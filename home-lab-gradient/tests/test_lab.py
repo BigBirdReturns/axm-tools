@@ -12,7 +12,15 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
-from lab import qualify_estate, scaffold_function, start_protocol  # noqa: E402
+from lab import (  # noqa: E402
+    accelerator_identities,
+    collect_private_identifier_failures,
+    host_fingerprint_components,
+    observed_host_fingerprint,
+    qualify_estate,
+    scaffold_function,
+    start_protocol,
+)
 from planner import PlannerError, canonical_bytes, read_json, sha256_json  # noqa: E402
 
 
@@ -859,6 +867,198 @@ class LabTests(unittest.TestCase):
             self.assertIn("does not admit workers", boundary)
             self.assertIn("infer missing accelerator roles", boundary)
             self.assertNotIn("physical", json.dumps(receipt["supports"]))
+
+    def test_one_relabelled_physical_host_cannot_fill_three_roles(self):
+        """The reproduced P1: three labels on one machine must refuse.
+
+        One observation is cloned three times. The computer name, processor
+        identity, iGPU, dGPU, and NVIDIA UUID are held constant; only the role
+        label and the timestamp change, and each digest is recomputed so every
+        observation is individually valid.
+        """
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            template = observation("one-and-only-machine", "GPU-THE-ONLY-BOARD")
+            files = []
+            for index, host_id in enumerate(("control-host", "heavy-host-a", "heavy-host-b")):
+                clone = json.loads(json.dumps(template))
+                clone["host_id"] = host_id
+                clone["observed_at"] = f"2026-08-05T0{index}:00:00Z"
+                files.append(self.write_observation(base, clone, host_id))
+
+            receipt_path, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T06:00:00Z",
+                ingest=False,
+            )
+
+            self.assertNotEqual(receipt["status"], "PASS")
+            self.assertEqual(receipt["supports"], [], "one machine may not support three-host capability")
+            refusals = receipt["unresolved"]["physical_identity"]
+            self.assertTrue(
+                any("is the same physical host as" in row for row in refusals),
+                refusals,
+            )
+            self.assertEqual(
+                sorted(row.split(":")[0] for row in refusals if "same physical host" in row),
+                ["heavy-host-a", "heavy-host-b"],
+            )
+            check = next(row for row in receipt["checks"] if row["id"] == "distinct-physical-hosts")
+            self.assertFalse(check["pass"])
+            # every other law is satisfied: only the physical denominator refuses
+            self.assertEqual(receipt["unresolved"]["general"], [])
+            self.assertEqual(receipt["unresolved"]["observation_digests"], [])
+            self.assertEqual(receipt["unresolved"]["privacy"], [])
+            aggregate = read_json(receipt_path.parent / "estate-observation.json")
+            self.assertEqual(len(set(aggregate["host_fingerprints"].values())), 1)
+
+    def test_duplicated_accelerator_identity_across_hosts_is_refused(self):
+        """Three real machines, but one NVIDIA UUID submitted under two roles."""
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = [
+                self.write_observation(base, observation("control-host", "GPU-4060"), "control-host"),
+                self.write_observation(base, observation("heavy-host-a", "GPU-SHARED-BOARD"), "heavy-host-a"),
+                self.write_observation(base, observation("heavy-host-b", "GPU-SHARED-BOARD"), "heavy-host-b"),
+            ]
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T06:05:00Z",
+                ingest=False,
+            )
+
+            self.assertNotEqual(receipt["status"], "PASS")
+            refusals = receipt["unresolved"]["physical_identity"]
+            self.assertIn(
+                "heavy-host-b: accelerator identity gpu-shared-board is already observed on heavy-host-a",
+                refusals,
+            )
+            check = next(row for row in receipt["checks"] if row["id"] == "distinct-physical-hosts")
+            self.assertFalse(check["pass"])
+            # the machines themselves are distinct: only the board is duplicated
+            self.assertFalse(any("same physical host" in row for row in refusals))
+
+    def test_host_fingerprint_excludes_the_role_label_and_the_timestamp(self):
+        """The fingerprint answers "which machine", never "which label"."""
+        machine = observation("heavy-host-a", "GPU-3090-A")
+        relabelled = json.loads(json.dumps(machine))
+        relabelled["host_id"] = "control-host"
+        relabelled["observed_at"] = "2027-03-04T05:06:07Z"
+        relabelled["collector"] = {"schema": "irrelevant", "source_sha256": "0" * 64}
+        relabelled["runtime"][0]["path"] = "D:\\elsewhere\\python.exe"
+        self.assertEqual(observed_host_fingerprint(machine), observed_host_fingerprint(relabelled))
+
+        for field, value in (
+            ("computer_name", "another-machine"),
+            ("os_caption", "Windows Server 2025"),
+        ):
+            other = json.loads(json.dumps(machine))
+            other["system"][field] = value
+            with self.subTest(field=field):
+                self.assertNotEqual(
+                    observed_host_fingerprint(machine),
+                    observed_host_fingerprint(other),
+                    f"{field} must move the fingerprint",
+                )
+        for mutate in (
+            lambda item: item["cpu"][0].__setitem__("processor_id", "BFEBFBFF000000000"),
+            lambda item: item["memory"].__setitem__("total_bytes", 68719476736),
+            lambda item: item["storage"]["physical_disks"][0].__setitem__("model", "another nvme"),
+            lambda item: item["graphics"]["nvidia"][0].__setitem__("uuid", "GPU-SOMETHING-ELSE"),
+        ):
+            other = json.loads(json.dumps(machine))
+            mutate(other)
+            self.assertNotEqual(observed_host_fingerprint(machine), observed_host_fingerprint(other))
+
+    def test_host_fingerprint_is_built_only_from_permitted_fields(self):
+        """Deriving physical identity must not widen the privacy law."""
+        components = host_fingerprint_components(linux_observation("heavy-host-b", "GPU-3090-B"))
+        self.assertEqual(
+            collect_private_identifier_failures(components, "heavy-host-b"),
+            [],
+            "the fingerprint inputs must carry no prohibited identifier",
+        )
+        for excluded in ("host_id", "observed_at", "clock", "collector", "runtime", "surfaces", "privacy"):
+            self.assertNotIn(excluded, components)
+        self.assertEqual(
+            accelerator_identities(linux_observation("heavy-host-b", "GPU-3090-B")),
+            ["gpu-3090-b"],
+        )
+
+    def test_aggregate_row_preserves_the_predecessor_device_and_digest_contract(self):
+        """An unchanged schema name must still mean an unchanged contract.
+
+        The predecessor estate-observation@1 row carried igpu_candidates,
+        dgpu_identities, physical_disks, network_adapters, and a source_sha256
+        that was the digest of the exact retained input file. All of it is still
+        here, and the two digests are now separately named as well.
+        """
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = [
+                self.write_observation(base, observation("control-host", "GPU-4060"), "control-host"),
+                self.write_observation(base, observation("heavy-host-a", "GPU-3090-A"), "heavy-host-a"),
+                self.write_observation(base, linux_observation("heavy-host-b", "GPU-3090-B"), "heavy-host-b"),
+            ]
+            receipt_path, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T06:10:00Z",
+                ingest=False,
+            )
+            self.assertEqual(receipt["status"], "PASS")
+            aggregate = read_json(receipt_path.parent / "estate-observation.json")
+            self.assertEqual(aggregate["schema"], "axm-community-lab/estate-observation@1")
+            rows = {row["host_id"]: row for row in aggregate["hosts"]}
+            self.assertEqual(sorted(rows), ["control-host", "heavy-host-a", "heavy-host-b"])
+
+            for host_id, row in rows.items():
+                with self.subTest(host_id=host_id):
+                    for field in (
+                        "host_id",
+                        "source_sha256",
+                        "computer_name",
+                        "cpu",
+                        "memory",
+                        "physical_disks",
+                        "network_adapters",
+                        "igpu_candidates",
+                        "dgpu_identities",
+                        "clock",
+                    ):
+                        self.assertIn(field, row, "predecessor field dropped")
+
+                    retained = receipt_path.parent / "inputs" / f"{host_id}.json"
+                    exact_file_digest = sha256_file(retained)
+                    stored = read_json(retained)
+                    # the predecessor meaning: the digest of the exact file bytes
+                    self.assertEqual(row["source_sha256"], exact_file_digest)
+                    self.assertEqual(row["source_file_sha256"], exact_file_digest)
+                    # and the semantic body digest, now separately named
+                    self.assertEqual(row["observation_sha256"], stored["observation_sha256"])
+                    self.assertNotEqual(row["source_file_sha256"], row["observation_sha256"])
+
+                    self.assertTrue(row["igpu_candidates"], "iGPU candidates were dropped")
+                    self.assertTrue(row["dgpu_identities"], "dGPU identities were dropped")
+                    self.assertEqual(
+                        [item["uuid"] for item in row["dgpu_identities"]],
+                        [item["uuid"] for item in stored["graphics"]["nvidia"]],
+                    )
+                    self.assertEqual(row["physical_disks"], stored["storage"]["physical_disks"])
+                    self.assertEqual(row["network_adapters"], stored["network"]["adapters"])
+                    self.assertEqual(row["host_fingerprint_sha256"], observed_host_fingerprint(stored))
+
+            self.assertEqual(
+                aggregate["host_fingerprints"],
+                {host_id: row["host_fingerprint_sha256"] for host_id, row in sorted(rows.items())},
+            )
+            self.assertEqual(len(set(aggregate["host_fingerprints"].values())), 3)
+            self.assertEqual(receipt["unresolved"]["physical_identity"], [])
 
     def test_blocked_experiment_cannot_open_run(self):
         with tempfile.TemporaryDirectory() as raw:

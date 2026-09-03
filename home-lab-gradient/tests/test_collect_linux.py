@@ -13,6 +13,7 @@ import hashlib
 import importlib.util
 import io
 import json
+import os
 import socket
 import tempfile
 import types
@@ -362,7 +363,7 @@ class RefusalTests(CollectLinuxTestCase):
     def test_cli_exit_codes(self):
         self.assertEqual(self.run_main(["--host-id", "heavy-host-b", "--out-file", str(self.output)]), 0)
 
-        second = self.base / "observations" / "refused.json"
+        second = self.base / "refused" / "heavy-host-b.json"
         self.collector.MEMINFO_PATH = self.base / "proc" / "meminfo-missing"
         self.assertEqual(self.run_main(["--host-id", "heavy-host-b", "--out-file", str(second)]), 1)
         self.assertFalse(second.exists())
@@ -371,7 +372,7 @@ class RefusalTests(CollectLinuxTestCase):
 
     def test_non_posix_host_is_refused_not_faked(self):
         """A host without os.uname refuses; it never invents a host identity."""
-        third = self.base / "observations" / "nonposix.json"
+        third = self.base / "nonposix" / "heavy-host-b.json"
         # Remove os.uname wherever it exists (it does not on Windows) and put it
         # back afterwards; patch.dict restores the module namespace exactly.
         with mock.patch.dict(self.collector.os.__dict__, clear=False):
@@ -420,9 +421,11 @@ class AtomicPublicationTests(CollectLinuxTestCase):
         self.assertTrue(temp.name.endswith(".tmp"))
 
     def test_publication_flushes_fsyncs_and_renames(self):
+        """The file, then the rename, then the directory that now names it."""
         calls: list[str] = []
         real_fsync = self.collector.os.fsync
         real_replace = self.collector.os.replace
+        real_fsync_directory = self.collector.fsync_directory
 
         def record_fsync(fd):
             calls.append("fsync")
@@ -432,19 +435,399 @@ class AtomicPublicationTests(CollectLinuxTestCase):
             calls.append("replace")
             return real_replace(src, dst)
 
+        def record_fsync_directory(path):
+            calls.append("fsync-directory")
+            return real_fsync_directory(path)
+
         with mock.patch.object(self.collector.os, "fsync", record_fsync), mock.patch.object(
             self.collector.os, "replace", record_replace
-        ):
+        ), mock.patch.object(self.collector, "fsync_directory", record_fsync_directory):
             _, failures = self.run_collect()
 
         self.assertEqual(failures, [])
-        self.assertEqual(calls, ["fsync", "replace"], "fsync must precede the atomic rename")
+        # Two publications, observation then receipt, each with the same law:
+        # a directory fsync only persists the entry once the rename created it.
+        self.assertEqual(
+            calls,
+            ["fsync", "replace", "fsync-directory", "fsync", "replace", "fsync-directory"],
+            "fsync must precede the atomic rename, and the directory fsync must follow it",
+        )
 
-    def test_only_the_named_output_and_its_temp_are_written(self):
+    def test_only_the_declared_outputs_and_their_temps_are_written(self):
+        """Exactly the two declared outputs, and no temporary survives either."""
         _, failures = self.run_collect()
         self.assertEqual(failures, [])
         written = sorted(item.name for item in self.output.parent.iterdir())
-        self.assertEqual(written, ["heavy-host-b.json"])
+        self.assertEqual(written, ["heavy-host-b.json", "heavy-host-b.receipt.json"])
+        self.assertFalse(any(name.endswith(".tmp") for name in written))
+
+    def test_publication_never_writes_through_a_predictable_temporary_name(self):
+        """The temporary is created exclusively under an unpredictable name.
+
+        A deterministic name is what let a pre-created hard link become the
+        inode that open("w") truncated, so the name must not be derivable and
+        the descriptor must be the one this process created.
+        """
+        seen: list[tuple] = []
+        real_mkstemp = self.collector.tempfile.mkstemp
+
+        def record_mkstemp(*args, **kwargs):
+            descriptor, name = real_mkstemp(*args, **kwargs)
+            seen.append((kwargs.get("dir"), name))
+            return descriptor, name
+
+        with mock.patch.object(self.collector.tempfile, "mkstemp", record_mkstemp):
+            _, failures = self.run_collect()
+
+        self.assertEqual(failures, [])
+        self.assertEqual(len(seen), 2, "one exclusive temporary per published file")
+        for directory, name in seen:
+            temp = Path(name)
+            published_dir = self.output.resolve().parent
+            self.assertEqual(temp.parent, published_dir, "the temporary stays in the output directory")
+            self.assertEqual(Path(str(directory)).resolve(), published_dir)
+            self.assertNotEqual(temp, self.collector.temp_path_for(self.output.resolve()))
+            self.assertFalse(temp.exists(), "no temporary survives publication")
+        self.assertNotEqual(seen[0][1], seen[1][1])
+
+    def test_hard_linked_deterministic_temp_refuses_and_leaves_the_unlisted_file_intact(self):
+        """The reproduced P1: a hard link at the temporary name must not be acted on.
+
+        The previous collector opened the deterministic name with mode "w",
+        which truncated the linked inode before the rename ever ran.
+        """
+        self.output.parent.mkdir(parents=True, exist_ok=True)
+        unlisted = self.base / "unlisted-secret.txt"
+        original = b"bytes the operator never listed as an output\n"
+        unlisted.write_bytes(original)
+        temp = self.collector.temp_path_for(self.output.resolve())
+        os.link(unlisted, temp)
+        self.assertEqual(unlisted.stat().st_nlink, 2)
+
+        _, failures = self.run_collect()
+
+        self.assertTrue(
+            any(
+                "deterministic temporary name" in failure
+                and "hard link to an unlisted object" in failure
+                and "nothing was written or removed" in failure
+                for failure in failures
+            ),
+            failures,
+        )
+        self.assertFalse(self.output.exists(), "nothing may be published behind a refusal")
+        self.assertFalse((self.output.parent / "heavy-host-b.receipt.json").exists())
+        self.assertEqual(unlisted.read_bytes(), original, "the unlisted file was mutated")
+        self.assertTrue(temp.exists(), "the operator's link must not be removed either")
+
+    def test_symlinked_deterministic_temp_refuses_and_leaves_the_target_intact(self):
+        """A symbolic link at the temporary name is refused, never followed."""
+        self.output.parent.mkdir(parents=True, exist_ok=True)
+        unlisted = self.base / "unlisted-symlink-target.txt"
+        original = b"a second object the operator never listed\n"
+        unlisted.write_bytes(original)
+        temp = self.collector.temp_path_for(self.output.resolve())
+        try:
+            os.symlink(unlisted, temp)
+        except (OSError, NotImplementedError) as exc:  # unprivileged Windows
+            self.skipTest(f"this platform will not create a symbolic link: {exc}")
+
+        _, failures = self.run_collect()
+
+        self.assertTrue(
+            any(
+                "deterministic temporary name" in failure
+                and "symbolic link" in failure
+                and "nothing was written or removed" in failure
+                for failure in failures
+            ),
+            failures,
+        )
+        self.assertFalse(self.output.exists())
+        self.assertEqual(unlisted.read_bytes(), original, "the symlink target was mutated")
+        self.assertTrue(os.path.islink(temp), "the operator's link must not be removed either")
+
+    def test_symbolic_link_classification_refuses_without_creating_one(self):
+        """The same refusal on a platform that will not create a symlink at all.
+
+        The witness drives the classification seam instead of the filesystem, so
+        the exact refusal is asserted on every leg, not only the POSIX ones.
+        """
+        self.output.parent.mkdir(parents=True, exist_ok=True)
+        temp = self.collector.temp_path_for(self.output.resolve())
+        temp.write_bytes(b"stands in for a symbolic link\n")
+        real_link_kind = self.collector.link_kind
+
+        def classify(path):
+            return "symbolic link" if Path(path) == temp else real_link_kind(path)
+
+        with mock.patch.object(self.collector, "link_kind", classify):
+            _, failures = self.run_collect()
+
+        self.assertTrue(
+            any(
+                "deterministic temporary name" in failure and "symbolic link" in failure
+                for failure in failures
+            ),
+            failures,
+        )
+        self.assertFalse(self.output.exists())
+        self.assertTrue(temp.exists(), "a refused alias is never unlinked")
+
+    def test_hard_linked_output_path_refuses_before_anything_is_written(self):
+        """The output name itself may not be an alias for an unlisted object."""
+        self.output.parent.mkdir(parents=True, exist_ok=True)
+        unlisted = self.base / "unlisted-output-alias.txt"
+        original = b"a third object the operator never listed\n"
+        unlisted.write_bytes(original)
+        os.link(unlisted, self.output)
+
+        _, failures = self.run_collect()
+
+        self.assertTrue(
+            any(
+                "output path" in failure and "hard link to an unlisted object" in failure
+                for failure in failures
+            ),
+            failures,
+        )
+        self.assertEqual(unlisted.read_bytes(), original)
+        self.assertEqual(self.output.read_bytes(), original, "the aliased output was rewritten")
+
+    def test_ordinary_stale_residue_is_still_cleared_but_an_alias_is_not(self):
+        """Recovery removes ordinary residue only; aliases are left alone."""
+        self.output.parent.mkdir(parents=True, exist_ok=True)
+        temp = self.collector.temp_path_for(self.output.resolve())
+        temp.write_bytes(b"ordinary interrupted residue\n")
+        self.assertEqual(self.collector.link_kind(temp), "regular file")
+        self.collector.discard_temp(self.output.resolve())
+        self.assertFalse(temp.exists())
+
+        unlisted = self.base / "unlisted-residue-target.txt"
+        unlisted.write_bytes(b"still listed nowhere\n")
+        os.link(unlisted, temp)
+        self.assertEqual(self.collector.link_kind(temp), "hard link to an unlisted object")
+        self.collector.discard_temp(self.output.resolve())
+        self.assertTrue(temp.exists(), "an alias must survive residue recovery")
+
+
+class SeedCoordinateTests(CollectLinuxTestCase):
+    """The declared coordinate is enforced, not documented."""
+
+    def test_undeclared_host_id_is_refused_before_any_surface_is_read(self):
+        target = self.base / "elsewhere" / "undeclared-host.json"
+        surfaces_read: list[str] = []
+
+        def tripwire(*args, **kwargs):
+            surfaces_read.append("read")
+            raise AssertionError("a host surface was read before the coordinate was validated")
+
+        with mock.patch.object(self.collector, "read_uname", tripwire):
+            with self.assertRaises(self.collector.CoordinateError) as raised:
+                self.collector.collect("undeclared-host", target)
+
+        message = str(raised.exception)
+        self.assertIn("is not declared by the seed manifest", message)
+        self.assertIn("control-host, heavy-host-a, heavy-host-b", message)
+        self.assertEqual(surfaces_read, [])
+        self.assertFalse(target.parent.exists(), "no directory may be created for a refused coordinate")
+
+    def test_output_basename_unrelated_to_host_id_is_refused(self):
+        """The reproduced P2: heavy-host-b written to not-the-host-id.json."""
+        target = self.base / "elsewhere" / "not-the-host-id.json"
+        with mock.patch.object(self.collector, "read_uname", side_effect=AssertionError):
+            with self.assertRaises(self.collector.CoordinateError) as raised:
+                self.collector.collect("heavy-host-b", target)
+
+        message = str(raised.exception)
+        self.assertIn("out-file basename must be the declared observation name", message)
+        self.assertIn("expected heavy-host-b.json", message)
+        self.assertIn("observed not-the-host-id.json", message)
+        self.assertFalse(target.parent.exists())
+
+    def test_both_substitutions_exit_two_through_the_cli(self):
+        self.assertEqual(
+            self.run_main(
+                ["--host-id", "undeclared-host", "--out-file", str(self.base / "x" / "undeclared-host.json")]
+            ),
+            2,
+        )
+        self.assertEqual(
+            self.run_main(
+                ["--host-id", "heavy-host-b", "--out-file", str(self.base / "x" / "not-the-host-id.json")]
+            ),
+            2,
+        )
+        self.assertFalse((self.base / "x").exists())
+
+    def test_declared_host_ids_come_from_the_bound_seed_manifest(self):
+        """The declaration is immutable: sha256sums.txt binds the manifest bytes."""
+        coordinates = self.collector.declared_coordinates()
+        self.assertEqual(
+            coordinates["host_ids"], ("control-host", "heavy-host-a", "heavy-host-b")
+        )
+        self.assertEqual(coordinates["output_name"], "<host-id>.json")
+
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / "seed").mkdir()
+            manifest = root / "seed" / "seed-manifest.json"
+            sums = root / "seed" / "sha256sums.txt"
+            source = json.loads((SCRIPTS.parent / "seed" / "seed-manifest.json").read_bytes().decode("utf-8"))
+            source["observation"]["declared_host_ids"] = ["undeclared-host"]
+            manifest.write_bytes((json.dumps(source, indent=2) + "\n").encode("utf-8"))
+            sums.write_bytes(
+                (
+                    hashlib.sha256(
+                        (SCRIPTS.parent / "seed" / "seed-manifest.json").read_bytes()
+                    ).hexdigest()
+                    + "  seed/seed-manifest.json\n"
+                ).encode("ascii")
+            )
+            with self.assertRaises(self.collector.CoordinateError) as raised:
+                self.collector.declared_coordinates(manifest_path=manifest, sums_path=sums)
+        self.assertIn("seed manifest digest mismatch", str(raised.exception))
+
+
+class ReturnReceiptTests(CollectLinuxTestCase):
+    """The body-free receipt issue #151 requires for the W01 join."""
+
+    def receipt_path(self) -> Path:
+        return self.output.parent / "heavy-host-b.receipt.json"
+
+    def receipt(self) -> dict:
+        return json.loads(self.receipt_path().read_bytes().decode("utf-8"))
+
+    def test_receipt_is_published_beside_the_observation(self):
+        _, failures = self.run_collect()
+        self.assertEqual(failures, [])
+        self.assertTrue(self.receipt_path().is_file())
+        receipt = self.receipt()
+        self.assertEqual(receipt["schema"], "axm-community-lab/host-observation-receipt@1")
+        self.assertEqual(receipt["host_id"], "heavy-host-b")
+        self.assertIs(receipt["carries_observation_body"], False)
+
+    def test_receipt_binds_the_exact_published_observation_bytes(self):
+        _, failures = self.run_collect()
+        self.assertEqual(failures, [])
+        receipt = self.receipt()
+        published = self.output.read_bytes()
+        self.assertEqual(receipt["observation_file_sha256"], hashlib.sha256(published).hexdigest())
+        self.assertEqual(receipt["observation_file_bytes"], len(published))
+        self.assertEqual(receipt["observation_file_name"], "heavy-host-b.json")
+        self.assertEqual(receipt["observation_sha256"], self.published()["observation_sha256"])
+        self.assertNotEqual(
+            receipt["observation_file_sha256"],
+            receipt["observation_sha256"],
+            "the file digest and the body digest are different facts",
+        )
+        body = {k: v for k, v in receipt.items() if k != "receipt_sha256"}
+        self.assertEqual(
+            receipt["receipt_sha256"],
+            hashlib.sha256(self.collector.canonical_bytes(body)).hexdigest(),
+        )
+
+    def test_receipt_carries_no_value_from_the_observation_body(self):
+        """Nothing host-descriptive may travel with the publishable artifact."""
+        _, failures = self.run_collect()
+        self.assertEqual(failures, [])
+        observation = self.published()
+        receipt = self.receipt()
+
+        allowed = {
+            observation["schema"],
+            observation["platform"],
+            observation["host_id"],
+            observation["observed_at"],
+            observation["observation_sha256"],
+            observation["collector"]["schema"],
+            observation["collector"]["source_sha256"],
+            str(observation["collector"]["python_executable"]["sha256"]),
+        }
+
+        def strings(payload, found):
+            if isinstance(payload, dict):
+                for value in payload.values():
+                    strings(value, found)
+            elif isinstance(payload, list):
+                for value in payload:
+                    strings(value, found)
+            elif isinstance(payload, str) and len(payload) >= 3:
+                found.add(payload)
+
+        body_values: set = set()
+        strings(observation, body_values)
+        receipt_values: list = []
+
+        def values(payload, found):
+            if isinstance(payload, dict):
+                for value in payload.values():
+                    values(value, found)
+            elif isinstance(payload, list):
+                for value in payload:
+                    values(value, found)
+            elif isinstance(payload, str):
+                found.append(payload)
+
+        values(receipt, receipt_values)
+        leaked = [
+            candidate
+            for candidate in sorted(body_values - allowed)
+            for value in receipt_values
+            if candidate == value or (len(candidate) >= 8 and candidate in value)
+        ]
+        self.assertEqual(leaked, [], "the receipt is not body-free")
+
+        # The specific identifiers this seam exists to keep out.
+        text = self.receipt_path().read_bytes().decode("utf-8")
+        for forbidden in (
+            observation["system"]["hostname"],
+            observation["system"]["kernel"],
+            observation["storage"]["physical_disks"][0]["model"],
+            observation["graphics"]["nvidia"][0]["uuid"],
+        ):
+            self.assertNotIn(forbidden, text, f"{forbidden} leaked into the receipt")
+
+    def test_receipt_publishes_accelerator_identity_only_as_a_digest(self):
+        _, failures = self.run_collect()
+        self.assertEqual(failures, [])
+        observation = self.published()
+        receipt = self.receipt()
+        identities = [row["uuid"].lower() for row in observation["graphics"]["nvidia"]]
+        self.assertTrue(identities)
+        self.assertEqual(receipt["accelerator_identity_count"], len(identities))
+        self.assertEqual(
+            receipt["accelerator_identity_sha256"],
+            sorted(hashlib.sha256(item.encode("utf-8")).hexdigest() for item in identities),
+        )
+
+    def test_receipt_is_lf_utf8_without_bom(self):
+        _, failures = self.run_collect()
+        self.assertEqual(failures, [])
+        raw = self.receipt_path().read_bytes()
+        self.assertFalse(raw.startswith(b"\xef\xbb\xbf"))
+        self.assertNotIn(b"\r", raw)
+        self.assertTrue(raw.endswith(b"\n"))
+        raw.decode("utf-8")
+
+    def test_receipt_fingerprint_ignores_the_role_label_and_the_timestamp(self):
+        """One machine relabelled is one fingerprint, whatever the label says."""
+        _, failures = self.run_collect()
+        self.assertEqual(failures, [])
+        observation = self.published()
+        relabelled = dict(observation, host_id="control-host", observed_at="2027-01-01T00:00:00Z")
+        self.assertEqual(
+            self.collector.observed_host_fingerprint(observation),
+            self.collector.observed_host_fingerprint(relabelled),
+        )
+        self.assertEqual(self.receipt()["host_fingerprint_sha256"], self.collector.observed_host_fingerprint(observation))
+
+        other_machine = json.loads(json.dumps(observation))
+        other_machine["system"]["hostname"] = "a-different-machine"
+        self.assertNotEqual(
+            self.collector.observed_host_fingerprint(observation),
+            self.collector.observed_host_fingerprint(other_machine),
+        )
 
 
 class IdentityAndDigestTests(CollectLinuxTestCase):

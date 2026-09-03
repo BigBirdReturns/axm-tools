@@ -34,7 +34,13 @@ from evidence import (
     write_json,
 )
 from planner import PlannerError, build_plan, parse_inputs, read_json, sha256_json, canonical_bytes
-from render import write_page
+from render import (
+    AUTHORITATIVE_COMPRESSOR_SHA256,
+    RenderError,
+    canonical_gzip,
+    compressor_fingerprint,
+    write_page,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -714,21 +720,182 @@ def validate_linux_observation_identity(host_observation: Mapping[str, Any], *, 
     return failures
 
 
-def normalize_host_observation_for_aggregate(host_observation: Mapping[str, Any], host_id: str) -> dict[str, Any]:
-    system = host_observation.get("system", {})
-    if not isinstance(system, Mapping):
-        system = {}
+HOST_FINGERPRINT_SCHEMA = "axm-community-lab/observed-host-fingerprint@1"
+
+
+def _mapping(value: Any) -> Mapping[str, Any]:
+    return value if isinstance(value, Mapping) else {}
+
+
+def _rows(value: Any) -> list[Any]:
+    return value if isinstance(value, list) else []
+
+
+def _component(value: Any) -> str:
+    """Normalize one permitted field into a comparable component string."""
+    if value is None or value is True or value is False:
+        return ""
+    if isinstance(value, (list, tuple)):
+        value = " ".join(str(item) for item in value if item is not None)
+    return " ".join(str(value).split()).strip().lower()
+
+
+def _joined(*values: Any) -> str:
+    return "|".join(_component(value) for value in values)
+
+
+def accelerator_identities(host_observation: Mapping[str, Any]) -> list[str]:
+    """Every globally unique accelerator identifier the observation carries.
+
+    An NVIDIA UUID is unique to one physical board by construction, so it is
+    the identity that must never appear under two host ids. PCI bus ids are
+    deliberately excluded: they are unique per machine, not per estate, and
+    requiring them to differ would refuse an honest three-host census.
+    """
+    graphics = _mapping(host_observation.get("graphics"))
+    identities: list[str] = []
+    for row in _rows(graphics.get("nvidia")) + _rows(graphics.get("adapters")):
+        if not isinstance(row, Mapping):
+            continue
+        identity = _component(row.get("uuid"))
+        if identity:
+            identities.append(identity)
+    return sorted(set(identities))
+
+
+def host_fingerprint_components(host_observation: Mapping[str, Any]) -> dict[str, Any]:
+    """The body-safe physical identity of the observed machine.
+
+    Built only from fields the privacy law already admits into an observation
+    body, so it introduces no new identifier and retains no prohibited one. It
+    deliberately excludes host_id, the estate role labels, observed_at, the
+    clock samples, and the collector and runtime rows: those are exactly what
+    an operator edits when relabelling one machine as three, and a fingerprint
+    that moved with them would prove only that the labels differ.
+    """
+    system = _mapping(host_observation.get("system"))
+    firmware = _mapping(system.get("firmware"))
+    memory = _mapping(host_observation.get("memory"))
+    storage = _mapping(host_observation.get("storage"))
+    graphics = _mapping(host_observation.get("graphics"))
+    return {
+        "schema": HOST_FINGERPRINT_SCHEMA,
+        "computer_name": _component(system.get("computer_name") or system.get("hostname")),
+        "system_manufacturer": _component(system.get("manufacturer") or firmware.get("system_manufacturer")),
+        "system_model": _component(system.get("model") or firmware.get("system_product_name")),
+        "os_identity": _component(system.get("os_caption") or system.get("os_release")),
+        "architecture": _component(system.get("architecture")),
+        "firmware": [
+            _component(system.get("bios_manufacturer") or firmware.get("bios_manufacturer")),
+            _component(system.get("bios_version") or firmware.get("bios_version")),
+            _component(firmware.get("bios_date")),
+            _component(firmware.get("board_name")),
+        ],
+        "cpu": sorted(
+            _joined(
+                row.get("name"),
+                row.get("manufacturer") or row.get("vendor"),
+                row.get("processor_id") or row.get("package_id"),
+                row.get("cores"),
+                row.get("logical_processors"),
+            )
+            for row in _rows(host_observation.get("cpu"))
+            if isinstance(row, Mapping)
+        ),
+        "memory_total_bytes": memory.get("total_bytes"),
+        "physical_disks": sorted(
+            _joined(row.get("model"), row.get("size_bytes"))
+            for row in _rows(storage.get("physical_disks"))
+            if isinstance(row, Mapping)
+        ),
+        "display_adapters": sorted(
+            _joined(row.get("name"), row.get("pnp_device_id") or row.get("bus_id"))
+            for row in _rows(graphics.get("adapters"))
+            if isinstance(row, Mapping)
+        ),
+        "accelerator_identities": accelerator_identities(host_observation),
+    }
+
+
+def observed_host_fingerprint(host_observation: Mapping[str, Any]) -> str:
+    """One digest addressing the observed machine, never its declared role."""
+    return hashlib.sha256(canonical_bytes(host_fingerprint_components(host_observation))).hexdigest()
+
+
+def physical_identity_failures(
+    fingerprints: Mapping[str, str],
+    accelerators: Mapping[str, Sequence[str]],
+) -> list[str]:
+    """Refuse a denominator that one machine could satisfy by relabelling.
+
+    Three declared host_id strings prove three labels. Three distinct observed
+    fingerprints, with accelerator identities appearing under exactly one of
+    them, are what prove three machines.
+    """
+    failures: list[str] = []
+    seen_fingerprint: dict[str, str] = {}
+    for host_id in sorted(fingerprints):
+        fingerprint = fingerprints[host_id]
+        owner = seen_fingerprint.get(fingerprint)
+        if owner is None:
+            seen_fingerprint[fingerprint] = host_id
+            continue
+        failures.append(
+            f"{host_id}: observed host fingerprint {fingerprint} is the same physical host as {owner}"
+        )
+    seen_accelerator: dict[str, str] = {}
+    for host_id in sorted(accelerators):
+        for identity in accelerators[host_id]:
+            owner = seen_accelerator.get(identity)
+            if owner is None:
+                seen_accelerator[identity] = host_id
+                continue
+            failures.append(
+                f"{host_id}: accelerator identity {identity} is already observed on {owner}"
+            )
+    return failures
+
+
+def normalize_host_observation_for_aggregate(
+    host_observation: Mapping[str, Any],
+    host_id: str,
+    *,
+    source_file: Path,
+    igpu_candidates: Sequence[Mapping[str, Any]],
+    dgpu_identities: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    """One aggregate row: the predecessor contract, plus explicit successors.
+
+    source_sha256 keeps its predecessor meaning -- the SHA-256 of the exact
+    retained input file -- and igpu_candidates, dgpu_identities,
+    physical_disks, and network_adapters are carried unchanged, so a consumer
+    written against the earlier estate-observation@1 reads the same fields with
+    the same semantics. The two digests are then named separately, because the
+    single phrase "the digest of this row" was the one thing that could mean
+    either the exact file bytes or the semantic observation body.
+    """
+    system = _mapping(host_observation.get("system"))
+    storage = _mapping(host_observation.get("storage"))
+    network = _mapping(host_observation.get("network"))
+    source_file_sha256 = sha256_file(source_file)
     return {
         "host_id": host_id,
-        "source_sha256": host_observation.get("observation_sha256"),
+        "source_sha256": source_file_sha256,
+        "source_file_sha256": source_file_sha256,
+        "observation_sha256": host_observation.get("observation_sha256"),
         "schema": host_observation.get("schema"),
         "platform": observe_platform(host_observation),
         "computer_name": system.get("computer_name") or system.get("hostname"),
+        "host_fingerprint_sha256": observed_host_fingerprint(host_observation),
         "cpu": host_observation.get("cpu", []),
         "memory": host_observation.get("memory", {}),
+        "physical_disks": storage.get("physical_disks", []),
         "storage": host_observation.get("storage", {}),
-        "clock": host_observation.get("clock"),
+        "network_adapters": network.get("adapters", []),
         "network": host_observation.get("network", {}),
+        "igpu_candidates": list(igpu_candidates),
+        "dgpu_identities": list(dgpu_identities),
+        "clock": host_observation.get("clock"),
         "observed_at": host_observation.get("observed_at"),
     }
 
@@ -752,6 +919,7 @@ def qualify_estate(
     inputs_dir.mkdir(parents=True)
 
     loaded: dict[str, dict[str, Any]] = {}
+    retained: dict[str, Path] = {}
     copied: list[Path] = []
     failures: list[str] = []
     private_failures: list[str] = []
@@ -760,6 +928,8 @@ def qualify_estate(
     inventory_failures: list[str] = []
     device_failures: list[str] = []
     disabled_reason_failures: list[str] = []
+    fingerprints: dict[str, str] = {}
+    accelerators: dict[str, list[str]] = {}
     for source in observations:
         item = load_json(source)
         schema = str(item.get("schema") or "")
@@ -802,6 +972,7 @@ def qualify_estate(
         private_failures.extend(collect_private_identifier_failures(item, host_id))
         shutil.copy2(source, target)
         loaded[host_id] = item
+        retained[host_id] = target
         copied.append(target)
 
     observed_ids = set(loaded)
@@ -849,12 +1020,25 @@ def qualify_estate(
             device_failures.append(f"{host_id}: expected {expected_dgpu} dGPU UUID(s), observed {len(dgpus)}")
         else:
             resolved_domains += expected_dgpu
-        host_rows.append(normalize_host_observation_for_aggregate(observation, host_id))
+        fingerprints[host_id] = observed_host_fingerprint(observation)
+        accelerators[host_id] = accelerator_identities(observation)
+        host_rows.append(
+            normalize_host_observation_for_aggregate(
+                observation,
+                host_id,
+                source_file=retained[host_id],
+                igpu_candidates=igpus,
+                dgpu_identities=dgpus,
+            )
+        )
+
+    identity_failures = physical_identity_failures(fingerprints, accelerators)
 
     aggregate = {
         "schema": "axm-community-lab/estate-observation@1",
         "estate_id": estate.get("estate_id"),
         "platform_rows": {host_id: observe_platform(observation) for host_id, observation in sorted(loaded.items())},
+        "host_fingerprints": dict(sorted(fingerprints.items())),
         "generated_at": generated_at,
         "host_count_expected": len(expected_hosts),
         "host_count_observed": len(loaded),
@@ -869,6 +1053,7 @@ def qualify_estate(
             "observation_digests": digest_failures,
             "source_identity": source_failures,
             "privacy": private_failures,
+            "physical_identity": identity_failures,
             "device_identity": device_failures,
         },
         "claim_boundary": "This aggregate records read-only host observations and explicit identity resolution. It does not admit workers, measure path cost, prove clock synchronization, or infer missing accelerator roles.",
@@ -884,6 +1069,7 @@ def qualify_estate(
         and not digest_failures
         and not source_failures
         and not private_failures
+        and not identity_failures
         and len(loaded) == len(expected_hosts)
     )
     device_identity_ok = host_inventory_ok and not device_failures and resolved_domains == expected_domains
@@ -902,6 +1088,12 @@ def qualify_estate(
             "id": "disabled-components-carry-reasons",
             "pass": not disabled_reason_failures,
             "detail": disabled_reason_failures or "every absent runtime is explicitly disabled with a reason",
+        },
+        {
+            "id": "distinct-physical-hosts",
+            "pass": not identity_failures,
+            "detail": identity_failures
+            or f"{len(fingerprints)} distinct observed host fingerprints, no accelerator identity observed twice",
         },
         {
             "id": "six-accelerator-domains-explicit",
@@ -1019,6 +1211,46 @@ def validate_source() -> dict[str, Any]:
     }
 
 
+def page_identity() -> dict[str, Any]:
+    """Runtime-independent identity of the committed page product.
+
+    ``identity`` holds only values that must be equal on every admitted
+    runtime, so a cross-leg comparison can assert equality directly. ``runtime``
+    records which interpreter produced the reading and is never compared.
+    """
+    html_path = ROOT / "index.html"
+    raw = html_path.read_bytes() if html_path.is_file() else b""
+    payload_match = re.search(
+        r'<script id="embedded-data" type="application/octet-stream">([A-Za-z0-9+/=]+)</script>',
+        raw.decode("utf-8", errors="replace"),
+    )
+    payload = base64.b64decode(payload_match.group(1)) if payload_match else b""
+    try:
+        embedded = gzip.decompress(payload) if payload else b""
+    except (OSError, ValueError):
+        embedded = b""
+    return {
+        "schema": "axm-community-lab/page-identity@1",
+        "identity": {
+            "path": "home-lab-gradient/index.html",
+            "page_sha256": hashlib.sha256(raw).hexdigest(),
+            "page_bytes": len(raw),
+            "page_carries_cr": b"\r" in raw,
+            "payload_sha256": hashlib.sha256(payload).hexdigest(),
+            "payload_bytes": len(payload),
+            "embedded_sha256": hashlib.sha256(embedded).hexdigest(),
+            "embedded_bytes": len(embedded),
+            "compressor_fingerprint": compressor_fingerprint(),
+            "authoritative_compressor_fingerprint": AUTHORITATIVE_COMPRESSOR_SHA256,
+        },
+        "runtime": {
+            "python": sys.version.split()[0],
+            "platform": sys.platform,
+            "os_name": os.name,
+        },
+    }
+
+
 def render_seed(*, generated_at: str) -> dict[str, Any]:
     estate = read_json(DATA / "estate.json")
     goals = read_json(DATA / "goals.json")
@@ -1078,6 +1310,8 @@ def command_main(argv: Sequence[str] | None = None) -> int:
     build_parser.add_argument("--now", default="2026-08-05T00:00:00Z")
 
     sub.add_parser("validate", help="validate source contracts and generated projections")
+
+    sub.add_parser("page-identity", help="print the runtime-independent identity of the committed page")
 
     args = parser.parse_args(argv)
     state_dir = args.state_dir.expanduser().resolve()
@@ -1144,12 +1378,41 @@ def command_main(argv: Sequence[str] | None = None) -> int:
             return 0
         if args.command == "build":
             plan = render_seed(generated_at=args.now)
-            print(json.dumps({"ok": True, "index": str(ROOT / "index.html"), "plan_sha256": plan["plan_sha256"]}, indent=2))
+            print(
+                json.dumps(
+                    {
+                        "ok": True,
+                        "index": str(ROOT / "index.html"),
+                        "plan_sha256": plan["plan_sha256"],
+                        "compressor_fingerprint": compressor_fingerprint(),
+                    },
+                    indent=2,
+                )
+            )
+            return 0
+        if args.command == "page-identity":
+            print(json.dumps(page_identity(), indent=2, sort_keys=True))
             return 0
         if args.command == "validate":
             result = validate_source()
             print(json.dumps(result, indent=2))
             return 0 if result["status"] == "PASS" else 1
+    except RenderError as exc:
+        # A runtime that cannot reproduce the product must fail loudly here
+        # rather than rewrite a tracked, digest-addressed page.
+        print(
+            json.dumps(
+                {
+                    "ok": False,
+                    "error": str(exc),
+                    "compressor_fingerprint": compressor_fingerprint(),
+                    "authoritative_compressor_fingerprint": AUTHORITATIVE_COMPRESSOR_SHA256,
+                },
+                indent=2,
+            ),
+            file=sys.stderr,
+        )
+        return 4
     except PlannerError as exc:
         print(json.dumps({"ok": False, "error": str(exc)}, indent=2), file=sys.stderr)
         return 2

@@ -7,3 +7,9 @@ scripts/collect-linux.py text eol=lf
 seed/** text eol=lf
 tests/test_collect_linux.py text eol=lf
 tests/test_seed.py text eol=lf
+
+# index.html is a byte-addressed product: every workflow leg rebuilds it and
+# fails on a tracked difference, and the legs compare its digest with each
+# other. A CRLF checkout on one platform would make that comparison lie, so
+# the product checks out with the exact bytes the builder writes.
+index.html text eol=lf

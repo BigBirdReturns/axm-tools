@@ -20,6 +20,34 @@ from typing import Any
 
 SCHEMA = "axm-community-lab/host-observation@2"
 COLLECTOR_SCHEMA = "axm-community-lab/host-observation-collector@1"
+RECEIPT_SCHEMA = "axm-community-lab/host-observation-receipt@1"
+HOST_FINGERPRINT_SCHEMA = "axm-community-lab/observed-host-fingerprint@1"
+# The only observation-body values a body-free receipt may repeat. Everything
+# else in the body is host-descriptive, and a receipt that carries it is no
+# longer publishable in the open.
+RECEIPT_JOIN_COORDINATES = ("schema", "platform", "host_id", "observed_at", "observation_sha256")
+RECEIPT_REQUIRED = (
+    "schema",
+    "observation_schema",
+    "collector_schema",
+    "platform",
+    "host_id",
+    "observed_at",
+    "observation_sha256",
+    "observation_file_name",
+    "observation_file_sha256",
+    "observation_file_bytes",
+    "host_fingerprint_sha256",
+    "accelerator_identity_sha256",
+    "accelerator_identity_count",
+    "collector_source_sha256",
+    "python_executable_sha256",
+    "seed_id",
+    "seed_manifest_sha256",
+    "carries_observation_body",
+    "claim_boundary",
+    "receipt_sha256",
+)
 REQUIRED_RUNTIME = ("python", "git", "ollama", "docker", "wsl", "nvidia-smi")
 WSL_INAPPLICABLE_REASON = "not applicable on a native Linux host"
 PROHIBITED_FIELD_MARKERS = (
@@ -156,6 +184,203 @@ def validate_collector(collector: Any) -> list[str]:
     return failures
 
 
+def fingerprint_component(value: Any) -> str:
+    if value is None or value is True or value is False:
+        return ""
+    if isinstance(value, (list, tuple)):
+        value = " ".join(str(item) for item in value if item is not None)
+    return " ".join(str(value).split()).strip().lower()
+
+
+def fingerprint_joined(*values: Any) -> str:
+    return "|".join(fingerprint_component(value) for value in values)
+
+
+def accelerator_identities(observation: Any) -> list[str]:
+    """Globally unique accelerator identifiers, NVIDIA UUIDs included."""
+    graphics = observation.get("graphics") if isinstance(observation, dict) else None
+    graphics = graphics if isinstance(graphics, dict) else {}
+    nvidia = graphics.get("nvidia") if isinstance(graphics.get("nvidia"), list) else []
+    adapters = graphics.get("adapters") if isinstance(graphics.get("adapters"), list) else []
+    identities: list[str] = []
+    for row in list(nvidia) + list(adapters):
+        if not isinstance(row, dict):
+            continue
+        identity = fingerprint_component(row.get("uuid"))
+        if identity:
+            identities.append(identity)
+    return sorted(set(identities))
+
+
+def host_fingerprint_components(observation: Any) -> dict:
+    """Body-safe physical identity of the observed machine.
+
+    Inlined here for the same reason canonical_bytes is, and it must stay
+    byte-identical to the collector's and the qualifier's definition: three
+    labels are not three machines, and the fingerprint is what tells them
+    apart. host_id, observed_at, the clock samples, and the collector and
+    runtime rows are excluded on purpose -- those are what an operator edits
+    when relabelling one machine as three.
+    """
+    observation = observation if isinstance(observation, dict) else {}
+    system = observation.get("system") if isinstance(observation.get("system"), dict) else {}
+    firmware = system.get("firmware") if isinstance(system.get("firmware"), dict) else {}
+    memory = observation.get("memory") if isinstance(observation.get("memory"), dict) else {}
+    storage = observation.get("storage") if isinstance(observation.get("storage"), dict) else {}
+    graphics = observation.get("graphics") if isinstance(observation.get("graphics"), dict) else {}
+    cpu_rows = observation.get("cpu") if isinstance(observation.get("cpu"), list) else []
+    disks = storage.get("physical_disks") if isinstance(storage.get("physical_disks"), list) else []
+    adapters = graphics.get("adapters") if isinstance(graphics.get("adapters"), list) else []
+    return {
+        "schema": HOST_FINGERPRINT_SCHEMA,
+        "computer_name": fingerprint_component(system.get("computer_name") or system.get("hostname")),
+        "system_manufacturer": fingerprint_component(
+            system.get("manufacturer") or firmware.get("system_manufacturer")
+        ),
+        "system_model": fingerprint_component(system.get("model") or firmware.get("system_product_name")),
+        "os_identity": fingerprint_component(system.get("os_caption") or system.get("os_release")),
+        "architecture": fingerprint_component(system.get("architecture")),
+        "firmware": [
+            fingerprint_component(system.get("bios_manufacturer") or firmware.get("bios_manufacturer")),
+            fingerprint_component(system.get("bios_version") or firmware.get("bios_version")),
+            fingerprint_component(firmware.get("bios_date")),
+            fingerprint_component(firmware.get("board_name")),
+        ],
+        "cpu": sorted(
+            fingerprint_joined(
+                row.get("name"),
+                row.get("manufacturer") or row.get("vendor"),
+                row.get("processor_id") or row.get("package_id"),
+                row.get("cores"),
+                row.get("logical_processors"),
+            )
+            for row in cpu_rows
+            if isinstance(row, dict)
+        ),
+        "memory_total_bytes": memory.get("total_bytes"),
+        "physical_disks": sorted(
+            fingerprint_joined(row.get("model"), row.get("size_bytes"))
+            for row in disks
+            if isinstance(row, dict)
+        ),
+        "display_adapters": sorted(
+            fingerprint_joined(row.get("name"), row.get("pnp_device_id") or row.get("bus_id"))
+            for row in adapters
+            if isinstance(row, dict)
+        ),
+        "accelerator_identities": accelerator_identities(observation),
+    }
+
+
+def observed_host_fingerprint(observation: Any) -> str:
+    return hashlib.sha256(canonical_bytes(host_fingerprint_components(observation))).hexdigest()
+
+
+def _body_strings(payload: Any, found: set) -> None:
+    if isinstance(payload, dict):
+        for value in payload.values():
+            _body_strings(value, found)
+    elif isinstance(payload, list):
+        for value in payload:
+            _body_strings(value, found)
+    elif isinstance(payload, str) and len(payload) >= 3:
+        found.add(payload)
+
+
+def _receipt_values(payload: Any, found: list) -> None:
+    """Receipt values only. Keys are contract names and are never a leak."""
+    if isinstance(payload, dict):
+        for value in payload.values():
+            _receipt_values(value, found)
+    elif isinstance(payload, list):
+        for value in payload:
+            _receipt_values(value, found)
+    elif isinstance(payload, str):
+        found.append(payload)
+
+
+def receipt_body_leak_failures(receipt: Any, observation: Any) -> list[str]:
+    """Refuse a receipt that repeats any host-descriptive value from the body.
+
+    A value leaks when it equals a receipt value outright, or when it is long
+    enough to be an identifier (eight characters or more) and appears inside
+    one. Only the declared join coordinates and the collector and Python
+    executable digests are exempt.
+    """
+    collector = observation.get("collector") if isinstance(observation, dict) else {}
+    collector = collector if isinstance(collector, dict) else {}
+    python_identity = collector.get("python_executable")
+    python_identity = python_identity if isinstance(python_identity, dict) else {}
+    allowed = {str(observation.get(name)) for name in RECEIPT_JOIN_COORDINATES}
+    allowed.update(
+        {
+            str(collector.get("schema")),
+            str(collector.get("source_sha256")),
+            str(python_identity.get("sha256")),
+        }
+    )
+    body: set = set()
+    _body_strings(observation, body)
+    values: list = []
+    _receipt_values(receipt, values)
+    failures: list[str] = []
+    for candidate in sorted(body - allowed):
+        for value in values:
+            if candidate == value or (len(candidate) >= 8 and candidate in value):
+                failures.append(f"receipt carries an observation body value: {candidate!r}")
+                break
+    return failures
+
+
+def validate_receipt(receipt: Any, observation: Any, observation_path: Path) -> list[str]:
+    """Return the list of refusals for a body-free return receipt."""
+    if not isinstance(receipt, dict):
+        return ["receipt is not a JSON object"]
+    failures: list[str] = []
+    for field in RECEIPT_REQUIRED:
+        if field not in receipt:
+            failures.append(f"receipt field missing: {field}")
+    if receipt.get("schema") != RECEIPT_SCHEMA:
+        failures.append("receipt schema mismatch")
+    if receipt.get("carries_observation_body") is not False:
+        failures.append("receipt must declare carries_observation_body false")
+    if not isinstance(observation, dict):
+        return failures + ["receipt cannot be checked against an unreadable observation"]
+    for field, name in (
+        ("observation_schema", "schema"),
+        ("platform", "platform"),
+        ("host_id", "host_id"),
+        ("observed_at", "observed_at"),
+        ("observation_sha256", "observation_sha256"),
+    ):
+        if receipt.get(field) != observation.get(name):
+            failures.append(f"receipt {field} does not bind the observation {name}")
+    if observation_path.is_file():
+        if receipt.get("observation_file_name") != observation_path.name:
+            failures.append("receipt observation_file_name does not name the observation file")
+        if receipt.get("observation_file_sha256") != sha256_file(observation_path):
+            failures.append("receipt observation_file_sha256 does not bind the exact file bytes")
+        if receipt.get("observation_file_bytes") != observation_path.stat().st_size:
+            failures.append("receipt observation_file_bytes does not bind the exact file size")
+    if receipt.get("host_fingerprint_sha256") != observed_host_fingerprint(observation):
+        failures.append("receipt host_fingerprint_sha256 does not recompute from the observation")
+    identities = accelerator_identities(observation)
+    expected_identities = sorted(
+        hashlib.sha256(identity.encode("utf-8")).hexdigest() for identity in identities
+    )
+    if receipt.get("accelerator_identity_sha256") != expected_identities:
+        failures.append("receipt accelerator_identity_sha256 does not recompute from the observation")
+    if receipt.get("accelerator_identity_count") != len(identities):
+        failures.append("receipt accelerator_identity_count does not match the observation")
+    expected_receipt_digest = hashlib.sha256(
+        canonical_bytes({k: v for k, v in receipt.items() if k != "receipt_sha256"})
+    ).hexdigest()
+    if receipt.get("receipt_sha256") != expected_receipt_digest:
+        failures.append("receipt digest mismatch")
+    failures.extend(receipt_body_leak_failures(receipt, observation))
+    return failures
+
+
 def validate(observation: Any) -> list[str]:
     """Return the list of refusals. Empty means the observation is admissible."""
     if not isinstance(observation, dict):
@@ -199,6 +424,11 @@ def validate(observation: Any) -> list[str]:
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Validate a returned Linux host observation")
     parser.add_argument("observation", help="Path to the returned <host-id>.json observation")
+    parser.add_argument(
+        "--receipt",
+        default="",
+        help="Path to the body-free <host-id>.receipt.json returned alongside the observation",
+    )
     return parser.parse_args(argv)
 
 
@@ -211,20 +441,29 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps({"ok": False, "failures": [f"unreadable observation: {exc}"]}, indent=2))
         return 2
     failures = validate(observation)
+    receipt_path = Path(args.receipt) if args.receipt else None
+    receipt = None
+    if receipt_path is not None:
+        try:
+            receipt = json.loads(receipt_path.read_bytes().decode("utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            print(json.dumps({"ok": False, "failures": [f"unreadable receipt: {exc}"]}, indent=2))
+            return 2
+        failures = failures + validate_receipt(receipt, observation, path)
     if failures:
         print(json.dumps({"ok": False, "observation": str(path), "failures": failures}, indent=2))
         return 1
-    print(
-        json.dumps(
-            {
-                "ok": True,
-                "observation": str(path),
-                "host_id": observation.get("host_id"),
-                "observation_sha256": observation.get("observation_sha256"),
-            },
-            indent=2,
-        )
-    )
+    result = {
+        "ok": True,
+        "observation": str(path),
+        "host_id": observation.get("host_id"),
+        "observation_sha256": observation.get("observation_sha256"),
+        "host_fingerprint_sha256": observed_host_fingerprint(observation),
+    }
+    if receipt is not None:
+        result["receipt"] = str(receipt_path)
+        result["receipt_sha256"] = receipt.get("receipt_sha256")
+    print(json.dumps(result, indent=2))
     return 0
 
 

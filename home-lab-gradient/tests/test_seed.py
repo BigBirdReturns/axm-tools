@@ -348,6 +348,198 @@ class SeedPrivacyTests(unittest.TestCase):
         self.assertIn("physical host execution", claim)
 
 
+class SeedCoordinateAndFingerprintTests(unittest.TestCase):
+    """The declared coordinate and the observed-host fingerprint are seed law."""
+
+    def setUp(self):
+        self.manifest = json.loads((SEED / "seed-manifest.json").read_text(encoding="utf-8"))
+        self.collector = load_seed_module("seed_collector_under_test", "../scripts/collect-linux.py")
+        self.validator = load_seed_module("seed_validator_for_fingerprint", "collect-linux.validator.py")
+
+    def test_manifest_declares_the_enforced_coordinate_and_the_receipt_producer(self):
+        observation = self.manifest["observation"]
+        self.assertEqual(
+            observation["declared_host_ids"], ["control-host", "heavy-host-a", "heavy-host-b"]
+        )
+        self.assertEqual(observation["expected_output_name"], "<host-id>.json")
+        self.assertIn("before any host surface is read", observation["expected_output_path_contract"])
+        self.assertIn("sha256sums.txt", observation["coordinate_authority"])
+
+        receipt = observation["receipt"]
+        self.assertEqual(receipt["schema"], "axm-community-lab/host-observation-receipt@1")
+        self.assertEqual(receipt["producer"], "scripts/collect-linux.py")
+        self.assertEqual(receipt["expected_output_name"], "<host-id>.receipt.json")
+        self.assertEqual(
+            receipt["body_free_join_coordinates"],
+            ["schema", "platform", "host_id", "observed_at", "observation_sha256"],
+        )
+        self.assertIn(receipt["schema_file"], self.manifest["files"])
+        self.assertIn("body-free receipt", self.manifest["observation"]["expected_output_path_contract"])
+
+    def test_manifest_states_the_physical_identity_law(self):
+        law = self.manifest["physical_identity"]
+        self.assertEqual(law["fingerprint_schema"], "axm-community-lab/observed-host-fingerprint@1")
+        self.assertIn("host_id", law["excluded_on_purpose"])
+        self.assertIn("observed_at", law["excluded_on_purpose"])
+        self.assertIn("three labels", law["law"])
+
+    def test_fingerprint_definition_is_identical_in_collector_validator_and_qualifier(self):
+        """One definition, inlined three times, must stay one definition.
+
+        The seed cannot import the qualifier and the qualifier cannot import
+        the seed, so agreement is asserted rather than assumed -- exactly the
+        arrangement canonical_bytes already lives under.
+        """
+        import lab  # noqa: PLC0415 -- the repository side of the same definition
+
+        observation = valid_observation()
+        digests = {
+            "collector": self.collector.observed_host_fingerprint(observation),
+            "validator": self.validator.observed_host_fingerprint(observation),
+            "qualifier": lab.observed_host_fingerprint(observation),
+        }
+        self.assertEqual(len(set(digests.values())), 1, digests)
+        self.assertEqual(
+            self.collector.host_fingerprint_components(observation),
+            lab.host_fingerprint_components(observation),
+        )
+        self.assertEqual(
+            self.validator.host_fingerprint_components(observation),
+            lab.host_fingerprint_components(observation),
+        )
+
+    def test_fingerprint_holds_still_across_a_relabelling(self):
+        observation = valid_observation()
+        relabelled = json.loads(json.dumps(observation))
+        relabelled["host_id"] = "control-host"
+        relabelled["observed_at"] = "2027-02-03T04:05:06Z"
+        self.assertEqual(
+            self.collector.observed_host_fingerprint(observation),
+            self.collector.observed_host_fingerprint(relabelled),
+        )
+        other = json.loads(json.dumps(observation))
+        other["system"]["hostname"] = "some-other-machine"
+        self.assertNotEqual(
+            self.collector.observed_host_fingerprint(observation),
+            self.collector.observed_host_fingerprint(other),
+        )
+
+
+class SeedReturnReceiptTests(unittest.TestCase):
+    """The body-free receipt contract, enforced by the seed's own validator."""
+
+    def setUp(self):
+        self.validator = load_seed_module("seed_receipt_validator", "collect-linux.validator.py")
+        self.collector = load_seed_module("seed_receipt_collector", "../scripts/collect-linux.py")
+        self.schema = json.loads(
+            (SEED / "host-observation-receipt-1.schema.json").read_text(encoding="utf-8")
+        )
+
+    def publish(self, root: Path):
+        """Write one observation and its receipt exactly as the collector does."""
+        observation = valid_observation()
+        observation["observation_sha256"] = sha256_bytes(
+            canonical_bytes({k: v for k, v in observation.items() if k != "observation_sha256"})
+        )
+        path = root / "heavy-host-b.json"
+        path.write_bytes((json.dumps(observation, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
+        receipt = self.collector.build_receipt(
+            observation, path, self.collector.declared_coordinates()
+        )
+        receipt_path = root / "heavy-host-b.receipt.json"
+        receipt_path.write_bytes(
+            (json.dumps(receipt, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
+        )
+        return observation, path, receipt, receipt_path
+
+    def test_receipt_schema_pins_the_body_free_contract(self):
+        self.assertEqual(self.schema["title"], "axm-community-lab/host-observation-receipt@1")
+        self.assertIs(self.schema["additionalProperties"], False)
+        self.assertEqual(self.schema["properties"]["carries_observation_body"]["const"], False)
+        self.assertEqual(
+            self.schema["body_free_join_coordinates"],
+            ["schema", "platform", "host_id", "observed_at", "observation_sha256"],
+        )
+        self.assertEqual(
+            self.schema["properties"]["host_id"]["enum"],
+            ["control-host", "heavy-host-a", "heavy-host-b"],
+        )
+        for absent in ("system", "cpu", "memory", "storage", "graphics", "network", "runtime", "surfaces"):
+            self.assertNotIn(absent, self.schema["properties"], "a body section reached the receipt schema")
+        for required in self.schema["required"]:
+            self.assertIn(required, self.schema["properties"])
+
+    def test_validator_accepts_a_matching_return_receipt(self):
+        with tempfile.TemporaryDirectory() as raw:
+            observation, path, receipt, receipt_path = self.publish(Path(raw))
+            self.assertEqual(self.validator.validate_receipt(receipt, observation, path), [])
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                self.assertEqual(
+                    self.validator.main([str(path), "--receipt", str(receipt_path)]), 0
+                )
+            reported = json.loads(out.getvalue())
+            self.assertTrue(reported["ok"])
+            self.assertEqual(reported["receipt_sha256"], receipt["receipt_sha256"])
+
+    def test_validator_refuses_a_receipt_bound_to_other_observation_bytes(self):
+        with tempfile.TemporaryDirectory() as raw:
+            observation, path, receipt, _ = self.publish(Path(raw))
+            path.write_bytes(path.read_bytes() + b"\n")
+            failures = self.validator.validate_receipt(receipt, observation, path)
+            self.assertIn(
+                "receipt observation_file_sha256 does not bind the exact file bytes", failures
+            )
+            self.assertIn(
+                "receipt observation_file_bytes does not bind the exact file size", failures
+            )
+
+    def test_validator_refuses_a_receipt_that_repeats_an_observation_body_value(self):
+        """The exact defect the receipt exists to prevent: a body value travelling."""
+        with tempfile.TemporaryDirectory() as raw:
+            observation, path, receipt, _ = self.publish(Path(raw))
+            leaked = dict(receipt, claim_boundary=f"collected on {observation['system']['hostname']}")
+            leaked["receipt_sha256"] = sha256_bytes(
+                canonical_bytes({k: v for k, v in leaked.items() if k != "receipt_sha256"})
+            )
+            failures = self.validator.validate_receipt(leaked, observation, path)
+            self.assertIn(
+                f"receipt carries an observation body value: {observation['system']['hostname']!r}",
+                failures,
+            )
+
+    def test_validator_refuses_a_receipt_carrying_an_accelerator_identifier(self):
+        with tempfile.TemporaryDirectory() as raw:
+            observation, path, receipt, _ = self.publish(Path(raw))
+            uuid = observation["graphics"]["nvidia"][0]["uuid"]
+            leaked = dict(receipt, accelerator_identity_sha256=[uuid])
+            leaked["receipt_sha256"] = sha256_bytes(
+                canonical_bytes({k: v for k, v in leaked.items() if k != "receipt_sha256"})
+            )
+            failures = self.validator.validate_receipt(leaked, observation, path)
+            self.assertIn(f"receipt carries an observation body value: {uuid!r}", failures)
+            self.assertIn(
+                "receipt accelerator_identity_sha256 does not recompute from the observation",
+                failures,
+            )
+
+    def test_validator_refuses_a_receipt_digest_tamper(self):
+        with tempfile.TemporaryDirectory() as raw:
+            observation, path, receipt, _ = self.publish(Path(raw))
+            tampered = dict(receipt, host_fingerprint_sha256="0" * 64)
+            failures = self.validator.validate_receipt(tampered, observation, path)
+            self.assertIn(
+                "receipt host_fingerprint_sha256 does not recompute from the observation", failures
+            )
+            self.assertIn("receipt digest mismatch", failures)
+
+    def test_validator_refuses_a_receipt_that_declares_it_carries_the_body(self):
+        with tempfile.TemporaryDirectory() as raw:
+            observation, path, receipt, _ = self.publish(Path(raw))
+            claimed = dict(receipt, carries_observation_body=True)
+            failures = self.validator.validate_receipt(claimed, observation, path)
+            self.assertIn("receipt must declare carries_observation_body false", failures)
+
+
 class SeedSchemaAndValidatorTests(unittest.TestCase):
     def setUp(self):
         self.validator = load_seed_module("seed_validator_under_test", "collect-linux.validator.py")

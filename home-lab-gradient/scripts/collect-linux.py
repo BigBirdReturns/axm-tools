@@ -7,7 +7,10 @@ Emits ``axm-community-lab/host-observation@2`` observations with:
 - explicit missing-tool and unreadable-surface evidence,
 - collector identity (collector source digest and Python executable digest),
 - no socket, listener, installer, or system-state side effect,
-- atomic on-disk publication (same-directory temporary file, fsync, rename).
+- a coordinate bound to the seed manifest before any host surface is read,
+- atomic on-disk publication through an exclusively created, unpredictable
+  same-directory temporary that can never be a pre-existing alias,
+- a body-free return receipt beside the observation, for the W01 join.
 
 The script is deliberately standard-library only and self-contained so the
 offline seed can run it on a host that has no clone of this repository.
@@ -26,14 +29,29 @@ import os
 import re
 import shlex
 import shutil
+import stat
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 SCHEMA = "axm-community-lab/host-observation@2"
 COLLECTOR_SCHEMA = "axm-community-lab/host-observation-collector@1"
+RECEIPT_SCHEMA = "axm-community-lab/host-observation-receipt@1"
+RECEIPT_SUFFIX = ".receipt.json"
+# The observed-host fingerprint definition is inlined here, in the seed
+# validator, and in the qualifier for the same reason canonical_bytes is: the
+# seed must run on a host with no clone of this repository. A witness asserts
+# all three definitions agree on one fixture, so a drift is a red test rather
+# than a silently different digest.
+HOST_FINGERPRINT_SCHEMA = "axm-community-lab/observed-host-fingerprint@1"
+BUNDLE_ROOT = Path(__file__).resolve().parents[1]
+SEED_MANIFEST_NAME = "seed/seed-manifest.json"
+SEED_SUMS_NAME = "seed/sha256sums.txt"
+SEED_MANIFEST_PATH = BUNDLE_ROOT / "seed" / "seed-manifest.json"
+SEED_SUMS_PATH = BUNDLE_ROOT / "seed" / "sha256sums.txt"
 REQUIRED_RUNTIME_NAMES = ("python", "git", "ollama", "docker", "wsl", "nvidia-smi")
 RUNTIME_WSL_INAPPLICABLE_REASON = "not applicable on a native Linux host"
 RUNTIME_ABSENT_REASON = "command not found in the current process PATH"
@@ -61,6 +79,10 @@ DMI_PUBLIC_FIELDS = (
 
 class CollectorError(RuntimeError):
     """Raised when the collector cannot run on this host at all."""
+
+
+class CoordinateError(ValueError):
+    """Raised when --host-id or --out-file leaves the declared seed coordinate."""
 
 
 def canonical_bytes(value: Any) -> bytes:
@@ -643,6 +665,245 @@ def collector_identity() -> dict[str, Any]:
     }
 
 
+def declared_coordinates(
+    *, manifest_path: Path | None = None, sums_path: Path | None = None
+) -> dict[str, Any]:
+    """Read the immutable seed declaration that binds this collector.
+
+    The manifest is not trusted on its own. seed/sha256sums.txt binds its exact
+    bytes and the seed identity is the digest of that sum file, so widening the
+    declared host ids cannot be done without producing a different seed.
+    """
+    manifest_path = SEED_MANIFEST_PATH if manifest_path is None else manifest_path
+    sums_path = SEED_SUMS_PATH if sums_path is None else sums_path
+    try:
+        raw = manifest_path.read_bytes()
+    except OSError as exc:
+        raise CoordinateError(
+            f"seed manifest is unreadable, so no host coordinate is declared: {manifest_path}"
+        ) from exc
+    try:
+        sums = sums_path.read_bytes()
+    except OSError as exc:
+        raise CoordinateError(
+            f"seed checksum file is unreadable, so the declaration is unbound: {sums_path}"
+        ) from exc
+    expected: str | None = None
+    for line in sums.decode("ascii", errors="replace").splitlines():
+        digest, separator, name = line.partition("  ")
+        if separator and name.strip() == SEED_MANIFEST_NAME:
+            expected = digest.strip().lower()
+    if expected is None:
+        raise CoordinateError(f"{SEED_SUMS_NAME} does not bind {SEED_MANIFEST_NAME}")
+    observed = sha256_bytes(raw)
+    if observed != expected:
+        raise CoordinateError(
+            f"seed manifest digest mismatch: {SEED_SUMS_NAME} binds {expected}, observed {observed}"
+        )
+    try:
+        manifest = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise CoordinateError(f"seed manifest is not readable JSON: {exc}") from exc
+    observation = manifest.get("observation")
+    if not isinstance(observation, Mapping):
+        raise CoordinateError("seed manifest declares no observation contract")
+    host_ids = tuple(str(item) for item in observation.get("declared_host_ids") or ())
+    if not host_ids:
+        raise CoordinateError("seed manifest declares no host ids")
+    output_name = str(observation.get("expected_output_name") or "")
+    if "<host-id>" not in output_name:
+        raise CoordinateError("seed manifest declares no <host-id> output name contract")
+    return {
+        "host_ids": host_ids,
+        "output_name": output_name,
+        "manifest_sha256": observed,
+        "seed_id": sha256_bytes(sums),
+    }
+
+
+def normalized_basename(out_file: Path | str) -> str:
+    """The final path component, with separators and . / .. resolved textually."""
+    return os.path.basename(os.path.normpath(str(out_file)))
+
+
+def validate_coordinates(
+    host_id: str, out_file: Path | str, *, coordinates: Mapping[str, Any] | None = None
+) -> dict[str, Any]:
+    """Enforce the declared role and output name before anything is read.
+
+    The seed README and manifest have always said --host-id is one of three
+    Estate roles and --out-file ends in <host-id>.json. This is where that stops
+    being documentation: it runs before any host surface is read and before any
+    directory or temporary file exists, so a substituted coordinate never
+    reaches a filesystem.
+    """
+    resolved = dict(coordinates) if coordinates is not None else declared_coordinates()
+    host_id = str(host_id).strip()
+    if not host_id:
+        raise CoordinateError("host_id required")
+    declared = tuple(resolved["host_ids"])
+    if host_id not in declared:
+        raise CoordinateError(
+            f"host_id {host_id!r} is not declared by the seed manifest; "
+            f"declared host ids are {', '.join(declared)}"
+        )
+    expected_name = str(resolved["output_name"]).replace("<host-id>", host_id)
+    observed_name = normalized_basename(out_file)
+    if observed_name != expected_name:
+        raise CoordinateError(
+            "out-file basename must be the declared observation name: "
+            f"expected {expected_name}, observed {observed_name}"
+        )
+    return resolved
+
+
+# ------------------------------------------------------ observed-host identity
+def fingerprint_component(value: Any) -> str:
+    if value is None or value is True or value is False:
+        return ""
+    if isinstance(value, (list, tuple)):
+        value = " ".join(str(item) for item in value if item is not None)
+    return " ".join(str(value).split()).strip().lower()
+
+
+def fingerprint_joined(*values: Any) -> str:
+    return "|".join(fingerprint_component(value) for value in values)
+
+
+def accelerator_identities(observation: Mapping[str, Any]) -> list[str]:
+    """Globally unique accelerator identifiers, NVIDIA UUIDs included."""
+    graphics = observation.get("graphics")
+    graphics = graphics if isinstance(graphics, Mapping) else {}
+    nvidia = graphics.get("nvidia") if isinstance(graphics.get("nvidia"), list) else []
+    adapters = graphics.get("adapters") if isinstance(graphics.get("adapters"), list) else []
+    identities: list[str] = []
+    for row in list(nvidia) + list(adapters):
+        if not isinstance(row, Mapping):
+            continue
+        identity = fingerprint_component(row.get("uuid"))
+        if identity:
+            identities.append(identity)
+    return sorted(set(identities))
+
+
+def host_fingerprint_components(observation: Mapping[str, Any]) -> dict[str, Any]:
+    """Body-safe physical identity of the observed machine.
+
+    Every input is a field the privacy law already admits into the body, and
+    host_id, observed_at, the clock samples, and the collector and runtime rows
+    are excluded: those are what an operator edits to relabel one machine as
+    three.
+    """
+    system = observation.get("system")
+    system = system if isinstance(system, Mapping) else {}
+    firmware = system.get("firmware")
+    firmware = firmware if isinstance(firmware, Mapping) else {}
+    memory = observation.get("memory")
+    memory = memory if isinstance(memory, Mapping) else {}
+    storage = observation.get("storage")
+    storage = storage if isinstance(storage, Mapping) else {}
+    graphics = observation.get("graphics")
+    graphics = graphics if isinstance(graphics, Mapping) else {}
+    cpu_rows = observation.get("cpu") if isinstance(observation.get("cpu"), list) else []
+    disks = storage.get("physical_disks") if isinstance(storage.get("physical_disks"), list) else []
+    adapters = graphics.get("adapters") if isinstance(graphics.get("adapters"), list) else []
+    return {
+        "schema": HOST_FINGERPRINT_SCHEMA,
+        "computer_name": fingerprint_component(system.get("computer_name") or system.get("hostname")),
+        "system_manufacturer": fingerprint_component(
+            system.get("manufacturer") or firmware.get("system_manufacturer")
+        ),
+        "system_model": fingerprint_component(system.get("model") or firmware.get("system_product_name")),
+        "os_identity": fingerprint_component(system.get("os_caption") or system.get("os_release")),
+        "architecture": fingerprint_component(system.get("architecture")),
+        "firmware": [
+            fingerprint_component(system.get("bios_manufacturer") or firmware.get("bios_manufacturer")),
+            fingerprint_component(system.get("bios_version") or firmware.get("bios_version")),
+            fingerprint_component(firmware.get("bios_date")),
+            fingerprint_component(firmware.get("board_name")),
+        ],
+        "cpu": sorted(
+            fingerprint_joined(
+                row.get("name"),
+                row.get("manufacturer") or row.get("vendor"),
+                row.get("processor_id") or row.get("package_id"),
+                row.get("cores"),
+                row.get("logical_processors"),
+            )
+            for row in cpu_rows
+            if isinstance(row, Mapping)
+        ),
+        "memory_total_bytes": memory.get("total_bytes"),
+        "physical_disks": sorted(
+            fingerprint_joined(row.get("model"), row.get("size_bytes"))
+            for row in disks
+            if isinstance(row, Mapping)
+        ),
+        "display_adapters": sorted(
+            fingerprint_joined(row.get("name"), row.get("pnp_device_id") or row.get("bus_id"))
+            for row in adapters
+            if isinstance(row, Mapping)
+        ),
+        "accelerator_identities": accelerator_identities(observation),
+    }
+
+
+def observed_host_fingerprint(observation: Mapping[str, Any]) -> str:
+    return sha256_bytes(canonical_bytes(host_fingerprint_components(observation)))
+
+
+def build_receipt(
+    observation: Mapping[str, Any],
+    published: Path,
+    coordinates: Mapping[str, Any],
+) -> dict[str, Any]:
+    """The body-free return receipt issue #151 requires for the W01 join.
+
+    It binds identities and digests and nothing else. No hostname, device name,
+    model, capacity, path, kernel string, or accelerator identifier from the
+    observation body appears here, so the receipt can be published in the open
+    while the body it addresses stays on the host that produced it.
+    """
+    collector = observation.get("collector")
+    collector = collector if isinstance(collector, Mapping) else {}
+    python_identity = collector.get("python_executable")
+    python_identity = python_identity if isinstance(python_identity, Mapping) else {}
+    identities = accelerator_identities(observation)
+    receipt: dict[str, Any] = {
+        "schema": RECEIPT_SCHEMA,
+        "observation_schema": observation.get("schema"),
+        "collector_schema": collector.get("schema"),
+        "platform": observation.get("platform"),
+        "host_id": observation.get("host_id"),
+        "observed_at": observation.get("observed_at"),
+        "observation_sha256": observation.get("observation_sha256"),
+        "observation_file_name": published.name,
+        "observation_file_sha256": sha256_file(published),
+        "observation_file_bytes": published.stat().st_size,
+        "host_fingerprint_sha256": observed_host_fingerprint(observation),
+        "accelerator_identity_sha256": sorted(
+            sha256_bytes(identity.encode("utf-8")) for identity in identities
+        ),
+        "accelerator_identity_count": len(identities),
+        "collector_source_sha256": collector.get("source_sha256"),
+        "python_executable_sha256": python_identity.get("sha256"),
+        "seed_id": coordinates.get("seed_id"),
+        "seed_manifest_sha256": coordinates.get("manifest_sha256"),
+        "carries_observation_body": False,
+        "claim_boundary": (
+            "Body-free return receipt. It binds the identity and digests of one "
+            "observation so the join can be recorded in the open without "
+            "publishing the observed body. It carries no host, device, or "
+            "accelerator identifier, admits no worker, and cannot substitute "
+            "for the observation it addresses."
+        ),
+    }
+    receipt["receipt_sha256"] = sha256_bytes(
+        canonical_bytes({k: v for k, v in receipt.items() if k != "receipt_sha256"})
+    )
+    return receipt
+
+
 def build_observation(host_id: str) -> tuple[dict[str, Any], list[str]]:
     host_id = host_id.strip()
     if not host_id:
@@ -687,46 +948,168 @@ def build_observation(host_id: str) -> tuple[dict[str, Any], list[str]]:
 
 
 def temp_path_for(path: Path) -> Path:
-    """Same-directory temporary name, distinct from any published output."""
+    """The historical deterministic temporary name, same directory as the output.
+
+    Nothing is written through this name any more: publication creates an
+    unpredictable temporary exclusively. The name is still recognized so that
+    residue from an interrupted older run is cleared instead of being left to
+    masquerade as output.
+    """
     return path.with_name(f".{path.name}.tmp")
 
 
-def write_atomic_json(payload: Mapping[str, Any], path: Path) -> Path:
-    """Publish by fsync then atomic rename. LF bytes, no BOM, trailing newline."""
-    path = path.resolve()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = temp_path_for(path)
-    data = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
-    with tmp.open("w", encoding="utf-8", newline="\n") as handle:
-        handle.write(data)
-        handle.flush()
-        os.fsync(handle.fileno())
-    os.replace(tmp, path)
-    return path
+def link_kind(path: Path) -> str:
+    """Classify an existing entry without ever following it."""
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
+        return "absent"
+    except OSError:
+        return "unreadable entry"
+    if stat.S_ISLNK(info.st_mode):
+        return "symbolic link"
+    if getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT:
+        return "reparse point"
+    if not stat.S_ISREG(info.st_mode):
+        return "non-regular file"
+    if getattr(info, "st_nlink", 1) > 1:
+        return "hard link to an unlisted object"
+    return "regular file"
+
+
+def alias_failures(path: Path, role: str) -> list[str]:
+    """Refuse to act on any name that is an alias for something else.
+
+    Removing or replacing an alias reaches an object the operator never listed.
+    A symbolic link, a hard link, and a Windows reparse point all do that, so
+    each refuses here and the run publishes nothing.
+    """
+    kind = link_kind(path)
+    if kind in {"absent", "regular file"}:
+        return []
+    return [
+        f"{role} {path.name} is a {kind}: acting on it would leave the declared "
+        "output boundary, so nothing was written or removed"
+    ]
+
+
+def boundary_failures(path: Path) -> list[str]:
+    """Every refusal the declared output coordinate can raise before writing."""
+    return alias_failures(path, "output path") + alias_failures(
+        temp_path_for(path), "deterministic temporary name"
+    )
 
 
 def discard_temp(path: Path) -> None:
-    """Remove interrupted or foreign residue so it can never be published."""
+    """Remove ordinary interrupted residue so it can never be published.
+
+    Only an ordinary single-link regular file is removed. Anything else is an
+    alias for an object outside the boundary and was already refused.
+    """
+    temp = temp_path_for(path)
+    if link_kind(temp) != "regular file":
+        return
     try:
-        temp_path_for(path.resolve()).unlink()
+        temp.unlink()
     except OSError:
         pass
 
 
-def collect(host_id: str, out_file: Path) -> tuple[dict[str, Any], list[str]]:
-    """Build and publish. On refusal nothing is published and residue is cleared."""
+def fsync_directory(path: Path) -> bool:
+    """fsync the containing directory so the published name itself is durable.
+
+    Windows exposes no directory handle to fsync; there the rename is recorded
+    by the filesystem metadata journal and this reports False.
+    """
+    if os.name == "nt":
+        return False
+    handle = os.open(str(path), os.O_RDONLY)
+    try:
+        os.fsync(handle)
+    finally:
+        os.close(handle)
+    return True
+
+
+def write_atomic_json(payload: Mapping[str, Any], path: Path) -> Path:
+    """Publish through a fresh exclusive temporary, fsync, rename, fsync dir.
+
+    The temporary is created with O_CREAT|O_EXCL under an unpredictable name,
+    so a pre-existing alias at a guessable path can never be the inode this
+    writes through. open("w") on a deterministic name truncates whatever inode
+    that name already resolves to, which is exactly how a hard link to an
+    unlisted file was mutated by an earlier version of this collector.
+    """
+    path = path.resolve()
+    for failure in boundary_failures(path):
+        raise CollectorError(failure)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    data = (json.dumps(payload, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
+    descriptor, raw_name = tempfile.mkstemp(
+        dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp"
+    )
+    tmp = Path(raw_name)
+    try:
+        links = getattr(os.fstat(descriptor), "st_nlink", 1)
+        if links != 1:
+            raise CollectorError(
+                f"exclusive temporary already carries {links} links; publication refused"
+            )
+        with os.fdopen(descriptor, "wb") as handle:
+            descriptor = -1
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(tmp, path)
+    except BaseException:
+        if descriptor >= 0:
+            os.close(descriptor)
+        try:
+            tmp.unlink()
+        except OSError:
+            pass
+        raise
+    fsync_directory(path.parent)
+    return path
+
+
+def receipt_path_for(out_file: Path, host_id: str) -> Path:
+    """The body-free receipt published beside the observation it addresses."""
+    return out_file.with_name(f"{host_id}{RECEIPT_SUFFIX}")
+
+
+def collect(
+    host_id: str, out_file: Path, *, coordinates: Mapping[str, Any] | None = None
+) -> tuple[dict[str, Any], list[str]]:
+    """Validate the coordinate, build, then publish. Refusal publishes nothing."""
+    resolved_coordinates = validate_coordinates(host_id, out_file, coordinates=coordinates)
+    out_path = Path(out_file).expanduser()
     observation, failures = build_observation(host_id)
+    try:
+        target = out_path.resolve()
+    except OSError as exc:
+        raise CollectorError(f"output path cannot be resolved: {exc}") from exc
+    receipt_target = receipt_path_for(target, host_id.strip())
+    failures = list(failures) + boundary_failures(target) + boundary_failures(receipt_target)
     if failures:
-        discard_temp(Path(out_file))
+        discard_temp(target)
+        discard_temp(receipt_target)
         return observation, failures
-    write_atomic_json(observation, Path(out_file))
+    discard_temp(target)
+    discard_temp(receipt_target)
+    published = write_atomic_json(observation, target)
+    write_atomic_json(build_receipt(observation, published, resolved_coordinates), receipt_target)
     return observation, []
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Collect a read-only Linux host observation")
-    parser.add_argument("--host-id", required=True, help="Host id declared in the estate descriptor")
-    parser.add_argument("--out-file", required=True, help="Observation JSON destination path")
+    parser.add_argument("--host-id", required=True, help="Host id declared by the seed manifest")
+    parser.add_argument(
+        "--out-file",
+        required=True,
+        help="Observation JSON destination path, whose basename must be <host-id>.json",
+    )
     return parser.parse_args(argv)
 
 
@@ -743,7 +1126,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     if failures:
         print(json.dumps({"ok": False, "failures": failures}, indent=2))
         return 1
-    print(json.dumps({"ok": True, "output": str(Path(args.out_file).resolve())}, indent=2))
+    output = Path(args.out_file).expanduser().resolve()
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "output": str(output),
+                "receipt": str(receipt_path_for(output, args.host_id.strip())),
+            },
+            indent=2,
+        )
+    )
     return 0
 
 
