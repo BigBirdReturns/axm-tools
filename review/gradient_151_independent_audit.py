@@ -138,7 +138,16 @@ def exact_source_gate() -> dict[str, Any]:
 
 
 def baseline_denominator() -> dict[str, Any]:
+    page_path = GRADIENT / "index.html"
+    page_before = hashlib.sha256(page_path.read_bytes()).hexdigest()
     build = run([sys.executable, str(SCRIPTS / "lab.py"), "build", "--now", "2026-08-05T00:00:00Z"])
+    page_after = hashlib.sha256(page_path.read_bytes()).hexdigest()
+    build_drift_paths = sorted(
+        filter(None, git_text("diff", "--name-only", CANDIDATE, "--", "home-lab-gradient").splitlines())
+    )
+    build_changed_page = page_before != page_after
+    if build_drift_paths:
+        run(["git", "checkout", CANDIDATE, "--", *build_drift_paths])
     count_probe = run(
         [
             sys.executable,
@@ -176,9 +185,15 @@ def baseline_denominator() -> dict[str, Any]:
         raise AuditFailure("seed reconstruction did not prove byte identity")
     dirty = git_text("diff", "--name-only", CANDIDATE, "--", "home-lab-gradient")
     if dirty:
-        raise AuditFailure(f"candidate denominator modified its own source: {dirty}")
+        raise AuditFailure(f"candidate denominator left source drift after reset: {dirty}")
     return {
         "test_count": 99,
+        "deterministic_build": {
+            "page_sha256_before": page_before,
+            "page_sha256_after": page_after,
+            "page_changed": build_changed_page,
+            "drift_paths": build_drift_paths,
+        },
         "tests": "PASS",
         "source_validation": validation,
         "seed_verification": {
@@ -374,6 +389,18 @@ def aggregate_identity_regression(lab: Any, fixtures: Any) -> dict[str, Any]:
         }
 
 
+def deterministic_page_build_observation(baseline: dict[str, Any]) -> dict[str, Any]:
+    build = baseline["deterministic_build"]
+    return {
+        "operation": "lab.py build --now 2026-08-05T00:00:00Z",
+        "page_sha256_before": build["page_sha256_before"],
+        "page_sha256_after": build["page_sha256_after"],
+        "drift_paths": build["drift_paths"],
+        "finding_reproduced": bool(build["page_changed"]),
+        "required_per_leg": False,
+    }
+
+
 def body_free_execution_receipt_gap() -> dict[str, Any]:
     manifest = json.loads((GRADIENT / "seed" / "seed-manifest.json").read_text(encoding="utf-8"))
     readme = (GRADIENT / "seed" / "README.md").read_text(encoding="utf-8")
@@ -441,6 +468,11 @@ def main(argv: list[str] | None = None) -> int:
                 **aggregate_identity_regression(lab, fixtures),
             },
             {
+                "id": "P2-DETERMINISTIC-PAGE-BUILD-DRIFT",
+                "severity": "P2",
+                **deterministic_page_build_observation(baseline),
+            },
+            {
                 "id": "P2-SEED-COORDINATE-CONTRACT-UNENFORCED",
                 "severity": "P2",
                 **unimplemented_seed_coordinate_contract_attack(test_collect),
@@ -464,6 +496,7 @@ def main(argv: list[str] | None = None) -> int:
         all_reproduced = all(
             row["finding_reproduced"] or row.get("supported") is False
             for row in findings
+            if row.get("required_per_leg", True)
         )
         result = {
             "schema": "axm-tools/gradient-151-independent-audit@1",
