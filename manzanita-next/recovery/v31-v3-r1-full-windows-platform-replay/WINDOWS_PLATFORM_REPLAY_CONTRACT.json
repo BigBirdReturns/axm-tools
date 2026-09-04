@@ -1,0 +1,77 @@
+{
+  "schema": "manzanita/v31-v3-r1-full-windows-platform-replay-contract@1",
+  "object_id": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1_FULL_WINDOWS_PLATFORM_REPLAY_V1",
+  "object_class": "bounded exact-package Windows platform replay",
+  "purpose": "Download the exact previously sealed V3 R1 operator bootstrap, verify and isolate its bytes, execute its package-owned Windows platform replay, and retain machine-readable evidence without reading operator storage or invoking production admission.",
+  "actors": {
+    "github_hosted_windows_runner": "downloads and executes the exact bounded package replay",
+    "source_custody": "binds exact package identity, workflow scope, and receipt validation",
+    "operator_workstation": "retains separate authority over any later origin-host storage campaign",
+    "release_authority": "retains merge, release, Pages, public-route, and product-mutation authority"
+  },
+  "source_package": {
+    "filename": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip",
+    "bytes": 553074,
+    "sha256": "2c4437c2f3c0cd7599b790ddc1a31315751db751daa3a81e4245e2a32b5f3738",
+    "download_url": "https://drive.usercontent.google.com/download?id=1tX9hAVhNdThVUq6ozuIfrqn5vAhgSxU3&export=download&confirm=t",
+    "release_root": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1",
+    "required_members": [
+      "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1/OPERATOR_EXECUTION_BOOTSTRAP_CONTRACT.json",
+      "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1/bootstrap_v31_operator_v3_r1.py",
+      "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1/resolve_and_run.cmd",
+      "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1/RUN_WINDOWS_PLATFORM_REPLAY.cmd"
+    ]
+  },
+  "nested_dependency": {
+    "filename": "MW_V31_PROVENANCE_AWARE_ROUND_TRIP_CONTROL_PACKET_V3.zip",
+    "bytes": 500961,
+    "sha256": "9821a140c507991e19e0f53d2d576e31b75ec4f11ff6ff8b7ab67677d95151a4"
+  },
+  "execution": {
+    "runner": "windows-latest",
+    "workspace": "isolated under RUNNER_TEMP",
+    "entrypoint": "RUN_WINDOWS_PLATFORM_REPLAY.cmd",
+    "expected_terminal_result": "PASS_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1_WINDOWS_PLATFORM_REPLAY",
+    "required_python": [3, 10],
+    "network_use": "exact package acquisition only",
+    "operator_storage_read": false,
+    "production_input_materialization": false,
+    "production_admission": false,
+    "product_mutation": false
+  },
+  "required_receipts": [
+    "V31_V3_R1_EXACT_PACKAGE_ACQUISITION_RECEIPT.json",
+    "V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1_WINDOWS_PLATFORM_REPLAY_RECEIPT.json",
+    "V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1_WINDOWS_PLATFORM_REPLAY_RECEIPT.validation.json"
+  ],
+  "prohibited_effects": [
+    "operator workstation storage search",
+    "File Library export",
+    "production input materialization",
+    "provenance-aware production intake",
+    "v31 exact-input admission",
+    "accepted-parent extraction",
+    "inherited baseline replay",
+    "mw-habitat-live-photo-031 construction",
+    "product mutation",
+    "merge",
+    "release",
+    "Pages deployment",
+    "public-route mutation",
+    "external effect"
+  ],
+  "authority": {
+    "operator_workstation_execution_observed": false,
+    "production_inputs_materialized": 0,
+    "admission_invoked": false,
+    "accepted_parent_extracted": false,
+    "v31_created": false,
+    "product_files_modified": 0,
+    "operator_visual_acceptance": "ABSENT",
+    "merge_authorized": false,
+    "release_authorized": false,
+    "public_route_effect": "none",
+    "pages_effect": "none",
+    "external_effect": "none"
+  }
+}
