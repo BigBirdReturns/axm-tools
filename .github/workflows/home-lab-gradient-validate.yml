@@ -1,5 +1,11 @@
 name: Home lab capability gradient validate
 
+# The candidate's own permanent gates. Review infrastructure proved the suite
+# can run on Windows; it cannot stand in for this. Every leg carries the exact
+# test denominator, seed verification and reconstruction, LF custody, the
+# tracked post-build diff gate, and a source identity that a final job compares
+# across legs. The Windows legs additionally parse the PowerShell collector.
+
 on:
   pull_request:
     paths:
@@ -19,21 +25,214 @@ on:
 permissions:
   contents: read
 
+env:
+  # The exact denominator. A suite that quietly shrinks is the failure this
+  # pins: the count is asserted before the suite is allowed to report green.
+  EXPECTED_TEST_COUNT: "155"
+  FIXED_NOW: "2026-08-05T00:00:00Z"
+
+defaults:
+  run:
+    shell: bash
+
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} / python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        python: ["3.10", "3.12"]
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python }}
 
-      - name: Rebuild deterministic plan and page
-        run: python home-lab-gradient/scripts/lab.py build --now 2026-08-05T00:00:00Z
+      - name: Record the leg identity
+        id: leg
+        run: echo "slug=${{ matrix.os }}-py${{ matrix.python }}" >> "$GITHUB_OUTPUT"
+
+      - name: Assert the exact test denominator
+        run: |
+          python - <<'PY'
+          import os, unittest
+          suite = unittest.defaultTestLoader.discover("home-lab-gradient/tests")
+          count = suite.countTestCases()
+          expected = int(os.environ["EXPECTED_TEST_COUNT"])
+          print(f"discovered {count} tests, expected {expected}")
+          raise SystemExit(0 if count == expected else 1)
+          PY
 
       - name: Run source tests
         run: python -m unittest discover -s home-lab-gradient/tests -v
 
+      - name: Verify the offline seed against its own sums
+        run: python home-lab-gradient/seed/verify.py --root home-lab-gradient
+
+      - name: Prove the seed reconstructs byte-for-byte
+        run: python home-lab-gradient/seed/reconstruct.py --root home-lab-gradient
+
+      - name: Check LF custody of the pinned members
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("home-lab-gradient")
+          # exactly the members .gitattributes pins, plus every seed file the
+          # manifest declares: the seed digests are over exact bytes, so a CRLF
+          # checkout anywhere here is a tamper rather than a difference.
+          manifest = json.loads((root / "seed" / "seed-manifest.json").read_text(encoding="utf-8"))
+          pinned = [
+              root / "index.html",
+              root / "scripts" / "collect-linux",
+              root / "scripts" / "collect-linux.py",
+              root / "tests" / "test_collect_linux.py",
+              root / "tests" / "test_seed.py",
+              root / "seed" / "sha256sums.txt",
+              *[root / name for name in manifest["files"]],
+          ]
+          failures = []
+          for path in pinned:
+              if not path.is_file():
+                  continue
+              raw = path.read_bytes()
+              if b"\r" in raw:
+                  failures.append(f"{path.as_posix()} carries CR bytes")
+              if raw.startswith(b"\xef\xbb\xbf"):
+                  failures.append(f"{path.as_posix()} carries a byte-order mark")
+          for line in failures:
+              print(line)
+          raise SystemExit(1 if failures else 0)
+          PY
+
+      - name: Parse the Windows collector
+        if: startsWith(matrix.os, 'windows')
+        shell: pwsh
+        run: |
+          $errors = $null
+          $tokens = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'home-lab-gradient/scripts/collect-windows.ps1'),
+            [ref]$tokens,
+            [ref]$errors) | Out-Null
+          if ($errors -and $errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.Message }
+            exit 1
+          }
+          Write-Host "collect-windows.ps1 parsed with $($tokens.Count) tokens and no errors"
+
       - name: Validate static contract
         run: python home-lab-gradient/scripts/lab.py validate
+
+      - name: Rebuild the deterministic plan and page
+        run: python home-lab-gradient/scripts/lab.py build --now "$FIXED_NOW"
+
+      - name: Fail on tracked post-build drift
+        run: |
+          # The previous workflow rebuilt and never looked. A leg that rewrites
+          # a committed, digest-addressed product must go red, not green.
+          git --no-pager diff --stat
+          git diff --exit-code
+          test -z "$(git status --porcelain)" || { git status --porcelain; exit 1; }
+
+      - name: Record this leg's source identity
+        run: |
+          mkdir -p leg-identity
+          python - <<'PY'
+          import hashlib, json, os, subprocess, sys
+          from pathlib import Path
+
+          sys.path.insert(0, "home-lab-gradient/scripts")
+          from lab import page_identity, validate_source
+
+          def digest(path):
+              return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+          def lf_digest(path):
+              # Members that are not pinned to LF check out with CRLF on Windows
+              # and LF on Ubuntu. Their content identity is still comparable, so
+              # it is compared over the normalized bytes git itself stores.
+              data = Path(path).read_bytes()
+              return hashlib.sha256(
+                  data.replace(bytes((13, 10)), bytes((10,)))
+              ).hexdigest()
+
+          tree = subprocess.run(
+              ["git", "rev-parse", "HEAD^{tree}"], capture_output=True, text=True, check=True
+          ).stdout.strip()
+
+          seed = json.loads(
+              subprocess.run(
+                  [sys.executable, "home-lab-gradient/seed/verify.py", "--root", "home-lab-gradient"],
+                  capture_output=True, text=True, check=True,
+              ).stdout
+          )
+          identity = page_identity()
+          validation = validate_source()
+          record = {
+              "schema": "axm-community-lab/gradient-leg-identity@1",
+              "leg": os.environ["LEG_SLUG"],
+              "runtime": identity["runtime"],
+              # Only this block is compared across legs. Everything a runtime is
+              # entitled to differ on stays out of it.
+              "identity": {
+                  **identity["identity"],
+                  "seed_id": seed["seed_id"],
+                  "plan_sha256": validation["plan_sha256"],
+                  "source_validation_status": validation["status"],
+                  "test_count": int(os.environ["EXPECTED_TEST_COUNT"]),
+                  "collector_linux_sha256": digest("home-lab-gradient/scripts/collect-linux.py"),
+                  "collector_windows_lf_sha256": lf_digest("home-lab-gradient/scripts/collect-windows.ps1"),
+                  "seed_sums_sha256": digest("home-lab-gradient/seed/sha256sums.txt"),
+                  "gitattributes_lf_sha256": lf_digest("home-lab-gradient/.gitattributes"),
+                  "git_tree": tree,
+              },
+          }
+          Path("leg-identity/leg.json").write_text(
+              json.dumps(record, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
+          )
+          print(json.dumps(record, indent=2, sort_keys=True))
+          PY
+        env:
+          LEG_SLUG: ${{ steps.leg.outputs.slug }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: leg-identity-${{ steps.leg.outputs.slug }}
+          path: leg-identity/leg.json
+          if-no-files-found: error
+
+  compare:
+    name: Cross-leg source identity
+    needs: validate
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: leg-identity-*
+          path: legs
+
+      - name: Every leg must report one source identity
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          records = []
+          for path in sorted(Path("legs").rglob("leg.json")):
+              records.append(json.loads(path.read_text(encoding="utf-8")))
+          if len(records) < 4:
+              raise SystemExit(f"expected four legs, received {len(records)}")
+
+          identities = {json.dumps(row["identity"], sort_keys=True) for row in records}
+          for row in records:
+              print(row["leg"], "->", row["identity"]["page_sha256"])
+          if len(identities) != 1:
+              for row in records:
+                  print(json.dumps(row, indent=2, sort_keys=True))
+              raise SystemExit("legs disagree about the source identity")
+          print(f"{len(records)} legs agree on one source identity")
+          PY

@@ -1,19 +1,91 @@
 #!/usr/bin/env python3
-"""Build the standalone Home Lab Capability Gradient interface."""
+"""Build the standalone Home Lab Capability Gradient interface.
+
+The page is a committed, byte-addressed product: every workflow leg rebuilds it
+and fails on a tracked difference. That only works if the build emits the same
+bytes on every admitted runtime, so this module owns both variables that a
+naive build inherits from its interpreter -- the gzip container header and the
+text-mode newline translation -- instead of letting the platform choose them.
+"""
 
 from __future__ import annotations
 
 import base64
-import gzip
+import hashlib
 import html
 import json
+import zlib
 from pathlib import Path
 from typing import Any, Mapping
+
+# gzip container fields this module writes itself. ``gzip.compress`` does not
+# write a stable header: CPython 3.11 and 3.12 delegate to zlib, which stamps
+# its own platform OS byte (0x03 on Unix, 0x0a on Windows), while 3.10 and 3.13
+# write 0xff. That single byte is the entire observed cross-runtime page drift
+# -- the raw deflate stream itself was byte-identical on every leg measured --
+# so the header is constructed here and never inherited.
+GZIP_MAGIC = b"\x1f\x8b"
+GZIP_METHOD_DEFLATE = 8
+GZIP_NO_FLAGS = 0
+GZIP_MTIME_ZERO = 0
+GZIP_XFL_BEST_COMPRESSION = 2
+GZIP_OS_UNKNOWN = 255
+COMPRESSION_LEVEL = 9
+
+# A fixed probe over the same code path as the payload. Its digest is the
+# behavioural identity of the local deflate implementation: it moves if zlib's
+# level-9 output moves, which is the one remaining way the product bytes could
+# drift between runtimes. The build refuses rather than rewriting the product
+# when it does not match AUTHORITATIVE_COMPRESSOR_SHA256.
+COMPRESSOR_PROBE = (
+    bytes(range(256)) * 8
+    + b'{"schema":"axm-community-lab/page-identity@1","home-lab-gradient":true}' * 64
+    + bytes(range(255, -1, -1)) * 8
+)
+AUTHORITATIVE_COMPRESSOR_SHA256 = "9e9209ef39367ae08b7a384ac84d23eff76ee9b5118368c97119f8f8475e7335"
+
+
+class RenderError(RuntimeError):
+    """Raised when the page cannot be built reproducibly on this runtime."""
+
+
+def canonical_gzip(raw: bytes) -> bytes:
+    """Frame a deflate stream in a gzip container with fixed header bytes."""
+    compressor = zlib.compressobj(COMPRESSION_LEVEL, zlib.DEFLATED, -zlib.MAX_WBITS)
+    body = compressor.compress(raw) + compressor.flush()
+    header = (
+        GZIP_MAGIC
+        + bytes((GZIP_METHOD_DEFLATE, GZIP_NO_FLAGS))
+        + GZIP_MTIME_ZERO.to_bytes(4, "little")
+        + bytes((GZIP_XFL_BEST_COMPRESSION, GZIP_OS_UNKNOWN))
+    )
+    trailer = (zlib.crc32(raw) & 0xFFFFFFFF).to_bytes(4, "little") + (len(raw) & 0xFFFFFFFF).to_bytes(4, "little")
+    return header + body + trailer
+
+
+def compressor_fingerprint() -> str:
+    """Digest of this runtime's canonical framing of the fixed probe vector."""
+    return hashlib.sha256(canonical_gzip(COMPRESSOR_PROBE)).hexdigest()
+
+
+def assert_authoritative_compressor() -> str:
+    """Refuse to build on a runtime that cannot reproduce the product bytes.
+
+    A non-authoritative runtime must fail loudly here rather than rewrite a
+    tracked, digest-addressed product with bytes no other leg can reproduce.
+    """
+    observed = compressor_fingerprint()
+    if observed != AUTHORITATIVE_COMPRESSOR_SHA256:
+        raise RenderError(
+            "this runtime's deflate implementation is not the authoritative page builder: "
+            f"expected compressor fingerprint {AUTHORITATIVE_COMPRESSOR_SHA256}, observed {observed}"
+        )
+    return observed
 
 
 def _compressed_payload(value: Mapping[str, Any]) -> str:
     raw = json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-    return base64.b64encode(gzip.compress(raw, compresslevel=9, mtime=0)).decode("ascii")
+    return base64.b64encode(canonical_gzip(raw)).decode("ascii")
 
 
 def build_page(
@@ -270,5 +342,12 @@ footer{{border-top:1px solid var(--line);margin-top:28px;padding:18px 0;color:va
 
 
 def write_page(path: Path, **kwargs: Mapping[str, Any]) -> None:
+    """Write the exact product bytes: LF endings on every platform, no BOM.
+
+    ``write_text`` in the default text mode translates LF to CRLF on Windows,
+    which would make the same source produce two different tracked products.
+    """
+    assert_authoritative_compressor()
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(build_page(**kwargs), encoding="utf-8")
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(build_page(**kwargs))

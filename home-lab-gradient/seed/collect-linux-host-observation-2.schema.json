@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "axm-community-lab/host-observation@2",
+  "title": "axm-community-lab/host-observation@2",
+  "description": "Platform-neutral read-only host observation. The denominator is closed: an absent tool or unreadable surface is represented explicitly rather than omitted. Prohibited private identifiers (disk or board serial numbers, machine GUIDs, MAC addresses, IP addresses, credentials, tokens, private keys, SSH material, Tailscale identity, persistent callback coordinates) must never appear.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "observed_at",
+    "platform",
+    "host_id",
+    "collector",
+    "system",
+    "cpu",
+    "memory",
+    "storage",
+    "graphics",
+    "network",
+    "runtime",
+    "clock",
+    "surfaces",
+    "privacy",
+    "observation_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "axm-community-lab/host-observation@2"},
+    "observed_at": {"type": "string", "description": "UTC wall time, RFC3339 with a Z suffix"},
+    "platform": {"type": "string", "enum": ["linux", "windows"]},
+    "host_id": {"type": "string", "minLength": 1, "description": "Host id declared in the estate descriptor"},
+    "collector": {
+      "type": "object",
+      "description": "Collector source identity and Python executable identity.",
+      "required": ["schema", "platform", "source_path", "source_sha256", "python_executable"],
+      "properties": {
+        "schema": {"const": "axm-community-lab/host-observation-collector@1"},
+        "platform": {"const": "linux"},
+        "source_path": {"type": "string", "minLength": 1},
+        "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "python_executable": {
+          "type": "object",
+          "required": ["path", "sha256"],
+          "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "version": {"type": "string"}
+          }
+        }
+      }
+    },
+    "system": {
+      "type": "object",
+      "description": "Host, operating system, kernel, architecture, and firmware identity. Firmware fields are null when the DMI surface is unreadable; serial-bearing DMI files are never read.",
+      "required": ["hostname", "kernel", "architecture"],
+      "properties": {
+        "hostname": {"type": "string", "minLength": 1},
+        "os_release": {"type": ["string", "null"]},
+        "os_version": {"type": ["string", "null"]},
+        "os_id": {"type": ["string", "null"]},
+        "kernel": {"type": "string", "minLength": 1},
+        "kernel_version": {"type": ["string", "null"]},
+        "architecture": {"type": "string", "minLength": 1},
+        "manufacturer": {"type": ["string", "null"]},
+        "model": {"type": ["string", "null"]},
+        "firmware": {
+          "type": "object",
+          "properties": {
+            "bios_manufacturer": {"type": ["string", "null"]},
+            "bios_version": {"type": ["string", "null"]},
+            "bios_date": {"type": ["string", "null"]},
+            "system_manufacturer": {"type": ["string", "null"]},
+            "system_product_name": {"type": ["string", "null"]},
+            "system_family": {"type": ["string", "null"]},
+            "board_name": {"type": ["string", "null"]}
+          }
+        }
+      }
+    },
+    "cpu": {
+      "type": "array",
+      "minItems": 1,
+      "description": "One row per physical package.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": ["string", "null"]},
+          "vendor": {"type": ["string", "null"]},
+          "package_id": {"type": ["string", "null"]},
+          "cores": {"type": ["integer", "null"]},
+          "logical_processors": {"type": ["integer", "null"]},
+          "logical_processors_observed": {"type": "integer"},
+          "current_clock_mhz": {"type": ["integer", "null"]},
+          "max_clock_mhz": {"type": ["integer", "null"]},
+          "virtualization_firmware_enabled": {"type": ["boolean", "null"]}
+        }
+      }
+    },
+    "memory": {
+      "type": "object",
+      "required": ["total_bytes", "modules", "modules_available", "modules_source"],
+      "properties": {
+        "total_bytes": {"type": "integer", "minimum": 1},
+        "modules": {"type": "array"},
+        "modules_available": {"type": "boolean"},
+        "modules_source": {
+          "type": "object",
+          "description": "Explicit evidence about per-module readability. Per-module DMI data is never parsed: it carries module serial numbers.",
+          "required": ["path", "readable", "note"],
+          "properties": {
+            "path": {"type": "string"},
+            "readable": {"type": "boolean"},
+            "note": {"type": "string"}
+          }
+        }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "required": ["physical_disks", "logical_volumes"],
+      "description": "Disk and volume evidence without serial numbers or WWNs.",
+      "properties": {
+        "physical_disks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": ["string", "null"]},
+              "model": {"type": ["string", "null"]},
+              "size_bytes": {"type": ["integer", "null"]},
+              "rotational": {"type": ["integer", "boolean", "null"]}
+            }
+          }
+        },
+        "logical_volumes": {"type": "array"},
+        "source": {"type": "string"},
+        "available": {"type": "boolean"},
+        "note": {"type": ["string", "null"]}
+      }
+    },
+    "graphics": {
+      "type": "object",
+      "required": ["adapters", "nvidia"],
+      "description": "Integrated-graphics candidates from PCI display-class evidence and NVIDIA devices from nvidia-smi. Neither is inferred from a declared inventory.",
+      "properties": {
+        "adapters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": ["string", "null"]},
+              "device_class": {"type": ["string", "null"]},
+              "pnp_device_id": {"type": ["string", "null"]},
+              "bus_id": {"type": ["string", "null"]},
+              "vendor_guess": {"type": "string"},
+              "role_candidate": {"type": "string", "enum": ["igpu", "igpu-candidate", "dgpu", "unclassified"]}
+            }
+          }
+        },
+        "nvidia": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["uuid"],
+            "properties": {
+              "uuid": {"type": "string", "minLength": 1},
+              "name": {"type": ["string", "null"]},
+              "memory_total_mib": {"type": ["integer", "null"]},
+              "driver_version": {"type": ["string", "null"]},
+              "pci_bus_id": {"type": ["string", "null"]},
+              "pstate": {"type": ["string", "null"]},
+              "power_limit_watts": {"type": ["number", "null"]}
+            }
+          }
+        }
+      }
+    },
+    "network": {
+      "type": "object",
+      "required": ["adapters", "addresses_collected"],
+      "description": "Physical link evidence only. MAC and IP addresses are never read.",
+      "properties": {
+        "adapters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "state": {"type": ["string", "null"]},
+              "mtu": {"type": ["integer", "null"]},
+              "speed_mbps": {"type": ["integer", "null"]},
+              "physical": {"type": "boolean"}
+            }
+          }
+        },
+        "addresses_collected": {"const": false}
+      }
+    },
+    "runtime": {
+      "type": "array",
+      "description": "Closed denominator: exactly one row for python, git, ollama, docker, wsl, and nvidia-smi. A platform-inapplicable runtime does not disappear; on native Linux wsl is present=false, disabled=true, path=null with the inapplicability reason.",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": ["name", "present", "path", "disabled", "disabled_reason"],
+        "properties": {
+          "name": {"type": "string", "enum": ["python", "git", "ollama", "docker", "wsl", "nvidia-smi"]},
+          "present": {"type": "boolean"},
+          "path": {"type": ["string", "null"]},
+          "disabled": {"type": "boolean"},
+          "disabled_reason": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "clock": {
+      "type": "object",
+      "required": ["stopwatch_frequency_hz", "samples", "cross_host_offset_measured"],
+      "properties": {
+        "stopwatch_frequency_hz": {"type": "integer"},
+        "monotonic_resolution_ns": {"type": "integer"},
+        "samples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["wall_utc", "monotonic_ns"],
+            "properties": {
+              "wall_utc": {"type": "string"},
+              "monotonic_ns": {"type": "integer"},
+              "perf_counter_ns": {"type": "integer"}
+            }
+          }
+        },
+        "cross_host_offset_measured": {"const": false}
+      }
+    },
+    "surfaces": {
+      "type": "object",
+      "required": ["files", "tools"],
+      "description": "Explicit readability and availability evidence for every consulted surface. An absent optional tool is recorded, never omitted.",
+      "properties": {
+        "files": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["path", "readable"],
+            "properties": {
+              "path": {"type": "string"},
+              "readable": {"type": "boolean"}
+            }
+          }
+        },
+        "tools": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["available", "path", "note"],
+            "properties": {
+              "available": {"type": "boolean"},
+              "path": {"type": ["string", "null"]},
+              "note": {"type": ["string", "null"]}
+            }
+          }
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "description": "Explicit refusals. Every value must be false; a true value is a retention and refuses qualification.",
+      "required": [
+        "serial_numbers_collected",
+        "mac_addresses_collected",
+        "ip_addresses_collected",
+        "machine_guid_collected"
+      ],
+      "properties": {
+        "serial_numbers_collected": {"const": false},
+        "mac_addresses_collected": {"const": false},
+        "ip_addresses_collected": {"const": false},
+        "machine_guid_collected": {"const": false}
+      }
+    },
+    "claim_boundary": {"type": "string"},
+    "observation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 over the canonical JSON bytes of this object with observation_sha256 removed: sort_keys=True, separators=(',',':'), ensure_ascii=False, UTF-8."
+    }
+  }
+}

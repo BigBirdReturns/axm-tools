@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://axm.tools/schemas/axm-community-lab/host-observation-receipt-1.json",
+  "title": "axm-community-lab/host-observation-receipt@1",
+  "description": "Body-free return receipt for one host observation. It binds the identity and digests of an observation so a join can be recorded in the open while the observed body stays on the host that produced it. Issue #151 requires the N01 result to return as a body-contained observation plus this receipt for the W01 join. The receipt carries no hostname, device name, model, capacity, path, kernel string, or accelerator identifier: the only observation-body values it may repeat are the declared join coordinates listed in body_free_join_coordinates, and the collector and Python executable digests.",
+  "type": "object",
+  "additionalProperties": false,
+  "body_free_join_coordinates": [
+    "schema",
+    "platform",
+    "host_id",
+    "observed_at",
+    "observation_sha256"
+  ],
+  "required": [
+    "schema",
+    "observation_schema",
+    "collector_schema",
+    "platform",
+    "host_id",
+    "observed_at",
+    "observation_sha256",
+    "observation_file_name",
+    "observation_file_sha256",
+    "observation_file_bytes",
+    "host_fingerprint_sha256",
+    "accelerator_identity_sha256",
+    "accelerator_identity_count",
+    "collector_source_sha256",
+    "python_executable_sha256",
+    "seed_id",
+    "seed_manifest_sha256",
+    "carries_observation_body",
+    "claim_boundary",
+    "receipt_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "axm-community-lab/host-observation-receipt@1"
+    },
+    "observation_schema": {
+      "const": "axm-community-lab/host-observation@2"
+    },
+    "collector_schema": {
+      "const": "axm-community-lab/host-observation-collector@1"
+    },
+    "platform": {
+      "const": "linux"
+    },
+    "host_id": {
+      "description": "The declared Estate role the observation was collected under. A role label, never a host name.",
+      "type": "string",
+      "enum": [
+        "control-host",
+        "heavy-host-a",
+        "heavy-host-b"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "observation_sha256": {
+      "description": "SHA-256 of the canonical observation body, excluding the digest field itself.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "observation_file_name": {
+      "description": "Basename of the published observation, always <host-id>.json.",
+      "type": "string",
+      "pattern": "^[a-z0-9-]+\\.json$"
+    },
+    "observation_file_sha256": {
+      "description": "SHA-256 of the exact published file bytes, which is not the same value as observation_sha256.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "observation_file_bytes": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "host_fingerprint_sha256": {
+      "description": "Body-safe observed-host fingerprint. Distinct fingerprints are what prove three machines rather than three labels; the digest publishes none of its inputs.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "accelerator_identity_sha256": {
+      "description": "SHA-256 of each accelerator identity, so cross-host duplication is checkable without publishing any accelerator identifier.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "accelerator_identity_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "collector_source_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "python_executable_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "seed_id": {
+      "description": "SHA-256 of the exact bytes of seed/sha256sums.txt: the identity of the bundle that produced this receipt.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "seed_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "carries_observation_body": {
+      "const": false
+    },
+    "claim_boundary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "receipt_sha256": {
+      "description": "SHA-256 of the canonical receipt body, excluding this field.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
