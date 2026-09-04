@@ -1,0 +1,184 @@
+name: NEVER MERGE Gradient 151 fe48d3 independent review
+
+on:
+  push:
+    branches:
+      - review/gradient-151-fe48d3-20260904
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gradient-151-fe48d3-independent-review-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONUTF8: "1"
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  audit:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+        python:
+          - "3.10"
+          - "3.12"
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+
+    steps:
+      - name: Configure Estate checkout policy
+        shell: bash
+        run: git config --global core.autocrlf true
+
+      - name: Check out exact review head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Execute candidate denominator and independent attacks
+        shell: bash
+        run: |
+          python review/gradient_151_fe48d3_independent_audit.py \
+            --out gradient-151-fe48d3-audit.json
+
+      - name: Parse the retained Windows collector
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $errors = $null
+          $tokens = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'home-lab-gradient/scripts/collect-windows.ps1'),
+            [ref]$tokens,
+            [ref]$errors) | Out-Null
+          if ($errors -and $errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.Message }
+            exit 1
+          }
+          Write-Host 'WINDOWS_COLLECTOR_PARSE_PASS'
+
+      - name: Upload independent audit receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradient-151-fe48d3-${{ matrix.os }}-py${{ matrix.python }}
+          path: gradient-151-fe48d3-audit.json
+          if-no-files-found: error
+          retention-days: 14
+
+  compare:
+    name: Compare independent audit receipts
+    if: always()
+    needs:
+      - audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Download all leg receipts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: gradient-151-fe48d3-*
+          path: receipts
+
+      - name: Require exact-source convergence and reproducible findings
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          paths = sorted(Path('receipts').rglob('gradient-151-fe48d3-audit.json'))
+          if len(paths) != 4:
+              raise SystemExit(f'expected four receipts, observed {len(paths)}')
+          rows = [json.loads(path.read_text(encoding='utf-8')) for path in paths]
+          expected_status = 'HOLD_INDEPENDENT_REVIEW_FINDINGS_REPRODUCED'
+          statuses = [row.get('status') for row in rows]
+          if statuses != [expected_status] * 4:
+              raise SystemExit(f'audit status denominator differs: {statuses}')
+
+          sources = {
+              (
+                  row['candidate_source']['head'],
+                  row['candidate_source']['tree'],
+                  row['candidate_source']['base'],
+                  row['candidate_source']['seed_id'],
+                  row['candidate_source']['page_sha256'],
+              )
+              for row in rows
+          }
+          if len(sources) != 1:
+              raise SystemExit(f'candidate source identities differ: {sources}')
+
+          for row in rows:
+              if not all(
+                  value.get('closed') is True
+                  for value in row['prior_review_repairs'].values()
+              ):
+                  raise SystemExit('a prior review repair failed to reproduce')
+              receipt_gap = row['findings']['P1_RECEIPTLESS_BODY_CAN_ENTER_THREE_HOST_JOIN']
+              if receipt_gap.get('vulnerable') is not True:
+                  raise SystemExit('receiptless-body join finding did not reproduce on one leg')
+
+          supported_symlink = [
+              row['findings']['P1_FINAL_OUTPUT_SYMLINK_ESCAPE']
+              for row in rows
+              if row['findings']['P1_FINAL_OUTPUT_SYMLINK_ESCAPE'].get('supported') is True
+          ]
+          if not supported_symlink:
+              raise SystemExit('no leg could execute the output-symlink attack')
+          if not all(row.get('vulnerable') is True for row in supported_symlink):
+              raise SystemExit('output-symlink attack did not reproduce on every supporting leg')
+
+          source = next(iter(sources))
+          aggregate = {
+              'schema': 'axm-tools/gradient-151-fe48d3-independent-audit-comparison@1',
+              'status': expected_status,
+              'legs': len(rows),
+              'source': {
+                  'head': source[0],
+                  'tree': source[1],
+                  'base': source[2],
+                  'seed_id': source[3],
+                  'page_sha256': source[4],
+              },
+              'finding_ids': [
+                  'P1_FINAL_OUTPUT_SYMLINK_ESCAPE',
+                  'P1_RECEIPTLESS_BODY_CAN_ENTER_THREE_HOST_JOIN',
+              ],
+              'symlink_attack_supporting_legs': len(supported_symlink),
+              'receipt_sha256': [hashlib.sha256(path.read_bytes()).hexdigest() for path in paths],
+              'physical_host_contacted': False,
+              'physical_observation_generated': False,
+              'provider_calls': 0,
+              'model_calls': 0,
+              'authority': 'none',
+          }
+          Path('GRADIENT-151-FE48D3-INDEPENDENT-AUDIT-COMPARISON.json').write_text(
+              json.dumps(aggregate, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+              newline='\n',
+          )
+          print(json.dumps(aggregate, sort_keys=True))
+          PY
+
+      - name: Upload comparison receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradient-151-fe48d3-comparison
+          path: GRADIENT-151-FE48D3-INDEPENDENT-AUDIT-COMPARISON.json
+          if-no-files-found: error
+          retention-days: 14
