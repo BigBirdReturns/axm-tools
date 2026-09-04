@@ -155,9 +155,10 @@ jobs:
               # Members that are not pinned to LF check out with CRLF on Windows
               # and LF on Ubuntu. Their content identity is still comparable, so
               # it is compared over the normalized bytes git itself stores.
-              return hashlib.sha256(Path(path).read_bytes().replace(b"
-", b"
-")).hexdigest()
+              data = Path(path).read_bytes()
+              return hashlib.sha256(
+                  data.replace(bytes((13, 10)), bytes((10,)))
+              ).hexdigest()
 
           tree = subprocess.run(
               ["git", "rev-parse", "HEAD^{tree}"], capture_output=True, text=True, check=True
