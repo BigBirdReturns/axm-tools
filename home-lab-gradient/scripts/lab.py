@@ -48,6 +48,37 @@ DATA = ROOT / "data"
 WINDOWS_HOST_SCHEMA = "axm-community-lab/windows-host-observation@1"
 LINUX_HOST_SCHEMA = "axm-community-lab/host-observation@2"
 COLLECTOR_SCHEMA = "axm-community-lab/host-observation-collector@1"
+HOST_OBSERVATION_RECEIPT_SCHEMA = "axm-community-lab/host-observation-receipt@1"
+HOST_OBSERVATION_RECEIPT_SUFFIX = ".receipt.json"
+HOST_OBSERVATION_RECEIPT_REQUIRED = (
+    "schema",
+    "observation_schema",
+    "collector_schema",
+    "platform",
+    "host_id",
+    "observed_at",
+    "observation_sha256",
+    "observation_file_name",
+    "observation_file_sha256",
+    "observation_file_bytes",
+    "host_fingerprint_sha256",
+    "accelerator_identity_sha256",
+    "accelerator_identity_count",
+    "collector_source_sha256",
+    "python_executable_sha256",
+    "seed_id",
+    "seed_manifest_sha256",
+    "carries_observation_body",
+    "claim_boundary",
+    "receipt_sha256",
+)
+HOST_OBSERVATION_RECEIPT_JOIN_COORDINATES = (
+    "schema",
+    "platform",
+    "host_id",
+    "observed_at",
+    "observation_sha256",
+)
 REQUIRED_RUNTIME_NAMES = ("python", "git", "ollama", "docker", "wsl", "nvidia-smi")
 PROHIBITED_FIELD_MARKERS = (
     "serial",
@@ -822,6 +853,141 @@ def observed_host_fingerprint(host_observation: Mapping[str, Any]) -> str:
     return hashlib.sha256(canonical_bytes(host_fingerprint_components(host_observation))).hexdigest()
 
 
+def host_observation_receipt_path(observation_path: Path, host_id: str) -> Path:
+    """The one admitted commit marker: an exact sibling named from host_id."""
+    return observation_path.with_name(f"{host_id}{HOST_OBSERVATION_RECEIPT_SUFFIX}")
+
+
+def admitted_seed_identity() -> tuple[str, str]:
+    """Return (seed id, manifest digest) from the exact admitted seed bytes."""
+    sums = ROOT / "seed" / "sha256sums.txt"
+    manifest = ROOT / "seed" / "seed-manifest.json"
+    return sha256_file(sums), sha256_file(manifest)
+
+
+def _receipt_body_strings(payload: Any, found: set[str]) -> None:
+    if isinstance(payload, Mapping):
+        for value in payload.values():
+            _receipt_body_strings(value, found)
+    elif isinstance(payload, list):
+        for value in payload:
+            _receipt_body_strings(value, found)
+    elif isinstance(payload, str) and len(payload) >= 3:
+        found.add(payload)
+
+
+def _receipt_scalar_strings(payload: Any, found: list[str]) -> None:
+    if isinstance(payload, Mapping):
+        for value in payload.values():
+            _receipt_scalar_strings(value, found)
+    elif isinstance(payload, list):
+        for value in payload:
+            _receipt_scalar_strings(value, found)
+    elif isinstance(payload, str):
+        found.append(payload)
+
+
+def host_receipt_body_leak_failures(
+    receipt: Mapping[str, Any], observation: Mapping[str, Any], host_id: str
+) -> list[str]:
+    """Refuse any host-descriptive observation value carried by the receipt."""
+    collector = _mapping(observation.get("collector"))
+    python_identity = _mapping(collector.get("python_executable"))
+    allowed = {str(observation.get(name)) for name in HOST_OBSERVATION_RECEIPT_JOIN_COORDINATES}
+    allowed.update(
+        {
+            str(collector.get("schema")),
+            str(collector.get("source_sha256")),
+            str(python_identity.get("sha256")),
+        }
+    )
+    body: set[str] = set()
+    _receipt_body_strings(observation, body)
+    receipt_values: list[str] = []
+    _receipt_scalar_strings(receipt, receipt_values)
+    failures: list[str] = []
+    for candidate in sorted(body - allowed):
+        if any(candidate == value or (len(candidate) >= 8 and candidate in value) for value in receipt_values):
+            failures.append(f"{host_id}: receipt carries an observation body value: {candidate!r}")
+    return failures
+
+
+def validate_host_observation_receipt(
+    receipt: Mapping[str, Any], observation: Mapping[str, Any], observation_path: Path
+) -> list[str]:
+    """Verify the body-free physical commit marker against exact observation bytes."""
+    host_id = str(observation.get("host_id") or observation_path.stem)
+    failures: list[str] = []
+    for field in HOST_OBSERVATION_RECEIPT_REQUIRED:
+        if field not in receipt:
+            failures.append(f"{host_id}: receipt field missing: {field}")
+    extras = sorted(set(receipt) - set(HOST_OBSERVATION_RECEIPT_REQUIRED))
+    if extras:
+        failures.append(f"{host_id}: receipt carries unrecognized fields: {', '.join(extras)}")
+    if receipt.get("schema") != HOST_OBSERVATION_RECEIPT_SCHEMA:
+        failures.append(f"{host_id}: receipt schema mismatch")
+    if receipt.get("observation_schema") != observation.get("schema"):
+        failures.append(f"{host_id}: receipt observation_schema does not bind the observation schema")
+    collector = _mapping(observation.get("collector"))
+    if receipt.get("collector_schema") != collector.get("schema"):
+        failures.append(f"{host_id}: receipt collector_schema does not bind the observation collector")
+    for field in ("platform", "host_id", "observed_at", "observation_sha256"):
+        if receipt.get(field) != observation.get(field):
+            failures.append(f"{host_id}: receipt {field} does not bind the observation")
+    expected_name = f"{host_id}.json"
+    if observation_path.name != expected_name:
+        failures.append(
+            f"{host_id}: Linux observation file name must be the declared lexical name {expected_name}"
+        )
+    if receipt.get("observation_file_name") != observation_path.name:
+        failures.append(f"{host_id}: receipt observation_file_name does not name the declared observation")
+    try:
+        exact_digest = sha256_file(observation_path)
+        exact_bytes = observation_path.stat().st_size
+    except OSError as exc:
+        failures.append(f"{host_id}: observation file cannot be bound by receipt: {exc}")
+    else:
+        if receipt.get("observation_file_sha256") != exact_digest:
+            failures.append(f"{host_id}: receipt observation_file_sha256 does not bind the exact file bytes")
+        if receipt.get("observation_file_bytes") != exact_bytes:
+            failures.append(f"{host_id}: receipt observation_file_bytes does not bind the exact file size")
+    if receipt.get("host_fingerprint_sha256") != observed_host_fingerprint(observation):
+        failures.append(f"{host_id}: receipt host_fingerprint_sha256 does not recompute")
+    identities = accelerator_identities(observation)
+    identity_digests = sorted(
+        hashlib.sha256(identity.encode("utf-8")).hexdigest() for identity in identities
+    )
+    if receipt.get("accelerator_identity_sha256") != identity_digests:
+        failures.append(f"{host_id}: receipt accelerator_identity_sha256 does not recompute")
+    if receipt.get("accelerator_identity_count") != len(identities):
+        failures.append(f"{host_id}: receipt accelerator_identity_count does not match")
+    python_identity = _mapping(collector.get("python_executable"))
+    if receipt.get("collector_source_sha256") != collector.get("source_sha256"):
+        failures.append(f"{host_id}: receipt collector_source_sha256 does not bind the collector")
+    if receipt.get("python_executable_sha256") != python_identity.get("sha256"):
+        failures.append(f"{host_id}: receipt python_executable_sha256 does not bind the collector runtime")
+    try:
+        seed_id, manifest_sha256 = admitted_seed_identity()
+    except OSError as exc:
+        failures.append(f"{host_id}: admitted seed identity is unreadable: {exc}")
+    else:
+        if receipt.get("seed_id") != seed_id:
+            failures.append(f"{host_id}: receipt seed_id does not bind the admitted seed")
+        if receipt.get("seed_manifest_sha256") != manifest_sha256:
+            failures.append(f"{host_id}: receipt seed_manifest_sha256 does not bind the admitted manifest")
+    if receipt.get("carries_observation_body") is not False:
+        failures.append(f"{host_id}: receipt must declare carries_observation_body false")
+    if not isinstance(receipt.get("claim_boundary"), str) or not receipt.get("claim_boundary"):
+        failures.append(f"{host_id}: receipt claim_boundary missing")
+    expected_receipt_digest = hashlib.sha256(
+        canonical_bytes({key: value for key, value in receipt.items() if key != "receipt_sha256"})
+    ).hexdigest()
+    if receipt.get("receipt_sha256") != expected_receipt_digest:
+        failures.append(f"{host_id}: receipt digest mismatch")
+    failures.extend(host_receipt_body_leak_failures(receipt, observation, host_id))
+    return failures
+
+
 def physical_identity_failures(
     fingerprints: Mapping[str, str],
     accelerators: Mapping[str, Sequence[str]],
@@ -925,11 +1091,13 @@ def qualify_estate(
     private_failures: list[str] = []
     digest_failures: list[str] = []
     source_failures: list[str] = []
+    receipt_failures: list[str] = []
     inventory_failures: list[str] = []
     device_failures: list[str] = []
     disabled_reason_failures: list[str] = []
     fingerprints: dict[str, str] = {}
     accelerators: dict[str, list[str]] = {}
+    receipt_digests: dict[str, str] = {}
     for source in observations:
         item = load_json(source)
         schema = str(item.get("schema") or "")
@@ -954,6 +1122,37 @@ def qualify_estate(
             continue
         if platform == "linux":
             source_failures.extend(validate_linux_observation_identity(item, host_id=host_id))
+            receipt_source = host_observation_receipt_path(source, host_id)
+            receipt_target = inputs_dir / receipt_source.name
+            try:
+                receipt_raw = receipt_source.read_bytes()
+            except FileNotFoundError:
+                receipt_failures.append(
+                    f"{host_id}: required Linux observation receipt missing: {receipt_source.name}"
+                )
+            except OSError as exc:
+                receipt_failures.append(
+                    f"{host_id}: required Linux observation receipt unreadable: {receipt_source.name}: {exc}"
+                )
+            else:
+                shutil.copy2(receipt_source, receipt_target)
+                copied.append(receipt_target)
+                receipt_digests[host_id] = sha256_file(receipt_target)
+                try:
+                    receipt_item = json.loads(receipt_raw.decode("utf-8"))
+                except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+                    receipt_failures.append(
+                        f"{host_id}: malformed Linux observation receipt {receipt_source.name}: {exc}"
+                    )
+                else:
+                    if not isinstance(receipt_item, Mapping):
+                        receipt_failures.append(
+                            f"{host_id}: malformed Linux observation receipt {receipt_source.name}: root must be an object"
+                        )
+                    else:
+                        receipt_failures.extend(
+                            validate_host_observation_receipt(receipt_item, item, source)
+                        )
         disabled_reason_failures.extend(
             disabled_with_reason_failures(
                 item,
@@ -1046,12 +1245,14 @@ def qualify_estate(
         "accelerator_domains_resolved": resolved_domains,
         "hosts": host_rows,
         "source_digests": {host_id: observation_digest(item) for host_id, item in sorted(loaded.items())},
+        "receipt_file_digests": dict(sorted(receipt_digests.items())),
         "unresolved": {
             "general": failures,
             "host_inventory": inventory_failures,
             "disabled_with_reason": disabled_reason_failures,
             "observation_digests": digest_failures,
             "source_identity": source_failures,
+            "observation_receipts": receipt_failures,
             "privacy": private_failures,
             "physical_identity": identity_failures,
             "device_identity": device_failures,
@@ -1068,6 +1269,7 @@ def qualify_estate(
         and not disabled_reason_failures
         and not digest_failures
         and not source_failures
+        and not receipt_failures
         and not private_failures
         and not identity_failures
         and len(loaded) == len(expected_hosts)
@@ -1088,6 +1290,11 @@ def qualify_estate(
             "id": "disabled-components-carry-reasons",
             "pass": not disabled_reason_failures,
             "detail": disabled_reason_failures or "every absent runtime is explicitly disabled with a reason",
+        },
+        {
+            "id": "linux-observation-commit-receipts",
+            "pass": not receipt_failures,
+            "detail": receipt_failures or "every Linux observation carries its exact body-free sibling receipt",
         },
         {
             "id": "distinct-physical-hosts",

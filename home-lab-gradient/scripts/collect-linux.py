@@ -993,8 +993,57 @@ def alias_failures(path: Path, role: str) -> list[str]:
     ]
 
 
+def parent_kind(path: Path) -> str:
+    """Classify one parent component without following that component.
+
+    Components are visited from the filesystem root toward the supplied output
+    name.  That ordering matters: once a component is known to be a link or a
+    reparse point, no descendant is inspected through it.
+    """
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
+        return "absent"
+    except OSError:
+        return "unreadable entry"
+    if stat.S_ISLNK(info.st_mode):
+        return "symbolic link"
+    if getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT:
+        return "reparse point"
+    if not stat.S_ISDIR(info.st_mode):
+        return "non-directory entry"
+    return "directory"
+
+
+def parent_failures(path: Path) -> list[str]:
+    """Refuse an alias anywhere in the lexical parent chain.
+
+    ``Path.resolve`` and ``realpath`` are intentionally absent.  Relative paths
+    are anchored at the current working directory without canonicalizing it,
+    and lexical ``.``/``..`` components remain in the walk.
+    """
+    lexical = path if path.is_absolute() else Path.cwd() / path
+    parent = lexical.parent
+    chain = [*reversed(parent.parents), parent]
+    for component in chain:
+        kind = parent_kind(component)
+        if kind == "absent":
+            break
+        if kind != "directory":
+            return [
+                f"output parent component {component} is a {kind}: following it "
+                "would leave the declared output boundary, so nothing was written or removed"
+            ]
+    return []
+
+
 def boundary_failures(path: Path) -> list[str]:
     """Every refusal the declared output coordinate can raise before writing."""
+    failures = parent_failures(path)
+    if failures:
+        # Even lstat of the final name would traverse an aliased parent.  Stop at
+        # the first unlawful component and never inspect a descendant through it.
+        return failures
     return alias_failures(path, "output path") + alias_failures(
         temp_path_for(path), "deterministic temporary name"
     )
@@ -1006,6 +1055,8 @@ def discard_temp(path: Path) -> None:
     Only an ordinary single-link regular file is removed. Anything else is an
     alias for an object outside the boundary and was already refused.
     """
+    if parent_failures(path):
+        return
     temp = temp_path_for(path)
     if link_kind(temp) != "regular file":
         return
@@ -1040,10 +1091,16 @@ def write_atomic_json(payload: Mapping[str, Any], path: Path) -> Path:
     that name already resolves to, which is exactly how a hard link to an
     unlisted file was mutated by an earlier version of this collector.
     """
-    path = path.resolve()
     for failure in boundary_failures(path):
         raise CollectorError(failure)
-    path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        raise CollectorError(f"output parent cannot be created: {exc}") from exc
+    # Reclassify after creation.  This both covers the newly created components
+    # and refuses if an existing component changed while mkdir was in flight.
+    for failure in boundary_failures(path):
+        raise CollectorError(failure)
     data = (json.dumps(payload, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
     descriptor, raw_name = tempfile.mkstemp(
         dir=str(path.parent), prefix=f".{path.name}.", suffix=".tmp"
@@ -1084,13 +1141,16 @@ def collect(
     """Validate the coordinate, build, then publish. Refusal publishes nothing."""
     resolved_coordinates = validate_coordinates(host_id, out_file, coordinates=coordinates)
     out_path = Path(out_file).expanduser()
-    observation, failures = build_observation(host_id)
-    try:
-        target = out_path.resolve()
-    except OSError as exc:
-        raise CollectorError(f"output path cannot be resolved: {exc}") from exc
+    target = out_path
     receipt_target = receipt_path_for(target, host_id.strip())
-    failures = list(failures) + boundary_failures(target) + boundary_failures(receipt_target)
+    coordinate_failures = list(
+        dict.fromkeys(boundary_failures(target) + boundary_failures(receipt_target))
+    )
+    if coordinate_failures:
+        return {}, coordinate_failures
+
+    observation, failures = build_observation(host_id)
+    failures = list(failures)
     if failures:
         discard_temp(target)
         discard_temp(receipt_target)
@@ -1126,7 +1186,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     if failures:
         print(json.dumps({"ok": False, "failures": failures}, indent=2))
         return 1
-    output = Path(args.out_file).expanduser().resolve()
+    output = Path(args.out_file).expanduser()
     print(
         json.dumps(
             {

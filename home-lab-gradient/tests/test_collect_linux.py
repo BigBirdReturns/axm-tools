@@ -391,6 +391,13 @@ class RefusalTests(CollectLinuxTestCase):
 
 
 class AtomicPublicationTests(CollectLinuxTestCase):
+    def assert_no_created_temporary(self, directory: Path) -> None:
+        if directory.is_dir():
+            self.assertFalse(
+                any(item.name.endswith(".tmp") for item in directory.iterdir()),
+                "a refused coordinate must leave no collector-created temporary",
+            )
+
     def test_interrupted_and_foreign_temp_output_is_replaced(self):
         self.output.parent.mkdir(parents=True, exist_ok=True)
         temp = self.collector.temp_path_for(self.output.resolve())
@@ -489,6 +496,114 @@ class AtomicPublicationTests(CollectLinuxTestCase):
         self.assertEqual(written, ["heavy-host-b.json", "heavy-host-b.receipt.json"])
         self.assertFalse(any(name.endswith(".tmp") for name in written))
 
+    def test_ordinary_lexical_output_publishes_observation_and_receipt(self):
+        """The clean control keeps the operator's declared basename intact."""
+        observation, failures = self.run_collect()
+        self.assertEqual(failures, [])
+        self.assertEqual(observation["host_id"], "heavy-host-b")
+        self.assertTrue(self.output.is_file())
+        receipt_path = self.output.parent / "heavy-host-b.receipt.json"
+        self.assertTrue(receipt_path.is_file())
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        self.assertEqual(receipt["observation_file_name"], self.output.name)
+        self.assert_no_created_temporary(self.output.parent)
+
+    def test_final_observation_symlink_refuses_before_host_read_and_preserves_alias(self):
+        self.output.parent.mkdir(parents=True, exist_ok=True)
+        unlisted = self.base / "unlisted-observation-target.txt"
+        original = b"operator-owned observation target\n"
+        unlisted.write_bytes(original)
+        try:
+            os.symlink(unlisted, self.output)
+        except (OSError, NotImplementedError) as exc:  # unprivileged Windows
+            self.skipTest(f"this platform will not create a symbolic link: {exc}")
+
+        with mock.patch.object(
+            self.collector, "read_uname", side_effect=AssertionError("host surface read")
+        ):
+            observation, failures = self.collector.collect("heavy-host-b", self.output)
+
+        self.assertEqual(observation, {})
+        self.assertTrue(any("output path" in item and "symbolic link" in item for item in failures), failures)
+        self.assertTrue(os.path.islink(self.output), "the operator-owned alias must remain")
+        self.assertEqual(unlisted.read_bytes(), original)
+        self.assertFalse((self.output.parent / "heavy-host-b.receipt.json").exists())
+        self.assert_no_created_temporary(self.output.parent)
+
+    def test_final_receipt_symlink_refuses_before_host_read_and_preserves_alias(self):
+        self.output.parent.mkdir(parents=True, exist_ok=True)
+        receipt_path = self.output.parent / "heavy-host-b.receipt.json"
+        unlisted = self.base / "unlisted-receipt-target.txt"
+        original = b"operator-owned receipt target\n"
+        unlisted.write_bytes(original)
+        try:
+            os.symlink(unlisted, receipt_path)
+        except (OSError, NotImplementedError) as exc:  # unprivileged Windows
+            self.skipTest(f"this platform will not create a symbolic link: {exc}")
+
+        with mock.patch.object(
+            self.collector, "read_uname", side_effect=AssertionError("host surface read")
+        ):
+            observation, failures = self.collector.collect("heavy-host-b", self.output)
+
+        self.assertEqual(observation, {})
+        self.assertTrue(any("output path" in item and "symbolic link" in item for item in failures), failures)
+        self.assertFalse(self.output.exists(), "the observation must not publish ahead of a refused receipt")
+        self.assertTrue(os.path.islink(receipt_path), "the operator-owned alias must remain")
+        self.assertEqual(unlisted.read_bytes(), original)
+        self.assert_no_created_temporary(self.output.parent)
+
+    def test_parent_directory_symlink_escape_refuses_before_host_read(self):
+        escaped = self.base / "unlisted-parent-target"
+        escaped.mkdir()
+        marker = escaped / "operator-owned.txt"
+        original = b"outside the declared coordinate\n"
+        marker.write_bytes(original)
+        try:
+            os.symlink(escaped, self.output.parent, target_is_directory=True)
+        except (OSError, NotImplementedError) as exc:  # unprivileged Windows
+            self.skipTest(f"this platform will not create a directory symbolic link: {exc}")
+
+        with mock.patch.object(
+            self.collector, "read_uname", side_effect=AssertionError("host surface read")
+        ), mock.patch.object(
+            self.collector, "link_kind", side_effect=AssertionError("descendant inspected through parent alias")
+        ):
+            observation, failures = self.collector.collect("heavy-host-b", self.output)
+
+        self.assertEqual(observation, {})
+        self.assertTrue(any("parent component" in item and "symbolic link" in item for item in failures), failures)
+        self.assertTrue(os.path.islink(self.output.parent), "the operator-owned parent alias must remain")
+        self.assertEqual(marker.read_bytes(), original)
+        self.assertFalse((escaped / "heavy-host-b.json").exists())
+        self.assertFalse((escaped / "heavy-host-b.receipt.json").exists())
+        self.assert_no_created_temporary(escaped)
+
+    def test_parent_directory_reparse_escape_refuses_on_every_platform(self):
+        """Drive the Windows reparse classification even where none can be made."""
+        self.output.parent.mkdir(parents=True)
+        marker = self.output.parent / "operator-owned.txt"
+        original = b"reparse target stand-in\n"
+        marker.write_bytes(original)
+        real_parent_kind = self.collector.parent_kind
+
+        def classify(path):
+            return "reparse point" if Path(path) == self.output.parent else real_parent_kind(path)
+
+        with mock.patch.object(self.collector, "parent_kind", side_effect=classify), mock.patch.object(
+            self.collector, "read_uname", side_effect=AssertionError("host surface read")
+        ), mock.patch.object(
+            self.collector, "link_kind", side_effect=AssertionError("descendant inspected through parent reparse")
+        ):
+            observation, failures = self.collector.collect("heavy-host-b", self.output)
+
+        self.assertEqual(observation, {})
+        self.assertTrue(any("parent component" in item and "reparse point" in item for item in failures), failures)
+        self.assertEqual(marker.read_bytes(), original)
+        self.assertFalse(self.output.exists())
+        self.assertFalse((self.output.parent / "heavy-host-b.receipt.json").exists())
+        self.assert_no_created_temporary(self.output.parent)
+
     def test_publication_never_writes_through_a_predictable_temporary_name(self):
         """The temporary is created exclusively under an unpredictable name.
 
@@ -512,9 +627,9 @@ class AtomicPublicationTests(CollectLinuxTestCase):
         for directory, name in seen:
             temp = Path(name)
             published_dir = self.output.resolve().parent
-            self.assertEqual(temp.parent, published_dir, "the temporary stays in the output directory")
-            self.assertEqual(Path(str(directory)).resolve(), published_dir)
-            self.assertNotEqual(temp, self.collector.temp_path_for(self.output.resolve()))
+            self.assertTrue(os.path.samefile(temp.parent, published_dir), "the temporary stays in the output directory")
+            self.assertTrue(os.path.samefile(Path(str(directory)), published_dir))
+            self.assertNotEqual(temp.name, self.collector.temp_path_for(self.output).name)
             self.assertFalse(temp.exists(), "no temporary survives publication")
         self.assertNotEqual(seen[0][1], seen[1][1])
 
@@ -582,7 +697,7 @@ class AtomicPublicationTests(CollectLinuxTestCase):
         the exact refusal is asserted on every leg, not only the POSIX ones.
         """
         self.output.parent.mkdir(parents=True, exist_ok=True)
-        temp = self.collector.temp_path_for(self.output.resolve())
+        temp = self.collector.temp_path_for(self.output)
         temp.write_bytes(b"stands in for a symbolic link\n")
         real_link_kind = self.collector.link_kind
 
@@ -610,8 +725,12 @@ class AtomicPublicationTests(CollectLinuxTestCase):
         unlisted.write_bytes(original)
         os.link(unlisted, self.output)
 
-        _, failures = self.run_collect()
+        with mock.patch.object(
+            self.collector, "read_uname", side_effect=AssertionError("host surface read")
+        ):
+            observation, failures = self.collector.collect("heavy-host-b", self.output)
 
+        self.assertEqual(observation, {})
         self.assertTrue(
             any(
                 "output path" in failure and "hard link to an unlisted object" in failure
@@ -621,6 +740,9 @@ class AtomicPublicationTests(CollectLinuxTestCase):
         )
         self.assertEqual(unlisted.read_bytes(), original)
         self.assertEqual(self.output.read_bytes(), original, "the aliased output was rewritten")
+        self.assertTrue(self.output.exists(), "the operator-owned hard-link name must remain")
+        self.assertFalse((self.output.parent / "heavy-host-b.receipt.json").exists())
+        self.assert_no_created_temporary(self.output.parent)
 
     def test_ordinary_stale_residue_is_still_cleared_but_an_alias_is_not(self):
         """Recovery removes ordinary residue only; aliases are left alone."""

@@ -28,7 +28,7 @@ permissions:
 env:
   # The exact denominator. A suite that quietly shrinks is the failure this
   # pins: the count is asserted before the suite is allowed to report green.
-  EXPECTED_TEST_COUNT: "141"
+  EXPECTED_TEST_COUNT: "155"
   FIXED_NOW: "2026-08-05T00:00:00Z"
 
 defaults:
