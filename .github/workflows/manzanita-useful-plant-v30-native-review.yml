@@ -1,0 +1,276 @@
+name: Manzanita Useful Plant v30 repository-native review
+
+on:
+  pull_request:
+    paths:
+      - 'manzanita-next/review/useful-plant-v30-native/**'
+      - '.github/workflows/manzanita-useful-plant-v30-native-review.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manzanita-useful-plant-v30-native-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-repository-native-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Resolve bounded comparison
+        id: refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "base=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
+            echo "head=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            git fetch origin main --depth=1
+            echo "base=$(git merge-base origin/main HEAD)" >> "$GITHUB_OUTPUT"
+            echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Parse native source and admission machinery
+        run: |
+          set -euo pipefail
+          node --check manzanita-next/review/useful-plant-v30-native/app.js
+          python -m py_compile \
+            manzanita-next/review/useful-plant-v30-native/verify.py \
+            manzanita-next/review/useful-plant-v30-native/browser_review.py \
+            manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
+            manzanita-next/review/useful-plant-v30-native/test_v29_parent_admission.py \
+            manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
+            manzanita-next/review/useful-plant-v30-native/test_plant_donor_admission.py \
+            manzanita-next/review/useful-plant-v30-native/classify_historical_carrier.py \
+            manzanita-next/review/useful-plant-v30-native/test_historical_carrier_classification.py \
+            manzanita-next/review/useful-plant-v30-native/recover_exact_git_objects.py \
+            manzanita-next/review/useful-plant-v30-native/test_recover_exact_git_objects.py \
+            manzanita-next/review/useful-plant-v30-native/recover_historical_archive.py
+          python -m json.tool \
+            manzanita-next/review/useful-plant-v30-native/V29_PARENT_ADMISSION_CONTRACT.json \
+            >/dev/null
+          python -m json.tool \
+            manzanita-next/review/useful-plant-v30-native/PLANT_DONOR_ADMISSION_CONTRACT.json \
+            >/dev/null
+          python manzanita-next/review/useful-plant-v30-native/test_historical_carrier_classification.py
+          python manzanita-next/review/useful-plant-v30-native/test_recover_exact_git_objects.py
+
+      - name: Verify source, custody, and changed-path scope
+        run: |
+          python manzanita-next/review/useful-plant-v30-native/verify.py \
+            --base '${{ steps.refs.outputs.base }}' \
+            --head '${{ steps.refs.outputs.head }}' \
+            --output "$RUNNER_TEMP/useful-plant-v30-source-receipt.json"
+
+      - name: Recover exact parent and Plant objects from all local Git objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          python manzanita-next/review/useful-plant-v30-native/recover_exact_git_objects.py \
+            --repo . \
+            --output-dir "$RUNNER_TEMP/useful-plant-v30-exact-git-recovery"
+
+      - name: Apply exact v29 parent admission gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          RECOVERY="$RUNNER_TEMP/useful-plant-v30-exact-git-recovery"
+          ARCHIVE="$RECOVERY/mw-habitat-live-photo-029.zip"
+          OUTPUT="$RUNNER_TEMP/V29_PARENT_ADMISSION_RECEIPT.json"
+          if [[ -f "$ARCHIVE" ]]; then
+            python manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
+              --archive "$ARCHIVE" \
+              --output "$OUTPUT"
+          else
+            python manzanita-next/review/useful-plant-v30-native/verify_v29_parent.py \
+              --archive "$ARCHIVE" \
+              --expect-missing \
+              --output "$OUTPUT"
+          fi
+          python manzanita-next/review/useful-plant-v30-native/test_v29_parent_admission.py
+
+      - name: Apply exact Plant donor admission gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          RECOVERY="$RUNNER_TEMP/useful-plant-v30-exact-git-recovery"
+          ORIGIN="$RECOVERY/plant-origin.svg"
+          CACHED="$RECOVERY/plant-derived-reference.webp"
+          OUTPUT="$RUNNER_TEMP/PLANT_DONOR_ADMISSION_RECEIPT.json"
+          if [[ -f "$ORIGIN" && -f "$CACHED" ]]; then
+            python manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
+              --origin "$ORIGIN" \
+              --cached "$CACHED" \
+              --output "$OUTPUT"
+          elif [[ ! -f "$ORIGIN" && ! -f "$CACHED" ]]; then
+            python manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
+              --origin "$ORIGIN" \
+              --cached "$CACHED" \
+              --expect-missing \
+              --output "$OUTPUT"
+          else
+            set +e
+            python manzanita-next/review/useful-plant-v30-native/verify_plant_donors.py \
+              --origin "$ORIGIN" \
+              --cached "$CACHED" \
+              --output "$OUTPUT"
+            status=$?
+            set -e
+            test "$status" -eq 1
+            python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          receipt = json.loads(
+              (Path(os.environ["RUNNER_TEMP"]) / "PLANT_DONOR_ADMISSION_RECEIPT.json").read_text()
+          )
+          assert receipt["result"] == "HOLD_EXACT_PLANT_DONORS_PARTIAL"
+          assert receipt["admission_state"] == "HOLD"
+          assert receipt["donors_admitted"] is False
+          assert receipt["blocking_holds"]
+          PY
+          fi
+          python manzanita-next/review/useful-plant-v30-native/test_plant_donor_admission.py
+
+      - name: Classify historical independent-archive carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          HISTORICAL_COMMIT="8eda7e87fb8f6789f4392a328c7ab3435f122bdf"
+          HISTORICAL_TREE="f695d10fd0651a99d33c52cc0ee9fd17307f1e90"
+          TARGET="$RUNNER_TEMP/manzanita-independent-archive-history"
+          git fetch --no-tags --depth=1 origin "$HISTORICAL_COMMIT"
+          python manzanita-next/review/useful-plant-v30-native/classify_historical_carrier.py \
+            --commit "$HISTORICAL_COMMIT" \
+            --tree "$HISTORICAL_TREE" \
+            --output-dir "$TARGET"
+
+      - name: Retain exact Git-object recovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-useful-plant-v30-exact-git-object-recovery
+          path: ${{ runner.temp }}/useful-plant-v30-exact-git-recovery/
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Retain historical carrier classification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-useful-plant-v30-historical-carrier-classification
+          path: ${{ runner.temp }}/manzanita-independent-archive-history/
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Install bounded browser runtime
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+
+      - name: Exercise operator review surface
+        env:
+          PYTHONUNBUFFERED: '1'
+        run: |
+          python manzanita-next/review/useful-plant-v30-native/browser_review.py \
+            --output "$RUNNER_TEMP/useful-plant-v30-browser-review"
+
+      - name: Enforce fail-closed authority receipts
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['RUNNER_TEMP'])
+          receipts = {
+              'source': json.loads((root / 'useful-plant-v30-source-receipt.json').read_text()),
+              'browser': json.loads((root / 'useful-plant-v30-browser-review/BROWSER_REVIEW_RECEIPT.json').read_text()),
+              'recovery': json.loads((root / 'useful-plant-v30-exact-git-recovery/EXACT_GIT_OBJECT_RECOVERY_RECEIPT.json').read_text()),
+              'parent': json.loads((root / 'V29_PARENT_ADMISSION_RECEIPT.json').read_text()),
+              'plant': json.loads((root / 'PLANT_DONOR_ADMISSION_RECEIPT.json').read_text()),
+              'historical': json.loads((root / 'manzanita-independent-archive-history/HISTORICAL_CARRIER_CLASSIFICATION_RECEIPT.json').read_text()),
+          }
+
+          assert receipts['source']['result'] == 'PASS'
+          assert receipts['browser']['result'] == 'PASS'
+          recovery = receipts['recovery']
+          assert recovery['result'] == 'PASS_EXACT_GIT_OBJECT_SCAN_COMPLETE'
+
+          parent = receipts['parent']
+          if recovery['v29_archive_recovered']:
+              assert parent['result'] == 'PASS_EXACT_V29_PARENT_ADMITTED'
+              assert parent['admission_state'] == 'ADMITTED'
+              assert parent['archive_admitted'] is True
+          else:
+              assert parent['result'] == 'HOLD_PARENT_ARCHIVE_UNMOUNTED'
+              assert parent['admission_state'] == 'HOLD'
+              assert parent['archive_admitted'] is False
+
+          plant = receipts['plant']
+          recovered = recovery['recovered']
+          if recovery['plant_pair_recovered']:
+              assert plant['result'] == 'PASS_EXACT_PLANT_DONORS_ADMITTED'
+              assert plant['admission_state'] == 'ADMITTED'
+              assert plant['donors_admitted'] is True
+          elif recovered['plant_origin'] or recovered['plant_cached']:
+              assert plant['result'] == 'HOLD_EXACT_PLANT_DONORS_PARTIAL'
+              assert plant['admission_state'] == 'HOLD'
+              assert plant['donors_admitted'] is False
+          else:
+              assert plant['result'] == 'HOLD_EXACT_PLANT_DONORS_UNMOUNTED'
+              assert plant['admission_state'] == 'HOLD'
+              assert plant['donors_admitted'] is False
+
+          historical = receipts['historical']
+          assert historical['result'] in {
+              'PASS_ASSERTED_SOURCE_RECOVERED',
+              'HOLD_VALID_CARRIER_ASSERTION_DRIFT',
+              'HOLD_HISTORICAL_CARRIER_UNRESOLVED',
+          }
+          if historical['result'] == 'PASS_ASSERTED_SOURCE_RECOVERED':
+              assert historical['admission_state'] == 'QUALIFIED'
+              assert historical['exact_source_archive_admitted'] is True
+              assert historical['recovered_archive']['sha256'] == historical['asserted_source_sha256']
+              assert historical['blocking_holds'] == []
+          else:
+              assert historical['admission_state'] == 'HOLD'
+              assert historical['exact_source_archive_admitted'] is False
+              assert historical['blocking_holds']
+
+          for label, receipt in receipts.items():
+              assert receipt['operator_visual_acceptance'] == 'ABSENT', label
+              assert receipt['release_authorized'] is False, label
+              assert receipt['merge_authorized'] is False, label
+              assert receipt['public_route_effect'] == 'none', label
+              assert receipt['pages_deployment_effect'] == 'none', label
+              assert receipt['external_effect'] == 'none', label
+          PY
+
+      - name: Retain independent review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-useful-plant-v30-native-review
+          path: |
+            manzanita-next/review/useful-plant-v30-native/
+            manzanita/assets/plant.webp
+            ${{ runner.temp }}/useful-plant-v30-source-receipt.json
+            ${{ runner.temp }}/V29_PARENT_ADMISSION_RECEIPT.json
+            ${{ runner.temp }}/PLANT_DONOR_ADMISSION_RECEIPT.json
+            ${{ runner.temp }}/useful-plant-v30-browser-review/
+          retention-days: 30
+          if-no-files-found: warn

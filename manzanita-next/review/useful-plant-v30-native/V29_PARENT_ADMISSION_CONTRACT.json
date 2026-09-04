@@ -1,0 +1,187 @@
+{
+  "admission_class": "EXACT_ARCHIVE_AND_MEMBER_CUSTODY",
+  "admission_rule": "Only the exact archive and every required exact member may establish parent admission. File-library references, prose receipts, reconstructed packages, and individually available descendants do not substitute for the archive.",
+  "authority": {
+    "external_effect": "none",
+    "merge_authorized": false,
+    "operator_visual_acceptance": "ABSENT",
+    "pages_deployment_effect": "none",
+    "public_route_effect": "none",
+    "release_authorized": false
+  },
+  "child_candidate_id": "MW-USEFUL-PLANT-V30-NATIVE-REVIEW-001",
+  "exact_plant_donors_deferred": [
+    {
+      "bytes": 3425,
+      "path_hint": "assets/public/plant-origin.svg",
+      "sha256": "2a531b108dfbfba5f7bfc1064c2adfa44d29649ea9fa3654ac3092fbe9a8bb03"
+    },
+    {
+      "bytes": 255932,
+      "path_hint": "assets/public/plant-derived-reference.webp",
+      "sha256": "dd2d3b7f5683ec8c785c6baac8b0036ae7ad043767463b963d8c132201817a02"
+    }
+  ],
+  "gate_id": "MW-V30-V29-PARENT-ADMISSION-001",
+  "next_gate_after_pass": "Exact Plant donor admission, then inherited Household, Street, and Property rendered locks.",
+  "parent_release_id": "mw-habitat-live-photo-029",
+  "required_archive": {
+    "bytes": 56875424,
+    "filename": "mw-habitat-live-photo-029.zip",
+    "sha256": "1bfa88922381650bc4b16b27c1ed8d728abba6f16e1159c85e0b1d294acc3ce6"
+  },
+  "required_members": [
+    {
+      "bytes": 1467,
+      "path": "MANIFEST.json",
+      "sha256": "cc87df97f2cf38404dc74a683c9a508c18072d7d1f6655a2997ce7f1e16888d9"
+    },
+    {
+      "bytes": 3064377,
+      "path": "index.html",
+      "sha256": "94b1826e7e1d896768296b854467692d514189983038ca295bf6fb4acda49c2f"
+    },
+    {
+      "bytes": 3064377,
+      "path": "mw-habitat-live-photo-029.STANDALONE.html",
+      "sha256": "94b1826e7e1d896768296b854467692d514189983038ca295bf6fb4acda49c2f"
+    },
+    {
+      "bytes": 3319791,
+      "path": "street.html",
+      "sha256": "6131a726531121dbb7be58e8f3342fecca1c23d540b9e4a49fd588d40b179eaf"
+    },
+    {
+      "bytes": 4695702,
+      "path": "property.html",
+      "sha256": "3c765638f07e6d6d08fc4ed2468d573f04aff1b726dc7ae700ce65e13e8f63eb"
+    },
+    {
+      "bytes": 540440,
+      "path": "assets/property/property-reference-4f5f752e2c06.webp",
+      "sha256": "4f5f752e2c064fc65e364748b19c0f465bd8fbaabbe9113394f41226d9a8376a"
+    },
+    {
+      "bytes": 637070,
+      "path": "assets/property/property-photo-twin-029.webp",
+      "sha256": "def597e9e9a5d612c39a3b138b58829626e8441b52d41e6733b08d2f50eeeb5e"
+    },
+    {
+      "bytes": 1838963,
+      "path": "data/MW_HABITAT_VERTICAL_SLICE_029.json",
+      "sha256": "08ad21c78e462468061d355e4a8571ad7a96c8b908e26b2da4a95764de05b64c"
+    },
+    {
+      "bytes": 2063881,
+      "path": "data/MW_STREET_VERTICAL_SLICE_029.json",
+      "sha256": "6ee7726b2589815ab20b33791a57b918884c666219de06862b0316cfb7a73984"
+    },
+    {
+      "bytes": 3089074,
+      "path": "data/MW_PROPERTY_VERTICAL_SLICE_029.json",
+      "sha256": "00be86cb43fe582ab8353c26d441ace7f6547cf66812fdf24942cc2603f67a07"
+    },
+    {
+      "bytes": 838,
+      "path": "receipts/ACCEPTANCE_CANDIDATE_RECEIPT.json",
+      "sha256": "196c536ac5255b2d83d37280332d7c198d2467274d8a8d58ce746420819c6349"
+    },
+    {
+      "bytes": 4222,
+      "path": "receipts/BROWSER_QUALIFICATION_RECEIPT.json",
+      "sha256": "caa0d5aeb0d8a14cebf45e32cea4e17a2e8fddcc5398f824cf838b6c08cd3e17"
+    },
+    {
+      "bytes": 458,
+      "path": "receipts/HOUSEHOLD_STREET_REFERENCE_LOCK_RECEIPT.json",
+      "sha256": "59eb0128d18b83480860ffcc56ec9603ef4a847f11c0b91721fee1984087ecae"
+    },
+    {
+      "bytes": 1167,
+      "path": "receipts/IDENTITY_CONTINUITY_RECEIPT.json",
+      "sha256": "364d2e3040f26a2faa6110e75bb95ba29d10bef53404a81d18db23523dcc4456"
+    },
+    {
+      "bytes": 1450,
+      "path": "receipts/QUALIFICATION_RECEIPT.json",
+      "sha256": "53727cc6cbc4a0af91f4cfb5eca2de7d6e2d7cfd3056364aed7315305921a7db"
+    },
+    {
+      "path": "SEAL.json"
+    }
+  ],
+  "schema": "manzanita/v29-parent-admission-contract@1",
+  "semantic_receipts": {
+    "identity_continuity": {
+      "path": "receipts/IDENTITY_CONTINUITY_RECEIPT.json",
+      "required": {
+        "household_object_sha256": "08ad21c78e462468061d355e4a8571ad7a96c8b908e26b2da4a95764de05b64c",
+        "household_pixel_agreement": 1.0,
+        "household_zone_ids_preserved": true,
+        "parent_release_id": "mw-habitat-live-photo-028",
+        "property_borrowed_geometry_count": 0,
+        "property_feature_ids": [
+          "property-roof-left-001",
+          "property-roof-center-001",
+          "property-roof-right-001",
+          "property-canopy-left-001",
+          "property-canopy-center-001",
+          "property-crown-right-001",
+          "property-curb-gutter-001"
+        ],
+        "property_object_sha256": "00be86cb43fe582ab8353c26d441ace7f6547cf66812fdf24942cc2603f67a07",
+        "release_id": "mw-habitat-live-photo-029",
+        "result": "PASS",
+        "schema": "manzanita/property-projection-identity-continuity@1",
+        "source_geometry_mutations": 0,
+        "street_object_sha256": "6ee7726b2589815ab20b33791a57b918884c666219de06862b0316cfb7a73984",
+        "street_pixel_agreement": 1.0,
+        "street_zone_ids_preserved": true
+      }
+    },
+    "qualification": {
+      "path": "receipts/QUALIFICATION_RECEIPT.json",
+      "required": {
+        "assistance_geometry": 0,
+        "authoritative_property_sources_admitted": 0,
+        "borrowed_geometry": 0,
+        "browser_checks_passed": 52,
+        "browser_checks_total": 52,
+        "console_errors": [],
+        "external_effect": "none",
+        "household_pixel_agreement": 1.0,
+        "operator_acceptance": "absent",
+        "page_errors": [],
+        "property_actors": 4,
+        "property_exact_features": 7,
+        "property_frame_geometry": 0,
+        "property_instruments": 4,
+        "property_scenarios": 2,
+        "property_source_states": 5,
+        "property_spatial_zones": 3,
+        "proposal_geometry": 0,
+        "release_authorized": false,
+        "release_id": "mw-habitat-live-photo-029",
+        "result": "PASS",
+        "schema": "manzanita/property-projection-qualification@1",
+        "source_geometry_mutations": 0,
+        "static_checks_passed": 27,
+        "static_checks_total": 27,
+        "street_pixel_agreement": 1.0
+      }
+    },
+    "seal": {
+      "member_ledger_field": "files",
+      "path": "SEAL.json",
+      "required": {
+        "external_effect": "none",
+        "household_reference_lock_agreement": 1.0,
+        "operator_acceptance": "absent",
+        "release_authorized": false,
+        "release_id": "mw-habitat-live-photo-029",
+        "result": "PASS_PROPERTY_SOURCE_NATIVE_PROJECTION",
+        "schema": "manzanita/property-projection-seal@1"
+      }
+    }
+  }
+}
