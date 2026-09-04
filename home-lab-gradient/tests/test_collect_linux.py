@@ -421,14 +421,31 @@ class AtomicPublicationTests(CollectLinuxTestCase):
         self.assertTrue(temp.name.endswith(".tmp"))
 
     def test_publication_flushes_fsyncs_and_renames(self):
-        """The file, then the rename, then the directory that now names it."""
+        """The file, then the rename, then the directory that now names it.
+
+        On POSIX ``fsync_directory`` reaches the kernel by calling os.fsync on
+        a directory descriptor of its own, so a naive recorder counts every
+        directory flush twice -- and not at all on Windows, where the function
+        reports False without opening a handle. The nested call is attributed
+        to the directory flush that caused it, so the recorded sequence states
+        the durability law itself and is the same on both platforms; how many
+        of those flushes actually reached a descriptor is asserted separately,
+        against what fsync_directory reported rather than against os.name.
+        """
         calls: list[str] = []
+        directory_reports: list[bool] = []
+        nested_fsyncs = 0
+        inside_directory_fsync = False
         real_fsync = self.collector.os.fsync
         real_replace = self.collector.os.replace
         real_fsync_directory = self.collector.fsync_directory
 
         def record_fsync(fd):
-            calls.append("fsync")
+            nonlocal nested_fsyncs
+            if inside_directory_fsync:
+                nested_fsyncs += 1
+            else:
+                calls.append("fsync")
             return real_fsync(fd)
 
         def record_replace(src, dst):
@@ -436,8 +453,15 @@ class AtomicPublicationTests(CollectLinuxTestCase):
             return real_replace(src, dst)
 
         def record_fsync_directory(path):
+            nonlocal inside_directory_fsync
             calls.append("fsync-directory")
-            return real_fsync_directory(path)
+            inside_directory_fsync = True
+            try:
+                reported = real_fsync_directory(path)
+            finally:
+                inside_directory_fsync = False
+            directory_reports.append(reported)
+            return reported
 
         with mock.patch.object(self.collector.os, "fsync", record_fsync), mock.patch.object(
             self.collector.os, "replace", record_replace
@@ -452,6 +476,10 @@ class AtomicPublicationTests(CollectLinuxTestCase):
             ["fsync", "replace", "fsync-directory", "fsync", "replace", "fsync-directory"],
             "fsync must precede the atomic rename, and the directory fsync must follow it",
         )
+        # Every directory flush that reported a durable handle made exactly one
+        # fsync on it: two on POSIX, none on Windows, asserted either way.
+        self.assertEqual(directory_reports, [os.name != "nt", os.name != "nt"])
+        self.assertEqual(nested_fsyncs, sum(1 for reported in directory_reports if reported))
 
     def test_only_the_declared_outputs_and_their_temps_are_written(self):
         """Exactly the two declared outputs, and no temporary survives either."""
