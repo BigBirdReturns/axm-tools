@@ -6,6 +6,9 @@ $ErrorActionPreference = 'Stop'
 $ScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RepoRoot = (Resolve-Path (Join-Path $ScriptRoot '..\..\..')).Path
 $WorkflowPath = Join-Path $RepoRoot '.github\workflows\manzanita-v31-origin-host-recovery-execution-v1.yml'
+$ExpectedPackageBytes = 553074
+$ExpectedPackageSha256 = '2c4437c2f3c0cd7599b790ddc1a31315751db751daa3a81e4245e2a32b5f3738'
+$ExpectedSourceReceiptName = 'V31_ORIGIN_HOST_RECOVERY_EXECUTION_SOURCE_VERIFICATION_RECEIPT_V1.json'
 $Required = @(
   (Join-Path $ScriptRoot 'ORIGIN_HOST_EXECUTION_CONTRACT.json'),
   (Join-Path $ScriptRoot 'run_origin_host_recovery.ps1'),
@@ -48,8 +51,8 @@ $WorkflowText = Get-Content -LiteralPath $WorkflowPath -Raw -Encoding UTF8
 Add-Check 'contract schema' ($Contract.schema -eq 'manzanita/v31-origin-host-recovery-execution-contract@1') $Contract.schema
 Add-Check 'contract class' ($Contract.object_class -eq 'bounded self-hosted Windows recovery execution and exact-return collection') $Contract.object_class
 Add-Check 'exact package name' ($Contract.source_package.filename -eq 'MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip') $Contract.source_package.filename
-Add-Check 'exact package byte count' ($Contract.source_package.bytes -eq 553074) $Contract.source_package.bytes
-Add-Check 'exact package SHA-256' ($Contract.source_package.sha256 -eq '2c4437c2f3c0cd7599b790ddc1a31315751db751daa3a81e4245e2a32b5f3738') $Contract.source_package.sha256
+Add-Check 'exact package byte count' ($Contract.source_package.bytes -eq $ExpectedPackageBytes) $Contract.source_package.bytes
+Add-Check 'exact package SHA-256' ($Contract.source_package.sha256 -eq $ExpectedPackageSha256) $Contract.source_package.sha256
 Add-Check 'exact package release root' ($Contract.source_package.release_root -eq 'MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1') $Contract.source_package.release_root
 Add-Check 'self-hosted Windows labels' ((@($Contract.workflow_scope.runner_labels) -join ',') -eq 'self-hosted,Windows') $Contract.workflow_scope.runner_labels
 Add-Check 'pull request execution prohibited' ($Contract.workflow_scope.pull_request_trigger -eq $false -and $Contract.workflow_scope.fork_execution -eq $false) $Contract.workflow_scope
@@ -70,8 +73,9 @@ $ParseErrors = $null
 Add-Check 'validation PowerShell parses' ($ParseErrors.Count -eq 0) @($ParseErrors | ForEach-Object { $_.Message })
 
 Add-Check 'administrator context required' ($ExecutionText.Contains('Test-Administrator') -and $ExecutionText.Contains('Administrator context required for the complete recovery campaign')) $null
-Add-Check 'exact download gate present' ($ExecutionText.Contains('curl.exe -L --fail') -and $ExecutionText.Contains('$ExpectedPackageBytes = 553074') -and $ExecutionText.Contains("$ExpectedPackageSha256 = '2c4437c2f3c0cd7599b790ddc1a31315751db751daa3a81e4245e2a32b5f3738'")) $null
-Add-Check 'all package entrypoints bound' (@('RUN_WINDOWS_PLATFORM_REPLAY.cmd','RUN_PREPARE_ONLY.cmd','RUN_ALL_RECOVERY_ADMIN.cmd','RUN_COLLECT_RETURNS.cmd') | ForEach-Object { $ExecutionText.Contains($_) } | Where-Object { -not $_ } | Measure-Object).Count -eq 0 $null
+$ExpectedPackageAssignment = '$ExpectedPackageSha256 = ''' + $ExpectedPackageSha256 + ''''
+Add-Check 'exact download gate present' ($ExecutionText.Contains('curl.exe -L --fail') -and $ExecutionText.Contains('$ExpectedPackageBytes = 553074') -and $ExecutionText.Contains($ExpectedPackageAssignment)) $null
+Add-Check 'all package entrypoints bound' ((@('RUN_WINDOWS_PLATFORM_REPLAY.cmd','RUN_PREPARE_ONLY.cmd','RUN_ALL_RECOVERY_ADMIN.cmd','RUN_COLLECT_RETURNS.cmd') | ForEach-Object { $ExecutionText.Contains($_) } | Where-Object { -not $_ } | Measure-Object).Count -eq 0) $null
 Add-Check 'lane logs redirected and summarized' ($ExecutionText.Contains('RedirectStandardOutput') -and $ExecutionText.Contains('RedirectStandardError') -and $ExecutionText.Contains('stdout_sha256') -and $ExecutionText.Contains('stderr_sha256')) $null
 Add-Check 'raw host names not retained' ($ExecutionText.Contains('runner_name_sha256') -and $ExecutionText.Contains('computer_name_sha256') -and $ExecutionText.Contains('user_profile_retained = $false')) $null
 Add-Check 'return collection independently inspected' ($ExecutionText.Contains('Inspect-ReturnCollection') -and $ExecutionText.Contains('paths_safe') -and $ExecutionText.Contains('paths_casefold_unique') -and $ExecutionText.Contains('manifest_present')) $null
@@ -85,9 +89,11 @@ Add-Check 'workflow branch is exact' ($WorkflowText.Contains('agent/manzanita-v3
 Add-Check 'workflow has manual dispatch' ([regex]::IsMatch($WorkflowText, '(?m)^\s*workflow_dispatch\s*:')) $null
 Add-Check 'workflow uses self-hosted Windows' ($WorkflowText.Contains('runs-on: [self-hosted, Windows]')) $null
 Add-Check 'workflow contents permission read only' ($WorkflowText.Contains('contents: read')) $null
+Add-Check 'runner context excluded from job-level env' (-not [regex]::IsMatch($WorkflowText, '(?m)^    env:\s*$')) $null
+Add-Check 'runner temporary paths assigned at step scope' ([regex]::Matches($WorkflowText, '(?m)^        env:\s*$').Count -eq 3 -and [regex]::Matches($WorkflowText, '\$\{\{\s*runner\.temp\s*\}\}').Count -eq 10) $null
 Add-Check 'workflow artifact retention one day' ($WorkflowText.Contains('retention-days: 1')) $null
 Add-Check 'workflow does not upload raw lane logs' (-not $WorkflowText.Contains('lane-logs') -and -not $WorkflowText.Contains('*.stdout.txt') -and -not $WorkflowText.Contains('*.stderr.txt')) $null
-Add-Check 'workflow uploads only governed return and receipts' ($WorkflowText.Contains('V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.json') -and $WorkflowText.Contains('V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.validation.json') -and $WorkflowText.Contains('MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip') -and $WorkflowText.Contains('SOURCE_VERIFICATION_RECEIPT.json')) $null
+Add-Check 'workflow uploads only governed return and receipts' ($WorkflowText.Contains('V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.json') -and $WorkflowText.Contains('V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.validation.json') -and $WorkflowText.Contains('MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip') -and $WorkflowText.Contains($ExpectedSourceReceiptName)) $null
 
 $Files = @()
 foreach ($Path in $Required) {

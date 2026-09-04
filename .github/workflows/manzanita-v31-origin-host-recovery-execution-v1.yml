@@ -20,11 +20,6 @@ jobs:
   execute-self-hosted-windows-recovery:
     runs-on: [self-hosted, Windows]
     timeout-minutes: 180
-    env:
-      SUMMARY_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.json
-      RETURN_PATH: ${{ runner.temp }}\MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip
-      VALIDATION_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.validation.json
-      SOURCE_RECEIPT: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_SOURCE_VERIFICATION_RECEIPT_V1.json
 
     steps:
       - uses: actions/checkout@v4
@@ -34,6 +29,8 @@ jobs:
 
       - name: Verify bounded source and privacy contract
         shell: powershell
+        env:
+          SOURCE_RECEIPT: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_SOURCE_VERIFICATION_RECEIPT_V1.json
         run: >-
           & '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\verify_origin_host_execution_source.ps1'
           -OutputPath $env:SOURCE_RECEIPT
@@ -42,6 +39,9 @@ jobs:
         id: execution
         continue-on-error: true
         shell: powershell
+        env:
+          SUMMARY_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.json
+          RETURN_PATH: ${{ runner.temp }}\MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip
         run: >-
           & '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\run_origin_host_recovery.ps1'
           -SummaryPath $env:SUMMARY_PATH
@@ -50,6 +50,10 @@ jobs:
       - name: Validate execution summary, return envelope, privacy, and authority holds
         if: always()
         shell: powershell
+        env:
+          SUMMARY_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.json
+          RETURN_PATH: ${{ runner.temp }}\MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip
+          VALIDATION_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.validation.json
         run: >-
           & '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\validate_origin_host_execution_summary.ps1'
           -SummaryPath $env:SUMMARY_PATH
