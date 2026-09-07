@@ -63,3 +63,14 @@ The scripts use only the Python standard library. No network call, account, targ
 ## Boundary
 
 This pack can reconstruct and govern what public evidence supports. It cannot establish private agreements, internal counterparties, cap-table or bank records, nonpublic technical evidence, actual corporate authority, private system access, or organizational adoption. Those remain explicit admission gaps until the selected company supplies an attributable record and the operator has authority to admit it.
+
+## Portability battery
+
+The pack carries four synthetic company shapes so reusable policy is exercised without letting the machine select a real company: maritime autonomy, aerial autonomy, defense hardware, and industrial robotics. Every fixture must compile through the same projection compiler with zero target-specific code.
+
+The portability battery also exercises two state transitions that the first extraction left implicit:
+
+- `scripts/freeze.py` creates a deterministic, ZIP_STORED public-only release containing the exact target state, pack snapshot, four projections, manifest, and seal. Two freezes of identical inputs must be byte-identical.
+- `scripts/compile_successor.py` binds a material public event to the exact target and prior object state, emits a bounded successor delta, preserves nonclaims, applies only declared state changes, and appends lineage rather than rewriting history.
+
+The synthetic successor fixture proves the event path without creating a real-company successor or bypassing human target selection.
