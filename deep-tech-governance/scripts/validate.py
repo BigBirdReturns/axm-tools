@@ -192,6 +192,8 @@ def main():
     for p in sorted(root.rglob("*")):
         if p.is_file() and p.name != "QUALIFICATION.json":
             rel = p.relative_to(root).as_posix()
+            if "__pycache__" in p.parts or p.suffix.lower() == ".pyc":
+                continue
             if p.suffix.lower() == ".json":
                 data = canonical(load(p))
                 manifest.append({"path": rel, "canonical_json_bytes": len(data), "sha256": sha256_bytes(data), "hash_mode": "canonical_json"})
