@@ -40,11 +40,34 @@ def server():
 
 
 def assert_no_overflow(page) -> None:
-    overflow = page.evaluate("""() => ({
-      doc: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      body: document.body.scrollWidth - document.body.clientWidth
-    })""")
-    assert overflow["doc"] <= 1 and overflow["body"] <= 1, overflow
+    observation = page.evaluate("""() => {
+      const viewport = document.documentElement.clientWidth;
+      const docOverflow = document.documentElement.scrollWidth - viewport;
+      const bodyOverflow = document.body.scrollWidth - document.body.clientWidth;
+      const offenders = [...document.querySelectorAll('*')].map((el) => {
+        const rect = el.getBoundingClientRect();
+        const style = getComputedStyle(el);
+        return {
+          tag: el.tagName.toLowerCase(),
+          id: el.id || null,
+          cls: typeof el.className === 'string' ? el.className : null,
+          text: (el.textContent || '').trim().replace(/\\s+/g, ' ').slice(0, 100),
+          left: Math.round(rect.left * 10) / 10,
+          right: Math.round(rect.right * 10) / 10,
+          width: Math.round(rect.width * 10) / 10,
+          scrollWidth: el.scrollWidth,
+          clientWidth: el.clientWidth,
+          overflowX: style.overflowX,
+          minWidth: style.minWidth,
+          whiteSpace: style.whiteSpace
+        };
+      }).filter((row) => row.right > viewport + 1 || row.left < -1)
+        .sort((a, b) => b.right - a.right)
+        .slice(0, 25);
+      return { viewport, docOverflow, bodyOverflow, offenders };
+    }""")
+    if observation["docOverflow"] > 1 or observation["bodyOverflow"] > 1:
+        raise AssertionError(json.dumps(observation, indent=2))
 
 
 def assert_local_only(requests: list[str]) -> None:
@@ -81,8 +104,6 @@ def main() -> None:
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "working-model-desktop.png"), full_page=True)
 
-        # All four scenarios are real projections, not label swaps. Playwright inner_text
-        # reflects CSS text-transform, so compare semantic stage names case-insensitively.
         expected = {
             "wildfire": ("wildfire exposure", "parcel score"),
             "tools": ("tool", "silent assignment"),
@@ -98,14 +119,12 @@ def main() -> None:
             stages = [value.strip().lower() for value in page.locator(".stage-card h4").all_inner_texts()]
             assert stages == expected_stages, stages
 
-        # Keyboard tab navigation carries the projection with focus.
         first = page.locator('[data-scenario="wildfire"]')
         first.focus()
         page.keyboard.press("ArrowRight")
         assert page.locator('[data-scenario="tools"]').get_attribute("aria-selected") == "true"
         assert "tool" in page.locator("#scenario-title").inner_text().lower()
 
-        # Incomplete packet preserves every blank rather than implying readiness.
         page.locator("#pilot-scenario").select_option("tools")
         page.locator("#pilot-sponsor").fill("Executive sponsor seat")
         assert "1 of 5" in page.locator("#form-status").inner_text()
@@ -124,7 +143,6 @@ def main() -> None:
         assert incomplete["authority"]["external_effect"] == "none"
         assert "Do not schedule" in incomplete["next_safe_action"]
 
-        # A fully filled preparation packet remains preparation, not acceptance or authority.
         page.locator("#pilot-operator").fill("Funded continuity operator seat")
         page.locator("#pilot-venue").fill("One bounded participant class")
         page.locator("#pilot-resources").fill("Defined pilot resource envelope")
@@ -146,7 +164,6 @@ def main() -> None:
         assert complete["authority"]["external_effect"] == "none"
         assert complete["invariant"]["silence_law"].startswith("Silence is not consent")
 
-        # Draft is local and persistent until deliberately cleared.
         page.reload(wait_until="networkidle")
         assert page.locator("#pilot-sponsor").input_value() == "Executive sponsor seat"
         assert page.locator("#pilot-operator").input_value() == "Funded continuity operator seat"
@@ -156,7 +173,6 @@ def main() -> None:
         page.reload(wait_until="networkidle")
         assert page.locator("#pilot-sponsor").input_value() == ""
 
-        # Theme is local and persistent.
         original_theme = page.locator("html").get_attribute("data-theme")
         page.locator("#theme").click()
         changed_theme = page.locator("html").get_attribute("data-theme")
@@ -164,22 +180,19 @@ def main() -> None:
         page.reload(wait_until="networkidle")
         assert page.locator("html").get_attribute("data-theme") == changed_theme
 
-        # Ordinary mobile.
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto(url + "#run-wildfire", wait_until="networkidle")
         assert page.locator('[data-scenario="wildfire"]').get_attribute("aria-selected") == "true"
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "working-model-mobile.png"), full_page=True)
 
-        # 320px at 200% root text must remain horizontally contained.
         page.set_viewport_size({"width": 320, "height": 800})
         page.goto(url + "#run-continuity", wait_until="networkidle")
         page.evaluate("document.documentElement.style.fontSize='200%'")
         page.wait_for_timeout(150)
+        page.screenshot(path=str(OUT / "working-model-320-200pct-debug.png"), full_page=True)
         assert_no_overflow(page)
-        page.screenshot(path=str(OUT / "working-model-320-200pct.png"), full_page=True)
 
-        # Reduced motion changes no meaning or operability.
         reduced = browser.new_context(viewport={"width": 1024, "height": 768}, reduced_motion="reduce")
         reduced_page = reduced.new_page()
         reduced_errors: list[str] = []
@@ -204,7 +217,7 @@ def main() -> None:
         "screenshots": [
             "working-model-desktop.png",
             "working-model-mobile.png",
-            "working-model-320-200pct.png"
+            "working-model-320-200pct-debug.png"
         ]
     }, indent=2))
 
