@@ -33,3 +33,7 @@ Reference fixtures may contain real target names and facts. Generic code, schema
 - `HOLD_SECTOR`: a required sector rule is missing and must be generalized before continuing.
 - `FAIL_TARGET_SPECIAL_CASE`: the implementation depends on target-specific code.
 - `FAIL_BOUNDARY`: private state or an external effect entered the public-only lane.
+
+## Executable portability battery
+
+The portability gate is tested against four synthetic startup shapes using the same compiler. The validator requires all four to produce the same four governed outputs, requires each admission map to retain company-controlled gaps, freezes each fixture twice and compares archive bytes, and applies one material successor event against a known prior state. This battery demonstrates implementation portability. It does not substitute for a human-selected real Target 02.
