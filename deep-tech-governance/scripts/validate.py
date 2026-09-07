@@ -104,7 +104,7 @@ def main():
         proc = subprocess.run([sys.executable, str(root/"scripts/compile_outputs.py"), str(root/"fixtures/synthetic-target.json"), "--out", td], capture_output=True, text=True)
         names = sorted(p.name for p in Path(td).glob("*.json"))
         expected = ["admission-map.json","diligence-map.json","operating-readiness.json","public-baseline.json"]
-        add(checks, "synthetic target compiles four projections", proc.returncode == 0 and names == expected, proc.stderr or str(names))
+        add(checks, "synthetic target compiles four projections", proc.returncode == 0 and names == expected, "" if proc.returncode == 0 and names == expected else (proc.stderr or str(names)))
         if proc.returncode == 0:
             admission = load(Path(td)/"admission-map.json")
             readiness = load(Path(td)/"operating-readiness.json")
