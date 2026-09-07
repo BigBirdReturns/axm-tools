@@ -1,0 +1,60 @@
+name: Manzanita Works working model v1 candidate
+
+on:
+  push:
+    branches:
+      - agent/manzanita-working-model-v1
+    paths:
+      - 'manzanita-working-model/**'
+      - '.github/workflows/manzanita-working-model.yml'
+  pull_request:
+    paths:
+      - 'manzanita-working-model/**'
+      - '.github/workflows/manzanita-working-model.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manzanita-working-model-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run exact public contract
+        run: python manzanita-working-model/tests/public_contract_test.py
+
+      - name: Resolve deterministic browser runtime
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -n "$browser" ]; then
+            echo "MW_CHROMIUM_EXECUTABLE=$browser" >> "$GITHUB_ENV"
+            "$browser" --version
+          else
+            python -m playwright install --with-deps chromium
+          fi
+
+      - name: Run real Chromium working-model campaign
+        env:
+          MW_WORKING_MODEL_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-working-model-review
+        run: python manzanita-working-model/tests/browser_test.py
+
+      - name: Retain review evidence only
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-working-model-v1-candidate-review
+          path: ${{ runner.temp }}/manzanita-working-model-review
+          if-no-files-found: error
+          retention-days: 30
