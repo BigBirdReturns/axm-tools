@@ -119,8 +119,12 @@ def main():
     for p in sorted(root.rglob("*")):
         if p.is_file() and p.name != "QUALIFICATION.json":
             rel = p.relative_to(root).as_posix()
-            data = p.read_bytes()
-            manifest.append({"path": rel, "bytes": len(data), "sha256": sha256_bytes(data)})
+            if p.suffix.lower() == ".json":
+                data = canonical(load(p))
+                manifest.append({"path": rel, "canonical_json_bytes": len(data), "sha256": sha256_bytes(data), "hash_mode": "canonical_json"})
+            else:
+                data = p.read_bytes()
+                manifest.append({"path": rel, "bytes": len(data), "sha256": sha256_bytes(data), "hash_mode": "raw_bytes"})
     qualification = {
         "schema": "axm/deep-tech-governance-qualification@1",
         "pack_id": "AXM-DEEPTECH-001",
