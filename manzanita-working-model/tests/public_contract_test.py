@@ -11,6 +11,7 @@ REPO = ROOT.parent
 
 REQUIRED = [
     "index.html",
+    "style-base.css",
     "style.css",
     "app.js",
     "WORKING_MODEL_CONTRACT.json",
@@ -30,9 +31,10 @@ def main() -> None:
         require(path.stat().st_size > 0, f"required candidate file empty: {name}")
 
     html = (ROOT / "index.html").read_text(encoding="utf-8")
-    css = (ROOT / "style.css").read_text(encoding="utf-8")
+    base_css = (ROOT / "style-base.css").read_text(encoding="utf-8")
+    override_css = (ROOT / "style.css").read_text(encoding="utf-8")
+    css = base_css + "\n" + override_css
     js = (ROOT / "app.js").read_text(encoding="utf-8")
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
     contract = json.loads((ROOT / "WORKING_MODEL_CONTRACT.json").read_text(encoding="utf-8"))
 
     require('content="mw-working-model-v1.0.0-candidate"' in html, "release marker absent")
@@ -88,7 +90,6 @@ def main() -> None:
         require(token not in js, f"personalized script token prohibited: {token}")
         require(token not in json.dumps(contract), f"personalized contract token prohibited: {token}")
 
-    # The public candidate has no runtime third-party URL, API, telemetry, or effect adapter.
     require(not re.search(r'https?://', html), "public HTML contains an absolute runtime URL")
     require("fetch(" not in js, "script contains fetch()")
     require("XMLHttpRequest" not in js, "script contains XMLHttpRequest")
@@ -104,12 +105,14 @@ def main() -> None:
     require("release_authority: false" in js, "pilot packet release hold absent")
     require("UNRESOLVED" in js, "unresolved value law absent")
 
+    require('@import url("style-base.css")' in override_css, "base style import absent")
     require("@media (max-width: 640px)" in css, "mobile CSS floor absent")
+    require("@media (max-width: 360px)" in override_css, "narrow accessibility hardening absent")
+    require("grid-template-columns: minmax(0, 1fr)" in override_css, "narrow capacity containment absent")
     require("@media (prefers-reduced-motion: reduce)" in css, "reduced-motion law absent")
     require(":focus-visible" in css, "focus-visible treatment absent")
     require("min-height: 48px" in css, "minimum primary form/control target hook absent")
 
-    # Verify source contracts are still present. This candidate composes them; it does not replace them.
     source_paths = [
         REPO / "manzanita" / "README.md",
         REPO / "essential-attention" / "README.md",
