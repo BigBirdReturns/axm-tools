@@ -79,6 +79,19 @@ def assert_local_only(requests: list[str]) -> None:
     assert not unexpected, unexpected
 
 
+def assert_http_clean(http_errors: list[dict[str, object]]) -> None:
+    # Chromium may probe /favicon.ico when a document has no icon declaration.
+    # Treat only that UA-originated, non-semantic request as ignorable. Every
+    # candidate CSS, script, image, page, or other 4xx/5xx response remains fatal.
+    failures = []
+    for item in http_errors:
+        path = urlparse(str(item["url"])).path
+        if path == "/favicon.ico" and item["status"] == 404:
+            continue
+        failures.append(item)
+    assert not failures, failures
+
+
 def main() -> None:
     with server() as url, sync_playwright() as playwright:
         launch: dict[str, object] = {"headless": True}
@@ -90,9 +103,21 @@ def main() -> None:
         page = context.new_page()
         errors: list[str] = []
         requests: list[str] = []
-        page.on("console", lambda msg: errors.append(f"console:{msg.type}:{msg.text}") if msg.type == "error" else None)
+        http_errors: list[dict[str, object]] = []
+        page.on(
+            "console",
+            lambda msg: errors.append(f"console:{msg.type}:{msg.text}")
+            if msg.type == "error" and not msg.text.startswith("Failed to load resource:")
+            else None,
+        )
         page.on("pageerror", lambda exc: errors.append(f"pageerror:{exc}"))
         page.on("request", lambda request: requests.append(request.url))
+        page.on(
+            "response",
+            lambda response: http_errors.append({"url": response.url, "status": response.status})
+            if response.status >= 400
+            else None,
+        )
 
         page.goto(url, wait_until="networkidle")
         assert page.locator('meta[name="mw-release"]').get_attribute("content") == "mw-working-model-v1.0.0-candidate"
@@ -190,8 +215,8 @@ def main() -> None:
         page.goto(url + "#run-continuity", wait_until="networkidle")
         page.evaluate("document.documentElement.style.fontSize='200%'")
         page.wait_for_timeout(150)
-        page.screenshot(path=str(OUT / "working-model-320-200pct-debug.png"), full_page=True)
         assert_no_overflow(page)
+        page.screenshot(path=str(OUT / "working-model-320-200pct.png"), full_page=True)
 
         reduced = browser.new_context(viewport={"width": 1024, "height": 768}, reduced_motion="reduce")
         reduced_page = reduced.new_page()
@@ -204,6 +229,7 @@ def main() -> None:
         reduced.close()
 
         assert_local_only(requests)
+        assert_http_clean(http_errors)
         assert not errors, errors
         browser.close()
 
@@ -217,7 +243,7 @@ def main() -> None:
         "screenshots": [
             "working-model-desktop.png",
             "working-model-mobile.png",
-            "working-model-320-200pct-debug.png"
+            "working-model-320-200pct.png"
         ]
     }, indent=2))
 
