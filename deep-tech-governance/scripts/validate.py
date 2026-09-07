@@ -30,7 +30,7 @@ def unique(items, key):
 
 def basic_state_validate(state, checks, prefix):
     required = [
-        "schema", "target_selection", "meta", "actors", "relationships", "instruments",
+        "schema", "target_selection", "meta", "sources", "actors", "relationships", "instruments",
         "claims", "evidence", "capabilities", "rights", "authorities", "decisions",
         "exceptions", "qualification_plans", "stress_scenarios", "lineage", "successor_events"
     ]
@@ -40,6 +40,20 @@ def basic_state_validate(state, checks, prefix):
     add(checks, f"{prefix} public-only lane", state.get("meta", {}).get("public_only") is True)
     add(checks, f"{prefix} automatic selection false", state.get("target_selection", {}).get("automatic_selection") is False)
     add(checks, f"{prefix} selection receipt present", bool(state.get("target_selection", {}).get("selection_receipt")))
+    sources = state.get("sources", [])
+    source_ids = [x.get("source_id") for x in sources]
+    add(checks, f"{prefix} source ids unique and nonempty", all(source_ids) and len(source_ids) == len(set(source_ids)) if sources else True)
+    target_id = state.get("target_selection", {}).get("target_id")
+    bad_source_targets = [x.get("source_id", "?") for x in sources if x.get("target_id") != target_id or x.get("public_source") is not True]
+    add(checks, f"{prefix} sources bind exact target and public lane", not bad_source_targets, ",".join(bad_source_targets))
+    source_set = set(source_ids)
+    unresolved_refs = []
+    for collection in ["claims", "evidence"]:
+        for obj in state.get(collection, []):
+            for ref in obj.get("source_refs", []):
+                if ref not in source_set:
+                    unresolved_refs.append(f"{obj.get('id','?')}:{ref}")
+    add(checks, f"{prefix} claim and evidence source refs resolve", not unresolved_refs, ",".join(unresolved_refs))
     bad_claims = []
     for c in state.get("claims", []):
         missing_fields = [k for k in ["id", "state", "text", "source_refs", "allowed_language", "prohibited_upgrade"] if k not in c]
@@ -114,11 +128,14 @@ def main():
         "README.md", "CONSTITUTION.md", "PORTABILITY_ACCEPTANCE.md", "pack.json",
         "schemas/governed-state.schema.json", "schemas/technical-evidence.schema.json",
         "schemas/authority-rights.schema.json", "schemas/successor-event.schema.json",
-        "templates/empty-target.json", "fixtures/reference-01.json",
+        "schemas/selection-receipt.schema.json", "schemas/source-receipt.schema.json",
+        "templates/empty-target.json", "templates/selection-receipt.json", "fixtures/reference-01.json",
+        "fixtures/synthetic-selection-receipt.json",
         "fixtures/synthetic-target.json", "fixtures/synthetic-aerial.json",
         "fixtures/synthetic-defense-hardware.json", "fixtures/synthetic-industrial-robotics.json",
         "fixtures/synthetic-successor-event.json", "scripts/compile_outputs.py",
-        "scripts/compile_successor.py", "scripts/freeze.py", "scripts/qualify_browser.py",
+        "scripts/compile_successor.py", "scripts/freeze.py", "scripts/bootstrap_target.py",
+        "scripts/source_receipt.py", "scripts/qualify_browser.py",
         "scripts/validate.py", "workbench.html", "BROWSER_QUALIFICATION.json",
     ]
     missing = [p for p in required_files if not (root / p).is_file()]
@@ -129,6 +146,8 @@ def main():
         "schemas/technical-evidence.schema.json",
         "schemas/authority-rights.schema.json",
         "schemas/successor-event.schema.json",
+        "schemas/selection-receipt.schema.json",
+        "schemas/source-receipt.schema.json",
     ]:
         obj = load(root / schema_path)
         add(checks, f"{schema_path} parses and identifies schema", bool(obj.get("$schema") and obj.get("$id")), obj.get("$id", ""))
@@ -162,6 +181,29 @@ def main():
 
     for fixture_path in fixture_paths:
         run_projection_battery(root, fixture_path, checks)
+
+    with tempfile.TemporaryDirectory() as td:
+        workspace = Path(td) / "workspace"
+        proc = subprocess.run(
+            [sys.executable, str(root / "scripts/bootstrap_target.py"), str(root / "fixtures/synthetic-selection-receipt.json"), "--out", str(workspace)],
+            capture_output=True, text=True
+        )
+        ok = proc.returncode == 0 and (workspace / "governed-state.json").is_file() and (workspace / "selection-receipt.json").is_file()
+        add(checks, "human selection receipt bootstraps target workspace", ok, "" if ok else proc.stderr)
+        if ok:
+            boot = load(workspace / "governed-state.json")
+            add(checks, "bootstrap preserves public-only empty source state", boot.get("meta", {}).get("public_only") is True and boot.get("sources") == [])
+            source_proc = subprocess.run(
+                [sys.executable, str(root / "scripts/source_receipt.py"), str(workspace), "--source-id", "SRC-BOOT-001", "--source-class", "PRIMARY_FIRST_PARTY", "--locator", "https://example.invalid/bootstrap", "--title", "Synthetic bootstrap source", "--observed-at", "2026-09-07", "--authority-scope", "synthetic fixture attribution only", "--nonclaim", "Synthetic fixture; no real-world claim."],
+                capture_output=True, text=True
+            )
+            updated = load(workspace / "governed-state.json") if source_proc.returncode == 0 else {}
+            add(checks, "public source receipt appends without external fetch", source_proc.returncode == 0 and len(updated.get("sources", [])) == 1 and updated["sources"][0].get("source_id") == "SRC-BOOT-001", "" if source_proc.returncode == 0 else source_proc.stderr)
+            duplicate_proc = subprocess.run(
+                [sys.executable, str(root / "scripts/source_receipt.py"), str(workspace), "--source-id", "SRC-BOOT-001", "--source-class", "PRIMARY_FIRST_PARTY", "--locator", "https://example.invalid/bootstrap", "--title", "Synthetic bootstrap source", "--observed-at", "2026-09-07", "--authority-scope", "synthetic fixture attribution only"],
+                capture_output=True, text=True
+            )
+            add(checks, "duplicate source receipt fails closed", duplicate_proc.returncode != 0)
 
     event_path = root / pack["successor_test_fixture"]
     with tempfile.TemporaryDirectory() as td:
