@@ -32,7 +32,7 @@ The schemas define:
 - `authority-rights.schema.json`: entity-bound authority and explicit IP/data/publicity/manufacturing/evidence-use rights.
 - `successor-event.schema.json`: bounded public events and the permitted successor actions.
 
-`scripts/compile_outputs.py` turns any conforming target state into four product projections. `scripts/validate.py` validates the pack, enforces the target-neutral boundary, exercises a synthetic target, checks the reference fixture contract, and writes a deterministic qualification receipt.
+`scripts/compile_outputs.py` turns any conforming target state into four product projections. `scripts/validate.py` validates the pack, enforces the target-neutral boundary, exercises four synthetic target shapes, checks the reference fixture contract, and writes a deterministic qualification receipt.
 
 ## Four product projections
 
@@ -74,3 +74,7 @@ The portability battery also exercises two state transitions that the first extr
 - `scripts/compile_successor.py` binds a material public event to the exact target and prior object state, emits a bounded successor delta, preserves nonclaims, applies only declared state changes, and appends lineage rather than rewriting history.
 
 The synthetic successor fixture proves the event path without creating a real-company successor or bypassing human target selection. `workbench.html` is the generic offline inspection surface: load any conforming governed-state JSON and inspect or export the same four projections locally.
+
+## Target intake front door
+
+`bootstrap_target.py` turns an exact human-authored selection receipt into an empty public-only target workspace while preserving the original receipt bytes and binding their SHA-256 into governed state. `source_receipt.py` then admits bounded public-source metadata, or hashes locally captured public bytes when they already exist. It never fetches a URL itself. Claims and evidence must resolve every `source_ref` to one of these target-bound receipts, so the pack now has a complete front door from explicit target selection through source custody rather than starting from an already-authored cartridge.
