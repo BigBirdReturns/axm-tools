@@ -2,7 +2,7 @@
 import argparse, hashlib, json, subprocess, sys, tempfile
 from pathlib import Path
 
-GENERIC_SUFFIXES = {".json", ".md", ".py"}
+GENERIC_SUFFIXES = {".json", ".md", ".py", ".html"}
 EXCLUDED_GENERIC_PATHS = {"fixtures/reference-01.json", "QUALIFICATION.json"}
 EXPECTED_OUTPUTS = ["admission-map.json", "diligence-map.json", "operating-readiness.json", "public-baseline.json"]
 
@@ -118,7 +118,8 @@ def main():
         "fixtures/synthetic-target.json", "fixtures/synthetic-aerial.json",
         "fixtures/synthetic-defense-hardware.json", "fixtures/synthetic-industrial-robotics.json",
         "fixtures/synthetic-successor-event.json", "scripts/compile_outputs.py",
-        "scripts/compile_successor.py", "scripts/freeze.py", "scripts/validate.py",
+        "scripts/compile_successor.py", "scripts/freeze.py", "scripts/qualify_browser.py",
+        "scripts/validate.py", "workbench.html", "BROWSER_QUALIFICATION.json",
     ]
     missing = [p for p in required_files if not (root / p).is_file()]
     add(checks, "required pack files present", not missing, ",".join(missing))
@@ -151,6 +152,13 @@ def main():
     add(checks, "generic code and policy contain no reference-target names", not leaks, ",".join(leaks))
     add(checks, "reference fixture isolates target-specific facts", ref.get("target_specific_code_required_by_pack") is False and ref.get("private_state_admitted") is False)
     add(checks, "reference fixture binds exact frozen commit and tree", bool(ref.get("frozen_demo_commit")) and bool(ref.get("frozen_demo_tree")))
+
+    browser_receipt = load(root / "BROWSER_QUALIFICATION.json")
+    add(checks, "browser qualification passes", browser_receipt.get("status") == "PASS" and browser_receipt.get("checks_passed") == browser_receipt.get("checks_total") == 24)
+    add(checks, "browser external network and errors zero", not browser_receipt.get("external_runtime_network_requests") and not browser_receipt.get("browser_errors"))
+    workbench = (root / "workbench.html").read_text(encoding="utf-8")
+    add(checks, "workbench exposes four product views", all(x in workbench for x in ["Public Baseline", "Diligence Map", "Admission Map", "Operating Readiness"]))
+    add(checks, "workbench contains no external URL literals", "http://" not in workbench and "https://" not in workbench)
 
     for fixture_path in fixture_paths:
         run_projection_battery(root, fixture_path, checks)
