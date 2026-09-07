@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AXM Deep-Tech Governance Workbench</title>
+<style>
+:root{color-scheme:light dark;--bg:#f5f6f8;--panel:#fff;--ink:#16191f;--muted:#667085;--line:#d9dde5;--accent:#25364f;--soft:#eef2f7;--danger:#912018;--warn:#8a4b00;--ok:#17633a}
+@media(prefers-color-scheme:dark){:root{--bg:#11151b;--panel:#171c24;--ink:#f1f4f8;--muted:#a5adba;--line:#313946;--accent:#d8e2f0;--soft:#202733;--danger:#ffaaa2;--warn:#ffd18a;--ok:#9be0b8}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{max-width:1220px;margin:auto;padding:28px}.top{display:flex;gap:24px;justify-content:space-between;align-items:flex-start;margin-bottom:20px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}h1{font-size:28px;margin:4px 0 6px;line-height:1.15}.subtitle{color:var(--muted);max-width:760px}.status{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:12px 14px;min-width:190px}.status b{display:block;font-size:13px}.status span{color:var(--muted);font-size:12px}.loader{border:1px dashed var(--line);background:var(--panel);border-radius:14px;padding:20px;display:flex;gap:18px;justify-content:space-between;align-items:center;margin-bottom:18px}.loader.drag{outline:2px solid var(--accent);outline-offset:2px}.loader strong{display:block}.loader small{color:var(--muted)}button,.fileButton{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:9px 12px;border-radius:9px;font:inherit;font-weight:650;cursor:pointer}.fileButton input{display:none}.primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}.meta{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:18px}.metric{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:13px}.metric .n{font-size:23px;font-weight:750}.metric .k{font-size:12px;color:var(--muted)}.tabs{display:flex;gap:7px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:16px;overflow:auto}.tab{white-space:nowrap}.tab[aria-selected="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}.bar{display:flex;gap:10px;justify-content:space-between;align-items:center;margin:0 0 14px}.bar h2{font-size:19px;margin:0}.bar .right{display:flex;gap:8px}.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:15px;min-width:0}.card h3{margin:0 0 7px;font-size:15px}.card p{margin:6px 0}.badge{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:2px 7px;font-size:11px;font-weight:750;letter-spacing:.02em;margin-right:5px}.badge.HELD,.badge.OPEN,.badge.critical{color:var(--danger)}.badge.SOURCE_ONLY,.badge.high{color:var(--warn)}.badge.CORROBORATED,.badge.QUALIFIED,.badge.CLOSED{color:var(--ok)}.muted{color:var(--muted)}.boundary{margin-top:9px;padding:9px 10px;background:var(--soft);border-radius:8px;font-size:13px}.boundary b{font-size:11px;text-transform:uppercase;letter-spacing:.06em}.list{display:grid;gap:10px}.empty{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:28px;text-align:center;color:var(--muted)}code{word-break:break-word}.sources{font-size:12px;color:var(--muted);word-break:break-word}.footer{margin-top:24px;color:var(--muted);font-size:12px}.hidden{display:none!important}
+@media(max-width:760px){.shell{padding:16px}.top,.loader{display:block}.status{margin-top:14px}.loader .actions{margin-top:14px}.meta{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}.bar{align-items:flex-start}.bar .right{flex-wrap:wrap;justify-content:flex-end}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <section class="top">
+    <div>
+      <div class="eyebrow">AXM / Deep-Tech Governance Pack</div>
+      <h1>Target-neutral governance workbench</h1>
+      <div class="subtitle">Load one human-selected governed-state cartridge. The workbench derives four views from the same evidence without promoting public observations into private company truth.</div>
+    </div>
+    <div class="status"><b id="targetLabel">No target loaded</b><span id="asOf">Public-only / offline</span></div>
+  </section>
+
+  <section class="loader" id="dropZone">
+    <div><strong>Load governed state</strong><small>Local JSON only. Nothing is uploaded or transmitted.</small></div>
+    <div class="actions"><label class="fileButton primary">Choose JSON<input id="fileInput" type="file" accept="application/json,.json"></label></div>
+  </section>
+
+  <section class="meta hidden" id="metrics">
+    <div class="metric"><div class="n" id="claimCount">0</div><div class="k">Claims</div></div>
+    <div class="metric"><div class="n" id="evidenceCount">0</div><div class="k">Evidence objects</div></div>
+    <div class="metric"><div class="n" id="exceptionCount">0</div><div class="k">Open high/critical</div></div>
+    <div class="metric"><div class="n" id="authorityCount">0</div><div class="k">Authority gaps</div></div>
+    <div class="metric"><div class="n" id="capabilityCount">0</div><div class="k">Capabilities</div></div>
+  </section>
+
+  <nav class="tabs" aria-label="Governance views">
+    <button class="tab" data-tab="public" aria-selected="true">Public Baseline</button>
+    <button class="tab" data-tab="diligence" aria-selected="false">Diligence Map</button>
+    <button class="tab" data-tab="admission" aria-selected="false">Admission Map</button>
+    <button class="tab" data-tab="readiness" aria-selected="false">Operating Readiness</button>
+  </nav>
+
+  <div class="bar"><h2 id="viewTitle">Public Baseline</h2><div class="right"><button id="exportBtn" disabled>Export current view</button></div></div>
+  <section id="empty" class="empty">Select a governed-state JSON file to begin.</section>
+  <section id="public" class="panel active"></section>
+  <section id="diligence" class="panel"></section>
+  <section id="admission" class="panel"></section>
+  <section id="readiness" class="panel"></section>
+  <div class="footer">No network runtime. Projections are derived locally from one governed state. Unknown, held, stale, and rejected state remains visible.</div>
+</main>
+<script>
+(() => {
+  const HIGH = new Set(['high','critical']);
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const arr = x => Array.isArray(x) ? x : [];
+  let state = null, views = {}, active = 'public';
+
+  function compile(s){
+    const claims=arr(s.claims), evidence=arr(s.evidence), instruments=arr(s.instruments), rights=arr(s.rights), authorities=arr(s.authorities), capabilities=arr(s.capabilities), exceptions=arr(s.exceptions), qplans=arr(s.qualification_plans);
+    const publicBaseline={schema:'axm/public-baseline@1',target_selection:s.target_selection,as_of:s.meta?.as_of,claims:claims.filter(c=>c.state!=='WITHDRAWN').map(c=>({id:c.id,state:c.state,text:c.text,source_refs:arr(c.source_refs),allowed_language:c.allowed_language||'',prohibited_upgrade:c.prohibited_upgrade||''})),evidence:evidence.map(e=>({id:e.id,state:e.state,source_refs:arr(e.source_refs),proves:arr(e.proves),does_not_prove:arr(e.does_not_prove)})),nonclaims:['Public observation is not private company truth.','Unknown state remains visible.','No output grants corporate authority or creates an external effect.']};
+    const diligence={schema:'axm/diligence-map@1',target_id:s.target_selection?.target_id,held_or_stale_claims:claims.filter(c=>['HELD','STALE'].includes(c.state)),high_risk_claims:claims.filter(c=>HIGH.has(c.risk)),open_high_critical_exceptions:exceptions.filter(e=>['OPEN','HELD'].includes(e.status)&&HIGH.has(e.severity)),instruments,rights,authorities,qualification_plans:qplans};
+    const gaps=[];
+    if(instruments.some(i=>['UNKNOWN','SIGNED_REPORTED','REPORTED'].includes(i.state))) gaps.push('executed_private_instruments');
+    if(rights.some(r=>['UNKNOWN','REPORTED'].includes(r.state))) gaps.push('rights_and_chain_of_title');
+    if(authorities.some(a=>['UNKNOWN','ASSERTED'].includes(a.state))) gaps.push('actual_delegated_authority');
+    if(claims.some(c=>['HELD','SOURCE_ONLY'].includes(c.state)&&HIGH.has(c.risk))) gaps.push('company_controlled_evidence_for_high_risk_claims');
+    if(exceptions.some(e=>['OPEN','HELD'].includes(e.status)&&HIGH.has(e.severity))) gaps.push('exception_resolution_records');
+    const admission={schema:'axm/admission-map@1',target_id:s.target_selection?.target_id,required_company_controlled_record_classes:[...new Set(gaps)].sort(),authority_rule:'Admission requires an attributable source and an operator with authority to admit that class of record.',public_baseline_mutation:'forbidden; admitted facts create successor state'};
+    const readiness={schema:'axm/operating-readiness@1',target_id:s.target_selection?.target_id,capabilities,authority_gaps:authorities.filter(a=>['UNKNOWN','ASSERTED'].includes(a.state)),high_critical_exceptions:exceptions.filter(e=>HIGH.has(e.severity)&&e.status!=='CLOSED'),technical_evidence_minimum:['hardware_revision','software_revision','model_or_policy_revision','sensor_and_calibration_refs','environment','procedure','telemetry_refs','acceptance_criteria','result','limitations','authority_ref','source_refs'],ready_for_external_effects:false};
+    return {public:publicBaseline,diligence,admission,readiness};
+  }
+
+  const badge = value => `<span class="badge ${esc(value)}">${esc(value||'UNKNOWN')}</span>`;
+  const sourceLine = refs => `<div class="sources">Sources: ${arr(refs).length ? arr(refs).map(esc).join(', ') : 'none bound'}</div>`;
+
+  function renderPublic(v){
+    if(!v.claims.length) return '<div class="empty">No public claims in this state.</div>';
+    return `<div class="list">${v.claims.map(c=>`<article class="card"><h3>${badge(c.state)} <code>${esc(c.id)}</code></h3><p>${esc(c.text)}</p>${sourceLine(c.source_refs)}<div class="boundary"><b>Allowed</b><br>${esc(c.allowed_language||'No stronger language declared.')}</div><div class="boundary"><b>Do not upgrade to</b><br>${esc(c.prohibited_upgrade||'No upgrade rule supplied.')}</div></article>`).join('')}</div>`;
+  }
+  function renderDiligence(v){
+    const blocks=[];
+    blocks.push(`<article class="card"><h3>Held or stale claims</h3>${v.held_or_stale_claims.length?v.held_or_stale_claims.map(c=>`<p>${badge(c.state)} <code>${esc(c.id)}</code> ${esc(c.text)}</p>`).join(''):'<p class="muted">None.</p>'}</article>`);
+    blocks.push(`<article class="card"><h3>Open high / critical exceptions</h3>${v.open_high_critical_exceptions.length?v.open_high_critical_exceptions.map(e=>`<p>${badge(e.severity)} <code>${esc(e.id)}</code> ${esc(e.failure_mode)}</p>`).join(''):'<p class="muted">None.</p>'}</article>`);
+    blocks.push(`<article class="card"><h3>Instruments</h3>${v.instruments.length?v.instruments.map(i=>`<p>${badge(i.state)} <code>${esc(i.id)}</code></p>`).join(''):'<p class="muted">None.</p>'}</article>`);
+    blocks.push(`<article class="card"><h3>Rights and authority</h3><p>${v.rights.length} rights objects · ${v.authorities.length} authority objects</p><p class="muted">Unknown rights and public titles do not create authority.</p></article>`);
+    return `<div class="grid">${blocks.join('')}</div>`;
+  }
+  function renderAdmission(v){
+    const gaps=v.required_company_controlled_record_classes;
+    return `<div class="grid"><article class="card"><h3>Company-controlled records still required</h3>${gaps.length?gaps.map(g=>`<p>${badge('HELD')} ${esc(g.replaceAll('_',' '))}</p>`).join(''):'<p class="muted">No gap classes derived.</p>'}</article><article class="card"><h3>Admission rule</h3><p>${esc(v.authority_rule)}</p><div class="boundary"><b>Lineage</b><br>${esc(v.public_baseline_mutation)}</div></article></div>`;
+  }
+  function renderReadiness(v){
+    return `<div class="grid"><article class="card"><h3>Capabilities</h3>${v.capabilities.length?v.capabilities.map(c=>`<p>${badge(c.state)} <code>${esc(c.id)}</code></p>`).join(''):'<p class="muted">None.</p>'}</article><article class="card"><h3>Authority gaps</h3>${v.authority_gaps.length?v.authority_gaps.map(a=>`<p>${badge(a.state)} <code>${esc(a.id)}</code></p>`).join(''):'<p class="muted">None.</p>'}</article><article class="card"><h3>High / critical controls</h3>${v.high_critical_exceptions.length?v.high_critical_exceptions.map(e=>`<p>${badge(e.severity)} <code>${esc(e.id)}</code> ${esc(e.failure_mode)}</p>`).join(''):'<p class="muted">None.</p>'}</article><article class="card"><h3>Minimum technical evidence</h3><p>${v.technical_evidence_minimum.map(esc).join(' · ')}</p><div class="boundary"><b>External effects</b><br>Held. This public-only projection cannot authorize action.</div></article></div>`;
+  }
+
+  function render(){
+    if(!state) return;
+    $('empty').classList.add('hidden'); $('metrics').classList.remove('hidden'); $('exportBtn').disabled=false;
+    $('targetLabel').textContent=state.target_selection?.target_label||state.target_selection?.target_id||'Loaded target';
+    $('asOf').textContent=`As of ${state.meta?.as_of||'unknown'} · ${state.meta?.public_only===true?'public-only':'boundary unspecified'}`;
+    $('claimCount').textContent=arr(state.claims).length; $('evidenceCount').textContent=arr(state.evidence).length;
+    $('exceptionCount').textContent=arr(state.exceptions).filter(e=>['OPEN','HELD'].includes(e.status)&&HIGH.has(e.severity)).length;
+    $('authorityCount').textContent=arr(state.authorities).filter(a=>['UNKNOWN','ASSERTED'].includes(a.state)).length;
+    $('capabilityCount').textContent=arr(state.capabilities).length;
+    $('public').innerHTML=renderPublic(views.public); $('diligence').innerHTML=renderDiligence(views.diligence); $('admission').innerHTML=renderAdmission(views.admission); $('readiness').innerHTML=renderReadiness(views.readiness);
+  }
+
+  function loadText(text){
+    const parsed=JSON.parse(text);
+    if(parsed.schema!=='axm/deep-tech-governed-state@1') throw new Error('Unsupported governed-state schema.');
+    if(parsed.target_selection?.automatic_selection!==false) throw new Error('Target selection must be human-controlled.');
+    state=parsed; views=compile(state); render();
+  }
+  function loadFile(file){const r=new FileReader();r.onload=()=>{try{loadText(r.result)}catch(e){alert(e.message)}};r.readAsText(file)}
+  $('fileInput').addEventListener('change',e=>e.target.files[0]&&loadFile(e.target.files[0]));
+  const dz=$('dropZone');
+  ['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag')}));
+  ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag')}));
+  dz.addEventListener('drop',e=>e.dataTransfer.files[0]&&loadFile(e.dataTransfer.files[0]));
+  const titles={public:'Public Baseline',diligence:'Diligence Map',admission:'Admission Map',readiness:'Operating Readiness'};
+  document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{active=btn.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',String(x===btn)));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===active));$('viewTitle').textContent=titles[active]}));
+  $('exportBtn').addEventListener('click',()=>{if(!views[active])return;const blob=new Blob([JSON.stringify(views[active],null,2)+'\n'],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${state.target_selection?.target_id||'target'}-${active}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),0)});
+  window.__AXM_WORKBENCH__={loadText,getState:()=>state,getViews:()=>views};
+})();
+</script>
+</body>
+</html>
