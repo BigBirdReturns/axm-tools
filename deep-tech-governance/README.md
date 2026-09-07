@@ -58,7 +58,7 @@ python deep-tech-governance/scripts/compile_outputs.py \
   --out /tmp/deep-tech-projections
 ```
 
-The scripts use only the Python standard library. No network call, account, target discovery, or external-effect adapter is required.
+The core compiler, successor, freeze, and structural validator use only the Python standard library. The optional browser qualifier uses Playwright plus a local Chromium runtime. The workbench itself performs no network fetches, account access, target discovery, or external effects.
 
 ## Boundary
 
@@ -73,4 +73,4 @@ The portability battery also exercises two state transitions that the first extr
 - `scripts/freeze.py` creates a deterministic, ZIP_STORED public-only release containing the exact target state, pack snapshot, four projections, manifest, and seal. Two freezes of identical inputs must be byte-identical.
 - `scripts/compile_successor.py` binds a material public event to the exact target and prior object state, emits a bounded successor delta, preserves nonclaims, applies only declared state changes, and appends lineage rather than rewriting history.
 
-The synthetic successor fixture proves the event path without creating a real-company successor or bypassing human target selection.
+The synthetic successor fixture proves the event path without creating a real-company successor or bypassing human target selection. `workbench.html` is the generic offline inspection surface: load any conforming governed-state JSON and inspect or export the same four projections locally.
