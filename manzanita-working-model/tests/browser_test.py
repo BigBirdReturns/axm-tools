@@ -81,20 +81,22 @@ def main() -> None:
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "working-model-desktop.png"), full_page=True)
 
-        # All four scenarios are real projections, not label swaps.
+        # All four scenarios are real projections, not label swaps. Playwright inner_text
+        # reflects CSS text-transform, so compare semantic stage names case-insensitively.
         expected = {
             "wildfire": ("wildfire exposure", "parcel score"),
             "tools": ("tool", "silent assignment"),
             "mobility": ("transportation path", "vehicle availability"),
             "continuity": ("good idea", "silence into rejection"),
         }
+        expected_stages = ["signal", "source", "authority", "safe action", "fallback", "closure", "learning"]
         for scenario, (title_fragment, prohibited_fragment) in expected.items():
             page.locator(f'[data-scenario="{scenario}"]').click()
             assert title_fragment.lower() in page.locator("#scenario-title").inner_text().lower()
             assert prohibited_fragment.lower() in page.locator("#scenario-prohibited").inner_text().lower()
             assert page.locator(".stage-card").count() == 7
-            stages = page.locator(".stage-card h4").all_inner_texts()
-            assert stages == ["Signal", "Source", "Authority", "Safe action", "Fallback", "Closure", "Learning"]
+            stages = [value.strip().lower() for value in page.locator(".stage-card h4").all_inner_texts()]
+            assert stages == expected_stages, stages
 
         # Keyboard tab navigation carries the projection with focus.
         first = page.locator('[data-scenario="wildfire"]')
@@ -109,9 +111,8 @@ def main() -> None:
         assert "1 of 5" in page.locator("#form-status").inner_text()
         with page.expect_download() as download_info:
             page.locator("#export-pilot").click()
-        first_download = download_info.value
         incomplete_path = OUT / "pilot-incomplete.json"
-        first_download.save_as(str(incomplete_path))
+        download_info.value.save_as(str(incomplete_path))
         incomplete = json.loads(incomplete_path.read_text(encoding="utf-8"))
         assert incomplete["schema"] == "manzanita-works/bounded-pilot-preparation@1"
         assert incomplete["standing"] == "INCOMPLETE_PREPARATION_HELD"
@@ -136,14 +137,12 @@ def main() -> None:
         complete = json.loads(complete_path.read_text(encoding="utf-8"))
         assert complete["standing"] == "PREPARED_FOR_ACCOUNTABLE_REVIEW_NOT_ACCEPTED"
         assert complete["organizational_gates"]["named_count"] == 5
-        assert complete["authority"]["institutional_acceptance"] is False
-        assert complete["authority"]["participant_consent"] is False
-        assert complete["authority"]["field_authority"] is False
-        assert complete["authority"]["spend_authority"] is False
-        assert complete["authority"]["publication_authority"] is False
-        assert complete["authority"]["assignment_authority"] is False
-        assert complete["authority"]["representation_authority"] is False
-        assert complete["authority"]["release_authority"] is False
+        for field in [
+            "institutional_acceptance", "participant_consent", "field_authority",
+            "spend_authority", "publication_authority", "assignment_authority",
+            "representation_authority", "release_authority",
+        ]:
+            assert complete["authority"][field] is False, field
         assert complete["authority"]["external_effect"] == "none"
         assert complete["invariant"]["silence_law"].startswith("Silence is not consent")
 
@@ -205,8 +204,8 @@ def main() -> None:
         "screenshots": [
             "working-model-desktop.png",
             "working-model-mobile.png",
-            "working-model-320-200pct.png",
-        ],
+            "working-model-320-200pct.png"
+        ]
     }, indent=2))
 
 
