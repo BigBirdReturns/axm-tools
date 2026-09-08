@@ -41,12 +41,42 @@
         </div>
       </div>
 
-      <div class="hero-visual" aria-label="Public demonstration place">
-        <img src="assets/property.webp" alt="Public-safe demonstration property from the Manzanita Place Fabric">
-        <div class="visual-label top-left"><span>Place</span> Public-safe demonstration</div>
-        <div class="visual-label bottom-left"><span>Evidence</span> Source state stays visible</div>
-        <div class="visual-label bottom-right"><span>Effect</span> Held until authority exists</div>
-      </div>
+      <div class="hero-visual hero-console" aria-label="Bounded working-case trace. No field activity is claimed.">
+          <div class="console-header">
+            <div>
+              <span class="console-kicker">Working case · N=0</span>
+              <strong>MW-CASE-000</strong>
+            </div>
+            <span class="console-status"><i aria-hidden="true"></i>Preparation only</span>
+          </div>
+
+          <div class="console-question">
+            <span>Concrete need</span>
+            <h2>Reduce wildfire exposure without creating a risk score.</h2>
+          </div>
+
+          <ol class="console-grammar" aria-label="Current case trace">
+            <li class="is-complete"><b>01</b><span>Signal</span></li>
+            <li class="is-complete"><b>02</b><span>Source</span></li>
+            <li class="is-current"><b>03</b><span>Authority</span></li>
+            <li><b>04</b><span>Safe action</span></li>
+            <li><b>05</b><span>Fallback</span></li>
+            <li><b>06</b><span>Closure</span></li>
+            <li><b>07</b><span>Learning</span></li>
+          </ol>
+
+          <div class="console-ledger">
+            <div><span>Source</span><strong>Resident + public context</strong><em>Bounded</em></div>
+            <div><span>Authority</span><strong>Accountable owner unresolved</strong><em class="console-hold">Hold</em></div>
+            <div><span>Output</span><strong>Verification path + assistance packet</strong><em>Prepared</em></div>
+            <div><span>External effect</span><strong>None</strong><em class="console-lock">Locked</em></div>
+          </div>
+
+          <div class="console-footer">
+            <span>Unresolved</span>
+            <code>sponsor · operator · venue · resources · stop condition</code>
+          </div>
+        </div>
     </section>
 
     <section class="compression-band" aria-label="The operating grammar">
@@ -136,8 +166,20 @@
       </div>
 
       <div class="proof-grid">
-        <a class="proof-card photo-card" href="../manzanita/">
-          <div class="proof-image"><img src="assets/household.webp" alt="Household aperture from the public Manzanita Place Fabric"></div>
+        <a class="proof-card instrument-card" href="../manzanita/">
+          <div class="proof-instrument place-instrument" aria-hidden="true">
+            <div class="instrument-top"><span>Place Fabric</span><b>07 scales</b></div>
+            <ol class="place-stack">
+              <li><span>01</span><strong>Household</strong><i>Lived</i></li>
+              <li><span>02</span><strong>Property</strong><i>Reference</i></li>
+              <li><span>03</span><strong>Street</strong><i>Map</i></li>
+              <li><span>04</span><strong>Neighborhood</strong><i>Cached</i></li>
+              <li><span>05</span><strong>City</strong><i>Public</i></li>
+              <li><span>06</span><strong>Region</strong><i>Public</i></li>
+              <li><span>07</span><strong>Hazard</strong><i>Held</i></li>
+            </ol>
+            <div class="instrument-foot"><span>No score</span><span>No adverse use</span></div>
+          </div>
           <div class="proof-copy">
             <p class="proof-state">Public · released projection</p>
             <h3>Place Fabric</h3>
