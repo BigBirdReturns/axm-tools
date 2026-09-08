@@ -1,0 +1,177 @@
+name: Finish Manzanita working model plain-language cleanup
+
+on:
+  push:
+    branches:
+      - fix/manzanita-working-model-editorial-finish-v1
+    paths:
+      - '.github/workflows/manzanita-working-model-editorial-finish-v6.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Remove final explanatory and status residue
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path('manzanita-working-model')
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected one match, observed {count}')
+              return text.replace(old, new, 1)
+
+          index_path = root / 'index.html'
+          html = index_path.read_text(encoding='utf-8')
+          replacements = {
+              '<span class="console-kicker">Prepared example · no active case</span>': '<span class="console-kicker">Demonstration trace</span>',
+              '<div class="instrument-foot"><span>Local-first</span><span>0 participant records</span></div>': '<div class="instrument-foot"><span>Local-first</span><span>No private records</span></div>',
+              'Public context can focus attention. It cannot diagnose the parcel, manufacture eligibility, or authorize work. The useful output is a source-linked verification and assistance path.': 'Public context can focus attention. It cannot diagnose the parcel, decide eligibility, or authorize work. The useful output is a source-backed verification and assistance path.',
+              '<p class="mini-label">What the model can prepare now</p>': '<p class="mini-label">Prepared output</p>',
+              '<p class="mini-label">What it may not manufacture</p>': '<p class="mini-label">Prohibited claims and effects</p>',
+              'Seven scales over one demonstration place, eight conditions, five operating seats, source states, safe actions, acceptance, and handoff.': 'One demonstration place across seven scales, with visible source quality, safe actions, acceptance, and handoff.',
+              'A working case file for source, interpretation, decisions, effect boundaries, receipts, replay, and cold handoff without silently assigning a person.': 'A local case file that preserves evidence, decisions, limits, receipts, and handoff without silently assigning work.',
+              'The deeper map of program organs, capacity classes, vendor boundaries, shared institutional substrate, and what must remain organization-owned.': 'The deeper map of program functions, capacity, vendor boundaries, shared services, and the records the organization must own.',
+              'Provider fallback, map-only honesty, image registration proposals, five genuinely different functional seats, and explicit adverse-action prohibitions.': 'Source fallback, map-only honesty, image-alignment proposals, five distinct user roles, and explicit prohibitions on adverse use.',
+              '<article><span>02</span><h3>Help cannot become adverse standing.</h3><p>Evidence collected to assist cannot silently become insurance, enforcement, eligibility, property, resident, or punitive scoring.</p></article>': '<article><span>02</span><h3>Help cannot become a penalty.</h3><p>Evidence gathered to help cannot silently become insurance, enforcement, eligibility, property, resident, or punitive scoring.</p></article>',
+              'A pilot begins when one problem has an accountable sponsor, a funded operator, an execution basis, an authority boundary, and a stop condition.': 'A pilot begins when one problem has an accountable sponsor, a funded operator, a defined venue and resources, an authority boundary, and a stop condition.',
+              '<strong>Execution basis</strong>': '<strong>Venue + resources</strong>',
+              '<span>Venue / participant class</span>': '<span>Venue / participant group</span>',
+              '<span>Resource envelope</span>': '<span>Available resources</span>',
+              '<div><span>Technical system</span><b>Ready for bounded use</b></div>': '<div><span>System</span><b>Ready for bounded use</b></div>',
+              '<div><span>Working-model front door</span><b>Live</b></div>': '<div><span>Working model</span><b>Live</b></div>',
+          }
+          for old, new in replacements.items():
+              html = replace_once(html, old, new, old[:72])
+          for residue in [
+              'no active case', '0 participant records', 'source-linked',
+              'what it may not manufacture', 'program organs',
+              'shared institutional substrate', 'functional seats',
+              'adverse standing', 'execution basis',
+              'venue / participant class', 'resource envelope',
+              'working-model front door', 'technical system'
+          ]:
+              if residue in html.lower():
+                  raise SystemExit(f'visible plain-language residue remains: {residue}')
+          index_path.write_text(html, encoding='utf-8')
+
+          app_path = root / 'app.js'
+          js = app_path.read_text(encoding='utf-8')
+          js_replacements = {
+              'Public context can focus attention. It cannot diagnose the parcel, manufacture eligibility, or authorize work. The useful output is a source-linked verification and assistance path.': 'Public context can focus attention. It cannot diagnose the parcel, decide eligibility, or authorize work. The useful output is a source-backed verification and assistance path.',
+              'Use public fire and weather context, the public-safe Place Fabric, and resident-supplied facts. Missing, stale, map-only, authored, and contradictory states stay visible.': 'Use public fire and weather context, Place Fabric, and resident-supplied facts. Missing, stale, map-only, authored, and contradictory states stay visible.',
+              'status.textContent = `${count} of 5 organizational gates have named inputs. ${unresolved ? `${unresolved} remain unresolved.` : \'All five have inputs; this still does not create authority or adoption.\'}`;': 'status.textContent = `${count} of 5 pilot decisions complete. ${unresolved ? `${unresolved} remain unresolved.` : \'All five are complete; authority and adoption still require explicit review.\'}`;',
+          }
+          for old, new in js_replacements.items():
+              js = replace_once(js, old, new, old[:72])
+          if 'public-safe' in js.lower() or 'organizational gates have named inputs' in js:
+              raise SystemExit('application plain-language residue remains')
+          app_path.write_text(js, encoding='utf-8')
+
+          static_path = root / 'tests/public_contract_test.py'
+          static = static_path.read_text(encoding='utf-8')
+          anchor = '    require(\'placeholder="Operator unresolved"\' in html, "compact operator placeholder absent")\n'
+          insert = anchor + '''    require("Demonstration trace" in html, "plain-language demonstration label absent")
+              require("No private records" in html, "privacy-forward record label absent")
+              require("Prepared output" in html and "Prohibited claims and effects" in html, "case consequence labels differ")
+              require("Venue / participant group" in html and "Available resources" in html, "plain-language form labels differ")
+              for residue in ["no active case", "0 participant records", "public-safe", "source-linked", "adverse standing", "execution basis", "resource envelope", "technical system", "working-model front door"]:
+                  require(residue not in html.lower(), f"plain-language residue remains in public HTML: {residue}")
+              require("public-safe" not in js.lower(), "public-safe application rhetoric remains")
+              require("pilot decisions complete" in js, "plain-language form status absent")
+          '''
+          import textwrap
+          static = replace_once(static, anchor, textwrap.dedent(insert), 'static plain-language assertions')
+          static_path.write_text(static, encoding='utf-8')
+
+          browser_assertions = '''        assert page.locator(".console-kicker").inner_text() == "Demonstration trace"
+              assert "No private records" in page.locator(".attention-instrument .instrument-foot").inner_text()
+              assert page.locator("#form-status").inner_text().startswith("0 of 5 pilot decisions complete.")
+              assert page.locator('label:has(#pilot-venue) > span').inner_text() == "Venue / participant group"
+              assert page.locator('label:has(#pilot-resources) > span').inner_text() == "Available resources"
+          '''
+          browser_assertions = textwrap.dedent(browser_assertions)
+          for name in ['browser_test.py', 'live_browser_test.py']:
+              path = root / 'tests' / name
+              test = path.read_text(encoding='utf-8')
+              anchor = '        assert page.locator("html").get_attribute("data-theme") is None\n'
+              test = replace_once(test, anchor, anchor + browser_assertions, f'{name} plain-language assertions')
+              path.write_text(test, encoding='utf-8')
+          PY
+
+      - name: Remove one-shot controller
+        run: rm '.github/workflows/manzanita-working-model-editorial-finish-v6.yml'
+
+      - name: Qualify the complete public surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            manzanita-working-model/tests/public_contract_test.py \
+            manzanita-working-model/tests/browser_test.py \
+            manzanita-working-model/tests/live_browser_test.py \
+            manzanita-working-model/tests/live_readback.py
+          node --check manzanita-working-model/app.js
+          python manzanita-working-model/tests/public_contract_test.py
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -n "$browser" ]; then
+            export MW_CHROMIUM_EXECUTABLE="$browser"
+          else
+            python -m playwright install --with-deps chromium
+          fi
+          export MW_WORKING_MODEL_SCREENSHOT_DIR="$RUNNER_TEMP/manzanita-working-model-plain-language-final"
+          python manzanita-working-model/tests/browser_test.py
+
+      - name: Retain final exact review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-working-model-plain-language-final-${{ github.sha }}
+          path: ${{ runner.temp }}/manzanita-working-model-plain-language-final
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit the qualified cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'manzanita-working-model-editorial-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          python - <<'PY'
+          import subprocess
+          required = {
+              'manzanita-working-model/index.html',
+              'manzanita-working-model/app.js',
+              'manzanita-working-model/tests/browser_test.py',
+              'manzanita-working-model/tests/live_browser_test.py',
+              'manzanita-working-model/tests/public_contract_test.py',
+          }
+          allowed = required | {'.github/workflows/manzanita-working-model-editorial-finish-v6.yml'}
+          rows = subprocess.check_output(['git', 'status', '--short'], text=True).splitlines()
+          observed = {row[3:] for row in rows}
+          missing = required - observed
+          unexpected = observed - allowed
+          if missing or unexpected:
+              raise SystemExit(f'changed-path gate failed\nmissing={sorted(missing)}\nunexpected={sorted(unexpected)}\nobserved={sorted(observed)}')
+          PY
+          git add -A
+          git commit -m 'manzanita: remove final public-language residue'
+          git push origin HEAD
