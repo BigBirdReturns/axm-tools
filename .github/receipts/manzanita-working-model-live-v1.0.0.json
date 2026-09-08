@@ -2,9 +2,9 @@
   "schema": "manzanita-works/working-model-public-release-receipt@1",
   "result": "PASS_PUBLIC_WORKING_MODEL_RELEASED_NO_INSTITUTIONAL_EFFECT",
   "release": "mw-working-model-v1.0.0",
-  "recorded_at": "2026-09-08T03:47:28.674418+00:00",
-  "source_sha": "644a401806b60bb336530d562fe3f769267d880e",
-  "repository_head_when_recorded": "ca17e4082ad2ae22f82b105dabfb5b231507999a",
+  "recorded_at": "2026-09-08T17:13:03.529384+00:00",
+  "source_sha": "ba4c015654b1a33de54e6305a530f2b812e24cad",
+  "repository_head_when_recorded": "d8b56b9eb01f6afc0697676ebd2b1a9ec80e2128",
   "page_url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
   "root_url": "https://bigbirdreturns.github.io/axm-tools/",
   "proofs": {
@@ -18,22 +18,22 @@
     "schema": "manzanita-works/working-model-live-byte-readback@1",
     "result": "PASS_EXACT_LIVE_RELEASE_BYTES",
     "release": "mw-working-model-v1.0.0",
-    "source_sha": "644a401806b60bb336530d562fe3f769267d880e",
+    "source_sha": "ba4c015654b1a33de54e6305a530f2b812e24cad",
     "page_url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
     "root_url": "https://bigbirdreturns.github.io/axm-tools/",
-    "observed_at": "2026-09-08T03:47:11.151337+00:00",
+    "observed_at": "2026-09-08T17:12:51.544673+00:00",
     "attempt": 1,
     "root_directory_link": true,
     "files": {
       "index.html": {
         "expected": {
-          "bytes": 18155,
-          "sha256": "c461a8708a079f8715496a355067eb74bbd09cf55ae6aed82f2a89ddd3c6ee87"
+          "bytes": 20187,
+          "sha256": "fe0dbbd1dbad998a2f972b861d42b9607c145ec71bb9dee6d7852028de28b4a5"
         },
         "observed": {
           "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/index.html",
-          "bytes": 18155,
-          "sha256": "c461a8708a079f8715496a355067eb74bbd09cf55ae6aed82f2a89ddd3c6ee87",
+          "bytes": 20187,
+          "sha256": "fe0dbbd1dbad998a2f972b861d42b9607c145ec71bb9dee6d7852028de28b4a5",
           "content_type": "text/html; charset=utf-8"
         }
       },
@@ -63,49 +63,49 @@
       },
       "style.css": {
         "expected": {
-          "bytes": 563,
-          "sha256": "fc4edff58b651a18d5e07cab580899c2290bd55296a6dbfd5d3dbe517b09f67d"
+          "bytes": 9469,
+          "sha256": "65fad236c390d08c56eee4664f631d65f659f622bec562f48930dbc6bd7f0438"
         },
         "observed": {
           "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/style.css",
-          "bytes": 563,
-          "sha256": "fc4edff58b651a18d5e07cab580899c2290bd55296a6dbfd5d3dbe517b09f67d",
+          "bytes": 9469,
+          "sha256": "65fad236c390d08c56eee4664f631d65f659f622bec562f48930dbc6bd7f0438",
           "content_type": "text/css; charset=utf-8"
         }
       },
       "WORKING_MODEL_CONTRACT.json": {
         "expected": {
-          "bytes": 8670,
-          "sha256": "11cd063462b9738855ebbf240343ec11dded8f945bec7ffe1918c21c7bb1bc1c"
+          "bytes": 9569,
+          "sha256": "4aa5bd5970d05d880eaa4fea75f2d816645bb83bf7fe7504f998164f4388e4a1"
         },
         "observed": {
           "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/WORKING_MODEL_CONTRACT.json",
-          "bytes": 8670,
-          "sha256": "11cd063462b9738855ebbf240343ec11dded8f945bec7ffe1918c21c7bb1bc1c",
+          "bytes": 9569,
+          "sha256": "4aa5bd5970d05d880eaa4fea75f2d816645bb83bf7fe7504f998164f4388e4a1",
           "content_type": "application/json; charset=utf-8"
         }
       },
       "RELEASE_CONTRACT.json": {
         "expected": {
-          "bytes": 1751,
-          "sha256": "04863e47c5038857808cd801c70d451c3d5c9f96257625f77f7b98de30b18011"
+          "bytes": 2036,
+          "sha256": "918bad4010242f6290f7d0e778059b272d21a7525a078c6cc56a1b9bbba765c9"
         },
         "observed": {
           "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/RELEASE_CONTRACT.json",
-          "bytes": 1751,
-          "sha256": "04863e47c5038857808cd801c70d451c3d5c9f96257625f77f7b98de30b18011",
+          "bytes": 2036,
+          "sha256": "918bad4010242f6290f7d0e778059b272d21a7525a078c6cc56a1b9bbba765c9",
           "content_type": "application/json; charset=utf-8"
         }
       },
       "README.md": {
         "expected": {
-          "bytes": 4201,
-          "sha256": "c1cf047beade02dfb7455ee6186b1d3fbc919c79cd0aef8d4a7321b3481caaf4"
+          "bytes": 4690,
+          "sha256": "1647b4675b2de4cdf2d768fad6316c3055ef39ebf7e33730884ef9664b68f70a"
         },
         "observed": {
           "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/README.md",
-          "bytes": 4201,
-          "sha256": "c1cf047beade02dfb7455ee6186b1d3fbc919c79cd0aef8d4a7321b3481caaf4",
+          "bytes": 4690,
+          "sha256": "1647b4675b2de4cdf2d768fad6316c3055ef39ebf7e33730884ef9664b68f70a",
           "content_type": "text/markdown; charset=utf-8"
         }
       },
@@ -142,7 +142,7 @@
     "schema": "manzanita-works/working-model-live-browser@1",
     "result": "PASS_LIVE_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
     "release": "mw-working-model-v1.0.0",
-    "source_sha": "644a401806b60bb336530d562fe3f769267d880e",
+    "source_sha": "ba4c015654b1a33de54e6305a530f2b812e24cad",
     "page_url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
     "scenarios": 4,
     "stages_per_scenario": 7,
@@ -157,19 +157,19 @@
     "program_external_effect": "none"
   },
   "pages_deployment": {
-    "deployed_at": "2026-09-08T03:46:59.016013+00:00",
-    "source_sha": "644a401806b60bb336530d562fe3f769267d880e",
-    "run_id": "34184673797",
+    "deployed_at": "2026-09-08T17:12:33.886663+00:00",
+    "source_sha": "ba4c015654b1a33de54e6305a530f2b812e24cad",
+    "run_id": "34255653514",
     "run_attempt": "1",
     "page_url": "https://bigbirdreturns.github.io/axm-tools/",
     "axm_readiness_release": "readiness-equipment-evidence/1.0"
   },
   "workflow": {
-    "run_id": 34184673796,
+    "run_id": 34255653513,
     "run_attempt": 1,
-    "artifact_id": 10040098411,
-    "artifact_url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34184673796/artifacts/10040098411",
-    "artifact_digest": "ccf53d1ca20bef4f83a48fd9a1ec0d17fa50650203f11a72988ef183f1d1245b"
+    "artifact_id": 10067762532,
+    "artifact_url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34255653513/artifacts/10067762532",
+    "artifact_digest": "d035e27c3f0719b99d0f5d597bfc6bae8d650f7128aae839c893288bcc23d230"
   },
   "candidate_qualification": {
     "result": "PASS_WORKING_MODEL_CANDIDATE_QUALIFIED_FOR_REVIEW",
