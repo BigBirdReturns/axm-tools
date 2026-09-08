@@ -50,3 +50,8 @@ Public publication establishes route availability and exact released bytes. It d
 `tests/browser_test.py` runs the local release through Chromium. `tests/live_readback.py` requires byte-for-byte parity between every release file on `main` and the public route. `tests/live_browser_test.py` repeats the material interactions against GitHub Pages. The workflow records a durable live receipt under `.github/receipts/` only after all four proofs pass.
 
 All files in this tool directory are steward-owned. The generated live receipt is machine-owned by `.github/workflows/manzanita-working-model.yml`.
+
+
+## Visual evidence posture
+
+The primary working-model surface uses operational instrumentation rather than archival or low-resolution photography. The hero shows a bounded case trace, unresolved organizational gates, and the exact zero-effect state. The Place Fabric card shows its seven-scale source posture and adverse-use boundary. The retained photo assets remain in release custody for historical continuity, but the page does not render them as evidence of current field activity.

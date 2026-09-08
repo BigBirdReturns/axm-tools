@@ -89,9 +89,24 @@ def main() -> None:
         require(link in html, f"existing-surface link absent: {link}")
 
     for asset in ["assets/property.webp", "assets/household.webp"]:
-        require(asset in html, f"public-safe image donor absent: {asset}")
         local = (ROOT / asset).resolve()
-        require(local.is_file(), f"linked public-safe donor missing from repo: {asset}")
+        require(local.is_file(), f"retained legacy photo asset missing from repo: {asset}")
+        require(asset not in html, f"legacy photo asset may not render as primary evidence: {asset}")
+
+    for hook in [
+        'class="hero-visual hero-console"',
+        'class="console-grammar"',
+        'class="console-ledger"',
+        'class="proof-instrument place-instrument"',
+        'class="place-stack"',
+        'No adverse use',
+    ]:
+        require(hook in html, f"operational evidence hook absent: {hook}")
+    require("<img" not in html, "working-model main surface may not render archival photography")
+    visual = contract["visual_evidence"]
+    require(visual["primary_mode"] == "operational_instrumentation", "visual evidence mode differs")
+    require(visual["historical_or_low_resolution_photography_used_as_primary_proof"] is False, "legacy photography must not carry primary proof")
+    require(visual["field_activity_claimed"] is False, "visual system may not manufacture field activity")
 
     personalized = ["Mila", "Jonathan", "Stu", "Cavala", "Sandhu"]
     for token in personalized:

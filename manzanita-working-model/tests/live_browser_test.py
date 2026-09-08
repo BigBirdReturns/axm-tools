@@ -75,6 +75,12 @@ def main() -> None:
         assert page.locator(".stage-card").count() == 7
         assert page.locator(".decision-number").count() == 5
         assert page.locator(".proof-card").count() == 4
+        assert page.locator("main img").count() == 0
+        assert page.locator(".hero-console").count() == 1
+        assert page.locator(".console-grammar li").count() == 7
+        assert page.locator(".console-ledger > div").count() == 4
+        assert page.locator(".place-stack li").count() == 7
+        assert "no adverse use" in page.locator(".instrument-foot").inner_text().lower()
         assert "Silence is not consent" in page.locator(".invariant").inner_text()
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "working-model-live-desktop.png"), full_page=True)
