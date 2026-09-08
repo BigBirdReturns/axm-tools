@@ -120,7 +120,7 @@ def main() -> None:
         )
 
         page.goto(url, wait_until="networkidle")
-        assert page.locator('meta[name="mw-release"]').get_attribute("content") == "mw-working-model-v1.0.0-candidate"
+        assert page.locator('meta[name="mw-release"]').get_attribute("content") == "mw-working-model-v1.0.0"
         assert page.locator(".scenario-tab").count() == 4
         assert page.locator(".stage-card").count() == 7
         assert page.locator(".decision-number").count() == 5
@@ -234,8 +234,8 @@ def main() -> None:
         browser.close()
 
     print(json.dumps({
-        "result": "PASS_WORKING_MODEL_CHROMIUM_CAMPAIGN",
-        "release": "mw-working-model-v1.0.0-candidate",
+        "result": "PASS_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
+        "release": "mw-working-model-v1.0.0",
         "scenarios": 4,
         "stages_per_scenario": 7,
         "pilot_gates": 5,

@@ -16,6 +16,9 @@ REQUIRED = [
     "app.js",
     "WORKING_MODEL_CONTRACT.json",
     "README.md",
+    "RELEASE_CONTRACT.json",
+    "assets/property.webp",
+    "assets/household.webp",
 ]
 
 
@@ -27,8 +30,8 @@ def require(condition: bool, message: str) -> None:
 def main() -> None:
     for name in REQUIRED:
         path = ROOT / name
-        require(path.is_file(), f"required candidate file absent: {name}")
-        require(path.stat().st_size > 0, f"required candidate file empty: {name}")
+        require(path.is_file(), f"required release file absent: {name}")
+        require(path.stat().st_size > 0, f"required release file empty: {name}")
 
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     base_css = (ROOT / "style-base.css").read_text(encoding="utf-8")
@@ -36,10 +39,16 @@ def main() -> None:
     css = base_css + "\n" + override_css
     js = (ROOT / "app.js").read_text(encoding="utf-8")
     contract = json.loads((ROOT / "WORKING_MODEL_CONTRACT.json").read_text(encoding="utf-8"))
+    release_contract = json.loads((ROOT / "RELEASE_CONTRACT.json").read_text(encoding="utf-8"))
 
-    require('content="mw-working-model-v1.0.0-candidate"' in html, "release marker absent")
+    require('content="mw-working-model-v1.0.0"' in html, "release marker absent")
     require(contract["schema"] == "manzanita-works/working-model-contract@1", "contract schema differs")
-    require(contract["state"] == "internal_adoption_ready_candidate", "candidate state differs")
+    require(contract["state"] == "released_public_safe_working_model", "release state differs")
+    require(contract["object"]["public_effect"] == "public_static_route_only", "public effect differs")
+    require(release_contract["schema"] == "manzanita-works/working-model-release@1", "release contract schema differs")
+    require(release_contract["release"] == "mw-working-model-v1.0.0", "release identity differs")
+    require(release_contract["publication_authority"]["institutional_acceptance"] is False, "release may not accept institution")
+    require(release_contract["publication_authority"]["program_external_effect"] == "none", "release may not create program effect")
     require(contract["object"]["institutional_acceptance"] is False, "institutional acceptance must remain false")
     require(contract["object"]["external_effect"] == "none", "contract external effect must remain none")
     require(contract["pilot_export"]["external_effect"] == "none", "pilot export external effect must remain none")
@@ -79,7 +88,7 @@ def main() -> None:
     for link in ["../manzanita/", "../essential-attention/", "../manzanita-works/"]:
         require(link in html, f"existing-surface link absent: {link}")
 
-    for asset in ["../manzanita/assets/property.webp", "../manzanita/assets/household.webp"]:
+    for asset in ["assets/property.webp", "assets/household.webp"]:
         require(asset in html, f"public-safe image donor absent: {asset}")
         local = (ROOT / asset).resolve()
         require(local.is_file(), f"linked public-safe donor missing from repo: {asset}")
@@ -124,19 +133,19 @@ def main() -> None:
     for path in source_paths:
         require(path.is_file(), f"source contract absent: {path.relative_to(REPO)}")
 
-    candidate_files = [ROOT / name for name in REQUIRED]
+    release_files = [ROOT / name for name in REQUIRED]
     digest = hashlib.sha256()
-    for path in sorted(candidate_files, key=lambda p: p.name):
+    for path in sorted(release_files, key=lambda p: p.as_posix()):
         digest.update(path.name.encode("utf-8") + b"\0")
         digest.update(path.read_bytes())
     print(json.dumps({
-        "result": "PASS_WORKING_MODEL_STATIC_CONTRACT",
-        "release": "mw-working-model-v1.0.0-candidate",
-        "files": len(candidate_files),
+        "result": "PASS_WORKING_MODEL_STATIC_RELEASE_CONTRACT",
+        "release": "mw-working-model-v1.0.0",
+        "files": len(release_files),
         "scenarios": 4,
         "pilot_gates": 5,
         "external_effect": "none",
-        "candidate_bundle_digest": digest.hexdigest(),
+        "release_bundle_digest": digest.hexdigest(),
     }, indent=2))
 
 
