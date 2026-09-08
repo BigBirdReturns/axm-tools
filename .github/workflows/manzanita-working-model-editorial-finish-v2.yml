@@ -1,0 +1,226 @@
+name: Finish Manzanita working model editorial surface v2
+
+on:
+  push:
+    branches:
+      - fix/manzanita-working-model-editorial-finish-v1
+    paths:
+      - '.github/workflows/manzanita-working-model-editorial-finish-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Materialize editorial finish and repair generated qualification source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import re
+          import textwrap
+          from pathlib import Path
+
+          root = Path('manzanita-working-model')
+          controller = Path('.github/workflows/manzanita-working-model-editorial-finish-v1.yml')
+          source = controller.read_text(encoding='utf-8')
+          step_anchor = source.index('      - name: Remove visual and editorial residue')
+          start_marker = "          python - <<'PY'\n"
+          program_start = source.index(start_marker, step_anchor) + len(start_marker)
+          program_end = source.index("\n          PY\n", program_start)
+          program = textwrap.dedent(source[program_start:program_end])
+          exec(compile(program, '<editorial-finish-v1-materializer>', 'exec'), {})
+
+          static_path = root / 'tests/public_contract_test.py'
+          static = static_path.read_text(encoding='utf-8')
+
+          required = '''REQUIRED = [
+              "index.html",
+              "app.js",
+              "style-base.css",
+              "style.css",
+              "WORKING_MODEL_CONTRACT.json",
+              "RELEASE_CONTRACT.json",
+              "README.md",
+          ]
+          '''
+          req_start = static.index('REQUIRED = [')
+          req_end = static.index('\n\n\ndef require', req_start)
+          static = static[:req_start] + textwrap.dedent(required).rstrip() + static[req_end:]
+
+          phrase_block = '''    for phrase in [
+              "Start with one accountable case",
+              "One real problem.",
+              "One bounded promise.",
+              "Silence creates no consent, assignment, rejection, or completion.",
+              "Run one case",
+              "The system is already built.",
+              "Five rules bound the work.",
+              "Five decisions make one bounded pilot possible.",
+              "Produce one pilot packet, not another scoping cycle.",
+              "A return moves one case forward. It does not restart the explanation.",
+              "No institutional acceptance implied.",
+          ]:
+              require(phrase in html, f"required public phrase absent: {phrase}")
+          '''
+          phrase_start = static.index('    for phrase in [')
+          phrase_end_marker = 'require(phrase in html, f"required public phrase absent: {phrase}")'
+          phrase_end = static.index(phrase_end_marker, phrase_start) + len(phrase_end_marker)
+          static = static[:phrase_start] + textwrap.dedent(phrase_block).rstrip() + static[phrase_end:]
+
+          visual_block = '''    for asset in ["assets/property.webp", "assets/household.webp"]:
+              require(not (ROOT / asset).exists(), f"removed photo asset remains in current release: {asset}")
+              require(asset not in html, f"removed photo asset remains in public HTML: {asset}")
+
+          for hook in [
+              'class="hero-visual hero-console"',
+              'class="console-grammar"',
+              'class="console-ledger"',
+              'class="proof-instrument place-instrument"',
+              'class="proof-instrument attention-instrument"',
+              'class="proof-instrument fabric-instrument"',
+              'class="proof-instrument glide-instrument"',
+              'class="attention-stack"',
+              'class="organ-grid"',
+              'class="source-chain"',
+              'class="role-strip"',
+              'No adverse use',
+          ]:
+              require(hook in html, f"operational evidence hook absent: {hook}")
+          require("<img" not in html, "working-model main surface may not render photography")
+          for residue in ["N=0", "compression-band", "capacity-section", "proof-symbol", 'id="theme"', "data-theme="]:
+              require(residue not in html, f"public visual or editorial residue remains: {residue}")
+          require("THEME_KEY" not in js and "applyTheme" not in js, "theme subsystem remains in script")
+          visual = contract["visual_evidence"]
+          require(visual["primary_mode"] == "operational_instrumentation", "visual evidence mode differs")
+          require(visual["historical_or_low_resolution_photography_used_as_primary_proof"] is False, "legacy photography must not carry primary proof")
+          require(visual["current_release_photo_assets"] == [], "current release photo asset list must be empty")
+          require(visual["field_activity_claimed"] is False, "visual system may not manufacture field activity")
+          require(release_contract["release_files"] == REQUIRED, "release-file contract differs from static release list")
+          require(release_contract["visual_evidence"]["current_release_photo_assets"] == [], "release contract retained current photo assets")
+          require(release_contract["visual_evidence"]["rendered_image_elements"] == 0, "release contract rendered-image count differs")
+          '''
+          visual_start = static.index('    for asset in ["assets/property.webp", "assets/household.webp"]:')
+          visual_end = static.index('\n    personalized =', visual_start)
+          static = static[:visual_start] + textwrap.dedent(visual_block).rstrip() + '\n' + static[visual_end:]
+          static_path.write_text(static, encoding='utf-8')
+
+          assertions = '''        assert page.locator(".proof-card").count() == 4
+              assert page.locator(".proof-instrument").count() == 4
+              assert page.locator(".proof-symbol").count() == 0
+              assert page.locator("main img").count() == 0
+              assert page.locator("#theme").count() == 0
+              assert page.locator(".compression-band").count() == 0
+              assert page.locator(".capacity-section").count() == 0
+              assert page.locator(".hero-console").count() == 1
+              assert page.locator(".console-grammar li").count() == 7
+              assert page.locator(".console-ledger > div").count() == 4
+              assert page.locator(".place-stack li").count() == 7
+              assert page.locator(".attention-stack li").count() == 5
+              assert page.locator(".organ-grid span").count() == 6
+              assert page.locator(".source-chain li").count() == 4
+              assert page.locator(".role-strip span").count() == 5
+              assert "no adverse use" in page.locator(".instrument-foot").all_inner_texts()[0].lower()
+              assert "Silence creates no consent" in page.locator(".invariant").inner_text()
+              assert "N=0" not in page.locator("body").inner_text()
+              assert page.locator("html").get_attribute("data-theme") is None
+              skip = page.locator(".skip")
+              assert skip.evaluate("el => el.getBoundingClientRect().width <= 1")
+              skip.focus()
+              assert skip.evaluate("el => el.getBoundingClientRect().width > 1")
+              page.evaluate("document.activeElement.blur()")
+          '''
+          assertions = textwrap.dedent(assertions).rstrip() + '\n'
+          for name in ['browser_test.py', 'live_browser_test.py']:
+              path = root / 'tests' / name
+              test = path.read_text(encoding='utf-8')
+              block_start = test.index('        assert page.locator(".proof-card").count() == 4')
+              block_end = test.index('        assert_no_overflow(page)', block_start)
+              test = test[:block_start] + assertions + test[block_end:]
+              path.write_text(test, encoding='utf-8')
+          PY
+
+      - name: Remove one-shot controllers
+        run: |
+          rm '.github/workflows/manzanita-working-model-editorial-finish-v1.yml'
+          rm '.github/workflows/manzanita-working-model-editorial-finish-v2.yml'
+
+      - name: Qualify the complete editorial finish
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            manzanita-working-model/tests/public_contract_test.py \
+            manzanita-working-model/tests/browser_test.py \
+            manzanita-working-model/tests/live_browser_test.py \
+            manzanita-working-model/tests/live_readback.py
+          node --check manzanita-working-model/app.js
+          python manzanita-working-model/tests/public_contract_test.py
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -n "$browser" ]; then
+            export MW_CHROMIUM_EXECUTABLE="$browser"
+          else
+            python -m playwright install --with-deps chromium
+          fi
+          export MW_WORKING_MODEL_SCREENSHOT_DIR="$RUNNER_TEMP/manzanita-working-model-editorial-finish"
+          python manzanita-working-model/tests/browser_test.py
+
+      - name: Retain exact visual review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-working-model-editorial-finish-${{ github.sha }}
+          path: ${{ runner.temp }}/manzanita-working-model-editorial-finish
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit the qualified finish
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'manzanita-working-model-editorial-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          python - <<'PY'
+          import subprocess
+          required = {
+              'manzanita-working-model/README.md',
+              'manzanita-working-model/RELEASE_CONTRACT.json',
+              'manzanita-working-model/WORKING_MODEL_CONTRACT.json',
+              'manzanita-working-model/app.js',
+              'manzanita-working-model/assets/household.webp',
+              'manzanita-working-model/assets/property.webp',
+              'manzanita-working-model/index.html',
+              'manzanita-working-model/style.css',
+              'manzanita-working-model/tests/browser_test.py',
+              'manzanita-working-model/tests/live_browser_test.py',
+              'manzanita-working-model/tests/live_readback.py',
+              'manzanita-working-model/tests/public_contract_test.py',
+          }
+          allowed = required | {
+              '.github/workflows/manzanita-working-model-editorial-finish-v1.yml',
+              '.github/workflows/manzanita-working-model-editorial-finish-v2.yml',
+          }
+          rows = subprocess.check_output(['git', 'status', '--short'], text=True).splitlines()
+          observed = {row[3:] for row in rows}
+          missing = required - observed
+          unexpected = observed - allowed
+          if missing or unexpected:
+              raise SystemExit(f'changed-path gate failed\nmissing={sorted(missing)}\nunexpected={sorted(unexpected)}\nobserved={sorted(observed)}')
+          PY
+          git add -A
+          git commit -m 'manzanita: complete working-model editorial finish'
+          git push origin HEAD
