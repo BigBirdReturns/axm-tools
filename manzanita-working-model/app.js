@@ -3,7 +3,6 @@
 
   const RELEASE = 'mw-working-model-v1.0.0';
   const STORAGE_KEY = 'mw-working-model-v1-draft';
-  const THEME_KEY = 'mw-working-model-theme';
 
   const scenarios = {
     wildfire: {
@@ -210,7 +209,7 @@
         silence_law: 'Silence is not consent, assignment, rejection, or completion.',
         unresolved_law: 'A blank remains unresolved and may not be promoted to implied readiness.',
         adverse_action_boundary: 'Assistance and place evidence may not become insurance, enforcement, eligibility, property, resident, or other punitive standing.',
-        continuity_law: 'No founder, advisor, volunteer, operator, or builder becomes the runtime by default.'
+        continuity_law: 'No founder, advisor, volunteer, operator, or builder becomes the default operator.'
       },
       authority: {
         institutional_acceptance: false,
@@ -262,29 +261,11 @@
     updateFormStatus();
   });
 
-  const themeButton = byId('theme');
-  function applyTheme(theme) {
-    const normalized = theme === 'dark' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = normalized;
-    themeButton.setAttribute('aria-pressed', String(normalized === 'dark'));
-    try { localStorage.setItem(THEME_KEY, normalized); } catch (_) {}
-  }
-  themeButton.addEventListener('click', () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
-
-  function initialTheme() {
-    try {
-      const stored = localStorage.getItem(THEME_KEY);
-      if (stored === 'light' || stored === 'dark') return stored;
-    } catch (_) {}
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-
   function scenarioFromHash() {
     return location.hash.match(/^#run-(wildfire|tools|mobility|continuity)$/)?.[1];
   }
 
   restoreDraft();
-  applyTheme(initialTheme());
   const initialScenario = scenarioFromHash() || byId('pilot-scenario').value || 'wildfire';
   renderScenario(initialScenario, { syncForm: false });
   updateFormStatus();

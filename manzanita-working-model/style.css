@@ -269,3 +269,183 @@
             .instrument-foot { display: grid; }
           }
           
+
+/* Editorial finish: one authored surface, no ornamental residue. */
+html { color-scheme: light; }
+.skip {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  transform: none;
+}
+.skip:focus-visible {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  width: auto;
+  height: auto;
+  padding: 10px 14px;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  clip-path: none;
+  white-space: normal;
+  border: 2px solid var(--void);
+  transform: none;
+}
+.hero {
+  min-height: 0;
+  padding-block: clamp(52px, 6.5vw, 94px);
+}
+.run-section,
+.ready-section,
+.unlock-section,
+.return-section,
+.handoff-section {
+  padding-block: clamp(76px, 7.5vw, 116px);
+}
+.ready-section { padding-top: clamp(88px, 8vw, 128px); }
+.proof-card { min-height: 320px; }
+.proof-copy h3 { font-size: clamp(27px, 2.6vw, 42px); }
+.proof-instrument { min-width: 0; }
+
+.attention-stack,
+.source-chain {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0;
+  border-top: 1px solid var(--void-line);
+}
+.attention-stack li,
+.source-chain li {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 28px;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--void-line);
+}
+.attention-stack span,
+.source-chain span {
+  min-width: 0;
+  font: 800 12px/1 var(--display);
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.attention-stack strong {
+  padding: 4px 6px;
+  border: 1px solid rgba(200, 202, 154, .34);
+  color: #c8ca9a;
+  font: 700 7px/1 var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.attention-stack i,
+.source-chain b {
+  color: #858273;
+  font: normal 7px/1 var(--mono);
+  text-align: right;
+}
+.organ-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 15px 0;
+  background: var(--void-line);
+  border: 1px solid var(--void-line);
+}
+.organ-grid span {
+  min-width: 0;
+  min-height: 58px;
+  display: flex;
+  align-items: flex-end;
+  padding: 11px;
+  background: color-mix(in srgb, var(--void) 94%, var(--olive));
+  font: 800 13px/1 var(--display);
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.source-chain li {
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+}
+.source-chain b { text-align: left; }
+.source-chain i {
+  padding: 4px 5px;
+  border: 1px solid rgba(236, 231, 216, .18);
+  color: #b9b5a7;
+  font: normal 700 7px/1 var(--mono);
+  text-transform: uppercase;
+}
+.source-chain .is-source i { border-color: rgba(200, 202, 154, .45); color: #c8ca9a; }
+.source-chain .is-held i { border-color: rgba(183, 71, 45, .55); color: #dc876f; }
+.role-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 2px 0 14px;
+}
+.role-strip span {
+  padding: 5px 6px;
+  border: 1px solid var(--void-line);
+  color: #b9b5a7;
+  font: 700 7px/1 var(--mono);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.rules-section { padding-block: clamp(72px, 7vw, 110px); }
+.rules-grid article { min-height: 220px; padding: 22px; }
+.rules-grid h3 { margin: 24px 0 12px; font-size: 21px; }
+.decision-list li { min-height: 116px; }
+.return-section { gap: clamp(38px, 7vw, 96px); }
+.handoff-box { gap: 44px; }
+
+@media (max-width: 1180px) {
+  .proof-instrument { min-height: 260px; }
+}
+@media (max-width: 640px) {
+  .hero { padding-block: 46px 64px; }
+  .run-section,
+  .ready-section,
+  .unlock-section,
+  .return-section,
+  .handoff-section { padding-block: 66px; }
+  .proof-instrument { min-height: 238px; }
+  .rules-grid article,
+  .rules-grid article:nth-child(4),
+  .rules-grid article:nth-child(5) { min-height: 0; padding: 28px 22px; }
+  .rules-grid h3 { margin-top: 18px; }
+  .decision-list li { min-height: 0; }
+}
+@media (max-width: 480px) {
+  .console-grammar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .console-grammar li { min-height: 68px; }
+  .organ-grid span { min-height: 52px; }
+}
+
+
+/* Narrow handoff containment proved at 320 CSS px and 200% root text. */
+.handoff-box,
+.handoff-box > *,
+.handoff-state,
+.handoff-state > div,
+.handoff-state span,
+.handoff-state b {
+  min-width: 0;
+  max-width: 100%;
+}
+.handoff-box h2,
+.handoff-state span,
+.handoff-state b {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 360px) {
+  .handoff-box { width: 100%; padding-inline: 16px; }
+}

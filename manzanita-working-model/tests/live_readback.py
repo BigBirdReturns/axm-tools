@@ -25,9 +25,8 @@ FILES = [
     "WORKING_MODEL_CONTRACT.json",
     "RELEASE_CONTRACT.json",
     "README.md",
-    "assets/property.webp",
-    "assets/household.webp",
 ]
+REMOVED_FILES = ["assets/property.webp", "assets/household.webp"]
 
 
 def digest(data: bytes) -> str:
@@ -79,6 +78,29 @@ def main() -> None:
             except (urllib.error.URLError, TimeoutError) as exc:
                 mismatches.append({"path": relative, "error": str(exc)})
 
+
+        removed_observed: dict[str, object] = {}
+        for relative in REMOVED_FILES:
+            url = urllib.parse.urljoin(BASE_URL, urllib.parse.quote(relative, safe="/"))
+            try:
+                data, content_type = fetch(cache_busted(url, attempt))
+                row = {
+                    "url": url,
+                    "bytes": len(data),
+                    "sha256": digest(data),
+                    "content_type": content_type,
+                    "status": "UNEXPECTEDLY_PRESENT",
+                }
+                removed_observed[relative] = row
+                mismatches.append({"path": relative, "expected": "REMOVED", "observed": row})
+            except urllib.error.HTTPError as exc:
+                if exc.code == 404:
+                    removed_observed[relative] = {"url": url, "status": "PASS_REMOVED", "http_status": 404}
+                else:
+                    mismatches.append({"path": relative, "expected": "REMOVED", "http_status": exc.code})
+            except (urllib.error.URLError, TimeoutError) as exc:
+                mismatches.append({"path": relative, "expected": "REMOVED", "error": str(exc)})
+
         root_ok = False
         root_error = None
         try:
@@ -110,6 +132,7 @@ def main() -> None:
                 "observed_at": datetime.now(timezone.utc).isoformat(),
                 "attempt": attempt,
                 "root_directory_link": True,
+                "removed_files": removed_observed,
                 "files": {
                     relative: {"expected": expected[relative], "observed": observed[relative]}
                     for relative in FILES

@@ -75,13 +75,29 @@ def main() -> None:
         assert page.locator(".stage-card").count() == 7
         assert page.locator(".decision-number").count() == 5
         assert page.locator(".proof-card").count() == 4
+        assert page.locator(".proof-instrument").count() == 4
+        assert page.locator(".proof-symbol").count() == 0
         assert page.locator("main img").count() == 0
+        assert page.locator("#theme").count() == 0
+        assert page.locator(".compression-band").count() == 0
+        assert page.locator(".capacity-section").count() == 0
         assert page.locator(".hero-console").count() == 1
         assert page.locator(".console-grammar li").count() == 7
         assert page.locator(".console-ledger > div").count() == 4
         assert page.locator(".place-stack li").count() == 7
-        assert "no adverse use" in page.locator(".instrument-foot").inner_text().lower()
-        assert "Silence is not consent" in page.locator(".invariant").inner_text()
+        assert page.locator(".attention-stack li").count() == 5
+        assert page.locator(".organ-grid span").count() == 6
+        assert page.locator(".source-chain li").count() == 4
+        assert page.locator(".role-strip span").count() == 5
+        assert "no adverse use" in page.locator(".instrument-foot").all_inner_texts()[0].lower()
+        assert "Silence creates no consent" in page.locator(".invariant").inner_text()
+        assert "N=0" not in page.locator("body").inner_text()
+        assert page.locator("html").get_attribute("data-theme") is None
+        skip = page.locator(".skip")
+        assert skip.evaluate("el => el.getBoundingClientRect().width <= 1")
+        skip.focus()
+        assert skip.evaluate("el => el.getBoundingClientRect().width > 1")
+        page.evaluate("document.activeElement.blur()")
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "working-model-live-desktop.png"), full_page=True)
 
@@ -140,12 +156,6 @@ def main() -> None:
         page.locator("#clear-pilot").click()
         assert page.locator("#pilot-sponsor").input_value() == ""
 
-        original_theme = page.locator("html").get_attribute("data-theme")
-        page.locator("#theme").click()
-        changed_theme = page.locator("html").get_attribute("data-theme")
-        assert changed_theme in {"light", "dark"} and changed_theme != original_theme
-        page.reload(wait_until="networkidle")
-        assert page.locator("html").get_attribute("data-theme") == changed_theme
 
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto(target("#run-mobility"), wait_until="networkidle")
