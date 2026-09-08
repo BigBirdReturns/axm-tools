@@ -143,6 +143,16 @@ def main() -> None:
         assert "Silence creates no consent" in page.locator(".invariant").inner_text()
         assert "N=0" not in page.locator("body").inner_text()
         assert page.locator("html").get_attribute("data-theme") is None
+        assert page.locator(".console-kicker").inner_text().lower() == "demonstration trace"
+        assert "no private records" in page.locator(".attention-instrument .instrument-foot").inner_text().lower()
+        assert page.locator("#form-status").inner_text() == "0 of 5 pilot decisions complete. 5 remain unresolved."
+        assert page.locator('label:has(#pilot-venue) > span').inner_text().lower() == "venue / participant group"
+        assert page.locator('label:has(#pilot-resources) > span').inner_text().lower() == "available resources"
+        assert page.locator("#export-pilot").inner_text() == "Export pilot packet"
+        assert page.locator(".evidence-details").count() == 0
+        body_text = page.locator("body").inner_text().lower()
+        for residue in ["no active case", "0 participant records", "public-safe", "source-linked", "adverse standing", "execution basis", "resource envelope", "technical system", "working-model front door"]:
+            assert residue not in body_text, residue
         skip = page.locator(".skip")
         assert skip.evaluate("el => el.getBoundingClientRect().width <= 1")
         skip.focus()
@@ -243,7 +253,7 @@ def main() -> None:
           const node = Array.from(el.childNodes).find(item => item.nodeType === Node.TEXT_NODE);
           if (!node) return false;
           const text = node.textContent || '';
-          const words = [...text.matchAll(/\S+/g)];
+          const words = [...text.matchAll(/\\S+/g)];
           return words.every(match => {
             const range = document.createRange();
             range.setStart(node, match.index);

@@ -115,7 +115,23 @@ def main() -> None:
     require("bounded kernel" not in html.lower(), "public bounded-kernel jargon remains")
     require("advanced view" not in html.lower(), "public advanced-view jargon remains")
     require('placeholder="Operator unresolved"' in html, "compact operator placeholder absent")
-    require("Evidence and boundaries" in html, "concise evidence disclosure label absent")
+    require("Demonstration trace" in html, "plain-language demonstration label absent")
+    require("No private records" in html, "privacy-forward record label absent")
+    require("Prepared output" in html and "Prohibited claims and effects" in html, "case consequence labels differ")
+    require("Venue / participant group" in html and "Available resources" in html, "plain-language form labels differ")
+    require("Export pilot packet" in html, "plain-language export action absent")
+    require("06 functions" in html, "Operating Fabric function count label differs")
+    require("Help cannot become a penalty." in html, "plain-language adverse-use rule absent")
+    require('details class="evidence-details"' not in html, "redundant technical disclosure remains")
+    for residue in [
+        "no active case", "0 participant records", "public-safe", "source-linked",
+        "adverse standing", "execution basis", "resource envelope",
+        "technical system", "working-model front door", "program organs",
+        "shared institutional substrate", "functional seats",
+    ]:
+        require(residue not in html.lower(), f"plain-language residue remains in public HTML: {residue}")
+    require("public-safe place fabric" not in js.lower(), "public-safe application rhetoric remains")
+    require("pilot decisions complete" in js, "plain-language form status absent")
     visual = contract["visual_evidence"]
     require(visual["primary_mode"] == "operational_instrumentation", "visual evidence mode differs")
     require(visual["historical_or_low_resolution_photography_used_as_primary_proof"] is False, "legacy photography must not carry primary proof")
