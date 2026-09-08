@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const RELEASE = 'mw-working-model-v1.0.0-candidate';
+  const RELEASE = 'mw-working-model-v1.0.0';
   const STORAGE_KEY = 'mw-working-model-v1-draft';
   const THEME_KEY = 'mw-working-model-theme';
 

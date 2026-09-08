@@ -1,0 +1,43 @@
+{
+  "schema": "manzanita-works/working-model-release@1",
+  "release": "mw-working-model-v1.0.0",
+  "state": "public_safe_release_candidate_pending_live_readback",
+  "route": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
+  "repository_path": "manzanita-working-model/",
+  "source_candidate": {
+    "qualification": "manzanita-working-model/QUALIFICATION.json",
+    "qualified_content_sha": "35e157dcbc441ac2d968588e53f7d9482c504fea",
+    "candidate_bundle_digest": "3868ff09ef80a75c15384f65a364ca90c2ddd53d633b011eaa94481e466bc101"
+  },
+  "release_files": [
+    "index.html",
+    "app.js",
+    "style-base.css",
+    "style.css",
+    "WORKING_MODEL_CONTRACT.json",
+    "RELEASE_CONTRACT.json",
+    "README.md",
+    "assets/property.webp",
+    "assets/household.webp"
+  ],
+  "required_proofs": [
+    "static release contract",
+    "local Chromium release campaign",
+    "exact live byte parity for every release file",
+    "live Chromium release campaign",
+    "root-directory discovery link",
+    "durable source-linked release receipt"
+  ],
+  "publication_authority": {
+    "actor": "repository_owner",
+    "scope": "publish this exact public-safe static route",
+    "institutional_acceptance": false,
+    "participant_consent": false,
+    "field_authority": false,
+    "spend_authority": false,
+    "assignment_authority": false,
+    "representation_authority": false,
+    "program_external_effect": "none"
+  },
+  "terminal_condition": "The release reaches terminal PASS only when the exact main-branch release files are observed at the public route, the live browser campaign passes, the root directory exposes the route, and a durable receipt records those facts without manufacturing institutional or program authority."
+}

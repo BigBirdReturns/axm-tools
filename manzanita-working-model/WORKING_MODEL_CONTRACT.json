@@ -1,16 +1,16 @@
 {
   "schema": "manzanita-works/working-model-contract@1",
   "contract_id": "MW-WORKING-MODEL-001",
-  "version": "1.0.0-candidate",
-  "state": "internal_adoption_ready_candidate",
+  "version": "1.0.0",
+  "state": "released_public_safe_working_model",
   "object": {
     "classification": "public_safe_convergence_and_pilot_preparation_surface",
     "accountable_actor": "design_integrator",
     "decision_authority": "release_authority",
     "institutional_acceptance": false,
-    "public_effect": "none",
+    "public_effect": "public_static_route_only",
     "external_effect": "none",
-    "claim_boundary": "This object compresses already-built Manzanita public-safe and internal candidate capabilities into one ordinary working model and local pilot-preparation surface. It is not Manzanita Works institutional adoption, a volunteer assignment, a field program, a participant record, a work order, an eligibility system, a fundraising system, a payment system, a public release authorization, or proof that any pilot exists."
+    "claim_boundary": "This object is the released public-safe Manzanita working model and local pilot-preparation surface. Publication proves route availability and the qualified bytes only. It is not Manzanita Works institutional adoption, a volunteer assignment, a funded continuity operator, a field program, a participant record, a work order, an eligibility system, a fundraising or payment system, or proof that any pilot or organizational commitment exists."
   },
   "purpose": "Make a future return by organizational leadership an input event rather than a prerequisite for understanding or preserving the system. A returning decision-maker should be able to select one bounded problem, identify the organization-owned seats and unresolved gates, export a no-effect preparation packet, and reach the deeper technical surfaces only when needed.",
   "source_surfaces": [
@@ -150,10 +150,24 @@
     "source_system_writeback": false
   },
   "release_holds": [
-    "No Manzanita Works institutional acceptance receipt is present for this candidate.",
-    "No pilot sponsor, funded continuity operator, venue, resource envelope, participant class, or field partner is admitted by this candidate.",
+    "No Manzanita Works institutional acceptance receipt is present for this release.",
+    "No pilot sponsor, funded continuity operator, venue, resource envelope, participant class, or field partner is admitted by this release.",
     "No participant consent, private household record, lawful field-access receipt, work authorization, completion receipt, or field acceptance is admitted.",
-    "No public promotion is authorized merely by passing repository or browser qualification."
+    "Public route publication grants no institutional, participant, field, spend, assignment, representation, eligibility, award, work, or program authority."
   ],
-  "control_question": "Can an organizational decision-maker who has not followed the architecture select one real problem, understand the source-authority-action boundary in minutes, see what already exists, name the five organization-owned gates, and export a bounded no-effect pilot packet without being asked to review the entire system or silently assigning labor?"
+  "control_question": "Can an organizational decision-maker who has not followed the architecture select one real problem, understand the source-authority-action boundary in minutes, see what already exists, name the five organization-owned gates, and export a bounded no-effect pilot packet without being asked to review the entire system or silently assigning labor?",
+  "publication": {
+    "state": "released_public_safe_static_route",
+    "route": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
+    "repository_path": "manzanita-working-model/",
+    "authority": "repository_owner",
+    "public_effect": "route_publication_only",
+    "institutional_acceptance": false,
+    "participant_consent": false,
+    "field_authority": false,
+    "spend_authority": false,
+    "assignment_authority": false,
+    "representation_authority": false,
+    "program_external_effect": "none"
+  }
 }
