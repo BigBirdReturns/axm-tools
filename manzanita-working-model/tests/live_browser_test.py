@@ -143,12 +143,14 @@ def main() -> None:
 
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto(target("#run-mobility"), wait_until="networkidle")
+        page.wait_for_function("document.querySelector('[data-scenario=\"mobility\"]').getAttribute('aria-selected') === 'true'")
         assert page.locator('[data-scenario="mobility"]').get_attribute("aria-selected") == "true"
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "working-model-live-mobile.png"), full_page=True)
 
         page.set_viewport_size({"width": 320, "height": 800})
         page.goto(target("#run-continuity"), wait_until="networkidle")
+        page.wait_for_function("document.querySelector('[data-scenario=\"continuity\"]').getAttribute('aria-selected') === 'true'")
         page.evaluate("document.documentElement.style.fontSize='200%'")
         page.wait_for_timeout(150)
         assert_no_overflow(page)
