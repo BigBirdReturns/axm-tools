@@ -1,23 +1,28 @@
-name: Manzanita Works working model v1 candidate
+name: Manzanita Works working model v1.0.0
 
 on:
   push:
     branches:
-      - agent/manzanita-working-model-v1
+      - main
+      - agent/manzanita-working-model-public-v1
     paths:
       - 'manzanita-working-model/**'
       - '.github/workflows/manzanita-working-model.yml'
+      - 'README.md'
+      - 'index.html'
   pull_request:
     paths:
       - 'manzanita-working-model/**'
       - '.github/workflows/manzanita-working-model.yml'
+      - 'README.md'
+      - 'index.html'
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: manzanita-working-model-${{ github.workflow }}-${{ github.ref }}
+  group: manzanita-working-model-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -31,7 +36,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Run exact public contract
+      - name: Run exact static release contract
         run: python manzanita-working-model/tests/public_contract_test.py
 
       - name: Resolve deterministic browser runtime
@@ -46,15 +51,123 @@ jobs:
             python -m playwright install --with-deps chromium
           fi
 
-      - name: Run real Chromium working-model campaign
+      - name: Run local Chromium release campaign
         env:
-          MW_WORKING_MODEL_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-working-model-review
+          MW_WORKING_MODEL_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-working-model-local-review
         run: python manzanita-working-model/tests/browser_test.py
 
-      - name: Retain review evidence only
+      - name: Retain local qualification evidence
         uses: actions/upload-artifact@v4
         with:
-          name: manzanita-working-model-v1-candidate-review
-          path: ${{ runner.temp }}/manzanita-working-model-review
+          name: manzanita-working-model-v1-local-${{ github.sha }}
+          path: ${{ runner.temp }}/manzanita-working-model-local-review
           if-no-files-found: error
           retention-days: 30
+
+  live-readback:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: qualify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      MW_WORKING_MODEL_URL: https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/
+      MW_ROOT_URL: https://bigbirdreturns.github.io/axm-tools/
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Resolve deterministic browser runtime
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -n "$browser" ]; then
+            echo "MW_CHROMIUM_EXECUTABLE=$browser" >> "$GITHUB_ENV"
+            "$browser" --version
+          else
+            python -m playwright install --with-deps chromium
+          fi
+
+      - name: Require exact live release bytes and root discovery
+        env:
+          MW_WORKING_MODEL_LIVE_MANIFEST: ${{ runner.temp }}/manzanita-working-model-live/byte-readback.json
+        run: python manzanita-working-model/tests/live_readback.py
+
+      - name: Run live Chromium release campaign
+        env:
+          MW_WORKING_MODEL_LIVE_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-working-model-live
+          MW_WORKING_MODEL_LIVE_BROWSER_RESULT: ${{ runner.temp }}/manzanita-working-model-live/live-browser-result.json
+        run: python manzanita-working-model/tests/live_browser_test.py
+
+      - name: Retain exact live release evidence
+        id: evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-working-model-v1-live-${{ github.sha }}
+          path: ${{ runner.temp }}/manzanita-working-model-live
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Wait for the deployment receipt that owns this source SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          pages_source=''
+          for attempt in $(seq 1 60); do
+            git fetch origin main
+            git checkout -B main origin/main
+            pages_source="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('.github/pages-deployment.json')
+          print(json.loads(path.read_text(encoding='utf-8')).get('source_sha', '') if path.exists() else '')
+          PY
+          )"
+            if [ "$pages_source" = "$GITHUB_SHA" ]; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::Pages deployment receipt did not converge on $GITHUB_SHA; observed $pages_source"
+          exit 1
+
+      - name: Refuse a stale release receipt if controlled files moved
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B main origin/main
+          if ! git diff --quiet "$GITHUB_SHA" -- manzanita-working-model README.md index.html .github/workflows/manzanita-working-model.yml; then
+            echo '::error::Release-controlled files changed after the triggering source SHA.'
+            git diff --stat "$GITHUB_SHA" -- manzanita-working-model README.md index.html .github/workflows/manzanita-working-model.yml
+            exit 1
+          fi
+
+      - name: Record the durable live-release receipt on main
+        env:
+          TRIGGER_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          ARTIFACT_ID: ${{ steps.evidence.outputs.artifact-id }}
+          ARTIFACT_URL: ${{ steps.evidence.outputs.artifact-url }}
+          ARTIFACT_DIGEST: ${{ steps.evidence.outputs.artifact-digest }}
+          BYTE_MANIFEST: ${{ runner.temp }}/manzanita-working-model-live/byte-readback.json
+          BROWSER_RESULT: ${{ runner.temp }}/manzanita-working-model-live/live-browser-result.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'manzanita-working-model-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          python manzanita-working-model/tests/record_live_receipt.py
+          git add .github/receipts/manzanita-working-model-live-v1.0.0.json
+          if git diff --cached --quiet; then
+            echo 'Exact live-release receipt already recorded for this source SHA.'
+            exit 0
+          fi
+          git commit -m 'manzanita: seal working model v1.0.0 live release'
+          git push origin main
