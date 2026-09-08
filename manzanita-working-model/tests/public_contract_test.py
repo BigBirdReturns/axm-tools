@@ -11,14 +11,12 @@ REPO = ROOT.parent
 
 REQUIRED = [
     "index.html",
+    "app.js",
     "style-base.css",
     "style.css",
-    "app.js",
     "WORKING_MODEL_CONTRACT.json",
-    "README.md",
     "RELEASE_CONTRACT.json",
-    "assets/property.webp",
-    "assets/household.webp",
+    "README.md",
 ]
 
 
@@ -63,16 +61,17 @@ def main() -> None:
     require(len(contract["source_surfaces"]) >= 6, "source-surface registry is incomplete")
 
     for phrase in [
+        "Start with one accountable case",
         "One real problem.",
         "One bounded promise.",
-        "Silence is not consent, assignment, rejection, or completion.",
-        "Run one case through the model",
-        "Different programs, one capacity model",
-        "The pieces are real. This page is the compression layer.",
-        "Five decisions turn an N=0 working model into one bounded pilot.",
-        "Do not schedule a scoping call. Produce one pilot packet.",
-        "A return should be an input event, not a rescue event.",
-        "No institutional acceptance is implied.",
+        "Silence creates no consent, assignment, rejection, or completion.",
+        "Run one case",
+        "The system is already built.",
+        "Five rules bound the work.",
+        "Five decisions make one bounded pilot possible.",
+        "Produce one pilot packet, not another scoping cycle.",
+        "A return moves one case forward. It does not restart the explanation.",
+        "No institutional acceptance implied.",
     ]:
         require(phrase in html, f"required public phrase absent: {phrase}")
 
@@ -83,31 +82,72 @@ def main() -> None:
     require(html.count('class="scenario-tab') == 4, "scenario-tab count differs")
     require(html.count('class="decision-number') == 5, "decision count differs")
     require(html.count('class="proof-card') == 4, "proof-card count differs")
-    require(html.count('<article><span>0') >= 6, "capacity rail count differs")
+    require(html.count('class="proof-instrument') == 4, "proof-instrument count differs")
 
     for link in ["../manzanita/", "../essential-attention/", "../manzanita-works/"]:
         require(link in html, f"existing-surface link absent: {link}")
 
     for asset in ["assets/property.webp", "assets/household.webp"]:
-        local = (ROOT / asset).resolve()
-        require(local.is_file(), f"retained legacy photo asset missing from repo: {asset}")
-        require(asset not in html, f"legacy photo asset may not render as primary evidence: {asset}")
+        require(not (ROOT / asset).exists(), f"removed photo asset remains in current release: {asset}")
+        require(asset not in html, f"removed photo asset remains in public HTML: {asset}")
 
     for hook in [
         'class="hero-visual hero-console"',
         'class="console-grammar"',
         'class="console-ledger"',
         'class="proof-instrument place-instrument"',
-        'class="place-stack"',
+        'class="proof-instrument attention-instrument"',
+        'class="proof-instrument fabric-instrument"',
+        'class="proof-instrument glide-instrument"',
+        'class="attention-stack"',
+        'class="organ-grid"',
+        'class="source-chain"',
+        'class="role-strip"',
         'No adverse use',
     ]:
         require(hook in html, f"operational evidence hook absent: {hook}")
-    require("<img" not in html, "working-model main surface may not render archival photography")
+    require("<img" not in html, "working-model main surface may not render photography")
+    for residue in ["N=0", "compression-band", "capacity-section", "proof-symbol", 'id="theme"', "data-theme="]:
+        require(residue not in html, f"public visual or editorial residue remains: {residue}")
+    require("THEME_KEY" not in js and "applyTheme" not in js, "theme subsystem remains in script")
+    require("administrative runtime" not in html.lower(), "public administrative-runtime jargon remains")
+    require("runtime owner" not in html.lower(), "public runtime-owner jargon remains")
+    require("bounded kernel" not in html.lower(), "public bounded-kernel jargon remains")
+    require("advanced view" not in html.lower(), "public advanced-view jargon remains")
+    require('placeholder="Operator unresolved"' in html, "compact operator placeholder absent")
+    require("Demonstration trace" in html, "plain-language demonstration label absent")
+    require("No private records" in html, "privacy-forward record label absent")
+    require("Prepared output" in html and "Prohibited claims and effects" in html, "case consequence labels differ")
+    require("Venue / participant group" in html and "Available resources" in html, "plain-language form labels differ")
+    require("Export pilot packet" in html, "plain-language export action absent")
+    require("06 functions" in html, "Operating Fabric function count label differs")
+    require("Help cannot become a penalty." in html, "plain-language adverse-use rule absent")
+    require('details class="evidence-details"' not in html, "redundant technical disclosure remains")
+    for residue in [
+        "no active case", "0 participant records", "public-safe", "source-linked",
+        "adverse standing", "execution basis", "resource envelope",
+        "technical system", "working-model front door", "program organs",
+        "shared institutional substrate", "functional seats",
+    ]:
+        require(residue not in html.lower(), f"plain-language residue remains in public HTML: {residue}")
+    require("public-safe place fabric" not in js.lower(), "public-safe application rhetoric remains")
+    require("pilot decisions complete" in js, "plain-language form status absent")
+    require("workable path" in html, "plain-language mobility path absent")
+    require("No site finding" in html, "plain-language Street Glide boundary absent")
+    require("Set what can happen and the stop conditions." in html, "plain-language pilot safety heading absent")
+    require("<span>External effect</span><b>None</b>" in html, "plain-language terminal effect state absent")
+    for residue in ["bounded path", "No feature claim", "effect boundary and stop conditions", "Next external effect"]:
+        require(residue.lower() not in html.lower(), f"final public residue remains: {residue}")
+    require("manually supplied" in js, "plain-language source-state language absent")
+    require("minimum missing observation" in js, "plain-language fallback absent")
     visual = contract["visual_evidence"]
     require(visual["primary_mode"] == "operational_instrumentation", "visual evidence mode differs")
     require(visual["historical_or_low_resolution_photography_used_as_primary_proof"] is False, "legacy photography must not carry primary proof")
+    require(visual["current_release_photo_assets"] == [], "current release photo asset list must be empty")
     require(visual["field_activity_claimed"] is False, "visual system may not manufacture field activity")
-
+    require(release_contract["release_files"] == REQUIRED, "release-file contract differs from static release list")
+    require(release_contract["visual_evidence"]["current_release_photo_assets"] == [], "release contract retained current photo assets")
+    require(release_contract["visual_evidence"]["rendered_image_elements"] == 0, "release contract rendered-image count differs")
     personalized = ["Mila", "Jonathan", "Stu", "Cavala", "Sandhu"]
     for token in personalized:
         require(token not in html, f"personalized public token prohibited: {token}")
@@ -134,7 +174,8 @@ def main() -> None:
     require('@import url("style-base.css")' in override_css, "base style import absent")
     require("@media (max-width: 640px)" in css, "mobile CSS floor absent")
     require("@media (max-width: 360px)" in override_css, "narrow accessibility hardening absent")
-    require("grid-template-columns: minmax(0, 1fr)" in override_css, "narrow capacity containment absent")
+    require("@media (max-width: 480px)" in override_css, "compact instrument breakpoint absent")
+    require(".console-grammar" in override_css, "compact grammar treatment absent")
     require("@media (prefers-reduced-motion: reduce)" in css, "reduced-motion law absent")
     require(":focus-visible" in css, "focus-visible treatment absent")
     require("min-height: 48px" in css, "minimum primary form/control target hook absent")

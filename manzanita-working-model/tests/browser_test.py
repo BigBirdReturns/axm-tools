@@ -125,13 +125,45 @@ def main() -> None:
         assert page.locator(".stage-card").count() == 7
         assert page.locator(".decision-number").count() == 5
         assert page.locator(".proof-card").count() == 4
+        assert page.locator(".proof-instrument").count() == 4
+        assert page.locator(".proof-symbol").count() == 0
         assert page.locator("main img").count() == 0
+        assert page.locator("#theme").count() == 0
+        assert page.locator(".compression-band").count() == 0
+        assert page.locator(".capacity-section").count() == 0
         assert page.locator(".hero-console").count() == 1
         assert page.locator(".console-grammar li").count() == 7
         assert page.locator(".console-ledger > div").count() == 4
         assert page.locator(".place-stack li").count() == 7
-        assert "no adverse use" in page.locator(".instrument-foot").inner_text().lower()
-        assert "Silence is not consent" in page.locator(".invariant").inner_text()
+        assert page.locator(".attention-stack li").count() == 5
+        assert page.locator(".organ-grid span").count() == 6
+        assert page.locator(".source-chain li").count() == 4
+        assert page.locator(".role-strip span").count() == 5
+        assert "no adverse use" in page.locator(".instrument-foot").all_inner_texts()[0].lower()
+        assert "Silence creates no consent" in page.locator(".invariant").inner_text()
+        assert "N=0" not in page.locator("body").inner_text()
+        assert page.locator("html").get_attribute("data-theme") is None
+        assert page.locator(".console-kicker").inner_text().lower() == "demonstration trace"
+        assert "no private records" in page.locator(".attention-instrument .instrument-foot").inner_text().lower()
+        assert page.locator("#form-status").inner_text() == "0 of 5 pilot decisions complete. 5 remain unresolved."
+        assert page.locator('label:has(#pilot-venue) > span').inner_text().lower() == "venue / participant group"
+        assert page.locator('label:has(#pilot-resources) > span').inner_text().lower() == "available resources"
+        assert page.locator("#export-pilot").inner_text() == "Export pilot packet"
+        assert page.locator(".evidence-details").count() == 0
+        body_text = page.locator("body").inner_text().lower()
+        for residue in ["no active case", "0 participant records", "public-safe", "source-linked", "adverse standing", "execution basis", "resource envelope", "technical system", "working-model front door"]:
+            assert residue not in body_text, residue
+        skip = page.locator(".skip")
+        assert skip.evaluate("el => el.getBoundingClientRect().width <= 1")
+        skip.focus()
+        assert skip.evaluate("el => el.getBoundingClientRect().width > 1")
+        assert "no site finding" in page.locator(".glide-instrument .instrument-foot").inner_text().lower()
+        assert "set what can happen and the stop conditions." in page.locator(".decision-list").inner_text().lower()
+        assert "external effect" in page.locator(".handoff-state").inner_text().lower()
+        clarity_text = page.locator("body").inner_text().lower()
+        for residue in ["bounded path", "no feature claim", "effect boundary and stop conditions", "next external effect"]:
+            assert residue not in clarity_text, residue
+        page.evaluate("document.activeElement.blur()")
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "working-model-desktop.png"), full_page=True)
 
@@ -204,12 +236,6 @@ def main() -> None:
         page.reload(wait_until="networkidle")
         assert page.locator("#pilot-sponsor").input_value() == ""
 
-        original_theme = page.locator("html").get_attribute("data-theme")
-        page.locator("#theme").click()
-        changed_theme = page.locator("html").get_attribute("data-theme")
-        assert changed_theme in {"light", "dark"} and changed_theme != original_theme
-        page.reload(wait_until="networkidle")
-        assert page.locator("html").get_attribute("data-theme") == changed_theme
 
         # Same-document fragment changes must update the governed scenario;
         # a cold-load-only deep link leaves ordinary in-tab navigation stale.
@@ -227,6 +253,21 @@ def main() -> None:
         page.goto(url + "#run-continuity", wait_until="networkidle")
         page.evaluate("document.documentElement.style.fontSize='200%'")
         page.wait_for_timeout(150)
+
+        heading = page.locator(".handoff-box h2")
+        assert heading.evaluate("""el => {
+          const node = Array.from(el.childNodes).find(item => item.nodeType === Node.TEXT_NODE);
+          if (!node) return false;
+          const text = node.textContent || '';
+          const words = [...text.matchAll(/\\S+/g)];
+          return words.every(match => {
+            const range = document.createRange();
+            range.setStart(node, match.index);
+            range.setEnd(node, match.index + match[0].length);
+            return range.getClientRects().length === 1;
+          });
+        }""")
+        assert page.locator("#pilot-operator").get_attribute("placeholder") == "Operator unresolved"
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "working-model-320-200pct.png"), full_page=True)
 

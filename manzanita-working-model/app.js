@@ -3,37 +3,36 @@
 
   const RELEASE = 'mw-working-model-v1.0.0';
   const STORAGE_KEY = 'mw-working-model-v1-draft';
-  const THEME_KEY = 'mw-working-model-theme';
 
   const scenarios = {
     wildfire: {
       kicker: 'Representative case · wildfire assistance',
       title: 'A resident wants help reducing wildfire exposure without becoming a risk score.',
-      summary: 'Public context can focus attention. It cannot diagnose the parcel, manufacture eligibility, or authorize work. The useful output is a source-linked verification and assistance path.',
-      output: 'A bounded verification and assistance packet with every unknown, authority boundary, stop condition, and handoff preserved.',
+      summary: 'Public context can focus attention. It cannot diagnose the parcel, decide eligibility, or authorize work. The useful output is a source-backed verification and assistance path.',
+      output: 'A verification and assistance packet that preserves every unknown, authority boundary, stop condition, and handoff.',
       prohibited: 'No parcel score, eligibility decision, insurance consequence, work order, field finding, or claim that help was delivered.',
       stages: [
-        ['Signal', 'A resident, neighbor, or program asks a bounded assistance question. Regional fire or weather context may increase attention, but it does not diagnose a specific home.'],
-        ['Source', 'Use public fire and weather context, the public-safe Place Fabric, and resident-supplied facts. Missing, stale, map-only, authored, and contradictory states stay visible.'],
+        ['Signal', 'A resident, neighbor, or program asks a specific assistance question. Regional fire or weather context may increase attention, but it does not diagnose a specific home.'],
+        ['Source', 'Use public fire and weather context, Place Fabric, and resident-supplied facts. Missing, stale, map-only, manually supplied, and contradictory states stay visible.'],
         ['Authority', 'The resident controls lived facts and consent. The program sponsor controls its offer and resources. Qualified field actors control work only inside lawful, accepted scope.'],
         ['Safe action', 'Prepare the minimum verification, assistance, material, or referral path needed to answer the resident’s question. Keep preparation distinct from inspection or work.'],
-        ['Fallback', 'If imagery or source coverage is insufficient, hold the claim. Ask for the minimum first-party observation, use map-only context, or route to a human source check.'],
+        ['Fallback', 'If imagery or source coverage is insufficient, hold the claim. Ask the resident for the minimum missing observation, use map-only context, or route to a human source check.'],
         ['Closure', 'Record whether the requested help reached an accepted outcome, was refused, was deferred, or remains blocked. Do not record a pass/fail grade for the property.'],
-        ['Learning', 'Aggregate repeated gaps in assistance, sourcing, tools, labor, or program design without exposing household identity or creating adverse standing.']
+        ['Learning', 'Track repeated gaps in assistance, sources, tools, labor, or program design without exposing household identity or creating a penalty.']
       ]
     },
     tools: {
       kicker: 'Representative case · tools + time',
       title: 'A neighbor needs a tool and enough human help to use it safely.',
       summary: 'Inventory is only one resource. The real case may require a tool, a person, time, transport, instruction, space, money, or a fallback. Those resources need different rules but one project context.',
-      output: 'A bounded capacity match: what is needed, what is actually available, what each provider is committing, and what closes the obligation.',
+      output: 'A capacity match that states what is needed, what is available, what each provider commits, and what closes the obligation.',
       prohibited: 'No silent assignment of volunteers, no inferred inventory, no promise that a tool or skill is available, and no permanent debt manufactured from participation.',
       stages: [
-        ['Signal', 'A participant states a concrete need or someone publishes a concrete offer. The system preserves who said what and the force of the statement.'],
+        ['Signal', 'A participant states a concrete need or someone publishes a concrete offer. The system preserves who said what and whether it is a request, offer, or commitment.'],
         ['Source', 'Check the current inventory or offer record, availability window, skill or training conditions, project context, and any required transport or space.'],
         ['Authority', 'The resource owner controls the tool or space. A person controls their own time and skill. The organization controls only resources and commitments it actually owns.'],
         ['Safe action', 'Prepare a match or commitment that states the resource, duration, rules, handoff, and responsible party. A suggestion remains a suggestion until accepted.'],
-        ['Fallback', 'If the first resource is unavailable, route to another tool, another date, a lending partner, a purchase option, instruction, or a safe “cannot fill” closure.'],
+        ['Fallback', 'If the first resource is unavailable, route to another tool, date, lending partner, purchase option, or instruction, or record that the need cannot be met.'],
         ['Closure', 'Close the loan, return, contribution, workshop, or declined match with an explicit receipt. Do not leave the obligation living in someone’s memory.'],
         ['Learning', 'Use repeated unmet needs to decide what the community should acquire, teach, stock, schedule, or partner for next.']
       ]
@@ -42,31 +41,31 @@
       kicker: 'Representative case · mobility',
       title: 'A community member needs a practical transportation path, not another program directory.',
       summary: 'The case begins with the actual trip and constraint. Equipment, route, repair, instruction, funding, storage, scheduling, and accessibility can participate without becoming one monolithic service.',
-      output: 'A bounded mobility path with the trip need, available resources, responsible actors, fallback, acceptance, and unresolved constraints carried together.',
+      output: 'A mobility path that keeps the trip need, available resources, responsible people, fallback, acceptance, and unresolved constraints together.',
       prohibited: 'No promise of vehicle availability, route safety, funding eligibility, repair completion, or participant fitness without the actor and evidence that can actually establish it.',
       stages: [
         ['Signal', 'A person states the trip, access, cost, repair, equipment, or confidence problem that is preventing useful mobility.'],
-        ['Source', 'Use current resource records, route and public context, first-party constraints, equipment status, program terms, and provider receipts without flattening them together.'],
+        ['Source', 'Use current resource records, route context, first-party constraints, equipment status, program terms, and provider receipts while preserving their different sources and authority.'],
         ['Authority', 'The participant controls acceptance. Equipment owners control equipment. Program owners control program resources. Qualified providers control repair or instruction inside scope.'],
         ['Safe action', 'Prepare the smallest viable mobility option: a loan, repair path, training session, route question, funding application, or combination with named owners.'],
         ['Fallback', 'If the preferred mode fails, preserve why and route to a different mode, date, provider, funding source, or explicit hold rather than inventing availability.'],
         ['Closure', 'Record the accepted, refused, completed, deferred, or blocked outcome and the return or follow-up obligation, if any.'],
-        ['Learning', 'Repeated transportation voids become an evidence base for shared fleet, repair capacity, route support, storage, training, or partnership decisions.']
+        ['Learning', 'Repeated transportation gaps provide evidence for shared vehicles, repair capacity, route support, storage, training, or partnerships.']
       ]
     },
     continuity: {
       kicker: 'Representative case · continuity',
       title: 'A good idea should not disappear when the person carrying it gets busy, leaves, or stops replying.',
-      summary: 'Offers, advisory comments, decisions, unknowns, authority, and next safe actions are distinct objects. Preserving those distinctions prevents enthusiasm from turning into invisible labor.',
+      summary: 'Offers, advice, decisions, unknowns, authority, and next safe actions must remain distinct. Preserving those differences prevents enthusiasm from turning into invisible labor.',
       output: 'A portable working case file that another person can reopen and understand without inheriting unstated authority or private context.',
       prohibited: 'No converting interest into assignment, silence into rejection, a meeting mention into a commitment, or a remembered relationship into institutional authority.',
       stages: [
         ['Signal', 'A meeting, message, source packet, offer, question, or decision creates something that may matter later.'],
         ['Source', 'Preserve the literal evidence, source summary, date, force, parties, and what is still unknown. Do not upgrade an interpretation because it is convenient.'],
-        ['Authority', 'Name the seat that can decide, the seat that can prepare, the affected actor, and every effect still withheld. Nobody inherits authority from proximity to the work.'],
+        ['Authority', 'Name who can decide, who can prepare, who is affected, and every effect still withheld. Nobody inherits authority by being close to the work.'],
         ['Safe action', 'Route only the next bounded internal move: recover a source, ask one question, draft a disposition, prepare a packet, or explicitly hold.'],
         ['Fallback', 'If the owner, source, budget, scope, or authority is absent, preserve the object as unresolved or expire it under a stated rule. Do not assign the nearest capable person.'],
-        ['Closure', 'Record the disposition, source, decision, acceptance, expiration, or remaining hold in a form a cold successor can replay.'],
+        ['Closure', 'Record the outcome, source, decision, acceptance, expiration, or remaining hold so another person can reopen the case without reconstruction.'],
         ['Learning', 'Repeated continuity failures expose missing operating functions, bad handoffs, unowned decisions, or work that needs a funded operator rather than heroic memory.']
       ]
     }
@@ -146,7 +145,7 @@
     const count = countNamedGates(draft);
     const status = byId('form-status');
     const unresolved = 5 - count;
-    status.textContent = `${count} of 5 organizational gates have named inputs. ${unresolved ? `${unresolved} remain unresolved.` : 'All five have inputs; this still does not create authority or adoption.'}`;
+    status.textContent = `${count} of 5 pilot decisions complete. ${unresolved ? `${unresolved} remain unresolved.` : 'All five are complete; authority and adoption still require explicit review.'}`;
   }
 
   function persistDraft() {
@@ -210,7 +209,7 @@
         silence_law: 'Silence is not consent, assignment, rejection, or completion.',
         unresolved_law: 'A blank remains unresolved and may not be promoted to implied readiness.',
         adverse_action_boundary: 'Assistance and place evidence may not become insurance, enforcement, eligibility, property, resident, or other punitive standing.',
-        continuity_law: 'No founder, advisor, volunteer, operator, or builder becomes the runtime by default.'
+        continuity_law: 'No founder, advisor, volunteer, operator, or builder becomes the default operator.'
       },
       authority: {
         institutional_acceptance: false,
@@ -262,29 +261,11 @@
     updateFormStatus();
   });
 
-  const themeButton = byId('theme');
-  function applyTheme(theme) {
-    const normalized = theme === 'dark' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = normalized;
-    themeButton.setAttribute('aria-pressed', String(normalized === 'dark'));
-    try { localStorage.setItem(THEME_KEY, normalized); } catch (_) {}
-  }
-  themeButton.addEventListener('click', () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
-
-  function initialTheme() {
-    try {
-      const stored = localStorage.getItem(THEME_KEY);
-      if (stored === 'light' || stored === 'dark') return stored;
-    } catch (_) {}
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-
   function scenarioFromHash() {
     return location.hash.match(/^#run-(wildfire|tools|mobility|continuity)$/)?.[1];
   }
 
   restoreDraft();
-  applyTheme(initialTheme());
   const initialScenario = scenarioFromHash() || byId('pilot-scenario').value || 'wildfire';
   renderScenario(initialScenario, { syncForm: false });
   updateFormStatus();

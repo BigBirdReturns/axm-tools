@@ -54,4 +54,4 @@ All files in this tool directory are steward-owned. The generated live receipt i
 
 ## Visual evidence posture
 
-The primary working-model surface uses operational instrumentation rather than archival or low-resolution photography. The hero shows a bounded case trace, unresolved organizational gates, and the exact zero-effect state. The Place Fabric card shows its seven-scale source posture and adverse-use boundary. The retained photo assets remain in release custody for historical continuity, but the page does not render them as evidence of current field activity.
+The primary surface uses operational instrumentation. The hero exposes a prepared-case trace, unresolved gates, and zero external effect. Each system card shows a specific operating mechanism. Prior low-resolution photo assets remain in Git history and are absent from the current release. The page claims no current field activity.

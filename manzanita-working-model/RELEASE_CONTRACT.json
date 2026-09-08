@@ -16,9 +16,7 @@
     "style.css",
     "WORKING_MODEL_CONTRACT.json",
     "RELEASE_CONTRACT.json",
-    "README.md",
-    "assets/property.webp",
-    "assets/household.webp"
+    "README.md"
   ],
   "required_proofs": [
     "static release contract",
@@ -42,11 +40,9 @@
   "terminal_condition": "The release reaches terminal PASS only when the exact main-branch release files are observed at the public route, the live browser campaign passes, the root directory exposes the route, and a durable receipt records those facts without manufacturing institutional or program authority.",
   "visual_evidence": {
     "primary_mode": "operational_instrumentation",
-    "legacy_photo_assets_rendered": false,
-    "legacy_photo_assets_retained_for_byte_custody_only": [
-      "assets/property.webp",
-      "assets/household.webp"
-    ],
+    "rendered_image_elements": 0,
+    "current_release_photo_assets": [],
+    "prior_photo_assets_preserved_in_source_history": true,
     "field_activity_claimed": false
   }
 }
