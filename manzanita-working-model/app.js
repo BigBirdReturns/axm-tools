@@ -279,12 +279,21 @@
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
+  function scenarioFromHash() {
+    return location.hash.match(/^#run-(wildfire|tools|mobility|continuity)$/)?.[1];
+  }
+
   restoreDraft();
   applyTheme(initialTheme());
-  const hashScenario = location.hash.match(/^#run-(wildfire|tools|mobility|continuity)$/)?.[1];
-  const initialScenario = hashScenario || byId('pilot-scenario').value || 'wildfire';
+  const initialScenario = scenarioFromHash() || byId('pilot-scenario').value || 'wildfire';
   renderScenario(initialScenario, { syncForm: false });
   updateFormStatus();
+
+  window.addEventListener('hashchange', () => {
+    const nextScenario = scenarioFromHash();
+    if (!nextScenario) return;
+    renderScenario(nextScenario);
+  });
 
   window.MW_WORKING_MODEL = Object.freeze({
     release: RELEASE,

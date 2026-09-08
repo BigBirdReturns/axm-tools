@@ -205,6 +205,12 @@ def main() -> None:
         page.reload(wait_until="networkidle")
         assert page.locator("html").get_attribute("data-theme") == changed_theme
 
+        # Same-document fragment changes must update the governed scenario;
+        # a cold-load-only deep link leaves ordinary in-tab navigation stale.
+        page.evaluate("location.hash = '#run-mobility'")
+        page.wait_for_function("document.querySelector('[data-scenario=\"mobility\"]').getAttribute('aria-selected') === 'true'")
+        assert "transportation path" in page.locator("#scenario-title").inner_text().lower()
+
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto(url + "#run-wildfire", wait_until="networkidle")
         assert page.locator('[data-scenario="wildfire"]').get_attribute("aria-selected") == "true"

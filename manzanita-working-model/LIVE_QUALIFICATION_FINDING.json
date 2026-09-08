@@ -1,0 +1,31 @@
+{
+  "schema": "manzanita-works/working-model-live-qualification-finding@1",
+  "finding_id": "MW-LIVE-ROUTE-001",
+  "state": "repaired_pending_requalification",
+  "release": "mw-working-model-v1.0.0",
+  "observed_source_sha": "eeda33f5ae501bab188e4a98c144ef0fd1c7720f",
+  "observed_run_id": 34184162210,
+  "evidence": {
+    "exact_live_release_bytes": "PASS_EXACT_LIVE_RELEASE_BYTES",
+    "root_directory_link": true,
+    "live_browser_campaign": "FAIL_SAME_DOCUMENT_HASH_ROUTE_STALE"
+  },
+  "mechanism": "After the page had already loaded, navigating from one #run-* fragment to another performed a same-document navigation. Initialization parsed the fragment only once and no hashchange listener reconciled the selected scenario, so the visible case could remain stale even though cold deep links worked.",
+  "repair": "Centralize fragment parsing, reconcile every valid hashchange through renderScenario, and require both local and live browser campaigns to exercise same-document route changes.",
+  "acceptance": [
+    "same-document mobility fragment selects mobility",
+    "same-document continuity fragment selects continuity",
+    "all four case projections retain seven stages",
+    "desktop, 390px mobile, and 320px at 200 percent text remain free of document overflow",
+    "public route bytes and root discovery remain exact"
+  ],
+  "authority": {
+    "institutional_acceptance": false,
+    "participant_consent": false,
+    "field_authority": false,
+    "spend_authority": false,
+    "assignment_authority": false,
+    "representation_authority": false,
+    "program_external_effect": "none"
+  }
+}

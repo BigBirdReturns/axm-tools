@@ -113,6 +113,8 @@ def main() -> None:
     require("field_authority: false" in js, "pilot packet field hold absent")
     require("release_authority: false" in js, "pilot packet release hold absent")
     require("UNRESOLVED" in js, "unresolved value law absent")
+    require("function scenarioFromHash()" in js, "hash route parser absent")
+    require("window.addEventListener('hashchange'" in js, "same-document hash route listener absent")
 
     require('@import url("style-base.css")' in override_css, "base style import absent")
     require("@media (max-width: 640px)" in css, "mobile CSS floor absent")
