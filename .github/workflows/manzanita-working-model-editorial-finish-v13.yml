@@ -1,0 +1,175 @@
+name: Finish Manzanita working model clarity pass v2
+
+on:
+  push:
+    branches:
+      - fix/manzanita-working-model-editorial-finish-v1
+    paths:
+      - '.github/workflows/manzanita-working-model-editorial-finish-v13.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Apply final clarity changes and exact qualification assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path('manzanita-working-model')
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected one match, observed {count}')
+              return text.replace(old, new, 1)
+
+          index_path = root / 'index.html'
+          html = index_path.read_text(encoding='utf-8')
+          replacements = {
+              'Turn a transportation need into a bounded path': 'Turn a transportation need into a workable path',
+              '<div class="instrument-foot"><span>No feature claim</span><span>No adverse use</span></div>': '<div class="instrument-foot"><span>No site finding</span><span>No adverse use</span></div>',
+              '<li><span class="decision-number">05</span><div><h3>Set the effect boundary and stop conditions.</h3><p>What may happen, what may never happen, what requires separate consent or review, and what makes the pilot stop.</p></div><strong>Safety limits</strong></li>': '<li><span class="decision-number">05</span><div><h3>Set what can happen and the stop conditions.</h3><p>State what may happen, what may never happen, what requires separate consent or review, and what stops the pilot.</p></div><strong>Safety limits</strong></li>',
+              '<div><span>Next external effect</span><b>None</b></div>': '<div><span>External effect</span><b>None</b></div>',
+          }
+          for old, new in replacements.items():
+              html = replace_once(html, old, new, old[:72])
+          for residue in ['bounded path', 'No feature claim', 'effect boundary and stop conditions', 'Next external effect']:
+              if residue.lower() in html.lower():
+                  raise SystemExit(f'final visible residue remains: {residue}')
+          index_path.write_text(html, encoding='utf-8')
+
+          app_path = root / 'app.js'
+          js = app_path.read_text(encoding='utf-8')
+          js = replace_once(
+              js,
+              'Missing, stale, map-only, authored, and contradictory states stay visible.',
+              'Missing, stale, map-only, manually supplied, and contradictory states stay visible.',
+              'authored source-state language',
+          )
+          js = replace_once(
+              js,
+              'Ask for the minimum first-party observation, use map-only context, or route to a human source check.',
+              'Ask the resident for the minimum missing observation, use map-only context, or route to a human source check.',
+              'first-party fallback language',
+          )
+          for residue in ['map-only, authored', 'minimum first-party observation']:
+              if residue in js:
+                  raise SystemExit(f'final dynamic residue remains: {residue}')
+          app_path.write_text(js, encoding='utf-8')
+
+          static_path = root / 'tests/public_contract_test.py'
+          static = static_path.read_text(encoding='utf-8')
+          anchor = '    require("pilot decisions complete" in js, "plain-language form status absent")\n'
+          added = '\n'.join([
+              '    require("workable path" in html, "plain-language mobility path absent")',
+              '    require("No site finding" in html, "plain-language Street Glide boundary absent")',
+              '    require("Set what can happen and the stop conditions." in html, "plain-language pilot safety heading absent")',
+              '    require("<span>External effect</span><b>None</b>" in html, "plain-language terminal effect state absent")',
+              '    for residue in ["bounded path", "No feature claim", "effect boundary and stop conditions", "Next external effect"]:',
+              '        require(residue.lower() not in html.lower(), f"final public residue remains: {residue}")',
+              '    require("manually supplied" in js, "plain-language source-state language absent")',
+              '    require("minimum missing observation" in js, "plain-language fallback absent")',
+              '',
+          ])
+          static = replace_once(static, anchor, anchor + added, 'static final-clarity assertions')
+          static_path.write_text(static, encoding='utf-8')
+
+          added_browser = '\n'.join([
+              '        assert "no site finding" in page.locator(".glide-instrument .instrument-foot").inner_text().lower()',
+              '        assert "Set what can happen and the stop conditions." in page.locator(".decision-list").inner_text()',
+              '        assert "External effect" in page.locator(".handoff-state").inner_text()',
+              '        clarity_text = page.locator("body").inner_text().lower()',
+              '        for residue in ["bounded path", "no feature claim", "effect boundary and stop conditions", "next external effect"]:',
+              '            assert residue not in clarity_text, residue',
+              '',
+          ])
+          for name in ['browser_test.py', 'live_browser_test.py']:
+              path = root / 'tests' / name
+              text = path.read_text(encoding='utf-8')
+              anchor = '        page.evaluate("document.activeElement.blur()")\n'
+              text = replace_once(text, anchor, added_browser + anchor, f'{name} final-clarity assertions')
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Remove one-shot controllers
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm '.github/workflows/manzanita-working-model-editorial-finish-v12.yml'
+          rm '.github/workflows/manzanita-working-model-editorial-finish-v13.yml'
+
+      - name: Qualify the complete public surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -W error::SyntaxWarning -m py_compile \
+            manzanita-working-model/tests/public_contract_test.py \
+            manzanita-working-model/tests/browser_test.py \
+            manzanita-working-model/tests/live_browser_test.py \
+            manzanita-working-model/tests/live_readback.py
+          node --check manzanita-working-model/app.js
+          python manzanita-working-model/tests/public_contract_test.py
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -n "$browser" ]; then
+            export MW_CHROMIUM_EXECUTABLE="$browser"
+          else
+            python -m playwright install --with-deps chromium
+          fi
+          export MW_WORKING_MODEL_SCREENSHOT_DIR="$RUNNER_TEMP/manzanita-working-model-final-clarity"
+          python -W error::SyntaxWarning manzanita-working-model/tests/browser_test.py
+
+      - name: Retain exact visual and packet review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-working-model-final-clarity-${{ github.sha }}
+          path: ${{ runner.temp }}/manzanita-working-model-final-clarity
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit the qualified clarity pass
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'manzanita-working-model-editorial-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          python - <<'PY'
+          import subprocess
+          required = {
+              'manzanita-working-model/app.js',
+              'manzanita-working-model/index.html',
+              'manzanita-working-model/tests/browser_test.py',
+              'manzanita-working-model/tests/live_browser_test.py',
+              'manzanita-working-model/tests/public_contract_test.py',
+          }
+          allowed = required | {
+              '.github/workflows/manzanita-working-model-editorial-finish-v12.yml',
+              '.github/workflows/manzanita-working-model-editorial-finish-v13.yml',
+          }
+          rows = subprocess.check_output(['git', 'status', '--short'], text=True).splitlines()
+          observed = {row[3:] for row in rows}
+          missing = required - observed
+          unexpected = observed - allowed
+          if missing or unexpected:
+              raise SystemExit(f'changed-path gate failed\nmissing={sorted(missing)}\nunexpected={sorted(unexpected)}\nobserved={sorted(observed)}')
+          PY
+          git add -A
+          git commit -m 'manzanita: finish final public-language details'
+          git push origin HEAD
