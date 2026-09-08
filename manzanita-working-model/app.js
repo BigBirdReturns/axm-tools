@@ -13,10 +13,10 @@
       prohibited: 'No parcel score, eligibility decision, insurance consequence, work order, field finding, or claim that help was delivered.',
       stages: [
         ['Signal', 'A resident, neighbor, or program asks a specific assistance question. Regional fire or weather context may increase attention, but it does not diagnose a specific home.'],
-        ['Source', 'Use public fire and weather context, Place Fabric, and resident-supplied facts. Missing, stale, map-only, authored, and contradictory states stay visible.'],
+        ['Source', 'Use public fire and weather context, Place Fabric, and resident-supplied facts. Missing, stale, map-only, manually supplied, and contradictory states stay visible.'],
         ['Authority', 'The resident controls lived facts and consent. The program sponsor controls its offer and resources. Qualified field actors control work only inside lawful, accepted scope.'],
         ['Safe action', 'Prepare the minimum verification, assistance, material, or referral path needed to answer the resident’s question. Keep preparation distinct from inspection or work.'],
-        ['Fallback', 'If imagery or source coverage is insufficient, hold the claim. Ask for the minimum first-party observation, use map-only context, or route to a human source check.'],
+        ['Fallback', 'If imagery or source coverage is insufficient, hold the claim. Ask the resident for the minimum missing observation, use map-only context, or route to a human source check.'],
         ['Closure', 'Record whether the requested help reached an accepted outcome, was refused, was deferred, or remains blocked. Do not record a pass/fail grade for the property.'],
         ['Learning', 'Track repeated gaps in assistance, sources, tools, labor, or program design without exposing household identity or creating a penalty.']
       ]

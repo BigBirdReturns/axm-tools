@@ -157,6 +157,12 @@ def main() -> None:
         assert skip.evaluate("el => el.getBoundingClientRect().width <= 1")
         skip.focus()
         assert skip.evaluate("el => el.getBoundingClientRect().width > 1")
+        assert "no site finding" in page.locator(".glide-instrument .instrument-foot").inner_text().lower()
+        assert "set what can happen and the stop conditions." in page.locator(".decision-list").inner_text().lower()
+        assert "external effect" in page.locator(".handoff-state").inner_text().lower()
+        clarity_text = page.locator("body").inner_text().lower()
+        for residue in ["bounded path", "no feature claim", "effect boundary and stop conditions", "next external effect"]:
+            assert residue not in clarity_text, residue
         page.evaluate("document.activeElement.blur()")
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "working-model-desktop.png"), full_page=True)

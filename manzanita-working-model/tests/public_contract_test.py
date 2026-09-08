@@ -132,6 +132,14 @@ def main() -> None:
         require(residue not in html.lower(), f"plain-language residue remains in public HTML: {residue}")
     require("public-safe place fabric" not in js.lower(), "public-safe application rhetoric remains")
     require("pilot decisions complete" in js, "plain-language form status absent")
+    require("workable path" in html, "plain-language mobility path absent")
+    require("No site finding" in html, "plain-language Street Glide boundary absent")
+    require("Set what can happen and the stop conditions." in html, "plain-language pilot safety heading absent")
+    require("<span>External effect</span><b>None</b>" in html, "plain-language terminal effect state absent")
+    for residue in ["bounded path", "No feature claim", "effect boundary and stop conditions", "Next external effect"]:
+        require(residue.lower() not in html.lower(), f"final public residue remains: {residue}")
+    require("manually supplied" in js, "plain-language source-state language absent")
+    require("minimum missing observation" in js, "plain-language fallback absent")
     visual = contract["visual_evidence"]
     require(visual["primary_mode"] == "operational_instrumentation", "visual evidence mode differs")
     require(visual["historical_or_low_resolution_photography_used_as_primary_proof"] is False, "legacy photography must not carry primary proof")
