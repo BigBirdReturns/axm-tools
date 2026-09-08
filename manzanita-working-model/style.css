@@ -1,0 +1,28 @@
+@import url("style-base.css");
+
+/* Narrow-screen accessibility hardening. Keep these overrides separate so the
+   qualified base composition remains byte-addressable and reviewable. */
+@media (max-width: 640px) {
+  .compression-band {
+    overflow-x: visible;
+  }
+
+  .compression-band ol {
+    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .compression-band li {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .capacity-rail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .capacity-rail article {
+    min-width: 0;
+  }
+}
