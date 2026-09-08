@@ -1,0 +1,192 @@
+{
+  "schema": "manzanita-works/working-model-public-release-receipt@1",
+  "result": "PASS_PUBLIC_WORKING_MODEL_RELEASED_NO_INSTITUTIONAL_EFFECT",
+  "release": "mw-working-model-v1.0.0",
+  "recorded_at": "2026-09-08T03:47:28.674418+00:00",
+  "source_sha": "644a401806b60bb336530d562fe3f769267d880e",
+  "repository_head_when_recorded": "ca17e4082ad2ae22f82b105dabfb5b231507999a",
+  "page_url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
+  "root_url": "https://bigbirdreturns.github.io/axm-tools/",
+  "proofs": {
+    "static_release_contract": "PASS_WORKING_MODEL_STATIC_RELEASE_CONTRACT",
+    "local_chromium": "PASS_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
+    "exact_live_bytes": "PASS_EXACT_LIVE_RELEASE_BYTES",
+    "live_chromium": "PASS_LIVE_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
+    "root_directory_link": true
+  },
+  "live_byte_readback": {
+    "schema": "manzanita-works/working-model-live-byte-readback@1",
+    "result": "PASS_EXACT_LIVE_RELEASE_BYTES",
+    "release": "mw-working-model-v1.0.0",
+    "source_sha": "644a401806b60bb336530d562fe3f769267d880e",
+    "page_url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
+    "root_url": "https://bigbirdreturns.github.io/axm-tools/",
+    "observed_at": "2026-09-08T03:47:11.151337+00:00",
+    "attempt": 1,
+    "root_directory_link": true,
+    "files": {
+      "index.html": {
+        "expected": {
+          "bytes": 18155,
+          "sha256": "c461a8708a079f8715496a355067eb74bbd09cf55ae6aed82f2a89ddd3c6ee87"
+        },
+        "observed": {
+          "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/index.html",
+          "bytes": 18155,
+          "sha256": "c461a8708a079f8715496a355067eb74bbd09cf55ae6aed82f2a89ddd3c6ee87",
+          "content_type": "text/html; charset=utf-8"
+        }
+      },
+      "app.js": {
+        "expected": {
+          "bytes": 17168,
+          "sha256": "aeeb9f48468f149218079058540fb7db1a1d08b79df5c882090abc386b4193db"
+        },
+        "observed": {
+          "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/app.js",
+          "bytes": 17168,
+          "sha256": "aeeb9f48468f149218079058540fb7db1a1d08b79df5c882090abc386b4193db",
+          "content_type": "application/javascript; charset=utf-8"
+        }
+      },
+      "style-base.css": {
+        "expected": {
+          "bytes": 21037,
+          "sha256": "553378166cdc950ae925a89d608497a6574ba85ff5dfec40f8ea5562d2f33f7e"
+        },
+        "observed": {
+          "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/style-base.css",
+          "bytes": 21037,
+          "sha256": "553378166cdc950ae925a89d608497a6574ba85ff5dfec40f8ea5562d2f33f7e",
+          "content_type": "text/css; charset=utf-8"
+        }
+      },
+      "style.css": {
+        "expected": {
+          "bytes": 563,
+          "sha256": "fc4edff58b651a18d5e07cab580899c2290bd55296a6dbfd5d3dbe517b09f67d"
+        },
+        "observed": {
+          "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/style.css",
+          "bytes": 563,
+          "sha256": "fc4edff58b651a18d5e07cab580899c2290bd55296a6dbfd5d3dbe517b09f67d",
+          "content_type": "text/css; charset=utf-8"
+        }
+      },
+      "WORKING_MODEL_CONTRACT.json": {
+        "expected": {
+          "bytes": 8670,
+          "sha256": "11cd063462b9738855ebbf240343ec11dded8f945bec7ffe1918c21c7bb1bc1c"
+        },
+        "observed": {
+          "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/WORKING_MODEL_CONTRACT.json",
+          "bytes": 8670,
+          "sha256": "11cd063462b9738855ebbf240343ec11dded8f945bec7ffe1918c21c7bb1bc1c",
+          "content_type": "application/json; charset=utf-8"
+        }
+      },
+      "RELEASE_CONTRACT.json": {
+        "expected": {
+          "bytes": 1751,
+          "sha256": "04863e47c5038857808cd801c70d451c3d5c9f96257625f77f7b98de30b18011"
+        },
+        "observed": {
+          "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/RELEASE_CONTRACT.json",
+          "bytes": 1751,
+          "sha256": "04863e47c5038857808cd801c70d451c3d5c9f96257625f77f7b98de30b18011",
+          "content_type": "application/json; charset=utf-8"
+        }
+      },
+      "README.md": {
+        "expected": {
+          "bytes": 4201,
+          "sha256": "c1cf047beade02dfb7455ee6186b1d3fbc919c79cd0aef8d4a7321b3481caaf4"
+        },
+        "observed": {
+          "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/README.md",
+          "bytes": 4201,
+          "sha256": "c1cf047beade02dfb7455ee6186b1d3fbc919c79cd0aef8d4a7321b3481caaf4",
+          "content_type": "text/markdown; charset=utf-8"
+        }
+      },
+      "assets/property.webp": {
+        "expected": {
+          "bytes": 60876,
+          "sha256": "6af8c147b3690e5d784dda46e10f980e6e0a4dfca416b3646e5a85277fcb8cc5"
+        },
+        "observed": {
+          "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/assets/property.webp",
+          "bytes": 60876,
+          "sha256": "6af8c147b3690e5d784dda46e10f980e6e0a4dfca416b3646e5a85277fcb8cc5",
+          "content_type": "image/webp"
+        }
+      },
+      "assets/household.webp": {
+        "expected": {
+          "bytes": 67534,
+          "sha256": "51bf4ef0c14cd2d1e174e24baf234455273425a333d7e3e58c32cfcd5ec395d6"
+        },
+        "observed": {
+          "url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/assets/household.webp",
+          "bytes": 67534,
+          "sha256": "51bf4ef0c14cd2d1e174e24baf234455273425a333d7e3e58c32cfcd5ec395d6",
+          "content_type": "image/webp"
+        }
+      }
+    },
+    "public_effect": "static_route_observed",
+    "institutional_acceptance": false,
+    "program_external_effect": "none"
+  },
+  "live_browser": {
+    "schema": "manzanita-works/working-model-live-browser@1",
+    "result": "PASS_LIVE_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
+    "release": "mw-working-model-v1.0.0",
+    "source_sha": "644a401806b60bb336530d562fe3f769267d880e",
+    "page_url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
+    "scenarios": 4,
+    "stages_per_scenario": 7,
+    "pilot_gates": 5,
+    "desktop_layout": "PASS",
+    "mobile_390_layout": "PASS",
+    "narrow_320_200pct_layout": "PASS_NO_DOCUMENT_OVERFLOW",
+    "keyboard_navigation": "PASS",
+    "incomplete_packet": "PASS_HELD",
+    "complete_packet": "PASS_PREPARATION_NOT_ACCEPTANCE",
+    "unexpected_cross_origin_requests": 0,
+    "program_external_effect": "none"
+  },
+  "pages_deployment": {
+    "deployed_at": "2026-09-08T03:46:59.016013+00:00",
+    "source_sha": "644a401806b60bb336530d562fe3f769267d880e",
+    "run_id": "34184673797",
+    "run_attempt": "1",
+    "page_url": "https://bigbirdreturns.github.io/axm-tools/",
+    "axm_readiness_release": "readiness-equipment-evidence/1.0"
+  },
+  "workflow": {
+    "run_id": 34184673796,
+    "run_attempt": 1,
+    "artifact_id": 10040098411,
+    "artifact_url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34184673796/artifacts/10040098411",
+    "artifact_digest": "ccf53d1ca20bef4f83a48fd9a1ec0d17fa50650203f11a72988ef183f1d1245b"
+  },
+  "candidate_qualification": {
+    "result": "PASS_WORKING_MODEL_CANDIDATE_QUALIFIED_FOR_REVIEW",
+    "qualified_content_sha": "35e157dcbc441ac2d968588e53f7d9482c504fea",
+    "candidate_bundle_digest": "3868ff09ef80a75c15384f65a364ca90c2ddd53d633b011eaa94481e466bc101"
+  },
+  "authority": {
+    "repository_owner_publication_authority_exercised": true,
+    "public_static_route_published": true,
+    "institutional_acceptance": false,
+    "participant_consent": false,
+    "field_authority": false,
+    "spend_authority": false,
+    "assignment_authority": false,
+    "representation_authority": false,
+    "eligibility_or_award_authority": false,
+    "program_external_effect": "none"
+  },
+  "terminal_condition": "Exact route bytes, live browser behavior, root discovery, and durable custody passed; institutional and program authority remain absent."
+}
