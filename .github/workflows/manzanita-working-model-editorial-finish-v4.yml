@@ -1,0 +1,146 @@
+name: Finish Manzanita working model editorial surface v4
+
+on:
+  push:
+    branches:
+      - fix/manzanita-working-model-editorial-finish-v1
+    paths:
+      - '.github/workflows/manzanita-working-model-editorial-finish-v4.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Materialize exact V3 finish and contain the narrow handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import textwrap
+          from pathlib import Path
+
+          controller = Path('.github/workflows/manzanita-working-model-editorial-finish-v3.yml')
+          source = controller.read_text(encoding='utf-8')
+          anchor = source.index('      - name: Materialize finish and write qualification blocks with exact indentation')
+          marker = "          python - <<'PY'\n"
+          start = source.index(marker, anchor) + len(marker)
+          end = source.index("\n          PY\n", start)
+          exec(compile(textwrap.dedent(source[start:end]), '<editorial-finish-v3-materializer>', 'exec'), {})
+
+          css_path = Path('manzanita-working-model/style.css')
+          css = css_path.read_text(encoding='utf-8')
+          containment = r'''
+
+          /* Narrow handoff containment proved at 320 CSS px and 200% root text. */
+          .handoff-box,
+          .handoff-box > *,
+          .handoff-state,
+          .handoff-state > div,
+          .handoff-state span,
+          .handoff-state b {
+            min-width: 0;
+            max-width: 100%;
+          }
+          .handoff-box h2,
+          .handoff-state span,
+          .handoff-state b {
+            overflow-wrap: anywhere;
+          }
+          @media (max-width: 360px) {
+            .handoff-box { width: 100%; padding-inline: 16px; }
+          }
+          '''
+          if 'Narrow handoff containment proved' in css:
+              raise SystemExit('narrow handoff containment already present')
+          css_path.write_text(css + containment, encoding='utf-8')
+          PY
+
+      - name: Remove one-shot controllers
+        run: |
+          rm '.github/workflows/manzanita-working-model-editorial-finish-v1.yml'
+          rm '.github/workflows/manzanita-working-model-editorial-finish-v2.yml'
+          rm '.github/workflows/manzanita-working-model-editorial-finish-v3.yml'
+          rm '.github/workflows/manzanita-working-model-editorial-finish-v4.yml'
+
+      - name: Qualify the complete editorial finish
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            manzanita-working-model/tests/public_contract_test.py \
+            manzanita-working-model/tests/browser_test.py \
+            manzanita-working-model/tests/live_browser_test.py \
+            manzanita-working-model/tests/live_readback.py
+          node --check manzanita-working-model/app.js
+          python manzanita-working-model/tests/public_contract_test.py
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -n "$browser" ]; then
+            export MW_CHROMIUM_EXECUTABLE="$browser"
+          else
+            python -m playwright install --with-deps chromium
+          fi
+          export MW_WORKING_MODEL_SCREENSHOT_DIR="$RUNNER_TEMP/manzanita-working-model-editorial-finish"
+          python manzanita-working-model/tests/browser_test.py
+
+      - name: Retain exact visual review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-working-model-editorial-finish-${{ github.sha }}
+          path: ${{ runner.temp }}/manzanita-working-model-editorial-finish
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Commit the qualified finish
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'manzanita-working-model-editorial-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          python - <<'PY'
+          import subprocess
+          required = {
+              'manzanita-working-model/README.md',
+              'manzanita-working-model/RELEASE_CONTRACT.json',
+              'manzanita-working-model/WORKING_MODEL_CONTRACT.json',
+              'manzanita-working-model/app.js',
+              'manzanita-working-model/assets/household.webp',
+              'manzanita-working-model/assets/property.webp',
+              'manzanita-working-model/index.html',
+              'manzanita-working-model/style.css',
+              'manzanita-working-model/tests/browser_test.py',
+              'manzanita-working-model/tests/live_browser_test.py',
+              'manzanita-working-model/tests/live_readback.py',
+              'manzanita-working-model/tests/public_contract_test.py',
+          }
+          allowed = required | {
+              '.github/workflows/manzanita-working-model-editorial-finish-v1.yml',
+              '.github/workflows/manzanita-working-model-editorial-finish-v2.yml',
+              '.github/workflows/manzanita-working-model-editorial-finish-v3.yml',
+              '.github/workflows/manzanita-working-model-editorial-finish-v4.yml',
+          }
+          rows = subprocess.check_output(['git', 'status', '--short'], text=True).splitlines()
+          observed = {row[3:] for row in rows}
+          missing = required - observed
+          unexpected = observed - allowed
+          if missing or unexpected:
+              raise SystemExit(f'changed-path gate failed\nmissing={sorted(missing)}\nunexpected={sorted(unexpected)}\nobserved={sorted(observed)}')
+          PY
+          git add -A
+          git commit -m 'manzanita: complete working-model editorial finish'
+          git push origin HEAD
