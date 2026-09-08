@@ -441,11 +441,15 @@ html { color-scheme: light; }
   min-width: 0;
   max-width: 100%;
 }
-.handoff-box h2,
 .handoff-state span,
 .handoff-state b {
   overflow-wrap: anywhere;
 }
+.handoff-box h2 {
+  overflow-wrap: normal;
+  word-break: normal;
+}
 @media (max-width: 360px) {
   .handoff-box { width: 100%; padding-inline: 16px; }
+  .handoff-box h2 { font-size: 34px; }
 }

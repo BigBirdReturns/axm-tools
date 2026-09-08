@@ -110,6 +110,12 @@ def main() -> None:
     for residue in ["N=0", "compression-band", "capacity-section", "proof-symbol", 'id="theme"', "data-theme="]:
         require(residue not in html, f"public visual or editorial residue remains: {residue}")
     require("THEME_KEY" not in js and "applyTheme" not in js, "theme subsystem remains in script")
+    require("administrative runtime" not in html.lower(), "public administrative-runtime jargon remains")
+    require("runtime owner" not in html.lower(), "public runtime-owner jargon remains")
+    require("bounded kernel" not in html.lower(), "public bounded-kernel jargon remains")
+    require("advanced view" not in html.lower(), "public advanced-view jargon remains")
+    require('placeholder="Operator unresolved"' in html, "compact operator placeholder absent")
+    require("Evidence and boundaries" in html, "concise evidence disclosure label absent")
     visual = contract["visual_evidence"]
     require(visual["primary_mode"] == "operational_instrumentation", "visual evidence mode differs")
     require(visual["historical_or_low_resolution_photography_used_as_primary_proof"] is False, "legacy photography must not carry primary proof")

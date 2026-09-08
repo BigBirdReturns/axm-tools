@@ -237,6 +237,21 @@ def main() -> None:
         page.goto(url + "#run-continuity", wait_until="networkidle")
         page.evaluate("document.documentElement.style.fontSize='200%'")
         page.wait_for_timeout(150)
+
+        heading = page.locator(".handoff-box h2")
+        assert heading.evaluate("""el => {
+          const node = Array.from(el.childNodes).find(item => item.nodeType === Node.TEXT_NODE);
+          if (!node) return false;
+          const text = node.textContent || '';
+          const words = [...text.matchAll(/\S+/g)];
+          return words.every(match => {
+            const range = document.createRange();
+            range.setStart(node, match.index);
+            range.setEnd(node, match.index + match[0].length);
+            return range.getClientRects().length === 1;
+          });
+        }""")
+        assert page.locator("#pilot-operator").get_attribute("placeholder") == "Operator unresolved"
         assert_no_overflow(page)
         page.screenshot(path=str(OUT / "working-model-320-200pct.png"), full_page=True)
 
