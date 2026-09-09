@@ -7,17 +7,35 @@
   "first_view": {
     "promise": "One real problem. One accountable owner. One bounded promise.",
     "current_state": {
-      "system": "ready_to_demonstrate",
-      "field_authority": "not_granted",
-      "external_effect": "none"
+      "demonstration": "ready",
+      "permission_to_act": "not_granted",
+      "action_taken": "none"
     },
     "example_case_state_rows": [
       "evidence",
-      "authority",
-      "safe next action",
-      "external effect"
+      "decision owner",
+      "safe next step",
+      "action taken"
     ],
-    "seven_stage_grammar_duplicated_in_hero": false
+    "seven_stage_grammar_duplicated_in_hero": false,
+    "desktop_hero_max_css_px": 84
+  },
+  "public_language": {
+    "receiver_first": true,
+    "technical_identifiers_confined_to_contracts_and_exports": true,
+    "public_copy_names_the_function_before_the_internal_mechanism": true,
+    "prohibited_visible_terms": [
+      "operating grammar",
+      "public projection",
+      "administrative runtime",
+      "institutional architecture",
+      "bounded kernel",
+      "cold-replayable",
+      "role projections",
+      "execution basis",
+      "effect boundary",
+      "continuity operator"
+    ]
   },
   "representative_cases": [
     "wildfire assistance",
@@ -37,33 +55,57 @@
   "working_surfaces": [
     {
       "id": "place_fabric",
+      "public_label": "place evidence",
       "path": "../manzanita/",
-      "job": "Source-backed place context across seven scales with gaps and source states visible."
+      "job": "Combine resident knowledge, public records, maps, and hazard sources while showing what is missing, stale, or held."
     },
     {
       "id": "essential_attention",
+      "public_label": "portable case record",
       "path": "../essential-attention/",
-      "job": "Sources, decisions, holds, effects, receipts, and handoffs in a portable case file."
+      "job": "Keep sources, decisions, holds, actions, receipts, and handoff in one record another person can reopen."
     },
     {
       "id": "operating_fabric",
+      "public_label": "shared resources",
       "path": "../manzanita-works/",
-      "job": "Physical, human, mobility, money, place, and continuity capacity across shared projects.",
-      "capacity_visualization": "six named resource classes without fabricated quantities",
+      "job": "Coordinate tools, people, transport, funding, place knowledge, and continuity without merging who controls them.",
+      "capacity_visualization": "six named resource types without fabricated quantities",
       "synthetic_capacity_metrics": false
     },
     {
       "id": "street_glide_and_roles",
+      "public_label": "source fallback and role-specific views",
       "standing": "separately_governed",
-      "job": "Provider fallback, source-state honesty, and distinct functional projections."
+      "job": "Keep claims honest when a live provider fails and show each participant only the view needed for the job."
     }
   ],
   "pilot_gates": [
-    "one problem",
-    "accountable sponsor",
-    "named and funded continuity operator",
-    "execution basis",
-    "effect boundary and stop condition"
+    {
+      "id": "problem",
+      "public_label": "concrete need",
+      "requirement": "case type plus a concrete statement of who is affected, what is failing, and what outcome would count"
+    },
+    {
+      "id": "sponsor",
+      "public_label": "who owns the promise",
+      "requirement": "a named person or organizational role that accepts accountability and stop authority"
+    },
+    {
+      "id": "operator",
+      "public_label": "who keeps the work running",
+      "requirement": "a named and funded day-to-day operating role"
+    },
+    {
+      "id": "basis",
+      "public_label": "where and with what",
+      "requirement": "venue, participants, resources, lawful access, and partners"
+    },
+    {
+      "id": "stop",
+      "public_label": "what is allowed and what stops the pilot",
+      "requirement": "permitted actions, prohibited consequences, and an explicit stop condition"
+    }
   ],
   "invariants": [
     "Evidence and preparation do not grant access, spend, work, publication, representation, or release authority.",
@@ -76,12 +118,13 @@
     "synthetic_capacity_metrics": false,
     "minimum_body_text_css_px": 11,
     "minimum_interactive_control_height_css_px": 44,
+    "desktop_hero_max_css_px": 84,
     "desktop_height_budget_css_px": 7000,
     "mobile_height_budget_css_px": 9500,
     "narrow_320_200_percent_height_budget_css_px": 14500,
     "mobile_header_position": "static",
     "mobile_case_layout": "two columns at 390 CSS pixels; one column at 360 CSS pixels and below",
-    "mobile_duplicate_gate_map": "hidden while packet standing remains visible",
+    "mobile_duplicate_gate_map": "hidden while preparation status remains visible",
     "skip_link": "hidden above viewport until focused",
     "anchor_clearance": "sticky desktop header may not occlude section headings"
   },
