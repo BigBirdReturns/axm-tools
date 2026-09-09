@@ -1,0 +1,66 @@
+name: Repair Manzanita capacity-class static assertion
+
+on:
+  push:
+    branches:
+      - review/manzanita-working-model-v1-1
+    paths:
+      - '.github/workflows/manzanita-working-model-static-capacity-check-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Replace nested-div parsing with exact semantic row assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('manzanita-working-model/tests/public_contract_test.py')
+          text = path.read_text(encoding='utf-8')
+          old = '''    capacity = block(html, "capacity-instrument", "div")
+              require(capacity.count("<div>") == 6, "capacity-class instrument must contain six non-metric rows")
+          '''
+          new = '''    capacity_rows = [
+              '<div><span>Physical</span><strong>Tools + materials</strong></div>',
+              '<div><span>Human</span><strong>Time + skill</strong></div>',
+              '<div><span>Mobility</span><strong>Transport + access</strong></div>',
+              '<div><span>Money</span><strong>Dues + grants</strong></div>',
+              '<div><span>Place</span><strong>Source context</strong></div>',
+              '<div><span>Continuity</span><strong>Decisions + handoff</strong></div>',
+          ]
+          require(html.count('class="instrument capacity-instrument"') == 1, "capacity-class instrument count differs")
+          for row in capacity_rows:
+              require(html.count(row) == 1, f"capacity-class row differs: {row}")
+          '''
+          if text.count(old) != 1:
+              raise SystemExit(f'capacity assertion anchor count differed: {text.count(old)}')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Remove one-shot repair
+        run: rm '.github/workflows/manzanita-working-model-static-capacity-check-fix.yml'
+
+      - name: Verify static release contract
+        run: python manzanita-working-model/tests/public_contract_test.py
+
+      - name: Commit exact repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'manzanita-working-model-review-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'manzanita: bind capacity checks to exact semantic rows'
+          git push origin HEAD
