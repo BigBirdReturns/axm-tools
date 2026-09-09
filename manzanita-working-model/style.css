@@ -45,7 +45,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .site-header nav { display: flex; align-items: center; gap: 24px; }
 .site-header nav a { font-size: 13px; font-weight: 720; text-decoration: none; }
 .site-header nav a:not(.nav-cta):hover, .site-header nav a:not(.nav-cta):focus-visible { text-decoration: underline; text-underline-offset: 5px; }
-.nav-cta { padding: 10px 13px; color: var(--paper-strong); background: var(--ink); border: 1px solid var(--ink); }
+.nav-cta { min-height: 44px; display: inline-flex; align-items: center; padding: 10px 13px; color: var(--paper-strong); background: var(--ink); border: 1px solid var(--ink); }
 .nav-cta:hover, .nav-cta:focus-visible { background: var(--green-deep); border-color: var(--green-deep); }
 
 .kicker { margin: 0 0 14px; color: var(--green); font-size: 12px; line-height: 1.2; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
@@ -191,7 +191,7 @@ a.system-card:hover, a.system-card:focus-visible { transform: translateY(-3px); 
 .progress-track i.is-resolved { background: var(--green); }
 .form-progress p { margin: 9px 0 0; color: var(--muted); font-size: 13px; }
 .button-full { width: 100%; }
-.clear-button { display: block; margin: 12px auto 0; padding: 4px 0; color: var(--muted); background: none; border: 0; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.clear-button { min-height: 44px; display: flex; align-items: center; justify-content: center; margin: 8px auto 0; padding: 10px 4px; color: var(--muted); background: none; border: 0; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
 .form-boundary { margin: 19px 0 0; padding-top: 17px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 
 .site-footer { margin-top: 24px; border-top: 1px solid var(--line); }
