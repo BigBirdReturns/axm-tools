@@ -115,6 +115,28 @@ def assert_desktop_composition(page: Page) -> None:
     assert min(row["width"] for row in geometry["cards"]) >= 570, geometry["cards"]
 
 
+def assert_skip_link_and_anchor_clearance(page: Page) -> None:
+    hidden_top = page.locator('.skip-link').evaluate("element => element.getBoundingClientRect().top")
+    assert hidden_top < 0, hidden_top
+    page.locator('.skip-link').focus()
+    visible_top = page.locator('.skip-link').evaluate("element => element.getBoundingClientRect().top")
+    assert visible_top >= 0, visible_top
+    page.evaluate("document.activeElement.blur()")
+    page.locator('a[href="#systems"]').click()
+    page.wait_for_timeout(120)
+    clearance = page.evaluate("""() => ({
+      headerBottom: document.querySelector('.site-header').getBoundingClientRect().bottom,
+      headingTop: document.querySelector('#systems .section-header').getBoundingClientRect().top
+    })""")
+    assert clearance["headingTop"] >= clearance["headerBottom"] - 1, clearance
+    page.evaluate("window.scrollTo(0, 0)")
+
+
+def prepare_screenshot(page: Page) -> None:
+    page.evaluate("document.activeElement?.blur(); window.scrollTo(0, 0)")
+    page.wait_for_timeout(80)
+
+
 def main() -> None:
     with serve() as base_url, sync_playwright() as playwright:
         launch: dict[str, object] = {"headless": True}
@@ -142,15 +164,19 @@ def main() -> None:
         assert page.locator(".system-card").count() == 4
         assert page.locator(".guardrail-grid article").count() == 3
         assert page.locator(".gate-map li").count() == 5
-        assert page.locator(".runtime-trace li").count() == 7
+        assert page.locator(".runtime-trace li").count() == 4
+        assert page.locator(".capacity-instrument i").count() == 0
+        assert page.locator(".capacity-instrument > div").count() == 6
         body = page.locator("body").inner_text()
         for stale in ["Not another architecture review", "public-safe", "If leadership returns tomorrow", "Do not schedule a scoping call", "N=0"]:
             assert stale not in body, stale
         assert_no_overflow(page)
         assert_text_floor(page)
         assert_control_targets(page)
-        desktop_height = assert_height_budget(page, 7600)
+        assert_skip_link_and_anchor_clearance(page)
+        desktop_height = assert_height_budget(page, 7000)
         assert_desktop_composition(page)
+        prepare_screenshot(page)
         page.screenshot(path=str(OUT / "working-model-v1.1-desktop.png"), full_page=True)
 
         expected = {
@@ -214,20 +240,29 @@ def main() -> None:
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto(base_url + "#run-mobility", wait_until="networkidle")
         assert page.locator('[data-scenario="mobility"]').get_attribute("aria-selected") == "true"
+        assert page.locator('.site-header').evaluate("element => getComputedStyle(element).position") == "static"
+        assert page.locator('.scenario-tabs').evaluate("element => getComputedStyle(element).gridTemplateColumns.split(' ').length") == 2
+        assert page.locator('.stage-list').evaluate("element => getComputedStyle(element).gridTemplateColumns.split(' ').length") == 2
+        assert page.locator('.gate-map ol').evaluate("element => getComputedStyle(element).display") == "none"
         assert_no_overflow(page)
         assert_text_floor(page)
         assert_control_targets(page)
-        mobile_height = assert_height_budget(page, 11000)
+        mobile_height = assert_height_budget(page, 9500)
         assert page.locator(".system-card").first.evaluate("element => getComputedStyle(element).gridTemplateColumns.split(' ').length") == 1
+        prepare_screenshot(page)
         page.screenshot(path=str(OUT / "working-model-v1.1-mobile.png"), full_page=True)
 
         page.set_viewport_size({"width": 320, "height": 800})
         page.goto(base_url + "#run-continuity", wait_until="networkidle")
         page.evaluate("document.documentElement.style.fontSize = '200%'")
         page.wait_for_timeout(150)
+        assert page.locator('.scenario-tabs').evaluate("element => getComputedStyle(element).gridTemplateColumns.split(' ').length") == 1
+        assert page.locator('.stage-list').evaluate("element => getComputedStyle(element).gridTemplateColumns.split(' ').length") == 1
         assert_no_overflow(page)
         assert_text_floor(page, 11.0)
-        narrow_height = assert_height_budget(page, 16000)
+        narrow_height = assert_height_budget(page, 14500)
+        prepare_screenshot(page)
+        page.evaluate("document.documentElement.style.fontSize = '200%'")
         page.screenshot(path=str(OUT / "working-model-v1.1-320-200pct.png"), full_page=True)
 
         reduced_context = browser.new_context(viewport={"width": 1024, "height": 768}, reduced_motion="reduce")
@@ -239,26 +274,32 @@ def main() -> None:
 
         allowed_origin = base_url.rstrip("/")
         unexpected = [url for url in requests if urlparse(url).scheme in {"http", "https"} and not url.startswith(allowed_origin + "/")]
-        relevant_http_errors = [row for row in http_errors if urlparse(str(row["url"])).path != "/favicon.ico"]
         assert not unexpected, unexpected
         assert not request_failures, request_failures
-        assert not relevant_http_errors, relevant_http_errors
+        assert not http_errors, http_errors
         assert not errors, errors
         browser.close()
 
     payload = {
-        "schema": "manzanita-works/working-model-browser-qualification@2",
+        "schema": "manzanita-works/working-model-browser-qualification@3",
         "result": "PASS_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
         "release": RELEASE,
         "scenarios": 4,
         "stages_per_scenario": 7,
+        "hero_state_rows": 4,
         "pilot_gates": 5,
         "rendered_images": 0,
+        "synthetic_capacity_metrics": 0,
         "desktop_height": desktop_height,
         "mobile_height": mobile_height,
         "narrow_320_200pct_height": narrow_height,
         "minimum_text_floor_css_px": 11,
+        "minimum_control_height_css_px": 44,
         "desktop_composition": "PASS",
+        "mobile_two_column_case_compression": "PASS",
+        "mobile_duplicate_gate_map_hidden": "PASS",
+        "sticky_header_anchor_clearance": "PASS",
+        "skip_link_hidden_until_focus": "PASS",
         "keyboard_navigation": "PASS",
         "hash_navigation": "PASS",
         "local_persistence_and_clear": "PASS",
