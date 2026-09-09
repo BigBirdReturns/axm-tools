@@ -1,55 +1,75 @@
 {
-  "schema": "manzanita-works/working-model-contract@1",
+  "schema": "manzanita-works/working-model-contract@2",
   "contract_id": "MW-WORKING-MODEL-001",
-  "version": "1.0.0",
-  "state": "released_public_safe_working_model",
-  "object": {
-    "classification": "public_safe_convergence_and_pilot_preparation_surface",
-    "accountable_actor": "design_integrator",
-    "decision_authority": "release_authority",
-    "institutional_acceptance": false,
-    "public_effect": "public_static_route_only",
-    "external_effect": "none",
-    "claim_boundary": "This object is the released public-safe Manzanita working model and local pilot-preparation surface. Publication proves route availability and the qualified bytes only. It is not Manzanita Works institutional adoption, a volunteer assignment, a funded continuity operator, a field program, a participant record, a work order, an eligibility system, a fundraising or payment system, or proof that any pilot or organizational commitment exists."
+  "version": "1.1.0",
+  "state": "released_public_working_model",
+  "purpose": "Move one concrete community problem from evidence to an accountable pilot proposal without hiding authority, adverse-use boundaries, fallback, closure, or handoff.",
+  "first_view": {
+    "promise": "One real problem. One accountable owner. One bounded promise.",
+    "current_state": {
+      "demonstration": "ready",
+      "permission_to_act": "not_granted",
+      "action_taken": "none"
+    },
+    "example_case_state_rows": [
+      "evidence",
+      "decision owner",
+      "safe next step",
+      "action taken"
+    ],
+    "seven_stage_grammar_duplicated_in_hero": false,
+    "desktop_hero_max_css_px": 84
   },
-  "purpose": "Make a future return by organizational leadership an input event rather than a prerequisite for understanding or preserving the system. A returning decision-maker should be able to select one bounded problem, identify the organization-owned seats and unresolved gates, export a no-effect preparation packet, and reach the deeper technical surfaces only when needed.",
-  "source_surfaces": [
-    {
-      "id": "place_fabric",
-      "path": "manzanita/",
-      "standing": "released_public_projection",
-      "role": "One public-safe demonstration place across seven apertures, eight conditions, five operating seats, source state, safe action, acceptance, and handoff."
+  "public_language": {
+    "receiver_first": true,
+    "technical_identifiers_confined_to_contracts_and_exports": true,
+    "public_copy_names_the_function_before_the_internal_mechanism": true,
+    "prohibited_visible_terms": [
+      "operating grammar",
+      "public projection",
+      "administrative runtime",
+      "institutional architecture",
+      "bounded kernel",
+      "cold-replayable",
+      "role projections",
+      "execution basis",
+      "effect boundary",
+      "continuity operator",
+      "accountable sponsor",
+      "sponsor review",
+      "no adverse use",
+      "authority stays separate",
+      "separate authorization",
+      "adverse standing",
+      "qualified field evidence",
+      "lived facts",
+      "first-party constraints",
+      "participant fitness",
+      "decision rights",
+      "unstated authority",
+      "institutional authority",
+      "role-specific views",
+      "source fallback"
+    ],
+    "public_stage_labels": {
+      "signal": "Need",
+      "source": "Evidence",
+      "authority": "Decision owner",
+      "safe_action": "Safe next step",
+      "fallback": "Backup path",
+      "closure": "Outcome",
+      "learning": "Next improvement"
     },
-    {
-      "id": "essential_attention",
-      "path": "essential-attention/",
-      "standing": "released_local_first_administrative_runtime",
-      "role": "Bounded case records, decisions, source receipts, effect firewall, contained roles, replay, and portable handoff."
-    },
-    {
-      "id": "operating_fabric",
-      "path": "manzanita-works/",
-      "standing": "released_public_safe_architecture_index",
-      "role": "Program organs, capacity classes, vendor boundaries, institutional substrate, and organization-owned record law."
-    },
-    {
-      "id": "street_glide",
-      "path": "manzanita-next/street-glide/",
-      "standing": "internal_candidate",
-      "role": "Provider fallback, map-only honesty, source-scene selection, and image-edge registration proposal without physical-feature authority."
-    },
-    {
-      "id": "five_roles",
-      "path": "manzanita-next/roles/ROLE_CONTRACT.json",
-      "standing": "internal_architecture_candidate",
-      "role": "Resident, nursery/grower, crew/steward, planner/program, and cold-successor projections with distinct authority, acceptance, export, failure, and prohibited consequences."
-    },
-    {
-      "id": "whole_experience",
-      "path": "manzanita-next/experience/EXPERIENCE_CONTRACT.json",
-      "standing": "internal_candidate",
-      "role": "One place composed across seven apertures, eight overlays, five roles, source failures, help, export, and FAB handoff."
+    "compact_single_line_placeholders": {
+      "accountable_owner": "Name or role",
+      "day_to_day_owner": "Funded owner"
     }
+  },
+  "representative_cases": [
+    "wildfire assistance",
+    "tools and time",
+    "mobility",
+    "continuity"
   ],
   "operating_grammar": [
     "signal",
@@ -60,127 +80,109 @@
     "closure",
     "learning"
   ],
-  "representative_cases": [
-    "wildfire assistance",
-    "tools and time",
-    "mobility",
-    "continuity"
-  ],
-  "shared_capacity_classes": [
-    "physical",
-    "human",
-    "mobility",
-    "money",
-    "place",
-    "continuity"
+  "working_surfaces": [
+    {
+      "id": "place_fabric",
+      "public_label": "place evidence",
+      "path": "../manzanita/",
+      "job": "Combine resident knowledge, public records, maps, and hazard sources while showing what is missing, stale, or held."
+    },
+    {
+      "id": "essential_attention",
+      "public_label": "portable case record",
+      "path": "../essential-attention/",
+      "job": "Keep sources, decisions, holds, actions, receipts, and handoff in one record another person can reopen."
+    },
+    {
+      "id": "operating_fabric",
+      "public_label": "shared resources",
+      "path": "../manzanita-works/",
+      "job": "Coordinate tools, people, transport, funding, place knowledge, and continuity without merging who controls them.",
+      "capacity_visualization": "six named resource types without fabricated quantities",
+      "synthetic_capacity_metrics": false
+    },
+    {
+      "id": "street_glide_and_roles",
+      "public_label": "backup source and job-specific views",
+      "standing": "separately_governed",
+      "job": "Keep claims honest when a live provider fails and show each participant only the view needed for the job."
+    }
   ],
   "pilot_gates": [
     {
-      "order": 1,
       "id": "problem",
-      "label": "Choose one problem",
-      "acceptance": "One real case class is named; generic transformation language is insufficient."
+      "public_label": "concrete need",
+      "requirement": "case type plus a concrete statement of who is affected, what is failing, and what outcome would count"
     },
     {
-      "order": 2,
       "id": "sponsor",
-      "label": "Name the accountable sponsor",
-      "acceptance": "The actor who owns the organizational promise, budget envelope, boundary, and stop authority is explicit."
+      "public_label": "who owns the promise",
+      "requirement": "a named person or organizational role that accepts accountability and stop authority"
     },
     {
-      "order": 3,
-      "id": "continuity_operator",
-      "label": "Assign and fund the continuity operator",
-      "acceptance": "The bounded human operating function is explicitly assigned and resourced; it does not default to a founder, advisor, volunteer, or builder."
+      "id": "operator",
+      "public_label": "who keeps the work running",
+      "requirement": "a named and funded day-to-day operating role"
     },
     {
-      "order": 4,
-      "id": "execution_basis",
-      "label": "Name venue, resources, and field partners",
-      "acceptance": "The actually available venue, participant class, resources, lawful access, skills, equipment, money, and escalation path are bounded for the pilot."
+      "id": "basis",
+      "public_label": "where and with what",
+      "requirement": "venue, participants, resources, lawful access, and partners"
     },
     {
-      "order": 5,
-      "id": "authority_and_stop",
-      "label": "Set the effect boundary and stop conditions",
-      "acceptance": "Permitted effects, prohibited effects, separate-consent gates, review requirements, and conditions that halt the pilot are explicit."
+      "id": "stop",
+      "public_label": "what is allowed and what stops the pilot",
+      "requirement": "permitted actions, prohibited consequences, and an explicit stop condition"
     }
   ],
   "invariants": [
-    "Silence is not consent, assignment, rejection, expiration, or completion unless a separately stated expiration rule applies.",
-    "An unanswered offer stays unresolved; capability and proximity do not assign the nearest person.",
-    "Authority never transfers because evidence is visible or a preparation packet is complete.",
-    "Assistance and place evidence may not become insurance, underwriting, eligibility, enforcement, property, resident, or other adverse standing.",
-    "Affected actors retain correction, refusal, narrowing, deferral, acceptance, and appeal where applicable.",
-    "Replaceable vendors may perform jobs but may not become the canonical institutional model by convenience.",
-    "Continuity is a function carried by records, receipts, replay, and a bounded operating seat rather than heroic memory."
+    "Evidence and preparation do not grant access, spend, work, publication, representation, or release authority.",
+    "Assistance and place evidence may not become risk, eligibility, enforcement, resident, property, or other adverse standing.",
+    "Sources, decisions, holds, receipts, and handoffs must remain legible after the original person leaves."
   ],
+  "visual_contract": {
+    "mode": "operational_instrumentation",
+    "rendered_photography": false,
+    "synthetic_capacity_metrics": false,
+    "minimum_body_text_css_px": 11,
+    "minimum_interactive_control_height_css_px": 44,
+    "desktop_hero_max_css_px": 84,
+    "desktop_height_budget_css_px": 7000,
+    "mobile_height_budget_css_px": 9500,
+    "narrow_320_200_percent_height_budget_css_px": 14500,
+    "mobile_header_position": "static",
+    "mobile_case_layout": "two columns at 390 CSS pixels; one column at 360 CSS pixels and below",
+    "mobile_duplicate_gate_map": "hidden while preparation status remains visible",
+    "skip_link": "hidden above viewport until focused",
+    "anchor_clearance": "sticky desktop header may not occlude section headings"
+  },
   "pilot_export": {
-    "schema": "manzanita-works/bounded-pilot-preparation@1",
+    "schema": "manzanita-works/bounded-pilot-preparation@2",
     "format": "local_json_download",
-    "network_request": false,
     "blank_value": "UNRESOLVED",
-    "external_effect": "none",
-    "institutional_acceptance": false,
-    "field_authority": false,
-    "release_authority": false,
-    "claim_boundary": "A generated packet is local preparation. It does not contact, schedule, assign, spend, enroll, inspect, publish, represent, authorize work, accept institutional scope, or release a field pilot."
-  },
-  "progressive_disclosure": {
-    "first_view": "One problem, one owner, one bounded promise; representative case selection; silence invariant.",
-    "second_view": "Seven-stage operating grammar and the prepared-versus-prohibited consequence for the selected case.",
-    "third_view": "Existing independently governed surfaces and the five organization-owned pilot gates.",
-    "advanced_view": "Place Fabric, Essential Attention, Operating Fabric, Street Glide, five-role, and whole-experience evidence."
-  },
-  "accessibility": {
-    "minimum_control_target_css_px": 44,
-    "keyboard_scenario_navigation": true,
-    "reduced_motion": true,
-    "mobile_floor_css_px": 320,
-    "meaning_without_color": true
+    "complete_standing": "PREPARED_FOR_ACCOUNTABLE_REVIEW_NOT_ACCEPTED",
+    "incomplete_standing": "INCOMPLETE_PREPARATION_HELD",
+    "network_request": false,
+    "external_effect": "none"
   },
   "privacy_and_network": {
-    "committed_private_participant_records": false,
     "telemetry": false,
     "runtime_model_call": false,
     "external_api_call": false,
-    "payment_adapter": false,
     "email_adapter": false,
     "calendar_adapter": false,
-    "source_system_writeback": false
+    "payment_adapter": false,
+    "source_system_writeback": false,
+    "stray_favicon_request": false
   },
-  "release_holds": [
-    "No Manzanita Works institutional acceptance receipt is present for this release.",
-    "No pilot sponsor, funded continuity operator, venue, resource envelope, participant class, or field partner is admitted by this release.",
-    "No participant consent, private household record, lawful field-access receipt, work authorization, completion receipt, or field acceptance is admitted.",
-    "Public route publication grants no institutional, participant, field, spend, assignment, representation, eligibility, award, work, or program authority."
-  ],
-  "control_question": "Can an organizational decision-maker who has not followed the architecture select one real problem, understand the source-authority-action boundary in minutes, see what already exists, name the five organization-owned gates, and export a bounded no-effect pilot packet without being asked to review the entire system or silently assigning labor?",
-  "publication": {
-    "state": "released_public_safe_static_route",
-    "route": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
-    "repository_path": "manzanita-working-model/",
-    "authority": "repository_owner",
-    "public_effect": "route_publication_only",
+  "authority": {
     "institutional_acceptance": false,
     "participant_consent": false,
     "field_authority": false,
     "spend_authority": false,
     "assignment_authority": false,
     "representation_authority": false,
+    "publication_authority": true,
     "program_external_effect": "none"
-  },
-  "visual_evidence": {
-    "primary_mode": "operational_instrumentation",
-    "hero": "A bounded case trace showing source, authority, prepared output, unresolved gates, and zero external effect.",
-    "place_fabric": "A seven-scale source-state instrument that exposes coverage and adverse-use limits without presenting degraded photography as proof of current field activity.",
-    "historical_or_low_resolution_photography_used_as_primary_proof": false,
-    "field_activity_claimed": false,
-    "acceptance": [
-      "No rendered image element appears in the working-model main surface.",
-      "The hero exposes a seven-stage case trace and four-row authority ledger.",
-      "The Place Fabric proof card exposes seven named scales and explicit no-score and no-adverse-use boundaries.",
-      "Desktop, mobile, narrow, keyboard, reduced-motion, and packet behavior remain qualified."
-    ]
   }
 }

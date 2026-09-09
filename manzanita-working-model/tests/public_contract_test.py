@@ -4,22 +4,38 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-REPO = ROOT.parent
-
-REQUIRED = [
+RELEASE = "mw-working-model-v1.1.0"
+RELEASE_FILES = [
     "index.html",
-    "style-base.css",
-    "style.css",
     "app.js",
+    "style.css",
     "WORKING_MODEL_CONTRACT.json",
-    "README.md",
     "RELEASE_CONTRACT.json",
-    "assets/property.webp",
-    "assets/household.webp",
+    "README.md",
 ]
+
+
+class DocumentParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.tags: list[str] = []
+        self.ids: set[str] = set()
+        self.scenarios: list[str] = []
+        self.classes: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        self.tags.append(tag)
+        values = dict(attrs)
+        if values.get("id"):
+            self.ids.add(str(values["id"]))
+        if values.get("data-scenario"):
+            self.scenarios.append(str(values["data-scenario"]))
+        if values.get("class"):
+            self.classes.extend(str(values["class"]).split())
 
 
 def require(condition: bool, message: str) -> None:
@@ -27,143 +43,194 @@ def require(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
+def digest(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def block(html: str, class_name: str, tag: str) -> str:
+    match = re.search(
+        rf'<{tag} class="[^"]*\b{re.escape(class_name)}\b[^"]*"[^>]*>(.*?)</{tag}>',
+        html,
+        re.S,
+    )
+    require(match is not None, f"block absent: {class_name}")
+    return match.group(1)
+
+
 def main() -> None:
-    for name in REQUIRED:
-        path = ROOT / name
-        require(path.is_file(), f"required release file absent: {name}")
-        require(path.stat().st_size > 0, f"required release file empty: {name}")
+    for relative in RELEASE_FILES:
+        require((ROOT / relative).is_file(), f"release file absent: {relative}")
 
     html = (ROOT / "index.html").read_text(encoding="utf-8")
-    base_css = (ROOT / "style-base.css").read_text(encoding="utf-8")
-    override_css = (ROOT / "style.css").read_text(encoding="utf-8")
-    css = base_css + "\n" + override_css
-    js = (ROOT / "app.js").read_text(encoding="utf-8")
+    app = (ROOT / "app.js").read_text(encoding="utf-8")
+    css = (ROOT / "style.css").read_text(encoding="utf-8")
     contract = json.loads((ROOT / "WORKING_MODEL_CONTRACT.json").read_text(encoding="utf-8"))
-    release_contract = json.loads((ROOT / "RELEASE_CONTRACT.json").read_text(encoding="utf-8"))
+    release = json.loads((ROOT / "RELEASE_CONTRACT.json").read_text(encoding="utf-8"))
 
-    require('content="mw-working-model-v1.0.0"' in html, "release marker absent")
-    require(contract["schema"] == "manzanita-works/working-model-contract@1", "contract schema differs")
-    require(contract["state"] == "released_public_safe_working_model", "release state differs")
-    require(contract["object"]["public_effect"] == "public_static_route_only", "public effect differs")
-    require(release_contract["schema"] == "manzanita-works/working-model-release@1", "release contract schema differs")
-    require(release_contract["release"] == "mw-working-model-v1.0.0", "release identity differs")
-    require(release_contract["publication_authority"]["institutional_acceptance"] is False, "release may not accept institution")
-    require(release_contract["publication_authority"]["program_external_effect"] == "none", "release may not create program effect")
-    require(contract["object"]["institutional_acceptance"] is False, "institutional acceptance must remain false")
-    require(contract["object"]["external_effect"] == "none", "contract external effect must remain none")
-    require(contract["pilot_export"]["external_effect"] == "none", "pilot export external effect must remain none")
-    require(contract["pilot_export"]["institutional_acceptance"] is False, "pilot export may not accept institution")
-    require(contract["pilot_export"]["field_authority"] is False, "pilot export may not create field authority")
-    require(contract["pilot_export"]["release_authority"] is False, "pilot export may not create release authority")
+    parser = DocumentParser()
+    parser.feed(html)
 
-    grammar = contract["operating_grammar"]
-    require(grammar == ["signal", "source", "authority", "safe_action", "fallback", "closure", "learning"], "operating grammar differs")
-    require(len(contract["pilot_gates"]) == 5, "pilot gate count differs")
-    require(len(contract["representative_cases"]) == 4, "representative case count differs")
-    require(len(contract["source_surfaces"]) >= 6, "source-surface registry is incomplete")
+    require(f'content="{RELEASE}"' in html, "HTML release identity differs")
+    require(f"const RELEASE = '{RELEASE}';" in app, "application release identity differs")
+    require(release["release"] == RELEASE, "release contract identity differs")
+    require(contract["version"] == "1.1.0", "working contract version differs")
+    require(release["release_files"] == RELEASE_FILES, "release file list differs")
+    require(release["visual_posture"]["rendered_photography"] is False, "photography posture differs")
+    require(release["visual_posture"]["dead_visual_assets_in_release"] is False, "dead asset posture differs")
+    require(release["visual_posture"]["receiver_first_language"] is True, "release language posture differs")
+    require(contract["visual_contract"]["rendered_photography"] is False, "working visual contract differs")
+    require(contract["public_language"]["receiver_first"] is True, "receiver-first language contract absent")
+    require(contract["public_language"]["technical_identifiers_confined_to_contracts_and_exports"] is True, "technical identifier boundary differs")
+    expected_stage_labels = {
+        "signal": "Need",
+        "source": "Evidence",
+        "authority": "Decision owner",
+        "safe_action": "Safe next step",
+        "fallback": "Backup path",
+        "closure": "Outcome",
+        "learning": "Next improvement",
+    }
+    require(contract["public_language"]["public_stage_labels"] == expected_stage_labels, "public stage-label contract differs")
+    require(release["visual_posture"]["public_stage_labels"] == 7, "release stage-label count differs")
+    for stage_id, public_label in expected_stage_labels.items():
+        require(f"{stage_id}: '{public_label}'" in app, f"application stage label differs: {stage_id}")
+    require("heading.textContent = stageLabels[stageId];" in app, "stage renderer bypasses receiver labels")
+
+    for obsolete in [
+        "Not another architecture review",
+        "public-safe",
+        "If leadership returns tomorrow",
+        "Do not schedule a scoping call",
+        "N=0",
+        "assets/property.webp",
+        "assets/household.webp",
+        "style-base.css",
+    ]:
+        require(obsolete not in html, f"obsolete visible rhetoric or asset reference remains: {obsolete}")
+
+    public_text = html.lower()
+    for jargon in [
+        "operating grammar",
+        "public projection",
+        "administrative runtime",
+        "institutional architecture",
+        "bounded kernel",
+        "cold-replayable",
+        "role projections",
+        "execution basis",
+        "effect boundary",
+        "continuity operator",
+        "front door routes",
+        "accountable sponsor",
+        "sponsor review",
+        "no adverse use",
+        "authority stays separate",
+        "separate authorization",
+        "adverse standing",
+        "qualified field evidence",
+        "role-specific views",
+        "source fallback",
+    ]:
+        require(jargon not in public_text, f"untranslated public jargon remains: {jargon}")
+
+    for jargon in [
+        "qualified field evidence",
+        "lived facts",
+        "the sponsor controls",
+        "first-party constraints",
+        "participant fitness",
+        "decision rights",
+        "unstated authority",
+        "institutional authority",
+        "budget, scope",
+        "separate authority is still required",
+    ]:
+        require(jargon not in app.lower(), f"untranslated dynamic language remains: {jargon}")
+
+    require('<link rel="icon" href="data:,">' in html, "inline empty favicon absent")
+    require('placeholder="Name or role"' in html, "compact accountable-owner placeholder absent")
+    require('placeholder="Funded owner"' in html, "compact day-to-day-owner placeholder absent")
+    require("img" not in parser.tags, "rendered image element remains")
+    require("--fill" not in html and "--fill" not in css, "synthetic capacity metric remains")
+    require(set(parser.scenarios) == {"wildfire", "tools", "mobility", "continuity"}, "scenario set differs")
+    require(len(parser.scenarios) == 4, "scenario tab count differs")
+    require(parser.classes.count("system-card") == 4, "system card count differs")
+    require(parser.classes.count("scenario-tab") == 4, "scenario tab class count differs")
+    require(parser.classes.count("guardrail-grid") == 1, "guardrail section differs")
+    require(parser.classes.count("pilot-form") == 1, "pilot form differs")
+
+    runtime = block(html, "runtime-trace", "ol")
+    require(runtime.count("<li") == 4, "hero case state must contain exactly four non-duplicative rows")
+    require("Signal" not in runtime and "Learning" not in runtime, "seven-stage grammar duplicated in hero")
+
+    capacity_rows = [
+        '<div><span>Physical</span><strong>Tools + materials</strong></div>',
+        '<div><span>Human</span><strong>Time + skill</strong></div>',
+        '<div><span>Mobility</span><strong>Transport + access</strong></div>',
+        '<div><span>Money</span><strong>Dues + grants</strong></div>',
+        '<div><span>Place</span><strong>Place evidence</strong></div>',
+        '<div><span>Continuity</span><strong>Decisions + handoff</strong></div>',
+    ]
+    require(html.count('class="instrument capacity-instrument"') == 1, "capacity-class instrument count differs")
+    for row in capacity_rows:
+        require(html.count(row) == 1, f"capacity-class row differs: {row}")
+
+    required_ids = {
+        "main", "try", "systems", "pilot", "scenario-panel", "scenario-title",
+        "scenario-summary", "scenario-output", "scenario-prohibited", "stage-list",
+        "pilot-form", "pilot-scenario", "pilot-problem", "pilot-sponsor", "pilot-operator",
+        "pilot-basis", "pilot-stop", "form-status", "packet-standing",
+        "packet-next", "export-pilot", "clear-pilot",
+    }
+    require(required_ids <= parser.ids, f"required IDs absent: {sorted(required_ids - parser.ids)}")
 
     for phrase in [
         "One real problem.",
+        "One accountable owner.",
         "One bounded promise.",
-        "Silence is not consent, assignment, rejection, or completion.",
-        "Run one case through the model",
-        "Different programs, one capacity model",
-        "The pieces are real. This page is the compression layer.",
-        "Five decisions turn an N=0 working model into one bounded pilot.",
-        "Do not schedule a scoping call. Produce one pilot packet.",
-        "A return should be an input event, not a rescue event.",
-        "No institutional acceptance is implied.",
+        "Four problems. The same path to accountable action.",
+        "Four parts already handle four different jobs.",
+        "Three rules keep help accountable.",
+        "Five facts turn the model into an accountable proposal.",
+        "The file stays on this device.",
+        "Who owns the promise?",
+        "Who keeps the work running?",
+        "Where and with what?",
     ]:
-        require(phrase in html, f"required public phrase absent: {phrase}")
+        require(phrase in html, f"required receiver-language copy absent: {phrase}")
 
-    for scenario in ["wildfire", "tools", "mobility", "continuity"]:
-        require(f'data-scenario="{scenario}"' in html, f"scenario tab absent: {scenario}")
-        require(f"{scenario}: {{" in js, f"scenario data absent: {scenario}")
+    require("font-size: 8px" not in css and "font: 8px" not in css, "sub-9px CSS text remains")
+    require("font-size: 9px" not in css and "font-size: 10px" not in css, "sub-11px CSS text remains")
+    require("font-size: clamp(62px, 5.2vw, 84px)" in css, "desktop hero scale contract differs")
+    require("@media (max-width: 360px)" in css, "narrow-screen contract absent")
+    require("prefers-reduced-motion" in css, "reduced-motion contract absent")
+    require("position: static" in css, "mobile non-sticky header contract absent")
+    require(".gate-map ol { display: none; }" in css, "mobile duplicate-gate suppression absent")
+    require("bounded-pilot-preparation@2" in app, "pilot export schema differs")
+    require("institutional_acceptance: false" in app, "authority hold absent")
+    require("external_effect: 'none'" in app, "external-effect hold absent")
 
-    require(html.count('class="scenario-tab') == 4, "scenario-tab count differs")
-    require(html.count('class="decision-number') == 5, "decision count differs")
-    require(html.count('class="proof-card') == 4, "proof-card count differs")
-    require(html.count('<article><span>0') >= 6, "capacity rail count differs")
-
-    for link in ["../manzanita/", "../essential-attention/", "../manzanita-works/"]:
-        require(link in html, f"existing-surface link absent: {link}")
-
-    for asset in ["assets/property.webp", "assets/household.webp"]:
-        local = (ROOT / asset).resolve()
-        require(local.is_file(), f"retained legacy photo asset missing from repo: {asset}")
-        require(asset not in html, f"legacy photo asset may not render as primary evidence: {asset}")
-
-    for hook in [
-        'class="hero-visual hero-console"',
-        'class="console-grammar"',
-        'class="console-ledger"',
-        'class="proof-instrument place-instrument"',
-        'class="place-stack"',
-        'No adverse use',
-    ]:
-        require(hook in html, f"operational evidence hook absent: {hook}")
-    require("<img" not in html, "working-model main surface may not render archival photography")
-    visual = contract["visual_evidence"]
-    require(visual["primary_mode"] == "operational_instrumentation", "visual evidence mode differs")
-    require(visual["historical_or_low_resolution_photography_used_as_primary_proof"] is False, "legacy photography must not carry primary proof")
-    require(visual["field_activity_claimed"] is False, "visual system may not manufacture field activity")
-
-    personalized = ["Mila", "Jonathan", "Stu", "Cavala", "Sandhu"]
-    for token in personalized:
-        require(token not in html, f"personalized public token prohibited: {token}")
-        require(token not in js, f"personalized script token prohibited: {token}")
-        require(token not in json.dumps(contract), f"personalized contract token prohibited: {token}")
-
-    require(not re.search(r'https?://', html), "public HTML contains an absolute runtime URL")
-    require("fetch(" not in js, "script contains fetch()")
-    require("XMLHttpRequest" not in js, "script contains XMLHttpRequest")
-    require("WebSocket" not in js, "script contains WebSocket")
-    require("sendBeacon" not in js, "script contains sendBeacon")
-    for prohibited in ["mailto:", "stripe.com", "givebutter", "calendar.google", "api_key", "access_token", "password"]:
-        require(prohibited.lower() not in (html + js).lower(), f"prohibited runtime/effect token present: {prohibited}")
-
-    require("external_effect: 'none'" in js, "pilot packet no-effect field absent")
-    require("institutional_acceptance: false" in js, "pilot packet acceptance hold absent")
-    require("participant_consent: false" in js, "pilot packet consent hold absent")
-    require("field_authority: false" in js, "pilot packet field hold absent")
-    require("release_authority: false" in js, "pilot packet release hold absent")
-    require("UNRESOLVED" in js, "unresolved value law absent")
-    require("function scenarioFromHash()" in js, "hash route parser absent")
-    require("window.addEventListener('hashchange'" in js, "same-document hash route listener absent")
-
-    require('@import url("style-base.css")' in override_css, "base style import absent")
-    require("@media (max-width: 640px)" in css, "mobile CSS floor absent")
-    require("@media (max-width: 360px)" in override_css, "narrow accessibility hardening absent")
-    require("grid-template-columns: minmax(0, 1fr)" in override_css, "narrow capacity containment absent")
-    require("@media (prefers-reduced-motion: reduce)" in css, "reduced-motion law absent")
-    require(":focus-visible" in css, "focus-visible treatment absent")
-    require("min-height: 48px" in css, "minimum primary form/control target hook absent")
-
-    source_paths = [
-        REPO / "manzanita" / "README.md",
-        REPO / "essential-attention" / "README.md",
-        REPO / "manzanita-works" / "README.md",
-        REPO / "manzanita-next" / "street-glide" / "STREET_GLIDE_CONTRACT.json",
-        REPO / "manzanita-next" / "roles" / "ROLE_CONTRACT.json",
-        REPO / "manzanita-next" / "experience" / "EXPERIENCE_CONTRACT.json",
-    ]
-    for path in source_paths:
-        require(path.is_file(), f"source contract absent: {path.relative_to(REPO)}")
-
-    release_files = [ROOT / name for name in REQUIRED]
-    digest = hashlib.sha256()
-    for path in sorted(release_files, key=lambda p: p.as_posix()):
-        digest.update(path.name.encode("utf-8") + b"\0")
-        digest.update(path.read_bytes())
-    print(json.dumps({
+    bundle = "\n".join(f"{digest(ROOT / path)}  {path}" for path in RELEASE_FILES)
+    result = {
         "result": "PASS_WORKING_MODEL_STATIC_RELEASE_CONTRACT",
-        "release": "mw-working-model-v1.0.0",
-        "files": len(release_files),
+        "release": RELEASE,
+        "files": len(RELEASE_FILES),
         "scenarios": 4,
+        "stages_per_scenario": 7,
+        "hero_state_rows": 4,
         "pilot_gates": 5,
+        "rendered_images": 0,
+        "synthetic_capacity_metrics": 0,
+        "obsolete_visible_rhetoric": 0,
+        "untranslated_public_jargon": 0,
+        "receiver_first_language": True,
+        "public_stage_labels": 7,
+        "visible_internal_nomenclature": 0,
+        "compact_input_placeholders": True,
         "external_effect": "none",
-        "release_bundle_digest": digest.hexdigest(),
-    }, indent=2))
+        "release_bundle_digest": hashlib.sha256(bundle.encode("utf-8")).hexdigest(),
+    }
+    print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":

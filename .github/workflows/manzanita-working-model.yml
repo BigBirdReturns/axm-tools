@@ -1,10 +1,10 @@
-name: Manzanita Works working model v1.0.0
+name: Manzanita Works working model v1.1.0
 
 on:
   push:
     branches:
       - main
-      - agent/manzanita-working-model-public-v1
+      - review/manzanita-working-model-v1-1
     paths:
       - 'manzanita-working-model/**'
       - '.github/workflows/manzanita-working-model.yml'
@@ -22,7 +22,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: manzanita-working-model-${{ github.ref }}
+  group: manzanita-working-model-v1-1-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -53,14 +53,14 @@ jobs:
 
       - name: Run local Chromium release campaign
         env:
-          MW_WORKING_MODEL_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-working-model-local-review
+          MW_WORKING_MODEL_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-working-model-v1.1-local
         run: python manzanita-working-model/tests/browser_test.py
 
       - name: Retain local qualification evidence
         uses: actions/upload-artifact@v4
         with:
-          name: manzanita-working-model-v1-local-${{ github.sha }}
-          path: ${{ runner.temp }}/manzanita-working-model-local-review
+          name: manzanita-working-model-v1.1-local-${{ github.sha }}
+          path: ${{ runner.temp }}/manzanita-working-model-v1.1-local
           if-no-files-found: error
           retention-days: 30
 
@@ -95,21 +95,21 @@ jobs:
 
       - name: Require exact live release bytes and root discovery
         env:
-          MW_WORKING_MODEL_LIVE_MANIFEST: ${{ runner.temp }}/manzanita-working-model-live/byte-readback.json
+          MW_WORKING_MODEL_LIVE_MANIFEST: ${{ runner.temp }}/manzanita-working-model-v1.1-live/byte-readback.json
         run: python manzanita-working-model/tests/live_readback.py
 
       - name: Run live Chromium release campaign
         env:
-          MW_WORKING_MODEL_LIVE_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-working-model-live
-          MW_WORKING_MODEL_LIVE_BROWSER_RESULT: ${{ runner.temp }}/manzanita-working-model-live/live-browser-result.json
+          MW_WORKING_MODEL_LIVE_SCREENSHOT_DIR: ${{ runner.temp }}/manzanita-working-model-v1.1-live
+          MW_WORKING_MODEL_LIVE_BROWSER_RESULT: ${{ runner.temp }}/manzanita-working-model-v1.1-live/live-browser-result.json
         run: python manzanita-working-model/tests/live_browser_test.py
 
       - name: Retain exact live release evidence
         id: evidence
         uses: actions/upload-artifact@v4
         with:
-          name: manzanita-working-model-v1-live-${{ github.sha }}
-          path: ${{ runner.temp }}/manzanita-working-model-live
+          name: manzanita-working-model-v1.1-live-${{ github.sha }}
+          path: ${{ runner.temp }}/manzanita-working-model-v1.1-live
           if-no-files-found: error
           retention-days: 90
 
@@ -156,18 +156,18 @@ jobs:
           ARTIFACT_ID: ${{ steps.evidence.outputs.artifact-id }}
           ARTIFACT_URL: ${{ steps.evidence.outputs.artifact-url }}
           ARTIFACT_DIGEST: ${{ steps.evidence.outputs.artifact-digest }}
-          BYTE_MANIFEST: ${{ runner.temp }}/manzanita-working-model-live/byte-readback.json
-          BROWSER_RESULT: ${{ runner.temp }}/manzanita-working-model-live/live-browser-result.json
+          BYTE_MANIFEST: ${{ runner.temp }}/manzanita-working-model-v1.1-live/byte-readback.json
+          BROWSER_RESULT: ${{ runner.temp }}/manzanita-working-model-v1.1-live/live-browser-result.json
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'manzanita-working-model-release-bot'
           git config user.email 'actions@users.noreply.github.com'
           python manzanita-working-model/tests/record_live_receipt.py
-          git add .github/receipts/manzanita-working-model-live-v1.0.0.json
+          git add .github/receipts/manzanita-working-model-live-v1.1.0.json
           if git diff --cached --quiet; then
             echo 'Exact live-release receipt already recorded for this source SHA.'
             exit 0
           fi
-          git commit -m 'manzanita: seal working model v1.0.0 live release'
+          git commit -m 'manzanita: seal working model v1.1.0 live release'
           git push origin main
