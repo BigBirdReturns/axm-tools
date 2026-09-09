@@ -59,6 +59,26 @@ def assert_control_targets(page: Page) -> None:
     assert not offenders, offenders
 
 
+def assert_skip_and_anchor(page: Page) -> None:
+    assert page.locator('.skip-link').evaluate("element => element.getBoundingClientRect().top") < 0
+    page.locator('.skip-link').focus()
+    assert page.locator('.skip-link').evaluate("element => element.getBoundingClientRect().top") >= 0
+    page.evaluate("document.activeElement.blur()")
+    page.locator('a[href="#systems"]').click()
+    page.wait_for_timeout(120)
+    clearance = page.evaluate("""() => ({
+      headerBottom: document.querySelector('.site-header').getBoundingClientRect().bottom,
+      headingTop: document.querySelector('#systems .section-header').getBoundingClientRect().top
+    })""")
+    assert clearance["headingTop"] >= clearance["headerBottom"] - 1, clearance
+    page.evaluate("window.scrollTo(0, 0)")
+
+
+def prepare_screenshot(page: Page) -> None:
+    page.evaluate("document.activeElement?.blur(); window.scrollTo(0, 0)")
+    page.wait_for_timeout(80)
+
+
 def main() -> None:
     parsed = urlparse(URL)
     allowed_origin = f"{parsed.scheme}://{parsed.netloc}"
@@ -75,7 +95,7 @@ def main() -> None:
         failures: list[str] = []
         http_errors: list[dict[str, object]] = []
         page.on("pageerror", lambda exc: errors.append(f"pageerror:{exc}"))
-        page.on("console", lambda message: errors.append(f"console:{message.type}:{message.text}") if message.type == "error" and not message.text.startswith("Failed to load resource:") else None)
+        page.on("console", lambda message: errors.append(f"console:{message.type}:{message.text}") if message.type == "error" else None)
         page.on("request", lambda request: requests.append(request.url))
         page.on("requestfailed", lambda request: failures.append(f"{request.url}: {request.failure}"))
         page.on("response", lambda response: http_errors.append({"url": response.url, "status": response.status}) if response.status >= 400 else None)
@@ -88,14 +108,18 @@ def main() -> None:
         assert page.locator(".system-card").count() == 4
         assert page.locator(".guardrail-grid article").count() == 3
         assert page.locator(".gate-map li").count() == 5
-        assert page.locator(".runtime-trace li").count() == 7
+        assert page.locator(".runtime-trace li").count() == 4
+        assert page.locator(".capacity-instrument i").count() == 0
+        assert page.locator(".capacity-instrument > div").count() == 6
         body = page.locator("body").inner_text()
         for stale in ["Not another architecture review", "public-safe", "If leadership returns tomorrow", "Do not schedule a scoping call", "N=0"]:
             assert stale not in body, stale
         assert_no_overflow(page)
         assert_text_floor(page)
         assert_control_targets(page)
-        desktop_height = assert_height_budget(page, 7600)
+        assert_skip_and_anchor(page)
+        desktop_height = assert_height_budget(page, 7000)
+        prepare_screenshot(page)
         page.screenshot(path=str(OUT / "working-model-v1.1-live-desktop.png"), full_page=True)
 
         expected = {
@@ -151,19 +175,28 @@ def main() -> None:
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto(target("#run-mobility"), wait_until="networkidle")
         assert page.locator('[data-scenario="mobility"]').get_attribute("aria-selected") == "true"
+        assert page.locator('.site-header').evaluate("element => getComputedStyle(element).position") == "static"
+        assert page.locator('.scenario-tabs').evaluate("element => getComputedStyle(element).gridTemplateColumns.split(' ').length") == 2
+        assert page.locator('.stage-list').evaluate("element => getComputedStyle(element).gridTemplateColumns.split(' ').length") == 2
+        assert page.locator('.gate-map ol').evaluate("element => getComputedStyle(element).display") == "none"
         assert_no_overflow(page)
         assert_text_floor(page)
         assert_control_targets(page)
-        mobile_height = assert_height_budget(page, 11000)
+        mobile_height = assert_height_budget(page, 9500)
+        prepare_screenshot(page)
         page.screenshot(path=str(OUT / "working-model-v1.1-live-mobile.png"), full_page=True)
 
         page.set_viewport_size({"width": 320, "height": 800})
         page.goto(target("#run-continuity"), wait_until="networkidle")
         page.evaluate("document.documentElement.style.fontSize = '200%'")
         page.wait_for_timeout(150)
+        assert page.locator('.scenario-tabs').evaluate("element => getComputedStyle(element).gridTemplateColumns.split(' ').length") == 1
+        assert page.locator('.stage-list').evaluate("element => getComputedStyle(element).gridTemplateColumns.split(' ').length") == 1
         assert_no_overflow(page)
         assert_text_floor(page)
-        narrow_height = assert_height_budget(page, 16000)
+        narrow_height = assert_height_budget(page, 14500)
+        prepare_screenshot(page)
+        page.evaluate("document.documentElement.style.fontSize = '200%'")
         page.screenshot(path=str(OUT / "working-model-v1.1-live-320-200pct.png"), full_page=True)
 
         reduced_context = browser.new_context(viewport={"width": 1024, "height": 768}, reduced_motion="reduce")
@@ -174,27 +207,33 @@ def main() -> None:
         reduced_context.close()
 
         unexpected = [url for url in requests if urlparse(url).scheme in {"http", "https"} and not url.startswith(allowed_origin + "/")]
-        relevant_http_errors = [row for row in http_errors if urlparse(str(row["url"])).path != "/favicon.ico"]
         assert not unexpected, unexpected
         assert not failures, failures
-        assert not relevant_http_errors, relevant_http_errors
+        assert not http_errors, http_errors
         assert not errors, errors
         browser.close()
 
     payload = {
-        "schema": "manzanita-works/working-model-live-browser@3",
+        "schema": "manzanita-works/working-model-live-browser@4",
         "result": "PASS_LIVE_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
         "release": RELEASE,
         "source_sha": SOURCE_SHA,
         "page_url": URL,
         "scenarios": 4,
         "stages_per_scenario": 7,
+        "hero_state_rows": 4,
         "pilot_gates": 5,
         "rendered_images": 0,
+        "synthetic_capacity_metrics": 0,
         "desktop_height": desktop_height,
         "mobile_height": mobile_height,
         "narrow_320_200pct_height": narrow_height,
         "minimum_text_floor_css_px": 11,
+        "minimum_control_height_css_px": 44,
+        "mobile_two_column_case_compression": "PASS",
+        "mobile_duplicate_gate_map_hidden": "PASS",
+        "sticky_header_anchor_clearance": "PASS",
+        "skip_link_hidden_until_focus": "PASS",
         "incomplete_packet": "PASS_HELD",
         "complete_packet": "PASS_REVIEW_NOT_ACCEPTANCE",
         "unexpected_cross_origin_requests": 0,
