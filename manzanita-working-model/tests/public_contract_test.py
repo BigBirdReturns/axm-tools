@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -46,6 +47,16 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def block(html: str, class_name: str, tag: str) -> str:
+    match = re.search(
+        rf'<{tag} class="[^"]*\b{re.escape(class_name)}\b[^"]*"[^>]*>(.*?)</{tag}>',
+        html,
+        re.S,
+    )
+    require(match is not None, f"block absent: {class_name}")
+    return match.group(1)
+
+
 def main() -> None:
     for relative in RELEASE_FILES:
         require((ROOT / relative).is_file(), f"release file absent: {relative}")
@@ -80,13 +91,21 @@ def main() -> None:
     ]:
         require(obsolete not in html, f"obsolete visible rhetoric or asset reference remains: {obsolete}")
 
+    require('<link rel="icon" href="data:,">' in html, "inline empty favicon absent")
     require("img" not in parser.tags, "rendered image element remains")
+    require("--fill" not in html and "--fill" not in css, "synthetic capacity metric remains")
     require(set(parser.scenarios) == {"wildfire", "tools", "mobility", "continuity"}, "scenario set differs")
     require(len(parser.scenarios) == 4, "scenario tab count differs")
     require(parser.classes.count("system-card") == 4, "system card count differs")
     require(parser.classes.count("scenario-tab") == 4, "scenario tab class count differs")
     require(parser.classes.count("guardrail-grid") == 1, "guardrail section differs")
     require(parser.classes.count("pilot-form") == 1, "pilot form differs")
+
+    runtime = block(html, "runtime-trace", "ol")
+    require(runtime.count("<li") == 4, "hero case state must contain exactly four non-duplicative rows")
+    require("Signal" not in runtime and "Learning" not in runtime, "seven-stage grammar duplicated in hero")
+    capacity = block(html, "capacity-instrument", "div")
+    require(capacity.count("<div>") == 6, "capacity-class instrument must contain six non-metric rows")
 
     required_ids = {
         "main", "try", "systems", "pilot", "scenario-panel", "scenario-title",
@@ -109,8 +128,11 @@ def main() -> None:
         require(phrase in html, f"required first-order copy absent: {phrase}")
 
     require("font-size: 8px" not in css and "font: 8px" not in css, "sub-9px CSS text remains")
+    require("font-size: 9px" not in css and "font-size: 10px" not in css, "sub-11px CSS text remains")
     require("@media (max-width: 360px)" in css, "narrow-screen contract absent")
     require("prefers-reduced-motion" in css, "reduced-motion contract absent")
+    require("position: static" in css, "mobile non-sticky header contract absent")
+    require(".gate-map ol { display: none; }" in css, "mobile duplicate-gate suppression absent")
     require("bounded-pilot-preparation@2" in app, "pilot export schema differs")
     require("institutional_acceptance: false" in app, "authority hold absent")
     require("external_effect: 'none'" in app, "external-effect hold absent")
@@ -122,8 +144,10 @@ def main() -> None:
         "files": len(RELEASE_FILES),
         "scenarios": 4,
         "stages_per_scenario": 7,
+        "hero_state_rows": 4,
         "pilot_gates": 5,
         "rendered_images": 0,
+        "synthetic_capacity_metrics": 0,
         "obsolete_visible_rhetoric": 0,
         "external_effect": "none",
         "release_bundle_digest": hashlib.sha256(bundle.encode("utf-8")).hexdigest(),
