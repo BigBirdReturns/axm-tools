@@ -1,0 +1,59 @@
+name: Normalize Manzanita working-model touch targets
+
+on:
+  push:
+    branches:
+      - review/manzanita-working-model-v1-1
+    paths:
+      - '.github/workflows/manzanita-working-model-touch-target-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Enforce forty-four-pixel touch targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('manzanita-working-model/style.css')
+          text = path.read_text(encoding='utf-8')
+          replacements = {
+              '.nav-cta { padding: 10px 13px; color: var(--paper-strong); background: var(--ink); border: 1px solid var(--ink); }':
+              '.nav-cta { min-height: 44px; display: inline-flex; align-items: center; padding: 10px 13px; color: var(--paper-strong); background: var(--ink); border: 1px solid var(--ink); }',
+              '.clear-button { display: block; margin: 12px auto 0; padding: 4px 0; color: var(--muted); background: none; border: 0; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }':
+              '.clear-button { min-height: 44px; display: flex; align-items: center; justify-content: center; margin: 8px auto 0; padding: 10px 4px; color: var(--muted); background: none; border: 0; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }',
+          }
+          for old, new in replacements.items():
+              if text.count(old) != 1:
+                  raise SystemExit(f'touch-target anchor count differed: {old[:40]} -> {text.count(old)}')
+              text = text.replace(old, new, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Remove one-shot normalizer
+        run: rm '.github/workflows/manzanita-working-model-touch-target-fix.yml'
+
+      - name: Verify static release contract
+        run: python manzanita-working-model/tests/public_contract_test.py
+
+      - name: Commit exact correction
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'manzanita-working-model-review-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'manzanita: enforce forty-four-pixel touch targets'
+          git push origin HEAD
