@@ -75,8 +75,8 @@
   const tabs = [...document.querySelectorAll('.scenario-tab')];
   const panel = byId('scenario-panel');
   const stageList = byId('stage-list');
-  const fieldIds = ['pilot-scenario', 'pilot-sponsor', 'pilot-operator', 'pilot-basis', 'pilot-stop'];
-  const gateKeys = ['scenario', 'sponsor', 'operator', 'basis', 'stop'];
+  const textFieldIds = ['pilot-problem', 'pilot-sponsor', 'pilot-operator', 'pilot-basis', 'pilot-stop'];
+  const gateKeys = ['problem', 'sponsor', 'operator', 'basis', 'stop'];
 
   function scenarioFromHash() {
     return location.hash.match(/^#run-(wildfire|tools|mobility|continuity)$/)?.[1];
@@ -135,6 +135,7 @@
   function currentDraft() {
     return {
       scenario: byId('pilot-scenario').value,
+      problem: byId('pilot-problem').value.trim(),
       sponsor: byId('pilot-sponsor').value.trim(),
       operator: byId('pilot-operator').value.trim(),
       basis: byId('pilot-basis').value.trim(),
@@ -142,8 +143,13 @@
     };
   }
 
+  function gateResolved(key, draft) {
+    if (key === 'problem') return Boolean(draft.scenario && draft.problem);
+    return Boolean(draft[key]);
+  }
+
   function resolvedKeys(draft) {
-    return gateKeys.filter((key) => Boolean(draft[key]));
+    return gateKeys.filter((key) => gateResolved(key, draft));
   }
 
   function updateFormStatus() {
@@ -174,6 +180,7 @@
       if (!stored || typeof stored !== 'object') return;
       if (typeof stored.scenario === 'string' && (stored.scenario === '' || scenarios[stored.scenario])) byId('pilot-scenario').value = stored.scenario;
       const pairs = [
+        ['pilot-problem', stored.problem],
         ['pilot-sponsor', stored.sponsor],
         ['pilot-operator', stored.operator],
         ['pilot-basis', stored.basis],
@@ -199,7 +206,11 @@
       generated_at: new Date().toISOString(),
       standing: named === 5 ? 'PREPARED_FOR_ACCOUNTABLE_REVIEW_NOT_ACCEPTED' : 'INCOMPLETE_PREPARATION_HELD',
       organizational_gates: {
-        problem: scenario ? { id: draft.scenario, title: scenario.title } : 'UNRESOLVED',
+        problem: {
+          case_type: scenario ? { id: draft.scenario, label: scenario.kicker } : 'UNRESOLVED',
+          statement: unresolved(draft.problem),
+          complete: Boolean(scenario && draft.problem)
+        },
         accountable_sponsor: unresolved(draft.sponsor),
         continuity_operator: unresolved(draft.operator),
         execution_basis: unresolved(draft.basis),
@@ -208,6 +219,7 @@
         required_count: 5
       },
       operating_case: scenario ? {
+        representative_title: scenario.title,
         intended_output: scenario.output,
         prohibited_consequence: scenario.prohibited,
         grammar: scenario.stages.map(([name, meaning], index) => ({ order: index + 1, name, meaning }))
@@ -250,7 +262,7 @@
     if (scenarios[event.target.value]) renderScenario(event.target.value, { syncForm: false });
     persistDraft();
   });
-  fieldIds.slice(1).forEach((id) => byId(id).addEventListener('input', persistDraft));
+  textFieldIds.forEach((id) => byId(id).addEventListener('input', persistDraft));
 
   byId('export-pilot').addEventListener('click', () => {
     persistDraft();
