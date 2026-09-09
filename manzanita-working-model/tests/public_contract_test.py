@@ -104,8 +104,18 @@ def main() -> None:
     runtime = block(html, "runtime-trace", "ol")
     require(runtime.count("<li") == 4, "hero case state must contain exactly four non-duplicative rows")
     require("Signal" not in runtime and "Learning" not in runtime, "seven-stage grammar duplicated in hero")
-    capacity = block(html, "capacity-instrument", "div")
-    require(capacity.count("<div>") == 6, "capacity-class instrument must contain six non-metric rows")
+
+    capacity_rows = [
+        '<div><span>Physical</span><strong>Tools + materials</strong></div>',
+        '<div><span>Human</span><strong>Time + skill</strong></div>',
+        '<div><span>Mobility</span><strong>Transport + access</strong></div>',
+        '<div><span>Money</span><strong>Dues + grants</strong></div>',
+        '<div><span>Place</span><strong>Source context</strong></div>',
+        '<div><span>Continuity</span><strong>Decisions + handoff</strong></div>',
+    ]
+    require(html.count('class="instrument capacity-instrument"') == 1, "capacity-class instrument count differs")
+    for row in capacity_rows:
+        require(html.count(row) == 1, f"capacity-class row differs: {row}")
 
     required_ids = {
         "main", "try", "systems", "pilot", "scenario-panel", "scenario-title",
