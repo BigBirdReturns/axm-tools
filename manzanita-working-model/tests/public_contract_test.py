@@ -121,10 +121,35 @@ def main() -> None:
         "effect boundary",
         "continuity operator",
         "front door routes",
+        "accountable sponsor",
+        "sponsor review",
+        "no adverse use",
+        "authority stays separate",
+        "separate authorization",
+        "adverse standing",
+        "qualified field evidence",
+        "role-specific views",
+        "source fallback",
     ]:
         require(jargon not in public_text, f"untranslated public jargon remains: {jargon}")
 
+    for jargon in [
+        "qualified field evidence",
+        "lived facts",
+        "the sponsor controls",
+        "first-party constraints",
+        "participant fitness",
+        "decision rights",
+        "unstated authority",
+        "institutional authority",
+        "budget, scope",
+        "separate authority is still required",
+    ]:
+        require(jargon not in app.lower(), f"untranslated dynamic language remains: {jargon}")
+
     require('<link rel="icon" href="data:,">' in html, "inline empty favicon absent")
+    require('placeholder="Name or role"' in html, "compact accountable-owner placeholder absent")
+    require('placeholder="Funded owner"' in html, "compact day-to-day-owner placeholder absent")
     require("img" not in parser.tags, "rendered image element remains")
     require("--fill" not in html and "--fill" not in css, "synthetic capacity metric remains")
     require(set(parser.scenarios) == {"wildfire", "tools", "mobility", "continuity"}, "scenario set differs")
@@ -143,7 +168,7 @@ def main() -> None:
         '<div><span>Human</span><strong>Time + skill</strong></div>',
         '<div><span>Mobility</span><strong>Transport + access</strong></div>',
         '<div><span>Money</span><strong>Dues + grants</strong></div>',
-        '<div><span>Place</span><strong>Source context</strong></div>',
+        '<div><span>Place</span><strong>Place evidence</strong></div>',
         '<div><span>Continuity</span><strong>Decisions + handoff</strong></div>',
     ]
     require(html.count('class="instrument capacity-instrument"') == 1, "capacity-class instrument count differs")
@@ -200,6 +225,8 @@ def main() -> None:
         "untranslated_public_jargon": 0,
         "receiver_first_language": True,
         "public_stage_labels": 7,
+        "visible_internal_nomenclature": 0,
+        "compact_input_placeholders": True,
         "external_effect": "none",
         "release_bundle_digest": hashlib.sha256(bundle.encode("utf-8")).hexdigest(),
     }

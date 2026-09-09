@@ -34,7 +34,22 @@
       "role projections",
       "execution basis",
       "effect boundary",
-      "continuity operator"
+      "continuity operator",
+      "accountable sponsor",
+      "sponsor review",
+      "no adverse use",
+      "authority stays separate",
+      "separate authorization",
+      "adverse standing",
+      "qualified field evidence",
+      "lived facts",
+      "first-party constraints",
+      "participant fitness",
+      "decision rights",
+      "unstated authority",
+      "institutional authority",
+      "role-specific views",
+      "source fallback"
     ],
     "public_stage_labels": {
       "signal": "Need",
@@ -44,6 +59,10 @@
       "fallback": "Backup path",
       "closure": "Outcome",
       "learning": "Next improvement"
+    },
+    "compact_single_line_placeholders": {
+      "accountable_owner": "Name or role",
+      "day_to_day_owner": "Funded owner"
     }
   },
   "representative_cases": [
@@ -84,7 +103,7 @@
     },
     {
       "id": "street_glide_and_roles",
-      "public_label": "source fallback and role-specific views",
+      "public_label": "backup source and job-specific views",
       "standing": "separately_governed",
       "job": "Keep claims honest when a live provider fails and show each participant only the view needed for the job."
     }

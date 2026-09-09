@@ -169,8 +169,11 @@ def main() -> None:
         assert page.locator(".capacity-instrument > div").count() == 6
         assert page.locator("#pilot-problem").count() == 1
         body = page.locator("body").inner_text()
+        visible_internal_terms = ['qualified field evidence', 'lived facts', 'the sponsor controls', 'first-party constraints', 'participant fitness', 'decision rights', 'unstated authority', 'institutional authority', 'adverse standing', 'separate authorization', 'role-specific views', 'source fallback']
         for stale in ["Not another architecture review", "public-safe", "If leadership returns tomorrow", "Do not schedule a scoping call", "N=0"]:
             assert stale not in body, stale
+        for internal in visible_internal_terms:
+            assert internal not in body.lower(), internal
         assert_no_overflow(page)
         assert_text_floor(page)
         assert_control_targets(page)
@@ -192,6 +195,9 @@ def main() -> None:
             assert title_fragment in page.locator("#scenario-title").inner_text().lower()
             assert prohibited_fragment in page.locator("#scenario-prohibited").inner_text().lower()
             assert [value.strip().lower() for value in page.locator(".stage-list h4").all_inner_texts()] == expected_stages
+            scenario_text = page.locator("#scenario-panel").inner_text().lower()
+            for internal in visible_internal_terms:
+                assert internal not in scenario_text, {"scenario": scenario, "term": internal}
             assert page.locator(f'[data-scenario="{scenario}"]').get_attribute("aria-selected") == "true"
             assert page.url.endswith(f"#run-{scenario}")
 
@@ -265,6 +271,8 @@ def main() -> None:
 
         page.set_viewport_size({"width": 320, "height": 800})
         page.goto(base_url + "#run-continuity", wait_until="networkidle")
+        assert page.locator("#pilot-sponsor").get_attribute("placeholder") == "Name or role"
+        assert page.locator("#pilot-operator").get_attribute("placeholder") == "Funded owner"
         page.evaluate("document.documentElement.style.fontSize = '200%'")
         page.wait_for_timeout(150)
         assert page.locator('.scenario-tabs').evaluate("element => getComputedStyle(element).gridTemplateColumns.split(' ').length") == 1
@@ -292,7 +300,7 @@ def main() -> None:
         browser.close()
 
     payload = {
-        "schema": "manzanita-works/working-model-browser-qualification@5",
+        "schema": "manzanita-works/working-model-browser-qualification@6",
         "result": "PASS_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
         "release": RELEASE,
         "scenarios": 4,
@@ -302,6 +310,8 @@ def main() -> None:
         "concrete_problem_required": True,
         "receiver_stage_labels": "PASS",
         "stable_stage_ids_in_export": "PASS",
+        "visible_internal_nomenclature": 0,
+        "compact_input_placeholders": "PASS",
         "rendered_images": 0,
         "synthetic_capacity_metrics": 0,
         "desktop_height": desktop_height,

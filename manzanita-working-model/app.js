@@ -17,13 +17,13 @@
     wildfire: {
       kicker: 'Wildfire assistance',
       title: 'A resident wants help reducing wildfire exposure without becoming a risk score.',
-      summary: 'Public context can focus attention. Resident facts and qualified field evidence determine what can be said or done.',
+      summary: 'Public records and maps can focus attention. What the resident reports and verified on-site evidence determine what can be said or done.',
       output: 'A verification and assistance path tied to its evidence.',
       prohibited: 'A parcel score, eligibility decision, work order, or claim that help was delivered.',
       stages: [
         ['signal', 'A resident asks for help with a specific exposure, task, or constraint.'],
-        ['source', 'Use public context plus resident facts; show gaps, staleness, and contradictions.'],
-        ['authority', 'The resident controls lived facts and consent. The sponsor controls the program offer.'],
+        ['source', 'Use public records and maps plus what the resident reports; show gaps, staleness, and contradictions.'],
+        ['authority', 'The resident controls what they report and whether they participate. The accountable owner controls the help offered.'],
         ['safe_action', 'Prepare the smallest verification, referral, material, or work path needed.'],
         ['fallback', 'Pause the claim and request one source check, or use clearly labeled map-only context.'],
         ['closure', 'Record accepted, refused, deferred, completed, or blocked without grading the property.'],
@@ -51,10 +51,10 @@
       title: 'A community member needs a practical transportation path, not another program directory.',
       summary: 'The case starts with the trip and constraint, then combines equipment, route, repair, funding, storage, and instruction.',
       output: 'A practical mobility plan with responsible people, backup options, acceptance, and unresolved constraints.',
-      prohibited: 'Unverified promises of availability, route safety, funding, repair completion, or participant fitness.',
+      prohibited: 'Unverified promises of availability, route safety, funding, completed repairs, or whether the option fits the participant.',
       stages: [
         ['signal', 'A person states the trip, cost, access, repair, equipment, or confidence problem.'],
-        ['source', 'Use current resource records, public route context, first-party constraints, and provider terms.'],
+        ['source', 'Use current resource records, public route information, the participant’s own constraints, and provider terms.'],
         ['authority', 'Participants control acceptance. Owners and qualified providers control their resources and work.'],
         ['safe_action', 'Prepare the smallest viable loan, repair, training, route, funding, or combined option.'],
         ['fallback', 'Record why the first mode failed and try another mode, date, provider, or explicit hold.'],
@@ -65,15 +65,15 @@
     continuity: {
       kicker: 'Handoff and continuity',
       title: 'A good idea should not disappear when the person carrying it gets busy, leaves, or stops replying.',
-      summary: 'Interest, decisions, unknowns, decision rights, and next steps remain separate so enthusiasm never becomes hidden labor.',
-      output: 'A portable record another person can reopen without inheriting unstated authority.',
-      prohibited: 'Turning interest into assignment, silence into rejection, or remembered context into institutional authority.',
+      summary: 'Interest, decisions, unknowns, permission, and next steps remain separate so enthusiasm never becomes hidden labor.',
+      output: 'A portable record another person can reopen without inheriting permission nobody granted.',
+      prohibited: 'Turning interest into assignment, silence into rejection, or remembered information into permission to act for the organization.',
       stages: [
         ['signal', 'A meeting, message, offer, question, source, or decision creates something worth preserving.'],
         ['source', 'Keep the literal evidence, date, participants, summary, and unresolved facts.'],
         ['authority', 'Name who may decide, who may prepare, who is affected, and every action still withheld.'],
         ['safe_action', 'Route only the next limited move: recover, ask, draft, prepare, close, or pause.'],
-        ['fallback', 'A missing owner, source, budget, scope, or permission keeps the item unresolved.'],
+        ['fallback', 'A missing owner, source, budget, boundary, or permission keeps the item unresolved.'],
         ['closure', 'Record the decision, acceptance, expiration, closure, or remaining hold.'],
         ['learning', 'Repeated failures expose missing jobs that need a funded owner.']
       ]
@@ -167,7 +167,7 @@
     const count = resolved.length;
     byId('form-status').textContent = `${count} of 5 facts named.${count === 5 ? ' Ready for accountable review, not execution.' : ` ${5 - count} remain unresolved.`}`;
     byId('packet-standing').textContent = count === 5 ? 'Prepared for review' : 'Incomplete preparation';
-    byId('packet-next').textContent = count === 5 ? 'Separate authority is still required.' : 'Name only the missing facts.';
+    byId('packet-next').textContent = count === 5 ? 'Permission to act is still required.' : 'Name only the missing facts.';
 
     gateKeys.forEach((key, index) => {
       const resolvedNow = resolved.includes(key);
@@ -255,7 +255,7 @@
         external_effect: 'none'
       },
       next_safe_action: named === 5
-        ? 'Present this packet for explicit organizational review. Every real-world action requires separate authority and acceptance.'
+        ? 'Present this packet for explicit organizational review. Every real-world action still requires explicit permission and acceptance.'
         : 'Resolve only the missing facts. Do not contact, enroll, schedule, spend, inspect, publish, assign, or operate from this packet.'
     };
   }
