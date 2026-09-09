@@ -77,7 +77,10 @@ def main() -> None:
     require(release["release_files"] == RELEASE_FILES, "release file list differs")
     require(release["visual_posture"]["rendered_photography"] is False, "photography posture differs")
     require(release["visual_posture"]["dead_visual_assets_in_release"] is False, "dead asset posture differs")
+    require(release["visual_posture"]["receiver_first_language"] is True, "release language posture differs")
     require(contract["visual_contract"]["rendered_photography"] is False, "working visual contract differs")
+    require(contract["public_language"]["receiver_first"] is True, "receiver-first language contract absent")
+    require(contract["public_language"]["technical_identifiers_confined_to_contracts_and_exports"] is True, "technical identifier boundary differs")
 
     for obsolete in [
         "Not another architecture review",
@@ -90,6 +93,22 @@ def main() -> None:
         "style-base.css",
     ]:
         require(obsolete not in html, f"obsolete visible rhetoric or asset reference remains: {obsolete}")
+
+    public_text = html.lower()
+    for jargon in [
+        "operating grammar",
+        "public projection",
+        "administrative runtime",
+        "institutional architecture",
+        "bounded kernel",
+        "cold-replayable",
+        "role projections",
+        "execution basis",
+        "effect boundary",
+        "continuity operator",
+        "front door routes",
+    ]:
+        require(jargon not in public_text, f"untranslated public jargon remains: {jargon}")
 
     require('<link rel="icon" href="data:,">' in html, "inline empty favicon absent")
     require("img" not in parser.tags, "rendered image element remains")
@@ -120,7 +139,7 @@ def main() -> None:
     required_ids = {
         "main", "try", "systems", "pilot", "scenario-panel", "scenario-title",
         "scenario-summary", "scenario-output", "scenario-prohibited", "stage-list",
-        "pilot-form", "pilot-scenario", "pilot-sponsor", "pilot-operator",
+        "pilot-form", "pilot-scenario", "pilot-problem", "pilot-sponsor", "pilot-operator",
         "pilot-basis", "pilot-stop", "form-status", "packet-standing",
         "packet-next", "export-pilot", "clear-pilot",
     }
@@ -130,15 +149,20 @@ def main() -> None:
         "One real problem.",
         "One accountable owner.",
         "One bounded promise.",
-        "Four problems. One operating grammar.",
-        "Three rules keep the model useful.",
-        "Five facts convert a useful model into an accountable proposal.",
-        "The export stays on this device.",
+        "Four problems. The same path to accountable action.",
+        "Four parts already handle four different jobs.",
+        "Three rules keep help accountable.",
+        "Five facts turn the model into an accountable proposal.",
+        "The file stays on this device.",
+        "Who owns the promise?",
+        "Who keeps the work running?",
+        "Where and with what?",
     ]:
-        require(phrase in html, f"required first-order copy absent: {phrase}")
+        require(phrase in html, f"required receiver-language copy absent: {phrase}")
 
     require("font-size: 8px" not in css and "font: 8px" not in css, "sub-9px CSS text remains")
     require("font-size: 9px" not in css and "font-size: 10px" not in css, "sub-11px CSS text remains")
+    require("font-size: clamp(62px, 5.2vw, 84px)" in css, "desktop hero scale contract differs")
     require("@media (max-width: 360px)" in css, "narrow-screen contract absent")
     require("prefers-reduced-motion" in css, "reduced-motion contract absent")
     require("position: static" in css, "mobile non-sticky header contract absent")
@@ -159,6 +183,8 @@ def main() -> None:
         "rendered_images": 0,
         "synthetic_capacity_metrics": 0,
         "obsolete_visible_rhetoric": 0,
+        "untranslated_public_jargon": 0,
+        "receiver_first_language": True,
         "external_effect": "none",
         "release_bundle_digest": hashlib.sha256(bundle.encode("utf-8")).hexdigest(),
     }
