@@ -3,70 +3,79 @@
 
   const RELEASE = 'mw-working-model-v1.1.0';
   const STORAGE_KEY = 'mw-working-model-v1.1-draft';
+  const stageLabels = Object.freeze({
+    signal: 'Need',
+    source: 'Evidence',
+    authority: 'Decision owner',
+    safe_action: 'Safe next step',
+    fallback: 'Backup path',
+    closure: 'Outcome',
+    learning: 'Next improvement'
+  });
 
   const scenarios = {
     wildfire: {
       kicker: 'Wildfire assistance',
       title: 'A resident wants help reducing wildfire exposure without becoming a risk score.',
       summary: 'Public context can focus attention. Resident facts and qualified field evidence determine what can be said or done.',
-      output: 'A source-linked verification and assistance path.',
+      output: 'A verification and assistance path tied to its evidence.',
       prohibited: 'A parcel score, eligibility decision, work order, or claim that help was delivered.',
       stages: [
-        ['Signal', 'A resident asks for help with a specific exposure, task, or constraint.'],
-        ['Source', 'Use public context plus resident facts; preserve gaps, staleness, and contradictions.'],
-        ['Authority', 'The resident controls lived facts and consent; the sponsor controls the program offer.'],
-        ['Safe action', 'Prepare the smallest verification, referral, material, or work path needed.'],
-        ['Fallback', 'Hold the claim and request one source check or use clearly labeled map-only context.'],
-        ['Closure', 'Record accepted, refused, deferred, completed, or blocked without grading the property.'],
-        ['Learning', 'Aggregate recurring service gaps without identifying or ranking households.']
+        ['signal', 'A resident asks for help with a specific exposure, task, or constraint.'],
+        ['source', 'Use public context plus resident facts; show gaps, staleness, and contradictions.'],
+        ['authority', 'The resident controls lived facts and consent. The sponsor controls the program offer.'],
+        ['safe_action', 'Prepare the smallest verification, referral, material, or work path needed.'],
+        ['fallback', 'Pause the claim and request one source check, or use clearly labeled map-only context.'],
+        ['closure', 'Record accepted, refused, deferred, completed, or blocked without grading the property.'],
+        ['learning', 'Count recurring service gaps without identifying or ranking households.']
       ]
     },
     tools: {
       kicker: 'Tools + time',
       title: 'A neighbor needs a tool and enough human help to use it safely.',
-      summary: 'The real case may require equipment, skill, time, transport, instruction, space, money, or a fallback.',
-      output: 'A bounded capacity match with explicit commitments and return conditions.',
+      summary: 'The case may require equipment, skill, time, transport, instruction, space, money, or a backup path.',
+      output: 'A specific match that names the resource, time, responsible person, and return conditions.',
       prohibited: 'Silent volunteer assignment, inferred inventory, implied availability, or permanent social debt.',
       stages: [
-        ['Signal', 'A participant states a concrete need or publishes a concrete offer.'],
-        ['Source', 'Check inventory, availability, training conditions, duration, transport, and space.'],
-        ['Authority', 'Owners control resources; people control their own time, skill, and participation.'],
-        ['Safe action', 'Prepare a match that names the resource, duration, rules, handoff, and responsible party.'],
-        ['Fallback', 'Route to another tool, date, partner, purchase, instruction, or explicit cannot-fill closure.'],
-        ['Closure', 'Close the loan, return, contribution, workshop, or declined match with a receipt.'],
-        ['Learning', 'Repeated unmet needs guide what the community should acquire, teach, stock, or partner for.']
+        ['signal', 'A participant states a concrete need or publishes a concrete offer.'],
+        ['source', 'Check inventory, availability, training conditions, duration, transport, and space.'],
+        ['authority', 'Owners control resources. People control their own time, skill, and participation.'],
+        ['safe_action', 'Prepare a match that names the resource, duration, rules, handoff, and responsible person.'],
+        ['fallback', 'Try another tool, date, partner, purchase, or instruction path; otherwise close it as unfilled.'],
+        ['closure', 'Record the loan, return, contribution, workshop, or declined match with a receipt.'],
+        ['learning', 'Repeated unmet needs show what the community should acquire, teach, stock, or partner for.']
       ]
     },
     mobility: {
       kicker: 'Mobility',
       title: 'A community member needs a practical transportation path, not another program directory.',
-      summary: 'The case starts with the trip and constraint, then composes equipment, route, repair, funding, storage, and instruction.',
-      output: 'A bounded mobility path with responsible actors, fallback, acceptance, and unresolved constraints.',
+      summary: 'The case starts with the trip and constraint, then combines equipment, route, repair, funding, storage, and instruction.',
+      output: 'A practical mobility plan with responsible people, backup options, acceptance, and unresolved constraints.',
       prohibited: 'Unverified promises of availability, route safety, funding, repair completion, or participant fitness.',
       stages: [
-        ['Signal', 'A person states the trip, cost, access, repair, equipment, or confidence problem.'],
-        ['Source', 'Use current resource records, public route context, first-party constraints, and provider terms.'],
-        ['Authority', 'Participants control acceptance; owners and qualified providers control their resources and work.'],
-        ['Safe action', 'Prepare the smallest viable loan, repair, training, route, funding, or combined option.'],
-        ['Fallback', 'Preserve why the first mode failed and route to another mode, date, provider, or hold.'],
-        ['Closure', 'Record accepted, refused, completed, deferred, or blocked plus any return obligation.'],
-        ['Learning', 'Repeated mobility voids support fleet, repair, storage, training, route, or partnership decisions.']
+        ['signal', 'A person states the trip, cost, access, repair, equipment, or confidence problem.'],
+        ['source', 'Use current resource records, public route context, first-party constraints, and provider terms.'],
+        ['authority', 'Participants control acceptance. Owners and qualified providers control their resources and work.'],
+        ['safe_action', 'Prepare the smallest viable loan, repair, training, route, funding, or combined option.'],
+        ['fallback', 'Record why the first mode failed and try another mode, date, provider, or explicit hold.'],
+        ['closure', 'Record accepted, refused, completed, deferred, or blocked plus any return obligation.'],
+        ['learning', 'Repeated mobility gaps support fleet, repair, storage, training, route, or partnership decisions.']
       ]
     },
     continuity: {
-      kicker: 'Continuity',
+      kicker: 'Handoff and continuity',
       title: 'A good idea should not disappear when the person carrying it gets busy, leaves, or stops replying.',
-      summary: 'Offers, comments, decisions, unknowns, authority, and next actions remain distinct so enthusiasm does not become hidden labor.',
-      output: 'A portable case file that another person can reopen without inheriting unstated authority.',
+      summary: 'Interest, decisions, unknowns, decision rights, and next steps remain separate so enthusiasm never becomes hidden labor.',
+      output: 'A portable record another person can reopen without inheriting unstated authority.',
       prohibited: 'Turning interest into assignment, silence into rejection, or remembered context into institutional authority.',
       stages: [
-        ['Signal', 'A meeting, message, source, offer, question, or decision creates something worth preserving.'],
-        ['Source', 'Retain the literal evidence, date, force, parties, summary, and unresolved facts.'],
-        ['Authority', 'Name who may decide, who may prepare, who is affected, and every effect still withheld.'],
-        ['Safe action', 'Route only the next bounded move: recover, ask, draft, prepare, close, or hold.'],
-        ['Fallback', 'Missing owner, source, budget, scope, or authority keeps the object unresolved.'],
-        ['Closure', 'Record the disposition, source, decision, acceptance, expiration, or remaining hold.'],
-        ['Learning', 'Repeated failures expose missing operating functions and work that needs a funded owner.']
+        ['signal', 'A meeting, message, offer, question, source, or decision creates something worth preserving.'],
+        ['source', 'Keep the literal evidence, date, participants, summary, and unresolved facts.'],
+        ['authority', 'Name who may decide, who may prepare, who is affected, and every action still withheld.'],
+        ['safe_action', 'Route only the next limited move: recover, ask, draft, prepare, close, or pause.'],
+        ['fallback', 'A missing owner, source, budget, scope, or permission keeps the item unresolved.'],
+        ['closure', 'Record the decision, acceptance, expiration, closure, or remaining hold.'],
+        ['learning', 'Repeated failures expose missing jobs that need a funded owner.']
       ]
     }
   };
@@ -91,13 +100,13 @@
     byId('scenario-output').textContent = scenario.output;
     byId('scenario-prohibited').textContent = scenario.prohibited;
 
-    stageList.replaceChildren(...scenario.stages.map(([name, meaning], index) => {
+    stageList.replaceChildren(...scenario.stages.map(([stageId, meaning], index) => {
       const item = document.createElement('li');
       const number = document.createElement('b');
       number.textContent = String(index + 1).padStart(2, '0');
       const copy = document.createElement('div');
       const heading = document.createElement('h4');
-      heading.textContent = name;
+      heading.textContent = stageLabels[stageId];
       const paragraph = document.createElement('p');
       paragraph.textContent = meaning;
       copy.append(heading, paragraph);
@@ -222,12 +231,17 @@
         representative_title: scenario.title,
         intended_output: scenario.output,
         prohibited_consequence: scenario.prohibited,
-        grammar: scenario.stages.map(([name, meaning], index) => ({ order: index + 1, name, meaning }))
+        grammar: scenario.stages.map(([stageId, meaning], index) => ({
+          order: index + 1,
+          id: stageId,
+          name: stageLabels[stageId],
+          meaning
+        }))
       } : 'UNRESOLVED',
       invariants: {
         authority: 'Evidence and preparation do not grant access, spend, work, publication, representation, or release authority.',
         adverse_use: 'Assistance and place evidence may not become risk, eligibility, enforcement, resident, property, or other adverse standing.',
-        continuity: 'No founder, advisor, volunteer, operator, or builder becomes the runtime by default.'
+        continuity: 'No founder, advisor, volunteer, operator, or builder becomes the permanent owner by default.'
       },
       authority: {
         institutional_acceptance: false,
@@ -241,7 +255,7 @@
         external_effect: 'none'
       },
       next_safe_action: named === 5
-        ? 'Present this packet for explicit organizational review. Every external effect requires separate authority and acceptance.'
+        ? 'Present this packet for explicit organizational review. Every real-world action requires separate authority and acceptance.'
         : 'Resolve only the missing facts. Do not contact, enroll, schedule, spend, inspect, publish, assign, or operate from this packet.'
     };
   }
@@ -288,5 +302,10 @@
     if (next) renderScenario(next);
   });
 
-  window.MW_WORKING_MODEL = Object.freeze({ release: RELEASE, scenarios: Object.keys(scenarios), buildPilotPacket });
+  window.MW_WORKING_MODEL = Object.freeze({
+    release: RELEASE,
+    scenarios: Object.keys(scenarios),
+    stageLabels,
+    buildPilotPacket
+  });
 })();
