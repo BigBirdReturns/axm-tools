@@ -4,7 +4,7 @@ Public route: `https://bigbirdreturns.github.io/axm-tools/manzanita-working-mode
 
 The working model begins with one concrete problem and carries it through seven operating stages: signal, source, authority, safe action, fallback, closure, and learning. Four representative cases demonstrate the same mechanism across wildfire assistance, tools and time, mobility, and continuity.
 
-The public page translates those mechanics into receiver language. Its seven visible steps are Need, Evidence, Decision owner, Safe next step, Backup path, Outcome, and Next improvement. Stable technical identifiers remain available in the contracts and exported packet rather than occupying the visible explanation.
+The public page translates those mechanics into receiver language. Its seven visible steps are Need, Evidence, Decision owner, Safe next step, Backup path, Outcome, and Next improvement. Stable machine-readable identifiers remain available in the contracts and exported packet rather than occupying the visible explanation. The browser campaigns verify the visible labels and their exported identities together.
 
 The first view presents one four-row case state instead of duplicating the complete seven-stage sequence. The shared-resources instrument names six resource types without inventing utilization, readiness, or capacity values. The page then exposes four separately governed working parts, three operating safeguards, and five facts required for a pilot proposal.
 
