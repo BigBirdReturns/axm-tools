@@ -111,6 +111,7 @@ def main() -> None:
         assert page.locator(".runtime-trace li").count() == 4
         assert page.locator(".capacity-instrument i").count() == 0
         assert page.locator(".capacity-instrument > div").count() == 6
+        assert page.locator("#pilot-problem").count() == 1
         body = page.locator("body").inner_text()
         for stale in ["Not another architecture review", "public-safe", "If leadership returns tomorrow", "Do not schedule a scoping call", "N=0"]:
             assert stale not in body, stale
@@ -128,7 +129,7 @@ def main() -> None:
             "mobility": ("transportation path", "availability"),
             "continuity": ("good idea", "silence into rejection"),
         }
-        expected_stages = ["signal", "source", "authority", "safe action", "fallback", "closure", "learning"]
+        expected_stages = ["need", "evidence", "decision owner", "safe next step", "backup path", "outcome", "next improvement"]
         for scenario, (title_fragment, prohibited_fragment) in expected.items():
             page.locator(f'[data-scenario="{scenario}"]').click()
             assert title_fragment in page.locator("#scenario-title").inner_text().lower()
@@ -141,8 +142,11 @@ def main() -> None:
         assert page.locator('[data-scenario="tools"]').get_attribute("aria-selected") == "true"
         page.evaluate("location.hash = '#run-mobility'")
         page.wait_for_function("document.querySelector('[data-scenario=\"mobility\"]').getAttribute('aria-selected') === 'true'")
+        assert page.locator("#form-status").inner_text().startswith("0 of 5")
 
+        page.locator("#pilot-problem").fill("Residents without reliable cars cannot reach evening appointments after the fixed-route service ends.")
         page.locator("#pilot-sponsor").fill("Accountable sponsor seat")
+        assert page.locator("#form-status").inner_text().startswith("2 of 5")
         with page.expect_download() as download_info:
             page.locator("#export-pilot").click()
         incomplete_path = OUT / "pilot-v1.1-live-incomplete.json"
@@ -151,6 +155,8 @@ def main() -> None:
         assert incomplete["release"] == RELEASE
         assert incomplete["standing"] == "INCOMPLETE_PREPARATION_HELD"
         assert incomplete["organizational_gates"]["named_count"] == 2
+        assert incomplete["organizational_gates"]["problem"]["complete"] is True
+        assert "evening appointments" in incomplete["organizational_gates"]["problem"]["statement"]
         assert incomplete["authority"]["external_effect"] == "none"
 
         page.locator("#pilot-operator").fill("Funded continuity operator")
@@ -164,12 +170,17 @@ def main() -> None:
         complete = json.loads(complete_path.read_text(encoding="utf-8"))
         assert complete["standing"] == "PREPARED_FOR_ACCOUNTABLE_REVIEW_NOT_ACCEPTED"
         assert complete["organizational_gates"]["named_count"] == 5
+        assert complete["organizational_gates"]["problem"]["case_type"]["id"] == "mobility"
+        assert [stage["id"] for stage in complete["operating_case"]["grammar"]] == ['signal', 'source', 'authority', 'safe_action', 'fallback', 'closure', 'learning']
+        assert [stage["name"].lower() for stage in complete["operating_case"]["grammar"]] == expected_stages
         for field in ["institutional_acceptance", "participant_consent", "field_authority", "spend_authority", "assignment_authority", "representation_authority", "publication_authority", "release_authority"]:
             assert complete["authority"][field] is False, field
 
         page.reload(wait_until="networkidle")
+        assert "evening appointments" in page.locator("#pilot-problem").input_value()
         assert page.locator("#pilot-sponsor").input_value() == "Accountable sponsor seat"
         page.locator("#clear-pilot").click()
+        assert page.locator("#pilot-problem").input_value() == ""
         assert page.locator("#form-status").inner_text().startswith("0 of 5")
 
         page.set_viewport_size({"width": 390, "height": 844})
@@ -214,7 +225,7 @@ def main() -> None:
         browser.close()
 
     payload = {
-        "schema": "manzanita-works/working-model-live-browser@4",
+        "schema": "manzanita-works/working-model-live-browser@5",
         "result": "PASS_LIVE_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
         "release": RELEASE,
         "source_sha": SOURCE_SHA,
@@ -223,6 +234,9 @@ def main() -> None:
         "stages_per_scenario": 7,
         "hero_state_rows": 4,
         "pilot_gates": 5,
+        "concrete_problem_required": True,
+        "receiver_stage_labels": "PASS",
+        "stable_stage_ids_in_export": "PASS",
         "rendered_images": 0,
         "synthetic_capacity_metrics": 0,
         "desktop_height": desktop_height,
@@ -234,7 +248,7 @@ def main() -> None:
         "mobile_duplicate_gate_map_hidden": "PASS",
         "sticky_header_anchor_clearance": "PASS",
         "skip_link_hidden_until_focus": "PASS",
-        "incomplete_packet": "PASS_HELD",
+        "incomplete_packet": "PASS_HELD_WITH_PARTIAL_GATES_PRESERVED",
         "complete_packet": "PASS_REVIEW_NOT_ACCEPTANCE",
         "unexpected_cross_origin_requests": 0,
         "program_external_effect": "none",

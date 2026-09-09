@@ -186,7 +186,7 @@ def main() -> None:
             "mobility": ("transportation path", "availability"),
             "continuity": ("good idea", "silence into rejection"),
         }
-        expected_stages = ["signal", "source", "authority", "safe action", "fallback", "closure", "learning"]
+        expected_stages = ["need", "evidence", "decision owner", "safe next step", "backup path", "outcome", "next improvement"]
         for scenario, (title_fragment, prohibited_fragment) in expected.items():
             page.locator(f'[data-scenario="{scenario}"]').click()
             assert title_fragment in page.locator("#scenario-title").inner_text().lower()
@@ -233,6 +233,8 @@ def main() -> None:
         assert complete["standing"] == "PREPARED_FOR_ACCOUNTABLE_REVIEW_NOT_ACCEPTED"
         assert complete["organizational_gates"]["named_count"] == 5
         assert complete["organizational_gates"]["problem"]["case_type"]["id"] == "mobility"
+        assert [stage["id"] for stage in complete["operating_case"]["grammar"]] == ['signal', 'source', 'authority', 'safe_action', 'fallback', 'closure', 'learning']
+        assert [stage["name"].lower() for stage in complete["operating_case"]["grammar"]] == expected_stages
         for field in ["institutional_acceptance", "participant_consent", "field_authority", "spend_authority", "assignment_authority", "representation_authority", "publication_authority", "release_authority"]:
             assert complete["authority"][field] is False, field
         assert complete["authority"]["external_effect"] == "none"
@@ -290,7 +292,7 @@ def main() -> None:
         browser.close()
 
     payload = {
-        "schema": "manzanita-works/working-model-browser-qualification@4",
+        "schema": "manzanita-works/working-model-browser-qualification@5",
         "result": "PASS_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
         "release": RELEASE,
         "scenarios": 4,
@@ -298,6 +300,8 @@ def main() -> None:
         "hero_state_rows": 4,
         "pilot_gates": 5,
         "concrete_problem_required": True,
+        "receiver_stage_labels": "PASS",
+        "stable_stage_ids_in_export": "PASS",
         "rendered_images": 0,
         "synthetic_capacity_metrics": 0,
         "desktop_height": desktop_height,

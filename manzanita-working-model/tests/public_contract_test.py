@@ -81,6 +81,20 @@ def main() -> None:
     require(contract["visual_contract"]["rendered_photography"] is False, "working visual contract differs")
     require(contract["public_language"]["receiver_first"] is True, "receiver-first language contract absent")
     require(contract["public_language"]["technical_identifiers_confined_to_contracts_and_exports"] is True, "technical identifier boundary differs")
+    expected_stage_labels = {
+        "signal": "Need",
+        "source": "Evidence",
+        "authority": "Decision owner",
+        "safe_action": "Safe next step",
+        "fallback": "Backup path",
+        "closure": "Outcome",
+        "learning": "Next improvement",
+    }
+    require(contract["public_language"]["public_stage_labels"] == expected_stage_labels, "public stage-label contract differs")
+    require(release["visual_posture"]["public_stage_labels"] == 7, "release stage-label count differs")
+    for stage_id, public_label in expected_stage_labels.items():
+        require(f"{stage_id}: '{public_label}'" in app, f"application stage label differs: {stage_id}")
+    require("heading.textContent = stageLabels[stageId];" in app, "stage renderer bypasses receiver labels")
 
     for obsolete in [
         "Not another architecture review",
@@ -185,6 +199,7 @@ def main() -> None:
         "obsolete_visible_rhetoric": 0,
         "untranslated_public_jargon": 0,
         "receiver_first_language": True,
+        "public_stage_labels": 7,
         "external_effect": "none",
         "release_bundle_digest": hashlib.sha256(bundle.encode("utf-8")).hexdigest(),
     }

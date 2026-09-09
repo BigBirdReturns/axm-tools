@@ -35,7 +35,16 @@
       "execution basis",
       "effect boundary",
       "continuity operator"
-    ]
+    ],
+    "public_stage_labels": {
+      "signal": "Need",
+      "source": "Evidence",
+      "authority": "Decision owner",
+      "safe_action": "Safe next step",
+      "fallback": "Backup path",
+      "closure": "Outcome",
+      "learning": "Next improvement"
+    }
   },
   "representative_cases": [
     "wildfire assistance",
