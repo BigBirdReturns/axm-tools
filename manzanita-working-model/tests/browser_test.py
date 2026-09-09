@@ -167,6 +167,7 @@ def main() -> None:
         assert page.locator(".runtime-trace li").count() == 4
         assert page.locator(".capacity-instrument i").count() == 0
         assert page.locator(".capacity-instrument > div").count() == 6
+        assert page.locator("#pilot-problem").count() == 1
         body = page.locator("body").inner_text()
         for stale in ["Not another architecture review", "public-safe", "If leadership returns tomorrow", "Do not schedule a scoping call", "N=0"]:
             assert stale not in body, stale
@@ -199,9 +200,12 @@ def main() -> None:
         assert page.locator('[data-scenario="tools"]').get_attribute("aria-selected") == "true"
         page.evaluate("location.hash = '#run-mobility'")
         page.wait_for_function("document.querySelector('[data-scenario=\"mobility\"]').getAttribute('aria-selected') === 'true'")
+        assert page.locator("#form-status").inner_text().startswith("0 of 5")
 
-        assert page.locator("#form-status").inner_text().startswith("1 of 5")
+        page.locator("#pilot-problem").fill("Residents without reliable cars cannot reach evening appointments after the fixed-route service ends.")
         page.locator("#pilot-sponsor").fill("Accountable sponsor seat")
+        assert page.locator("#form-status").inner_text().startswith("2 of 5")
+        assert page.locator('[data-gate="problem"]').get_attribute("class").find("is-resolved") >= 0
         with page.expect_download() as download_info:
             page.locator("#export-pilot").click()
         incomplete_path = OUT / "pilot-v1.1-incomplete.json"
@@ -210,6 +214,8 @@ def main() -> None:
         assert incomplete["release"] == RELEASE
         assert incomplete["standing"] == "INCOMPLETE_PREPARATION_HELD"
         assert incomplete["organizational_gates"]["named_count"] == 2
+        assert incomplete["organizational_gates"]["problem"]["complete"] is True
+        assert "evening appointments" in incomplete["organizational_gates"]["problem"]["statement"]
         assert incomplete["organizational_gates"]["continuity_operator"] == "UNRESOLVED"
         assert incomplete["authority"]["institutional_acceptance"] is False
         assert incomplete["authority"]["external_effect"] == "none"
@@ -226,14 +232,17 @@ def main() -> None:
         complete = json.loads(complete_path.read_text(encoding="utf-8"))
         assert complete["standing"] == "PREPARED_FOR_ACCOUNTABLE_REVIEW_NOT_ACCEPTED"
         assert complete["organizational_gates"]["named_count"] == 5
+        assert complete["organizational_gates"]["problem"]["case_type"]["id"] == "mobility"
         for field in ["institutional_acceptance", "participant_consent", "field_authority", "spend_authority", "assignment_authority", "representation_authority", "publication_authority", "release_authority"]:
             assert complete["authority"][field] is False, field
         assert complete["authority"]["external_effect"] == "none"
 
         page.reload(wait_until="networkidle")
+        assert "evening appointments" in page.locator("#pilot-problem").input_value()
         assert page.locator("#pilot-sponsor").input_value() == "Accountable sponsor seat"
         page.locator("#clear-pilot").click()
         assert page.locator("#pilot-scenario").input_value() == ""
+        assert page.locator("#pilot-problem").input_value() == ""
         assert page.locator("#form-status").inner_text().startswith("0 of 5")
         assert page.locator(".gate-map li.is-resolved").count() == 0
 
@@ -281,13 +290,14 @@ def main() -> None:
         browser.close()
 
     payload = {
-        "schema": "manzanita-works/working-model-browser-qualification@3",
+        "schema": "manzanita-works/working-model-browser-qualification@4",
         "result": "PASS_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
         "release": RELEASE,
         "scenarios": 4,
         "stages_per_scenario": 7,
         "hero_state_rows": 4,
         "pilot_gates": 5,
+        "concrete_problem_required": True,
         "rendered_images": 0,
         "synthetic_capacity_metrics": 0,
         "desktop_height": desktop_height,
@@ -303,7 +313,7 @@ def main() -> None:
         "keyboard_navigation": "PASS",
         "hash_navigation": "PASS",
         "local_persistence_and_clear": "PASS",
-        "incomplete_packet": "PASS_HELD",
+        "incomplete_packet": "PASS_HELD_WITH_PARTIAL_GATES_PRESERVED",
         "complete_packet": "PASS_REVIEW_NOT_ACCEPTANCE",
         "unexpected_cross_origin_requests": 0,
         "external_effect": "none",
