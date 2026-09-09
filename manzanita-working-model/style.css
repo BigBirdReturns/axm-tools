@@ -256,7 +256,7 @@ a.system-card:hover, a.system-card:focus-visible { transform: translateY(-3px); 
   .runtime-trace em { grid-column: 2; justify-self: start; }
   .runtime-boundary { grid-template-columns: 1fr; }
   .runtime-boundary div + div { border-left: 0; border-top: 1px solid var(--dark-line); }
-  .section { padding-block: 72px; }
+  .section { padding-block: 66px; }
   .section-header h2, .guardrails h2 { font-size: 40px; }
   .split-header > p { font-size: 15px; }
   .scenario-tabs { grid-template-columns: 1fr; }
