@@ -42,7 +42,7 @@
         </dl>
       </div>
 
-      <article class="case-runtime" aria-label="Example case trace">
+      <article class="case-runtime" aria-label="Example case state">
         <header class="runtime-header">
           <div><span>Case 01</span><strong>Wildfire assistance</strong></div>
           <em>Preparation</em>
@@ -52,17 +52,13 @@
           <h2>Reduce wildfire exposure without creating a risk score.</h2>
         </div>
         <ol class="runtime-trace">
-          <li class="trace-ready"><b>01</b><div><strong>Signal</strong><span>Resident asks for specific help.</span></div><em>Captured</em></li>
-          <li class="trace-ready"><b>02</b><div><strong>Source</strong><span>Public context plus resident facts.</span></div><em>Bounded</em></li>
-          <li class="trace-open"><b>03</b><div><strong>Authority</strong><span>Accountable sponsor still required.</span></div><em>Open</em></li>
-          <li><b>04</b><div><strong>Safe action</strong><span>Prepare verification and assistance path.</span></div><em>Ready</em></li>
-          <li><b>05</b><div><strong>Fallback</strong><span>Hold claims and request one source check.</span></div><em>Defined</em></li>
-          <li><b>06</b><div><strong>Closure</strong><span>Accepted, refused, deferred, or blocked.</span></div><em>Defined</em></li>
-          <li><b>07</b><div><strong>Learning</strong><span>Aggregate service gaps, never household grades.</span></div><em>Defined</em></li>
+          <li class="trace-ready"><b>01</b><div><strong>Evidence</strong><span>Resident request plus public context.</span></div><em>Bounded</em></li>
+          <li class="trace-open"><b>02</b><div><strong>Authority</strong><span>Accountable sponsor still required.</span></div><em>Open</em></li>
+          <li><b>03</b><div><strong>Safe next action</strong><span>Prepare a verification and assistance path.</span></div><em>Ready</em></li>
+          <li><b>04</b><div><strong>External effect</strong><span>No field action, score, award, or work order.</span></div><em>Locked</em></li>
         </ol>
         <footer class="runtime-boundary">
-          <div><span>Can prepare now</span><strong>Verification path + pilot packet</strong></div>
-          <div><span>Cannot create</span><strong>Parcel score, eligibility, work order, or field finding</strong></div>
+          <div><span>Still required before a pilot</span><strong>Sponsor · operator · execution basis · effect boundary</strong></div>
         </footer>
       </article>
     </section>
@@ -139,14 +135,14 @@
 
           <a class="system-card" href="../manzanita-works/">
             <div class="instrument capacity-instrument" aria-hidden="true">
-              <header><span>Operating Fabric</span><b>Capacity</b></header>
-              <div><span>Physical</span><i style="--fill:72%"></i></div>
-              <div><span>Human</span><i style="--fill:54%"></i></div>
-              <div><span>Mobility</span><i style="--fill:38%"></i></div>
-              <div><span>Money</span><i style="--fill:31%"></i></div>
-              <div><span>Place</span><i style="--fill:83%"></i></div>
-              <div><span>Continuity</span><i style="--fill:66%"></i></div>
-              <footer><span>Shared substrate</span><span>Separate authority</span></footer>
+              <header><span>Operating Fabric</span><b>6 resource classes</b></header>
+              <div><span>Physical</span><strong>Tools + materials</strong></div>
+              <div><span>Human</span><strong>Time + skill</strong></div>
+              <div><span>Mobility</span><strong>Transport + access</strong></div>
+              <div><span>Money</span><strong>Dues + grants</strong></div>
+              <div><span>Place</span><strong>Source context</strong></div>
+              <div><span>Continuity</span><strong>Decisions + handoff</strong></div>
+              <footer><span>Shared projects</span><span>Separate authority</span></footer>
             </div>
             <div class="system-copy"><p>Institutional architecture</p><h3>Operating Fabric</h3><span>Tools, people, mobility, money, place, and continuity participating in the same projects.</span><strong>Open the architecture →</strong></div>
           </a>
@@ -155,9 +151,9 @@
             <div class="instrument fallback-instrument" aria-hidden="true">
               <header><span>Street Glide</span><b>Fallback</b></header>
               <ol>
-                <li class="pass"><span>Live source</span><em>Unavailable</em></li>
+                <li><span>Live source</span><em>Unavailable</em></li>
                 <li class="pass"><span>Cached source</span><em>Available</em></li>
-                <li><span>Map context</span><em>Available</em></li>
+                <li class="pass"><span>Map context</span><em>Available</em></li>
                 <li><span>Claim</span><em>Held</em></li>
               </ol>
               <footer><span>Provider failure contained</span><span>Honesty preserved</span></footer>
