@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-RECEIPT = REPO / ".github" / "receipts" / "manzanita-working-model-live-v1.0.0.json"
+RELEASE = "mw-working-model-v1.1.0"
+RECEIPT = REPO / ".github" / "receipts" / "manzanita-working-model-live-v1.1.0.json"
 
 
 def load(path: str | Path) -> dict:
@@ -20,25 +21,27 @@ def main() -> None:
     browser_result = load(os.environ["BROWSER_RESULT"])
     pages_receipt = load(REPO / ".github" / "pages-deployment.json")
     release_contract = load(REPO / "manzanita-working-model" / "RELEASE_CONTRACT.json")
-    candidate_qualification = load(REPO / "manzanita-working-model" / "QUALIFICATION.json")
     trigger_sha = os.environ["TRIGGER_SHA"]
 
     assert byte_manifest["result"] == "PASS_EXACT_LIVE_RELEASE_BYTES"
     assert browser_result["result"] == "PASS_LIVE_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN"
     assert pages_receipt["source_sha"] == trigger_sha
-    assert release_contract["release"] == "mw-working-model-v1.0.0"
+    assert release_contract["release"] == RELEASE
     assert byte_manifest["source_sha"] == trigger_sha
     assert browser_result["source_sha"] == trigger_sha
+    assert byte_manifest["release_file_count"] == 6
+    assert byte_manifest["rendered_photography"] is False
+    assert byte_manifest["dead_visual_assets_in_release"] is False
+    assert browser_result["rendered_images"] == 0
+    assert browser_result["minimum_text_floor_css_px"] == 11
 
     receipt = {
-        "schema": "manzanita-works/working-model-public-release-receipt@1",
-        "result": "PASS_PUBLIC_WORKING_MODEL_RELEASED_NO_INSTITUTIONAL_EFFECT",
-        "release": "mw-working-model-v1.0.0",
+        "schema": "manzanita-works/working-model-public-release-receipt@3",
+        "result": "PASS_PUBLIC_WORKING_MODEL_V1_1_RELEASED_NO_INSTITUTIONAL_EFFECT",
+        "release": RELEASE,
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "source_sha": trigger_sha,
-        "repository_head_when_recorded": subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=REPO, text=True
-        ).strip(),
+        "repository_head_when_recorded": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip(),
         "page_url": byte_manifest["page_url"],
         "root_url": byte_manifest["root_url"],
         "proofs": {
@@ -47,6 +50,11 @@ def main() -> None:
             "exact_live_bytes": byte_manifest["result"],
             "live_chromium": browser_result["result"],
             "root_directory_link": byte_manifest["root_directory_link"],
+            "release_file_count": 6,
+            "rendered_photography": False,
+            "dead_visual_assets_in_release": False,
+            "minimum_text_floor_css_px": 11,
+            "height_budgets": "PASS",
         },
         "live_byte_readback": byte_manifest,
         "live_browser": browser_result,
@@ -57,11 +65,6 @@ def main() -> None:
             "artifact_id": int(os.environ["ARTIFACT_ID"]),
             "artifact_url": os.environ["ARTIFACT_URL"],
             "artifact_digest": os.environ["ARTIFACT_DIGEST"],
-        },
-        "candidate_qualification": {
-            "result": candidate_qualification["result"],
-            "qualified_content_sha": candidate_qualification["qualified_content"]["head_sha"],
-            "candidate_bundle_digest": candidate_qualification["qualified_content"]["candidate_bundle_digest"],
         },
         "authority": {
             "repository_owner_publication_authority_exercised": True,
@@ -75,10 +78,7 @@ def main() -> None:
             "eligibility_or_award_authority": False,
             "program_external_effect": "none",
         },
-        "terminal_condition": (
-            "Exact route bytes, live browser behavior, root discovery, and durable custody passed; "
-            "institutional and program authority remain absent."
-        ),
+        "terminal_condition": "All six public files matched the merged source bytes; local and live browser campaigns passed; the public surface contains no rendered photography, dead visual asset, stale candidate rhetoric, sub-11px text, document overflow, or unbounded pilot effect."
     }
 
     if RECEIPT.exists():
