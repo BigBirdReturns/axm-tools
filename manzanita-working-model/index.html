@@ -187,7 +187,7 @@
       <div class="pilot-layout">
         <aside class="gate-map" aria-label="Five pilot gates">
           <ol>
-            <li data-gate="scenario"><span>01</span><div><strong>Problem</strong><small>One real case class</small></div><em>Open</em></li>
+            <li data-gate="problem"><span>01</span><div><strong>Problem</strong><small>Case type plus a concrete statement</small></div><em>Open</em></li>
             <li data-gate="sponsor"><span>02</span><div><strong>Sponsor</strong><small>Owns promise and stop authority</small></div><em>Open</em></li>
             <li data-gate="operator"><span>03</span><div><strong>Operator</strong><small>Named and funded continuity</small></div><em>Open</em></li>
             <li data-gate="basis"><span>04</span><div><strong>Execution basis</strong><small>Venue, resources, partners</small></div><em>Open</em></li>
@@ -197,16 +197,23 @@
         </aside>
 
         <form id="pilot-form" class="pilot-form">
-          <label>
-            <span><b>01</b> Problem</span>
-            <select id="pilot-scenario" name="scenario">
-              <option value="">Choose one problem</option>
-              <option value="wildfire">Wildfire assistance</option>
-              <option value="tools">Tools + time</option>
-              <option value="mobility">Mobility</option>
-              <option value="continuity">Continuity</option>
-            </select>
-          </label>
+          <fieldset class="problem-fields">
+            <legend><b>01</b> Problem</legend>
+            <label>
+              <span>Case type</span>
+              <select id="pilot-scenario" name="scenario">
+                <option value="">Choose one case type</option>
+                <option value="wildfire">Wildfire assistance</option>
+                <option value="tools">Tools + time</option>
+                <option value="mobility">Mobility</option>
+                <option value="continuity">Continuity</option>
+              </select>
+            </label>
+            <label>
+              <span>Concrete problem</span>
+              <textarea id="pilot-problem" name="problem" rows="3" placeholder="Who is affected, what is failing, and what outcome would count"></textarea>
+            </label>
+          </fieldset>
           <label>
             <span><b>02</b> Accountable sponsor</span>
             <input id="pilot-sponsor" name="sponsor" type="text" autocomplete="off" placeholder="Person or organizational seat">
