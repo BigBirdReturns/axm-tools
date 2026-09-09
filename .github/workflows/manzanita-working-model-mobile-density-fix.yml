@@ -1,0 +1,53 @@
+name: Normalize Manzanita working-model mobile density
+
+on:
+  push:
+    branches:
+      - review/manzanita-working-model-v1-1
+    paths:
+      - '.github/workflows/manzanita-working-model-mobile-density-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Tighten mobile section rhythm without changing the acceptance budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('manzanita-working-model/style.css')
+          text = path.read_text(encoding='utf-8')
+          old = '  .section { padding-block: 72px; }'
+          new = '  .section { padding-block: 66px; }'
+          if text.count(old) != 1:
+              raise SystemExit(f'mobile section-rhythm anchor count differed: {text.count(old)}')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Remove one-shot normalizer
+        run: rm '.github/workflows/manzanita-working-model-mobile-density-fix.yml'
+
+      - name: Verify static release contract
+        run: python manzanita-working-model/tests/public_contract_test.py
+
+      - name: Commit exact correction
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'manzanita-working-model-review-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'manzanita: tighten mobile section rhythm'
+          git push origin HEAD
