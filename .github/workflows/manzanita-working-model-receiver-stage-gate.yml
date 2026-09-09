@@ -1,0 +1,243 @@
+name: Bind Manzanita receiver-stage labels
+
+on:
+  push:
+    branches:
+      - review/manzanita-working-model-v1-1
+    paths:
+      - '.github/workflows/manzanita-working-model-receiver-stage-gate.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  bind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Bind public labels to stable stage identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          from pathlib import Path
+
+          ROOT = Path('manzanita-working-model')
+          BROWSER = ROOT / 'tests' / 'browser_test.py'
+          LIVE = ROOT / 'tests' / 'live_browser_test.py'
+          STATIC = ROOT / 'tests' / 'public_contract_test.py'
+          CONTRACT = ROOT / 'WORKING_MODEL_CONTRACT.json'
+          RELEASE = ROOT / 'RELEASE_CONTRACT.json'
+          README = ROOT / 'README.md'
+
+          public_names = [
+              'need',
+              'evidence',
+              'decision owner',
+              'safe next step',
+              'backup path',
+              'outcome',
+              'next improvement',
+          ]
+          stable_ids = [
+              'signal',
+              'source',
+              'authority',
+              'safe_action',
+              'fallback',
+              'closure',
+              'learning',
+          ]
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected one anchor, found {count}')
+              return text.replace(old, new, 1)
+
+          old_stage_line = '        expected_stages = ["signal", "source", "authority", "safe action", "fallback", "closure", "learning"]'
+          new_stage_line = '        expected_stages = ["need", "evidence", "decision owner", "safe next step", "backup path", "outcome", "next improvement"]'
+
+          browser = BROWSER.read_text(encoding='utf-8')
+          browser = replace_once(browser, old_stage_line, new_stage_line, 'browser public stage labels')
+          browser = replace_once(
+              browser,
+              '        assert complete["organizational_gates"]["problem"]["case_type"]["id"] == "mobility"\n',
+              '        assert complete["organizational_gates"]["problem"]["case_type"]["id"] == "mobility"\n'
+              '        assert [stage["id"] for stage in complete["operating_case"]["grammar"]] == '
+              + repr(stable_ids) + '\n'
+              '        assert [stage["name"].lower() for stage in complete["operating_case"]["grammar"]] == expected_stages\n',
+              'browser exported stage identity',
+          )
+          browser = replace_once(
+              browser,
+              '        "schema": "manzanita-works/working-model-browser-qualification@4",',
+              '        "schema": "manzanita-works/working-model-browser-qualification@5",',
+              'browser result schema',
+          )
+          browser = replace_once(
+              browser,
+              '        "concrete_problem_required": True,\n',
+              '        "concrete_problem_required": True,\n'
+              '        "receiver_stage_labels": "PASS",\n'
+              '        "stable_stage_ids_in_export": "PASS",\n',
+              'browser result stage proof',
+          )
+          BROWSER.write_text(browser, encoding='utf-8')
+
+          live = LIVE.read_text(encoding='utf-8')
+          live = replace_once(live, old_stage_line, new_stage_line, 'live public stage labels')
+          live = replace_once(
+              live,
+              '        assert page.locator(".capacity-instrument > div").count() == 6\n',
+              '        assert page.locator(".capacity-instrument > div").count() == 6\n'
+              '        assert page.locator("#pilot-problem").count() == 1\n',
+              'live concrete problem field',
+          )
+          live = replace_once(
+              live,
+              '        page.wait_for_function("document.querySelector(\'[data-scenario=\\"mobility\\"]\').getAttribute(\'aria-selected\') === \'true\'")\n\n'
+              '        page.locator("#pilot-sponsor").fill("Accountable sponsor seat")\n',
+              '        page.wait_for_function("document.querySelector(\'[data-scenario=\\"mobility\\"]\').getAttribute(\'aria-selected\') === \'true\'")\n'
+              '        assert page.locator("#form-status").inner_text().startswith("0 of 5")\n\n'
+              '        page.locator("#pilot-problem").fill("Residents without reliable cars cannot reach evening appointments after the fixed-route service ends.")\n'
+              '        page.locator("#pilot-sponsor").fill("Accountable sponsor seat")\n'
+              '        assert page.locator("#form-status").inner_text().startswith("2 of 5")\n',
+              'live partial problem gate',
+          )
+          live = replace_once(
+              live,
+              '        assert incomplete["organizational_gates"]["named_count"] == 2\n'
+              '        assert incomplete["authority"]["external_effect"] == "none"\n',
+              '        assert incomplete["organizational_gates"]["named_count"] == 2\n'
+              '        assert incomplete["organizational_gates"]["problem"]["complete"] is True\n'
+              '        assert "evening appointments" in incomplete["organizational_gates"]["problem"]["statement"]\n'
+              '        assert incomplete["authority"]["external_effect"] == "none"\n',
+              'live incomplete packet semantics',
+          )
+          live = replace_once(
+              live,
+              '        assert complete["organizational_gates"]["named_count"] == 5\n',
+              '        assert complete["organizational_gates"]["named_count"] == 5\n'
+              '        assert complete["organizational_gates"]["problem"]["case_type"]["id"] == "mobility"\n'
+              '        assert [stage["id"] for stage in complete["operating_case"]["grammar"]] == '
+              + repr(stable_ids) + '\n'
+              '        assert [stage["name"].lower() for stage in complete["operating_case"]["grammar"]] == expected_stages\n',
+              'live exported stage identity',
+          )
+          live = replace_once(
+              live,
+              '        page.reload(wait_until="networkidle")\n'
+              '        assert page.locator("#pilot-sponsor").input_value() == "Accountable sponsor seat"\n'
+              '        page.locator("#clear-pilot").click()\n'
+              '        assert page.locator("#form-status").inner_text().startswith("0 of 5")\n',
+              '        page.reload(wait_until="networkidle")\n'
+              '        assert "evening appointments" in page.locator("#pilot-problem").input_value()\n'
+              '        assert page.locator("#pilot-sponsor").input_value() == "Accountable sponsor seat"\n'
+              '        page.locator("#clear-pilot").click()\n'
+              '        assert page.locator("#pilot-problem").input_value() == ""\n'
+              '        assert page.locator("#form-status").inner_text().startswith("0 of 5")\n',
+              'live persistence and clear',
+          )
+          live = replace_once(
+              live,
+              '        "schema": "manzanita-works/working-model-live-browser@4",',
+              '        "schema": "manzanita-works/working-model-live-browser@5",',
+              'live result schema',
+          )
+          live = replace_once(
+              live,
+              '        "pilot_gates": 5,\n',
+              '        "pilot_gates": 5,\n'
+              '        "concrete_problem_required": True,\n'
+              '        "receiver_stage_labels": "PASS",\n'
+              '        "stable_stage_ids_in_export": "PASS",\n',
+              'live result stage proof',
+          )
+          live = replace_once(
+              live,
+              '        "incomplete_packet": "PASS_HELD",',
+              '        "incomplete_packet": "PASS_HELD_WITH_PARTIAL_GATES_PRESERVED",',
+              'live incomplete packet result',
+          )
+          LIVE.write_text(live, encoding='utf-8')
+
+          static = STATIC.read_text(encoding='utf-8')
+          static = replace_once(
+              static,
+              '    require(contract["public_language"]["technical_identifiers_confined_to_contracts_and_exports"] is True, "technical identifier boundary differs")\n',
+              '    require(contract["public_language"]["technical_identifiers_confined_to_contracts_and_exports"] is True, "technical identifier boundary differs")\n'
+              '    expected_stage_labels = {\n'
+              '        "signal": "Need",\n'
+              '        "source": "Evidence",\n'
+              '        "authority": "Decision owner",\n'
+              '        "safe_action": "Safe next step",\n'
+              '        "fallback": "Backup path",\n'
+              '        "closure": "Outcome",\n'
+              '        "learning": "Next improvement",\n'
+              '    }\n'
+              '    require(contract["public_language"]["public_stage_labels"] == expected_stage_labels, "public stage-label contract differs")\n'
+              '    require(release["visual_posture"]["public_stage_labels"] == 7, "release stage-label count differs")\n'
+              '    for stage_id, public_label in expected_stage_labels.items():\n'
+              '        require(f"{stage_id}: \'{public_label}\'" in app, f"application stage label differs: {stage_id}")\n'
+              '    require("heading.textContent = stageLabels[stageId];" in app, "stage renderer bypasses receiver labels")\n',
+              'static receiver stage contract',
+          )
+          static = replace_once(
+              static,
+              '        "receiver_first_language": True,\n',
+              '        "receiver_first_language": True,\n'
+              '        "public_stage_labels": 7,\n',
+              'static result stage count',
+          )
+          STATIC.write_text(static, encoding='utf-8')
+
+          contract = json.loads(CONTRACT.read_text(encoding='utf-8'))
+          contract['public_language']['public_stage_labels'] = {
+              'signal': 'Need',
+              'source': 'Evidence',
+              'authority': 'Decision owner',
+              'safe_action': 'Safe next step',
+              'fallback': 'Backup path',
+              'closure': 'Outcome',
+              'learning': 'Next improvement',
+          }
+          CONTRACT.write_text(json.dumps(contract, indent=2) + '\n', encoding='utf-8')
+
+          release = json.loads(RELEASE.read_text(encoding='utf-8'))
+          release['visual_posture']['public_stage_labels'] = 7
+          RELEASE.write_text(json.dumps(release, indent=2) + '\n', encoding='utf-8')
+
+          readme = README.read_text(encoding='utf-8')
+          readme = replace_once(
+              readme,
+              'The public page translates those mechanics into receiver language. It names the decision owner, safe next step, action taken, working parts, accountable owner, day-to-day owner, place and resources, permitted action, and stop rule directly. Technical identifiers remain available in the contracts and exported packet rather than occupying the visible explanation.\n',
+              'The public page translates those mechanics into receiver language. Its seven visible steps are Need, Evidence, Decision owner, Safe next step, Backup path, Outcome, and Next improvement. Stable technical identifiers remain available in the contracts and exported packet rather than occupying the visible explanation.\n',
+              'README public stage labels',
+          )
+          README.write_text(readme, encoding='utf-8')
+          PY
+
+      - name: Remove one-shot controller
+        run: rm '.github/workflows/manzanita-working-model-receiver-stage-gate.yml'
+
+      - name: Verify static release contract
+        run: python manzanita-working-model/tests/public_contract_test.py
+
+      - name: Commit exact stage-label gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'manzanita-working-model-review-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'manzanita: bind plain stage labels to stable identities'
+          git push origin HEAD
