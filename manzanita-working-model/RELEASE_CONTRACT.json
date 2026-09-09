@@ -1,36 +1,34 @@
 {
-  "schema": "manzanita-works/working-model-release@1",
-  "release": "mw-working-model-v1.0.0",
-  "state": "public_safe_release_candidate_pending_live_readback",
+  "schema": "manzanita-works/working-model-release@2",
+  "release": "mw-working-model-v1.1.0",
+  "state": "released_public_static_route",
   "route": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
   "repository_path": "manzanita-working-model/",
-  "source_candidate": {
-    "qualification": "manzanita-working-model/QUALIFICATION.json",
-    "qualified_content_sha": "35e157dcbc441ac2d968588e53f7d9482c504fea",
-    "candidate_bundle_digest": "3868ff09ef80a75c15384f65a364ca90c2ddd53d633b011eaa94481e466bc101"
-  },
   "release_files": [
     "index.html",
     "app.js",
-    "style-base.css",
     "style.css",
     "WORKING_MODEL_CONTRACT.json",
     "RELEASE_CONTRACT.json",
-    "README.md",
-    "assets/property.webp",
-    "assets/household.webp"
+    "README.md"
   ],
-  "required_proofs": [
+  "proofs_required": [
     "static release contract",
-    "local Chromium release campaign",
-    "exact live byte parity for every release file",
-    "live Chromium release campaign",
-    "root-directory discovery link",
+    "local Chromium campaign",
+    "exact live byte parity",
+    "live Chromium campaign",
+    "root discovery",
     "durable source-linked release receipt"
   ],
+  "visual_posture": {
+    "primary_mode": "operational_instrumentation",
+    "rendered_photography": false,
+    "dead_visual_assets_in_release": false,
+    "field_activity_claimed": false
+  },
   "publication_authority": {
     "actor": "repository_owner",
-    "scope": "publish this exact public-safe static route",
+    "scope": "publish this exact public static route",
     "institutional_acceptance": false,
     "participant_consent": false,
     "field_authority": false,
@@ -39,14 +37,5 @@
     "representation_authority": false,
     "program_external_effect": "none"
   },
-  "terminal_condition": "The release reaches terminal PASS only when the exact main-branch release files are observed at the public route, the live browser campaign passes, the root directory exposes the route, and a durable receipt records those facts without manufacturing institutional or program authority.",
-  "visual_evidence": {
-    "primary_mode": "operational_instrumentation",
-    "legacy_photo_assets_rendered": false,
-    "legacy_photo_assets_retained_for_byte_custody_only": [
-      "assets/property.webp",
-      "assets/household.webp"
-    ],
-    "field_activity_claimed": false
-  }
+  "terminal_condition": "The release passes only when all six files match the merged source bytes at the public route, the browser campaign passes, root discovery is present, and the durable receipt preserves every authority hold."
 }
