@@ -19,6 +19,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Bind the materializer to the indented executive section
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('tools/materialize_essential_attention_mila_return.py')
+          text = path.read_text(encoding='utf-8')
+          old = '    html = replace_once(html, old_executive, new_executive, "executive projection")'
+          new = '    old_executive = textwrap.indent(old_executive, "      ")\n    new_executive = textwrap.indent(new_executive, "      ")\n    html = replace_once(html, old_executive, new_executive, "executive projection")'
+          if text.count(old) != 1:
+              raise SystemExit('executive replacement anchor differs')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
       - name: Materialize the direct Mila return projection
         run: python tools/materialize_essential_attention_mila_return.py
 
