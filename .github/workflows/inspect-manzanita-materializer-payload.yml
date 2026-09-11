@@ -1,0 +1,71 @@
+name: Inspect Manzanita materializer payload
+
+on:
+  push:
+    branches:
+      - review/manzanita-receiver-journey-convergence-v1
+    paths:
+      - '.github/workflows/inspect-manzanita-materializer-payload.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decode and inspect exact payload members
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import base64
+          import hashlib
+          import io
+          import json
+          import tarfile
+          from pathlib import Path
+
+          controller = Path('.github/workflows/materialize-manzanita-receiver-journey.yml')
+          lines = controller.read_text(encoding='utf-8').splitlines()
+          start = next(i for i, line in enumerate(lines) if "cat > /tmp/mw-convergence-materializer.b64 <<'B64'" in line) + 1
+          end = next(i for i in range(start, len(lines)) if lines[i].strip() == 'B64')
+          payload = base64.b64decode(''.join(line.strip() for line in lines[start:end] if line.strip()), validate=True)
+          out = Path('/tmp/mw-materializer-payload')
+          out.mkdir(parents=True, exist_ok=True)
+          with tarfile.open(fileobj=io.BytesIO(payload), mode='r:gz') as archive:
+              members = archive.getmembers()
+              archive.extractall(out, members=members)
+          rows = []
+          for path in sorted(p for p in out.rglob('*') if p.is_file()):
+              raw = path.read_bytes()
+              rows.append({
+                  'path': path.relative_to(out).as_posix(),
+                  'bytes': len(raw),
+                  'sha256': hashlib.sha256(raw).hexdigest(),
+                  'prefix_hex': raw[:64].hex(),
+                  'nul_count': raw.count(0),
+                  'even_nul_count': raw[0::2].count(0),
+                  'odd_nul_count': raw[1::2].count(0),
+              })
+          receipt = {
+              'archive_bytes': len(payload),
+              'archive_sha256': hashlib.sha256(payload).hexdigest(),
+              'members': rows,
+          }
+          (out / 'INSPECTION.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(receipt, indent=2))
+          PY
+
+      - name: Retain exact decoded payload
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-materializer-payload-${{ github.sha }}
+          path: /tmp/mw-materializer-payload
+          if-no-files-found: error
+          retention-days: 7
