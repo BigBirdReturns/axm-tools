@@ -1,0 +1,27 @@
+name: Export Essential Attention v1.3.0 source
+
+on:
+  push:
+    branches:
+      - review/essential-attention-mila-bounded-return-v1-3-0
+    paths:
+      - '.github/workflows/export-ea130-source.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retain exact bounded-return source
+        uses: actions/upload-artifact@v4
+        with:
+          name: essential-attention-v1.3.0-source-${{ github.sha }}
+          path: |
+            essential-attention
+            .github/workflows/essential-attention-check.yml
+          if-no-files-found: error
+          retention-days: 7
