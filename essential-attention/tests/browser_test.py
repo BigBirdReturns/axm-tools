@@ -225,7 +225,7 @@ with serve_root() as origin, sync_playwright() as p:
     check("Mila projection shows three current queues", mila_page.locator("[data-mila-queue]").count() == 3)
     check("Mila projection preserves five decision cards", mila_page.locator(".decision-card").count() == 5)
     check("Mila projection exposes five explicit draft rows", mila_page.locator("[data-mila-draft]").count() == 5)
-    check("Mila projection keeps silence unresolved", "silence remains unresolved" in mila_page.locator("#milaCommunicationState").inner_text().lower())
+    check("Mila projection keeps silence unresolved", "silence stays unresolved" in mila_page.locator("#milaCommunicationState").inner_text().lower())
     mila_page.screenshot(path=str(OUT / "mila-review-desktop.png"), full_page=True)
 
     mila_page.set_viewport_size({"width": 390, "height": 844})
