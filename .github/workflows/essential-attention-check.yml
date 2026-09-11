@@ -45,7 +45,7 @@ jobs:
           python -m pip install --disable-pip-version-check playwright==1.57.0
           python -m playwright install --with-deps chromium
 
-      - name: Drive first use, guided tour, contained run, handoff, and Mila review
+      - name: Drive operating desk, Mila receiver, export, and narrow rendering
         run: python essential-attention/tests/browser_test.py
 
       - name: Retain Essential Attention v1.2.1 browser evidence
