@@ -1,0 +1,49 @@
+name: Bind Manzanita materializer archive digest
+
+on:
+  push:
+    branches:
+      - review/manzanita-receiver-journey-convergence-v1
+    paths:
+      - '.github/workflows/repair-manzanita-materializer-digest.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  bind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace the stale expected digest with the observed exact archive digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('.github/workflows/repair-manzanita-receiver-journey-materializer.yml')
+          text = path.read_text(encoding='utf-8')
+          old = "expected = '587aacb69a24129ce17f0d065b48d0354073165f0556fdb8a204dd2db2786b6f'"
+          new = "expected = '383fc3ce34fa346056f852cdcbb645dae1c5df0b863d5ef0deaa12cbd51d43de'"
+          if text.count(old) != 1:
+              raise SystemExit(f'stale digest anchor count differed: {text.count(old)}')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Remove one-shot digest binder
+        run: rm '.github/workflows/repair-manzanita-materializer-digest.yml'
+
+      - name: Commit the exact source-bound digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'manzanita-receiver-journey-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'manzanita: bind materializer to observed archive digest'
+          git push origin HEAD
