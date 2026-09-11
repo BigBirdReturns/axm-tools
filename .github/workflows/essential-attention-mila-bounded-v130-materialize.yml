@@ -1,0 +1,42 @@
+name: Materialize Essential Attention bounded Mila v1.3.0
+
+on:
+  push:
+    branches:
+      - review/essential-attention-mila-bounded-return-v1-3-0
+    paths:
+      - '.github/workflows/essential-attention-mila-bounded-v130-materialize.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Materialize bounded receiver transaction
+        run: python tools/materialize_essential_attention_mila_bounded_v130.py
+
+      - name: Verify static contract and syntax
+        run: |
+          python essential-attention/tests/public_contract_test.py
+          python -m py_compile essential-attention/tests/browser_test.py
+          node --check /tmp/essential-attention-inline.js
+
+      - name: Remove one-shot materializer sources
+        run: |
+          rm tools/materialize_essential_attention_mila_bounded_v130.py
+          rm .github/workflows/essential-attention-mila-bounded-v130-materialize.yml
+
+      - name: Commit bounded Mila v1.3.0 release candidate
+        run: |
+          git config user.name 'essential-attention-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'essential-attention: add bounded Mila return v1.3.0'
+          git push origin HEAD
