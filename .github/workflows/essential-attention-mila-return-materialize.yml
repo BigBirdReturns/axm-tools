@@ -41,17 +41,15 @@ jobs:
       - name: Parse the materialized inline runtime
         run: node --check /tmp/essential-attention-inline.js
 
-      - name: Remove one-shot materializer
-        run: |
-          rm tools/materialize_essential_attention_mila_return.py
-          rm .github/workflows/essential-attention-mila-return-materialize.yml
+      - name: Restore workflow sources outside the generated release
+        run: git checkout -- .github/workflows/essential-attention-check.yml
 
-      - name: Commit the exact Mila return projection
+      - name: Commit only the generated Essential Attention release
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'essential-attention-release-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add -A
+          git add essential-attention
           git commit -m 'essential-attention: add direct Mila return projection v1.2.1'
           git push origin HEAD
