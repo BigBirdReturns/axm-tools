@@ -55,7 +55,7 @@ jobs:
           encoded = ''.join(line.strip() for line in lines[start:end] if line.strip())
           payload = base64.b64decode(encoded, validate=True)
           digest = hashlib.sha256(payload).hexdigest()
-          expected = '587aacb69a24129ce17f0d065b48d0354073165f0556fdb8a204dd2db2786b6f'
+          expected = '383fc3ce34fa346056f852cdcbb645dae1c5df0b863d5ef0deaa12cbd51d43de'
           if digest != expected:
               raise SystemExit(f'materializer archive digest differs: {digest}')
 
