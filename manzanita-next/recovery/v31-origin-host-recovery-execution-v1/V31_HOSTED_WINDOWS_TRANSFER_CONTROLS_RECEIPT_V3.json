@@ -1,0 +1,94 @@
+{
+  "schema": "manzanita/v31-hosted-windows-transfer-controls-receipt@3",
+  "result": "PASS_HOSTED_WINDOWS_TRANSFER_CONTROLS_V3_SELF_HOSTED_EXECUTION_PENDING",
+  "generated_at": "2026-09-07T17:51:49Z",
+  "repository": {
+    "full_name": "BigBirdReturns/axm-tools",
+    "branch": "agent/manzanita-v31-origin-host-recovery-execution-v1",
+    "qualified_head_sha": "7aad03221b22d385de3e09de81f29af6c7c425bc",
+    "pull_request": 147
+  },
+  "exact_execution_package": {
+    "filename": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip",
+    "bytes": 553074,
+    "sha256": "2c4437c2f3c0cd7599b790ddc1a31315751db751daa3a81e4245e2a32b5f3738",
+    "active_runtime_custody": "PASS_AUTHENTICATED_PRIVATE_DRIVE_RAW_FILE",
+    "committed_to_public_repository": false
+  },
+  "hosted_windows_run": {
+    "workflow": ".github/workflows/manzanita-v31-hosted-private-source-visibility-v3.yml",
+    "run_id": 34149299613,
+    "run_attempt": 1,
+    "runner": "windows-2025",
+    "conclusion": "success",
+    "artifact": {
+      "id": 10028786175,
+      "name": "manzanita-v31-hosted-windows-transfer-controls-v3-attempt-1",
+      "bytes": 3573,
+      "sha256": "eeae7f7382d31719f7e0eb79c1a416d1af75d3b838166ae1ffc59a387c8759d9",
+      "expires_at": "2026-09-14T17:51:49Z"
+    }
+  },
+  "controls": {
+    "validation": {
+      "result": "PASS_HOSTED_WINDOWS_TRANSFER_CONTROLS_V3",
+      "checks_total": 14,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "sha256": "a5ed416811496030859f84f47a20e7b2ea2be656ae584a285ba6f9d9bafc6f65"
+    },
+    "runner_local_stage_hold": {
+      "result": "HOLD_EXACT_BOOTSTRAP_NOT_PRESENT_IN_RUNNER_LOCAL_OR_SYNCED_CUSTODY",
+      "wrong_identity_candidates": 1,
+      "output_written": false,
+      "sha256": "361936417ffee84cd26ddbc534d318ad58316fe1723051eeaedb2b18ea38b00a"
+    },
+    "temporary_local_file_bridge": {
+      "result": "PASS_LOCAL_FILE_SOURCE_BRIDGE_REWRITE_EXACTLY_ONCE",
+      "source_matches": 1,
+      "repository_source_modified": false,
+      "sha256": "5df1d35f60e07caa896dd7d2ca682262e0a2441c745440a40ad1d0ea6bc697ce"
+    },
+    "private_drive_visibility": {
+      "result": "HOLD_PRIVATE_DRIVE_SOURCE_REQUIRES_AUTHENTICATED_TRANSFER_OR_RUNNER_LOCAL_EXACT_STAGE",
+      "response_class": "GOOGLE_ACCOUNTS_SIGN_IN_HTML",
+      "response_bytes": 908715,
+      "response_sha256": "d65a3f0c6396e114e89ce597ac267c366f10785b4c80b413594f666d821f8aa7",
+      "exact_package": false,
+      "response_retained": false,
+      "platform_replay_invoked": false,
+      "platform_replay_observed": false,
+      "sha256": "0b30d5d8b7d7c6809d39e62e3b02a6618ba8fc1b859764346d71b09141ee3ae2"
+    }
+  },
+  "supersession": {
+    "prior_workflow_run_id": 34149043698,
+    "prior_artifact_sha256": "45cbd4ad13fbd138eab8355dcb19fd56675030a52b05aa766b14d0ab5ed4c5a9",
+    "defect": "The prior visibility receipt serialized platform_replay.observed as an empty JSON object because the PowerShell literal omitted the dollar sign.",
+    "repair": "The V3 workflow emits a Boolean false, validates its JSON type, validates all authority holds, and retains no response body.",
+    "prior_receipt_controls_superseded": true
+  },
+  "authority": {
+    "windows_platform_replay": false,
+    "operator_storage_execution": false,
+    "production_inputs_materialized": 0,
+    "receiving_intake": false,
+    "production_admission": false,
+    "accepted_parent_extraction": false,
+    "inherited_replay": false,
+    "v31_construction": false,
+    "product_mutation": false,
+    "operator_visual_acceptance": "ABSENT_FOR_V31",
+    "merge_authorized": false,
+    "release_authorized": false,
+    "public_route_effect": "none",
+    "pages_effect": "none",
+    "external_effect": "hosted Windows control qualification and repository evidence only"
+  },
+  "next_gate": {
+    "object": "SELF_HOSTED_WINDOWS_EXACT_PACKAGE_STAGE_AND_PACKAGE_OWNED_CAMPAIGN",
+    "standing": "PENDING_RUNNER",
+    "required_result": "PASS_V31_ORIGIN_HOST_RECOVERY_EXECUTION_SUMMARY_AND_RETURN_VALIDATED",
+    "control_question": "Will an online self-hosted Windows runner locate the exact package in runner-local or synced custody, close the package-owned Windows replay, execute the bounded origin-storage lanes, and return source candidates without product mutation?"
+  }
+}
