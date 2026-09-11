@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Verify the one-file contract and help surface
+      - name: Verify the one-file contract and bounded receiver surface
         run: python essential-attention/tests/public_contract_test.py
 
       - name: Parse the inline runtime
@@ -45,16 +45,16 @@ jobs:
           python -m pip install --disable-pip-version-check playwright==1.57.0
           python -m playwright install --with-deps chromium
 
-      - name: Drive operating desk, Mila receiver, export, and narrow rendering
+      - name: Drive operating desk, bounded Mila route, export, and narrow rendering
         run: python essential-attention/tests/browser_test.py
 
-      - name: Retain Essential Attention v1.2.1 browser evidence
+      - name: Retain Essential Attention v1.3.0 browser evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: essential-attention-v1.2.1-${{ github.sha }}
+          name: essential-attention-v1.3.0-${{ github.sha }}
           path: |
-            /tmp/essential-attention-v1.2.1-browser
+            /tmp/essential-attention-v1.3.0-browser
             essential-attention/QUALIFICATION.json
           if-no-files-found: error
           retention-days: 30
