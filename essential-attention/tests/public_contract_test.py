@@ -26,7 +26,7 @@ required_roles = [
 
 checks = {
     "doctype": source.lstrip().lower().startswith("<!doctype html>"),
-    "release_1_2_0": "Essential Attention v1.2.0" in source and "version:'1.2.0'" in source,
+    "release_1_2_1": "Essential Attention v1.2.1" in source and "version:'1.2.1'" in source,
     "plain_no_atob": "atob(" not in source,
     "plain_no_decompression_loader": "DecompressionStream" not in source,
     "one_inline_script": source.count("<script>") == 1 and "<script src=" not in source,
@@ -78,6 +78,16 @@ checks = {
         token in source for token in ["Barlow Condensed", "IBM Plex Mono", "IBM Plex Sans", "Lora"]
     ) and "font-src data:" in source,
     "frozen_palette": all(token in source for token in ["#0D0C09", "#ECE7D8", "#7C7F57", "#C24B2C"]),
+\
+            "mila_query_and_hash_routes": "get('projection')==='mila'" in source and "location.hash.toLowerCase()==='#mila'" in source,
+            "mila_body_projection": "mila-projection" in source and "Five decisions. No reconstructed universe." in source,
+            "mila_three_queues": all(token in source for token in ["authority_required:", "accepted_obligations_at_risk:", "evidence_ready_for_disposition:"]),
+            "mila_packet_schema": "essential-attention/mila-review-packet@1" in source,
+            "mila_source_bytes_excluded": "private_source_bytes_included:false" in source and "source_content_included:false" in source and "bytes_included:false" in source,
+            "mila_recipient_return_unresolved": "recipient_return_confirmation" in source and "status:'unresolved'" in source,
+            "mila_silence_invariant": "Silence supplies no evidence of rejection, hostility, consent, availability, or duty." in source,
+            "mila_real_world_authority_held": all(token in source for token in ["institutional_acceptance:false", "field_authority:false", "spend_authority:false", "assignment_authority:false", "publication_authority:false", "release_authority:false", "external_effect:'none'"]),
+            "mila_readme": "## Mila return projection (v1.2.1)" in readme,
     "readme_present": README.exists() and len(readme) > 8000,
     "readme_operating_desk": "## v1.2.0 operating desk" in readme.lower(),
     "readme_contents": "The default FAB cartridge contains seven case objects" in readme,
@@ -96,14 +106,16 @@ artifact_bytes = source.encode("utf-8")
 readme_bytes = readme.encode("utf-8")
 digest = hashlib.sha256(artifact_bytes).hexdigest()
 receipt = {
-    "schema": "essential-attention/pages-qualification@4",
-    "release": "1.2.0",
+    "schema": "essential-attention/pages-qualification@5",
+    "release": "1.2.1",
     "artifact": "essential-attention/index.html",
     "sha256": digest,
     "bytes": len(artifact_bytes),
     "readme_bytes": len(readme_bytes),
     "checks": checks,
-    "operator_surface": "AXM Operating Desk with Today, Records, Decisions, Evidence, Handoff, and progressive advanced tools",
+    "operator_surface": "AXM Operating Desk plus a direct Mila decision-only return projection",
+    "mila_return_projection": True,
+    "mila_review_packet_schema": "essential-attention/mila-review-packet@1",
     "external_effect_adapters": 0,
 }
 QUALIFICATION.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")

@@ -12,6 +12,8 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
 HTML = ROOT / "essential-attention" / "index.html"
+OUT = Path(os.environ.get("EA_BROWSER_OUT", "/tmp/essential-attention-v1.2.1-browser"))
+OUT.mkdir(parents=True, exist_ok=True)
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -70,7 +72,7 @@ with serve_root() as origin, sync_playwright() as p:
         page.goto(origin + "/essential-attention/?browser-test=1", wait_until="domcontentloaded")
 
     page.wait_for_selector("#view-overview.active")
-    check("release title is operating desk", page.title() == "Essential Attention v1.2.0 · FAB Operating Desk")
+    check("release title is operating desk", page.title() == "Essential Attention v1.2.1 · FAB Operating Desk")
     check("first visit opens compact orientation", page.locator("#helpDialog").evaluate("el => el.open"))
     check("primary navigation has five places", page.locator(".seat-nav button").count() == 5)
     check(
@@ -152,7 +154,7 @@ with serve_root() as origin, sync_playwright() as p:
     with page.expect_download() as download_info:
         page.click("#exportPacketButton")
     packet = json.loads(Path(download_info.value.path()).read_text(encoding="utf-8"))
-    check("portable packet carries v1.2.0 build", packet["build"]["version"] == "1.2.0")
+    check("portable packet carries v1.2.1 build", packet["build"]["version"] == "1.2.1")
     for _ in range(30):
         if "recorded" in page.locator("#handoffExportStatus").inner_text().lower():
             break
@@ -185,6 +187,93 @@ with serve_root() as origin, sync_playwright() as p:
     check("mobile keeps the primary action within viewport", mobile["primaryWidth"] <= mobile["clientWidth"], json.dumps(mobile))
     check("mobile keeps all five places available", mobile["navVisible"], json.dumps(mobile))
 
+\
+            page.screenshot(path=str(OUT / "operating-desk-mobile.png"), full_page=True)
+
+            mila_context = browser.new_context(viewport={"width": 1440, "height": 1000}, accept_downloads=True)
+            mila_page = mila_context.new_page()
+            mila_errors: list[str] = []
+            mila_console_errors: list[str] = []
+            mila_page.on("pageerror", lambda error: mila_errors.append(str(error)))
+            mila_page.on("console", lambda message: mila_console_errors.append(message.text) if message.type == "error" else None)
+            if file_mode:
+                mila_page.on(
+                    "request",
+                    lambda request: external_requests.append(request.url)
+                    if not request.url.startswith(("data:", "blob:", "file:", "about:"))
+                    else None,
+                )
+                direct_mila_url = HTML.as_uri() + "?projection=mila&browser-test=1"
+                ordinary_url = HTML.as_uri() + "?browser-test=1"
+            else:
+                mila_page.on(
+                    "request",
+                    lambda request: external_requests.append(request.url)
+                    if not request.url.startswith(origin + "/")
+                    else None,
+                )
+                direct_mila_url = origin + "/essential-attention/?projection=mila&browser-test=1"
+                ordinary_url = origin + "/essential-attention/?browser-test=1"
+
+            mila_page.goto(direct_mila_url, wait_until="domcontentloaded")
+            mila_page.wait_for_selector("#view-executive.active")
+            check("Mila query route opens the decision projection", "mila-projection" in (mila_page.locator("body").get_attribute("class") or ""))
+            check("Mila projection has a receiver-specific title", mila_page.title() == "Mila review · Essential Attention v1.2.1")
+            check("Mila projection suppresses onboarding", not mila_page.locator("#helpDialog").evaluate("el => el.open"))
+            check("Mila projection suppresses unrelated navigation", mila_page.locator('.seat-nav button:not([data-view="executive"])').evaluate_all("els => els.every(el => getComputedStyle(el).display === 'none')"))
+            check("Mila projection shows three current queues", mila_page.locator("[data-mila-queue]").count() == 3)
+            check("Mila projection preserves five decision cards", mila_page.locator(".decision-card").count() == 5)
+            check("Mila projection exposes five explicit draft rows", mila_page.locator("[data-mila-draft]").count() == 5)
+            check("Mila projection keeps silence unresolved", "silence remains unresolved" in mila_page.locator("#milaCommunicationState").inner_text().lower())
+            mila_page.screenshot(path=str(OUT / "mila-review-desktop.png"), full_page=True)
+
+            mila_page.locator("[data-decision]").first.click()
+            check("Mila can draft one local disposition", mila_page.locator("#decisionDialog").evaluate("el => el.open"))
+            mila_page.fill("#decisionDraftRationale", "Keep the meeting held until a named owner and evidence agenda exist.")
+            mila_page.click('#decisionDraftForm button[type="submit"]')
+            check("Mila draft ledger records one disposition", mila_page.locator(".mila-draft-row.is-drafted").count() == 1)
+            with mila_page.expect_download() as mila_download:
+                mila_page.click("#exportMilaPacketButton")
+            mila_packet = json.loads(Path(mila_download.value.path()).read_text(encoding="utf-8"))
+            check("Mila packet uses the dedicated schema", mila_packet["schema"] == "essential-attention/mila-review-packet@1")
+            check("Mila packet carries the v1.2.1 build", mila_packet["release"] == "1.2.1" and mila_packet["build"]["version"] == "1.2.1")
+            check("Mila packet carries all five decisions", len(mila_packet["decisions"]) == 5)
+            check("Mila packet distinguishes one draft from four unresolved", mila_packet["decision_counts"]["local_drafts"] == 1 and mila_packet["decision_counts"]["unresolved"] == 4)
+            check("Mila packet carries all three queues", set(mila_packet["queues"]) == {"authority_required", "accepted_obligations_at_risk", "evidence_ready_for_disposition"})
+            check("Mila packet preserves unresolved recipient return", mila_packet["recipient_return_confirmation"]["status"] == "unresolved")
+            check("Mila packet excludes participant and field records", mila_packet["privacy"]["participant_records"] == 0 and mila_packet["privacy"]["field_cases"] == 0)
+            check("Mila packet excludes private source bytes", mila_packet["source_receipts"]["private_source_bytes_included"] is False and mila_packet["source_receipts"]["source_content_included"] is False and all(item["bytes_included"] is False for item in mila_packet["source_receipts"]["items"]))
+            held_authority = ["institutional_acceptance", "participant_consent", "field_authority", "spend_authority", "assignment_authority", "calendar_authority", "payment_authority", "representation_authority", "publication_authority", "release_authority", "operator_acceptance"]
+            check("Mila packet withholds every real-world authority", all(mila_packet["authority"][key] is False for key in held_authority) and mila_packet["authority"]["external_effect"] == "none")
+
+            mila_page.reload(wait_until="domcontentloaded")
+            mila_page.wait_for_selector("#view-executive.active")
+            check("Mila direct route preserves the local draft", mila_page.locator(".mila-draft-row.is-drafted").count() == 1)
+            mila_page.goto(ordinary_url, wait_until="domcontentloaded")
+            mila_page.wait_for_selector("#view-overview.active")
+            check("ordinary route remains unchanged", mila_page.title() == "Essential Attention v1.2.1 · FAB Operating Desk")
+            check("direct Mila route did not consume first-use orientation", mila_page.locator("#helpDialog").evaluate("el => el.open"))
+            mila_page.click("#helpCloseBottomButton")
+            mila_page.goto(ordinary_url + "#mila", wait_until="domcontentloaded")
+            mila_page.wait_for_selector("#view-executive.active")
+            check("Mila hash alias opens the same projection", "mila-projection" in (mila_page.locator("body").get_attribute("class") or "") and not mila_page.locator("#helpDialog").evaluate("el => el.open"))
+
+            mila_page.set_viewport_size({"width": 320, "height": 800})
+            mila_page.evaluate("document.documentElement.style.fontSize='200%'")
+            mila_page.wait_for_timeout(120)
+            mila_geometry = mila_page.evaluate("""() => ({
+              scrollWidth: document.documentElement.scrollWidth,
+              clientWidth: document.documentElement.clientWidth,
+              exportWidth: document.querySelector('#exportMilaPacketButton').getBoundingClientRect().width,
+              exportHeight: document.querySelector('#exportMilaPacketButton').getBoundingClientRect().height
+            })""")
+            check("Mila projection remains bounded at 320px and 200 percent text", mila_geometry["scrollWidth"] <= mila_geometry["clientWidth"], json.dumps(mila_geometry))
+            check("Mila export remains operable at narrow text zoom", mila_geometry["exportWidth"] > 0 and mila_geometry["exportHeight"] >= 44, json.dumps(mila_geometry))
+            mila_page.screenshot(path=str(OUT / "mila-review-320-200pct.png"), full_page=True)
+            check("Mila projection has zero JavaScript errors", len(mila_errors) == 0, json.dumps(mila_errors))
+            check("Mila projection has zero console errors", len(mila_console_errors) == 0, json.dumps(mila_console_errors))
+            mila_context.close()
+
     reduced = browser.new_context(viewport={"width": 900, "height": 700}, reduced_motion="reduce").new_page()
     reduced.goto(origin + "/essential-attention/?reduced-motion=1", wait_until="domcontentloaded")
     reduced_animation = reduced.locator("#view-overview").evaluate("el => getComputedStyle(el).animationName")
@@ -194,6 +283,21 @@ with serve_root() as origin, sync_playwright() as p:
     check("zero outbound network requests", len(external_requests) == 0, json.dumps(external_requests))
     check("zero JavaScript errors", len(page_errors) == 0, json.dumps(page_errors))
     check("zero console errors", len(console_errors) == 0, json.dumps(console_errors))
+    result = {
+        "schema": "essential-attention/browser-qualification@5",
+        "release": "1.2.1",
+        "ordinary_operating_desk": "PASS",
+        "mila_query_projection": "PASS",
+        "mila_hash_projection": "PASS",
+        "mila_review_packet": "PASS",
+        "mila_silence_invariant": "PASS_UNRESOLVED_WITHOUT_MOTIVE_INFERENCE",
+        "private_source_bytes_in_mila_packet": 0,
+        "participant_records": 0,
+        "field_cases": 0,
+        "external_effect": "none",
+        "screenshots": ["operating-desk-mobile.png", "mila-review-desktop.png", "mila-review-320-200pct.png"],
+    }
+    (OUT / "browser-result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     browser.close()
 
-print("\nEssential Attention operating desk: all assertions passed")
+print("\nEssential Attention v1.2.1 operating desk and Mila return projection: all assertions passed")

@@ -1,4 +1,4 @@
-# Essential Attention v1.2.0: FAB Operating Desk
+# Essential Attention v1.2.1: FAB Operating Desk
 
 Essential Attention is a local-first administrative case runtime. Version 1.2.0 opens with one populated cartridge, `mw-ea-n0-fab-offers-001`, which reconstructs the aftermath of the first Futures Advisory Board meeting as a source-linked set of events, offers, open questions, decisions, and continuity obligations.
 
@@ -182,3 +182,14 @@ These components do not introduce performance KPIs, sales stages, human assignme
 6. Run and verify the seven contained functions.
 7. Pass the cold continuity replay.
 8. Export the portable packet.
+
+
+## Mila return projection (v1.2.1)
+
+`?projection=mila` and `#mila` open the Decisions surface directly as a bounded executive projection. The ordinary operating-desk route remains unchanged. The direct projection suppresses onboarding, the guided tour, advanced packet controls, and unrelated navigation so Mila receives only five executive questions, three current queues, the local disposition ledger, and one local review-packet export.
+
+The three queues separate authority required from Mila, accepted obligations at risk, and evidence ready for disposition. They preserve the source states of the five decisions and seven FAB records. Accepted FAB participation remains bounded advisory service; Meeting #2 remains held; Catnip remains a conditional review offer; Essential Attention remains accepted only as an internal N=0 runtime. None of those states creates a field partner, unbounded workload, calendar act, expenditure, publication, representation, or institutional commitment.
+
+Communication state remains exact: no accepted return receipt exists. Mila's silence remains unresolved and supplies no evidence of rejection, hostility, consent, availability, or duty. The interface does not manufacture a motive or convert elapsed time into an organizational disposition.
+
+The export uses `essential-attention/mila-review-packet@1`. It contains the five decision records, latest local disposition or `UNRESOLVED`, source references, all three queues, recipient-return status, and local source-receipt metadata. It includes zero participant records, zero field cases, and zero private source bytes. Every real-world authority field remains false and `external_effect` remains `none`; only an accepted external authority receipt can change official state.
