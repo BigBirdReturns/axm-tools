@@ -1,0 +1,35 @@
+name: Export Manzanita receiver v2 source
+
+on:
+  push:
+    branches:
+      - review/manzanita-receiver-journey-v2
+    paths:
+      - '.github/workflows/export-manzanita-receiver-v2-source.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retain exact current source
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-receiver-v2-source-${{ github.sha }}
+          path: |
+            index.html
+            README.md
+            manzanita-working-model
+            manzanita
+            essential-attention
+            manzanita-works
+            .github/workflows/manzanita-working-model.yml
+            .github/workflows/manzanita-check.yml
+            .github/workflows/essential-attention-check.yml
+            .github/workflows/manzanita-works-dreamboard.yml
+          if-no-files-found: error
+          retention-days: 7
