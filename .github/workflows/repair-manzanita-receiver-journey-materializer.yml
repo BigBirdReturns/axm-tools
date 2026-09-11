@@ -1,0 +1,307 @@
+name: Repair Manzanita receiver journey materializer
+
+on:
+  push:
+    branches:
+      - review/manzanita-receiver-journey-convergence-v1
+    paths:
+      - '.github/workflows/repair-manzanita-receiver-journey-materializer.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repair-manzanita-receiver-journey-v1
+  cancel-in-progress: true
+
+jobs:
+  repair-and-qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Recover the deterministic materializer from the invalid controller
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import base64
+          import hashlib
+          import io
+          import tarfile
+          from pathlib import Path
+
+          root = Path.cwd().resolve()
+          controller = Path('.github/workflows/materialize-manzanita-receiver-journey.yml')
+          lines = controller.read_text(encoding='utf-8').splitlines()
+          start = next(
+              index for index, line in enumerate(lines)
+              if "cat > /tmp/mw-convergence-materializer.b64 <<'B64'" in line
+          ) + 1
+          end = next(index for index in range(start, len(lines)) if lines[index].strip() == 'B64')
+          encoded = ''.join(line.strip() for line in lines[start:end] if line.strip())
+          payload = base64.b64decode(encoded, validate=True)
+          digest = hashlib.sha256(payload).hexdigest()
+          expected = '587aacb69a24129ce17f0d065b48d0354073165f0556fdb8a204dd2db2786b6f'
+          if digest != expected:
+              raise SystemExit(f'materializer archive digest differs: {digest}')
+
+          with tarfile.open(fileobj=io.BytesIO(payload), mode='r:gz') as archive:
+              members = archive.getmembers()
+              for member in members:
+                  destination = (root / member.name).resolve()
+                  if destination != root and root not in destination.parents:
+                      raise SystemExit(f'unsafe materializer member: {member.name}')
+              archive.extractall(root, members=members)
+
+          required = [
+              Path('tools/patch_mw_convergence.py'),
+              Path('tools/bump_mw_convergence_versions.py'),
+          ]
+          missing = [str(path) for path in required if not path.is_file()]
+          if missing:
+              raise SystemExit(f'materializer archive omitted required files: {missing}')
+          print(f'PASS_MATERIALIZER_ARCHIVE_RECOVERED {digest}')
+          PY
+          python -m py_compile tools/patch_mw_convergence.py tools/bump_mw_convergence_versions.py
+
+      - name: Materialize the connected receiver journey
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/patch_mw_convergence.py
+          python tools/bump_mw_convergence_versions.py
+          git diff --check
+          mkdir -p /tmp/mw-convergence
+          git status --short > /tmp/mw-convergence/materialized-status.txt
+          git diff --stat > /tmp/mw-convergence/materialized-diff-stat.txt
+
+      - name: Verify all static contracts and runtime syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          python manzanita-working-model/tests/public_contract_test.py
+          python manzanita/tests/public_contract_test.py
+          python essential-attention/tests/public_contract_test.py
+          python manzanita-works/tests/public_contract_test.py
+          python -m py_compile \
+            manzanita-working-model/tests/browser_test.py \
+            manzanita/tests/browser_test.py \
+            essential-attention/tests/browser_test.py \
+            manzanita-works/tests/browser_test.py \
+            tests/pages/verify_manzanita_receiver_journey.py
+          node --check manzanita-working-model/app.js
+          node --check manzanita/app.js
+          node --check manzanita/theme-init.js
+          node --check manzanita-works/app.js
+          node --check manzanita-works/data.js
+          node --check /tmp/essential-attention-inline.js
+
+      - name: Install deterministic browser dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+          python -m playwright install --with-deps chromium
+
+      - name: Qualify the Working Model candidate
+        env:
+          MW_WORKING_MODEL_SCREENSHOT_DIR: /tmp/mw-convergence/working-model
+        run: python manzanita-working-model/tests/browser_test.py
+
+      - name: Qualify the Place Fabric candidate
+        env:
+          MANZANITA_SCREENSHOT_DIR: /tmp/mw-convergence/place-fabric
+        run: |
+          set -euo pipefail
+          python manzanita/tests/browser_test.py
+          python programs/manzanita-public-convergence/rendered_visual_floor.py --output /tmp/mw-convergence/place-fabric-visual-floor
+
+      - name: Qualify Essential Attention and the Mila return surface
+        env:
+          EA_BROWSER_OUT: /tmp/mw-convergence/essential-attention
+        run: python essential-attention/tests/browser_test.py
+
+      - name: Qualify the Operating Fabric candidate
+        env:
+          MW_DREAMBOARD_SCREENSHOT_DIR: /tmp/mw-convergence/operating-fabric
+        run: python manzanita-works/tests/browser_test.py
+
+      - name: Audit the complete receiver journey
+        env:
+          MW_RECEIVER_AUDIT_OUT: /tmp/mw-convergence/receiver-journey
+          MATERIALIZATION_PARENT_SHA: ${{ github.sha }}
+        run: python tests/pages/verify_manzanita_receiver_journey.py
+
+      - name: Retain exact branch qualification evidence
+        id: evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-receiver-journey-convergence-${{ github.sha }}
+          path: |
+            /tmp/mw-convergence
+            manzanita-working-model/RELEASE_CONTRACT.json
+            manzanita-working-model/WORKING_MODEL_CONTRACT.json
+            manzanita/QUALIFICATION.json
+            manzanita/RELEASE_RECEIPT.json
+            essential-attention/QUALIFICATION.json
+            manzanita-works/QUALIFICATION.json
+            manzanita-works/RELEASE_RECEIPT.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Record the durable branch qualification
+        if: success()
+        env:
+          MATERIALIZATION_PARENT_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          ARTIFACT_ID: ${{ steps.evidence.outputs.artifact-id }}
+          ARTIFACT_URL: ${{ steps.evidence.outputs.artifact-url }}
+          ARTIFACT_DIGEST: ${{ steps.evidence.outputs.artifact-digest }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import os
+          import shutil
+          import subprocess
+          from pathlib import Path
+
+          audit_path = Path('/tmp/mw-convergence/receiver-journey/AUDIT.json')
+          audit = json.loads(audit_path.read_text(encoding='utf-8'))
+          if audit.get('classification') != 'PASS_MANZANITA_RECEIVER_JOURNEY_CONVERGED':
+              raise SystemExit(f"unexpected audit classification: {audit.get('classification')}")
+
+          controlled_roots = [
+              Path('index.html'),
+              Path('README.md'),
+              Path('manzanita-working-model'),
+              Path('manzanita'),
+              Path('essential-attention'),
+              Path('manzanita-works'),
+              Path('tests/pages/verify_manzanita_receiver_journey.py'),
+          ]
+          manifest = audit.get('controlled_source_manifest')
+          if not manifest:
+              rows = []
+              for root in controlled_roots:
+                  if root.is_file():
+                      paths = [root]
+                  elif root.is_dir():
+                      paths = sorted(path for path in root.rglob('*') if path.is_file())
+                  else:
+                      continue
+                  for path in paths:
+                      payload = path.read_bytes()
+                      rows.append({
+                          'path': path.as_posix(),
+                          'bytes': len(payload),
+                          'sha256': hashlib.sha256(payload).hexdigest(),
+                      })
+              manifest = rows
+          controlled_digest = audit.get('controlled_source_digest')
+          if not controlled_digest:
+              binding = '\n'.join(
+                  f"{item['sha256']}  {item['bytes']}  {item['path']}" for item in manifest
+              )
+              controlled_digest = hashlib.sha256(binding.encode('utf-8')).hexdigest()
+
+          target = Path('programs/manzanita-receiver-journey-convergence')
+          target.mkdir(parents=True, exist_ok=True)
+          shutil.copy2(audit_path, target / 'AUDIT.json')
+          shutil.copy2('/tmp/mw-convergence/receiver-journey/AUDIT.md', target / 'AUDIT.md')
+
+          qualification = {
+              'schema': 'manzanita-works/receiver-journey-qualification@1',
+              'campaign': 'MANZANITA_RECEIVER_JOURNEY_CONVERGENCE_V1',
+              'state': 'PASS_BRANCH_CANDIDATE_NOT_DEPLOYED',
+              'classification': audit['classification'],
+              'qualified_at': audit['generated_at'],
+              'candidate_branch': 'review/manzanita-receiver-journey-convergence-v1',
+              'materialization_parent_sha': audit.get('materialization_parent_sha', os.environ['MATERIALIZATION_PARENT_SHA']),
+              'controlled_source_digest': controlled_digest,
+              'controlled_source_files': len(manifest),
+              'surface_releases': {
+                  'working_model': '1.2.0',
+                  'place_fabric': '1.7.0',
+                  'essential_attention': '1.2.2',
+                  'operating_fabric': '0.3.0',
+              },
+              'gates': {
+                  'static_contracts': 'PASS',
+                  'runtime_syntax': 'PASS',
+                  'working_model_browser': 'PASS',
+                  'place_fabric_browser_and_visual_floor': 'PASS',
+                  'essential_attention_and_mila_browser': 'PASS',
+                  'operating_fabric_browser': 'PASS',
+                  'whole_receiver_journey': 'PASS',
+              },
+              'evidence': {
+                  'workflow_run_id': int(os.environ['RUN_ID']),
+                  'workflow_run_attempt': int(os.environ['RUN_ATTEMPT']),
+                  'artifact_id': int(os.environ['ARTIFACT_ID']),
+                  'artifact_url': os.environ['ARTIFACT_URL'],
+                  'artifact_digest': os.environ['ARTIFACT_DIGEST'],
+                  'screenshots_expected': 18,
+              },
+              'deployment': {
+                  'performed': False,
+                  'live_byte_parity': 'NOT_PERFORMED',
+                  'live_browser_readback': 'NOT_PERFORMED',
+              },
+              'authority': {
+                  'institutional_acceptance': False,
+                  'participant_consent': False,
+                  'field_authority': False,
+                  'spend_authority': False,
+                  'publication_authority': False,
+                  'external_effect': 'none',
+              },
+              'commit_binding': 'The enclosing Git commit contains this qualification and the tested controlled tree. The exact tested bytes are bound by controlled_source_digest; the materialization parent and workflow evidence identify the qualifying transaction.',
+              'terminal_condition': 'Branch qualification is complete. Promotion, Pages deployment, live byte parity, and live browser readback remain separate authority and terminal transactions.',
+          }
+          (target / 'QUALIFICATION.json').write_text(json.dumps(qualification, indent=2) + '\n', encoding='utf-8')
+          (target / 'README.md').write_text(
+              '# Manzanita Receiver Journey Convergence V1\n\n'
+              'This campaign joins the Working Model, Place Fabric, Essential Attention, and Operating Fabric into one receiver path while preserving separate objects, runtimes, evidence ceilings, and authority boundaries. The branch candidate passed each surface contract and the six-route whole-journey audit at desktop, mobile, and 320 CSS pixels with 200 percent root text.\n\n'
+              'The qualification proves branch-local behavior and exact controlled bytes. It does not prove deployment, live parity, participant acceptance, institutional adoption, field authority, spending authority, or publication authority. Those remain separate transactions.\n',
+              encoding='utf-8',
+          )
+          print(json.dumps({'classification': qualification['classification'], 'controlled_source_digest': controlled_digest}, indent=2))
+          PY
+          python -m json.tool programs/manzanita-receiver-journey-convergence/QUALIFICATION.json >/dev/null
+
+      - name: Commit the qualified branch candidate
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f tools/patch_mw_convergence.py tools/bump_mw_convergence_versions.py
+          rm -f .github/workflows/materialize-manzanita-receiver-journey.yml
+          rm -f .github/workflows/repair-manzanita-receiver-journey-materializer.yml
+          rm -f .github/workflows/export-mw-convergence-source.yml
+          git config user.name 'manzanita-receiver-journey-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'manzanita: qualify connected receiver journey v1'
+          git push origin HEAD
