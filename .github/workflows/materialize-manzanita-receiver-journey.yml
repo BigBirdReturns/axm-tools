@@ -1,0 +1,417 @@
+name: Materialize Manzanita receiver journey convergence
+
+on:
+  push:
+    branches:
+      - review/manzanita-receiver-journey-convergence-v1
+    paths:
+      - '.github/workflows/materialize-manzanita-receiver-journey.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: materialize-manzanita-receiver-journey-v1
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Restore the deterministic materializer
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/mw-convergence-materializer.b64 <<'B64'
+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
+B64
+          base64 --decode /tmp/mw-convergence-materializer.b64 > /tmp/mw-convergence-materializer.tgz
+          echo '587aacb69a24129ce17f0d065b48d0354073165f0556fdb8a204dd2db2786b6f  /tmp/mw-convergence-materializer.tgz' | sha256sum -c -
+          tar -xzf /tmp/mw-convergence-materializer.tgz
+          python -m py_compile tools/patch_mw_convergence.py tools/bump_mw_convergence_versions.py
+
+      - name: Materialize the connected receiver journey
+        run: |
+          set -euo pipefail
+          python tools/patch_mw_convergence.py
+          python tools/bump_mw_convergence_versions.py
+          git diff --check
+          mkdir -p /tmp/mw-convergence
+          git status --short > /tmp/mw-convergence/materialized-status.txt
+          git diff --stat > /tmp/mw-convergence/materialized-diff-stat.txt
+
+      - name: Verify all static contracts and runtime syntax
+        run: |
+          set -euo pipefail
+          python manzanita-working-model/tests/public_contract_test.py
+          python manzanita/tests/public_contract_test.py
+          python essential-attention/tests/public_contract_test.py
+          python manzanita-works/tests/public_contract_test.py
+          python -m py_compile \
+            manzanita-working-model/tests/browser_test.py \
+            manzanita/tests/browser_test.py \
+            essential-attention/tests/browser_test.py \
+            manzanita-works/tests/browser_test.py \
+            tests/pages/verify_manzanita_receiver_journey.py
+          node --check manzanita-working-model/app.js
+          node --check manzanita/app.js
+          node --check manzanita/theme-init.js
+          node --check manzanita-works/app.js
+          node --check manzanita-works/data.js
+          node --check /tmp/essential-attention-inline.js
+
+      - name: Install deterministic browser dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 playwright==1.57.0
+          python -m playwright install --with-deps chromium
+
+      - name: Qualify the Working Model candidate
+        env:
+          MW_WORKING_MODEL_SCREENSHOT_DIR: /tmp/mw-convergence/working-model
+        run: python manzanita-working-model/tests/browser_test.py
+
+      - name: Qualify the Place Fabric candidate
+        env:
+          MANZANITA_SCREENSHOT_DIR: /tmp/mw-convergence/place-fabric
+        run: |
+          python manzanita/tests/browser_test.py
+          python programs/manzanita-public-convergence/rendered_visual_floor.py --output /tmp/mw-convergence/place-fabric-visual-floor
+
+      - name: Qualify Essential Attention and the Mila return surface
+        env:
+          EA_BROWSER_OUT: /tmp/mw-convergence/essential-attention
+        run: python essential-attention/tests/browser_test.py
+
+      - name: Qualify the Operating Fabric candidate
+        env:
+          MW_DREAMBOARD_SCREENSHOT_DIR: /tmp/mw-convergence/operating-fabric
+        run: python manzanita-works/tests/browser_test.py
+
+      - name: Audit the complete receiver journey
+        env:
+          MW_RECEIVER_AUDIT_OUT: /tmp/mw-convergence/receiver-journey
+        run: python tests/pages/verify_manzanita_receiver_journey.py
+
+      - name: Retain exact branch qualification evidence
+        id: evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-receiver-journey-convergence-${{ github.sha }}
+          path: |
+            /tmp/mw-convergence
+            manzanita-working-model/RELEASE_CONTRACT.json
+            manzanita-working-model/WORKING_MODEL_CONTRACT.json
+            manzanita/QUALIFICATION.json
+            manzanita/RELEASE_RECEIPT.json
+            essential-attention/QUALIFICATION.json
+            manzanita-works/QUALIFICATION.json
+            manzanita-works/RELEASE_RECEIPT.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Record the durable branch qualification
+        if: success()
+        env:
+          MATERIALIZATION_PARENT_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          ARTIFACT_ID: ${{ steps.evidence.outputs.artifact-id }}
+          ARTIFACT_URL: ${{ steps.evidence.outputs.artifact-url }}
+          ARTIFACT_DIGEST: ${{ steps.evidence.outputs.artifact-digest }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import shutil
+          from pathlib import Path
+
+          audit_path = Path('/tmp/mw-convergence/receiver-journey/AUDIT.json')
+          audit = json.loads(audit_path.read_text(encoding='utf-8'))
+          if audit['classification'] != 'PASS_MANZANITA_RECEIVER_JOURNEY_CONVERGED':
+              raise SystemExit(f"unexpected audit classification: {audit['classification']}")
+
+          target = Path('programs/manzanita-receiver-journey-convergence')
+          target.mkdir(parents=True, exist_ok=True)
+          shutil.copy2(audit_path, target / 'AUDIT.json')
+          shutil.copy2('/tmp/mw-convergence/receiver-journey/AUDIT.md', target / 'AUDIT.md')
+
+          qualification = {
+              'schema': 'manzanita-works/receiver-journey-qualification@1',
+              'campaign': 'MANZANITA_RECEIVER_JOURNEY_CONVERGENCE_V1',
+              'state': 'PASS_BRANCH_CANDIDATE_NOT_DEPLOYED',
+              'classification': audit['classification'],
+              'qualified_at': audit['generated_at'],
+              'candidate_branch': 'review/manzanita-receiver-journey-convergence-v1',
+              'materialization_parent_sha': audit['materialization_parent_sha'],
+              'controlled_source_digest': audit['controlled_source_digest'],
+              'controlled_source_files': len(audit['controlled_source_manifest']),
+              'surface_releases': {
+                  'working_model': '1.2.0',
+                  'place_fabric': '1.7.0',
+                  'essential_attention': '1.2.2',
+                  'operating_fabric': '0.3.0',
+              },
+              'gates': {
+                  'static_contracts': 'PASS',
+                  'runtime_syntax': 'PASS',
+                  'working_model_browser': 'PASS',
+                  'place_fabric_browser_and_visual_floor': 'PASS',
+                  'essential_attention_and_mila_browser': 'PASS',
+                  'operating_fabric_browser': 'PASS',
+                  'whole_receiver_journey': 'PASS',
+              },
+              'evidence': {
+                  'workflow_run_id': int(os.environ['RUN_ID']),
+                  'workflow_run_attempt': int(os.environ['RUN_ATTEMPT']),
+                  'artifact_id': int(os.environ['ARTIFACT_ID']),
+                  'artifact_url': os.environ['ARTIFACT_URL'],
+                  'artifact_digest': os.environ['ARTIFACT_DIGEST'],
+                  'screenshots': 18,
+              },
+              'deployment': {
+                  'performed': False,
+                  'live_byte_parity': 'NOT_PERFORMED',
+                  'live_browser_readback': 'NOT_PERFORMED',
+              },
+              'authority': {
+                  'institutional_acceptance': False,
+                  'participant_consent': False,
+                  'field_authority': False,
+                  'spend_authority': False,
+                  'publication_authority': False,
+                  'external_effect': 'none',
+              },
+              'commit_binding': 'The enclosing Git commit contains this qualification and the tested controlled tree. The exact tested bytes are bound by controlled_source_digest; the materialization parent and workflow evidence identify the qualifying transaction.',
+              'terminal_condition': 'Branch qualification is complete. Promotion, Pages deployment, live byte parity, and live browser readback remain separate authority and terminal transactions.',
+          }
+          (target / 'QUALIFICATION.json').write_text(json.dumps(qualification, indent=2) + '\n', encoding='utf-8')
+          (target / 'README.md').write_text(
+              '# Manzanita Receiver Journey Convergence V1\n\n'
+              'This campaign joins the Working Model, Place Fabric, Essential Attention, and Operating Fabric into one receiver path while preserving separate objects, runtimes, evidence ceilings, and authority boundaries. The branch candidate passed each surface contract and the six-route whole-journey audit at desktop, mobile, and 320 CSS pixels with 200 percent root text.\n\n'
+              'The qualification proves branch-local behavior and exact controlled bytes. It does not prove deployment, live parity, participant acceptance, institutional adoption, field authority, spending authority, or publication authority. Those remain separate transactions.\n',
+              encoding='utf-8',
+          )
+          PY
+          python -m json.tool programs/manzanita-receiver-journey-convergence/QUALIFICATION.json >/dev/null
+
+      - name: Commit the qualified branch candidate
+        if: success()
+        run: |
+          set -euo pipefail
+          rm -f tools/patch_mw_convergence.py tools/bump_mw_convergence_versions.py
+          rm -f .github/workflows/materialize-manzanita-receiver-journey.yml
+          rm -f .github/workflows/export-mw-convergence-source.yml
+          git config user.name 'manzanita-receiver-journey-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'manzanita: qualify connected receiver journey v1'
+          git push origin HEAD
