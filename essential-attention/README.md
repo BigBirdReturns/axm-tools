@@ -193,3 +193,8 @@ The three queues separate authority required from Mila, accepted obligations at 
 Communication state remains exact: no accepted return receipt exists. Mila's silence remains unresolved and supplies no evidence of rejection, hostility, consent, availability, or duty. The interface does not manufacture a motive or convert elapsed time into an organizational disposition.
 
 The export uses `essential-attention/mila-review-packet@1`. It contains the five decision records, latest local disposition or `UNRESOLVED`, source references, all three queues, recipient-return status, and local source-receipt metadata. It includes zero participant records, zero field cases, and zero private source bytes. Every real-world authority field remains false and `external_effect` remains `none`; only an accepted external authority receipt can change official state.
+
+
+## Mila receiver polish (v1.2.1)
+
+The direct Mila route removes the general operating shell, duplicate decision totals, footer provenance string, tour, onboarding, guidance, and unrelated navigation. It opens as one centered executive folio with five choices, three current queues, and one local export. The headline and every receiver-facing text block are explicitly checked for horizontal clipping at ordinary mobile size and at 320 CSS pixels with 200 percent root text.

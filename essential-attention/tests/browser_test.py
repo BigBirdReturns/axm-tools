@@ -220,11 +220,27 @@ with serve_root() as origin, sync_playwright() as p:
     check("Mila projection has a receiver-specific title", mila_page.title() == "Mila review · Essential Attention v1.2.1")
     check("Mila projection suppresses onboarding", not mila_page.locator("#helpDialog").evaluate("el => el.open"))
     check("Mila projection suppresses unrelated navigation", mila_page.locator('.seat-nav button:not([data-view="executive"])').evaluate_all("els => els.every(el => getComputedStyle(el).display === 'none')"))
+    check("Mila projection removes the operating shell", mila_page.locator(".rail").evaluate("el => getComputedStyle(el).display === 'none'") and mila_page.locator(".topbar").evaluate("el => getComputedStyle(el).display === 'none'") and mila_page.locator("footer").evaluate("el => getComputedStyle(el).display === 'none'"))
+    check("Mila projection removes duplicate decision totals", mila_page.locator("#decisionSummary").evaluate("el => getComputedStyle(el).display === 'none'"))
     check("Mila projection shows three current queues", mila_page.locator("[data-mila-queue]").count() == 3)
     check("Mila projection preserves five decision cards", mila_page.locator(".decision-card").count() == 5)
     check("Mila projection exposes five explicit draft rows", mila_page.locator("[data-mila-draft]").count() == 5)
     check("Mila projection keeps silence unresolved", "silence remains unresolved" in mila_page.locator("#milaCommunicationState").inner_text().lower())
     mila_page.screenshot(path=str(OUT / "mila-review-desktop.png"), full_page=True)
+
+    mila_page.set_viewport_size({"width": 390, "height": 844})
+    mila_page.wait_for_timeout(100)
+    mila_mobile = mila_page.evaluate("""() => ({
+      documentWidth: document.documentElement.scrollWidth,
+      viewportWidth: document.documentElement.clientWidth,
+      titleScroll: document.querySelector('#milaReturnTitle').scrollWidth,
+      titleClient: document.querySelector('#milaReturnTitle').clientWidth
+    })""")
+    check("Mila mobile surface has no horizontal overflow", mila_mobile["documentWidth"] <= mila_mobile["viewportWidth"], json.dumps(mila_mobile))
+    check("Mila mobile headline is fully visible", mila_mobile["titleScroll"] <= mila_mobile["titleClient"] + 1, json.dumps(mila_mobile))
+    mila_page.screenshot(path=str(OUT / "mila-review-mobile.png"), full_page=True)
+    mila_page.set_viewport_size({"width": 1440, "height": 1000})
+    mila_page.wait_for_timeout(100)
 
     mila_page.locator("[data-decision]").first.click()
     check("Mila can draft one local disposition", mila_page.locator("#decisionDialog").evaluate("el => el.open"))
@@ -260,13 +276,28 @@ with serve_root() as origin, sync_playwright() as p:
     mila_page.set_viewport_size({"width": 320, "height": 800})
     mila_page.evaluate("document.documentElement.style.fontSize='200%'")
     mila_page.wait_for_timeout(120)
-    mila_geometry = mila_page.evaluate("""() => ({
-      scrollWidth: document.documentElement.scrollWidth,
-      clientWidth: document.documentElement.clientWidth,
-      exportWidth: document.querySelector('#exportMilaPacketButton').getBoundingClientRect().width,
-      exportHeight: document.querySelector('#exportMilaPacketButton').getBoundingClientRect().height
+    mila_geometry = mila_page.evaluate("""() => {
+      const title = document.querySelector('#milaReturnTitle');
+      const selectors = '#milaReturnTitle, .mila-return-intro p, .mila-communication, .mila-queue h3, .mila-queue li strong, .mila-queue li p, .decision-card h3, .decision-card p, .decision-card .detail, .mila-draft-row strong, .mila-draft-row p, #exportMilaPacketButton';
+      const clipped = [...document.querySelectorAll(selectors)].flatMap(element => {
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        if (style.display === 'none' || rect.width <= 0 || rect.height <= 0 || element.scrollWidth <= element.clientWidth + 1) return [];
+        return [{tag: element.tagName, className: element.className, text: (element.textContent || '').trim().slice(0, 80), scrollWidth: element.scrollWidth, clientWidth: element.clientWidth}];
+      });
+      return {
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+        titleScroll: title.scrollWidth,
+        titleClient: title.clientWidth,
+        exportWidth: document.querySelector('#exportMilaPacketButton').getBoundingClientRect().width,
+        exportHeight: document.querySelector('#exportMilaPacketButton').getBoundingClientRect().height,
+        clipped
+      };
     })""")
     check("Mila projection remains bounded at 320px and 200 percent text", mila_geometry["scrollWidth"] <= mila_geometry["clientWidth"], json.dumps(mila_geometry))
+    check("Mila headline remains fully visible at 320px and 200 percent text", mila_geometry["titleScroll"] <= mila_geometry["titleClient"] + 1, json.dumps(mila_geometry))
+    check("Mila receiver text has no horizontal clipping", len(mila_geometry["clipped"]) == 0, json.dumps(mila_geometry["clipped"]))
     check("Mila export remains operable at narrow text zoom", mila_geometry["exportWidth"] > 0 and mila_geometry["exportHeight"] >= 44, json.dumps(mila_geometry))
     mila_page.screenshot(path=str(OUT / "mila-review-320-200pct.png"), full_page=True)
     check("Mila projection has zero JavaScript errors", len(mila_errors) == 0, json.dumps(mila_errors))
@@ -294,7 +325,7 @@ with serve_root() as origin, sync_playwright() as p:
         "participant_records": 0,
         "field_cases": 0,
         "external_effect": "none",
-        "screenshots": ["operating-desk-mobile.png", "mila-review-desktop.png", "mila-review-320-200pct.png"],
+        "screenshots": ["operating-desk-mobile.png", "mila-review-desktop.png", "mila-review-mobile.png", "mila-review-320-200pct.png"],
     }
     (OUT / "browser-result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     browser.close()

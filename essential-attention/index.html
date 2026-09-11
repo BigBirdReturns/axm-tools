@@ -557,6 +557,68 @@ body.mila-projection .view{min-height:calc(100vh - 120px)}
 @media(max-width:780px){body.mila-projection .seat-nav{display:block}.mila-return-intro{padding:25px 20px}.mila-return-intro h2{font-size:clamp(2.3rem,13vw,4rem)}.mila-draft-row{grid-template-columns:1fr}.mila-draft-row em{grid-row:1}.mila-subhead,.mila-export-row{display:block}.mila-subhead p,.mila-export-row button{margin-top:13px}.mila-export-row button{width:100%}}
 @media(max-width:430px){.mila-return-counts{grid-template-columns:1fr}.mila-queue header,.mila-queue li,.mila-draft-row{padding-inline:13px}.mila-drafts{padding-inline:12px}body.mila-projection .top-actions{display:none}}
 
+
+/* MILA_RECEIVER_POLISH_V1_2_1 */
+body.mila-projection{background:var(--paper-alt)}
+body.mila-projection .app{display:block;min-height:100vh;background:var(--paper-alt)}
+body.mila-projection .rail,
+body.mila-projection .topbar,
+body.mila-projection footer,
+body.mila-projection .decision-summary,
+body.mila-projection .executive-generic{display:none!important}
+body.mila-projection .main{min-width:0;width:100%}
+body.mila-projection .content{width:min(1240px,100%);max-width:none;margin:0 auto;padding:clamp(26px,4vw,58px) clamp(14px,4vw,54px) 72px}
+body.mila-projection #view-executive{min-width:0;min-height:0;padding:clamp(24px,4vw,46px);border:1px solid var(--rule);background:var(--paper);box-shadow:0 24px 70px rgba(24,20,12,.13)}
+body.mila-projection #view-executive::before,
+body.mila-projection #view-executive::after{display:none}
+body.mila-projection .mila-return-intro{margin:0 0 24px;padding:0 0 30px;border:0;border-bottom:4px solid var(--ink);background:transparent;box-shadow:none}
+body.mila-projection .mila-return-intro h2{max-width:980px;margin:.35rem 0 .8rem;font-size:clamp(3rem,6vw,5.8rem);line-height:.91;letter-spacing:-.04em;text-wrap:balance;overflow-wrap:normal;word-break:normal}
+body.mila-projection .mila-return-intro>p{max-width:900px;font-size:1rem;line-height:1.6}
+body.mila-projection .mila-communication{max-width:900px;margin-top:20px;padding:14px 16px;font-size:.86rem;line-height:1.55}
+body.mila-projection .mila-return-counts{margin-top:20px}
+body.mila-projection .mila-return-queues{margin:24px 0 28px}
+body.mila-projection .mila-queue-grid{gap:12px}
+body.mila-projection .mila-queue header{min-height:68px}
+body.mila-projection .mila-queue li{min-height:0}
+body.mila-projection .decision-grid{gap:14px}
+body.mila-projection .decision-card{min-width:0;box-shadow:none}
+body.mila-projection .decision-card h3,
+body.mila-projection .decision-card p,
+body.mila-projection .decision-card .detail,
+body.mila-projection .mila-queue h3,
+body.mila-projection .mila-queue strong,
+body.mila-projection .mila-queue p,
+body.mila-projection .mila-queue span,
+body.mila-projection .mila-draft-row strong,
+body.mila-projection .mila-draft-row p{max-width:100%;overflow-wrap:anywhere}
+body.mila-projection .mila-drafts{margin-top:28px;padding:clamp(20px,3vw,30px)}
+body.mila-projection #exportMilaPacketButton{min-width:220px}
+@media(max-width:780px){
+  body.mila-projection .content{padding:12px 10px 40px}
+  body.mila-projection #view-executive{padding:24px 18px}
+  body.mila-projection .mila-return-intro{padding-bottom:24px}
+  body.mila-projection .mila-return-intro h2{font-size:clamp(2.35rem,11vw,4.2rem)}
+  body.mila-projection .mila-return-intro>p{font-size:.94rem;line-height:1.52}
+  body.mila-projection .mila-communication{font-size:.8rem}
+  body.mila-projection .decision-card h3{font-size:1.25rem}
+  body.mila-projection #exportMilaPacketButton{min-width:0;width:100%}
+}
+@media(max-width:430px){
+  body.mila-projection .content{padding-inline:8px}
+  body.mila-projection #view-executive{padding:20px 14px}
+  body.mila-projection .mila-return-intro h2{font-size:clamp(1.25rem,10vw,2rem);line-height:.96;letter-spacing:-.025em;text-wrap:balance}
+  body.mila-projection .mila-return-intro>p{font-size:.86rem;line-height:1.45}
+  body.mila-projection .mila-communication{padding:12px;font-size:.76rem}
+  body.mila-projection .mila-return-counts article{padding:12px}
+  body.mila-projection .mila-queue header,
+  body.mila-projection .mila-queue li{padding:13px 12px}
+  body.mila-projection .mila-queue header h3{font-size:.92rem}
+  body.mila-projection .mila-queue li strong{font-size:.82rem}
+  body.mila-projection .mila-queue li p{font-size:.74rem}
+  body.mila-projection .decision-card h3{font-size:clamp(.95rem,5vw,1.18rem)}
+  body.mila-projection .mila-drafts{padding-inline:11px}
+}
+
 </style>
 </head>
 <body>
@@ -695,10 +757,10 @@ body.mila-projection .view{min-height:calc(100vh - 120px)}
       <section class="view" id="view-executive">
         <div class="section-head executive-generic"><div><div class="eyebrow">Decision authority</div><h2>Five bounded questions</h2></div><p>The queue shows the stage, key facts, consequence, safe progress, and next action without pretending that a browser click exercises organizational authority.</p></div>
         <section class="mila-return mila-return-intro" aria-labelledby="milaReturnTitle">
-          <div class="eyebrow">Mila executive projection · draft only</div>
-          <h2 id="milaReturnTitle">Five decisions. No reconstructed universe.</h2>
-          <p>This view contains only the questions that require Manzanita executive authority, the obligations whose status matters now, and the evidence already ready for disposition. It contains zero participant records and zero field cases. Every action remains a local draft until an accepted external authority receipt changes official state.</p>
-          <div class="mila-communication" id="milaCommunicationState"><strong>Communication state</strong>No accepted return receipt exists. Silence remains unresolved and supplies no evidence of rejection, hostility, consent, availability, or duty.</div>
+          <div class="eyebrow">Essential Attention · Mila executive review · local draft only</div>
+          <h2 id="milaReturnTitle">Five decisions. Everything needed to decide them.</h2>
+          <p>These are the five choices that require Manzanita’s decision. Everything else stays in its existing state. The page contains no participant records or field cases, and every selection remains a local draft until Manzanita records it through its own accepted process.</p>
+          <div class="mila-communication" id="milaCommunicationState"><strong>Communication state</strong>No response has been recorded. Silence stays unresolved; it does not mean rejection, hostility, consent, availability, or obligation.</div>
           <div class="mila-return-counts" id="milaReturnCounts" aria-label="Mila review counts"></div>
         </section>
         <div class="decision-summary" id="decisionSummary"></div>
@@ -1329,7 +1391,7 @@ function openOffer(offerId){const o=activeOffers().find(x=>x.offer_id===offerId)
 
 function renderExecutive(){
   const reviewed=new Set(prefArray('reviewed_decisions'));const drafted=cartridge.decisions.filter(d=>decisionDraft(d.decision_id)).length;const accepted=cartridge.decisions.filter(d=>d.current==='accepted').length;$('#decisionSummary').innerHTML=[[cartridge.decisions.length,'Bounded questions'],[reviewed.size,'Reviewed'],[drafted,'Local drafts'],[accepted,'Already accepted']].map(([n,l])=>`<article><b>${esc(n)}</b><span>${esc(l)}</span></article>`).join('');
-  $('#decisionGrid').innerHTML=cartridge.decisions.map(d=>{const draft=decisionDraft(d.decision_id);const isReviewed=reviewed.has(d.decision_id);const pathIndex=draft?2:isReviewed?1:0;return `<article class="card decision-card" data-decision-card="${esc(d.decision_id)}"><div><div class="receipt-head"><div><div class="eyebrow">${esc(d.decision_id)}</div><h3>${esc(d.title)}</h3></div><span class="state ${esc(d.current)}">${esc(d.current)}</span></div><div class="decision-mini-path" aria-label="Decision progress"><i class="done"></i><i class="${pathIndex>=1?'done':''}"></i><i class="${pathIndex>=2?'current':''}"></i><i></i></div><p>${esc(d.question)}</p><div class="detail"><b>Consequence</b>${esc(d.consequence)}</div><div class="detail"><b>Safe progress without external decision</b>${esc(d.safe_next)}</div></div><div class="controls">${d.options.map(o=>`<button class="small ${draft?.payload?.disposition===o?'active':''}" data-decision="${esc(d.decision_id)}" data-disposition="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="decision-review"><span class="fine">${draft?`Latest local draft: <strong>${esc(draft.payload.disposition)}</strong>, ${prettyDate(draft.created_at)}`:isReviewed?'Reviewed; no local disposition recorded.':'Not yet reviewed.'}</span><button class="small" data-review-decision="${esc(d.decision_id)}">${isReviewed?'Reviewed ✓':'Mark reviewed'}</button></div></article>`}).join('');
+  $('#decisionGrid').innerHTML=cartridge.decisions.map(d=>{const draft=decisionDraft(d.decision_id);const isReviewed=reviewed.has(d.decision_id);const pathIndex=draft?2:isReviewed?1:0;return `<article class="card decision-card" data-decision-card="${esc(d.decision_id)}"><div><div class="receipt-head"><div><div class="eyebrow">${esc(d.decision_id)}</div><h3>${esc(d.title)}</h3></div><span class="state ${esc(d.current)}">${esc(d.current)}</span></div><div class="decision-mini-path" aria-label="Decision progress"><i class="done"></i><i class="${pathIndex>=1?'done':''}"></i><i class="${pathIndex>=2?'current':''}"></i><i></i></div><p>${esc(d.question)}</p><div class="detail"><b>Consequence</b>${esc(d.consequence)}</div><div class="detail"><b>${isMilaProjection()?'What can proceed now':'Safe progress without external decision'}</b>${esc(d.safe_next)}</div></div><div class="controls">${d.options.map(o=>`<button class="small ${draft?.payload?.disposition===o?'active':''}" data-decision="${esc(d.decision_id)}" data-disposition="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="decision-review"><span class="fine">${draft?`Latest local draft: <strong>${esc(draft.payload.disposition)}</strong>, ${prettyDate(draft.created_at)}`:isReviewed?'Reviewed; no local disposition recorded.':'Not yet reviewed.'}</span><button class="small" data-review-decision="${esc(d.decision_id)}">${isReviewed?'Reviewed ✓':'Mark reviewed'}</button></div></article>`}).join('');
   $$('[data-decision]').forEach(b=>b.addEventListener('click',()=>openDecisionDraft(b.dataset.decision,b.dataset.disposition)));$$('[data-review-decision]').forEach(b=>b.addEventListener('click',()=>markDecisionReviewed(b.dataset.reviewDecision)));
 }
 
