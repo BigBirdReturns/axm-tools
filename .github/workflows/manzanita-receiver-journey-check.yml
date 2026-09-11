@@ -1,0 +1,53 @@
+name: Manzanita receiver journey
+
+on:
+  push:
+    paths:
+      - "index.html"
+      - "manzanita-working-model/**"
+      - "manzanita/**"
+      - "essential-attention/**"
+      - "manzanita-works/**"
+      - "tests/pages/verify_manzanita_receiver_journey.py"
+      - ".github/workflows/manzanita-receiver-journey-check.yml"
+  pull_request:
+    paths:
+      - "index.html"
+      - "manzanita-working-model/**"
+      - "manzanita/**"
+      - "essential-attention/**"
+      - "manzanita-works/**"
+      - "tests/pages/verify_manzanita_receiver_journey.py"
+      - ".github/workflows/manzanita-receiver-journey-check.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  receiver-journey:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright and Chromium
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+
+      - name: Audit the branch-local receiver journey
+        run: python tests/pages/verify_manzanita_receiver_journey.py
+
+      - name: Retain receiver-journey evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-receiver-journey-${{ github.sha }}
+          path: /tmp/manzanita-receiver-journey-audit
+          if-no-files-found: error
+          retention-days: 30
