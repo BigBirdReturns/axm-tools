@@ -1,0 +1,32 @@
+name: Export Manzanita convergence sources
+
+on:
+  push:
+    branches:
+      - review/manzanita-receiver-journey-convergence-v1
+    paths:
+      - '.github/workflows/export-mw-convergence-source.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retain exact convergence sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: mw-convergence-source-${{ github.sha }}
+          path: |
+            index.html
+            manzanita-working-model
+            manzanita
+            essential-attention
+            manzanita-works
+            tests/pages/verify_manzanita_receiver_journey.py
+            .github/workflows/manzanita-receiver-journey-check.yml
+          if-no-files-found: error
+          retention-days: 7
