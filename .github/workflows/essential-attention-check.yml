@@ -44,5 +44,16 @@ jobs:
           python -m pip install --disable-pip-version-check playwright==1.57.0
           python -m playwright install --with-deps chromium
 
-      - name: Drive first use, guided tour, contained run, and handoff
+      - name: Drive first use, guided tour, contained run, handoff, and Mila review
         run: python essential-attention/tests/browser_test.py
+
+      - name: Retain Essential Attention v1.2.1 browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: essential-attention-v1.2.1-${{ github.sha }}
+          path: |
+            /tmp/essential-attention-v1.2.1-browser
+            essential-attention/QUALIFICATION.json
+          if-no-files-found: error
+          retention-days: 30
