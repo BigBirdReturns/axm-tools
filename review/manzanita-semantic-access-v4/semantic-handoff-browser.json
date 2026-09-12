@@ -1,0 +1,330 @@
+{
+  "schema": "manzanita-works/semantic-handoff@4",
+  "release": "source-adaptive-semantic-v4",
+  "state": {
+    "aperture": "street",
+    "instrument": "access",
+    "mode": "live",
+    "seat": "successor",
+    "detail": "operate",
+    "providerScene": 1
+  },
+  "object": "Provider scene, corridor coverage, registration, and public-edge questions",
+  "source": "Retained attributed public-source street photograph",
+  "asset_id": "2ef01e8c21b4a6e191e357faa4a1b0fa49f78d0a2259bbbdbcccd1a9f8b51b1e",
+  "source_mode": "LIVE / PROVIDER",
+  "instrument": {
+    "id": "access",
+    "label": "Access",
+    "surface": "semantic_registration"
+  },
+  "semantic_receipt": {
+    "receipt_sha256": "60af48fed6bb94fe68b64c657ae1c481021e5869fb3fb42f3f79018db69fdedb",
+    "coverage": "partial_visible_access_topology",
+    "features": [
+      {
+        "id": "provider-b-public-sidewalk-001",
+        "class": "public_sidewalk",
+        "label": "Public sidewalk",
+        "geometry": {
+          "type": "polygon",
+          "points": [
+            [
+              0,
+              776
+            ],
+            [
+              180,
+              784
+            ],
+            [
+              360,
+              784
+            ],
+            [
+              540,
+              780
+            ],
+            [
+              720,
+              770
+            ],
+            [
+              900,
+              755
+            ],
+            [
+              1080,
+              742
+            ],
+            [
+              1260,
+              727
+            ],
+            [
+              1440,
+              713
+            ],
+            [
+              1600,
+              705
+            ],
+            [
+              1600,
+              770
+            ],
+            [
+              1440,
+              780
+            ],
+            [
+              1260,
+              792
+            ],
+            [
+              1080,
+              812
+            ],
+            [
+              900,
+              830
+            ],
+            [
+              720,
+              842
+            ],
+            [
+              540,
+              842
+            ],
+            [
+              360,
+              832
+            ],
+            [
+              180,
+              820
+            ],
+            [
+              0,
+              815
+            ]
+          ]
+        },
+        "confidence": "high_visible_surface",
+        "evidence": "The public sidewalk is visible across the full scene with driveway interruptions.",
+        "label_point": [
+          1060,
+          785
+        ],
+        "non_claim": "Does not establish ADA compliance, public right, maintenance condition, or current passability."
+      },
+      {
+        "id": "provider-b-entry-path-001",
+        "class": "entry_path",
+        "label": "Entry path",
+        "geometry": {
+          "type": "polygon",
+          "points": [
+            [
+              158,
+              675
+            ],
+            [
+              215,
+              690
+            ],
+            [
+              285,
+              713
+            ],
+            [
+              360,
+              742
+            ],
+            [
+              455,
+              780
+            ],
+            [
+              418,
+              805
+            ],
+            [
+              330,
+              772
+            ],
+            [
+              260,
+              745
+            ],
+            [
+              200,
+              718
+            ],
+            [
+              145,
+              700
+            ]
+          ]
+        },
+        "confidence": "high_visible_pavers",
+        "evidence": "A stepping-stone path visibly connects the front steps toward the sidewalk.",
+        "label_point": [
+          325,
+          730
+        ],
+        "non_claim": "Does not establish accessibility, slip resistance, legal access, current clearance, or resident authorization."
+      },
+      {
+        "id": "provider-b-entry-steps-001",
+        "class": "entry_steps",
+        "label": "Entry steps",
+        "geometry": {
+          "type": "polygon",
+          "points": [
+            [
+              76,
+              625
+            ],
+            [
+              282,
+              625
+            ],
+            [
+              290,
+              690
+            ],
+            [
+              170,
+              697
+            ],
+            [
+              92,
+              680
+            ]
+          ]
+        },
+        "confidence": "high_visible_steps",
+        "evidence": "Front entry steps and landing are visibly distinct.",
+        "label_point": [
+          165,
+          650
+        ],
+        "non_claim": "Does not establish code compliance, handrail adequacy, accessibility, condition, or entry authority."
+      },
+      {
+        "id": "provider-b-center-drive-001",
+        "class": "driveway_crossing",
+        "label": "Driveway crossing",
+        "geometry": {
+          "type": "polygon",
+          "points": [
+            [
+              535,
+              676
+            ],
+            [
+              650,
+              688
+            ],
+            [
+              770,
+              716
+            ],
+            [
+              900,
+              750
+            ],
+            [
+              960,
+              778
+            ],
+            [
+              940,
+              832
+            ],
+            [
+              810,
+              816
+            ],
+            [
+              670,
+              790
+            ],
+            [
+              555,
+              754
+            ]
+          ]
+        },
+        "confidence": "medium_vehicle_and_tree_occlusion",
+        "evidence": "A concrete driveway crosses the sidewalk, with portions occluded by a vehicle and tree trunk.",
+        "label_point": [
+          760,
+          720
+        ],
+        "non_claim": "Occluded boundaries are approximate. No legal access, clearance, ownership, or current-use conclusion follows."
+      },
+      {
+        "id": "provider-b-right-drive-001",
+        "class": "driveway_crossing",
+        "label": "Driveway crossing",
+        "geometry": {
+          "type": "polygon",
+          "points": [
+            [
+              1265,
+              673
+            ],
+            [
+              1415,
+              665
+            ],
+            [
+              1600,
+              666
+            ],
+            [
+              1600,
+              770
+            ],
+            [
+              1420,
+              782
+            ],
+            [
+              1280,
+              758
+            ]
+          ]
+        },
+        "confidence": "medium_vehicle_occlusion",
+        "evidence": "A second paved driveway crosses the sidewalk at the right side, partially occluded by a vehicle and trees.",
+        "label_point": [
+          1410,
+          705
+        ],
+        "non_claim": "Does not establish ownership, legal access, clearance, curb-cut compliance, or current passability."
+      }
+    ],
+    "unknowns": [
+      "Current passability and temporary obstruction",
+      "ADA or code compliance",
+      "Ownership, easement, right-of-entry, and public/private legal status",
+      "Surface condition outside the visible capture",
+      "Occluded connections and destinations"
+    ]
+  },
+  "seat": {
+    "id": "successor",
+    "label": "Successor",
+    "evidence": "Exact source and artifact identities, transforms, failure receipts, state transitions, authorities, holds, exports, and rollback donors.",
+    "next_safe_action": "Use the visible feature inventory to prepare a verification question. Confirm current conditions, lawful access, dimensions, obstacles, and affected-actor authority before acting.",
+    "acceptance": "A cold operator reproduces the same state and knows what it proves, what it does not prove, and who controls the next transition.",
+    "authority": "Read-only visual interpretation. No entry, inspection, dispatch, traffic control, work, enforcement, or accessibility determination.",
+    "handoff": "Return a replay receipt, drift report, or bounded successor object with every unresolved authority and source gap intact."
+  },
+  "public_effect": "none",
+  "claim_boundary": "The receipt identifies only visually distinguishable circulation surfaces in the exact named image. It does not determine legal access, accessibility, condition, safety, clearance, ownership, or current use."
+}
