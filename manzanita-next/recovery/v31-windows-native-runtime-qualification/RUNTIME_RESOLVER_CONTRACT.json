@@ -1,0 +1,67 @@
+{
+  "schema": "manzanita/v31-windows-native-runtime-qualification-contract@1",
+  "object_id": "MW_V31_WINDOWS_NATIVE_RUNTIME_QUALIFICATION_V1",
+  "object_class": "bounded Windows-native qualification instrument",
+  "purpose": "Execute the exact v31 Python runtime resolver and process-local compatibility shims under a real GitHub-hosted Windows runner without searching operator storage, materializing production inputs, invoking v31 admission, or modifying a product surface.",
+  "actors": {
+    "github_actions_runner": "executes the bounded Windows qualification and retains receipts",
+    "source_custody": "controls exact source identities and the qualification contract",
+    "operator_host": "retains separate authority over any later local storage search",
+    "release_authority": "retains merge, release, Pages, and public-route authority"
+  },
+  "runtime_contract": {
+    "minimum_python": [3, 10],
+    "candidate_order": [
+      "PATH_PY3_LAUNCHER",
+      "PATH_PYTHON3",
+      "PATH_PYTHON",
+      "CODEX_DEPENDENCY_RUNTIME",
+      "CODEX_RUNTIME",
+      "USER_LOCAL_PYTHON",
+      "PROGRAM_FILES_PYTHON"
+    ],
+    "candidate_admission": "isolated executable probe must complete with Python >= 3.10",
+    "command_presence_is_insufficient": true,
+    "compatibility_aliases": ["py", "python", "python3"],
+    "path_change_scope": "current qualification process only",
+    "registry_mutation": false,
+    "network_client_operation": false
+  },
+  "required_campaigns": [
+    "Windows PowerShell 5.1 parse",
+    "PowerShell 7 parse",
+    "broken executable candidate refusal",
+    "supported runtime resolution",
+    "py -3 compatibility shim execution",
+    "python compatibility shim execution",
+    "python3 compatibility shim execution",
+    "same-executable continuity across aliases",
+    "receipt schema and authority validation"
+  ],
+  "prohibited_effects": [
+    "operator storage search",
+    "File Library export",
+    "production input materialization",
+    "v31 exact-input admission",
+    "accepted-parent extraction",
+    "v31 product mutation",
+    "merge",
+    "release",
+    "Pages deployment",
+    "public-route mutation",
+    "external effect"
+  ],
+  "success_result": "PASS_WINDOWS_NATIVE_RUNTIME_RESOLVER_AND_SHIMS_QUALIFIED",
+  "authority": {
+    "product_files_modified": 0,
+    "operator_host_execution_proved": false,
+    "production_inputs_materialized": 0,
+    "admission_invoked": false,
+    "v31_created": false,
+    "merge_authorized": false,
+    "release_authorized": false,
+    "public_route_effect": "none",
+    "pages_effect": "none",
+    "external_effect": "none"
+  }
+}
