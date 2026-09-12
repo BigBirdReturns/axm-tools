@@ -1,0 +1,120 @@
+{
+  "schema": "manzanita/useful-plant-v30-fab-visual-audit@1",
+  "result": "FAB_RETURN_FOR_VISUAL_HIERARCHY",
+  "object": {
+    "pull_request": 141,
+    "reviewed_head_sha": "9a26c8d29a175dcf507d102254f8015fb8698a73",
+    "classification": "bounded repository-native operator-review surface",
+    "public_product_classification": "not_admitted"
+  },
+  "actors": {
+    "fab_review_seat": "classifies visual and interaction hierarchy without acquiring operator acceptance",
+    "household": "retains purpose, privacy, effort ceiling, substitution refusal, and stop authority",
+    "grower": "proposes reversible placement and care",
+    "neighbor": "coordinates shared edges without household authority",
+    "ecologist": "interprets habitat function and uncertainty",
+    "responder": "uses bounded condition evidence for assistance-first triage",
+    "operator": "retains the only visual acceptance decision"
+  },
+  "receipts": {
+    "workflow_run_id": 33094526410,
+    "workflow_run_number": 23,
+    "source_checks": {
+      "passed": 61,
+      "total": 61
+    },
+    "browser_checks": {
+      "passed": 73,
+      "total": 73
+    },
+    "retained_screenshot_count": 9,
+    "registered_photo_frame": {
+      "x_px": 33,
+      "y_px": 268.75,
+      "width_px": 972.703125,
+      "height_px": 607.9375
+    },
+    "donor_natural_size": {
+      "width_px": 1600,
+      "height_px": 1000
+    },
+    "persistent_control_inventory": {
+      "mode_controls": 6,
+      "seat_controls": 5,
+      "image_hotspots": 5,
+      "stop_controls": 3,
+      "accessible_buttons_total": 21
+    },
+    "external_requests": 0,
+    "console_or_page_errors": 0
+  },
+  "findings": [
+    {
+      "id": "VH-01",
+      "severity": "blocking",
+      "finding": "The photographic place begins 268.75 pixels below the top edge and occupies only 972.7 pixels of a 1600-pixel desktop width.",
+      "mechanism": "Administrative framing precedes and competes with the place that is supposed to establish the object."
+    },
+    {
+      "id": "VH-02",
+      "severity": "blocking",
+      "finding": "The use loop, operating seat, registered zone, evidence state, and household stop state are exposed as simultaneous top-level ontologies.",
+      "mechanism": "A first-time household user must decode the system before acting on the living object."
+    },
+    {
+      "id": "VH-03",
+      "severity": "blocking",
+      "finding": "The photograph is treated as a framed evidence panel inside an interface rather than as the operating landscape from which controls emerge.",
+      "mechanism": "Persistent surrounding chrome makes the image one component among many instead of the retained place that carries the use loop."
+    },
+    {
+      "id": "VH-04",
+      "severity": "major",
+      "finding": "Registration geometry remains persistently visible as instrumentation instead of becoming a low-weight, landscape-following interaction layer.",
+      "mechanism": "Persistent hotspot affordances improve testability but make the image read as an annotated diagram."
+    },
+    {
+      "id": "VH-05",
+      "severity": "major",
+      "finding": "Passing mobile reflow and 200-percent text tests proves containment rather than semantic priority.",
+      "mechanism": "The same control inventory can stack without overflow while still becoming a long administrative wall."
+    },
+    {
+      "id": "VH-06",
+      "severity": "major",
+      "finding": "Evidence and authority vocabulary is too prominent for first-use comprehension.",
+      "mechanism": "The first layer should answer what the object is, where it belongs, what it needs today, and what the household can do next."
+    }
+  ],
+  "disposition": {
+    "fab_review": "return_for_visual_hierarchy",
+    "operator_visual_acceptance": "ABSENT",
+    "merge_authorized": false,
+    "release_authorized": false,
+    "public_route_effect": "none",
+    "pages_deployment_effect": "none",
+    "external_product_effect": "none",
+    "preserve_current_surface_as": "instrumented review harness and behavioral donor",
+    "next_object": "Useful Plant v30 field composition"
+  },
+  "next_object_acceptance_floor": [
+    "The photographic place begins no more than 64 CSS pixels below the viewport top on desktop.",
+    "The photographic place occupies at least 70 percent of the first desktop viewport area and at least 55 percent of the first mobile viewport height.",
+    "No more than three persistent interactive controls appear over or beside the place before the first user action.",
+    "Only one active loop action, one compact seat summary, and one household stop affordance remain continuously visible.",
+    "Mode, seat, evidence, and authority inventories open contextually rather than competing as simultaneous top-level navigation.",
+    "Registration geometry is hidden until interaction and follows natural image borders where the donor permits.",
+    "No overlay may cover more than 25 percent of the rendered photograph at one time.",
+    "All 61 source checks and all 73 behavioral checks remain satisfied or are replaced by stricter equivalents.",
+    "The successor campaign retains desktop, 390-pixel mobile, 200-percent text, keyboard, URL-state, zero-external-request, zero-console-error, and no-embedded-acceptance evidence."
+  ],
+  "evidence_ledger": {
+    "evidence_tier": "retained browser screenshots, measured rendered geometry, and source-linked workflow receipts",
+    "venue": "PR #141 and workflow run 23",
+    "target": "visual hierarchy of the bounded review object",
+    "upside": "preserve verified behavior while restoring place-first comprehension",
+    "downside": "a cosmetic rewrite could obscure authority or regress accessibility",
+    "failure_mode": "retain the current harness, keep acceptance absent, and refuse merge or release"
+  },
+  "control_question": "Can the next composition make the household understand the living object from the place itself before exposing the machinery that proves the system is governed?"
+}

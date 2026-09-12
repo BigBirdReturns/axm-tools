@@ -1,0 +1,90 @@
+@import url("./style-base.css");
+
+/* Measured repair for PR #141. The retained stylesheet remains byte-exact in style-base.css. */
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.topbar,
+.workspace,
+.scene-column,
+.control-column,
+.control-column > section,
+.evidence-drawer,
+.review-gate,
+footer,
+.brand-lockup,
+.brand-lockup > div,
+.custody-strip {
+  min-width: 0;
+}
+
+.scene-frame {
+  border: 0;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.scene-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border: 1px solid var(--line);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.scene-frame img,
+.scene-wash,
+.registration-layer {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .brand-lockup,
+  .custody-strip {
+    width: 100%;
+  }
+
+  .custody-strip {
+    max-width: none;
+    justify-content: flex-start;
+  }
+
+  .status-pill {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 390px) {
+  .topbar {
+    gap: .65rem;
+  }
+
+  .custody-strip {
+    gap: .35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-frame::after {
+    transition: none;
+  }
+}
+
+@media print {
+  .scene-frame {
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+}

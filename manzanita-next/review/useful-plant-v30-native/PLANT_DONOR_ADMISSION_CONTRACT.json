@@ -1,0 +1,85 @@
+{
+  "schema": "manzanita/exact-plant-donor-admission-contract@1",
+  "gate_id": "MW-V30-PLANT-DONOR-ADMISSION-001",
+  "candidate_id": "MW-USEFUL-PLANT-V30-NATIVE-REVIEW-001",
+  "object_id": "MW-PLANT-BH02-001",
+  "admission_class": "EXACT_TWO_OBJECT_MEDIA_CUSTODY",
+  "admission_rule": "Both retained Plant media objects must be mounted and match their exact filename, byte count, SHA-256 digest, container, dimensions, and passive-media floor. A public Plant photograph, reconstructed SVG, custody plate, File Library reference, embedded lineage record, or one-of-two partial mount cannot substitute for either donor.",
+  "source_coordinates": [
+    "mw-habitat-live-photo-020.STANDALONE.html embedded public convergence assets",
+    "PUBLIC_CONVERGENCE.json exact asset ledger"
+  ],
+  "required_donors": {
+    "origin": {
+      "filename": "plant-origin.svg",
+      "path_hint": "assets/public/plant-origin.svg",
+      "media_type": "image/svg+xml",
+      "source_state": "reference",
+      "source_state_id": "MW-PLANT-SOURCE-BH02-REFERENCE-001",
+      "state_class": "AUTHORED_ORIGIN_RECORD",
+      "bytes": 3425,
+      "sha256": "2a531b108dfbfba5f7bfc1064c2adfa44d29649ea9fa3654ac3092fbe9a8bb03",
+      "width": 1600,
+      "height": 1000,
+      "view_box": "0 0 1600 1000"
+    },
+    "cached": {
+      "filename": "plant-derived-reference.webp",
+      "path_hint": "assets/public/plant-derived-reference.webp",
+      "media_type": "image/webp",
+      "source_state": "cached",
+      "source_state_id": "MW-PLANT-SOURCE-BH02-CACHED-001",
+      "state_class": "DERIVED_STATIC_REFERENCE_AGE_UNKNOWN",
+      "bytes": 255932,
+      "sha256": "dd2d3b7f5683ec8c785c6baac8b0036ae7ad043767463b963d8c132201817a02",
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  "explicit_non_substitutes": [
+    {
+      "path": "manzanita/assets/plant.webp",
+      "bytes": 44620,
+      "sha256": "e6148cb9e0bbaf6b117dd5162f52bac2c805aa69e8f4b820fb7909dfece37a23",
+      "classification": "ADMITTED_PUBLIC_PHOTOGRAPHIC_DONOR_NOT_EXACT_RETAINED_PLANT_MEDIA"
+    },
+    {
+      "path": "assets/plant/useful-plant-origin-recovered-v30.svg",
+      "classification": "RECOVERED_RECONSTRUCTION_NOT_HASH_IDENTICAL"
+    },
+    {
+      "path": "assets/plant/plant-cached-custody-v30.svg",
+      "classification": "LINEAGE_CUSTODY_PLATE_NO_PLANT_APPEARANCE"
+    }
+  ],
+  "passive_svg_floor": {
+    "forbidden_markup": [
+      "<!DOCTYPE",
+      "<!ENTITY",
+      "<?xml-stylesheet",
+      "<script",
+      "<foreignObject",
+      "<iframe",
+      "<object",
+      "<embed"
+    ],
+    "forbidden_element_local_names": [
+      "script",
+      "foreignObject",
+      "iframe",
+      "object",
+      "embed"
+    ],
+    "forbidden_event_attribute_prefix": "on",
+    "external_reference_allowed": false
+  },
+  "next_gate_after_pass": "Inherited Household, Street, and Property rendered-lock admission against the exact v29 parent.",
+  "authority": {
+    "operator_visual_acceptance": "ABSENT",
+    "merge_authorized": false,
+    "release_authorized": false,
+    "public_route_effect": "none",
+    "pages_deployment_effect": "none",
+    "external_effect": "none"
+  }
+}
