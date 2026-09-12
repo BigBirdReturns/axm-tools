@@ -1,0 +1,62 @@
+{
+  "schema": "manzanita/useful-plant-v30-source-replay-bootstrap@3",
+  "carrier_id": "MW-USEFUL-PLANT-V30-SOURCE-REPLAY-BOOTSTRAP-001",
+  "generated_at": "2026-08-27T03:15:00+00:00",
+  "object_class": "BOUNDED_SOURCE_REPLAY_REVIEW",
+  "target_repository": "BigBirdReturns/axm-tools",
+  "target_branch": "agent/manzanita-useful-plant-v30-continuation-review",
+  "target_path": "manzanita-next/review/mw-habitat-live-photo-030-continuation",
+  "source_object": {
+    "release_id": "mw-habitat-live-photo-030",
+    "candidate_id": "MW-USEFUL-PLANT-VERTICAL-SLICE-030",
+    "aperture": "Useful Plant",
+    "actors": [
+      "Household",
+      "Nursery / Grower",
+      "Practitioner",
+      "Program / Community",
+      "Successor"
+    ],
+    "mechanism": "A complete source carrier is reconstructed in an isolated GitHub Actions workspace, qualified, rendered into eight controlled views, and placed before an operator review board with no preselected decision."
+  },
+  "payload": {
+    "receipt": "PAYLOAD_RECEIPT.json",
+    "part_glob": "SOURCE_PAYLOAD.tar.xz.b64.part*",
+    "part_count": 8,
+    "expanded_member_count": 39,
+    "source_manifest": "SOURCE_MANIFEST.json"
+  },
+  "allowed_changed_paths": [
+    "manzanita-next/review/mw-habitat-live-photo-030-continuation/**",
+    ".github/workflows/manzanita-useful-plant-v30-continuation-review.yml"
+  ],
+  "prohibited_paths": [
+    "manzanita/**",
+    "index.html",
+    "README.md",
+    "CONTINUITY.md",
+    "PROJECT_ESTATE.json"
+  ],
+  "workflow_effect": "Verifies changed-path scope, validates and expands the multipart text carrier, installs an isolated browser runtime, reruns 202 source-carrier checks, 75 runtime checks, and 15 operator-console checks, then retains the measured review artifact. It writes no repository file and deploys nothing.",
+  "evidence_ledger": {
+    "tier": "source-replay plus generated browser evidence",
+    "venue": "draft pull request and isolated GitHub Actions runner",
+    "target": "Useful Plant v30 source-native vertical slice",
+    "upside": "independent reproducibility and operator-visible review surface",
+    "downside": "exact inherited parent and exact retained Plant media remain unmounted",
+    "failure_mode": "treating reconstructed or generated evidence as exact parent custody, retained-media identity, operator acceptance, or release authority"
+  },
+  "blocking_holds": [
+    "exact v29 archive not mounted",
+    "exact retained Plant origin SVG not mounted",
+    "exact retained cached Plant WebP not mounted",
+    "Household, Street, and Property rendered parent locks not executed against exact v29 bytes",
+    "operator visual acceptance absent"
+  ],
+  "operator_visual_acceptance": "ABSENT",
+  "release_authorized": false,
+  "merge_authorized": false,
+  "public_route_effect": "none",
+  "pages_deployment_effect": "none",
+  "external_effect": "none"
+}
