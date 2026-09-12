@@ -1,0 +1,421 @@
+{
+  "schema": "manzanita-works/capacity-core@0.1",
+  "release": {
+    "id": "mw-essential-capacity-v0.1.0",
+    "title": "Manzanita Works · Essential Capacity",
+    "subtitle": "Capacity Commons Ledger",
+    "version": "0.1.0",
+    "status": "public-safe operating candidate",
+    "date": "2026-08-18",
+    "purpose": "Prove one offer-to-fulfilled-need chain across time, tools, pilotage, projects, credits, evidence, and authority without making an external platform canonical."
+  },
+  "authority_boundary": {
+    "local_runtime": "May prepare, record, validate, export, and replay local capacity events.",
+    "external_effects_withheld": [
+      "No message is sent",
+      "No person is enrolled",
+      "No tool is checked out",
+      "No payment is charged",
+      "No credit is recognized outside the local packet",
+      "No organization is represented"
+    ],
+    "release_condition": "A named Manzanita Works steward must accept the specific external act in the authoritative source system."
+  },
+  "seats": [
+    {
+      "id": "member",
+      "label": "Member",
+      "function": "Publish a need or offer and request redemption.",
+      "may": [
+        "draft_intent",
+        "request_redemption",
+        "inspect_own_balance"
+      ],
+      "may_not": [
+        "accept_performance",
+        "issue_credit",
+        "claim_external_execution"
+      ]
+    },
+    {
+      "id": "contributor",
+      "label": "Contributor",
+      "function": "Commit capacity and record what was actually provided.",
+      "may": [
+        "draft_intent",
+        "accept_commitment",
+        "record_performance"
+      ],
+      "may_not": [
+        "accept_own_performance",
+        "issue_credit"
+      ]
+    },
+    {
+      "id": "pilot",
+      "label": "Pilot / Navigator",
+      "function": "Provide bounded hand-holding without replacing the domain professional.",
+      "may": [
+        "draft_intent",
+        "record_pilotage",
+        "prepare_handoff"
+      ],
+      "may_not": [
+        "exercise_unheld_professional_authority",
+        "issue_credit"
+      ]
+    },
+    {
+      "id": "steward",
+      "label": "Steward / Operator",
+      "function": "Accept evidence, reconcile external references, and issue credits under policy.",
+      "may": [
+        "record_external_reference",
+        "accept_performance",
+        "issue_credit",
+        "hold_effect"
+      ],
+      "may_not": [
+        "fabricate_external_custody",
+        "erase_ledger_history"
+      ]
+    },
+    {
+      "id": "successor",
+      "label": "Successor / Auditor",
+      "function": "Reconstruct the case, verify receipts, and carry the packet forward.",
+      "may": [
+        "run_qualification",
+        "export_packet",
+        "close_local_rehearsal"
+      ],
+      "may_not": [
+        "infer_missing_authority",
+        "rewrite_frozen_receipts"
+      ]
+    }
+  ],
+  "capacity_classes": [
+    {
+      "id": "physical_tool",
+      "label": "Physical tools",
+      "examples": [
+        "torque wrench",
+        "ladder",
+        "repair stand"
+      ],
+      "accounting": "custody and condition events",
+      "primary_authority": "MyTurn or later replacement adapter"
+    },
+    {
+      "id": "time",
+      "label": "Time",
+      "examples": [
+        "workshop shift",
+        "setup",
+        "repair session"
+      ],
+      "accounting": "accepted duration after performance"
+    },
+    {
+      "id": "skill",
+      "label": "Skills",
+      "examples": [
+        "bike repair",
+        "bookkeeping",
+        "translation"
+      ],
+      "accounting": "performed service with bounded scope"
+    },
+    {
+      "id": "pilotage",
+      "label": "Pilotage",
+      "examples": [
+        "onboarding",
+        "benefit navigation",
+        "service handoff"
+      ],
+      "accounting": "bounded navigation event and destination receipt"
+    },
+    {
+      "id": "knowledge",
+      "label": "Knowledge",
+      "examples": [
+        "template",
+        "procedure",
+        "training note"
+      ],
+      "accounting": "published or transferred reusable artifact"
+    },
+    {
+      "id": "space",
+      "label": "Space",
+      "examples": [
+        "meeting room",
+        "work bench",
+        "storage"
+      ],
+      "accounting": "reservation and actual use"
+    },
+    {
+      "id": "mobility",
+      "label": "Mobility",
+      "examples": [
+        "e-bike",
+        "cargo trip",
+        "pickup capacity"
+      ],
+      "accounting": "custody, route, or completed transport event"
+    },
+    {
+      "id": "money",
+      "label": "Money",
+      "examples": [
+        "suggested dues",
+        "reasonable rental",
+        "donation"
+      ],
+      "accounting": "processor receipt or authorized offline record",
+      "boundary": "Money is one capacity rail and does not define the commons."
+    }
+  ],
+  "agents": [
+    {
+      "id": "agent-manzanita-works",
+      "type": "organization",
+      "label": "Manzanita Works",
+      "standing": "constitutional owner",
+      "public_safe": true
+    },
+    {
+      "id": "agent-essential-tools",
+      "type": "program",
+      "label": "Essential Tools",
+      "standing": "physical-capacity program",
+      "public_safe": true
+    },
+    {
+      "id": "agent-contributor-01",
+      "type": "synthetic_person",
+      "label": "Contributor 01",
+      "standing": "public-safe rehearsal actor",
+      "public_safe": true
+    },
+    {
+      "id": "agent-pilot-01",
+      "type": "synthetic_person",
+      "label": "Pilot 01",
+      "standing": "public-safe rehearsal actor",
+      "public_safe": true
+    },
+    {
+      "id": "agent-steward-01",
+      "type": "synthetic_person",
+      "label": "Steward 01",
+      "standing": "public-safe rehearsal actor",
+      "public_safe": true
+    }
+  ],
+  "projects": [
+    {
+      "id": "project-essential-time-pilot",
+      "label": "Essential Time pilot",
+      "purpose": "Test collective contribution, acceptance, credit, and pilotage redemption.",
+      "state": "rehearsal",
+      "authority": "Manzanita Works steward"
+    },
+    {
+      "id": "project-ebike-workshop",
+      "label": "E-bike workshop",
+      "purpose": "Place the mobility project inside the same tool, time, skill, and space substrate.",
+      "state": "rehearsal",
+      "authority": "Project steward plus physical-custody source system"
+    }
+  ],
+  "resources": [
+    {
+      "id": "resource-workshop-facilitation",
+      "capacity_class": "skill",
+      "label": "Workshop facilitation",
+      "unit": "minute",
+      "state": "available",
+      "provider": "agent-contributor-01"
+    },
+    {
+      "id": "resource-pilotage",
+      "capacity_class": "pilotage",
+      "label": "Bounded service navigation",
+      "unit": "minute",
+      "state": "available",
+      "provider": "agent-pilot-01"
+    },
+    {
+      "id": "resource-torque-wrench",
+      "capacity_class": "physical_tool",
+      "label": "Torque wrench",
+      "unit": "use",
+      "state": "external-reference-only",
+      "provider": "agent-essential-tools",
+      "external_system": "myturn",
+      "external_id": "public-safe-placeholder"
+    }
+  ],
+  "intents": [
+    {
+      "id": "intent-workshop-need",
+      "kind": "need",
+      "project": "project-ebike-workshop",
+      "capacity_class": "skill",
+      "resource": "resource-workshop-facilitation",
+      "quantity": 120,
+      "unit": "minute",
+      "provider": null,
+      "receiver": "agent-manzanita-works",
+      "description": "Two hours of facilitation for a public-safe e-bike workshop rehearsal.",
+      "state": "open",
+      "visibility": "public-safe"
+    },
+    {
+      "id": "intent-workshop-offer",
+      "kind": "offer",
+      "project": "project-ebike-workshop",
+      "capacity_class": "skill",
+      "resource": "resource-workshop-facilitation",
+      "quantity": 120,
+      "unit": "minute",
+      "provider": "agent-contributor-01",
+      "receiver": null,
+      "description": "Contributor 01 can facilitate the workshop for two hours.",
+      "state": "open",
+      "visibility": "public-safe"
+    },
+    {
+      "id": "intent-tool-need",
+      "kind": "need",
+      "project": "project-ebike-workshop",
+      "capacity_class": "physical_tool",
+      "resource": "resource-torque-wrench",
+      "quantity": 1,
+      "unit": "use",
+      "provider": null,
+      "receiver": "agent-manzanita-works",
+      "description": "One torque-wrench use is needed for the workshop.",
+      "state": "open",
+      "visibility": "public-safe"
+    },
+    {
+      "id": "intent-tool-offer",
+      "kind": "offer",
+      "project": "project-ebike-workshop",
+      "capacity_class": "physical_tool",
+      "resource": "resource-torque-wrench",
+      "quantity": 1,
+      "unit": "use",
+      "provider": "agent-essential-tools",
+      "receiver": null,
+      "description": "Essential Tools may supply the tool if MyTurn confirms custody and availability.",
+      "state": "conditional",
+      "visibility": "public-safe"
+    },
+    {
+      "id": "intent-pilotage-offer",
+      "kind": "offer",
+      "project": "project-essential-time-pilot",
+      "capacity_class": "pilotage",
+      "resource": "resource-pilotage",
+      "quantity": 60,
+      "unit": "minute",
+      "provider": "agent-pilot-01",
+      "receiver": null,
+      "description": "Pilot 01 can provide one hour of bounded service navigation.",
+      "state": "open",
+      "visibility": "public-safe"
+    }
+  ],
+  "commitments": [],
+  "events": [
+    {
+      "id": "event-seed-published",
+      "event_type": "seed_admitted",
+      "timestamp": "2026-08-18T00:00:00Z",
+      "actor": "agent-manzanita-works",
+      "project": "project-essential-time-pilot",
+      "state": "recorded",
+      "authority": "public-safe release preparation",
+      "evidence": "evidence-public-safe-seed",
+      "receipt_id": "receipt-seed-001",
+      "note": "The rehearsal cartridge was admitted. No exchange or external effect occurred."
+    }
+  ],
+  "credits": {
+    "unit": {
+      "id": "essential-minute",
+      "label": "Essential Minute",
+      "basis": "one accepted minute of eligible contribution",
+      "cash_value": null,
+      "transferability": "within-policy only",
+      "legal_tender": false,
+      "statement": "Participation accounting, not cash, wages, legal tender, or an investment."
+    },
+    "accounts": [
+      {
+        "agent": "agent-contributor-01",
+        "issued": 0,
+        "redeemed": 0,
+        "balance": 0
+      },
+      {
+        "agent": "agent-pilot-01",
+        "issued": 0,
+        "redeemed": 0,
+        "balance": 0
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "id": "evidence-public-safe-seed",
+      "class": "operating illustration",
+      "description": "Synthetic actors and bounded events demonstrate the model without publishing member data.",
+      "standing": "admitted"
+    },
+    {
+      "id": "evidence-myturn-boundary",
+      "class": "adapter boundary",
+      "description": "The commons may retain an external MyTurn identifier or import receipt, but does not claim a checkout occurred without the MyTurn record.",
+      "standing": "admitted"
+    }
+  ],
+  "policies": [
+    {
+      "id": "policy-collective-clearing",
+      "rule": "Contribution and redemption need not close between the same two people.",
+      "control": "Credits are issued only after an accepted event and may be redeemed from the collective pool under policy."
+    },
+    {
+      "id": "policy-no-preperformance-credit",
+      "rule": "An intent or commitment is not a completed contribution.",
+      "control": "No Essential Minutes are issued before a steward accepts a performed event."
+    },
+    {
+      "id": "policy-adapter-custody",
+      "rule": "External platforms remain replaceable.",
+      "control": "MyTurn, payment processors, fundraising systems, and later components are referenced through adapter records; the canonical cross-domain relationships remain portable."
+    },
+    {
+      "id": "policy-purpose-firewall",
+      "rule": "Participation data may support access, scheduling, recognition, safety, and continuity.",
+      "control": "It may not silently become punitive scoring, eligibility denial, employment screening, insurance action, or unrelated reputation ranking."
+    },
+    {
+      "id": "policy-sensitive-services",
+      "rule": "Victim-service and other sensitive needs are not public dashboard material.",
+      "control": "The public release uses synthetic records. Real sensitive cases require private custody, minimum disclosure, and role-specific access."
+    },
+    {
+      "id": "policy-eligible-contribution",
+      "rule": "Credits do not excuse wage, licensing, safeguarding, or professional-duty requirements.",
+      "control": "A steward must classify the activity as eligible before credit issuance; legally compensable or licensed work remains subject to its governing rules."
+    }
+  ]
+}
