@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-15T17:10:25.330756Z",
+  "generated": "2026-09-16T17:10:52.424763Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -11,7 +11,7 @@
       "source": "Google News",
       "scope": "district",
       "ok": true,
-      "kept": 0
+      "kept": 1
     },
     {
       "source": "Holly Avenue News",
@@ -23,7 +23,7 @@
       "source": "LAist Education",
       "scope": "state",
       "ok": true,
-      "kept": 2
+      "kept": 3
     },
     {
       "source": "CA Dept of Education",
@@ -35,7 +35,7 @@
       "source": "Google News",
       "scope": "state",
       "ok": true,
-      "kept": 8
+      "kept": 11
     },
     {
       "source": "AUSD board schedule",
@@ -46,8 +46,32 @@
   ],
   "items": [
     {
+      "id": "5127e9da7a3d",
+      "source": "LAist Education",
+      "title": "California K-12 schools with military-style rifles don\u2019t always disclose them as law requires",
+      "summary": "Nine K-12 districts in California with these weapons have not been routinely reporting their inventories, renewing their policies, or holding public forums.",
+      "link": "https://laist.com/news/education/california-k-12-schools-military-style-rifles",
+      "published": "Wed, 16 Sep 2026 12:00:00 GMT",
+      "priority": "normal",
+      "scope": "state",
+      "first_seen": "2026-09-16",
+      "bills": []
+    },
+    {
+      "id": "3b19c09339d0",
+      "source": "Ottumwa Courier",
+      "title": "California K-12 schools with military-style rifles don\u2019t always disclose them as law requires",
+      "summary": "",
+      "link": "https://news.google.com/rss/articles/CBMikgJBVV95cUxPQWdQUEZ6b1VJVHFueHFEeW82X0hIaDBHcjN5RlJiM2dYX0pWVWp4UmRGT0x0YXJpcUZHRmtWQ1I1NzFPNmNJZUE0cjFtN091UjZqT1luNExackZpMDhEOWl2TGp3QmlCN3V1cUNYQ1JpN3lGdXl3NTNfWWdXMVlianFtZVN2Z3lRUG56VWZDWTlQZ2syQjlaajJzWDlOMGQ1cElXRTFraUNHUGlrTVZWLVFhS3JDd1Y4dXprRFZ0YjBZcHZVV0pEdWdhb0lyZl9iQ2JDTjd5UjJMTkF2TEJUNDhpak4zWWlDbGgxMVN1OVEzS3Q1RVhKcGtkczZmY2Rfcld3bjZkaF9nb1B6dXhwNGtB?oc=5",
+      "published": "Tue, 15 Sep 2026 18:55:38 GMT",
+      "priority": "normal",
+      "scope": "state",
+      "first_seen": "2026-09-16",
+      "bills": []
+    },
+    {
       "id": "3369f8dbb0e9",
-      "source": "CalMatters",
+      "source": "calmatters.org",
       "title": "California K-12 schools with military-style rifles don\u2019t always disclose them as law requires",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQRVQ1dVVhTFBwQXVCN0hyQkw1ZlBuemhHUlE4aTlaWl94RXdxODRzMDBXSHoyLUxaRkxKTmJhZkVGRnlWOWFnRVRzTkhtNmZpUmRPOGNJT016TFNEZks0MC14c19nUTFyTjFIQXlGVDRzTkh2NXdnUVZWbUJZQVRlcURCbHI2ZlkwSVEwVQ?oc=5",
@@ -107,7 +131,7 @@
     },
     {
       "id": "1be460414e05",
-      "source": "edsource.org",
+      "source": "EdSource",
       "title": "UPDATE: Nearly 300,000 K-12 students are homeless in California, UCLA report says",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOMXY5WlloRlhwWGlmZjlKeWtwVHNMaTV5MzJJWkxRYVBuV2NYUXNCSmc2dWZHVklBbndoMmhtSFhRN2FyVVFFUkpLdVNXT01XSlpFUE8zTlBQazlzem5PZHBSYjJ1eERqM3Nzb2hLOXlKeUdKdGNBa0Q2OGlNd25EMnpQeVlpbm5hRlJkY3Q3MHNiRTVfekR3N3JtLUVKdTZaMmc?oc=5",
@@ -203,7 +227,7 @@
     },
     {
       "id": "20629a23c3ca",
-      "source": "gov.ca.gov",
+      "source": "California State Portal | CA.gov",
       "title": "As school begins, California launches universal Transitional Kindergarten, free meals for EVERY student and historic supports for kids",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxOSEtyTE5Da0hOcURIME5saWJ1dDE2Y2RvV1FRUHVnLWRuVU05ZHZNX1N3QV8tR01oRHBhSE1oY0lRSG1WUXVxVnlGakQtbDZGa0ZqLS1zeVlpODd5Q1N1dTdyMXhUbUVrZmRjWFhsRUxZaDY4RXJFUzRxemdqR2lIOGlpOWhXbzNUdkF4d2NNMTFCMWR1dUw0dEdhNjdUYTluQnhub29KdHY4bDVCVTR0aHhIZUtDbWhRRlBBZF9YVmNCLXN0aEZyUnQwVzQtalE4dDdNNWVvQlBXZzF0Y2UyazBNODQ5WmptS3RpdllkVGJ6bmpSaklUMUZ0QQ?oc=5",
@@ -263,7 +287,7 @@
     },
     {
       "id": "0d842234e85a",
-      "source": "CalMatters",
+      "source": "calmatters.org",
       "title": "Californians voted to spend $1 billion on K-12 arts. Why are schools returning the money?",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1tNFdSLVRKSW9PdS1zSzBIczVzT0ZhYTZ1MmlLMXVfVkNDTF9JRkRCeUx4WW9DcFQ5SF8tZUU5S3JGVWU4bm5pRElLX0FWaVVMV1JmNHpENVdYNW8tUjhXV2VwQmdOMWdjeVE5Ukp2dXlxNVA2?oc=5",
@@ -517,7 +541,7 @@
     },
     {
       "id": "08efcddde77f",
-      "source": "Local News Matters",
+      "source": "localnewsmatters.org",
       "title": "New California law ensures K-12 students are being taught by humans rather than AI",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNWjFrZTZXdkluQTBZcU9aSmI3VE52bzlwQnM4QVhFWjJGVC1obGdndGZVczdFa20td3FkeDVOWXE3WVZab1JuTGJhdk9mRmN6UE9YWHMza19YT2p5N1lwWHA5SzdEMDVNdEVGR1lrdE1jWVBQUC0wOEVhSUNENUE1U2dwZmRoWDVWek5iSUZsWnZRX0xOMEQzcU9ZR1U2SFo1MGsySWU4RU1GUHZWc0hQaFJvdndGeHlyYWw2YjZENjc?oc=5",
@@ -577,7 +601,7 @@
     },
     {
       "id": "3b023b2dc9a8",
-      "source": "gov.ca.gov",
+      "source": "California State Portal | CA.gov",
       "title": "Governor Newsom signs legislation enacting long-recommended changes to improve TK-12 school governance in California",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNNTJRN3ZRajVKWDZSWHhmRUNaUnFpQWdDZGVxS2JLb0NVVUxDX181TkVFdTc2cnVfZUFNMGFkcmZ4LU9CTXBSSHdPR09HamU2SWlsUmo2RmZDd1dya0lVeDlEUTZWYXhGUUVlQTZjMGpodmRvM0h4bC1vYndtUEx6cVIxSVNUUTVBb2wxWHY2VzhqVkM5Q1N2SzluaGE3bW1kX3h5YnMyZDB4c3FWdjBGbHdNUWdocTJ3MWFDX3RVai1pSF95amhDbTNWNnJDZllUazd3S0RaUk1IT2c5NkFnaFowcVI2UQ?oc=5",
@@ -601,7 +625,7 @@
     },
     {
       "id": "6d9a5e116545",
-      "source": "gov.ca.gov",
+      "source": "California State Portal | CA.gov",
       "title": "Governor Newsom signs historic investments to bolster support for special education",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPRTBWQ2pIZERyX2ZjQUZzdy1yWks2Z3BjRU1TRllmQndkTkRkbFJ2eURyZ2h5VUFvV0xMQlRqdGh2S1p6czFkeWZnTnpvMXFvWFRkRTUzN3dwMTJSR2pJdFlKWGRWRFdqSVZoRkJnMVhyQWRfakFDb3QzN1BuSFBDT3ZKYi1uTnVma09FMlZDVTdlaFhBbDJPTTZLY2EtVkhVR2Q2aXp0Vlcwa3FMbldzYmc5R3FNSngtYXc?oc=5",
