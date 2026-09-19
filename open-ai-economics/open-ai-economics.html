@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Independent public-source research on open and closed AI economics, with an editable cost-per-successful-task calculator."><title>Who captures the value of open AI? | Free research edition</title><style>
+:root { --ink:#14212d; --muted:#53616e; --accent:#155e75; --line:#d7e0e5; --paper:#fff; --wash:#f3f7f9; }
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:#edf2f4;font-family:Georgia,'Times New Roman',serif;font-size:18px;line-height:1.63}a{color:var(--accent);text-underline-offset:3px}a:hover{color:#093e4b}button,input{font:inherit}button,a,input{touch-action:manipulation}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #ab6217;outline-offset:3px}.topbar{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);background:rgba(255,255,255,.97);font-family:Arial,sans-serif;font-size:13px}.top-inner{max-width:1080px;margin:auto;padding:15px 30px;display:flex;gap:20px;align-items:center;justify-content:space-between}.mark{font-weight:800;letter-spacing:.09em;text-transform:uppercase}.nav{display:flex;gap:19px;align-items:center;flex-wrap:wrap}.nav a{text-decoration:none}.nav button{background:var(--ink);color:#fff;border:0;border-radius:5px;padding:7px 12px;cursor:pointer;font-size:12px}main{max-width:1080px;margin:36px auto;background:var(--paper);box-shadow:0 8px 32px #20334a0d;padding:64px 76px 55px;border-top:5px solid var(--accent)}article>h1{font-family:Arial,sans-serif;font-size:clamp(34px,5vw,55px);font-weight:750;line-height:1.07;letter-spacing:-.038em;margin:0 0 20px;max-width:780px}article>h2:first-of-type{font-size:22px;line-height:1.4;font-weight:400;color:var(--muted);margin:0 0 19px;font-family:Georgia,serif}article>p:first-of-type{font-family:Arial,sans-serif;letter-spacing:.02em;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:28px}h2,h3{font-family:Arial,sans-serif;line-height:1.25;break-after:avoid}h2{font-size:27px;margin:44px 0 20px}h3{font-size:25px;margin:44px 0 20px;letter-spacing:-.018em;scroll-margin-top:90px}p{margin:0 0 18px}strong{font-weight:700}hr{border:0;border-top:1px solid var(--line);margin:38px 0}.table-wrap{overflow-x:auto;margin:22px 0 26px;max-width:100%}table{border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:14px;line-height:1.5}th{font-weight:700;background:var(--wash);text-align:left}th,td{padding:12px 13px;border-top:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:1px solid var(--line)}td:first-child{font-weight:600}article a[href^='#s']{font-family:Arial,sans-serif;font-size:.72em;vertical-align:super;text-decoration:none;white-space:nowrap;margin-left:2px}article a[id^='s']{scroll-margin-top:85px}#sources~p{font-size:14px;line-height:1.5}#sources{border-top:1px solid var(--line);padding-top:27px}.calc{font-family:Arial,sans-serif;margin-top:45px;padding:30px;background:var(--wash);border:1px solid var(--line);border-radius:8px;scroll-margin-top:80px}.calc h2{margin:0 0 12px;font-size:28px}.calc p{font-size:14px;line-height:1.55}.eyebrow{text-transform:uppercase;letter-spacing:.09em;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:12px}.shared-inputs,.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:18px 0}.panel{background:white;border:1px solid var(--line);border-radius:5px;padding:21px}.panel h3{font-size:18px;margin:0 0 18px}.field{margin-bottom:15px}.field label{display:block;font-size:13px;font-weight:700;line-height:1.4;margin-bottom:5px}.field small{display:block;font-size:12px;line-height:1.4;color:var(--muted);margin-top:5px}.field input{max-width:100%;width:100%;font-size:17px;font-variant-numeric:tabular-nums;color:var(--ink);background:#fff;border:1px solid #95a5b1;border-radius:4px;padding:10px 11px}.result{margin:20px 0 0;padding-top:16px;border-top:1px solid var(--line)}.result .value{font-size:31px;line-height:1.2;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}.result .unit{font-size:12px;color:var(--muted);margin:3px 0 14px}.status{font-size:12px;font-weight:700;line-height:1.5;padding:7px 9px;display:inline-block;border:1px solid var(--line);border-radius:3px}.pass{background:#edf7f2;color:#21593e}.fail{background:#fff1e3;color:#8b410d}.calc-note{background:#fff;padding:18px 20px;border-left:3px solid var(--accent);font-size:14px;line-height:1.55}.error{color:#a21b24;font-size:14px;font-weight:700}.buttons{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 14px}.buttons button{font-size:13px;cursor:pointer;border:1px solid var(--ink);border-radius:4px;padding:9px 13px;background:white;color:var(--ink)}.buttons .primary{background:var(--ink);color:#fff}.smallprint{font-family:Arial,sans-serif;font-size:12px;color:var(--muted);line-height:1.5}.bottom{border-top:1px solid var(--line);padding-top:20px;margin-top:32px;display:flex;justify-content:space-between;gap:20px}.print-only{display:none}noscript p{color:#8b410d;border:1px solid #c58e65;padding:14px}blockquote{border-left:3px solid var(--accent);margin:20px 0;padding-left:20px}
+@media(max-width:700px){body{font-size:17px;line-height:1.6}.top-inner{padding:12px 18px;display:block}.nav{gap:13px;margin-top:9px;font-size:12px}.mark{font-size:11px}main{margin:0;border-top:0;padding:35px 22px 32px;box-shadow:none}article>h1{font-size:39px}article>h2:first-of-type{font-size:20px}h3{font-size:23px;margin-top:34px}.calc{padding:20px 15px;margin-left:-5px;margin-right:-5px}.shared-inputs,.cols{grid-template-columns:1fr;gap:12px}.panel{padding:17px}table{font-size:12px;min-width:560px}th,td{padding:10px}.bottom{display:block}.result .value{font-size:29px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{@page{size:A4;margin:19mm 19mm 20mm}body{background:white;font-size:10.35pt;line-height:1.48;color:#162431}.topbar,.calc,.bottom,.screen-only{display:none!important}.print-only{display:block}main{margin:0;padding:0;border:0;max-width:none;box-shadow:none}article>h1{font-size:31pt;line-height:1.08;letter-spacing:-.025em;margin:0 0 12pt;max-width:90%}article>h2:first-of-type{font-size:14pt;line-height:1.4;margin-bottom:12pt}article>p:first-of-type{font-size:8.5pt;padding-bottom:14pt;margin-bottom:18pt}p{margin:0 0 8.5pt;orphans:3;widows:3}h3{font-size:15pt;line-height:1.22;margin:22pt 0 10pt;break-after:avoid-page}h2{font-size:18pt;margin:24pt 0 12pt;break-after:avoid-page}table{font-size:8.5pt;line-height:1.4;min-width:0}th,td{padding:7pt 7pt}.table-wrap{overflow:visible;break-inside:avoid;margin:13pt 0 15pt}a{color:#155e75;text-decoration:none}hr{display:none}#provenance{break-before:page}#sources{break-before:page;border:0;padding-top:0;margin-top:0}#sources~p{font-size:8.6pt;line-height:1.4;margin-bottom:9pt;break-inside:avoid}#sources~a{display:block}article a[href^='#s']{font-size:.74em} }
+</style></head>
+<body><header class="topbar"><div class="top-inner"><div class="mark">Open-model economics / Free Research</div><nav class="nav" aria-label="Document navigation"><a href="#economics">Economics</a><a href="#control">Control</a><a href="#calculator">Calculator</a><a href="#sources">Sources</a><button type="button" onclick="window.print()">Print / PDF</button></nav></div></header>
+<main><article><h1>Who captures the value of open AI?</h1>
+<h2>A public-source briefing on model choice, operating control and inference economics</h2>
+<p><strong>Free edition · 19 September 2026 · Version 1.0</strong></p>
+<p>Open weights expand the set of suppliers capable of serving a workload. Economic value then depends on who can deliver verified outcomes at lower total cost, who controls the customer relationship, and who retains bargaining power as alternatives improve. A downloadable model gives the buyer an option. Engineering, contracts and operating capacity determine whether that option is usable.</p>
+<p>The practical unit of analysis is the <strong>workload under a defined quality, latency and security requirement</strong>. This briefing develops that unit into a cost model, a supplier-economics test and an exit test. Observations from public sources are cited; the economic mechanisms are analysis; all calculator defaults are explicitly hypothetical.</p>
+<h3>1. Read the denominator before declaring a winner</h3>
+<p>Vercel's latest displayed observation, September 18, reports <strong>78.4% open-weight token share</strong> on AI Gateway. Its definition concerns downloadable weights. On the same observation, DeepSeek V4.1 Flash accounts for <strong>59.3% of tokens, 18.8% of requests and 5.1% of spend</strong>. Those are three different measures of the same gateway's activity. <a href="#s2">2</a></p>
+<p>Vercel's documentation says the figures beside models default to the most recent day, even when the chart displays a longer window. The published data are anonymized daily aggregates without absolute volumes or customer identities. A three-month chart therefore does not make its displayed end-point shares three-month averages. <a href="#s3">3</a></p>
+<p>The economic inference is limited but useful: substantial token throughput can coexist with a much smaller share of expenditure. Workload length, prices, caching, tokenization and application mix could contribute; these aggregates do not identify their individual effects. They also leave unanswered whether traffic is broadly distributed across customers or concentrated in a few large workloads.</p>
+<p>A forecast about the three best models requires an additional measurement system: a deadline, an openness definition, a frozen evaluation suite, comparable inference budgets, uncertainty estimates and rules for handling specialized models. Usage, frontier capability and profitability are separate hypotheses. A supplier can lead one measure and lag another without a contradiction.</p>
+<p>For a buyer, the decisive question is narrower: which model completes this workload within its operating requirements, and what does each accepted result cost? A broad leaderboard helps generate candidates; a workload evaluation supplies the purchasing evidence.</p>
+<h3>2. Separate rights, capability and deployment</h3>
+<p>The Open Source Initiative's definition requires freedoms to use, study, modify and share, supported by parameters, code and sufficiently detailed training-data information. Downloading weights alone establishes less. A buyer should inspect the actual license and associated materials rather than infer permission from a marketing category. <a href="#s4">4</a></p>
+<p>Companies can also participate in both distribution models. OpenAI released the gpt-oss models under Apache 2.0 in August 2025 while continuing its hosted model business. Google's Model Garden offers Google, open and third-party models. These are documented product choices, not evidence that either company has committed to a permanent single-category strategy. <a href="#s5">5</a> <a href="#s6">6</a></p>
+<p>Capability is workload-specific. Stanford's 2026 AI Index describes markedly uneven performance across different tasks. For procurement, that means measuring the exact version, reasoning budget, tool environment, context length, quantization and retry policy you intend to operate. A historical gap on an aggregate benchmark does not specify the gap on your production tasks. <a href="#s14">14</a></p>
+<p>Deployment adds another independent axis:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Deployment</th>
+<th>What the buyer gains</th>
+<th>What the buyer must still verify</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Proprietary hosted API</td>
+<td>A managed service with provider-maintained models</td>
+<td>Contract, retention, capacity, price changes and a workable fallback</td>
+</tr>
+<tr>
+<td>Open weights on a specialist platform</td>
+<td>A potential alternative host for the same weights</td>
+<td>Portability of tuning, runtime, state and production behavior</td>
+</tr>
+<tr>
+<td>Open weights in a buyer-managed cloud environment</td>
+<td>Greater control of the deployment and data path</td>
+<td>Cloud dependencies, administrator access, isolation and operating costs</td>
+</tr>
+<tr>
+<td>Open weights on locally operated infrastructure</td>
+<td>Direct control of the local serving environment</td>
+<td>Staffing, hardware supply, software updates, security and recovery</td>
+</tr>
+</tbody>
+</table></div>
+<p>This table is an analytical checklist, not a universal ranking. Baseten's advertised managed, self-hosted and hybrid options illustrate why model access and operating location must be recorded separately. OpenAI's endpoint documentation similarly separates model access from data-control settings. <a href="#s8">8</a> <a href="#s10">10</a></p>
+<p>A substitution claim becomes credible when the buyer can change supplier while preserving acceptable behavior. Copying the weight files is only one step in that test.</p>
+<h3 id="economics">3. Calculate the cost of a verified result</h3>
+<p>Use a common accounting horizon and define success before testing. Let <strong>N</strong> be submitted jobs, <strong>F</strong> fixed costs within that horizon, <strong>v</strong> the fully loaded variable cost per submitted job, and <strong>p</strong> the end-to-end fraction of jobs that pass the agreed validation and latency requirements. Include the complete retry policy in both costs and measured success.</p>
+<p><strong>Cost per accepted job = (F + N × v) / (N × p)</strong></p>
+<p>The numerator includes unsuccessful attempts, tool calls, review, orchestration, storage and operating labor. For owned hardware, use a consistent allocation for depreciation or economic capital cost. For rented hardware, avoid adding the same hardware expense again under depreciation. Keep the horizon identical across alternatives and show which costs are incremental versus shared.</p>
+<p>The following example uses invented inputs to expose the mechanism. It is neither a vendor quote nor a model benchmark.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Hypothetical configuration</th>
+<th style="text-align:right">Fixed cost per horizon</th>
+<th style="text-align:right">Variable cost per submitted job</th>
+<th style="text-align:right">Verified success fraction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: managed API</td>
+<td style="text-align:right">$0</td>
+<td style="text-align:right">$0.10</td>
+<td style="text-align:right">95%</td>
+</tr>
+<tr>
+<td>B: buyer-operated open model</td>
+<td style="text-align:right">$12,000</td>
+<td style="text-align:right">$0.03</td>
+<td style="text-align:right">85%</td>
+</tr>
+</tbody>
+</table></div>
+<p>At <strong>100,000 jobs</strong>, A costs $10,000 and produces 95,000 accepted jobs, or <strong>$0.1053 per accepted job</strong>. B costs $15,000 and produces 85,000 accepted jobs, or <strong>$0.1765</strong>. At <strong>1,000,000 jobs</strong>, the corresponding costs are <strong>$0.1053</strong> and <strong>$0.0494</strong>, provided the assumed cost and success functions remain unchanged.</p>
+<p>The mathematical crossover occurs at approximately <strong>201,770 submitted jobs</strong>. That is a conditional result of the assumptions, not a forecast about the utilization or staffing capacity of a real deployment. Capacity expansion, burstiness, queueing, new hardware and operational headcount can change both the fixed and variable terms.</p>
+<p>There is also a hard acceptance constraint. With a required success rate of 90%, B is ineligible at either volume, regardless of its unit cost. Normalizing by accepted jobs does not erase failed demand, compensate users for errors, or make different service levels interchangeable. A fallback route needs its own measured costs, conditional success rates and latency.</p>
+<p>The accompanying browser calculator exposes every input, shows the acceptance gate and exports its assumptions. It does not infer correlated retries, failure losses, capacity steps or quality from prices. Its role is to make the arithmetic inspectable before a real workload supplies the evidence.</p>
+<h3 id="margins">4. Test where the supplier can retain a margin</h3>
+<p>An increase in qualified suppliers gives buyers additional negotiating options. That can pressure the owner of a model, the company hosting it, or both. The beneficiaries may include customers through lower prices, and no accounting identity assigns all the savings to the serving platform.</p>
+<p>A serving business can charge for genuine work: improving throughput at a latency target, handling bursts, managing capacity, securing deployments and reducing the customer's operating burden. Fireworks publishes both token-based serverless billing and GPU-time deployment billing. Baseten offers infrastructure spanning its managed environment and customer-controlled deployments. Those offerings participate in related markets with different cost structures. <a href="#s10">10</a> <a href="#s11">11</a></p>
+<p>Large incumbent clouds also have access to open-model demand. Google's documented model catalog is enough to establish that downloadable weights do not reserve the hosting opportunity for a particular group of newer providers. Which supplier retains value depends on relative cost, deployment requirements, customer distribution, utilization and contract terms. <a href="#s6">6</a></p>
+<p>A financial example shows why revenue growth needs a capital-accounting companion. For Q2 2026, Nebius reported <strong>$582.3 million consolidated revenue</strong>, <strong>$236.2 million adjusted EBITDA</strong>, and a <strong>$190.4 million net loss from continuing operations</strong>. Its operating cash flow was <strong>$2,246.1 million</strong>, while purchases of property, equipment and intangible assets were <strong>$5,657.4 million</strong>. Subtracting the latter from the former gives <strong>negative $3,411.3 million</strong>. <a href="#s12">12</a></p>
+<p>These are unaudited group figures, including businesses beyond inference. The cash-flow subtraction is our calculation, not a company-reported free-cash-flow measure. Growth investment can support future earnings; the figures alone establish neither investment failure nor sustainable long-term returns. They establish the need to track capital deployment alongside growth. <a href="#s12">12</a></p>
+<p>For an infrastructure thesis, request realized economics by hardware generation and workload cohort: contracted and achieved utilization, revenue per capacity unit, operating cost, refresh assumptions, customer concentration, cancellation rights and capital needed to serve renewals. For a software serving layer, ask how much of gross profit survives its underlying cloud bill, support requirements and competitive repricing.</p>
+<p>Token growth also leaves spending growth unresolved. Total spend depends on the number of jobs, compute consumed per job and price per compute unit. Lower prices may expand demand, while efficiency lowers the resources needed for each completed task. The resulting revenue and margin depend on the sizes of those effects. A rising token counter supplies only part of the equation.</p>
+<h3 id="control">5. Protect proprietary knowledge at the actual data boundary</h3>
+<p>A request containing business context creates a data-handling exposure. The exposure depends on the receiver, the processing path, the permitted uses, retention and access controls. It does not automatically transfer ownership of the business's knowledge or establish that the provider trains on it.</p>
+<p>OpenAI states that business/API data are not used for training by default. Anthropic states the same default for its commercial inputs and outputs, with exceptions such as explicitly submitted feedback. These are published product policies; they are not independent audits of implementation, and consumer offerings have separate terms. <a href="#s7">7</a> <a href="#s9">9</a></p>
+<p>Retention is a different question. OpenAI's documentation separately describes abuse-monitoring logs, application state and eligibility or limitations for retention controls. The exact endpoint, features and settings matter. Buyers should preserve the applicable policy and contract version and test that the deployed configuration matches the intended boundary. <a href="#s8">8</a></p>
+<p>The same scrutiny applies to a third party hosting open weights. Model portability does not make prompts private from the operator processing them. A locally controlled deployment can reduce some external exposures, while assigning more responsibility for patching, identity, secrets, logs and recovery to its operator. Evaluate the actual data flow rather than using the license as a security certificate.</p>
+<p>An enterprise should separately control its documents, retrieval permissions, task definitions, evaluation examples, correction history and action-approval rules. Treat the model as one dependency behind that control structure. To verify an exit path, export those assets, revoke the old provider's credentials and run a representative workload through another approved route. Record the engineering time, residual dependencies and behavioral regressions.</p>
+<p>Routing can help, provided the router is evaluated too. RouteLLM, submitted in 2024 and revised in 2025, supplies research evidence for learned routing between stronger and weaker models on its tested benchmarks. It does not promise the same savings on a new customer workload. Measure routing mistakes, privacy restrictions, evaluation cost and fallback behavior before assigning value to a multi-model design. <a href="#s13">13</a></p>
+<p>The operational asset is the ability to make and verify a change. A diagram with several model logos demonstrates an intended architecture; a successful migration with preserved controls demonstrates an exercised option.</p>
+<h3>6. Run a decision process that can reject a preferred narrative</h3>
+<p>Start with a defined workload distribution, including difficult and high-cost cases. Freeze a held-out evaluation set, access permissions, retry budgets and a validation rubric. Choose sample sizes to support the desired uncertainty bounds. Measure candidates on matched jobs where possible, and report the uncertainty around both cost and success rather than publishing a single favorable average.</p>
+<p>Separate shadow evaluation from production authority. A candidate can observe or propose before it receives permission to take external actions. Establish stop conditions for data leakage, unauthorized actions, latency violations and unacceptable error rates. A low price cannot waive a hard constraint.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Evidence required</th>
+<th>Condition that changes the decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shift a workload to open weights</td>
+<td>Matched-task results meeting quality and latency floors, including review and retry costs</td>
+<td>Savings disappear under real load, or the candidate misses a required constraint</td>
+</tr>
+<tr>
+<td>Pay a frontier-model premium</td>
+<td>Measured additional successful work or reduced downstream loss worth more than the premium</td>
+<td>A qualified alternative supplies the same useful outcome at lower full cost</td>
+</tr>
+<tr>
+<td>Commit to a hosting platform</td>
+<td>Capacity, reliability, security controls and economics under an actual contract</td>
+<td>Repricing, congestion or retained dependencies invalidate the assumed advantage</td>
+</tr>
+<tr>
+<td>Claim meaningful portability</td>
+<td>A completed export and migration with known time, cost and regressions</td>
+<td>Critical state, permissions or behavior remain tied to the original provider</td>
+</tr>
+</tbody>
+</table></div>
+<p>This is a proposed decision protocol. It is not a claim that any named provider has passed these tests. After every material model, price or infrastructure change, rerun the affected slices. Preserve failures and superseded configurations so that a later result can be reconciled to an earlier claim.</p>
+<p>For an investment narrative, preregister what would count as confirmation. More open-model traffic would support adoption. Improving retained unit margins and returns on deployed capital would support value capture by a supplier. Successful switches with lower total cost would support buyer bargaining power. The three findings require different evidence.</p>
+<h3>7. Keep the commercial ledger separate from the evidence ledger</h3>
+<p>Subscription growth is useful feedback about demand for a paid bundle. Price also selects for willingness and ability to pay. Inferring analytical accuracy from those observations requires an additional causal argument: acquisition channels, audience composition, access benefits and churn can change without a corresponding change in factual quality.</p>
+<p>A research product can publish dated claims, named sources, explicit assumptions, forecasts with terminal conditions, alternative explanations and a correction history. Readers can then evaluate what the work establishes independently of its price. Free material deserves the same scrutiny, and a free substitute proves its value through the work it enables.</p>
+<p>The defensible open-AI thesis is therefore conditional: downloadable weights can increase buyer choice when licenses permit the intended use, models meet the workload requirements, and a buyer can actually operate or move the deployment. Suppliers earn durable returns only to the extent that their remaining advantages survive that choice. An operating plan should preserve the evidence and exit paths needed to test both sides.</p>
+<hr />
+<h2 id="provenance">Provenance and limitations</h2>
+<p><strong>Scope.</strong> This is independent analysis prepared from public primary sources on September 19, 2026. Social Capital's current public preview identified the open-versus-closed AI topic and advertised a 99-page subscriber report. The paid deck was not accessed or reproduced, and this briefing does not purport to summarize or assess its unseen contents. <a href="#s1">1</a></p>
+<p><strong>Evidence boundary.</strong> Gateway figures describe one service on a specified day. Vendor documentation establishes stated offerings and policies, not independent verification of their implementation. The Nebius figures are unaudited, consolidated and historical. The routing paper supports a method under its evaluated conditions. Derived mechanisms are analysis; the numerical cost example and every calculator default are illustrative assumptions.</p>
+<p><strong>Operational boundary.</strong> No model evaluation, infrastructure benchmark, penetration test or customer-data audit was performed for this briefing. The calculator normalizes assumed cost by assumed verified success; it does not measure either. A real purchasing decision also needs workload-specific error costs, capacity, contracts and security review. No named company's private margins or valuation have been estimated.</p>
+<p><strong>Distribution.</strong> This original briefing is provided free to read and share. The browser edition has no account requirement, analytics, external scripts or live-data dependency. Source links leave the document only when a reader chooses to open them. Referenced publications retain their own rights. Vercel's extracted leaderboard observations are attributed to Vercel under its stated CC BY 4.0 data license.</p>
+<h2 id="sources">Sources</h2>
+<p>All sources were checked on September 19, 2026. Dates below distinguish publication dates from access dates. Numbers in the text point to the source entry, whose scope records the limit of its use.</p>
+<p><a id="s1"></a></p>
+<p><strong>[1] Social Capital / Chamath Palihapitiya. <a href="https://research.socialcapital.com/p/open-vs-closed" target="_blank" rel="noopener noreferrer">Deep Dive: The Open vs. Closed AI Race (public preview)</a>.</strong> 2026-09-18. Identifies the topic and advertised subscriber report. The paid PDF was not accessed; this briefing makes no claim about its full contents.</p>
+<p><a id="s2"></a></p>
+<p><strong>[2] Vercel. <a href="https://vercel.com/ai-gateway/leaderboards/models" target="_blank" rel="noopener noreferrer">AI Gateway model leaderboards</a>.</strong> Latest displayed observation: 2026-09-18. AI Gateway traffic only. Open weights 78.4%; DeepSeek V4.1 Flash token share 59.3%, request share 18.8%, spend share 5.1%. Shares do not measure global market share or model capability. Vercel licenses its leaderboard data CC BY 4.0.</p>
+<p><a id="s3"></a></p>
+<p><strong>[3] Vercel. <a href="https://vercel.com/docs/ai-gateway/leaderboards" target="_blank" rel="noopener noreferrer">AI Gateway Leaderboards: methodology and exports</a>.</strong> Accessed 2026-09-19. States that displayed model/lab shares default to the most recent day, and that data are anonymized daily aggregates without absolute volumes or customer identifiers.</p>
+<p><a id="s4"></a></p>
+<p><strong>[4] Open Source Initiative. <a href="https://opensource.org/ai/open-source-ai-definition" target="_blank" rel="noopener noreferrer">The Open Source AI Definition, version 1.0</a>.</strong> Version 1.0; accessed 2026-09-19. Use, study, modify and share freedoms; parameters, code and sufficiently detailed training-data information. This is OSI's definition, not a claim that every vendor uses the term consistently.</p>
+<p><a id="s5"></a></p>
+<p><strong>[5] OpenAI. <a href="https://openai.com/index/introducing-gpt-oss/" target="_blank" rel="noopener noreferrer">Introducing gpt-oss</a>.</strong> 2025-08-05. Historical example of a provider offering both hosted proprietary models and Apache-2.0-licensed open weights. No current model-performance ranking is inferred.</p>
+<p><a id="s6"></a></p>
+<p><strong>[6] Google Cloud. <a href="https://cloud.google.com/model-garden" target="_blank" rel="noopener noreferrer">Model Garden</a>.</strong> Accessed 2026-09-19. Documents access to Google, open and third-party models. Establishes availability, not independently measured quality or provider margins.</p>
+<p><a id="s7"></a></p>
+<p><strong>[7] OpenAI. <a href="https://openai.com/enterprise-privacy/" target="_blank" rel="noopener noreferrer">Enterprise privacy at OpenAI</a>.</strong> Updated 2026-01-08. Business/API data are not used to train models by default. This is a stated policy, not an audit of implementation or a universal no-retention promise.</p>
+<p><a id="s8"></a></p>
+<p><strong>[8] OpenAI. <a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noopener noreferrer">Data controls in the OpenAI platform</a>.</strong> Accessed 2026-09-19. Distinguishes training use, abuse-monitoring retention, application state and eligibility/limitations of retention controls. Exact endpoint and feature selection matter.</p>
+<p><a id="s9"></a></p>
+<p><strong>[9] Anthropic. <a href="https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training" target="_blank" rel="noopener noreferrer">Is my data used for model training?</a>.</strong> 2026-08-18. No training on commercial inputs/outputs by default, with exceptions including explicitly supplied feedback. Consumer plans are described separately.</p>
+<p><a id="s10"></a></p>
+<p><strong>[10] Baseten. <a href="https://www.baseten.co/" target="_blank" rel="noopener noreferrer">Inference platform and deployment options</a>.</strong> Accessed 2026-09-19. Managed, single-tenant, self-hosted/VPC and hybrid options. Vendor statements establish offered configurations; they do not independently verify reliability or cost advantages.</p>
+<p><a id="s11"></a></p>
+<p><strong>[11] Fireworks AI. <a href="https://fireworks.ai/pricing" target="_blank" rel="noopener noreferrer">Pricing</a>.</strong> Accessed 2026-09-19. Per-token serverless and GPU-time on-demand billing. No live vendor rates are used as defaults in the illustrative calculator.</p>
+<p><a id="s12"></a></p>
+<p><strong>[12] Nebius Group. <a href="https://assets.nebius.com/assets/dfe7a7f3-771e-4653-94e8-8f86bf126b1d/PR.pdf?cache-buster=2026-08-12T11%3A58%3A03.516Z" target="_blank" rel="noopener noreferrer">Second-quarter 2026 financial results</a>.</strong> 2026-08-12. Quarter ended June 30, 2026; pages 1 and 8. Group figures include other businesses and are not standalone inference unit economics. EBITDA is non-GAAP. The cash-flow subtraction in this briefing is our calculation, not a company-reported FCF measure.</p>
+<p><a id="s13"></a></p>
+<p><strong>[13] Ong et al.. <a href="https://arxiv.org/abs/2406.18665" target="_blank" rel="noopener noreferrer">RouteLLM: Learning to Route LLMs with Preference Data</a>.</strong> Submitted 2024-06-26; revised 2025-02-23. Evidence that learned routing can trade off model quality and cost on evaluated benchmarks. Does not establish savings on a new enterprise workload or September 2026 model pairs.</p>
+<p><a id="s14"></a></p>
+<p><strong>[14] Stanford HAI. <a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank" rel="noopener noreferrer">2026 AI Index Report</a>.</strong> 2026; retrospective performance evidence. Describes uneven performance across task families. Used for the limitation of single-number capability comparisons, not as a live September ranking.</p>
+</article>
+<section class="calc" id="calculator" aria-labelledby="calc-title">
+<div class="eyebrow">Editable decision model · hypothetical inputs</div>
+<h2 id="calc-title">Cost per verified successful task</h2>
+<p>Use the same accounting horizon for both alternatives. A job is counted as successful only after your complete validation, latency and retry policy. All costs and success fractions below are assumptions, not quoted prices or measured model results.</p>
+<form id="cost-form" novalidate>
+<div class="shared-inputs">
+ <div class="field"><label for="n">Submitted jobs in the horizon</label><input id="n" type="number" min="1" max="1000000000000" step="1" value="100000" required><small>Positive whole number. Counts failed submissions too.</small></div>
+ <div class="field"><label for="floor">Minimum acceptable success rate (%)</label><input id="floor" type="number" min="0" max="100" step="0.1" value="90" required><small>A hard quality floor, independent of unit cost.</small></div>
+</div>
+<div class="cols">
+ <section class="panel" aria-labelledby="a-title"><h3 id="a-title">A · Managed API scenario</h3>
+ <div class="field"><label for="fa">Fixed cost in this horizon (USD)</label><input id="fa" type="number" min="0" max="1000000000000" step="any" value="0" required></div>
+ <div class="field"><label for="va">Variable cost per submitted job (USD)</label><input id="va" type="number" min="0" max="1000000000" step="any" value="0.10" required><small>Include tools, review and retries; do not double count.</small></div>
+ <div class="field"><label for="pa">Verified success rate (%)</label><input id="pa" type="number" min="0.001" max="100" step="any" value="95" required><small>Measure end-to-end success on matched workloads.</small></div>
+ <div class="result" id="a-result" aria-live="polite"></div></section>
+ <section class="panel" aria-labelledby="b-title"><h3 id="b-title">B · Buyer-operated open model scenario</h3>
+ <div class="field"><label for="fb">Fixed cost in this horizon (USD)</label><input id="fb" type="number" min="0" max="1000000000000" step="any" value="12000" required></div>
+ <div class="field"><label for="vb">Variable cost per submitted job (USD)</label><input id="vb" type="number" min="0" max="1000000000" step="any" value="0.03" required><small>Include serving, tools, review and retries.</small></div>
+ <div class="field"><label for="pb">Verified success rate (%)</label><input id="pb" type="number" min="0.001" max="100" step="any" value="85" required><small>A cheaper failure remains a failure.</small></div>
+ <div class="result" id="b-result" aria-live="polite"></div></section>
+</div>
+<p id="input-error" class="error" role="alert" hidden></p>
+<div class="calc-note" id="comparison" aria-live="polite"></div>
+<div class="buttons"><button class="primary" type="button" id="export">Export scenario JSON</button><button type="button" id="high-volume">Try 1,000,000 jobs</button><button type="reset">Reset assumptions</button></div>
+</form>
+<p class="smallprint">Formula: (fixed cost + submitted jobs × variable cost) ÷ (submitted jobs × verified success fraction). The crossover assumes constant costs and success rates, the same horizon and sufficient capacity. Passing the success floor alone does not verify security, license, contractual or operational constraints. Inputs remain in this browser session and are never sent anywhere.</p>
+<noscript><p>The calculator requires JavaScript. The worked example and formulas in section 3 remain readable without it.</p></noscript>
+</section>
+<footer class="bottom smallprint"><span>Independent analysis · Version 1.0 · 19 September 2026</span><span>No paywall · No account · No analytics</span></footer></main><script>
+"use strict";
+const defaults = {n:100000,floor:90,fa:0,va:0.10,pa:95,fb:12000,vb:0.03,pb:85};
+const numberFormat = new Intl.NumberFormat('en-US',{maximumFractionDigits:2});
+const dollars = x => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(x);
+const unit = x => '$' + x.toLocaleString('en-US',{minimumFractionDigits:4,maximumFractionDigits:4});
+function validateInputs(x){
+  const keys=Object.keys(defaults);
+  if(keys.some(k=>typeof x[k]!== 'number'||!Number.isFinite(x[k]))) throw new Error('Enter a finite number in every field. Blank fields are not zero.');
+  if(!Number.isInteger(x.n)||x.n<1||x.n>1e12) throw new Error('Submitted jobs must be a whole number from 1 to 1,000,000,000,000.');
+  if(x.floor<0||x.floor>100) throw new Error('The minimum success rate must be between 0% and 100%.');
+  for(const k of ['pa','pb']) if(x[k]<0.001||x[k]>100) throw new Error('Both scenario success rates must be at least 0.001% and no more than 100%.');
+  for(const k of ['fa','fb']) if(x[k]<0||x[k]>1e12) throw new Error('Fixed costs must be nonnegative and no greater than one trillion USD.');
+  for(const k of ['va','vb']) if(x[k]<0||x[k]>1e9) throw new Error('Variable costs must be nonnegative and no greater than one billion USD per job.');
+}
+function computeScenario(x){
+  validateInputs(x);
+  const result=(f,v,pct)=>{const p=pct/100;return {total:f+x.n*v,accepted:x.n*p,cost:(f+x.n*v)/(x.n*p),passes:pct+1e-12>=x.floor};};
+  const a=result(x.fa,x.va,x.pa), b=result(x.fb,x.vb,x.pb);
+  // cA-cB = intercept/N + slope, with rates in fractions.
+  const intercept=x.fa/(x.pa/100)-x.fb/(x.pb/100);
+  const slope=x.va/(x.pa/100)-x.vb/(x.pb/100);
+  let crossover=null;
+  if(slope!==0){const n=-intercept/slope;if(Number.isFinite(n)&&n>0)crossover=n;}
+  return {a,b,crossover,identical:intercept===0&&slope===0};
+}
+function readInputs(){const x={};for(const k of Object.keys(defaults)){const t=document.getElementById(k).value.trim();x[k]=t===''?NaN:Number(t);}return x;}
+function resultMarkup(r){return `<div class="value">${unit(r.cost)}</div><div class="unit">per verified successful task</div><p>${dollars(r.total)} total / ${numberFormat.format(r.accepted)} expected successful tasks</p><span class="status ${r.passes?'pass':'fail'}">${r.passes?'Meets stated success-rate floor':'Fails stated success-rate floor'}</span>`;}
+let current=null;
+function update(){
+ try{
+  const x=readInputs(),r=computeScenario(x);current={x,r};
+  document.getElementById('input-error').hidden=true;document.getElementById('export').disabled=false;
+  document.getElementById('a-result').innerHTML=resultMarkup(r.a);document.getElementById('b-result').innerHTML=resultMarkup(r.b);
+  let gate;
+  if(!r.a.passes&&!r.b.passes)gate='Neither scenario meets the stated success-rate floor. A cost comparison cannot make either eligible.';
+  else if(r.a.passes&&!r.b.passes)gate='Only A meets the stated success-rate floor. B remains ineligible even where its cost per successful task is lower.';
+  else if(!r.a.passes&&r.b.passes)gate='Only B meets the stated success-rate floor. A remains ineligible even where its cost per successful task is lower.';
+  else {const tie=Math.abs(r.a.cost-r.b.cost)<1e-10;gate=tie?'Both meet the success-rate floor and have the same calculated unit cost.':`Both meet the success-rate floor. ${r.a.cost<r.b.cost?'A':'B'} has the lower calculated unit cost at this volume; other constraints still require separate verification.`;}
+  let cross=r.identical?'The two cost-per-success functions are identical under these inputs.':r.crossover!==null?`The mathematical crossover is ${numberFormat.format(r.crossover)} submitted jobs (about ${Math.ceil(r.crossover).toLocaleString('en-US')} whole jobs). This does not override a failed acceptance gate.`:'There is no positive-volume cost crossover under these constant-input assumptions.';
+  document.getElementById('comparison').textContent=gate+' '+cross;
+ }catch(e){
+  current=null;document.getElementById('export').disabled=true;
+  const el=document.getElementById('input-error');el.textContent=e.message;el.hidden=false;
+  document.getElementById('a-result').textContent='Awaiting valid inputs.';document.getElementById('b-result').textContent='Awaiting valid inputs.';
+  document.getElementById('comparison').textContent='Correct the inputs to calculate. Previous outputs have been cleared.';
+ }
+}
+document.getElementById('cost-form').addEventListener('input',update);
+document.getElementById('cost-form').addEventListener('submit',e=>e.preventDefault());
+document.getElementById('cost-form').addEventListener('reset',()=>setTimeout(update,0));
+document.getElementById('high-volume').addEventListener('click',()=>{document.getElementById('n').value='1000000';update();});
+document.getElementById('export').addEventListener('click',()=>{
+ if(!current)return;
+ const data={schema:'open-ai-economics/scenario-v1',exported_at:new Date().toISOString(),assumption_status:'user-entered illustrative assumptions; not vendor prices or measured benchmarks',horizon:'same user-defined accounting horizon for both alternatives',inputs:current.x,results:current.r,formula:'(F + N*v)/(N*p)',notes:['p is a fraction, while pa/pb inputs are percentages.','Fixed costs, variable costs and success rates are assumed constant.','Acceptance gate checks only the user-specified success-rate floor.','Error losses, capacity steps and additional security/legal constraints are not modeled.']};
+ const u=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+ const a=document.createElement('a');a.href=u;a.download='ai-economics-scenario.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);
+});
+window.economicsModel={computeScenario,validateInputs,defaults};
+update();
+</script></body></html>

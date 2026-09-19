@@ -1,0 +1,54 @@
+{
+  "title": "Who captures the value of open AI? | Free research edition",
+  "default_outputs": {
+    "a": {
+      "total": 10000,
+      "accepted": 95000,
+      "cost": 0.10526315789473684,
+      "passes": true
+    },
+    "b": {
+      "total": 15000,
+      "accepted": 85000,
+      "cost": 0.17647058823529413,
+      "passes": false
+    },
+    "crossover": 201769.91150442476,
+    "identical": false
+  },
+  "high_volume_test": "passed; B remains ineligible despite lower unit cost",
+  "changed_floor_test": "passed",
+  "zero_success_test": "passed; stale results cleared and export disabled",
+  "blank_input_test": "passed",
+  "additional_validation": {
+    "same": true,
+    "sameCross": null,
+    "noCross": null,
+    "bad": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "export_test": "passed",
+  "mobile_page_overflow": false,
+  "page_errors": [],
+  "automatic_external_requests": [],
+  "pdf_pages": 7,
+  "pdf_page_word_counts": [
+    446,
+    434,
+    454,
+    538,
+    506,
+    237,
+    520
+  ],
+  "pdf_has_sources": true,
+  "pdf_links": 32,
+  "visual_review": "Seven PDF pages inspected after removing a blank-page pagination defect; no clipped content observed. Desktop and mobile browser layouts inspected.",
+  "tested_in": "Headless Chromium; PDF rendered with PyMuPDF for visual inspection."
+}

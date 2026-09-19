@@ -79,6 +79,8 @@ are touching tells you how much care to take.
 
 ## 3. Map (snapshot, July 2026 — trust the tree over this list)
 
+- `open-ai-economics/` (added 2026-09-19): dated public-source report and local cost-per-successful-task calculator, with a separate quality gate, PDF and source/evidence downloads; no live-data feed or scheduled work.
+
 - `acceptance.html` — the buyer-facing OSW equipment-evidence challenge:
   one offline page that exercises physical-availability findings against
   synthetic or sponsor-provided operational exports. Its real browser path is

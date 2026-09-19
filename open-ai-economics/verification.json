@@ -1,0 +1,55 @@
+{
+  "checked_at": "2026-09-19T23:09:35.788Z",
+  "scope": "Publication browser checks; source claims and hypothetical inputs are not independently revalidated by these tests.",
+  "checks": {
+    "landing_page_navigation": "passed",
+    "high_volume_quality_gate": "passed",
+    "changed_floor": "passed",
+    "zero_success": "passed",
+    "blank_input": "passed",
+    "reset": "passed",
+    "json_export": "passed",
+    "edge_cases": {
+      "identical": true,
+      "identical_crossover": null,
+      "dominated_crossover": null
+    },
+    "mobile_overflow": false,
+    "standalone_html": "passed"
+  },
+  "default_outputs": {
+    "a": {
+      "total": 10000,
+      "accepted": 95000,
+      "cost": 0.10526315789473684,
+      "passes": true
+    },
+    "b": {
+      "total": 15000,
+      "accepted": 85000,
+      "cost": 0.17647058823529413,
+      "passes": false
+    },
+    "crossover": 201769.91150442476,
+    "identical": false
+  },
+  "pdf": "Re-rendered from the unchanged standalone HTML with Chromium; Windows font metrics required 0.92 print scale to retain seven pages.",
+  "page_errors": [],
+  "automatic_external_requests": [],
+  "pdf_check": {
+    "pages": 7,
+    "page_word_counts": [
+      484,
+      447,
+      536,
+      471,
+      386,
+      226,
+      509
+    ],
+    "links": 32,
+    "has_sources": true
+  },
+  "visual_review": "Desktop and mobile browser images and all seven rendered PDF page thumbnails inspected; no clipping or blank pages observed.",
+  "pdf_print_scale": 0.92
+}

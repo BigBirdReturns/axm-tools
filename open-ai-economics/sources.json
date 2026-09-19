@@ -1,0 +1,131 @@
+{
+  "checked_on": "2026-09-19",
+  "sources": [
+    {
+      "id": 1,
+      "publisher": "Social Capital / Chamath Palihapitiya",
+      "title": "Deep Dive: The Open vs. Closed AI Race (public preview)",
+      "date": "2026-09-18",
+      "url": "https://research.socialcapital.com/p/open-vs-closed",
+      "type": "Author's public description",
+      "scope": "Identifies the topic and advertised subscriber report. The paid PDF was not accessed; this briefing makes no claim about its full contents."
+    },
+    {
+      "id": 2,
+      "publisher": "Vercel",
+      "title": "AI Gateway model leaderboards",
+      "date": "Latest displayed observation: 2026-09-18",
+      "url": "https://vercel.com/ai-gateway/leaderboards/models",
+      "type": "First-party usage data",
+      "scope": "AI Gateway traffic only. Open weights 78.4%; DeepSeek V4.1 Flash token share 59.3%, request share 18.8%, spend share 5.1%. Shares do not measure global market share or model capability. Vercel licenses its leaderboard data CC BY 4.0."
+    },
+    {
+      "id": 3,
+      "publisher": "Vercel",
+      "title": "AI Gateway Leaderboards: methodology and exports",
+      "date": "Accessed 2026-09-19",
+      "url": "https://vercel.com/docs/ai-gateway/leaderboards",
+      "type": "Dataset documentation",
+      "scope": "States that displayed model/lab shares default to the most recent day, and that data are anonymized daily aggregates without absolute volumes or customer identifiers."
+    },
+    {
+      "id": 4,
+      "publisher": "Open Source Initiative",
+      "title": "The Open Source AI Definition, version 1.0",
+      "date": "Version 1.0; accessed 2026-09-19",
+      "url": "https://opensource.org/ai/open-source-ai-definition",
+      "type": "Definition from its issuing organization",
+      "scope": "Use, study, modify and share freedoms; parameters, code and sufficiently detailed training-data information. This is OSI's definition, not a claim that every vendor uses the term consistently."
+    },
+    {
+      "id": 5,
+      "publisher": "OpenAI",
+      "title": "Introducing gpt-oss",
+      "date": "2025-08-05",
+      "url": "https://openai.com/index/introducing-gpt-oss/",
+      "type": "First-party release announcement",
+      "scope": "Historical example of a provider offering both hosted proprietary models and Apache-2.0-licensed open weights. No current model-performance ranking is inferred."
+    },
+    {
+      "id": 6,
+      "publisher": "Google Cloud",
+      "title": "Model Garden",
+      "date": "Accessed 2026-09-19",
+      "url": "https://cloud.google.com/model-garden",
+      "type": "Product documentation",
+      "scope": "Documents access to Google, open and third-party models. Establishes availability, not independently measured quality or provider margins."
+    },
+    {
+      "id": 7,
+      "publisher": "OpenAI",
+      "title": "Enterprise privacy at OpenAI",
+      "date": "Updated 2026-01-08",
+      "url": "https://openai.com/enterprise-privacy/",
+      "type": "Published data-use commitments",
+      "scope": "Business/API data are not used to train models by default. This is a stated policy, not an audit of implementation or a universal no-retention promise."
+    },
+    {
+      "id": 8,
+      "publisher": "OpenAI",
+      "title": "Data controls in the OpenAI platform",
+      "date": "Accessed 2026-09-19",
+      "url": "https://developers.openai.com/api/docs/guides/your-data",
+      "type": "Endpoint-level documentation",
+      "scope": "Distinguishes training use, abuse-monitoring retention, application state and eligibility/limitations of retention controls. Exact endpoint and feature selection matter."
+    },
+    {
+      "id": 9,
+      "publisher": "Anthropic",
+      "title": "Is my data used for model training?",
+      "date": "2026-08-18",
+      "url": "https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training",
+      "type": "Commercial-product data-use policy",
+      "scope": "No training on commercial inputs/outputs by default, with exceptions including explicitly supplied feedback. Consumer plans are described separately."
+    },
+    {
+      "id": 10,
+      "publisher": "Baseten",
+      "title": "Inference platform and deployment options",
+      "date": "Accessed 2026-09-19",
+      "url": "https://www.baseten.co/",
+      "type": "Vendor product description",
+      "scope": "Managed, single-tenant, self-hosted/VPC and hybrid options. Vendor statements establish offered configurations; they do not independently verify reliability or cost advantages."
+    },
+    {
+      "id": 11,
+      "publisher": "Fireworks AI",
+      "title": "Pricing",
+      "date": "Accessed 2026-09-19",
+      "url": "https://fireworks.ai/pricing",
+      "type": "Vendor pricing structure",
+      "scope": "Per-token serverless and GPU-time on-demand billing. No live vendor rates are used as defaults in the illustrative calculator."
+    },
+    {
+      "id": 12,
+      "publisher": "Nebius Group",
+      "title": "Second-quarter 2026 financial results",
+      "date": "2026-08-12",
+      "url": "https://assets.nebius.com/assets/dfe7a7f3-771e-4653-94e8-8f86bf126b1d/PR.pdf?cache-buster=2026-08-12T11%3A58%3A03.516Z",
+      "type": "Unaudited consolidated financial disclosure",
+      "scope": "Quarter ended June 30, 2026; pages 1 and 8. Group figures include other businesses and are not standalone inference unit economics. EBITDA is non-GAAP. The cash-flow subtraction in this briefing is our calculation, not a company-reported FCF measure."
+    },
+    {
+      "id": 13,
+      "publisher": "Ong et al.",
+      "title": "RouteLLM: Learning to Route LLMs with Preference Data",
+      "date": "Submitted 2024-06-26; revised 2025-02-23",
+      "url": "https://arxiv.org/abs/2406.18665",
+      "type": "Original research paper",
+      "scope": "Evidence that learned routing can trade off model quality and cost on evaluated benchmarks. Does not establish savings on a new enterprise workload or September 2026 model pairs."
+    },
+    {
+      "id": 14,
+      "publisher": "Stanford HAI",
+      "title": "2026 AI Index Report",
+      "date": "2026; retrospective performance evidence",
+      "url": "https://hai.stanford.edu/ai-index/2026-ai-index-report",
+      "type": "Research synthesis",
+      "scope": "Describes uneven performance across task families. Used for the limitation of single-number capability comparisons, not as a live September ranking."
+    }
+  ]
+}

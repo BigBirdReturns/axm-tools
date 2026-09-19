@@ -1,0 +1,39 @@
+{
+  "schema": "open-ai-economics/scenario-v1",
+  "exported_at": "2026-09-19T21:54:06.343Z",
+  "assumption_status": "user-entered illustrative assumptions; not vendor prices or measured benchmarks",
+  "horizon": "same user-defined accounting horizon for both alternatives",
+  "inputs": {
+    "n": 100000,
+    "floor": 90,
+    "fa": 0,
+    "va": 0.1,
+    "pa": 95,
+    "fb": 12000,
+    "vb": 0.03,
+    "pb": 85
+  },
+  "results": {
+    "a": {
+      "total": 10000,
+      "accepted": 95000,
+      "cost": 0.10526315789473684,
+      "passes": true
+    },
+    "b": {
+      "total": 15000,
+      "accepted": 85000,
+      "cost": 0.17647058823529413,
+      "passes": false
+    },
+    "crossover": 201769.91150442476,
+    "identical": false
+  },
+  "formula": "(F + N*v)/(N*p)",
+  "notes": [
+    "p is a fraction, while pa/pb inputs are percentages.",
+    "Fixed costs, variable costs and success rates are assumed constant.",
+    "Acceptance gate checks only the user-specified success-rate floor.",
+    "Error losses, capacity steps and additional security/legal constraints are not modeled."
+  ]
+}
