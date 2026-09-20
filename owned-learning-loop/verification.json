@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-09-20",
+  "scope": "Static publication and local interaction checks; external sources are cited separately in sources.json.",
+  "checks": {
+    "html_loaded_in_chromium": "passed",
+    "page_errors": [],
+    "desktop_render": "passed",
+    "mobile_render": "passed",
+    "mobile_horizontal_overflow": false,
+    "seven_item_builder": "passed",
+    "builder_state_update": "passed",
+    "javascript_syntax": "passed",
+    "json_files_parse": "passed"
+  }
+}

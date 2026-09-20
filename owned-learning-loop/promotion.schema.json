@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bigbirdreturns.github.io/axm-tools/owned-learning-loop/promotion.schema.json",
+  "title": "Owned Learning Loop Promotion Receipt",
+  "type": "object",
+  "required": ["candidate_id", "base_model_id", "training_set_hash", "eval_set_hash", "decision", "decided_at", "rollback_to"],
+  "properties": {
+    "candidate_id": {"type": "string"},
+    "base_model_id": {"type": "string"},
+    "training_set_hash": {"type": "string"},
+    "eval_set_hash": {"type": "string"},
+    "holdout_set_hash": {"type": ["string", "null"]},
+    "metrics": {"type": "object", "properties": {"success_rate": {"type": ["number", "null"], "minimum": 0, "maximum": 1}, "critical_failures": {"type": ["integer", "null"], "minimum": 0}, "p95_latency_ms": {"type": ["number", "null"], "minimum": 0}, "cost_per_success": {"type": ["number", "null"], "minimum": 0}}},
+    "quality_gate_passed": {"type": "boolean"},
+    "authority_gate_passed": {"type": "boolean"},
+    "decision": {"enum": ["promote", "reject", "shadow", "rollback"]},
+    "decision_owner": {"type": ["string", "null"]},
+    "decided_at": {"type": "string", "format": "date-time"},
+    "rollback_to": {"type": "string"},
+    "notes": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}

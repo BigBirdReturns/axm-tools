@@ -1,0 +1,19 @@
+{
+  "schema": "axm/owned-learning-loop-plan@1",
+  "created_at": "2026-09-20T00:00:00Z",
+  "workloads": [
+    {"id": "code-fix", "terminal_outcome": "Patch merged with required tests green"},
+    {"id": "research-brief", "terminal_outcome": "Brief accepted after source verification with no material correction"},
+    {"id": "support-resolution", "terminal_outcome": "Ticket closed without reopen inside the defined observation window"}
+  ],
+  "first_week": [
+    "Instrument traces and terminal outcome references",
+    "Freeze representative replay and holdout cases",
+    "Benchmark hosted and local candidates on identical cases",
+    "Create explicit workload routing rules",
+    "Train one narrow adapter from accepted examples",
+    "Shadow the candidate against replay traffic",
+    "Emit a promotion or rejection receipt with rollback target"
+  ],
+  "rule": "Quality and authority gates pass before latency or cost can justify promotion."
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "axm/source-ledger@1",
+  "as_of": "2026-09-20",
+  "sources": [
+    {"id":"ahmad-desktop","url":"https://ai.engineer/talks/XV2oYi7kojc-desktop-frontier","claim":"Public 18-month RTX 5090 capability forecast and hardware-ownership thesis","kind":"reported claim"},
+    {"id":"ahmad-continual","url":"https://ai.engineer/talks/KB41dTlX1Uc-state-union-why-local-why-now","claim":"Continual-learning proposal to move some durable agent memory toward local weight updates","kind":"reported claim"},
+    {"id":"osmantic","url":"https://osmantic.com/","claim":"ODS currently positions local/hybrid serving, operator traces and continuous evaluation","kind":"product documentation"},
+    {"id":"otel","url":"https://opentelemetry.io/blog/2026/genai-observability/","claim":"GenAI semantic conventions capture model and tool telemetry","kind":"technical documentation"},
+    {"id":"anthropic-evals","url":"https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents","claim":"Agent evaluations should measure multi-step behavior across the lifecycle","kind":"engineering guidance"},
+    {"id":"mlflow-traces","url":"https://mlflow.org/docs/latest/genai/eval-monitor/running-evaluation/traces/","claim":"Production traces can be evaluated including intermediate agent behavior","kind":"technical documentation"},
+    {"id":"peft-lora","url":"https://huggingface.co/docs/peft/en/package_reference/lora","claim":"LoRA adapts frozen base weights with smaller trainable matrices","kind":"technical documentation"},
+    {"id":"trl","url":"https://huggingface.co/docs/trl/index","claim":"Current post-training tooling includes SFT, DPO, GRPO, distillation and PEFT integration","kind":"technical documentation"},
+    {"id":"vllm-lora","url":"https://docs.vllm.ai/en/latest/features/lora/","claim":"vLLM serves LoRA adapters and supports dynamic and in-place replacement","kind":"technical documentation"},
+    {"id":"vllm-guidance","url":"https://docs.vllm.ai/en/latest/usage/security/","claim":"Dynamic LoRA loading should be restricted to trusted administration","kind":"deployment guidance"},
+    {"id":"rtx5090","url":"https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/","claim":"RTX 5090 has 32 GB GDDR7","kind":"vendor specification"},
+    {"id":"rtxpro6000","url":"https://www.nvidia.com/en-us/products/workstations/professional-desktop-gpus/rtx-pro-6000-family/","claim":"RTX PRO 6000 Blackwell has 96 GB GDDR7 ECC","kind":"vendor specification"}
+  ]
+}

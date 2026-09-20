@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bigbirdreturns.github.io/axm-tools/owned-learning-loop/trace.schema.json",
+  "title": "Owned Learning Loop Trace",
+  "type": "object",
+  "required": ["trace_id", "workload_id", "started_at", "model", "route", "outcome"],
+  "properties": {
+    "trace_id": {"type": "string"},
+    "workload_id": {"type": "string"},
+    "started_at": {"type": "string", "format": "date-time"},
+    "model": {"type": "object", "required": ["id"], "properties": {"id": {"type": "string"}, "quantization": {"type": ["string", "null"]}, "adapter_id": {"type": ["string", "null"]}}},
+    "route": {"enum": ["local", "hosted", "human", "refused"]},
+    "input_ref": {"type": ["string", "null"], "description": "Hash or governed reference; raw sensitive content is optional."},
+    "prompt_config_hash": {"type": ["string", "null"]},
+    "retrieval_refs": {"type": "array", "items": {"type": "string"}},
+    "tool_events": {"type": "array", "items": {"type": "object"}},
+    "latency_ms": {"type": ["number", "null"], "minimum": 0},
+    "cost": {"type": ["number", "null"], "minimum": 0},
+    "outcome": {"type": "object", "required": ["status"], "properties": {"status": {"enum": ["accepted", "rejected", "partial", "unknown"]}, "evidence_ref": {"type": ["string", "null"]}, "reviewer": {"type": ["string", "null"]}}},
+    "privacy_tags": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

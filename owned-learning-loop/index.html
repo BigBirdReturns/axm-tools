@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Own the Learning Loop · AXM</title>
+<meta name="description" content="A public 12-month lead playbook for local-first adaptive AI.">
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#13212b;--muted:#596773;--line:#d8d4ca;--accent:#0b6477;--hot:#9a3f2a;--ok:#2f6a4f;--code:#13212b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+html,body{max-width:100%;overflow-x:hidden}\nbody{margin:0;background:var(--bg);color:var(--ink);font:16px/1.58 Georgia,serif}
+a{color:var(--accent)}code,.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.shell{max-width:1120px;margin:auto;padding:0 24px}
+.top{position:sticky;top:0;z-index:10;background:rgba(244,241,234,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .shell{display:flex;justify-content:space-between;align-items:center;min-height:58px;gap:20px}
+.brand{font:700 13px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase}
+.nav{display:flex;gap:18px;flex-wrap:wrap}.nav a{font:13px/1 sans-serif;text-decoration:none}
+.hero{padding:72px 0 44px;border-bottom:1px solid var(--line)}
+.kicker{font:700 12px/1.3 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--accent)}
+h1{font:800 clamp(44px,8vw,92px)/.93 Arial,sans-serif;letter-spacing:-.055em;max-width:850px;margin:18px 0 24px}
+.dek{font-size:clamp(20px,2.6vw,30px);line-height:1.3;max-width:930px;color:#2d3d48}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-block;padding:11px 15px;border:1px solid var(--ink);border-radius:5px;text-decoration:none;font:700 13px/1 Arial,sans-serif}
+.btn.primary{background:var(--ink);color:white}
+.thesis{margin-top:34px;padding:20px 22px;background:var(--paper);border-left:5px solid var(--hot);max-width:930px}
+.thesis strong{font-family:Arial,sans-serif}
+section{padding:54px 0;border-bottom:1px solid var(--line)}
+h2{font:800 clamp(30px,4vw,48px)/1 Arial,sans-serif;letter-spacing:-.035em;margin:0 0 20px}
+h3{font:750 20px/1.2 Arial,sans-serif;margin:0 0 9px}
+.lead{font-size:20px;max-width:880px;color:#2d3d48}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:28px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:20px}
+.card p:last-child{margin-bottom:0}.span4{grid-column:span 4}.span6{grid-column:span 6}.span12{grid-column:1/-1}
+.num{font:800 12px/1 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--accent);letter-spacing:.1em}
+.pipeline{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin:30px 0 8px}
+.node{background:var(--ink);color:white;border-radius:6px;padding:14px 8px;text-align:center;font:700 12px/1.25 Arial,sans-serif}
+table{width:100%;border-collapse:collapse;background:var(--paper);margin-top:24px}
+th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:13px 14px}
+th{font:700 12px/1.2 Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;background:#ece9e1}
+td:first-child{font-weight:bold}
+.timeline{counter-reset:step;margin:30px 0 0;padding:0;list-style:none}
+.timeline li{counter-increment:step;display:grid;grid-template-columns:76px 1fr;gap:18px;padding:18px 0;border-top:1px solid var(--line)}
+.timeline li:before{content:"DAY " counter(step);font:800 12px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--accent)}
+.timeline li:first-child:before{content:"TODAY"}
+.rule{border-left:4px solid var(--accent);padding:2px 0 2px 18px;margin:24px 0;font-size:20px}
+.small{font-size:13px;color:var(--muted)}
+.gate{background:var(--ink);color:white;border-radius:10px;padding:26px;margin-top:28px}
+.gate h3{font-size:25px}.gate code{color:#bce5ef}
+.checker{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.checks{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:20px}
+.checks label{display:block;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}.checks label:last-child{border:0}
+.checks input{width:18px;height:18px;vertical-align:-3px;margin-right:9px}
+.output{background:#e7efe9;border:1px solid #bdd0c2;border-radius:8px;padding:20px}.output h3{color:var(--ok)}
+.progress{height:8px;background:#cfd7d0;border-radius:99px;overflow:hidden;margin:14px 0 18px}.progress span{display:block;height:100%;background:var(--ok);width:0;transition:.2s}
+pre{white-space:pre-wrap;background:var(--code);color:#eef7f7;padding:18px;border-radius:7px;overflow:auto;font-size:13px}
+.sources{font-size:14px}.sources li{margin:0 0 12px}
+footer{padding:34px 0 55px;color:var(--muted);font-size:13px}
+@media(max-width:820px){.span4,.span6{grid-column:1/-1}.pipeline{grid-template-columns:repeat(2,1fr)}.checker{grid-template-columns:1fr}.nav{display:none}.hero{padding-top:48px}th,td{padding:10px 9px;font-size:14px}table{table-layout:fixed;width:100%}th,td{overflow-wrap:anywhere}}
+</style>
+</head>
+<body>
+<div class="top"><div class="shell">
+<div class="brand">AXM · Owned Learning Loop</div>
+<nav class="nav"><a href="#map">Map</a><a href="#week">7-day build</a><a href="#memory">Memory</a><a href="#gate">Promotion</a><a href="#builder">Builder</a><a href="#sources">Sources</a></nav>
+</div></div>
+<header class="hero"><div class="shell">
+<div class="kicker">Public release · 20 September 2026 · Version 1.0</div>
+<h1>Own the learning loop.</h1>
+<p class="dek">The 12-month lead is available now. Capture real work, attach outcomes, replay it as evals, route by workload, adapt only what is stable, promote by evidence, and keep a rollback path. Better models can arrive later.</p>
+<div class="actions"><a class="btn primary" href="#week">Build it this week</a><a class="btn" href="owned-loop-starter.zip">Download the starter pack</a><a class="btn" href="OWNED-LOOP-SPEC.md">Read the plain-text spec</a></div>
+<div class="thesis"><strong>The shot:</strong> by late 2027, smaller open models may deliver capability that currently needs much larger hardware. The team that wins will not be the one that merely bought the GPU. It will be the one that spent 2026 building a proprietary, replayable correction loop around its own work.</div>
+</div></header>
+<main>
+<section id="map"><div class="shell">
+<div class="kicker">01 · The map</div>
+<h2>Do 2027's boring work now.</h2>
+<p class="lead">Local serving is becoming easier. The scarce asset is moving one layer up: the evidence needed to decide what the system should learn, whether it improved, and when a new model or adapter deserves production traffic.</p>
+<div class="pipeline" aria-label="Owned learning loop">
+<div class="node">WORK</div><div class="node">TRACE</div><div class="node">LABEL</div><div class="node">EVAL</div>
+<div class="node">ROUTE</div><div class="node">ADAPT</div><div class="node">PROMOTE</div><div class="node">ROLL BACK</div>
+</div>
+<div class="grid">
+<div class="card span4"><div class="num">ASSET 01</div><h3>Terminal outcomes</h3><p>Record whether the work actually succeeded: merged patch, resolved ticket, accepted report, recovered payment, passed inspection. Model applause is not ground truth.</p></div>
+<div class="card span4"><div class="num">ASSET 02</div><h3>Replayable traces</h3><p>Preserve model identity, prompt/version, tools, retrievals, decisions, latency, cost and outcome references. Redact sensitive content or store hashes when raw bytes are unnecessary.</p></div>
+<div class="card span4"><div class="num">ASSET 03</div><h3>Versioned evals</h3><p>Turn recurring work and failures into a frozen replay set. A model swap becomes an engineering change with measurable regressions, not a vibe check.</p></div>
+<div class="card span4"><div class="num">ASSET 04</div><h3>Routing policy</h3><p>Send routine work to the cheapest system that clears the quality floor. Reserve frontier models for novelty, teaching, difficult verification and overflow.</p></div>
+<div class="card span4"><div class="num">ASSET 05</div><h3>Adapters, not amnesia</h3><p>Keep base weights frozen first. Train small, task-specific deltas when repeated evidence says a skill should move into weights. Version every artifact.</p></div>
+<div class="card span4"><div class="num">ASSET 06</div><h3>Promotion receipts</h3><p>Every deployment records dataset hash, base-model identity, candidate artifact, eval results, decision owner and rollback pointer. Learning becomes auditable operations.</p></div>
+</div>
+</div></section>
+<section id="week"><div class="shell">
+<div class="kicker">02 · Seven-day build</div>
+<h2>A year of positioning in one week.</h2>
+<p class="lead">Start with the work, not the hardware. Three narrow recurring workflows with visible outcomes are more valuable than a giant unlabelled transcript archive.</p>
+<ol class="timeline">
+<li><div><h3>Choose three recurring workflows.</h3><p>Define the terminal condition for each in one sentence. Example: "patch merged with tests green," not "assistant response looked good."</p></div></li>
+<li><div><h3>Instrument the path.</h3><p>Capture model/version, prompts, tool calls, retrievals, elapsed time, token/cost metadata and an outcome reference. Use OpenTelemetry-compatible traces or an equivalent local ledger.</p></div></li>
+<li><div><h3>Build the replay set.</h3><p>Freeze representative successes, common failures, expensive edge cases and critical safety/authority boundaries. Keep a holdout slice the adaptation process never sees.</p></div></li>
+<li><div><h3>Run a two-lane baseline.</h3><p>Replay the same cases against the best hosted model you trust and the best local candidate that fits your hardware. Compare successful outcomes first, then latency and cost.</p></div></li>
+<li><div><h3>Write the router.</h3><p>Local-first for known work that clears the quality floor; frontier for low-confidence, novel or high-impact cases. Log every escalation so tomorrow's specialization set comes from real misses.</p></div></li>
+<li><div><h3>Train one narrow adapter.</h3><p>Use accepted examples for one stable skill. Freeze the base model, version the dataset and adapter, and do not let production traffic dynamically replace weights.</p></div></li>
+<li><div><h3>Shadow, evaluate, promote.</h3><p>Run the candidate on replay traffic without controlling outcomes. Promote only after it clears the quality gate and critical regressions are zero. Store the receipt and rollback target.</p></div></li>
+</ol>
+<div class="rule"><strong>By next Sunday you should own a loop, not a demo:</strong> real traces → real outcomes → replay → local candidate → bounded adaptation → measurable promotion.</div>
+</div></section>
+<section id="memory"><div class="shell">
+<div class="kicker">03 · Memory placement</div>
+<h2>Do not put "memory" into weights just because you can.</h2>
+<p class="lead">The durable advantage comes from placing information in the cheapest layer that preserves correctness, editability and provenance. Weight updates are the final promotion tier, not the default memory store.</p>
+<table>
+<thead><tr><th>Information</th><th>Default home</th><th>Move toward weights when…</th><th>Keep out of weights when…</th></tr></thead>
+<tbody>
+<tr><td>Current task state</td><td>Context / structured state</td><td>Never as task state</td><td>It expires when the task ends</td></tr>
+<tr><td>Mutable facts</td><td>Database / retrieval</td><td>The fact becomes a stable general skill, not merely remembered data</td><td>It needs correction, deletion, authority or citations</td></tr>
+<tr><td>User / org preferences</td><td>Profile + policy store</td><td>A stable behavioral pattern is repeatedly demonstrated and safe to generalize</td><td>Consent, role or policy can change</td></tr>
+<tr><td>Repeated procedure</td><td>Skill file / workflow first</td><td>Replay data shows the procedure is stable and adapter training improves it</td><td>Deterministic code expresses it better</td></tr>
+<tr><td>Domain style / transformation</td><td>Versioned adapter</td><td>It survives a holdout eval and rollback remains cheap</td><td>It contaminates unrelated tasks</td></tr>
+<tr><td>Broad capability</td><td>Base model</td><td>Only after evidence justifies a true model update</td><td>A small adapter or external state can carry it</td></tr>
+</tbody></table>
+<p class="small">This hierarchy is an engineering rule, not a claim that adapters solve continual learning. Catastrophic forgetting, data contamination, reward misspecification and stale preferences remain live failure modes.</p>
+</div></section>
+<section id="gate"><div class="shell">
+<div class="kicker">04 · Promotion law</div>
+<h2>Quality gates before economics.</h2>
+<p class="lead">A cheaper local model that fails the work is expensive. A candidate earns production traffic only after it meets the workload's acceptance floor.</p>
+<div class="gate">
+<h3>Minimum promotion receipt</h3>
+<pre>base_model_id       = immutable model + quantization identity
+candidate_id        = adapter / model artifact hash
+training_set_hash   = exact source set used for adaptation
+eval_set_hash       = frozen replay + holdout identity
+success_rate        = terminal outcomes, not model preference
+critical_failures   = must satisfy workload-specific maximum
+p95_latency         = measured on the target hardware
+cost_per_success    = total run cost / accepted outcomes
+decision_owner      = human or governed process with authority
+rollback_to         = last known-good model + adapter pair</pre>
+<p><strong>Order of operations:</strong> pass the quality and safety/authority thresholds; then compare latency and cost. Never optimize a candidate into production by averaging away a critical regression.</p>
+</div>
+<div class="grid">
+<div class="card span6"><h3>Frontier models become teachers, not truth.</h3><p>Use stronger hosted models to generate candidate solutions, critiques and difficult synthetic cases. Anchor promotion to terminal outcomes and independent checks; a teacher model can be confidently wrong.</p></div>
+<div class="card span6"><h3>Adapters become privileged artifacts.</h3><p>vLLM supports runtime LoRA loading and even in-place replacement, while its own security guidance warns that dynamic loading is unsafe when exposed to untrusted clients. Treat adapter promotion like code deployment.</p></div>
+</div>
+</div></section>
+<section id="hardware"><div class="shell">
+<div class="kicker">05 · Hardware</div>
+<h2>Buy memory headroom, not mythology.</h2>
+<p class="lead">Use existing hardware until the workload proves it is the bottleneck. When you do buy, size for model weights, KV cache, context, concurrency and adaptation headroom rather than headline TOPS.</p>
+<div class="grid">
+<div class="card span4"><div class="num">32 GB CLASS</div><h3>Single-GPU laboratory</h3><p>NVIDIA's RTX 5090 has 32 GB GDDR7. That makes the memory class a credible target for local inference, quantized-model experiments and bounded adapter work. It does not guarantee any particular future capability.</p></div>
+<div class="card span4"><div class="num">96 GB CLASS</div><h3>Workstation headroom</h3><p>RTX PRO 6000 Blackwell carries 96 GB GDDR7 ECC, materially expanding the set of models, contexts and adaptation workloads that fit on one device.</p></div>
+<div class="card span4"><div class="num">THE RULE</div><h3>The GPU is replaceable.</h3><p>The proprietary asset is the trace → outcome → eval → adaptation ledger. If a better accelerator or model arrives, you should be able to swap it in and replay your evidence immediately.</p></div>
+</div>
+<p class="small">Ahmad Osman's public late-2027 forecast is GLM-5.2-class capability on one 32 GB RTX 5090. Treat that as a falsifiable forecast, not a purchasing guarantee.</p>
+</div></section>
+<section id="builder"><div class="shell">
+<div class="kicker">06 · Lead builder</div>
+<h2>Generate your next seven moves.</h2>
+<p class="lead">Mark what you already have. The page will produce the missing sequence and a local JSON receipt. Nothing is uploaded.</p>
+<div class="checker">
+<div class="checks" id="checks">
+<label><input type="checkbox" data-key="outcomes"> I have terminal outcome definitions for recurring work.</label>
+<label><input type="checkbox" data-key="traces"> I capture replayable model/tool/retrieval traces.</label>
+<label><input type="checkbox" data-key="evals"> I maintain a frozen eval set plus unseen holdout cases.</label>
+<label><input type="checkbox" data-key="baseline"> I benchmark hosted and local candidates on the same cases.</label>
+<label><input type="checkbox" data-key="router"> I route by workload and quality threshold, not brand.</label>
+<label><input type="checkbox" data-key="adapters"> I version task adapters separately from frozen base models.</label>
+<label><input type="checkbox" data-key="promotion"> I require a promotion receipt and tested rollback target.</label>
+</div>
+<div class="output">
+<h3 id="stateTitle">Your lead plan</h3>
+<div class="progress"><span id="bar"></span></div>
+<div id="next"></div>
+<div class="actions"><button class="btn primary" id="download" type="button">Download plan JSON</button><button class="btn" id="reset" type="button">Reset</button></div>
+</div>
+</div>
+</div></section>
+<section id="forecast"><div class="shell">
+<div class="kicker">07 · Our dated shot</div>
+<h2>What we expect by September 2027.</h2>
+<div class="rule">Teams that own replayable work evidence will treat foundation models as replaceable components. Teams that own only hardware will still be starting from zero every time a better model arrives.</div>
+<div class="grid">
+<div class="card span4"><h3>Model swaps become cheap.</h3><p>A new local or hosted model can be replayed against your frozen workload evidence within hours, with regressions visible before production.</p></div>
+<div class="card span4"><h3>Specialists absorb the routine.</h3><p>Repeated, well-labelled workloads migrate toward smaller local models or adapters; frontier systems concentrate on novelty, difficult verification and generating new training pressure.</p></div>
+<div class="card span4"><h3>The moat is the correction loop.</h3><p>Private traces alone are exhaust. Private traces joined to outcomes, evals, adaptation lineage and deployment decisions become an accumulating operating asset.</p></div>
+</div>
+<p class="small">This is a forecast, not an observed fact. The page is dated so the claim can be audited later.</p>
+</div></section>
+<section id="sources"><div class="shell">
+<div class="kicker">08 · Receipts</div>
+<h2>Sources and boundaries.</h2>
+<ol class="sources">
+<li><a href="https://ai.engineer/talks/XV2oYi7kojc-desktop-frontier">AI Engineer, "The Desktop Frontier"</a>: Osman's 18-month RTX 5090 forecast and hardware-ownership thesis.</li>
+<li><a href="https://ai.engineer/talks/KB41dTlX1Uc-state-union-why-local-why-now">AI Engineer, "State of the Union: Why Local, Why Now"</a>: Osman's continual-learning argument and proposed local weight updates.</li>
+<li><a href="https://osmantic.com/">Osmantic</a>: current ODS positioning around local/hybrid serving, operator traces and continuous evaluation.</li>
+<li><a href="https://opentelemetry.io/blog/2026/genai-observability/">OpenTelemetry</a>: GenAI conventions for model calls, tool activity and token telemetry.</li>
+<li><a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic</a>: agent evals as a lifecycle discipline for multi-step systems.</li>
+<li><a href="https://mlflow.org/docs/latest/genai/eval-monitor/running-evaluation/traces/">MLflow</a>: evaluating production traces, including intermediate agent behavior.</li>
+<li><a href="https://huggingface.co/docs/peft/en/package_reference/lora">Hugging Face PEFT</a>: LoRA as parameter-efficient adaptation with frozen base weights.</li>
+<li><a href="https://huggingface.co/docs/trl/index">Hugging Face TRL</a>: current post-training stack including SFT, DPO, GRPO, distillation and PEFT integrations.</li>
+<li><a href="https://docs.vllm.ai/en/latest/features/lora/">vLLM</a>: LoRA serving, dynamic loading and in-place replacement support.</li>
+<li><a href="https://docs.vllm.ai/en/latest/usage/security/">vLLM deployment guidance</a>: dynamic LoRA loading should be restricted to trusted administration.</li>
+<li><a href="https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/">NVIDIA RTX 5090 specifications</a>: 32 GB GDDR7.</li>
+<li><a href="https://www.nvidia.com/en-us/products/workstations/professional-desktop-gpus/rtx-pro-6000-family/">NVIDIA RTX PRO 6000 Blackwell specifications</a>: 96 GB GDDR7 ECC.</li>
+</ol>
+<p class="small">Observed product capabilities and published statements are separated from our architectural recommendations and forecast. No claim here depends on unpublished access, a paid research product or a private vendor roadmap.</p>
+</div></section>
+</main>
+<footer><div class="shell">AXM public research · <a href="../">axm-tools</a> · static page, no account, no analytics, no background network requests except links you choose to open.</div></footer>
+<script src="app.js"></script>
+</body>
+</html>
