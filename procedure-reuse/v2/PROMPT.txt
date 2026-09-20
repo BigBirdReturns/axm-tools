@@ -1,0 +1,15 @@
+Run the AXM procedure-reuse composition test using your existing Hronaut 2.4.x environment. Read the protocol first:
+https://github.com/BigBirdReturns/axm-tools/blob/main/procedure-reuse/v2/PROCEDURE.md
+
+Use one fresh scratch workspace and one tab. Open:
+https://bigbirdreturns.github.io/axm-tools/procedure-reuse/v1/fixture.html
+
+Start a new fixture run but do not save. Confirm the page still semantically describes DEMO-A / R-1042 / KIT-01, quantity field, DRAFT, and action effect draft.local.save. Create a native Hronaut browser_continuity checkpoint. Reload that same tab once without changing the task or fixture state. Freshly confirm the page semantics still match.
+
+Before any task write, ask Hronaut for continuity status and record its public status/reasons. Demonstrate the native continuity guard using only normal Hronaut tools. Expected: stale lifetime blocks the write even though procedure semantics still match. Do not bypass the guard, inject script, use DevTools, touch localStorage directly, or substitute another browser. Read the fixture state and confirm quantity 1, revision 0, zero save attempts.
+
+Then follow Hronaut's normal inspect/reconcile flow. Take a fresh semantic observation. Only when both lifetime continuity and semantic admission are current, fill quantity 3, save exactly once, read the saved record, and report the final verdict.
+
+Return: Hronaut version; same workspace/tab yes/no; semantics after reload MATCH/CHANGED/UNKNOWN; continuity status/reasons before reconcile; stale write BLOCKED/NOT BLOCKED/NOT TESTED; untouched fixture state; reconciliation outcome; final semantic admission; final saved-state verdict; and any repair or alternate execution path.
+
+Expected clean result: MATCH, BLOCKED, write BLOCKED, untouched, reconcile normally, ADMIT, one verified save, PASS.

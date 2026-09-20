@@ -7,6 +7,11 @@ for name,want in manifest['sha256'].items():
     path=root/'v1'/name
     assert path.is_relative_to(root/'v1') and '..' not in Path(name).parts
     assert hashlib.sha256(path.read_bytes()).hexdigest()==want, name
+v2=json.loads((root/'v2/manifest.json').read_text())
+for name,want in v2['sha256'].items():
+    path=root/'v2'/name
+    assert path.is_relative_to(root/'v2') and '..' not in Path(name).parts
+    assert hashlib.sha256(path.read_bytes()).hexdigest()==want, 'v2/'+name
 html=(root/'v1/fixture.html').read_text()
 assert "connect-src 'none'" in html and "form-action 'none'" in html
 js=(root/'v1/fixture.mjs').read_text()
