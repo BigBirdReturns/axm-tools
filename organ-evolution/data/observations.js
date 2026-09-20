@@ -1,6 +1,6 @@
 window.AXM_ORGAN_OBSERVATIONS = {
   "format": "axm-organ-observations/1",
-  "generatedAt": "2026-09-19T16:33:26.429596Z",
+  "generatedAt": "2026-09-20T16:52:32.343756Z",
   "organs": [
     {
       "findings": [
@@ -10,7 +10,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/pull/153"
           ],
-          "summary": "BigBirdReturns/axm-arc draft PR #153 has remained open for 56 days."
+          "summary": "BigBirdReturns/axm-arc draft PR #153 has remained open for 57 days."
         },
         {
           "code": "stale_draft_pr",
@@ -18,7 +18,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/pull/158"
           ],
-          "summary": "BigBirdReturns/axm-arc draft PR #158 has remained open for 56 days."
+          "summary": "BigBirdReturns/axm-arc draft PR #158 has remained open for 57 days."
         },
         {
           "code": "stale_draft_pr",
@@ -26,7 +26,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/pull/169"
           ],
-          "summary": "BigBirdReturns/axm-arc draft PR #169 has remained open for 54 days."
+          "summary": "BigBirdReturns/axm-arc draft PR #169 has remained open for 55 days."
         },
         {
           "code": "stale_draft_pr",
@@ -34,7 +34,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/pull/175"
           ],
-          "summary": "BigBirdReturns/axm-arc draft PR #175 has remained open for 54 days."
+          "summary": "BigBirdReturns/axm-arc draft PR #175 has remained open for 55 days."
         },
         {
           "code": "stale_draft_pr",
@@ -42,7 +42,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/pull/177"
           ],
-          "summary": "BigBirdReturns/axm-arc draft PR #177 has remained open for 54 days."
+          "summary": "BigBirdReturns/axm-arc draft PR #177 has remained open for 55 days."
         },
         {
           "code": "stale_draft_pr",
@@ -50,7 +50,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/pull/181"
           ],
-          "summary": "BigBirdReturns/axm-arc draft PR #181 has remained open for 53 days."
+          "summary": "BigBirdReturns/axm-arc draft PR #181 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -58,7 +58,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/pull/182"
           ],
-          "summary": "BigBirdReturns/axm-arc draft PR #182 has remained open for 53 days."
+          "summary": "BigBirdReturns/axm-arc draft PR #182 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -66,7 +66,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/pull/184"
           ],
-          "summary": "BigBirdReturns/axm-arc draft PR #184 has remained open for 53 days."
+          "summary": "BigBirdReturns/axm-arc draft PR #184 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -74,7 +74,71 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/pull/187"
           ],
-          "summary": "BigBirdReturns/axm-arc draft PR #187 has remained open for 53 days."
+          "summary": "BigBirdReturns/axm-arc draft PR #187 has remained open for 54 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-arc/pull/249"
+          ],
+          "summary": "BigBirdReturns/axm-arc draft PR #249 has remained open for 46 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-arc/pull/250"
+          ],
+          "summary": "BigBirdReturns/axm-arc draft PR #250 has remained open for 46 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-arc/pull/251"
+          ],
+          "summary": "BigBirdReturns/axm-arc draft PR #251 has remained open for 46 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-arc/pull/252"
+          ],
+          "summary": "BigBirdReturns/axm-arc draft PR #252 has remained open for 46 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-arc/pull/253"
+          ],
+          "summary": "BigBirdReturns/axm-arc draft PR #253 has remained open for 46 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-arc/pull/254"
+          ],
+          "summary": "BigBirdReturns/axm-arc draft PR #254 has remained open for 46 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-arc/pull/255"
+          ],
+          "summary": "BigBirdReturns/axm-arc draft PR #255 has remained open for 46 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-arc/pull/256"
+          ],
+          "summary": "BigBirdReturns/axm-arc draft PR #256 has remained open for 46 days."
         },
         {
           "code": "workflow_unclassified_stale",
@@ -82,7 +146,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/actions/runs/30843424631"
           ],
-          "summary": "BigBirdReturns/axm-arc: latest unknown receipt for Burn Protocol active source frontier recovery is 46 days old."
+          "summary": "BigBirdReturns/axm-arc: latest unknown receipt for Burn Protocol active source frontier recovery is 47 days old."
         },
         {
           "code": "workflow_unclassified_stale",
@@ -90,7 +154,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-arc/actions/runs/31017868463"
           ],
-          "summary": "BigBirdReturns/axm-arc: latest unknown receipt for Burn Protocol active source frontier — Episode 5 Chapter 3 is 45 days old."
+          "summary": "BigBirdReturns/axm-arc: latest unknown receipt for Burn Protocol active source frontier — Episode 5 Chapter 3 is 46 days old."
         },
         {
           "code": "workflow_historical_not_green",
@@ -121,7 +185,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/pull/153"
               ],
-              "summary": "BigBirdReturns/axm-arc draft PR #153 has remained open for 56 days."
+              "summary": "BigBirdReturns/axm-arc draft PR #153 has remained open for 57 days."
             },
             {
               "code": "stale_draft_pr",
@@ -129,7 +193,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/pull/158"
               ],
-              "summary": "BigBirdReturns/axm-arc draft PR #158 has remained open for 56 days."
+              "summary": "BigBirdReturns/axm-arc draft PR #158 has remained open for 57 days."
             },
             {
               "code": "stale_draft_pr",
@@ -137,7 +201,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/pull/169"
               ],
-              "summary": "BigBirdReturns/axm-arc draft PR #169 has remained open for 54 days."
+              "summary": "BigBirdReturns/axm-arc draft PR #169 has remained open for 55 days."
             },
             {
               "code": "stale_draft_pr",
@@ -145,7 +209,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/pull/175"
               ],
-              "summary": "BigBirdReturns/axm-arc draft PR #175 has remained open for 54 days."
+              "summary": "BigBirdReturns/axm-arc draft PR #175 has remained open for 55 days."
             },
             {
               "code": "stale_draft_pr",
@@ -153,7 +217,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/pull/177"
               ],
-              "summary": "BigBirdReturns/axm-arc draft PR #177 has remained open for 54 days."
+              "summary": "BigBirdReturns/axm-arc draft PR #177 has remained open for 55 days."
             },
             {
               "code": "stale_draft_pr",
@@ -161,7 +225,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/pull/181"
               ],
-              "summary": "BigBirdReturns/axm-arc draft PR #181 has remained open for 53 days."
+              "summary": "BigBirdReturns/axm-arc draft PR #181 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -169,7 +233,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/pull/182"
               ],
-              "summary": "BigBirdReturns/axm-arc draft PR #182 has remained open for 53 days."
+              "summary": "BigBirdReturns/axm-arc draft PR #182 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -177,7 +241,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/pull/184"
               ],
-              "summary": "BigBirdReturns/axm-arc draft PR #184 has remained open for 53 days."
+              "summary": "BigBirdReturns/axm-arc draft PR #184 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -185,7 +249,71 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/pull/187"
               ],
-              "summary": "BigBirdReturns/axm-arc draft PR #187 has remained open for 53 days."
+              "summary": "BigBirdReturns/axm-arc draft PR #187 has remained open for 54 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-arc/pull/249"
+              ],
+              "summary": "BigBirdReturns/axm-arc draft PR #249 has remained open for 46 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-arc/pull/250"
+              ],
+              "summary": "BigBirdReturns/axm-arc draft PR #250 has remained open for 46 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-arc/pull/251"
+              ],
+              "summary": "BigBirdReturns/axm-arc draft PR #251 has remained open for 46 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-arc/pull/252"
+              ],
+              "summary": "BigBirdReturns/axm-arc draft PR #252 has remained open for 46 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-arc/pull/253"
+              ],
+              "summary": "BigBirdReturns/axm-arc draft PR #253 has remained open for 46 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-arc/pull/254"
+              ],
+              "summary": "BigBirdReturns/axm-arc draft PR #254 has remained open for 46 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-arc/pull/255"
+              ],
+              "summary": "BigBirdReturns/axm-arc draft PR #255 has remained open for 46 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-arc/pull/256"
+              ],
+              "summary": "BigBirdReturns/axm-arc draft PR #256 has remained open for 46 days."
             },
             {
               "code": "workflow_unclassified_stale",
@@ -193,7 +321,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/actions/runs/30843424631"
               ],
-              "summary": "BigBirdReturns/axm-arc: latest unknown receipt for Burn Protocol active source frontier recovery is 46 days old."
+              "summary": "BigBirdReturns/axm-arc: latest unknown receipt for Burn Protocol active source frontier recovery is 47 days old."
             },
             {
               "code": "workflow_unclassified_stale",
@@ -201,7 +329,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-arc/actions/runs/31017868463"
               ],
-              "summary": "BigBirdReturns/axm-arc: latest unknown receipt for Burn Protocol active source frontier — Episode 5 Chapter 3 is 45 days old."
+              "summary": "BigBirdReturns/axm-arc: latest unknown receipt for Burn Protocol active source frontier — Episode 5 Chapter 3 is 46 days old."
             },
             {
               "code": "workflow_historical_not_green",
@@ -220,7 +348,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-arc",
-          "headAgeDays": 4,
+          "headAgeDays": 5,
           "headAt": "2026-09-14T21:25:51Z",
           "headSha": "ecf196593bdf819a405ee4fa01429a41a80d6f89",
           "latestTag": "archive/codex/gate3-lamp-district",
@@ -228,7 +356,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 56,
+              "ageDays": 57,
               "baseRef": "main",
               "createdAt": "2026-07-24T18:27:52Z",
               "draft": true,
@@ -240,7 +368,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/153"
             },
             {
-              "ageDays": 56,
+              "ageDays": 57,
               "baseRef": "main",
               "createdAt": "2026-07-25T06:33:52Z",
               "draft": true,
@@ -252,7 +380,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/158"
             },
             {
-              "ageDays": 54,
+              "ageDays": 55,
               "baseRef": "main",
               "createdAt": "2026-07-26T20:29:42Z",
               "draft": true,
@@ -264,7 +392,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/169"
             },
             {
-              "ageDays": 54,
+              "ageDays": 55,
               "baseRef": "main",
               "createdAt": "2026-07-27T05:13:23Z",
               "draft": true,
@@ -276,7 +404,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/175"
             },
             {
-              "ageDays": 54,
+              "ageDays": 55,
               "baseRef": "main",
               "createdAt": "2026-07-27T15:58:32Z",
               "draft": true,
@@ -288,7 +416,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/177"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "main",
               "createdAt": "2026-07-27T18:05:16Z",
               "draft": true,
@@ -300,7 +428,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/181"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "integration/continuous-authority-estate-v1",
               "createdAt": "2026-07-27T21:45:47Z",
               "draft": true,
@@ -312,7 +440,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/182"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "integration/continuous-authority-estate-v1",
               "createdAt": "2026-07-28T00:11:32Z",
               "draft": true,
@@ -324,7 +452,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/184"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "feature/authored-experience-contract-v1",
               "createdAt": "2026-07-28T02:46:43Z",
               "draft": true,
@@ -336,7 +464,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/187"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "feature/asoiaf-reviewed-answer-packet-v1",
               "createdAt": "2026-08-05T04:45:02Z",
               "draft": true,
@@ -348,7 +476,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/249"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "feature/asoiaf-answer-work-order-v1",
               "createdAt": "2026-08-05T05:11:19Z",
               "draft": true,
@@ -360,7 +488,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/250"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "feature/asoiaf-answer-work-lease-v1",
               "createdAt": "2026-08-05T05:34:14Z",
               "draft": true,
@@ -372,7 +500,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/251"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "feature/asoiaf-answer-desk-estate-v1",
               "createdAt": "2026-08-05T07:48:08Z",
               "draft": true,
@@ -384,7 +512,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/252"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "feature/asoiaf-answer-desk-worker-v1",
               "createdAt": "2026-08-05T08:10:01Z",
               "draft": true,
@@ -396,7 +524,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/253"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "feature/asoiaf-answer-desk-exchange-v1",
               "createdAt": "2026-08-05T09:08:34Z",
               "draft": true,
@@ -408,7 +536,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/254"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "feature/asoiaf-answer-desk-exchange-v1",
               "createdAt": "2026-08-05T09:22:58Z",
               "draft": true,
@@ -420,7 +548,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/255"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "feature/asoiaf-answer-desk-transport-v1",
               "createdAt": "2026-08-05T16:24:07Z",
               "draft": true,
@@ -432,7 +560,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/256"
             },
             {
-              "ageDays": 44,
+              "ageDays": 45,
               "baseRef": "feature/asoiaf-answer-desk-transport-operations-v1",
               "createdAt": "2026-08-05T20:22:47Z",
               "draft": true,
@@ -444,7 +572,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/257"
             },
             {
-              "ageDays": 44,
+              "ageDays": 45,
               "baseRef": "integration/asoiaf-answer-desk-supervised-transport-v1",
               "createdAt": "2026-08-05T20:29:51Z",
               "draft": true,
@@ -456,7 +584,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/258"
             },
             {
-              "ageDays": 44,
+              "ageDays": 45,
               "baseRef": "feature/asoiaf-answer-desk-transport-operations-v1",
               "createdAt": "2026-08-05T22:50:01Z",
               "draft": true,
@@ -468,7 +596,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/260"
             },
             {
-              "ageDays": 44,
+              "ageDays": 45,
               "baseRef": "feature/asoiaf-answer-desk-transport-enrollment-v1",
               "createdAt": "2026-08-06T14:16:04Z",
               "draft": true,
@@ -480,7 +608,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/264"
             },
             {
-              "ageDays": 44,
+              "ageDays": 45,
               "baseRef": "feature/asoiaf-answer-credential-deployment-v1",
               "createdAt": "2026-08-06T15:39:57Z",
               "draft": true,
@@ -492,7 +620,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/265"
             },
             {
-              "ageDays": 43,
+              "ageDays": 44,
               "baseRef": "feature/asoiaf-answer-credential-broker-v1",
               "createdAt": "2026-08-06T20:28:08Z",
               "draft": true,
@@ -504,7 +632,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/270"
             },
             {
-              "ageDays": 43,
+              "ageDays": 44,
               "baseRef": "feature/asoiaf-answer-desk-supervised-delivery-v1",
               "createdAt": "2026-08-06T23:28:21Z",
               "draft": true,
@@ -516,7 +644,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/273"
             },
             {
-              "ageDays": 43,
+              "ageDays": 44,
               "baseRef": "integration/asoiaf-answer-desk-enrollment-supervised-delivery-v1",
               "createdAt": "2026-08-06T23:56:08Z",
               "draft": true,
@@ -528,7 +656,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/275"
             },
             {
-              "ageDays": 43,
+              "ageDays": 44,
               "baseRef": "feature/asoiaf-answer-credential-deployment-integrated-v1",
               "createdAt": "2026-08-07T01:40:51Z",
               "draft": true,
@@ -540,7 +668,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/278"
             },
             {
-              "ageDays": 43,
+              "ageDays": 44,
               "baseRef": "feature/asoiaf-answer-credential-broker-integrated-v1",
               "createdAt": "2026-08-07T01:52:09Z",
               "draft": true,
@@ -552,7 +680,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/279"
             },
             {
-              "ageDays": 43,
+              "ageDays": 44,
               "baseRef": "feature/asoiaf-answer-credential-provider-host-v1",
               "createdAt": "2026-08-07T02:21:29Z",
               "draft": true,
@@ -564,7 +692,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/280"
             },
             {
-              "ageDays": 43,
+              "ageDays": 44,
               "baseRef": "feature/asoiaf-answer-credential-broker-service-v1",
               "createdAt": "2026-08-07T05:30:44Z",
               "draft": true,
@@ -576,7 +704,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/282"
             },
             {
-              "ageDays": 43,
+              "ageDays": 44,
               "baseRef": "feature/asoiaf-answer-credential-provider-host-integrated-v1",
               "createdAt": "2026-08-07T05:59:18Z",
               "draft": true,
@@ -588,7 +716,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/284"
             },
             {
-              "ageDays": 42,
+              "ageDays": 43,
               "baseRef": "feature/asoiaf-answer-actor-runtime-v1",
               "createdAt": "2026-08-07T17:13:07Z",
               "draft": true,
@@ -600,7 +728,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/288"
             },
             {
-              "ageDays": 42,
+              "ageDays": 43,
               "baseRef": "feature/asoiaf-answer-actor-adapter-host-v1",
               "createdAt": "2026-08-07T18:51:41Z",
               "draft": true,
@@ -612,7 +740,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/294"
             },
             {
-              "ageDays": 42,
+              "ageDays": 43,
               "baseRef": "feature/asoiaf-answer-actor-capability-broker-v1",
               "createdAt": "2026-08-07T21:31:35Z",
               "draft": true,
@@ -624,7 +752,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/298"
             },
             {
-              "ageDays": 5,
+              "ageDays": 6,
               "baseRef": "main",
               "createdAt": "2026-09-13T23:41:37Z",
               "draft": true,
@@ -636,7 +764,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-arc/pull/303"
             },
             {
-              "ageDays": 5,
+              "ageDays": 6,
               "baseRef": "main",
               "createdAt": "2026-09-13T23:41:38Z",
               "draft": true,
@@ -1038,7 +1166,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-core/pull/28"
           ],
-          "summary": "BigBirdReturns/axm-core draft PR #28 has remained open for 52 days."
+          "summary": "BigBirdReturns/axm-core draft PR #28 has remained open for 53 days."
         }
       ],
       "localObservations": [],
@@ -1055,12 +1183,12 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-core/pull/28"
               ],
-              "summary": "BigBirdReturns/axm-core draft PR #28 has remained open for 52 days."
+              "summary": "BigBirdReturns/axm-core draft PR #28 has remained open for 53 days."
             }
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-core",
-          "headAgeDays": 17,
+          "headAgeDays": 18,
           "headAt": "2026-09-02T02:37:41Z",
           "headSha": "91ec2708eb28a9760c8a9967f589a12d6e87b114",
           "latestTag": "v1.0.0",
@@ -1068,7 +1196,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "main",
               "createdAt": "2026-07-29T01:50:37Z",
               "draft": true,
@@ -1245,7 +1373,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-embodied/pull/15"
           ],
-          "summary": "BigBirdReturns/axm-embodied draft PR #15 has remained open for 54 days."
+          "summary": "BigBirdReturns/axm-embodied draft PR #15 has remained open for 55 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1253,7 +1381,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-embodied/pull/20"
           ],
-          "summary": "BigBirdReturns/axm-embodied draft PR #20 has remained open for 52 days."
+          "summary": "BigBirdReturns/axm-embodied draft PR #20 has remained open for 53 days."
         },
         {
           "code": "workflow_required_stale",
@@ -1261,7 +1389,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-embodied/actions/runs/31045914198"
           ],
-          "summary": "BigBirdReturns/axm-embodied: latest permanent gate receipt for ci is 44 days old."
+          "summary": "BigBirdReturns/axm-embodied: latest permanent gate receipt for ci is 45 days old."
         },
         {
           "code": "workflow_advisory_stale",
@@ -1269,7 +1397,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-embodied/actions/runs/31045914153"
           ],
-          "summary": "BigBirdReturns/axm-embodied: latest publication job receipt for Deploy GitHub Pages is 44 days old."
+          "summary": "BigBirdReturns/axm-embodied: latest publication job receipt for Deploy GitHub Pages is 45 days old."
         },
         {
           "code": "workflow_historical_pending",
@@ -1294,7 +1422,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-embodied/pull/15"
               ],
-              "summary": "BigBirdReturns/axm-embodied draft PR #15 has remained open for 54 days."
+              "summary": "BigBirdReturns/axm-embodied draft PR #15 has remained open for 55 days."
             },
             {
               "code": "stale_draft_pr",
@@ -1302,7 +1430,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-embodied/pull/20"
               ],
-              "summary": "BigBirdReturns/axm-embodied draft PR #20 has remained open for 52 days."
+              "summary": "BigBirdReturns/axm-embodied draft PR #20 has remained open for 53 days."
             },
             {
               "code": "workflow_required_stale",
@@ -1310,7 +1438,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-embodied/actions/runs/31045914198"
               ],
-              "summary": "BigBirdReturns/axm-embodied: latest permanent gate receipt for ci is 44 days old."
+              "summary": "BigBirdReturns/axm-embodied: latest permanent gate receipt for ci is 45 days old."
             },
             {
               "code": "workflow_advisory_stale",
@@ -1318,7 +1446,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-embodied/actions/runs/31045914153"
               ],
-              "summary": "BigBirdReturns/axm-embodied: latest publication job receipt for Deploy GitHub Pages is 44 days old."
+              "summary": "BigBirdReturns/axm-embodied: latest publication job receipt for Deploy GitHub Pages is 45 days old."
             },
             {
               "code": "workflow_historical_pending",
@@ -1331,7 +1459,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-embodied",
-          "headAgeDays": 44,
+          "headAgeDays": 45,
           "headAt": "2026-08-05T20:39:52Z",
           "headSha": "813abf55a85a0e2bdac9618e5be20769e84de722",
           "latestTag": "v1.4.0",
@@ -1339,7 +1467,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 54,
+              "ageDays": 55,
               "baseRef": "main",
               "createdAt": "2026-07-27T05:02:28Z",
               "draft": true,
@@ -1351,7 +1479,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-embodied/pull/15"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "main",
               "createdAt": "2026-07-29T04:55:38Z",
               "draft": true,
@@ -1511,7 +1639,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "findings": [],
           "fork": false,
           "fullName": "BigBirdReturns/axm-genesis",
-          "headAgeDays": 14,
+          "headAgeDays": 15,
           "headAt": "2026-09-05T15:36:45Z",
           "headSha": "5fcd472d6119afc0e9bb80ffc91f9ccc8adde705",
           "latestTag": "v1.2.0",
@@ -1519,7 +1647,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 74,
+              "ageDays": 75,
               "baseRef": "main",
               "createdAt": "2026-07-06T18:02:00Z",
               "draft": false,
@@ -1531,7 +1659,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-genesis/pull/23"
             },
             {
-              "ageDays": 73,
+              "ageDays": 74,
               "baseRef": "main",
               "createdAt": "2026-07-07T18:18:21Z",
               "draft": false,
@@ -1543,7 +1671,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-genesis/pull/26"
             },
             {
-              "ageDays": 30,
+              "ageDays": 31,
               "baseRef": "main",
               "createdAt": "2026-08-19T21:40:57Z",
               "draft": true,
@@ -1723,7 +1851,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-hinge/pull/6"
           ],
-          "summary": "BigBirdReturns/axm-hinge draft PR #6 has remained open for 52 days."
+          "summary": "BigBirdReturns/axm-hinge draft PR #6 has remained open for 53 days."
         },
         {
           "code": "workflow_required_stale",
@@ -1731,7 +1859,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-hinge/actions/runs/29984819088"
           ],
-          "summary": "BigBirdReturns/axm-hinge: latest permanent gate receipt for python is 58 days old."
+          "summary": "BigBirdReturns/axm-hinge: latest permanent gate receipt for python is 59 days old."
         }
       ],
       "localObservations": [],
@@ -1748,7 +1876,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-hinge/pull/6"
               ],
-              "summary": "BigBirdReturns/axm-hinge draft PR #6 has remained open for 52 days."
+              "summary": "BigBirdReturns/axm-hinge draft PR #6 has remained open for 53 days."
             },
             {
               "code": "workflow_required_stale",
@@ -1756,12 +1884,12 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-hinge/actions/runs/29984819088"
               ],
-              "summary": "BigBirdReturns/axm-hinge: latest permanent gate receipt for python is 58 days old."
+              "summary": "BigBirdReturns/axm-hinge: latest permanent gate receipt for python is 59 days old."
             }
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-hinge",
-          "headAgeDays": 58,
+          "headAgeDays": 59,
           "headAt": "2026-07-23T06:20:52Z",
           "headSha": "9c36ae56750712059ac2ec1af7589de5c7d62d4c",
           "latestTag": "archive/agent/hinge-impact-layer",
@@ -1769,7 +1897,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "main",
               "createdAt": "2026-07-29T04:54:31Z",
               "draft": true,
@@ -1865,7 +1993,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/103"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #103 has remained open for 66 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #103 has remained open for 67 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1873,7 +2001,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/121"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #121 has remained open for 60 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #121 has remained open for 61 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1881,7 +2009,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/122"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #122 has remained open for 60 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #122 has remained open for 61 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1889,7 +2017,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/123"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #123 has remained open for 60 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #123 has remained open for 61 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1897,7 +2025,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/136"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #136 has remained open for 53 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #136 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1905,7 +2033,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/137"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #137 has remained open for 53 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #137 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1913,7 +2041,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/139"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #139 has remained open for 53 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #139 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1921,7 +2049,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/142"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #142 has remained open for 52 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #142 has remained open for 53 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1929,7 +2057,23 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/147"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #147 has remained open for 52 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #147 has remained open for 53 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/tier-bench/pull/154"
+          ],
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #154 has remained open for 46 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/tier-bench/pull/155"
+          ],
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #155 has remained open for 46 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1937,7 +2081,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/68"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #68 has remained open for 70 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #68 has remained open for 71 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1945,7 +2089,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/69"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #69 has remained open for 70 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #69 has remained open for 71 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1953,7 +2097,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/72"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #72 has remained open for 69 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #72 has remained open for 70 days."
         },
         {
           "code": "stale_draft_pr",
@@ -1961,7 +2105,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/89"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #89 has remained open for 67 days."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #89 has remained open for 68 days."
         },
         {
           "code": "workflow_required_stale",
@@ -1969,7 +2113,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/actions/runs/30416065959"
           ],
-          "summary": "BigBirdReturns/tier-bench:supplier_foundry: latest permanent gate receipt for Supplier Foundry asset pilot is 52 days old."
+          "summary": "BigBirdReturns/tier-bench:supplier_foundry: latest permanent gate receipt for Supplier Foundry asset pilot is 53 days old."
         }
       ],
       "localObservations": [
@@ -2003,7 +2147,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/103"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #103 has remained open for 66 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #103 has remained open for 67 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2011,7 +2155,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/121"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #121 has remained open for 60 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #121 has remained open for 61 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2019,7 +2163,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/122"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #122 has remained open for 60 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #122 has remained open for 61 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2027,7 +2171,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/123"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #123 has remained open for 60 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #123 has remained open for 61 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2035,7 +2179,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/136"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #136 has remained open for 53 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #136 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2043,7 +2187,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/137"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #137 has remained open for 53 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #137 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2051,7 +2195,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/139"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #139 has remained open for 53 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #139 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2059,7 +2203,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/142"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #142 has remained open for 52 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #142 has remained open for 53 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2067,7 +2211,23 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/147"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #147 has remained open for 52 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #147 has remained open for 53 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/tier-bench/pull/154"
+              ],
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #154 has remained open for 46 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/tier-bench/pull/155"
+              ],
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #155 has remained open for 46 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2075,7 +2235,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/68"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #68 has remained open for 70 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #68 has remained open for 71 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2083,7 +2243,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/69"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #69 has remained open for 70 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #69 has remained open for 71 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2091,7 +2251,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/72"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #72 has remained open for 69 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #72 has remained open for 70 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2099,7 +2259,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/89"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #89 has remained open for 67 days."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry draft PR #89 has remained open for 68 days."
             },
             {
               "code": "workflow_required_stale",
@@ -2107,12 +2267,12 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/actions/runs/30416065959"
               ],
-              "summary": "BigBirdReturns/tier-bench:supplier_foundry: latest permanent gate receipt for Supplier Foundry asset pilot is 52 days old."
+              "summary": "BigBirdReturns/tier-bench:supplier_foundry: latest permanent gate receipt for Supplier Foundry asset pilot is 53 days old."
             }
           ],
           "fork": false,
           "fullName": "BigBirdReturns/tier-bench",
-          "headAgeDays": 17,
+          "headAgeDays": 18,
           "headAt": "2026-09-02T02:33:00Z",
           "headSha": "f6137258ce3f0462ccbf09c6adee01454332f7ec",
           "latestTag": "v0.1.0",
@@ -2120,7 +2280,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 70,
+              "ageDays": 71,
               "baseRef": "main",
               "createdAt": "2026-07-11T01:31:31Z",
               "draft": true,
@@ -2132,7 +2292,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/68"
             },
             {
-              "ageDays": 70,
+              "ageDays": 71,
               "baseRef": "main",
               "createdAt": "2026-07-11T01:43:37Z",
               "draft": true,
@@ -2144,7 +2304,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/69"
             },
             {
-              "ageDays": 69,
+              "ageDays": 70,
               "baseRef": "main",
               "createdAt": "2026-07-12T08:53:32Z",
               "draft": true,
@@ -2156,7 +2316,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/72"
             },
             {
-              "ageDays": 67,
+              "ageDays": 68,
               "baseRef": "main",
               "createdAt": "2026-07-13T19:03:09Z",
               "draft": true,
@@ -2168,7 +2328,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/89"
             },
             {
-              "ageDays": 66,
+              "ageDays": 67,
               "baseRef": "main",
               "createdAt": "2026-07-14T20:54:09Z",
               "draft": true,
@@ -2180,7 +2340,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/103"
             },
             {
-              "ageDays": 60,
+              "ageDays": 61,
               "baseRef": "agent/monster-wrangler-desk",
               "createdAt": "2026-07-21T01:19:36Z",
               "draft": true,
@@ -2192,7 +2352,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/121"
             },
             {
-              "ageDays": 60,
+              "ageDays": 61,
               "baseRef": "codex/chair-inbox-v1",
               "createdAt": "2026-07-21T01:46:38Z",
               "draft": true,
@@ -2204,7 +2364,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/122"
             },
             {
-              "ageDays": 60,
+              "ageDays": 61,
               "baseRef": "agent/chair-inbox-v1-repair-001",
               "createdAt": "2026-07-21T03:21:03Z",
               "draft": true,
@@ -2216,7 +2376,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/123"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "main",
               "createdAt": "2026-07-27T20:30:42Z",
               "draft": true,
@@ -2228,7 +2388,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/136"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "main",
               "createdAt": "2026-07-27T22:39:31Z",
               "draft": true,
@@ -2240,7 +2400,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/137"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "main",
               "createdAt": "2026-07-28T00:01:05Z",
               "draft": true,
@@ -2252,7 +2412,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/139"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "agent/conditional-memory-lab-v1",
               "createdAt": "2026-07-28T17:51:00Z",
               "draft": true,
@@ -2264,7 +2424,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/142"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "main",
               "createdAt": "2026-07-28T19:30:36Z",
               "draft": false,
@@ -2276,7 +2436,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/143"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "agent/task-computer-v1",
               "createdAt": "2026-07-29T02:26:07Z",
               "draft": true,
@@ -2288,7 +2448,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/147"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "main",
               "createdAt": "2026-08-05T07:50:31Z",
               "draft": true,
@@ -2300,7 +2460,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/154"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "agent/menace-edge-qualification-v1",
               "createdAt": "2026-08-05T09:32:27Z",
               "draft": true,
@@ -2312,7 +2472,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/155"
             },
             {
-              "ageDays": 44,
+              "ageDays": 45,
               "baseRef": "feature/community-home-lab-anchor-crate-v0.2.0",
               "createdAt": "2026-08-06T03:37:54Z",
               "draft": true,
@@ -2324,7 +2484,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/156"
             },
             {
-              "ageDays": 44,
+              "ageDays": 45,
               "baseRef": "feature/halo3-cell-zero-v0.1.0",
               "createdAt": "2026-08-06T04:04:30Z",
               "draft": true,
@@ -2336,7 +2496,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/157"
             },
             {
-              "ageDays": 42,
+              "ageDays": 43,
               "baseRef": "main",
               "createdAt": "2026-08-07T18:41:09Z",
               "draft": true,
@@ -2348,7 +2508,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/159"
             },
             {
-              "ageDays": 38,
+              "ageDays": 39,
               "baseRef": "main",
               "createdAt": "2026-08-11T17:27:38Z",
               "draft": true,
@@ -2360,7 +2520,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/162"
             },
             {
-              "ageDays": 22,
+              "ageDays": 23,
               "baseRef": "main",
               "createdAt": "2026-08-28T04:22:10Z",
               "draft": false,
@@ -2372,7 +2532,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/167"
             },
             {
-              "ageDays": 21,
+              "ageDays": 22,
               "baseRef": "claude/queue-estate-ladder-20260827",
               "createdAt": "2026-08-28T20:42:02Z",
               "draft": false,
@@ -2384,7 +2544,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/168"
             },
             {
-              "ageDays": 21,
+              "ageDays": 22,
               "baseRef": "claude/k3-dspark-prep-20260828",
               "createdAt": "2026-08-28T22:04:38Z",
               "draft": false,
@@ -2396,7 +2556,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/169"
             },
             {
-              "ageDays": 17,
+              "ageDays": 18,
               "baseRef": "main",
               "createdAt": "2026-09-02T03:42:27Z",
               "draft": true,
@@ -2408,7 +2568,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/170"
             },
             {
-              "ageDays": 17,
+              "ageDays": 18,
               "baseRef": "main",
               "createdAt": "2026-09-02T07:08:56Z",
               "draft": true,
@@ -2420,7 +2580,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/171"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "joint/astra-stage2-calibration-20260902",
               "createdAt": "2026-09-02T22:47:28Z",
               "draft": true,
@@ -2432,7 +2592,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/181"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "feature/community-home-lab-anchor-crate-v0.2.0",
               "createdAt": "2026-09-03T03:57:36Z",
               "draft": true,
@@ -2444,7 +2604,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/183"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "joint/astra-stage2-calibration-impl-20260902",
               "createdAt": "2026-09-03T12:35:37Z",
               "draft": true,
@@ -2456,7 +2616,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/185"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "joint/astra-stage2-calibration-impl-20260902",
               "createdAt": "2026-09-03T14:22:31Z",
               "draft": true,
@@ -2468,7 +2628,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/186"
             },
             {
-              "ageDays": 15,
+              "ageDays": 17,
               "baseRef": "joint/astra-stage2-control-identities-20260903",
               "createdAt": "2026-09-03T16:50:57Z",
               "draft": true,
@@ -2480,7 +2640,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/187"
             },
             {
-              "ageDays": 15,
+              "ageDays": 16,
               "baseRef": "fix/anchor-crate-4060-backend-thermal-binding-20260902",
               "createdAt": "2026-09-03T19:30:43Z",
               "draft": true,
@@ -2623,7 +2783,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/103"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #103 has remained open for 66 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #103 has remained open for 67 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2631,7 +2791,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/121"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #121 has remained open for 60 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #121 has remained open for 61 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2639,7 +2799,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/122"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #122 has remained open for 60 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #122 has remained open for 61 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2647,7 +2807,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/123"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #123 has remained open for 60 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #123 has remained open for 61 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2655,7 +2815,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/136"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #136 has remained open for 53 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #136 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2663,7 +2823,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/137"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #137 has remained open for 53 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #137 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2671,7 +2831,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/139"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #139 has remained open for 53 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #139 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2679,7 +2839,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/142"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #142 has remained open for 52 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #142 has remained open for 53 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2687,7 +2847,23 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/147"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #147 has remained open for 52 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #147 has remained open for 53 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/tier-bench/pull/154"
+          ],
+          "summary": "BigBirdReturns/tier-bench draft PR #154 has remained open for 46 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/tier-bench/pull/155"
+          ],
+          "summary": "BigBirdReturns/tier-bench draft PR #155 has remained open for 46 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2695,7 +2871,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/68"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #68 has remained open for 70 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #68 has remained open for 71 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2703,7 +2879,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/69"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #69 has remained open for 70 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #69 has remained open for 71 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2711,7 +2887,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/72"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #72 has remained open for 69 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #72 has remained open for 70 days."
         },
         {
           "code": "stale_draft_pr",
@@ -2719,7 +2895,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/pull/89"
           ],
-          "summary": "BigBirdReturns/tier-bench draft PR #89 has remained open for 67 days."
+          "summary": "BigBirdReturns/tier-bench draft PR #89 has remained open for 68 days."
         },
         {
           "code": "workflow_unclassified_stale",
@@ -2727,7 +2903,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/actions/runs/30424570364"
           ],
-          "summary": "BigBirdReturns/tier-bench: latest unknown receipt for AXM action player floor is 52 days old."
+          "summary": "BigBirdReturns/tier-bench: latest unknown receipt for AXM action player floor is 53 days old."
         },
         {
           "code": "workflow_unclassified_stale",
@@ -2735,7 +2911,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/actions/runs/30217298621"
           ],
-          "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Deploy Tier Bench site to GitHub Pages is 54 days old."
+          "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Deploy Tier Bench site to GitHub Pages is 55 days old."
         },
         {
           "code": "workflow_unclassified_stale",
@@ -2743,7 +2919,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/actions/runs/30416066009"
           ],
-          "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Supplier Foundry asset floor is 52 days old."
+          "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Supplier Foundry asset floor is 53 days old."
         },
         {
           "code": "workflow_unclassified_stale",
@@ -2751,7 +2927,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/tier-bench/actions/runs/30416065959"
           ],
-          "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Supplier Foundry asset pilot is 52 days old."
+          "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Supplier Foundry asset pilot is 53 days old."
         }
       ],
       "localObservations": [],
@@ -2768,7 +2944,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/103"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #103 has remained open for 66 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #103 has remained open for 67 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2776,7 +2952,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/121"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #121 has remained open for 60 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #121 has remained open for 61 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2784,7 +2960,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/122"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #122 has remained open for 60 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #122 has remained open for 61 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2792,7 +2968,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/123"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #123 has remained open for 60 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #123 has remained open for 61 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2800,7 +2976,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/136"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #136 has remained open for 53 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #136 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2808,7 +2984,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/137"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #137 has remained open for 53 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #137 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2816,7 +2992,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/139"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #139 has remained open for 53 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #139 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2824,7 +3000,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/142"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #142 has remained open for 52 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #142 has remained open for 53 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2832,7 +3008,23 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/147"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #147 has remained open for 52 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #147 has remained open for 53 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/tier-bench/pull/154"
+              ],
+              "summary": "BigBirdReturns/tier-bench draft PR #154 has remained open for 46 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/tier-bench/pull/155"
+              ],
+              "summary": "BigBirdReturns/tier-bench draft PR #155 has remained open for 46 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2840,7 +3032,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/68"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #68 has remained open for 70 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #68 has remained open for 71 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2848,7 +3040,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/69"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #69 has remained open for 70 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #69 has remained open for 71 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2856,7 +3048,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/72"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #72 has remained open for 69 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #72 has remained open for 70 days."
             },
             {
               "code": "stale_draft_pr",
@@ -2864,7 +3056,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/pull/89"
               ],
-              "summary": "BigBirdReturns/tier-bench draft PR #89 has remained open for 67 days."
+              "summary": "BigBirdReturns/tier-bench draft PR #89 has remained open for 68 days."
             },
             {
               "code": "workflow_unclassified_stale",
@@ -2872,7 +3064,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/actions/runs/30424570364"
               ],
-              "summary": "BigBirdReturns/tier-bench: latest unknown receipt for AXM action player floor is 52 days old."
+              "summary": "BigBirdReturns/tier-bench: latest unknown receipt for AXM action player floor is 53 days old."
             },
             {
               "code": "workflow_unclassified_stale",
@@ -2880,7 +3072,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/actions/runs/30217298621"
               ],
-              "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Deploy Tier Bench site to GitHub Pages is 54 days old."
+              "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Deploy Tier Bench site to GitHub Pages is 55 days old."
             },
             {
               "code": "workflow_unclassified_stale",
@@ -2888,7 +3080,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/actions/runs/30416066009"
               ],
-              "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Supplier Foundry asset floor is 52 days old."
+              "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Supplier Foundry asset floor is 53 days old."
             },
             {
               "code": "workflow_unclassified_stale",
@@ -2896,12 +3088,12 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/tier-bench/actions/runs/30416065959"
               ],
-              "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Supplier Foundry asset pilot is 52 days old."
+              "summary": "BigBirdReturns/tier-bench: latest unknown receipt for Supplier Foundry asset pilot is 53 days old."
             }
           ],
           "fork": false,
           "fullName": "BigBirdReturns/tier-bench",
-          "headAgeDays": 17,
+          "headAgeDays": 18,
           "headAt": "2026-09-02T02:33:00Z",
           "headSha": "f6137258ce3f0462ccbf09c6adee01454332f7ec",
           "latestTag": "v0.1.0",
@@ -2909,7 +3101,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 70,
+              "ageDays": 71,
               "baseRef": "main",
               "createdAt": "2026-07-11T01:31:31Z",
               "draft": true,
@@ -2921,7 +3113,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/68"
             },
             {
-              "ageDays": 70,
+              "ageDays": 71,
               "baseRef": "main",
               "createdAt": "2026-07-11T01:43:37Z",
               "draft": true,
@@ -2933,7 +3125,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/69"
             },
             {
-              "ageDays": 69,
+              "ageDays": 70,
               "baseRef": "main",
               "createdAt": "2026-07-12T08:53:32Z",
               "draft": true,
@@ -2945,7 +3137,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/72"
             },
             {
-              "ageDays": 67,
+              "ageDays": 68,
               "baseRef": "main",
               "createdAt": "2026-07-13T19:03:09Z",
               "draft": true,
@@ -2957,7 +3149,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/89"
             },
             {
-              "ageDays": 66,
+              "ageDays": 67,
               "baseRef": "main",
               "createdAt": "2026-07-14T20:54:09Z",
               "draft": true,
@@ -2969,7 +3161,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/103"
             },
             {
-              "ageDays": 60,
+              "ageDays": 61,
               "baseRef": "agent/monster-wrangler-desk",
               "createdAt": "2026-07-21T01:19:36Z",
               "draft": true,
@@ -2981,7 +3173,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/121"
             },
             {
-              "ageDays": 60,
+              "ageDays": 61,
               "baseRef": "codex/chair-inbox-v1",
               "createdAt": "2026-07-21T01:46:38Z",
               "draft": true,
@@ -2993,7 +3185,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/122"
             },
             {
-              "ageDays": 60,
+              "ageDays": 61,
               "baseRef": "agent/chair-inbox-v1-repair-001",
               "createdAt": "2026-07-21T03:21:03Z",
               "draft": true,
@@ -3005,7 +3197,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/123"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "main",
               "createdAt": "2026-07-27T20:30:42Z",
               "draft": true,
@@ -3017,7 +3209,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/136"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "main",
               "createdAt": "2026-07-27T22:39:31Z",
               "draft": true,
@@ -3029,7 +3221,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/137"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "main",
               "createdAt": "2026-07-28T00:01:05Z",
               "draft": true,
@@ -3041,7 +3233,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/139"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "agent/conditional-memory-lab-v1",
               "createdAt": "2026-07-28T17:51:00Z",
               "draft": true,
@@ -3053,7 +3245,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/142"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "main",
               "createdAt": "2026-07-28T19:30:36Z",
               "draft": false,
@@ -3065,7 +3257,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/143"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "agent/task-computer-v1",
               "createdAt": "2026-07-29T02:26:07Z",
               "draft": true,
@@ -3077,7 +3269,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/147"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "main",
               "createdAt": "2026-08-05T07:50:31Z",
               "draft": true,
@@ -3089,7 +3281,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/154"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "agent/menace-edge-qualification-v1",
               "createdAt": "2026-08-05T09:32:27Z",
               "draft": true,
@@ -3101,7 +3293,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/155"
             },
             {
-              "ageDays": 44,
+              "ageDays": 45,
               "baseRef": "feature/community-home-lab-anchor-crate-v0.2.0",
               "createdAt": "2026-08-06T03:37:54Z",
               "draft": true,
@@ -3113,7 +3305,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/156"
             },
             {
-              "ageDays": 44,
+              "ageDays": 45,
               "baseRef": "feature/halo3-cell-zero-v0.1.0",
               "createdAt": "2026-08-06T04:04:30Z",
               "draft": true,
@@ -3125,7 +3317,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/157"
             },
             {
-              "ageDays": 42,
+              "ageDays": 43,
               "baseRef": "main",
               "createdAt": "2026-08-07T18:41:09Z",
               "draft": true,
@@ -3137,7 +3329,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/159"
             },
             {
-              "ageDays": 38,
+              "ageDays": 39,
               "baseRef": "main",
               "createdAt": "2026-08-11T17:27:38Z",
               "draft": true,
@@ -3149,7 +3341,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/162"
             },
             {
-              "ageDays": 22,
+              "ageDays": 23,
               "baseRef": "main",
               "createdAt": "2026-08-28T04:22:10Z",
               "draft": false,
@@ -3161,7 +3353,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/167"
             },
             {
-              "ageDays": 21,
+              "ageDays": 22,
               "baseRef": "claude/queue-estate-ladder-20260827",
               "createdAt": "2026-08-28T20:42:02Z",
               "draft": false,
@@ -3173,7 +3365,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/168"
             },
             {
-              "ageDays": 21,
+              "ageDays": 22,
               "baseRef": "claude/k3-dspark-prep-20260828",
               "createdAt": "2026-08-28T22:04:38Z",
               "draft": false,
@@ -3185,7 +3377,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/169"
             },
             {
-              "ageDays": 17,
+              "ageDays": 18,
               "baseRef": "main",
               "createdAt": "2026-09-02T03:42:27Z",
               "draft": true,
@@ -3197,7 +3389,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/170"
             },
             {
-              "ageDays": 17,
+              "ageDays": 18,
               "baseRef": "main",
               "createdAt": "2026-09-02T07:08:56Z",
               "draft": true,
@@ -3209,7 +3401,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/171"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "joint/astra-stage2-calibration-20260902",
               "createdAt": "2026-09-02T22:47:28Z",
               "draft": true,
@@ -3221,7 +3413,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/181"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "feature/community-home-lab-anchor-crate-v0.2.0",
               "createdAt": "2026-09-03T03:57:36Z",
               "draft": true,
@@ -3233,7 +3425,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/183"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "joint/astra-stage2-calibration-impl-20260902",
               "createdAt": "2026-09-03T12:35:37Z",
               "draft": true,
@@ -3245,7 +3437,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/185"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "joint/astra-stage2-calibration-impl-20260902",
               "createdAt": "2026-09-03T14:22:31Z",
               "draft": true,
@@ -3257,7 +3449,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/186"
             },
             {
-              "ageDays": 15,
+              "ageDays": 17,
               "baseRef": "joint/astra-stage2-control-identities-20260903",
               "createdAt": "2026-09-03T16:50:57Z",
               "draft": true,
@@ -3269,7 +3461,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/tier-bench/pull/187"
             },
             {
-              "ageDays": 15,
+              "ageDays": 16,
               "baseRef": "fix/anchor-crate-4060-backend-thermal-binding-20260902",
               "createdAt": "2026-09-03T19:30:43Z",
               "draft": true,
@@ -3518,7 +3710,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-tools/pull/14"
           ],
-          "summary": "BigBirdReturns/axm-tools draft PR #14 has remained open for 68 days."
+          "summary": "BigBirdReturns/axm-tools draft PR #14 has remained open for 69 days."
         },
         {
           "code": "stale_draft_pr",
@@ -3526,13 +3718,21 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-tools/pull/39"
           ],
-          "summary": "BigBirdReturns/axm-tools draft PR #39 has remained open for 52 days."
+          "summary": "BigBirdReturns/axm-tools draft PR #39 has remained open for 53 days."
+        },
+        {
+          "code": "stale_draft_pr",
+          "severity": "attention",
+          "sourceRefs": [
+            "https://github.com/BigBirdReturns/axm-tools/pull/52"
+          ],
+          "summary": "BigBirdReturns/axm-tools draft PR #52 has remained open for 46 days."
         },
         {
           "code": "workflow_required_pending",
           "severity": "attention",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/35455327937"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/35524067280"
           ],
           "summary": "BigBirdReturns/axm-tools: current scheduled observer Organ evolution observe + deploy is in_progress."
         },
@@ -3546,7 +3746,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_unclassified_not_green",
           "severity": "critical",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/34637052280"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/35523787870"
           ],
           "summary": "BigBirdReturns/axm-tools: .github/workflows/pelagos-governance-materialize.yml concluded failure and has no exact workflow-role declaration. It remains critical until classified."
         },
@@ -3554,7 +3754,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "code": "workflow_unclassified_not_green",
           "severity": "critical",
           "sourceRefs": [
-            "https://github.com/BigBirdReturns/axm-tools/actions/runs/34183988274"
+            "https://github.com/BigBirdReturns/axm-tools/actions/runs/35521155028"
           ],
           "summary": "BigBirdReturns/axm-tools: Case Zero workbench qualification concluded failure and has no exact workflow-role declaration. It remains critical until classified."
         }
@@ -3564,7 +3764,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
       "repositories": [
         {
           "archived": false,
-          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/29d2bb68bf526a867716cecbc2866bbd208fbe71",
+          "commitUrl": "https://github.com/BigBirdReturns/axm-tools/commit/229b15fb20e3fceab588b79df79880097482de65",
           "defaultBranch": "main",
           "findings": [
             {
@@ -3579,7 +3779,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-tools/pull/14"
               ],
-              "summary": "BigBirdReturns/axm-tools draft PR #14 has remained open for 68 days."
+              "summary": "BigBirdReturns/axm-tools draft PR #14 has remained open for 69 days."
             },
             {
               "code": "stale_draft_pr",
@@ -3587,13 +3787,21 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-tools/pull/39"
               ],
-              "summary": "BigBirdReturns/axm-tools draft PR #39 has remained open for 52 days."
+              "summary": "BigBirdReturns/axm-tools draft PR #39 has remained open for 53 days."
+            },
+            {
+              "code": "stale_draft_pr",
+              "severity": "attention",
+              "sourceRefs": [
+                "https://github.com/BigBirdReturns/axm-tools/pull/52"
+              ],
+              "summary": "BigBirdReturns/axm-tools draft PR #52 has remained open for 46 days."
             },
             {
               "code": "workflow_required_pending",
               "severity": "attention",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/35455327937"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/35524067280"
               ],
               "summary": "BigBirdReturns/axm-tools: current scheduled observer Organ evolution observe + deploy is in_progress."
             },
@@ -3607,7 +3815,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_unclassified_not_green",
               "severity": "critical",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/34637052280"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/35523787870"
               ],
               "summary": "BigBirdReturns/axm-tools: .github/workflows/pelagos-governance-materialize.yml concluded failure and has no exact workflow-role declaration. It remains critical until classified."
             },
@@ -3615,7 +3823,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "code": "workflow_unclassified_not_green",
               "severity": "critical",
               "sourceRefs": [
-                "https://github.com/BigBirdReturns/axm-tools/actions/runs/34183988274"
+                "https://github.com/BigBirdReturns/axm-tools/actions/runs/35521155028"
               ],
               "summary": "BigBirdReturns/axm-tools: Case Zero workbench qualification concluded failure and has no exact workflow-role declaration. It remains critical until classified."
             }
@@ -3623,14 +3831,14 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "fork": false,
           "fullName": "BigBirdReturns/axm-tools",
           "headAgeDays": 0,
-          "headAt": "2026-09-19T15:59:14Z",
-          "headSha": "29d2bb68bf526a867716cecbc2866bbd208fbe71",
+          "headAt": "2026-09-20T16:47:23Z",
+          "headSha": "229b15fb20e3fceab588b79df79880097482de65",
           "latestTag": "archive/claude/session-planning-1h0xlw",
           "license": null,
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 68,
+              "ageDays": 69,
               "baseRef": "main",
               "createdAt": "2026-07-12T22:36:48Z",
               "draft": true,
@@ -3642,7 +3850,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/14"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "main",
               "createdAt": "2026-07-29T04:53:39Z",
               "draft": true,
@@ -3654,7 +3862,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/39"
             },
             {
-              "ageDays": 45,
+              "ageDays": 46,
               "baseRef": "main",
               "createdAt": "2026-08-05T08:36:15Z",
               "draft": true,
@@ -3666,7 +3874,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/52"
             },
             {
-              "ageDays": 35,
+              "ageDays": 36,
               "baseRef": "main",
               "createdAt": "2026-08-14T23:24:01Z",
               "draft": false,
@@ -3678,7 +3886,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/88"
             },
             {
-              "ageDays": 31,
+              "ageDays": 32,
               "baseRef": "main",
               "createdAt": "2026-08-19T00:05:44Z",
               "draft": true,
@@ -3690,7 +3898,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/118"
             },
             {
-              "ageDays": 31,
+              "ageDays": 32,
               "baseRef": "main",
               "createdAt": "2026-08-19T00:42:52Z",
               "draft": true,
@@ -3702,7 +3910,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/119"
             },
             {
-              "ageDays": 31,
+              "ageDays": 32,
               "baseRef": "main",
               "createdAt": "2026-08-19T08:10:09Z",
               "draft": true,
@@ -3714,7 +3922,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/122"
             },
             {
-              "ageDays": 28,
+              "ageDays": 29,
               "baseRef": "main",
               "createdAt": "2026-08-21T22:50:54Z",
               "draft": true,
@@ -3726,7 +3934,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/134"
             },
             {
-              "ageDays": 23,
+              "ageDays": 24,
               "baseRef": "main",
               "createdAt": "2026-08-27T03:59:50Z",
               "draft": true,
@@ -3738,7 +3946,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/140"
             },
             {
-              "ageDays": 23,
+              "ageDays": 24,
               "baseRef": "main",
               "createdAt": "2026-08-27T04:10:34Z",
               "draft": true,
@@ -3750,7 +3958,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/141"
             },
             {
-              "ageDays": 18,
+              "ageDays": 19,
               "baseRef": "main",
               "createdAt": "2026-09-01T16:16:50Z",
               "draft": true,
@@ -3762,7 +3970,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/142"
             },
             {
-              "ageDays": 17,
+              "ageDays": 18,
               "baseRef": "main",
               "createdAt": "2026-09-01T23:26:11Z",
               "draft": true,
@@ -3774,7 +3982,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/146"
             },
             {
-              "ageDays": 17,
+              "ageDays": 18,
               "baseRef": "main",
               "createdAt": "2026-09-01T23:44:07Z",
               "draft": true,
@@ -3786,7 +3994,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/147"
             },
             {
-              "ageDays": 16,
+              "ageDays": 17,
               "baseRef": "main",
               "createdAt": "2026-09-02T18:46:25Z",
               "draft": true,
@@ -3798,7 +4006,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/149"
             },
             {
-              "ageDays": 15,
+              "ageDays": 16,
               "baseRef": "agent/home-lab-capability-gradient",
               "createdAt": "2026-09-03T19:21:55Z",
               "draft": true,
@@ -3810,7 +4018,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/152"
             },
             {
-              "ageDays": 15,
+              "ageDays": 16,
               "baseRef": "feature/home-lab-gradient-linux-observation-20260902",
               "createdAt": "2026-09-03T21:18:57Z",
               "draft": true,
@@ -3822,7 +4030,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/154"
             },
             {
-              "ageDays": 15,
+              "ageDays": 16,
               "baseRef": "feature/home-lab-gradient-linux-observation-20260902",
               "createdAt": "2026-09-04T01:06:17Z",
               "draft": true,
@@ -3834,7 +4042,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-tools/pull/155"
             },
             {
-              "ageDays": 10,
+              "ageDays": 11,
               "baseRef": "main",
               "createdAt": "2026-09-08T22:14:56Z",
               "draft": false,
@@ -3859,7 +4067,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
             "license": false,
             "readme": true,
             "scopePath": null,
-            "scopedFileCount": 538,
+            "scopedFileCount": 585,
             "successionFiles": [
               "AGENTS.md",
               "CLAUDE.md",
@@ -3908,6 +4116,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               ".github/workflows/pelagos-governance-materialize.yml",
               ".github/workflows/pelagos-governance-promote-once-v2.yml",
               ".github/workflows/polybolos-contract.yml",
+              ".github/workflows/procedure-reuse-check.yml",
               ".github/workflows/pta-fetch.yml",
               ".github/workflows/resolution-backfill-audit.yml"
             ]
@@ -4003,18 +4212,18 @@ window.AXM_ORGAN_OBSERVATIONS = {
           },
           "workflowScope": "all",
           "workflowSelection": {
-            "includedCount": 14,
+            "includedCount": 13,
             "mode": "all",
-            "observedCount": 14,
+            "observedCount": 13,
             "omittedCount": 0
           },
           "workflows": [
             {
               "conclusion": "failure",
-              "createdAt": "2026-09-11T19:06:44Z",
+              "createdAt": "2026-09-20T16:47:00Z",
               "event": "push",
-              "headSha": "cc22b3885f68339fd0e077a7b5c31c61b96c7bda",
-              "id": 34637052280,
+              "headSha": "e60f30095ad2a251ad06fe6eca9bd2c0837d98d3",
+              "id": 35523787870,
               "lifecycle": "current",
               "name": ".github/workflows/pelagos-governance-materialize.yml",
               "required": false,
@@ -4022,15 +4231,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-09-11T19:06:44Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34637052280"
+              "updatedAt": "2026-09-20T16:47:00Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35523787870"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-09-08T03:34:33Z",
+              "createdAt": "2026-09-20T15:56:51Z",
               "event": "push",
-              "headSha": "5df5094b488a6857e5a72adeb7d726fae39b6065",
-              "id": 34183988266,
+              "headSha": "d814c51e1d37ef638ec9c7d7a3df97c0af15973b",
+              "id": 35521154992,
               "lifecycle": "current",
               "name": "AXM Witness Department Ledger 0.9.2",
               "required": false,
@@ -4038,15 +4247,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-09-08T03:35:55Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34183988266"
+              "updatedAt": "2026-09-20T15:57:44Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35521154992"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-09-09T08:54:25Z",
+              "createdAt": "2026-09-20T16:47:01Z",
               "event": "push",
-              "headSha": "acf60dca908558871a30d900ec78b4b11dbe665b",
-              "id": 34331706399,
+              "headSha": "e60f30095ad2a251ad06fe6eca9bd2c0837d98d3",
+              "id": 35523788464,
               "lifecycle": "current",
               "name": "Acceptance page",
               "required": true,
@@ -4054,15 +4263,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The established browser acceptance surface is a current repository gate.",
               "roleSource": "declared",
               "status": "completed",
-              "updatedAt": "2026-09-09T08:54:58Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34331706399"
+              "updatedAt": "2026-09-20T16:47:33Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35523788464"
             },
             {
               "conclusion": "failure",
-              "createdAt": "2026-09-08T03:34:33Z",
+              "createdAt": "2026-09-20T15:56:51Z",
               "event": "push",
-              "headSha": "5df5094b488a6857e5a72adeb7d726fae39b6065",
-              "id": 34183988274,
+              "headSha": "d814c51e1d37ef638ec9c7d7a3df97c0af15973b",
+              "id": 35521155028,
               "lifecycle": "current",
               "name": "Case Zero workbench qualification",
               "required": false,
@@ -4070,15 +4279,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-09-08T03:35:45Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34183988274"
+              "updatedAt": "2026-09-20T15:57:56Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35521155028"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-09-08T03:34:33Z",
+              "createdAt": "2026-09-20T15:56:51Z",
               "event": "push",
-              "headSha": "5df5094b488a6857e5a72adeb7d726fae39b6065",
-              "id": 34183988308,
+              "headSha": "d814c51e1d37ef638ec9c7d7a3df97c0af15973b",
+              "id": 35521155018,
               "lifecycle": "current",
               "name": "Manzanita Works Operating Fabric Dreamboard v0.2.0",
               "required": false,
@@ -4086,15 +4295,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-09-08T03:35:07Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34183988308"
+              "updatedAt": "2026-09-20T15:57:18Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35521155018"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-09-08T03:34:33Z",
+              "createdAt": "2026-09-20T15:56:51Z",
               "event": "push",
-              "headSha": "5df5094b488a6857e5a72adeb7d726fae39b6065",
-              "id": 34183988293,
+              "headSha": "d814c51e1d37ef638ec9c7d7a3df97c0af15973b",
+              "id": 35521154998,
               "lifecycle": "current",
               "name": "Manzanita Works v1.6.0 Photographic Place Fabric contract",
               "required": false,
@@ -4102,15 +4311,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-09-08T03:35:36Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34183988293"
+              "updatedAt": "2026-09-20T15:57:54Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35521154998"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-09-09T08:54:25Z",
+              "createdAt": "2026-09-20T15:56:51Z",
               "event": "push",
-              "headSha": "acf60dca908558871a30d900ec78b4b11dbe665b",
-              "id": 34331706366,
+              "headSha": "d814c51e1d37ef638ec9c7d7a3df97c0af15973b",
+              "id": 35521154969,
               "lifecycle": "current",
               "name": "Manzanita Works working model v1.1.0",
               "required": false,
@@ -4118,8 +4327,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-09-09T08:55:24Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34331706366"
+              "updatedAt": "2026-09-20T15:58:14Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35521154969"
             },
             {
               "conclusion": "success",
@@ -4139,10 +4348,10 @@ window.AXM_ORGAN_OBSERVATIONS = {
             },
             {
               "conclusion": null,
-              "createdAt": "2026-09-19T16:33:13Z",
+              "createdAt": "2026-09-20T16:52:20Z",
               "event": "schedule",
-              "headSha": "29d2bb68bf526a867716cecbc2866bbd208fbe71",
-              "id": 35455327937,
+              "headSha": "229b15fb20e3fceab588b79df79880097482de65",
+              "id": 35524067280,
               "lifecycle": "current",
               "name": "Organ evolution observe + deploy",
               "required": true,
@@ -4150,15 +4359,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The live census must continue to compile, validate, and publish bounded observations.",
               "roleSource": "declared",
               "status": "in_progress",
-              "updatedAt": "2026-09-19T16:33:18Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35455327937"
+              "updatedAt": "2026-09-20T16:52:25Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35524067280"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-09-08T03:34:33Z",
+              "createdAt": "2026-09-20T15:56:51Z",
               "event": "push",
-              "headSha": "5df5094b488a6857e5a72adeb7d726fae39b6065",
-              "id": 34183988325,
+              "headSha": "d814c51e1d37ef638ec9c7d7a3df97c0af15973b",
+              "id": 35521154979,
               "lifecycle": "current",
               "name": "Organ evolution surface",
               "required": true,
@@ -4166,15 +4375,15 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The anatomy, observation, and decision workbench has its own current browser and source gate.",
               "roleSource": "declared",
               "status": "completed",
-              "updatedAt": "2026-09-08T03:35:14Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34183988325"
+              "updatedAt": "2026-09-20T15:57:34Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35521154979"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-09-19T15:58:47Z",
-              "event": "schedule",
-              "headSha": "34ece2e76ff54874a6f10add31de1924fe62f556",
-              "id": 35453476303,
+              "createdAt": "2026-09-20T16:47:01Z",
+              "event": "push",
+              "headSha": "e60f30095ad2a251ad06fe6eca9bd2c0837d98d3",
+              "id": 35523788460,
               "lifecycle": "current",
               "name": "PTA tracker fetch + deploy",
               "required": false,
@@ -4182,47 +4391,31 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "The PTA tool's data publication is an advisory sibling lane, not the authority for every Tools surface.",
               "roleSource": "declared",
               "status": "completed",
-              "updatedAt": "2026-09-19T15:59:17Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35453476303"
+              "updatedAt": "2026-09-20T16:47:27Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35523788460"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-09-01T19:18:10Z",
+              "createdAt": "2026-09-20T16:47:01Z",
               "event": "push",
-              "headSha": "5e112d4ac8fea9b144f475ab7fb3b1fe213356e9",
-              "id": 33548711407,
+              "headSha": "e60f30095ad2a251ad06fe6eca9bd2c0837d98d3",
+              "id": 35523788448,
               "lifecycle": "current",
-              "name": "Pelagos Governance Layer live readback",
+              "name": "Procedure reuse interoperability check",
               "required": false,
               "role": "unknown",
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-09-01T19:18:48Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/33548711407"
+              "updatedAt": "2026-09-20T16:47:49Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35523788448"
             },
             {
               "conclusion": "success",
-              "createdAt": "2026-09-01T19:08:54Z",
+              "createdAt": "2026-09-20T15:56:51Z",
               "event": "push",
-              "headSha": "63ce555743aa0ebc6eff0ff96a74fb2ab9553716",
-              "id": 33547797398,
-              "lifecycle": "current",
-              "name": "Pelagos Governance Layer qualification",
-              "required": false,
-              "role": "unknown",
-              "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
-              "roleSource": "unclassified",
-              "status": "completed",
-              "updatedAt": "2026-09-01T19:10:07Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/33547797398"
-            },
-            {
-              "conclusion": "success",
-              "createdAt": "2026-09-08T03:34:33Z",
-              "event": "push",
-              "headSha": "5df5094b488a6857e5a72adeb7d726fae39b6065",
-              "id": 34183988298,
+              "headSha": "d814c51e1d37ef638ec9c7d7a3df97c0af15973b",
+              "id": 35521154983,
               "lifecycle": "current",
               "name": "clinical-site-fabric-verify",
               "required": false,
@@ -4230,8 +4423,8 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "roleBasis": "No exact human-owned workflow-role declaration matched this run name.",
               "roleSource": "unclassified",
               "status": "completed",
-              "updatedAt": "2026-09-08T03:34:41Z",
-              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/34183988298"
+              "updatedAt": "2026-09-20T15:57:03Z",
+              "url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/35521154983"
             }
           ]
         }
@@ -4251,7 +4444,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/136"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #136 has remained open for 56 days."
+          "summary": "BigBirdReturns/axm-world draft PR #136 has remained open for 57 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4259,7 +4452,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/146"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #146 has remained open for 56 days."
+          "summary": "BigBirdReturns/axm-world draft PR #146 has remained open for 57 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4267,7 +4460,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/203"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #203 has remained open for 54 days."
+          "summary": "BigBirdReturns/axm-world draft PR #203 has remained open for 55 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4275,7 +4468,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/205"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #205 has remained open for 54 days."
+          "summary": "BigBirdReturns/axm-world draft PR #205 has remained open for 55 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4283,7 +4476,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/206"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #206 has remained open for 53 days."
+          "summary": "BigBirdReturns/axm-world draft PR #206 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4291,7 +4484,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/208"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #208 has remained open for 53 days."
+          "summary": "BigBirdReturns/axm-world draft PR #208 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4299,7 +4492,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/212"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #212 has remained open for 53 days."
+          "summary": "BigBirdReturns/axm-world draft PR #212 has remained open for 54 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4307,7 +4500,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/217"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #217 has remained open for 52 days."
+          "summary": "BigBirdReturns/axm-world draft PR #217 has remained open for 53 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4315,7 +4508,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/226"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #226 has remained open for 52 days."
+          "summary": "BigBirdReturns/axm-world draft PR #226 has remained open for 53 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4323,7 +4516,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/234"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #234 has remained open for 52 days."
+          "summary": "BigBirdReturns/axm-world draft PR #234 has remained open for 53 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4331,7 +4524,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/257"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #257 has remained open for 50 days."
+          "summary": "BigBirdReturns/axm-world draft PR #257 has remained open for 51 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4339,7 +4532,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/272"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #272 has remained open for 47 days."
+          "summary": "BigBirdReturns/axm-world draft PR #272 has remained open for 49 days."
         },
         {
           "code": "stale_draft_pr",
@@ -4347,7 +4540,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "sourceRefs": [
             "https://github.com/BigBirdReturns/axm-world/pull/284"
           ],
-          "summary": "BigBirdReturns/axm-world draft PR #284 has remained open for 46 days."
+          "summary": "BigBirdReturns/axm-world draft PR #284 has remained open for 47 days."
         }
       ],
       "localObservations": [],
@@ -4370,7 +4563,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/136"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #136 has remained open for 56 days."
+              "summary": "BigBirdReturns/axm-world draft PR #136 has remained open for 57 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4378,7 +4571,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/146"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #146 has remained open for 56 days."
+              "summary": "BigBirdReturns/axm-world draft PR #146 has remained open for 57 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4386,7 +4579,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/203"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #203 has remained open for 54 days."
+              "summary": "BigBirdReturns/axm-world draft PR #203 has remained open for 55 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4394,7 +4587,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/205"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #205 has remained open for 54 days."
+              "summary": "BigBirdReturns/axm-world draft PR #205 has remained open for 55 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4402,7 +4595,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/206"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #206 has remained open for 53 days."
+              "summary": "BigBirdReturns/axm-world draft PR #206 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4410,7 +4603,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/208"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #208 has remained open for 53 days."
+              "summary": "BigBirdReturns/axm-world draft PR #208 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4418,7 +4611,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/212"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #212 has remained open for 53 days."
+              "summary": "BigBirdReturns/axm-world draft PR #212 has remained open for 54 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4426,7 +4619,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/217"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #217 has remained open for 52 days."
+              "summary": "BigBirdReturns/axm-world draft PR #217 has remained open for 53 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4434,7 +4627,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/226"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #226 has remained open for 52 days."
+              "summary": "BigBirdReturns/axm-world draft PR #226 has remained open for 53 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4442,7 +4635,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/234"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #234 has remained open for 52 days."
+              "summary": "BigBirdReturns/axm-world draft PR #234 has remained open for 53 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4450,7 +4643,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/257"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #257 has remained open for 50 days."
+              "summary": "BigBirdReturns/axm-world draft PR #257 has remained open for 51 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4458,7 +4651,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/272"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #272 has remained open for 47 days."
+              "summary": "BigBirdReturns/axm-world draft PR #272 has remained open for 49 days."
             },
             {
               "code": "stale_draft_pr",
@@ -4466,12 +4659,12 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "sourceRefs": [
                 "https://github.com/BigBirdReturns/axm-world/pull/284"
               ],
-              "summary": "BigBirdReturns/axm-world draft PR #284 has remained open for 46 days."
+              "summary": "BigBirdReturns/axm-world draft PR #284 has remained open for 47 days."
             }
           ],
           "fork": false,
           "fullName": "BigBirdReturns/axm-world",
-          "headAgeDays": 4,
+          "headAgeDays": 5,
           "headAt": "2026-09-14T17:43:01Z",
           "headSha": "db999a932fe467cde6c17897a8b4a1b104c0ea16",
           "latestTag": "archive/codex/world-enterprise-client",
@@ -4479,7 +4672,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
           "observedRef": "main",
           "openPullRequests": [
             {
-              "ageDays": 56,
+              "ageDays": 57,
               "baseRef": "main",
               "createdAt": "2026-07-24T18:33:05Z",
               "draft": true,
@@ -4491,7 +4684,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/136"
             },
             {
-              "ageDays": 56,
+              "ageDays": 57,
               "baseRef": "main",
               "createdAt": "2026-07-25T06:38:21Z",
               "draft": true,
@@ -4503,7 +4696,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/146"
             },
             {
-              "ageDays": 54,
+              "ageDays": 55,
               "baseRef": "main",
               "createdAt": "2026-07-27T04:32:56Z",
               "draft": true,
@@ -4515,7 +4708,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/203"
             },
             {
-              "ageDays": 54,
+              "ageDays": 55,
               "baseRef": "qualify/action-runtime-closure-v1",
               "createdAt": "2026-07-27T05:17:29Z",
               "draft": true,
@@ -4527,7 +4720,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/205"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "qualify/action-runtime-closure-v1",
               "createdAt": "2026-07-27T17:51:48Z",
               "draft": true,
@@ -4539,7 +4732,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/206"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "integration/continuous-authority-estate-v1",
               "createdAt": "2026-07-27T23:51:57Z",
               "draft": true,
@@ -4551,7 +4744,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/208"
             },
             {
-              "ageDays": 53,
+              "ageDays": 54,
               "baseRef": "qualify/action-runtime-closure-v1",
               "createdAt": "2026-07-28T03:31:33Z",
               "draft": true,
@@ -4563,7 +4756,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/212"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "feature/action-semantic-objectives-v1",
               "createdAt": "2026-07-28T16:54:49Z",
               "draft": true,
@@ -4575,7 +4768,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/217"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "demo/underdrain-authored-pilot-v2",
               "createdAt": "2026-07-28T21:36:02Z",
               "draft": true,
@@ -4587,7 +4780,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/226"
             },
             {
-              "ageDays": 52,
+              "ageDays": 53,
               "baseRef": "feature/underdrain-natural-player-v1",
               "createdAt": "2026-07-29T15:14:30Z",
               "draft": true,
@@ -4599,7 +4792,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/234"
             },
             {
-              "ageDays": 50,
+              "ageDays": 51,
               "baseRef": "feature/underdrain-unity6000-player-train-v1",
               "createdAt": "2026-07-30T18:08:58Z",
               "draft": true,
@@ -4611,7 +4804,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/257"
             },
             {
-              "ageDays": 50,
+              "ageDays": 51,
               "baseRef": "feature/underdrain-unity6000-player-train-v1",
               "createdAt": "2026-07-30T18:35:18Z",
               "draft": false,
@@ -4623,7 +4816,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/261"
             },
             {
-              "ageDays": 47,
+              "ageDays": 49,
               "baseRef": "main",
               "createdAt": "2026-08-02T16:39:15Z",
               "draft": true,
@@ -4635,7 +4828,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/272"
             },
             {
-              "ageDays": 46,
+              "ageDays": 47,
               "baseRef": "main",
               "createdAt": "2026-08-03T18:50:46Z",
               "draft": true,
@@ -4647,7 +4840,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/284"
             },
             {
-              "ageDays": 36,
+              "ageDays": 37,
               "baseRef": "feature/underdrain-unity6000-player-train-v1",
               "createdAt": "2026-08-13T19:01:20Z",
               "draft": true,
@@ -4659,7 +4852,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/292"
             },
             {
-              "ageDays": 15,
+              "ageDays": 16,
               "baseRef": "feature/underdrain-unity6000-player-train-v1",
               "createdAt": "2026-09-03T17:20:06Z",
               "draft": true,
@@ -4671,7 +4864,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/300"
             },
             {
-              "ageDays": 5,
+              "ageDays": 6,
               "baseRef": "main",
               "createdAt": "2026-09-13T23:41:40Z",
               "draft": true,
@@ -4683,7 +4876,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/304"
             },
             {
-              "ageDays": 5,
+              "ageDays": 6,
               "baseRef": "main",
               "createdAt": "2026-09-13T23:41:41Z",
               "draft": true,
@@ -4695,7 +4888,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/305"
             },
             {
-              "ageDays": 5,
+              "ageDays": 6,
               "baseRef": "main",
               "createdAt": "2026-09-13T23:41:43Z",
               "draft": true,
@@ -4707,7 +4900,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/306"
             },
             {
-              "ageDays": 5,
+              "ageDays": 6,
               "baseRef": "main",
               "createdAt": "2026-09-13T23:41:45Z",
               "draft": true,
@@ -4719,7 +4912,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/307"
             },
             {
-              "ageDays": 4,
+              "ageDays": 5,
               "baseRef": "main",
               "createdAt": "2026-09-14T17:47:02Z",
               "draft": false,
@@ -4731,7 +4924,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
               "url": "https://github.com/BigBirdReturns/axm-world/pull/312"
             },
             {
-              "ageDays": 4,
+              "ageDays": 5,
               "baseRef": "main",
               "createdAt": "2026-09-14T18:54:52Z",
               "draft": false,
@@ -5058,7 +5251,7 @@ window.AXM_ORGAN_OBSERVATIONS = {
     },
     "sourcesFormat": "axm-organ-sources/1"
   },
-  "sourceDigest": "organobs1_b3c7a3ffe16f8e1cb5513ca5fc9532b3531c7592d72e6d247622a8f94b867e27",
+  "sourceDigest": "organobs1_632ec617b3ed48ba110e4c7a3dad23df1b344a24cd1f75129f690b87c5047a30",
   "unavailable": [
     {
       "error": "GitHub HTTP 404 for /repos/BigBirdReturns/axm-bloodstream: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/repos#get-a-repository\",\"status\":\"404\"}",
