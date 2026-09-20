@@ -5,12 +5,14 @@ procedure stops when its meaning changes. It is designed for a Hronaut
 maintainer to run with their own already-connected local agent, without
 sharing accounts, credentials, machine access or repository write access.
 
-The static landing page has one copy-ready prompt. The versioned capsule is
+The static landing page keeps the original v1 prompt and links the additive v2 copy-ready prompt. The versioned capsule is
 [`v1/PROCEDURE.md`](v1/PROCEDURE.md), with executable pure rules in
 [`v1/contract.mjs`](v1/contract.mjs). The four cases are baseline PASS,
 cosmetic drift PASS, semantic drift UNKNOWN before action, and a false
 success message followed by FAIL with no retry. All four use the same
 scratch browser workspace; a reload tests the fixture's storage continuity.
+
+The additive [`v2/PROCEDURE.md`](v2/PROCEDURE.md) is the mirror test. It leaves the frozen v1 fixture unchanged, holds page semantics constant, creates a native Hronaut continuity checkpoint, reloads the same tab to stale Hronaut's lifetime evidence, and asks whether that independent boundary blocks the write until normal reconciliation and a fresh semantic read.
 
 ## Run and inspect
 
@@ -42,6 +44,8 @@ exercises the pure contract. The optional browser qualification lives in
 test dependency. Its workflow installs the pinned test runtime outside this
 site's runtime; no package manifest or browser dependency is deployed.
 
+Yevhen Tienkaiev later reported a native Hronaut 2.4.28 v1 run with the same PASS, PASS, UNKNOWN/0-save, FAIL/1-save sequence, one scratch workspace/tab, reload continuity and no repairs. That public maintainer report is recorded at `data/hronaut-native-run-20260919.json` with its provenance boundary.
+
 The reference runner is **not Hronaut**. Its browser-context checks do not
 qualify Hronaut's MCP lifecycle or workspace-generation semantics. The site
 shows that distinction. Neither a fixture PASS nor a receipt authorizes
@@ -50,7 +54,7 @@ production routing. Read the unclaimed boundaries in the capsule.
 ## Maintenance and file ownership
 
 All files in this directory are steward-owned. There is no machine-owned
-feed and no scheduled mutation. Once published, `v1/` is immutable; behavior
+feed and no scheduled mutation. Once published, `v1/` is immutable; the additive `v2/` protocol reuses it without changing its bytes. Behavior
 changes require a new version and manifest. The parent landing page may
 change publication links or add separately attributed observations without
 rewriting the pinned experiment. Receipts are evidence, never new authority.
