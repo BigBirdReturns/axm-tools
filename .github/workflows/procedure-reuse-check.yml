@@ -1,0 +1,36 @@
+name: Procedure reuse interoperability check
+on:
+  push:
+    paths: ['procedure-reuse/**', 'tests/pages/verify_procedure_reuse.py', '.github/workflows/procedure-reuse-check.yml']
+  pull_request:
+    paths: ['procedure-reuse/**', 'tests/pages/verify_procedure_reuse.py', '.github/workflows/procedure-reuse-check.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python procedure-reuse/scripts/check.py
+      - run: node --test procedure-reuse/scripts/rules.test.mjs
+      - name: Install test-only browser runtime
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Exercise actual browser states and export
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/procedure-reuse-evidence
+        run: python tests/pages/verify_procedure_reuse.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: procedure-reuse-reference-evidence
+          path: ${{ runner.temp }}/procedure-reuse-evidence
+          if-no-files-found: warn
