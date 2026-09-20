@@ -10,6 +10,7 @@ a year and still be working when you come back.
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
+| [`procedure-reuse/`](procedure-reuse/) | Disposable four-case browser test for procedure admission, semantic drift, saved-record verification and a local receipt; includes a source-pinned Hronaut handoff with no shared accounts or machine access | [Open the interoperability test](https://bigbirdreturns.github.io/axm-tools/procedure-reuse/) |
 | [`open-ai-economics/`](open-ai-economics/) | Free public-source report and local cost-per-successful-task calculator, with a separate quality gate, PDF, evidence ledger and downloadable sources | [Read the report + use the calculator](https://bigbirdreturns.github.io/axm-tools/open-ai-economics/) |
 | [`manzanita-working-model/`](manzanita-working-model/) | Public-safe adoption front door: run one concrete problem through source, authority, safe action, fallback, closure, and learning; name the five organization-owned pilot gates; export a bounded no-effect preparation packet | [Working Model v1.0.0](https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/) |
 | [`manzanita/`](manzanita/) | Public-safe photographic place fabric with seven genuine apertures, image-registered conditions, five operational seats, assistance-first horticultural and wildfire remediation, an explicit adverse-use firewall, local export, and an Essential Attention handoff | [Place Fabric v1.6.0](https://bigbirdreturns.github.io/axm-tools/manzanita/) |

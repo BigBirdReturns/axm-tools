@@ -1,9 +1,9 @@
 name: Procedure reuse interoperability check
 on:
   push:
-    paths: ['procedure-reuse/**', 'tests/pages/verify_procedure_reuse.py', '.github/workflows/procedure-reuse-check.yml']
+    paths: ['procedure-reuse/**', 'tests/pages/verify_procedure_reuse*.py', '.github/workflows/procedure-reuse-check.yml']
   pull_request:
-    paths: ['procedure-reuse/**', 'tests/pages/verify_procedure_reuse.py', '.github/workflows/procedure-reuse-check.yml']
+    paths: ['procedure-reuse/**', 'tests/pages/verify_procedure_reuse*.py', '.github/workflows/procedure-reuse-check.yml']
 permissions:
   contents: read
 jobs:
@@ -27,7 +27,18 @@ jobs:
       - name: Exercise actual browser states and export
         env:
           EVIDENCE_DIR: ${{ runner.temp }}/procedure-reuse-evidence
-        run: python tests/pages/verify_procedure_reuse.py
+        run: |
+          python tests/pages/verify_procedure_reuse.py
+          python tests/pages/verify_procedure_reuse_landing.py
+      - name: Verify the published release after the existing Pages deploy
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/procedure-reuse-evidence/public
+          PROCEDURE_REUSE_BASE: https://bigbirdreturns.github.io/axm-tools/procedure-reuse
+        run: |
+          python procedure-reuse/scripts/check_live.py
+          python tests/pages/verify_procedure_reuse.py
+          python tests/pages/verify_procedure_reuse_landing.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:

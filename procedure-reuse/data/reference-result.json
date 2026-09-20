@@ -1,0 +1,17 @@
+{
+  "schema": "axm/procedure-reuse-reference-result@1",
+  "tested_at_utc": "2026-09-20T00:05:22Z",
+  "executor": "Python Playwright / reference fixture runner, not Hronaut",
+  "browser": "143.0.7499.4",
+  "cases": [
+    {"case":1,"verdict":"PASS","saveAttempts":1,"externalAttempts":0,"savedQuantity":3},
+    {"case":2,"verdict":"PASS","saveAttempts":1,"externalAttempts":0,"savedQuantity":3},
+    {"case":3,"verdict":"UNKNOWN","saveAttempts":0,"externalAttempts":0,"savedQuantity":1},
+    {"case":4,"verdict":"FAIL","saveAttempts":1,"externalAttempts":0,"savedQuantity":1}
+  ],
+  "four_case_contract":{"conforms":true,"errors":[]},
+  "checks":{"same_browser_context":true,"same_fixture_marker_across_reload":true,"export_roundtrip":true,"separate_python_event_crosscheck":true,"semantic_drift_rechecked_before_dispatch":true,"mobile_no_horizontal_overflow":true,"zero_unexpected_network_requests":true,"zero_browser_errors":true},
+  "hronaut_execution":"NOT_RUN",
+  "workspace_generation_claim":"NOT_MADE",
+  "production_authorized":false
+}

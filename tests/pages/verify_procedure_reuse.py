@@ -1,6 +1,7 @@
 """Local browser reference. Uses existing Playwright; never talks to Hronaut."""
 import contextlib, hashlib, http.server, json, os, pathlib, threading, time
 from playwright.sync_api import sync_playwright
+from urllib.parse import urlsplit
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 OUT=pathlib.Path(os.environ.get('EVIDENCE_DIR', '/tmp/axm-procedure-reuse-evidence')); OUT.mkdir(parents=True,exist_ok=True)
 class Quiet(http.server.SimpleHTTPRequestHandler):
@@ -9,8 +10,10 @@ handler=lambda *a,**kw: Quiet(*a,directory=str(ROOT),**kw)
 server=http.server.ThreadingHTTPServer(('127.0.0.1',0),handler)
 threading.Thread(target=server.serve_forever,daemon=True).start()
 origin=f'http://127.0.0.1:{server.server_port}'
-url=origin+'/procedure-reuse/v1/fixture.html'
-module=origin+'/procedure-reuse/v1/contract.mjs'
+base=os.environ.get('PROCEDURE_REUSE_BASE',origin+'/procedure-reuse').rstrip('/')
+parts=urlsplit(base);origin=f'{parts.scheme}://{parts.netloc}'
+url=base+'/v1/fixture.html'
+module=base+'/v1/contract.mjs'
 
 def observation(page):
     return dict(origin=page.evaluate('location.origin'),run=page.locator('#runline').get_attribute('data-run'),case=int(page.locator('#runline').get_attribute('data-case')),account=page.locator('#account').inner_text(),record=page.locator('#record').inner_text(),item=page.locator('#item').inner_text(),effect=page.locator('#effect').inner_text(),saveTargets=page.get_by_role('button',name='Save draft',exact=True).count(),quantityTargets=page.get_by_role('spinbutton',name='Quantity',exact=True).count(),dialogs=page.get_by_role('dialog').count())
