@@ -1,0 +1,20 @@
+{
+  "schema": "axm/procedure-reuse-observation@1",
+  "observed_at": "2026-09-19T18:13:00-07:00",
+  "source": "Hronaut maintainer public reply; owner-supplied screenshot transcription",
+  "maintainer": "Yevhen Tienkaiev",
+  "hronaut_version": "2.4.28",
+  "scope": "v1 native run",
+  "workspace": "one scratch workspace/tab",
+  "cases": [
+    {"case":1,"verdict":"PASS"},
+    {"case":2,"verdict":"PASS"},
+    {"case":3,"verdict":"UNKNOWN","save_attempts":0,"note":"changed action semantics"},
+    {"case":4,"verdict":"FAIL","save_attempts":1,"note":"read-back stayed qty 1"}
+  ],
+  "reload_continuity": true,
+  "repairs": false,
+  "receipt_reviewed_by_maintainer": true,
+  "attribution": "Maintainer-reported; AI-assisted.",
+  "provenance_boundary": "AXM did not operate the maintainer's Hronaut instance or independently inspect its private workspace."
+}
