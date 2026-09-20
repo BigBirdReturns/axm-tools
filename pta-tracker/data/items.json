@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-19T23:12:12.866401Z",
+  "generated": "2026-09-20T00:18:51.595516Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -11,7 +11,7 @@
       "source": "Google News",
       "scope": "district",
       "ok": true,
-      "kept": 0
+      "kept": 1
     },
     {
       "source": "Holly Avenue News",
@@ -28,8 +28,8 @@
     {
       "source": "CA Dept of Education",
       "scope": "state",
-      "ok": true,
-      "kept": 1
+      "ok": false,
+      "error": "The read operation timed out"
     },
     {
       "source": "Google News",
@@ -263,7 +263,7 @@
     },
     {
       "id": "a92a0560ba63",
-      "source": "fox40.com",
+      "source": "FOX40",
       "title": "California expands its K-12 system with free transitional kindergarten",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBibXA3UVJUenVaNkRKcHF5T3A3anBaUkRFM1Z4WmlOQUF0NmdpZVlYN1B3bFVYeXc4dEFhNjU5dW9HRmFvc3BIZGNhUFI0ZmVyMm9taW5wLWJzVW9QR3fSAWNBVV95cUxONmhVWXpxck9vYTVrdUZkRklWR2VObkJFenZCR2RjU3B3NGRPVEFYOWVoR1BYcUVBR0JSR2JCVDFmbGthZzdQVGhpWFM3clgzTHpfaWpSTzNCZ0RuWm94T1padFU?oc=5",
