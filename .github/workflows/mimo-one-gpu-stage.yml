@@ -48,7 +48,7 @@ jobs:
               p.write_bytes(body.encode('utf-8'))
           print('Source payload authenticated and materialized:',len(files),'files')
           # Harness repair following run 35658338898: locator assertions avoid
-          # eval blocked by the page's unchanged, deliberate Content Security Policy.
+          # eval blocked by the page's unchanged Content Security Policy.
           p=Path('mimo-one-gpu/tests/browser.py');s=p.read_text()
           old='from playwright.sync_api import sync_playwright'
           assert s.count(old)==1;s=s.replace(old,old+', expect')
@@ -97,19 +97,22 @@ jobs:
           name: mimo-one-gpu-staging-evidence
           path: ${{ runner.temp }}/mimo-evidence
           if-no-files-found: warn
-      - name: Commit plain source only after qualification
+      - name: Commit plain content only within existing job permissions
         run: |
           python - <<'PY'
           from pathlib import Path
           import shutil
           for p in Path('mimo-one-gpu').rglob('__pycache__'): shutil.rmtree(p)
           shutil.rmtree('.github/staging/mimo-handoff')
-          Path('.github/workflows/mimo-one-gpu-stage.yml').unlink()
+          # Installing the permanent workflow and removing this staging workflow
+          # are separate connector writes, not operations of this content-only job.
+          Path('.github/workflows/mimo-one-gpu-check.yml').unlink()
           PY
           git config user.name 'mimo-handoff-publication'
           git config user.email 'actions@users.noreply.github.com'
-          git add mimo-one-gpu README.md index.html CONTINUITY.md .github/workflows/mimo-one-gpu-check.yml
-          git add -u .github/staging/mimo-handoff .github/workflows/mimo-one-gpu-stage.yml
+          git add mimo-one-gpu README.md index.html CONTINUITY.md
+          git add -u .github/staging/mimo-handoff
+          test -z "$(git diff --cached --name-only -- .github/workflows/)"
           git diff --cached --check
-          git commit -m 'Publish the inspected MiMo handoff source after 38 controls and browser qualification'
+          git commit -m 'Retain the inspected MiMo handoff source after 38 controls and browser qualification'
           git push origin HEAD:agent/mimo-one-gpu-publication
