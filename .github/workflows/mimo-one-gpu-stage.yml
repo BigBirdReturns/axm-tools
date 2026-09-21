@@ -1,0 +1,103 @@
+name: Materialize and verify MiMo handoff once
+on:
+  push:
+    branches: ['agent/mimo-one-gpu-publication']
+    paths: ['.github/staging/mimo-handoff/**', '.github/workflows/mimo-one-gpu-stage.yml']
+permissions:
+  contents: write
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/mimo-one-gpu-publication
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Authenticate and materialize exact source payload
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64, gzip, hashlib, json
+          root=Path('.')
+          parts=[(root/f'.github/staging/mimo-handoff/{i:02d}.b64').read_text().strip() for i in range(7)]
+          # Two known ASCII transport transcription repairs. Full payload hashes
+          # below must still match the authored bytes before any source executes.
+          assert parts[3].count('HZycH69')==1
+          parts[3]=parts[3].replace('HZycH69','HZycHh69')
+          assert parts[6].count('t1np/cnn04v')==1
+          parts[6]=parts[6].replace('t1np/cnn04v','t1np/cnn09v')
+          packed=base64.b64decode(''.join(parts),validate=True)
+          assert hashlib.sha256(packed).hexdigest()=='49fc8da5978a53660025178782893be912c6dbbe065983657c892b606427a793'
+          data=gzip.decompress(packed)
+          assert len(data)==128419
+          assert hashlib.sha256(data).hexdigest()=='537c332296ebe4107843fd5c7c0050cf94b57f0b29f645e4af66827514a83742'
+          files=json.loads(data)
+          assert len(files)==21
+          for name,body in files.items():
+              p=Path(name)
+              assert not p.is_absolute() and '..' not in p.parts
+              assert name.startswith('mimo-one-gpu/') or name=='.github/workflows/mimo-one-gpu-check.yml'
+              assert isinstance(body,str) and len(body.encode())<200000
+              assert not p.exists(),name
+              p.parent.mkdir(parents=True,exist_ok=True)
+              p.write_bytes(body.encode('utf-8'))
+          print('Source payload authenticated and materialized:',len(files),'files')
+          PY
+          python mimo-one-gpu/scripts/seal.py
+          python mimo-one-gpu/scripts/check.py
+          node --check mimo-one-gpu/app.js
+      - name: Preserve other tools while adding the directory entry
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('README.md');s=p.read_text();anchor='|------|--------------|-----------|'
+          assert s.count(anchor)==1 and '[`mimo-one-gpu/`]' not in s
+          row='| [`mimo-one-gpu/`](mimo-one-gpu/) | Inspectable one-GPU MiMo experiment: permissioned hardware and checkpoint inspection, proposed host-memory offload, bounded canary and native benchmark handoff; actual MiMo inference remains unqualified | [Prepare the local test](https://bigbirdreturns.github.io/axm-tools/mimo-one-gpu/) |'
+          p.write_text(s.replace(anchor,anchor+'\n'+row,1))
+          p=Path('index.html');s=p.read_text();assert s.count('</header>')==1 and 'href="mimo-one-gpu/"' not in s
+          card='\n\n<div class="tool">\n  <div class="title"><a href="mimo-one-gpu/">MiMo · One GPU at a Time</a></div>\n  <div class="desc">Prepare an inspectable single-GPU experiment while keeping the full checkpoint and original benchmark protocol. Copy the local-agent handoff, review the source and record actual memory, load and score evidence. Hardware inspection precedes a separate loading approval; no automatic model download or result upload.</div>\n  <a class="open" href="mimo-one-gpu/">Prepare the local test →</a>\n</div>'
+          p.write_text(s.replace('</header>','</header>'+card,1))
+          p=Path('CONTINUITY.md');s=p.read_text();anchor='## 3. Map (snapshot, July 2026 — trust the tree over this list)'
+          assert s.count(anchor)==1
+          note='\n\n- `mimo-one-gpu/` (added 2026-09-21): static one-GPU MiMo handoff and inspectable local experiment kit. Controller and browser qualification are separate from native model fit and quality, which remain NOT RUN. No backend, automatic acquisition, telemetry upload or scheduled work.'
+          p.write_text(s.replace(anchor,anchor+note,1))
+          PY
+      - name: Synthetic controller qualification
+        run: python -m unittest discover -s mimo-one-gpu/tests -v
+      - name: Test-only browser runtime
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Exercise the actual copy and source handoff
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/mimo-evidence
+        run: python mimo-one-gpu/tests/browser.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mimo-one-gpu-staging-evidence
+          path: ${{ runner.temp }}/mimo-evidence
+          if-no-files-found: warn
+      - name: Commit plain source only after qualification
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil
+          for p in Path('mimo-one-gpu').rglob('__pycache__'): shutil.rmtree(p)
+          shutil.rmtree('.github/staging/mimo-handoff')
+          Path('.github/workflows/mimo-one-gpu-stage.yml').unlink()
+          PY
+          git config user.name 'mimo-handoff-publication'
+          git config user.email 'actions@users.noreply.github.com'
+          git add mimo-one-gpu README.md index.html CONTINUITY.md .github/workflows/mimo-one-gpu-check.yml
+          git add -u .github/staging/mimo-handoff .github/workflows/mimo-one-gpu-stage.yml
+          git diff --cached --check
+          git commit -m 'Publish the inspected MiMo handoff source after 38 controls and browser qualification'
+          git push origin HEAD:agent/mimo-one-gpu-publication
