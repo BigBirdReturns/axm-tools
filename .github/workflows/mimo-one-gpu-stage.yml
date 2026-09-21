@@ -27,8 +27,6 @@ jobs:
           import base64, gzip, hashlib, json
           root=Path('.')
           parts=[(root/f'.github/staging/mimo-handoff/{i:02d}.b64').read_text().strip() for i in range(7)]
-          # Two known ASCII transport transcription repairs. Full payload hashes
-          # below must still match the authored bytes before any source executes.
           assert parts[3].count('HZycH69')==1
           parts[3]=parts[3].replace('HZycH69','HZycHh69')
           assert parts[6].count('t1np/cnn04v')==1
@@ -49,6 +47,20 @@ jobs:
               p.parent.mkdir(parents=True,exist_ok=True)
               p.write_bytes(body.encode('utf-8'))
           print('Source payload authenticated and materialized:',len(files),'files')
+          # Harness repair following run 35658338898: locator assertions avoid
+          # eval blocked by the page's unchanged, deliberate Content Security Policy.
+          p=Path('mimo-one-gpu/tests/browser.py');s=p.read_text()
+          old='from playwright.sync_api import sync_playwright'
+          assert s.count(old)==1;s=s.replace(old,old+', expect')
+          for prefix,n in [('Read-only preview',2),('Read failed',1)]:
+              old='page.wait_for_function("document.getElementById(\'source-status\').textContent.startsWith(\''+prefix+'\')")'
+              assert s.count(old)==n,(prefix,s.count(old))
+              s=s.replace(old,'expect(page.locator("#source-status")).to_have_text(re.compile(r"^'+prefix+'"))')
+          old='page.wait_for_function("([text])=>document.getElementById(\'source-code\').textContent===text", arg=[expected])'
+          assert s.count(old)==1
+          s=s.replace(old,'expect(page.locator("#source-code")).to_have_text(expected)\n            assert page.locator("#source-code").text_content() == expected')
+          assert 'wait_for_function' not in s
+          p.write_text(s)
           PY
           python mimo-one-gpu/scripts/seal.py
           python mimo-one-gpu/scripts/check.py
