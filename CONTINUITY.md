@@ -79,6 +79,8 @@ are touching tells you how much care to take.
 
 ## 3. Map (snapshot, July 2026 — trust the tree over this list)
 
+- `mimo-one-gpu/` (added 2026-09-21): static one-GPU MiMo handoff and inspectable local experiment kit. Controller and browser qualification are separate from native model fit and quality, which remain NOT RUN. No backend, automatic acquisition, telemetry upload or scheduled work.
+
 - `owned-learning-loop/` (added 2026-09-20): static public playbook and local plan generator for trace -> outcome -> eval -> route -> adapt -> promote/rollback; includes portable schemas and no scheduled work.
 
 - `procedure-reuse/` (added 2026-09-19): disposable four-case browser interoperability test with a pinned procedure, semantic-admission checks, fresh saved-record verification and local receipt export. The Hronaut handoff uses the maintainer's own connected client; reference-browser success does not establish Hronaut-native qualification. No shared account, backend or scheduled work.

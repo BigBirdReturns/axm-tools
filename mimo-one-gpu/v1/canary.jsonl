@@ -1,0 +1,1 @@
+{"custom_id":"load-canary-not-a-benchmark","method":"POST","url":"/v1/chat/completions","body":{"model":"XiaomiMiMo/MiMo-V2.6-Pro-RL","messages":[{"role":"user","content":"Reply with the number that equals 6 times 7."}],"max_tokens":32,"temperature":0,"top_p":1,"seed":7,"stream":false}}

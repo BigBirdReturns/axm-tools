@@ -10,6 +10,7 @@ a year and still be working when you come back.
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
+| [`mimo-one-gpu/`](mimo-one-gpu/) | Inspectable one-GPU MiMo experiment: permissioned hardware and checkpoint inspection, proposed host-memory offload, bounded canary and native benchmark handoff; actual MiMo inference remains unqualified | [Prepare the local test](https://bigbirdreturns.github.io/axm-tools/mimo-one-gpu/) |
 | [`owned-learning-loop/`](owned-learning-loop/) | Public 12-month lead playbook for local-first adaptive AI: terminal outcomes, replayable traces, evals, workload routing, bounded adapters, promotion receipts and rollback | [Own the learning loop](https://bigbirdreturns.github.io/axm-tools/owned-learning-loop/) |
 | [`procedure-reuse/`](procedure-reuse/) | Disposable four-case browser test for procedure admission, semantic drift, saved-record verification and a local receipt; includes a source-pinned Hronaut handoff with no shared accounts or machine access | [Open the interoperability test](https://bigbirdreturns.github.io/axm-tools/procedure-reuse/) |
 | [`open-ai-economics/`](open-ai-economics/) | Free public-source report and local cost-per-successful-task calculator, with a separate quality gate, PDF, evidence ledger and downloadable sources | [Read the report + use the calculator](https://bigbirdreturns.github.io/axm-tools/open-ai-economics/) |

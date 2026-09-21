@@ -1,0 +1,16 @@
+{
+  "schema":"axm/one-gpu-settings@1",
+  "model_id":"XiaomiMiMo/MiMo-V2.6-Pro-RL",
+  "model_revision":"REPLACE_WITH_EXACT_40_HEX_REVISION",
+  "model_path":"/choose/an/existing/local/checkpoint",
+  "image":"vllm/vllm-openai:mimov25-cu129",
+  "gpu_index":0,
+  "context":2048,
+  "prefill_chunk":512,
+  "offload_gib":512,
+  "ram_limit_gib":576,
+  "reserve_gib":32,
+  "cpus":8,
+  "timeout_s":1800,
+  "max_requests":1
+}
