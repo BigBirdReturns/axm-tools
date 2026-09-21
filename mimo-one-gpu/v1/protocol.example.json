@@ -1,0 +1,11 @@
+{
+  "schema":"axm/frozen-benchmark-requests@1",
+  "benchmark_id":"REPLACE_WITH_EXACT_BENCHMARK_AND_SPLIT",
+  "harness_revision":"REPLACE_WITH_COMMIT_AND_CONFIGURATION",
+  "dataset_revision":"REPLACE_WITH_REVISION_AND_ITEM_DENOMINATOR",
+  "scorer_revision":"REPLACE_WITH_NATIVE_SCORER_COMMIT",
+  "interaction":"independent_requests",
+  "timing_policy":"offline-no-per-request-deadline",
+  "context":2048,
+  "requests_sha256":"REPLACE_WITH_EXACT_REQUEST_FILE_SHA256"
+}

@@ -1,0 +1,16 @@
+{
+  "schema":"axm/mimo-one-gpu-sources@1",
+  "checked_on":"2026-09-21",
+  "native_mimo_one_gpu_result":"NOT_RUN",
+  "sources":[
+    {"url":"https://demo.osmanticcloud.com/lab","kind":"operator-public-hardware-report","claim":"Blackwell Tower: two RTX PRO 6000 Blackwell GPUs with 96 GB each; vLLM stack. Host RAM is not given.","boundary":"Public reference machine, not a live inventory measurement of the recipient's workstation."},
+    {"url":"https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL","kind":"publisher-model-card","claim":"1.02T total, 42B active; published vLLM deployment uses TP=8 and the mimov25-cu129 image.","boundary":"No publisher single-GPU CPU-offload qualification was located."},
+    {"url":"https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL/blob/main/config.json","kind":"publisher-configuration","claim":"mimo_v2 / MiMoV2ForCausalLM, fused_qkv, quant_method fp8, store_dtype mxfp4, 70 layers, 384 experts and top-8 routing.","boundary":"Pin exact revision on the receiver. Storage dtype alone does not prove loaded memory."},
+    {"url":"https://docs.vllm.ai/en/stable/cli/run-batch/","kind":"runtime-documentation","claim":"Offline OpenAI-shaped batch request support and engine arguments.","boundary":"Generic interface support is not proof of this model/image/backend combination."},
+    {"url":"https://docs.vllm.ai/en/stable/configuration/engine_args/","kind":"runtime-documentation","claim":"cpu-offload-gb is per-GPU host-memory offload, with transfer overhead.","boundary":"Not NVMe streaming and not a quality-preservation or performance guarantee."},
+    {"url":"https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/models/mimo_v2.py","kind":"runtime-source-inspection","git_blob":"dfbed256551efa0e25543672b6801110cadd23de","claim":"MiMo-specific attention, MoE and fused-QKV weight-loading implementation exists.","boundary":"Not executed in this research; exact deployed image is pinned separately at runtime."},
+    {"url":"https://github.com/BigBirdReturns/aperture/releases/tag/v0.4.7","kind":"prior-owned-tool","claim":"Permissioned hardware/model inspection and source-qualified recipes; smaller GGUF CPU/GPU split qualification.","boundary":"Not a MiMo benchmark adapter or distributed inference engine."},
+    {"url":"https://github.com/BigBirdReturns/tier-bench/pull/169","kind":"prior-owned-experiment-record","head":"c1a816f248134d5bd816ac76bd8e83c1d127d36b","claim":"Retained K3 strict-state comparisons cover 93 layers at two accepted positions; 1.38x canonical improvement against a 588 s/token baseline.","boundary":"Open stacked PR; private artifacts required for physical recomputation. No fresh K3 run performed here and no MiMo port implied."},
+    {"url":"https://github.com/Osmantic/ODS","kind":"recipient-public-stack","claim":"Existing local deployment/dashboard workflow; use an isolated test instead of reinstalling or altering it.","boundary":"No write, PR, contact or installation performed on the recipient's infrastructure."}
+  ]
+}

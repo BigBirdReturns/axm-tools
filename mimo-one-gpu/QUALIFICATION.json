@@ -1,0 +1,9 @@
+{
+  "schema": "axm/mimo-one-gpu-qualification@1",
+  "control_tests": {"passed": 38, "fixture_class": "synthetic checkpoints and mocked native processes"},
+  "browser_requirement": "copy, selections, source read-back, downloads, failure paths and responsive layout must pass before publication",
+  "native_mimo_inference": "NOT_RUN",
+  "single_gpu_fit": "NOT_QUALIFIED",
+  "benchmark_scores": "NOT_MEASURED",
+  "workflow": "https://github.com/BigBirdReturns/axm-tools/actions/workflows/mimo-one-gpu-check.yml"
+}
