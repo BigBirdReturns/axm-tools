@@ -10,66 +10,90 @@
     }
   },
   "note": "Curated by the VP Legislation, by hand. The nightly fetch never touches this file — parent cards are written consequences, not scraped headlines. Every card needs: kid_impact (one sentence, what changes for a student/family), owner (who actually decides), and at most one action. Keep kid_impact to ONE sentence at a 4th-6th grade reading level: the single-sentence form is the one with evidence behind it, and this audience reads it in four languages. Give any dated coming_up card an 'until' (YYYY-MM-DD): the page hides it the day after, so a past meeting can never sit there saying 'coming up'. Give any card a 'covers' array of items.json ids it accounts for — the nightly gap check flags every district hot item that no card covers, so an uncovered id is a card someone still owes. If an item can't be phrased as a consequence with an owner, it stays in the VP Desk. The watchlist is VP-Desk-only: known scheduled obligations with a date they're expected by — the page flags anything past due that isn't marked done, so a blank where a report should be never goes unnoticed.",
-  "updated": "2026-07-27",
+  "updated": "2026-09-21",
   "coming_up": [
     {
-      "id": "coming-board-2026-07-28",
+      "id": "coming-board-2026-09-22",
       "kind": "meeting",
-      "until": "2026-07-28",
-      "when": "2026-07-28T19:00",
+      "until": "2026-09-22",
+      "when": "2026-09-22T19:00",
       "location": "Arcadia Education Center Board Room, 150 S 3rd Ave, Arcadia, CA 91006",
-      "title": "AUSD Board of Education meets Tuesday, July 28",
-      "kid_impact": "Summer meetings set up the new school year — phone rules, money, and school plans — before the first day of class.",
-      "impact_area": "District decisions",
+      "title": "September 22: learning materials, teacher assignments and facilities",
+      "kid_impact": "Parents can speak at the board's hearing on whether students have enough learning materials, before the board votes.",
+      "impact_area": "Classroom materials / district decisions",
       "owner": "AUSD Board of Education",
-      "time_sensitivity": "Agenda posts on Simbli a few days before the meeting",
-      "source_url": "https://www.ausd.net/apps/pages/agenda",
-      "covers": ["ausd-mtg-2026-07-28"],
-      "action": { "type": "read", "label": "Check the agenda on Simbli", "url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512" }
+      "time_sensitivity": "September 22 at 7 p.m.; agenda reviewed September 21, decisions still pending",
+      "source_url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=81149",
+      "covers": [
+        "ausd-mtg-2026-09-22"
+      ],
+      "action": {
+        "type": "read",
+        "label": "Read the September 22 agenda",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=81149"
+      }
     }
   ],
   "in_effect": [
     {
       "id": "parent-phones",
       "kind": "law",
-      "title": "New phone rules are coming when school starts",
-      "kid_impact": "A state law now requires Arcadia USD to have a policy limiting student smartphone use during school hours. Expect specific phone rules from the district before the first day in August. Emergencies, medical needs, and IEP/504 plans are exempt by law.",
+      "title": "Check your school's current smartphone rules",
+      "kid_impact": "California requires a school smartphone policy, but this tracker has not yet verified Arcadia USD's adopted rules for your child.",
       "impact_area": "School day / devices",
-      "owner": "Arcadia USD board sets the policy; Holly Avenue implements it",
-      "time_sensitivity": "In effect July 1 — details arrive before school starts",
+      "owner": "Arcadia USD board sets the policy; each school implements it",
+      "time_sensitivity": "State adoption deadline: July 1, 2026; local policy still unverified on September 21",
       "law_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240AB3216",
       "law_label": "AB 3216 — Pupils: use of smartphones",
-      "source_url": "https://edsource.org/2026/california-schools-new-laws/761168",
-      "covers": ["seed-ab3216"],
-      "action": { "type": "read", "label": "Read the law summary", "url": "https://edsource.org/2026/california-schools-new-laws/761168" }
+      "source_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240AB3216",
+      "covers": [
+        "seed-ab3216"
+      ],
+      "action": {
+        "type": "check",
+        "label": "Ask the school office for the current phone policy",
+        "url": "{{school_site}}"
+      }
     },
     {
       "id": "parent-sb848",
       "kind": "law",
       "title": "Stronger abuse-prevention rules at every school",
-      "kid_impact": "Schools must now run expanded background checks on job applicants, train staff and students to recognize signs of grooming or abuse, and post their safe-environment policy where parents can see it.",
+      "kid_impact": "Schools must have written policies to help protect children from abuse and keep learning spaces easy to supervise.",
       "impact_area": "Student safety",
-      "owner": "Arcadia USD; your school must post its policy",
-      "time_sensitivity": "In effect July 1",
+      "owner": "Arcadia USD board and school administrators",
+      "time_sensitivity": "Written safe-environment policies were due July 1, 2026; local implementation not verified",
       "law_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB848",
       "law_label": "SB 848 — Pupil safety: employee misconduct, abuse prevention",
-      "source_url": "https://edsource.org/2026/california-schools-new-laws/761168",
-      "covers": ["seed-sb848"],
-      "action": { "type": "check", "label": "Ask the office where the policy is posted", "url": "{{school_site}}" }
+      "source_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB848",
+      "covers": [
+        "seed-sb848"
+      ],
+      "action": {
+        "type": "check",
+        "label": "Ask the office for its safe-environment policy",
+        "url": "{{school_site}}"
+      }
     },
     {
       "id": "parent-sb760",
       "kind": "law",
-      "title": "Every school must offer an all-gender restroom",
-      "kid_impact": "Campuses must provide at least one unlocked, signed all-gender restroom during school hours — often by re-signing an existing single-stall restroom. A facilities change; nothing for families to do.",
+      "title": "All-gender restroom access at qualifying campuses",
+      "kid_impact": "Campuses covered by SB 760 must offer an accessible all-gender student restroom; ask the office which restroom your child can use.",
       "impact_area": "Campus facilities",
       "owner": "Arcadia USD facilities",
-      "time_sensitivity": "In effect July 1",
+      "time_sensitivity": "July 1, 2026 deadline applies to campuses with more than one boys' and one girls' student restroom, excluding TK/K restrooms; local facilities not verified",
       "law_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240SB760",
       "law_label": "SB 760 — School facilities: all-gender restrooms",
-      "source_url": "https://edsource.org/2026/california-schools-new-laws/761168",
-      "covers": ["seed-sb760"],
-      "action": null
+      "source_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240SB760",
+      "covers": [
+        "seed-sb760"
+      ],
+      "action": {
+        "type": "check",
+        "label": "Ask the office about restroom access",
+        "url": "{{school_site}}"
+      }
     }
   ],
   "actions": [
@@ -99,11 +123,12 @@
     {
       "id": "watch-lcap-budget",
       "what": "LCAP + 2026-27 budget adopted",
-      "why": "State law required board adoption by June 30. Verify it happened in the June minutes, then mark done — this is where next year's staffing and program money got set. (Checked Jul 27: the district's public-notices page does carry the 2026-27 Proposed Budget Report and the DRAFT 2026-27 LCAP Year 3, so the required public hearings ran on schedule. The adoption vote itself still can't be confirmed from open sources — AUSD's adopted-minutes page stops at Jan 16, 2026, six months behind. The June minutes on Simbli remain the only check.)",
+      "why": "Verified September 21: AUSD labels the 2026-2027 LCAP year 3 as Board Approved at https://www.ausd.net/apps/pages/lcff and publishes a Signed Adopted Budget 2026-2027 on its Fiscal Services page. This confirms publication of adopted documents, not the exact vote date.",
       "expected_by": "2026-06-30",
-      "check_url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
-      "check_label": "June minutes on Simbli",
-      "status": "open"
+      "check_url": "https://www.ausd.net/apps/pages/index.jsp?uREC_ID=2740474&type=d&pREC_ID=2749824",
+      "check_label": "AUSD adopted 2026-27 budget",
+      "status": "done",
+      "verified_on": "2026-09-21"
     },
     {
       "id": "watch-board-schedule",
@@ -117,8 +142,8 @@
     {
       "id": "watch-phone-policy",
       "what": "AUSD smartphone policy adopted (AB 3216)",
-      "why": "Required by state law; parents will ask about it the first week of school. Watch board agendas for the policy item, then turn it into a parent card. (Checked Jul 27: the statewide July 1 deadline has now passed. AUSD adoption is still unconfirmed — nothing on the public-notices page, and the district's posted technology policy is BP 6162.7, which governs instructional tech, not personal devices. The Jul 28 agenda is the next place to look. CURATOR WARNING: searching this turns up a tidy tiered phone policy — none at elementary, lockers at middle, caddies at high school — under Superintendent Lori Frerk. That is Arcadia, WISCONSIN, via the Winona Post. Wrong district, wrong state. Do not let it near a parent card.)",
-      "expected_by": "2026-08-15",
+      "why": "Reviewed September 21: AB 3216 required policy adoption by July 1, 2026, but the public AUSD policy pages checked do not establish its adopted smartphone rules. Ask the school office for the current policy or verify the board record on Simbli; keep open until that evidence is available. Do not confuse Arcadia, California with Arcadia, Wisconsin.",
+      "expected_by": "2026-07-01",
       "check_url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
       "check_label": "Board agendas",
       "status": "open"
@@ -134,9 +159,9 @@
     },
     {
       "id": "watch-board-reorg",
-      "what": "Board organizational meeting (new officers)",
-      "why": "Every December the board elects its president and sets the year. Committee assignments here decide who to email about what.",
-      "expected_by": "2026-12-31",
+      "what": "Verify July board organizational meeting outcomes",
+      "why": "Corrected September 21: the district schedule identifies July 14, 2026 as the annual reorganizational meeting, not December. The schedule establishes the planned meeting only; verify elected officers and committee assignments from its minutes before marking done.",
+      "expected_by": "2026-07-14",
       "check_url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
       "check_label": "Simbli listing",
       "status": "open"
@@ -149,6 +174,29 @@
       "check_url": "https://ha.ausd.net",
       "check_label": "Holly Avenue site",
       "status": "open"
+    }
+  ],
+  "archived_cards": [
+    {
+      "id": "coming-board-2026-07-28",
+      "kind": "meeting",
+      "until": "2026-07-28",
+      "when": "2026-07-28T19:00",
+      "location": "Arcadia Education Center Board Room, 150 S 3rd Ave, Arcadia, CA 91006",
+      "title": "AUSD Board of Education meets Tuesday, July 28",
+      "kid_impact": "Summer meetings set up the new school year — phone rules, money, and school plans — before the first day of class.",
+      "impact_area": "District decisions",
+      "owner": "AUSD Board of Education",
+      "time_sensitivity": "Agenda posts on Simbli a few days before the meeting",
+      "source_url": "https://www.ausd.net/apps/pages/agenda",
+      "covers": [
+        "ausd-mtg-2026-07-28"
+      ],
+      "action": {
+        "type": "read",
+        "label": "Check the agenda on Simbli",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512"
+      }
     }
   ]
 }

@@ -372,3 +372,20 @@ in all four locales, or add the id to English only (missing translations fall
 back to English by design). The monthly report generator deliberately stays
 English — it's the officer's paste-ready board document. Family doctrine:
 axm-genesis `docs/LOCALIZATION.md`.
+
+### September 2026 maintenance
+
+The nightly workflow commits both `items.json` and the append-only
+`archive.json`; generated `gaps.json` and `derived.json` remain deployment
+outputs. Retired hand-written cards are preserved in `parent.json`
+`archived_cards` (not displayed). Archiving a reminder does not establish
+what the board decided. Past meetings without verified outcomes remain
+curation gaps until their records are reviewed.
+
+The September 21 review confirmed published adopted LCAP and budget
+documents. Smartphone-policy adoption and July organizational-meeting
+outcomes remain unverified; see the watchlist. Simbli worked in the local
+browser after the automated reader failed. The September 22 agenda was
+reviewed and a sourced meeting card added; August 25/September 8 outcomes
+remain unverified (no minutes links were shown in the meeting listing). A fresh curation date records this review, not
+confirmation of every local implementation.

@@ -103,3 +103,24 @@ rather than rewriting it. The `identity/` area landed across PRs #5 and #7
 (July 2026); the second exists because a PR merged mid-session strands any
 later commits on its branch — a merged PR never picks up new pushes, so
 follow-ups need a fresh PR from a restarted branch.
+
+## PTA verification ? September 21, 2026
+
+- AUSD now publishes the board-approved 2026-27 LCAP at
+  https://www.ausd.net/apps/pages/lcff and signed adopted budget at
+  https://www.ausd.net/apps/pages/index.jsp?uREC_ID=2740474&type=d&pREC_ID=2749824.
+- https://www.ausd.net/apps/pages/agenda identifies July 14 as the annual
+  reorganizational meeting; the former December watchlist assumption was wrong.
+- Legal-card review: AB 3216 names emergency, staff permission, physician
+  determination and IEP exceptions (do not label every 504 plan an express
+  exception in this act). SB 848 authorizes pupil instruction, rather than
+  mandating it for every student. SB 760 has a campus-restroom-count condition.
+  Parent cards now point to the primary statutes and avoid claiming locally
+  verified implementation.
+- Archive overflow is durable state: commit archive.json alongside items.json,
+  or fresh CI checkouts will forget earlier overflow after 120 live items.
+- Simbli was accessible through the local browser on September 21 after
+  automated access failed. September 22 agenda: meeting MID=81149, including
+  instructional-materials hearing, teacher-assignment authorization and
+  facilities update. The meeting listing showed no minutes links for
+  August 25 or September 8; do not infer votes from agenda proposals.
