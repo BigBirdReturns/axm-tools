@@ -135,3 +135,19 @@ follow-ups need a fresh PR from a restarted branch.
   passed (1:24:03-1:24:22), including Proposition 28 annual-report item D.
   parent.json records these evidence types and timestamps; do not describe
   transcripts as signed minutes or annual reports as new spending approvals.
+
+## PTA board-review pilot - September 21, 2026
+
+The officer has not yet shared the tracker with the full PTA board. Do not
+infer a scheduled PTA meeting from an intention to share it tomorrow, or turn
+the district meeting schedule into an attendance obligation. board-brief.html
+provides a suggested sharing message and dated brief; no messages were sent.
+
+The former report button promoted raw feed headlines into a board update.
+It now uses only selected source-reviewed cards in parent.json.board_report,
+checks its own review deadline, and flags past agenda dates as follow-up work.
+Run `node pta-tracker/scripts/test_board_report.mjs` after report changes.
+
+Observed in browser QA: cache-first HTML served the previous report generator
+on the first visit after an update. Service worker v2 uses network-first page
+navigation, retaining offline fallback. Data refresh never renews curation.

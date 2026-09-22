@@ -1,11 +1,38 @@
 # PTA Legislation Tracker
 
-A zero-maintenance, district-first tracker for what parents at an Arcadia USD
-K-6 campus need to know. Built by the Holly Avenue Elementary PTA and now
-serving one page per AUSD elementary school off one shared corpus (see
-"Multiple schools" below). It does the VP-Legislation job: watch the district
-and the state, filter for relevance, and generate the monthly board report on
-demand.
+An officer-prepared legislation and district-policy pilot for Holly Avenue
+families and PTA board review. Selected feeds refresh automatically; meaningful
+parent summaries and board reports require source review and curation. The page
+is not evidence of board endorsement or a replacement for district guidance.
+
+## Before each report or board share
+
+1. Check feed health and coverage gaps, then open the actual district agenda,
+   adopted policies, and recent minutes or official recordings. A proposal is
+   not an approval; an adopted district rule is not proof of school implementation.
+2. Review California State PTA [positions](https://capta.org/advocacy/current-legislation/)
+   and [alerts](https://capta.org/advocacy/take-action/), plus council/district PTA
+   communications received through existing channels. Verify bill session,
+   status, deadline and PTA position before recommending any campaign.
+3. In `data/parent.json`, choose up to four useful cards in `board_report.card_ids`.
+   Each needs a source and `reviewed_on`; record evidence limits. Set the report's
+   `reviewed_on` and `review_by` around the next decision requiring another check.
+   Updating the nightly feed or top-level curation date does not renew this report.
+4. State whether the report is informational, seeks feedback, or requests an
+   authorized action. Update follow-up owners, target dates and status. Keep
+   student names, private concerns and contact details out of this public repo.
+5. Generate the board draft in VP Desk, read it, and share through the board's
+   agreed channel. It uses curated cards, never automatically turns headlines
+   into endorsed statements. Expired meeting reminders become follow-up notices;
+   an overdue report review blocks generation of a current-looking report.
+6. After board review or a meeting, record decisions and the next report date in the PTA's
+   existing minutes/process. Update this pilot's status only when the board has
+   actually decided its use. Archive superseded cards with sources intact.
+
+Aim for a short check weekly and before each meeting; investigate substantive
+changes as needed. Success means a useful report delivered and questions followed
+through, not a zero gap count. The initial board-review brief and optional sharing message are in `board-brief.html`;
+its dated handout is a snapshot, while the generator is the repeatable workflow.
 
 ## How it works
 

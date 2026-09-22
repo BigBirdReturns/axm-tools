@@ -1,0 +1,27 @@
+// Regression checks for the actual report function embedded in the page.
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const start=html.indexOf('function buildBoardReport(');
+const end=html.indexOf('document.getElementById("gen").onclick',start);
+const scope={inSchoolScope:c=>!c.schools||c.schools.includes('ha')};
+vm.createContext(scope);vm.runInContext(html.slice(start,end),scope);
+const p=JSON.parse(readFileSync(new URL('../data/parent.json',import.meta.url),'utf8'));
+const report=scope.buildBoardReport(p,new Date(2026,8,22,12));
+assert.match(report,/BOARD REVIEW DRAFT/);
+assert.match(report,/Phones away/);
+assert.match(report,/BOARD DISCUSSION/);
+assert.match(report,/FOLLOW-UPS/);
+assert.match(scope.buildBoardReport(null),/unavailable/);
+assert.match(scope.buildBoardReport(p,new Date(2026,8,24)),/^REVIEW REQUIRED/);
+const after=scope.buildBoardReport(p,new Date(2026,8,23));
+assert.match(after,/Follow-up required: September 22/);
+assert.doesNotMatch(after,/Parents can speak at the board/);
+const bad=structuredClone(p);bad.board_report.card_ids.push('missing-card');
+assert.match(scope.buildBoardReport(bad,new Date(2026,8,22)),/^REVIEW REQUIRED/);
+const foreign=structuredClone(p);foreign.in_effect[0].schools=['other'];
+assert.match(scope.buildBoardReport(foreign,new Date(2026,8,22)),/^REVIEW REQUIRED/);
+const noSource=structuredClone(p);delete noSource.in_effect[0].source_url;
+assert.match(scope.buildBoardReport(noSource,new Date(2026,8,22)),/^REVIEW REQUIRED/);
+console.log('PASS: reviewed report, missing data/source, expired review, past meeting and school scope');

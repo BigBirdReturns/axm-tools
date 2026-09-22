@@ -5,14 +5,15 @@
  *   - ./data/*.json  → network-first, cache fallback. The tracker's data is
  *     nightly-fresh when online; offline you get the last-seen data, and the
  *     page's existing staleness banner tells the reader how old it is.
- *   - everything else (the page, manifest, icons) → cache-first with a
+ *   - page navigations -> network-first, cache fallback.
+ *   - other assets (manifest, icons) → cache-first with a
  *     background refresh, so an installed app boots instantly and offline,
  *     and picks up deploys on the next online visit.
  *
  * Bump CACHE when the caching strategy itself changes (content updates flow
  * through the refresh logic on their own).
  */
-const CACHE = "pta-tracker-v1";
+const CACHE = "pta-tracker-v2";
 const PRECACHE = ["./", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", (event) => {
@@ -35,12 +36,13 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // Live tracker data: network-first so an online reader always sees the
+  // Page navigations and live tracker data: network-first so an online reader always sees the
   // nightly refresh; the cached copy is the offline fallback.
-  if (url.pathname.includes("/data/") && url.pathname.endsWith(".json")) {
+  if (req.mode === "navigate" || (url.pathname.includes("/data/") && url.pathname.endsWith(".json"))) {
     event.respondWith(
       fetch(req)
         .then((res) => {
+          if (!res.ok) return caches.match(req).then(hit => hit || res);
           const copy = res.clone();
           caches.open(CACHE).then((cache) => cache.put(req, copy));
           return res;

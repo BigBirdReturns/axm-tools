@@ -31,7 +31,9 @@
         "type": "read",
         "label": "Read the September 22 agenda",
         "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=81149"
-      }
+      },
+      "reviewed_on": "2026-09-21",
+      "disposition": "Optional public participation; decisions pending"
     }
   ],
   "in_effect": [
@@ -53,7 +55,10 @@
         "type": "read",
         "label": "Read AUSD mobile-device rules",
         "url": "https://simbli.eboardsolutions.com/Policy/ViewPolicy.aspx?S=36030512&revid=qalhvuFRp3WcLpRMvzHRFA==&ppage=0&st=mobile&mt=Exact&ptid=amIgTZiB9plushNjl6WXhfiOQ==&fromPageId=6"
-      }
+      },
+      "reviewed_on": "2026-09-21",
+      "disposition": "For information",
+      "verification_note": "District BP 5131.8 is adopted. School-specific permitted times and implementation still need confirmation. Consult the full policy for exceptions."
     },
     {
       "id": "parent-sb848",
@@ -73,7 +78,9 @@
         "type": "check",
         "label": "Ask the office for its safe-environment policy",
         "url": "{{school_site}}"
-      }
+      },
+      "reviewed_on": "2026-09-21",
+      "disposition": "For information"
     },
     {
       "id": "parent-sb760",
@@ -93,7 +100,9 @@
         "type": "check",
         "label": "Ask the office about restroom access",
         "url": "{{school_site}}"
-      }
+      },
+      "reviewed_on": "2026-09-21",
+      "disposition": "For information"
     },
     {
       "id": "parent-elop-2026",
@@ -113,7 +122,9 @@
         "type": "read",
         "label": "Read the expanded learning plan",
         "url": "https://simbli.eboardsolutions.com/Meetings/Attachment.aspx?S=36030512&AID=1672654&MID=75661"
-      }
+      },
+      "reviewed_on": "2026-09-21",
+      "disposition": "For information"
     },
     {
       "id": "parent-arts-report-2026",
@@ -133,7 +144,9 @@
         "type": "read",
         "label": "Read the district arts funding report",
         "url": "https://www.ausd.net/apps/pages/index.jsp?pREC_ID=2673901&type=d&uREC_ID=2740474"
-      }
+      },
+      "reviewed_on": "2026-09-21",
+      "disposition": "For information"
     }
   ],
   "actions": [
@@ -157,6 +170,13 @@
       "label": "Bring an issue to the PTA",
       "detail": "Pickup chaos, confusing phone rules, 'nobody told us' — if it has an owner and a next decision point, the PTA can route it. Talk to any board member.",
       "url": null
+    },
+    {
+      "id": "act-capta",
+      "type": "read",
+      "label": "Check official PTA positions and action alerts",
+      "detail": "California State PTA publishes its own positions and participation opportunities. A link here does not establish a position adopted by this local PTA.",
+      "url": "https://capta.org/advocacy/take-action/"
     }
   ],
   "watchlist": [
@@ -240,5 +260,52 @@
         "url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512"
       }
     }
-  ]
+  ],
+  "publication_note": "Officer-prepared pilot for board review. This page does not represent an adopted PTA position or district guidance. Sources and unresolved questions are shown so the board can assess it before wider sharing.",
+  "board_report": {
+    "reviewed_on": "2026-09-21",
+    "review_by": "2026-09-23",
+    "disposition": "For information and board feedback. No policy endorsement or advocacy vote is requested in this draft.",
+    "request": "Please review the pilot and suggest corrections or missing family questions. Agree how future updates should be reviewed and shared through an existing PTA channel. No meeting or attendance is requested.",
+    "card_ids": [
+      "parent-phones",
+      "parent-elop-2026",
+      "parent-arts-report-2026",
+      "coming-board-2026-09-22"
+    ],
+    "followups": [
+      {
+        "what": "Review the September 22 district meeting outcome; replace the agenda reminder with verified decisions.",
+        "owner": "VP Legislation",
+        "due": "2026-09-23",
+        "status": "open"
+      },
+      {
+        "what": "Confirm the school-specific phone guidance and expanded-learning application/contact information before promising families details.",
+        "owner": "VP Legislation; school office is the information source",
+        "due": "2026-09-29",
+        "status": "open"
+      },
+      {
+        "what": "Record feedback from the full board, the agreed review/distribution process, and the next update date.",
+        "owner": "VP Legislation, with PTA president",
+        "due": "2026-09-29",
+        "status": "open"
+      }
+    ],
+    "resources": [
+      {
+        "label": "California State PTA positions on current legislation",
+        "url": "https://capta.org/advocacy/current-legislation/"
+      },
+      {
+        "label": "California State PTA action alerts",
+        "url": "https://capta.org/advocacy/take-action/"
+      },
+      {
+        "label": "Legislative Advocacy Chair role",
+        "url": "https://toolkit.capta.org/job-descriptions/legislative-advocacy-chairman/"
+      }
+    ]
+  }
 }
