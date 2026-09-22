@@ -383,9 +383,12 @@ what the board decided. Past meetings without verified outcomes remain
 curation gaps until their records are reviewed.
 
 The September 21 review confirmed published adopted LCAP and budget
-documents. Smartphone-policy adoption and July organizational-meeting
-outcomes remain unverified; see the watchlist. Simbli worked in the local
-browser after the automated reader failed. The September 22 agenda was
-reviewed and a sourced meeting card added; August 25/September 8 outcomes
-remain unverified (no minutes links were shown in the meeting listing). A fresh curation date records this review, not
-confirmation of every local implementation.
+documents, BP 5131.8 (mobile devices, adopted June 23), and current officers
+on the official board roster. The September 22 agenda has a sourced meeting
+card. August 25 ELOP-plan approval and September 8 Proposition 28 annual-report
+approval were verified by matching agenda items to the official recordings'
+transcripts; receipt URLs and timestamps are in each card. These are recording
+receipts, not signed minutes. They do not establish school-specific program
+availability, every local legal implementation, or July committee assignments.
+Simbli worked in the local browser after the automated reader failed; search
+its policy library for "mobile" to find BP 5131.8.

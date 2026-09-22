@@ -38,21 +38,21 @@
     {
       "id": "parent-phones",
       "kind": "law",
-      "title": "Check your school's current smartphone rules",
-      "kid_impact": "California requires a school smartphone policy, but this tracker has not yet verified Arcadia USD's adopted rules for your child.",
+      "title": "Phones away during class unless staff allow them",
+      "kid_impact": "Students must silence and put away phones during class unless staff allow their use; each school sets any other permitted times.",
       "impact_area": "School day / devices",
       "owner": "Arcadia USD board sets the policy; each school implements it",
-      "time_sensitivity": "State adoption deadline: July 1, 2026; local policy still unverified on September 21",
+      "time_sensitivity": "BP 5131.8 adopted June 23, 2026; verified September 21",
       "law_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240AB3216",
       "law_label": "AB 3216 — Pupils: use of smartphones",
-      "source_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240AB3216",
+      "source_url": "https://simbli.eboardsolutions.com/Policy/ViewPolicy.aspx?S=36030512&revid=qalhvuFRp3WcLpRMvzHRFA==&ppage=0&st=mobile&mt=Exact&ptid=amIgTZiB9plushNjl6WXhfiOQ==&fromPageId=6",
       "covers": [
         "seed-ab3216"
       ],
       "action": {
-        "type": "check",
-        "label": "Ask the school office for the current phone policy",
-        "url": "{{school_site}}"
+        "type": "read",
+        "label": "Read AUSD mobile-device rules",
+        "url": "https://simbli.eboardsolutions.com/Policy/ViewPolicy.aspx?S=36030512&revid=qalhvuFRp3WcLpRMvzHRFA==&ppage=0&st=mobile&mt=Exact&ptid=amIgTZiB9plushNjl6WXhfiOQ==&fromPageId=6"
       }
     },
     {
@@ -93,6 +93,46 @@
         "type": "check",
         "label": "Ask the office about restroom access",
         "url": "{{school_site}}"
+      }
+    },
+    {
+      "id": "parent-elop-2026",
+      "kind": "district",
+      "title": "Expanded learning plan approved",
+      "kid_impact": "Families can read the approved district plan for learning programs outside the regular school day and ask their school about available places.",
+      "impact_area": "Expanded learning",
+      "owner": "Arcadia USD",
+      "time_sensitivity": "Approved August 25, 2026; recording reviewed September 21",
+      "source_url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=75661",
+      "covers": [
+        "ausd-mtg-2026-08-25"
+      ],
+      "verification_note": "Agenda consent item F identifies the ELOP Plan 2026. Official meeting recording transcript: no consent items removed at 13:29; motion for A-J at 1:18:12 and passage at 1:18:31. Recording evidence, not signed minutes; no claim about school-specific eligibility or seats.",
+      "verification_url": "https://www.youtube.com/watch?v=vw_1xjT_cBQ&t=4692",
+      "action": {
+        "type": "read",
+        "label": "Read the expanded learning plan",
+        "url": "https://simbli.eboardsolutions.com/Meetings/Attachment.aspx?S=36030512&AID=1672654&MID=75661"
+      }
+    },
+    {
+      "id": "parent-arts-report-2026",
+      "kind": "district",
+      "title": "District arts funding report approved",
+      "kid_impact": "Families can review the district arts funding report for last school year to see how the money supported arts education.",
+      "impact_area": "Arts education / funding",
+      "owner": "Arcadia USD",
+      "time_sensitivity": "2025-26 report approved September 8, 2026; recording reviewed September 21",
+      "source_url": "https://www.ausd.net/apps/pages/index.jsp?pREC_ID=2673901&type=d&uREC_ID=2740474",
+      "covers": [
+        "ausd-mtg-2026-09-08"
+      ],
+      "verification_note": "September 8 agenda MID=81148 consent item D is the Proposition 28 Annual Report FY2025-26. Official recording transcript: motion for A-D and F-H at 1:24:03, passage at 1:24:22. Item E was separately considered. This is an accountability report, not a promise of new classes or funding at an individual school.",
+      "verification_url": "https://www.youtube.com/watch?v=JhVA193LMkM&t=5043",
+      "action": {
+        "type": "read",
+        "label": "Read the district arts funding report",
+        "url": "https://www.ausd.net/apps/pages/index.jsp?pREC_ID=2673901&type=d&uREC_ID=2740474"
       }
     }
   ],
@@ -142,11 +182,12 @@
     {
       "id": "watch-phone-policy",
       "what": "AUSD smartphone policy adopted (AB 3216)",
-      "why": "Reviewed September 21: AB 3216 required policy adoption by July 1, 2026, but the public AUSD policy pages checked do not establish its adopted smartphone rules. Ask the school office for the current policy or verify the board record on Simbli; keep open until that evidence is available. Do not confuse Arcadia, California with Arcadia, Wisconsin.",
+      "why": "Verified September 21 in the AUSD Simbli policy library: BP 5131.8, Mobile Communication Devices, is ADOPTED with an original adoption date of June 23, 2026. Instructional-time use requires authorization; other permitted times are determined by the school. The library search term mobile finds this policy; smartphone did not.",
       "expected_by": "2026-07-01",
-      "check_url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
-      "check_label": "Board agendas",
-      "status": "open"
+      "check_url": "https://simbli.eboardsolutions.com/Policy/ViewPolicy.aspx?S=36030512&revid=qalhvuFRp3WcLpRMvzHRFA==&ppage=0&st=mobile&mt=Exact&ptid=amIgTZiB9plushNjl6WXhfiOQ==&fromPageId=6",
+      "check_label": "Adopted BP 5131.8",
+      "status": "done",
+      "verified_on": "2026-09-21"
     },
     {
       "id": "watch-caaspp",
@@ -159,12 +200,13 @@
     },
     {
       "id": "watch-board-reorg",
-      "what": "Verify July board organizational meeting outcomes",
-      "why": "Corrected September 21: the district schedule identifies July 14, 2026 as the annual reorganizational meeting, not December. The schedule establishes the planned meeting only; verify elected officers and committee assignments from its minutes before marking done.",
+      "what": "2026-27 board officers confirmed",
+      "why": "Verified September 21 on the official 2026-27 board roster: Shirley Yee, President; Jennifer Vargo, Vice President; Raymond Cheung, Clerk. Titles appear in roster images. July 14 was the scheduled organizational meeting. This receipt confirms current officers, not the July vote tally or committee assignments.",
       "expected_by": "2026-07-14",
-      "check_url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
-      "check_label": "Simbli listing",
-      "status": "open"
+      "check_url": "https://www.ausd.net/apps/pages/Board",
+      "check_label": "AUSD current board roster",
+      "status": "done",
+      "verified_on": "2026-09-21"
     },
     {
       "id": "watch-sarc",

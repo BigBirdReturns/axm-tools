@@ -124,3 +124,14 @@ follow-ups need a fresh PR from a restarted branch.
   instructional-materials hearing, teacher-assignment authorization and
   facilities update. The meeting listing showed no minutes links for
   August 25 or September 8; do not infer votes from agenda proposals.
+
+- Follow-up verification September 21: Simbli policy-library search "mobile"
+  found adopted BP 5131.8 (June 23, 2026); "smartphone" returned no results.
+  The current board roster embeds officer titles in images: Shirley Yee,
+  President; Jennifer Vargo, Vice President; Raymond Cheung, Clerk.
+- Missing minutes do not end research: official August 25 recording
+  vw_1xjT_cBQ confirms consent A-J passed (1:18:12-1:18:31), including ELOP
+  plan item F. September 8 recording JhVA193LMkM confirms consent A-D/F-H
+  passed (1:24:03-1:24:22), including Proposition 28 annual-report item D.
+  parent.json records these evidence types and timestamps; do not describe
+  transcripts as signed minutes or annual reports as new spending approvals.
