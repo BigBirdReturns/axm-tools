@@ -1,0 +1,94 @@
+name: Hot Aisle workload report 2.0 release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/hot-aisle-v2/**'
+      - '.github/workflows/hot-aisle-release-v2.yml'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Install exact tested source with preimage checks
+        run: python .github/hot-aisle-v2/materialize.py
+      - name: Re-run source and arithmetic qualification
+        run: |
+          set -euo pipefail
+          node hot-aisle/scripts/test_workbench.cjs
+          python -m unittest discover -s hot-aisle/scripts -p 'test_price_math.py' -v
+          git diff --check
+      - name: Commit source and record release identity
+        run: |
+          set -euo pipefail
+          git config user.name 'hot-aisle-release-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -- hot-aisle README.md index.html CONTINUITY.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Hot Aisle: import benchmark results and export source-bound customer reports'
+            git push origin HEAD:main
+          fi
+          echo "RELEASE_SOURCE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Configure Pages
+        uses: actions/configure-pages@v6.0.0
+      - name: Upload complete site
+        uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: .
+          name: hot-aisle-pages-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Deploy source in the same workflow as its token commit
+        id: deploy
+        uses: actions/deploy-pages@v5.0.1
+        with:
+          artifact_name: hot-aisle-pages-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Record successful deployment
+        env:
+          PAGE_URL: ${{ steps.deploy.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          def digest(path):
+              return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+          data = {
+              'schema': 'hot-aisle/deployment@2',
+              'version': '2.0.0',
+              'deployed_at': datetime.now(timezone.utc).isoformat(),
+              'source_sha': os.environ['RELEASE_SOURCE_SHA'],
+              'run_id': os.environ['GITHUB_RUN_ID'],
+              'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'page_url': os.environ['PAGE_URL'].rstrip('/')+'/hot-aisle/',
+              'index_sha256': digest('hot-aisle/index.html'),
+              'archive_sha256': digest('hot-aisle/workload-report.zip'),
+              'qualification': json.loads(Path('hot-aisle/QUALIFICATION.json').read_text()),
+              'ci_rerun': {'import_math_evidence_regressions': 80, 'legacy_price_arithmetic': 13},
+              'measurement_scope': 'Software qualification only; no Hot Aisle or comparator hardware benchmark run.',
+          }
+          Path('.github/hot-aisle-v2-deployment.json').write_text(json.dumps(data,indent=2)+'\n')
+          print(json.dumps(data,indent=2))
+          PY
+          git add -- .github/hot-aisle-v2-deployment.json
+          git commit -m 'Hot Aisle: record workload-report deployment'
+          git push origin HEAD:main
