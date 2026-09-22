@@ -10,7 +10,7 @@ a year and still be working when you come back.
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
-| [`hot-aisle/`](hot-aisle/) | Free dated GPU price and accepted-work economics calculator; explicit price-only boundary, arithmetic tests and proposed reproducible campaign | [Use the free calculator](https://bigbirdreturns.github.io/axm-tools/hot-aisle/) |
+| [`hot-aisle/`](hot-aisle/) | Import vLLM results, account for the billable allocation, compare compatible trials and export a customer report with source-bound calculations | [Build a workload report](https://bigbirdreturns.github.io/axm-tools/hot-aisle/) |
 | [`mimo-one-gpu/`](mimo-one-gpu/) | Inspectable one-GPU MiMo experiment: permissioned hardware and checkpoint inspection, proposed host-memory offload, bounded canary and native benchmark handoff; actual MiMo inference remains unqualified | [Prepare the local test](https://bigbirdreturns.github.io/axm-tools/mimo-one-gpu/) |
 | [`owned-learning-loop/`](owned-learning-loop/) | Public 12-month lead playbook for local-first adaptive AI: terminal outcomes, replayable traces, evals, workload routing, bounded adapters, promotion receipts and rollback | [Own the learning loop](https://bigbirdreturns.github.io/axm-tools/owned-learning-loop/) |
 | [`procedure-reuse/`](procedure-reuse/) | Disposable four-case browser test for procedure admission, semantic drift, saved-record verification and a local receipt; includes a source-pinned Hronaut handoff with no shared accounts or machine access | [Open the interoperability test](https://bigbirdreturns.github.io/axm-tools/procedure-reuse/) |

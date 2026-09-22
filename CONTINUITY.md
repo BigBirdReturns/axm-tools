@@ -79,7 +79,7 @@ are touching tells you how much care to take.
 
 ## 3. Map (snapshot, July 2026 — trust the tree over this list)
 
-- `hot-aisle/` (added 2026-09-22): static GPU allocation-price and accepted-work calculator with dated source prices, standalone HTML, arithmetic tests and an unexecuted campaign plan. User-entered rates remain unverified; no cloud provisioning, backend, telemetry or scheduled work.
+- `hot-aisle/` (updated 2026-09-22): v2 imports existing vLLM results, applies optional per-request gates and exports customer HTML plus source-bound calculation evidence. Repeats, compatibility holds and local recomputation are implemented; hardware benchmarks remain unexecuted. Standalone HTML, no uploads or scheduled work.
 
 - `mimo-one-gpu/` (added 2026-09-21): static one-GPU MiMo handoff and inspectable local experiment kit. Controller and browser qualification are separate from native model fit and quality, which remain NOT RUN. No backend, automatic acquisition, telemetry upload or scheduled work.
 
