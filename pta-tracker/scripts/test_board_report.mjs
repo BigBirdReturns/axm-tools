@@ -4,15 +4,16 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const start=html.indexOf('function buildBoardReport(');
-const end=html.indexOf('document.getElementById("gen").onclick',start);
+const end=html.indexOf('const clearReportBtn=',start);
 const scope={inSchoolScope:c=>!c.schools||c.schools.includes('ha')};
 vm.createContext(scope);vm.runInContext(html.slice(start,end),scope);
 const p=JSON.parse(readFileSync(new URL('../data/parent.json',import.meta.url),'utf8'));
 const report=scope.buildBoardReport(p,new Date(2026,8,22,12));
-assert.match(report,/BOARD REVIEW DRAFT/);
-assert.match(report,/Phones away/);
-assert.match(report,/BOARD DISCUSSION/);
-assert.match(report,/FOLLOW-UPS/);
+assert.match(report,/PTA LEGISLATION UPDATE - DRAFT/);
+assert.match(report,/mobile-device policy/);
+assert.match(report,/SOURCES/);
+assert.doesNotMatch(report,/BOARD DISCUSSION|FOLLOW-UPS|Coverage counts|Owner:/);
+assert.match(report,/school-specific phone/);
 assert.match(scope.buildBoardReport(null),/unavailable/);
 assert.match(scope.buildBoardReport(p,new Date(2026,8,24)),/^REVIEW REQUIRED/);
 const after=scope.buildBoardReport(p,new Date(2026,8,23));
@@ -25,3 +26,25 @@ assert.match(scope.buildBoardReport(foreign,new Date(2026,8,22)),/^REVIEW REQUIR
 const noSource=structuredClone(p);delete noSource.in_effect[0].source_url;
 assert.match(scope.buildBoardReport(noSource,new Date(2026,8,22)),/^REVIEW REQUIRED/);
 console.log('PASS: reviewed report, missing data/source, expired review, past meeting and school scope');
+
+// Exercise the actual generate/clear handlers, including error-state controls.
+const elements=Object.fromEntries(['gen','clear-report'].map(id=>[id,{style:{},focus(){this.focused=true;}}]));
+scope.document={getElementById:id=>elements[id]};
+scope.report={style:{},textContent:''};scope.copyBtn={style:{},textContent:''};scope.shareBtn={style:{}};
+scope.t=k=>k;scope.navigator={share(){}};scope.PARENT=p;
+const actionEnd=html.indexOf('copyBtn.onclick=',end);
+vm.runInContext(html.slice(end,actionEnd),scope);
+// Isolate button behavior from the machine's clock; date checks ran above.
+scope.buildBoardReport=()=>report;
+elements.gen.onclick();
+assert.equal(scope.copyBtn.style.display,'inline-block');
+assert.equal(scope.shareBtn.style.display,'inline-block');
+elements['clear-report'].onclick();
+assert.equal(scope.report.textContent,'');
+for(const el of [scope.report,scope.copyBtn,scope.shareBtn,elements['clear-report']])assert.equal(el.style.display,'none');
+assert.equal(elements.gen.focused,true);
+elements.gen.onclick();assert.equal(scope.report.textContent,report);
+scope.buildBoardReport=()=> 'REVIEW REQUIRED: expired';elements.gen.onclick();
+assert.equal(scope.copyBtn.style.display,'none');assert.equal(scope.shareBtn.style.display,'none');
+assert.equal(elements['clear-report'].style.display,'inline-block');
+console.log('PASS: generate, clear, regenerate and error-state controls');

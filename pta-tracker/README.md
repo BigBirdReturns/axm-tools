@@ -21,8 +21,10 @@ is not evidence of board endorsement or a replacement for district guidance.
 4. State whether the report is informational, seeks feedback, or requests an
    authorized action. Update follow-up owners, target dates and status. Keep
    student names, private concerns and contact details out of this public repo.
-5. Generate the board draft in VP Desk, read it, and share through the board's
-   agreed channel. It uses curated cards, never automatically turns headlines
+5. Generate the short board draft in VP Desk, read it, and share through the board's
+   agreed channel. Clear draft dismisses it and hides its copy/share controls.
+   The draft contains curated summaries and numbered sources; the pilot feedback
+   request belongs in the separate board-sharing brief. It uses curated cards, never automatically turns headlines
    into endorsed statements. Expired meeting reminders become follow-up notices;
    an overdue report review blocks generation of a current-looking report.
 6. After board review or a meeting, record decisions and the next report date in the PTA's
