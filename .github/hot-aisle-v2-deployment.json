@@ -1,13 +1,31 @@
 {
   "schema": "hot-aisle/deployment@2",
   "version": "2.0.0",
-  "deployed_at": "2026-09-22T22:44:41.929211+00:00",
-  "source_sha": "179a0d82ae9901d6535f4b4f9f7812dfcb374ce3",
-  "run_id": "35793909783",
+  "deployed_at": "2026-09-22T22:48:26.766602+00:00",
+  "source_sha": "72e4adc983b9137d69592fce4b02d0573398ef42",
+  "run_id": "35794128379",
   "run_attempt": "1",
   "page_url": "https://bigbirdreturns.github.io/axm-tools/hot-aisle/",
   "index_sha256": "cd79dc1b81740c682e1529d55c9d76f91ae8750b97abab676d5dfdd52c917e57",
   "archive_sha256": "4ef40eef504c778f8f79d55e9cdd6ad71ae67878b9cd31ecdd8d540b267b26bb",
+  "live_http_readback": {
+    "checked_at": "2026-09-22T22:48:26.731651+00:00",
+    "state": "MATCH",
+    "files": [
+      {
+        "url": "https://bigbirdreturns.github.io/axm-tools/hot-aisle/",
+        "status": 200,
+        "bytes": 63398,
+        "sha256": "cd79dc1b81740c682e1529d55c9d76f91ae8750b97abab676d5dfdd52c917e57"
+      },
+      {
+        "url": "https://bigbirdreturns.github.io/axm-tools/hot-aisle/workload-report.zip",
+        "status": 200,
+        "bytes": 43561,
+        "sha256": "4ef40eef504c778f8f79d55e9cdd6ad71ae67878b9cd31ecdd8d540b267b26bb"
+      }
+    ]
+  },
   "qualification": {
     "schema": "hot-aisle/software-qualification@2",
     "version": "2.0.0",
