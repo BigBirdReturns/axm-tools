@@ -79,6 +79,8 @@ are touching tells you how much care to take.
 
 ## 3. Map (snapshot, July 2026 — trust the tree over this list)
 
+- `hot-aisle/` (added 2026-09-22): static GPU allocation-price and accepted-work calculator with dated source prices, standalone HTML, arithmetic tests and an unexecuted campaign plan. User-entered rates remain unverified; no cloud provisioning, backend, telemetry or scheduled work.
+
 - `mimo-one-gpu/` (added 2026-09-21): static one-GPU MiMo handoff and inspectable local experiment kit. Controller and browser qualification are separate from native model fit and quality, which remain NOT RUN. No backend, automatic acquisition, telemetry upload or scheduled work.
 
 - `owned-learning-loop/` (added 2026-09-20): static public playbook and local plan generator for trace -> outcome -> eval -> route -> adapt -> promote/rollback; includes portable schemas and no scheduled work.
@@ -93,7 +95,7 @@ are touching tells you how much care to take.
   guarded by `tests/pages/verify_acceptance.mjs`.
 - `organ-evolution/` — the local-only estate-anatomy and evolution
   workbench. It separates organ identity, function, implementation, supplier,
-  evidence, motive, authority, migration, and succession; guarded by
+  evidence, motive, authority, migration, stress, and succession; guarded by
   `organ-evolution/scripts/validate.py` and
   `tests/pages/verify_organ_evolution.mjs`.
 - `axm-witness/` — AXM Witness Department Ledger 0.9.2: an exact-byte, department-controlled local export-ledger pilot for authorized Flock-shaped exports, qualified 30/30 under native browser storage and WebCrypto. It proves department custody and decisions after receipt; vendor-declared completeness and pre-delivery origin remain external boundaries.
@@ -101,7 +103,7 @@ are touching tells you how much care to take.
   PTA, relevance filter, board report, offline PWA. Its README is the
   operating manual.
 - `identity/` — a **reference area, not a tool** (§6): the AXM/SCG
-  identity system, its frozen releases, and the provenance law.
+  identity system, its frozen releases, and the provenance law that governs them.
 - `index.html` — the root directory page. Tools get cards; reference
   areas get a quieter link.
 - `.github/workflows/pta-fetch.yml` — nightly fetch + data commit + site
