@@ -116,3 +116,6 @@ maintaining it this year. [`CONTINUITY.md`](CONTINUITY.md) is the handoff
 document: which properties are invariant, which parts are expected to rot,
 and how to change things legitimately — written for the next maintainer,
 human or AI.
+## Compute decision desk and workload instrument
+
+Start at `compute/` for the provider-neutral decision desk. `hot-aisle/` owns bounded evaluation and qualified records. Their explicit local publication seam, source authorities, commands and qualification boundaries are documented in [integration/README.md](integration/README.md). The integration workflow tests real localhost navigation, SSE and reconnect and builds both portable kits from source.

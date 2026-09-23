@@ -226,3 +226,9 @@ platform, a new format, a new kind of tool, a new kind of steward —
 choose the option that still works after ten years of nobody looking at
 it. Fewer moving parts beats more features. Visible failure beats silent
 cleverness. Convention beats dependency. Plain text beats everything.
+
+## Compute and workload-instrument integration, 22 September 2026
+
+The owner requested the combined desk and runner. `compute/` is the provider-neutral public front door; `hot-aisle/` remains the execution instrument. The desk never starts or owns jobs. Optional, operator-started loopback and stdio helpers run in a customer-controlled environment; the hosted Pages surface remains static. This bounded integration uses generated source projections, rather than runtime imports between the tools, as documented in `integration/README.md`.
+
+`compute/data/catalog.json` owns published price observations. Instrument record/revalidation code and its page report engine own evidence-derived findings. `integration/build.py --check` prevents drift among copied authorities. Local publish retains immutable qualified-record/evidence pairs. The directory catalogue and the static homepage are not publication of a customer result. Native browser qualification runs on the source branch; main deployment and real provider resource access remain separate actions.
