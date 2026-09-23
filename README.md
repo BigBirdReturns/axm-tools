@@ -10,6 +10,7 @@ a year and still be working when you come back.
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
+| [`research-desk/`](research-desk/) | Compare supplied task results and costs, trace corrections into affected conclusions, and export reviewed client reports; includes a five-minute synthetic example and single-file offline app | [Open Research Desk](https://bigbirdreturns.github.io/axm-tools/research-desk/) |
 | [`hot-aisle/`](hot-aisle/) | Qualify a vLLM deployment on Hot Aisle MI300X: a connected runner (CLI, localhost service, MCP) drives approved evaluations, retains every trial, writes a qualified record the page recomputes in the browser, and answers what needs retesting after a price, traffic or runtime change. Import path retained for offline evidence | [Qualify a deployment](https://bigbirdreturns.github.io/axm-tools/hot-aisle/) |
 | [`mimo-one-gpu/`](mimo-one-gpu/) | Inspectable one-GPU MiMo experiment: permissioned hardware and checkpoint inspection, proposed host-memory offload, bounded canary and native benchmark handoff; actual MiMo inference remains unqualified | [Prepare the local test](https://bigbirdreturns.github.io/axm-tools/mimo-one-gpu/) |
 | [`owned-learning-loop/`](owned-learning-loop/) | Public 12-month lead playbook for local-first adaptive AI: terminal outcomes, replayable traces, evals, workload routing, bounded adapters, promotion receipts and rollback | [Own the learning loop](https://bigbirdreturns.github.io/axm-tools/owned-learning-loop/) |

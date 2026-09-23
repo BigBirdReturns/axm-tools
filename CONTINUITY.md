@@ -232,3 +232,8 @@ cleverness. Convention beats dependency. Plain text beats everything.
 The owner requested the combined desk and runner. `compute/` is the provider-neutral public front door; `hot-aisle/` remains the execution instrument. The desk never starts or owns jobs. Optional, operator-started loopback and stdio helpers run in a customer-controlled environment; the hosted Pages surface remains static. This bounded integration uses generated source projections, rather than runtime imports between the tools, as documented in `integration/README.md`.
 
 `compute/data/catalog.json` owns published price observations. Instrument record/revalidation code and its page report engine own evidence-derived findings. `integration/build.py --check` prevents drift among copied authorities. Local publish retains immutable qualified-record/evidence pairs. The directory catalogue and the static homepage are not publication of a customer result. Native browser qualification runs on the source branch; main deployment and real provider resource access remain separate actions.
+
+
+## Research Desk public handoff, 22 September 2026
+
+`research-desk/` supplies a plain-language landing page, the preserved single-file Research Desk 1.0.0 app, supported input contracts and synthetic example reports with replayable history. No backend or new workflow exists. The app is an independent build for inspection, not a BEP adoption or integration claim. Workspace data lives in memory until explicitly exported. Native publication checks and exact original-app identity are recorded in that directory. Existing compute and Hot Aisle tools remain unchanged.
