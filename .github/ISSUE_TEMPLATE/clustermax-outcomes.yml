@@ -1,0 +1,155 @@
+name: "ClusterMAX challenge: plan+binding+outcomes submission"
+description: >-
+  Submit a frozen prediction plan, its medal binding, and its terminal job
+  outcomes for the ClusterMAX challenge's prospective test
+  (scripts/challenge.py). See clustermax-challenge/SUBMITTING.md before
+  filling this in.
+title: "[clustermax-outcomes] "
+labels:
+  - clustermax-challenge
+  - submission
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read `clustermax-challenge/SUBMITTING.md` first. This form is for a
+        **prospective plan+outcomes packet** (a frozen prediction, run as an
+        ordinary customer, against real terminal job outcomes). If you're
+        instead correcting a provider's retrospective incident history for
+        the R1 study, open a pull request against `retrospective/incidents/`
+        directly rather than using this form.
+
+        You can also skip this form and open a pull request adding
+        `clustermax-challenge/submissions/<id>/{plan.json,binding.json,outcomes.json,SUBMITTER.md}`
+        directly -- that path runs through CI automatically. Use this form if
+        you'd rather have a maintainer do that for you.
+
+  - type: input
+    id: submission_id
+    attributes:
+      label: Submission id
+      description: >-
+        Short, url-safe identifier for this submission (becomes the
+        submissions/<id>/ directory name if this is turned into a PR).
+      placeholder: acme-cloud-2026-11
+    validations:
+      required: true
+
+  - type: textarea
+    id: plan_json
+    attributes:
+      label: plan.json
+      description: >-
+        Paste the full contents of your frozen plan.json (schema
+        secondrun.rating-plan.v4), or a link to it. It carries no medal
+        field and no rubric hash -- the medal and rubric are filled in
+        later, by binding.json below -- but it does carry a `binding_rules`
+        object (medal_source, rubric_source, tiers) committing to which
+        official sources that later binding must cite, and its own
+        `disclosure` object (relationship, compensation, credits,
+        special_support, editorial_influence), which must be real text, not
+        a placeholder.
+      render: json
+    validations:
+      required: true
+
+  - type: textarea
+    id: binding_json
+    attributes:
+      label: binding.json
+      description: >-
+        Paste the full contents of your binding.json (schema
+        secondrun.rating-binding.v2), or a link to it. This is the record
+        you filled in once the rating actually published, naming the rating
+        and version, the medal table you read it from (source.url and its
+        sha256) and the rubric you read it from (rubric.url and its
+        sha256), when you bound it (bound_at), and the medal per provider.
+        bound_at must be after plan.json's frozen_at and strictly before
+        every job's started_at, and both source.retrieved_utc and
+        rubric.retrieved_utc must be at or before bound_at.
+      render: json
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcomes_json
+    attributes:
+      label: outcomes.json
+      description: >-
+        Paste the full contents of your outcomes.json
+        (schema secondrun.rating-outcomes.v4), or a link to it. Each row may
+        optionally declare credits_redeemed_usd (defaults to 0) for any
+        GPU-cloud credits redeemed toward that job; it cannot exceed the
+        row's own total_cost_usd, which stays the normal list-price charge
+        used for gates and cost-per-accepted-unit.
+      render: json
+    validations:
+      required: true
+
+  - type: textarea
+    id: disclosure
+    attributes:
+      label: Disclosure
+      description: >-
+        Your relationship, if any, to any provider or rating named in
+        plan.json (employee, investor, customer, no relationship, etc.), and
+        how the account used for these jobs was obtained. This becomes
+        SUBMITTER.md's disclosure section; submit_check.py refuses a
+        submission that has none. (This is separate from plan.json's own
+        structured `disclosure` object above, which evaluate() checks
+        directly -- fill in both.)
+      placeholder: |
+        Relationship to provider(s): none / customer since ... / employee of ... / etc.
+        Account type: ordinary self-signup paid account, not a reviewer or partner account.
+    validations:
+      required: true
+
+  - type: textarea
+    id: receipts
+    attributes:
+      label: Receipts
+      description: >-
+        For each trial, the receipt_ref/receipt_sha256 pair (or a link to
+        where the underlying invoices/receipts can be checked). Do not paste
+        secrets, API keys, or account identifiers here -- redact them from
+        plan.json/outcomes.json before submitting.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: >-
+            I froze plan.json (including every prediction's predicted_at)
+            before any of these jobs ran, and before I saw any outcome.
+          required: true
+        - label: >-
+            Every job I attempted is included in outcomes.json, including
+            failed/timed-out/aborted attempts -- I did not drop any.
+          required: true
+        - label: >-
+            These jobs were run on an ordinary customer account (not a
+            reviewer, admin, or partner account).
+          required: true
+        - label: >-
+            I removed secrets, API keys, account identifiers, and anything
+            else I don't want public from all three files.
+          required: true
+        - label: >-
+            I bound binding.json's medals after the rating actually
+            published, and bound_at is before every job's started_at -- I
+            did not choose or backfill a medal after seeing outcomes.
+          required: true
+        - label: >-
+            plan.json's own disclosure object (relationship, compensation,
+            credits, special_support, editorial_influence) is filled in with
+            real answers, not placeholders.
+          required: true
+        - label: >-
+            Any GPU-cloud credits redeemed toward these jobs are declared in
+            outcomes.json's credits_redeemed_usd per row (0/omitted if none);
+            total_cost_usd stays the normal list-price charge, not a
+            credits-reduced figure.
+          required: true
