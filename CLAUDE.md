@@ -155,3 +155,7 @@ navigation, retaining offline fallback. Data refresh never renews curation.
 ## Compute connection verification - September 22, 2026
 
 A fragment-only navigation to a private local workspace does not reload the document. Consume its connection token on `hashchange` as well as initial load and remove it from the address. Native tests must wait for `CONNECTED` as a prefix: `NOT CONNECTED` contains the same substring. Chromium innerText applies CSS text-transform; qualification badges should be checked semantically, with identity disclosures opened before visibility assertions.
+
+## Compute public release browser check - September 23, 2026 UTC
+
+Ubuntu CI exposed 320px page overflow that Windows native checks did not: compact header controls and connected rows needed natural wrapping under fallback-font widths. Keep the narrow layout wrapping and preserve the page-width assertions; do not hide overflow to satisfy them. The original Hot Aisle URL remains the instrument entry and links to the provider-neutral compute desk. Runner instructions use the executable shipped in the kit, not an assumed npm package.
