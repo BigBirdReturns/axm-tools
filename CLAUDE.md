@@ -181,3 +181,15 @@ The runner drives `vllm bench serve` over ssh on the host, so a containerised vL
 bind-mounted; `jobs.normalizePlan` accepts that. Comparator arms on other clouds cannot go
 through the runner (adapter must be hotaisle or local; local marks records synthetic); import
 their files as supplied evidence instead.
+
+## First campaign, field facts - September 23, 2026 UTC
+
+Verified while running `hot-aisle/campaign/` Runs 1-2:
+- vLLM 0.30.0 (`vllm/vllm-openai@sha256:8a69ffad…`) rejects `--disable-log-requests`; request logging is off by default. Its bench prints a notice that default sampling temperature changed; pass `--temperature` explicitly when output content matters.
+- `rocm/vllm@sha256:30761c21…` is vLLM 0.27.1-dev and its `--save-detailed` output has no per-request `latencies` array, so the report engine (correctly) holds any E2E gate on those files. `vllm/vllm-openai-rocm:v0.30.0` exists (`@sha256:2e7da1ad…`); `rocm/vllm` is deprecated upstream.
+- On vLLM 0.30.0 ROCm with `VLLM_ROCM_USE_AITER=1`, a dense FP8 70B auto-selected `ROCM_ATTN` ("incompatible backend TURBOQUANT … overriding") and `RowWiseTorchFP8ScaledMMLinearKernel`. Always collect `serve.log` and name the selected backend in the record.
+- `docker inspect <container>` has no RepoDigests; use `docker image inspect` on `.Config.Image` (arm.sh fixed). `rocm-smi` product names contain tab characters, so escape them before writing JSON.
+- DigitalOcean new accounts start at GPU Droplet limit 0; a support ticket raised it to 1 GPU (so arms run one at a time). At ~19:10 UTC, H200 1x was out of capacity in all six GPU regions and MI300X was greyed in NYC2/TOR1. The "AI/ML Ready" NVIDIA image ships nvidia-container-toolkit 1.19.1 and `--gpus all` works.
+- Hot Aisle admin TUI accepts the team's registered SSH key directly (`ssh -tt admin.hotaisle.app`, no email code); it refuses connections after many logins in a short period. The API has `GET /virtual_machines/available/`.
+- Codex on the owner's ChatGPT account rejects `gpt-6-terra`; `gpt-6-astra` works.
+- `hot-aisle/campaign/research-2026-09/` is internal strategy, not site content: keep it off `main` before any push, or move it to a private repo.
