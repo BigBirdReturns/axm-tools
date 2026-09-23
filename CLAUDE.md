@@ -151,3 +151,7 @@ Run `node pta-tracker/scripts/test_board_report.mjs` after report changes.
 Observed in browser QA: cache-first HTML served the previous report generator
 on the first visit after an update. Service worker v2 uses network-first page
 navigation, retaining offline fallback. Data refresh never renews curation.
+
+## Compute connection verification - September 22, 2026
+
+A fragment-only navigation to a private local workspace does not reload the document. Consume its connection token on `hashchange` as well as initial load and remove it from the address. Native tests must wait for `CONNECTED` as a prefix: `NOT CONNECTED` contains the same substring. Chromium innerText applies CSS text-transform; qualification badges should be checked semantically, with identity disclosures opened before visibility assertions.
