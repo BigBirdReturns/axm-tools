@@ -163,3 +163,21 @@ Ubuntu CI exposed 320px page overflow that Windows native checks did not: compac
 ## Shared-site acceptance closeout, September 23, 2026 UTC
 
 The independent brand's nowrap line widened a 390px DejaVu Sans viewport to 404px. Natural brand wrapping fixes the cause; 320px also needs price-tile labels to wrap. Keep document-width assertions and scrollable ledgers; do not hide document overflow. The fresh-browser journey now downloads and recomputes a report and carries a saved decision through reload. All four current full-site Pages publishers require source-matched product qualification before upload; data-only commits may reuse identical passing source trees.
+
+## First-campaign provider facts - September 23, 2026 UTC
+
+Verified for `hot-aisle/campaign/` (the kit is committed; nothing has been rented or run):
+Hot Aisle lists $2.99/GPU-hr for a new-customer MI300X VM, billed by the minute, no stated
+minimum deposit; bare metal $3.39 with a one-month minimum; VMs ship with ROCm and Docker and
+use key-based SSH. DigitalOcean GPU Droplets list MI300X $2.59 and H100 $4.41 per GPU-hour,
+billed per second with a 5-minute minimum; image slugs `gpu-amd-base` (ROCm 7.14) and
+`gpu-h100x1-base` (CUDA 13.1, container toolkit); the docs do not state new-account GPU
+limits, so the first droplet create is the test. RunPod's MI300X was out of stock; Spheron
+($3.59/hr, 20-minute minimum) is the H100 fallback. Pins: Qwen/Qwen3-Coder-30B-A3B-Instruct-FP8
+at dcaee4d4dfc5ee71ad501f01f530e5652438fde0 (31.2 GB, fine-grained FP8 block 128);
+rocm/vllm@sha256:30761c21… and vllm/vllm-openai@sha256:8a69ffad…, both published 2026-09-22.
+The runner drives `vllm bench serve` over ssh on the host, so a containerised vLLM needs
+`target.vllm_command = ["docker","exec","vllm","vllm","bench","serve"]` and the result dir
+bind-mounted; `jobs.normalizePlan` accepts that. Comparator arms on other clouds cannot go
+through the runner (adapter must be hotaisle or local; local marks records synthetic); import
+their files as supplied evidence instead.
