@@ -25,6 +25,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
+  actions: read
   contents: write
   pages: write
   id-token: write
@@ -351,6 +352,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Require qualified compute sources before publishing the shared site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python integration/release_gate.py --timeout 600 --receipt "${{ runner.temp }}/compute-publication-gate.json"
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
