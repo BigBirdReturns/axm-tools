@@ -1,0 +1,14 @@
+{
+  "schema": "second-run/request-input-qualification@1",
+  "scope": "35 Node placement cases, 6 real MCP bridge cases and 10 Python collector tests; no live account reads, provisioning or new inference",
+  "local_results": {
+    "new_node_tests": 41,
+    "new_python_tests": 10,
+    "existing_bridge": "15 pass; one pre-existing symlink test cannot create a link under this Windows account (EPERM). Kept enabled for Linux CI."
+  },
+  "source_review": "20 primary-documentation entries; six successful public release/model metadata captures",
+  "simulation": "All placement scenarios authored and explicitly synthetic; real campaign calibration is not relabeled as live supply",
+  "execution": "Not authorized or initiated by this input layer",
+  "remaining_native_boundary": "Qualify dstack/gateway lifecycle through the approved execution owner before automatic user-task dispatch",
+  "ci_entrypoint": "Existing compute/tests/test_bridge.cjs imports the new Node checks and executes the offline Python parser tests; no workflow file changed."
+}

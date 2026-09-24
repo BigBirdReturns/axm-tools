@@ -1,0 +1,98 @@
+{
+  "schema": "second-run/material-observations@1",
+  "observed_at": "2026-09-24T19:48:01.857639+00:00",
+  "observations": [
+    {
+      "id": "coding-model",
+      "url": "https://huggingface.co/api/models/Qwen/Qwen3-Coder-30B-A3B-Instruct-FP8",
+      "observed_at": "2026-09-24T19:48:01.329014+00:00",
+      "status": "OBSERVED",
+      "source_sha256": "beec49b4f867d4bc8a21c5e838f6ed8ccb4e72035773bce4cbfbb144a0b7789d",
+      "bytes": 20241,
+      "value": {
+        "model": "Qwen/Qwen3-Coder-30B-A3B-Instruct-FP8",
+        "revision": "dcaee4d4dfc5ee71ad501f01f530e5652438fde0",
+        "gated": false,
+        "license": "apache-2.0",
+        "last_modified": "2025-12-03T08:20:23.000Z",
+        "interpretation": "Repository metadata; no weights downloaded, license review and task qualification remain separate."
+      }
+    },
+    {
+      "id": "docling-release",
+      "url": "https://api.github.com/repos/docling-project/docling/releases/latest",
+      "observed_at": "2026-09-24T19:48:01.329014+00:00",
+      "status": "OBSERVED",
+      "source_sha256": "27401024ce1826823de3523aae0119ee925262e282908d14fbfa067fd1143eba",
+      "bytes": 7024,
+      "value": {
+        "tag": "v2.130.0",
+        "published_at": "2026-09-22T15:33:48Z",
+        "prerelease": false,
+        "url": "https://github.com/docling-project/docling/releases/tag/v2.130.0",
+        "interpretation": "Upstream release metadata, not installation or compatibility approval."
+      }
+    },
+    {
+      "id": "dstack-release",
+      "url": "https://api.github.com/repos/dstackai/dstack/releases/latest",
+      "observed_at": "2026-09-24T19:48:01.329014+00:00",
+      "status": "OBSERVED",
+      "source_sha256": "6e0dd260e89229371d45785d70de3ca74948fe100ecbe6a4d2903c0c6ef55e34",
+      "bytes": 5692,
+      "value": {
+        "tag": "0.22.1",
+        "published_at": "2026-09-17T14:13:28Z",
+        "prerelease": false,
+        "url": "https://github.com/dstackai/dstack/releases/tag/0.22.1",
+        "interpretation": "Upstream release metadata, not installation or compatibility approval."
+      }
+    },
+    {
+      "id": "lmcache-release",
+      "url": "https://api.github.com/repos/LMCache/LMCache/releases/latest",
+      "observed_at": "2026-09-24T19:48:01.329014+00:00",
+      "status": "OBSERVED",
+      "source_sha256": "2b5defa7f42e011c3549d17c19c96c414f3b4ed0404094d384c3ce6f6f5107bd",
+      "bytes": 29653,
+      "value": {
+        "tag": "v0.5.5",
+        "published_at": "2026-09-12T21:07:56Z",
+        "prerelease": false,
+        "url": "https://github.com/LMCache/LMCache/releases/tag/v0.5.5",
+        "interpretation": "Upstream release metadata, not installation or compatibility approval."
+      }
+    },
+    {
+      "id": "sglang-release",
+      "url": "https://api.github.com/repos/sgl-project/sglang/releases/latest",
+      "observed_at": "2026-09-24T19:48:01.564791+00:00",
+      "status": "OBSERVED",
+      "source_sha256": "90137898635663276e9a49d9b04994e105d0cb0cf882f43d2ef0b5b8df747c84",
+      "bytes": 87598,
+      "value": {
+        "tag": "v0.5.20",
+        "published_at": "2026-09-18T22:41:33Z",
+        "prerelease": false,
+        "url": "https://github.com/sgl-project/sglang/releases/tag/v0.5.20",
+        "interpretation": "Upstream release metadata, not installation or compatibility approval."
+      }
+    },
+    {
+      "id": "vllm-release",
+      "url": "https://api.github.com/repos/vllm-project/vllm/releases/latest",
+      "observed_at": "2026-09-24T19:48:01.612357+00:00",
+      "status": "OBSERVED",
+      "source_sha256": "a5b56e9fe76fef1361db6d08a111e1c684d66652515ca69b386078b177eb9370",
+      "bytes": 65340,
+      "value": {
+        "tag": "v0.30.0",
+        "published_at": "2026-09-22T05:20:54Z",
+        "prerelease": false,
+        "url": "https://github.com/vllm-project/vllm/releases/tag/v0.30.0",
+        "interpretation": "Upstream release metadata, not installation or compatibility approval."
+      }
+    }
+  ],
+  "scope": "Release/model metadata only; no price renewal, installation, compatibility certification or execution."
+}

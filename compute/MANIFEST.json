@@ -1,6 +1,6 @@
 {
   "schema": "second-run/compute-release@1",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "engineVersion": "0.1.0",
   "files": [
     {
@@ -55,8 +55,8 @@
     },
     {
       "path": "scripts/connect.cjs",
-      "bytes": 18765,
-      "sha256": "fd9429df08f62bf21f73e475964fba90134e9555b034810e63e8f780d7525c88"
+      "bytes": 21502,
+      "sha256": "8793d5469cd8210b888574d7167e928fdff691bc81af8a281081404ad439a86d"
     },
     {
       "path": "scripts/recompute.cjs",
@@ -65,8 +65,8 @@
     },
     {
       "path": "scripts/build.py",
-      "bytes": 4225,
-      "sha256": "a734c71b7865411faf904c163ff52270d5ef4d46feb26950e65dc584ce2c1043"
+      "bytes": 4622,
+      "sha256": "d98f903e14b2c5b67cdf055bbde0204a0bc137088c13c3617b4ae08a6f8e2dbc"
     },
     {
       "path": "scripts/review_prices.py",
@@ -75,8 +75,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 10509,
-      "sha256": "4f09c6b4bd05734f77836a5a23e8e90bf139ec659071d467f8c2216a6f951097"
+      "bytes": 11325,
+      "sha256": "f941ff2f728648f1b85178be626e76792c18e238a848140dc5bdaf91b638d190"
     },
     {
       "path": "LICENSE",
@@ -110,8 +110,8 @@
     },
     {
       "path": "tests/test_bridge.cjs",
-      "bytes": 9069,
-      "sha256": "c6e8e3d33433d77d1ac46b48e0ce3a09f13570219562b9dcda38004a322d8bf1"
+      "bytes": 9646,
+      "sha256": "9906212d73ee1806f0d7e28cb197851276ae2e72585ea6d60a9bb1062bf283ac"
     },
     {
       "path": "tests/test_browser.py",
@@ -122,6 +122,76 @@
       "path": "tests/test_prices.py",
       "bytes": 1543,
       "sha256": "bcb7b449431ed16f65959675d9b538ee8b38f2a260a19b6f2adb73c6402f7839"
+    },
+    {
+      "path": "inputs/README.md",
+      "bytes": 8144,
+      "sha256": "d86d1eb0bcca48f445c5388c6033b22d4cb0cf111a5df2c87b22940981dd3589"
+    },
+    {
+      "path": "inputs/cli.cjs",
+      "bytes": 1134,
+      "sha256": "c005226e380b59c3e293dba11433409bea28994b79c8b5e7bc7565531b6613cf"
+    },
+    {
+      "path": "inputs/collect.py",
+      "bytes": 9042,
+      "sha256": "cc7d2343b8ee38216b2b23b24a511bd51aebfe6aa16c6f82672f86a6a210285a"
+    },
+    {
+      "path": "inputs/compose.cjs",
+      "bytes": 2404,
+      "sha256": "d68ee747c3e384d6cbdb065756026f4af0c2303afc37a5e8ef1d7bc626d727b9"
+    },
+    {
+      "path": "inputs/fixtures.cjs",
+      "bytes": 3652,
+      "sha256": "01ae54593ebb4fa420698d0de9913a9c7c992220d0b8b64ffd2249b64bd3da56"
+    },
+    {
+      "path": "inputs/materials.json",
+      "bytes": 14763,
+      "sha256": "904833027b17e16094478e88986ec88f49c44cdfa8830337fa923cc5a96cd5ee"
+    },
+    {
+      "path": "inputs/placement.cjs",
+      "bytes": 10250,
+      "sha256": "ac66a09f1089269e8e0929d3ba6aa361832b23fefcad5afd93bc40cb452877ac"
+    },
+    {
+      "path": "inputs/recipes.json",
+      "bytes": 3031,
+      "sha256": "5abfeb95af40e9dc71882ef88e17a780cdbadbf9659c3d963738149ab35f1510"
+    },
+    {
+      "path": "tests/test_placement.cjs",
+      "bytes": 4728,
+      "sha256": "2906e311c8f6588ab57fba8bd5dfdc8fda38e668a4fd038d9f8848b382155f70"
+    },
+    {
+      "path": "tests/test_inputs.py",
+      "bytes": 2269,
+      "sha256": "d131019c4edc42ab51eb342a65aaac3adac76f2e86e88688c72057b073d8101b"
+    },
+    {
+      "path": "tests/test_placement_bridge.cjs",
+      "bytes": 3761,
+      "sha256": "1d319f8758f4a5de3970faac0591ef57b6b1f12566c3ef72e16c683853a21977"
+    },
+    {
+      "path": "inputs/source-observation-20260924.json",
+      "bytes": 4075,
+      "sha256": "d9abd1e920ecfdc14ccc0135f6aa9f5db684ee33bddaaadc084d49f003bea63a"
+    },
+    {
+      "path": "inputs/QUALIFICATION.json",
+      "bytes": 1047,
+      "sha256": "21b1bc0ce33f96fd9e3e590aec703eb0913b6d869f1e9f814d7af23e8b6acc59"
+    },
+    {
+      "path": "inputs/retained-calibration.json",
+      "bytes": 6533,
+      "sha256": "023ac7ea03ed036441d6e162535bd0c2815bdff9696f370cff13c0c0241a582a"
     }
   ]
 }

@@ -193,3 +193,7 @@ Verified while running `hot-aisle/campaign/` Runs 1-2:
 - Hot Aisle admin TUI accepts the team's registered SSH key directly (`ssh -tt admin.hotaisle.app`, no email code); it refuses connections after many logins in a short period. The API has `GET /virtual_machines/available/`.
 - Codex on the owner's ChatGPT account rejects `gpt-6-terra`; `gpt-6-astra` works.
 - `hot-aisle/campaign/research-2026-09/` is internal strategy, not site content: keep it off `main` before any push, or move it to a private repo.
+
+## Request-input integration, 24 September 2026
+
+Official dstack docs already name Hot Aisle as a native backend and expose MinimumReservationMinutes in its availability response. Fleet idle_duration does not release nodes at the configured minimum. Treat these as lease/lifecycle inputs, not an hourly-price shortcut. Current metadata was captured separately; newest releases do not replace qualified environment digests. The compute helper adds read-only placement calculations without inheriting execution authority.

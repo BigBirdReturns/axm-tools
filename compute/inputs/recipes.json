@@ -1,0 +1,56 @@
+{
+  "schema": "second-run/execution-materials@1",
+  "state": "SOURCE_REVIEWED_NOT_LIVE_QUALIFIED",
+  "execution_owner": "Existing approved runner; use dstack for separately authorized resource lifecycle, SGLang/compatible server gateway for packet routing.",
+  "recipes": [
+    {
+      "id": "coding-batch",
+      "entry": "existing editor or batch client",
+      "material_ids": [
+        "continue",
+        "dstack",
+        "hotaisle-supply",
+        "vllm",
+        "evalplus"
+      ],
+      "work": "Bounded code tasks with an executable acceptance validator",
+      "already_observed": "Run 3 provides historical calibration on Qwen3-Coder-30B-A3B-Instruct-FP8; it is not a general coding-agent deployment",
+      "runtime_policy": "Keep the successful environment digests until replacement is qualified; newest tags are change signals only",
+      "terminal": "Return code and acceptance receipts; preserve all failures; reconcile execution before retrying an unknown remote state"
+    },
+    {
+      "id": "agent-session-reuse",
+      "entry": "authorized OpenAI-compatible client",
+      "material_ids": [
+        "continue",
+        "sglang-gateway",
+        "lmcache-ha",
+        "lmcache-daemon"
+      ],
+      "work": "Multi-turn sessions with repeated prefixes, bounded tool work and long context",
+      "test": "Compare no cache, HBM cache and offloaded cache on the same traces and end-to-end acceptance; include queue and cold-load penalties",
+      "isolation": "Cache key binds tenant, workload, model/tokenizer/revision and compatible runtime/layout; placement only accepts a qualified supplied savings estimate",
+      "terminal": "Request acceptance and cache-cost receipts, no arbitrary command execution from a retrieved trace"
+    },
+    {
+      "id": "document-corpus",
+      "entry": "selected directory or document workflow",
+      "material_ids": [
+        "docling",
+        "private-ssh-fleets",
+        "vllm-structured",
+        "huggingface-xet"
+      ],
+      "work": "Native extraction and indexing first; selectively escalate layout/semantic tasks that require inference",
+      "test": "Schema validity, source/page attribution, reference-field agreement and explicit abstention; retain readable text without OCR",
+      "terminal": "Usable structured corpus and per-source validation receipts; remote data allowed only by policy"
+    }
+  ],
+  "lifecycle_contract": {
+    "new_lease": "Use observed minimum reservation and allocation size, not just per-GPU hourly advertisement",
+    "fleet_floor": "Zero minimum nodes for an on-demand fleet; explicitly set idle_duration and inspect resulting plan",
+    "retention": "Model storage and GPU idle cost independently; delete/release confirmation is a required terminal observation",
+    "spend": "Predicted cost is not a provider-enforced spending cap; existing account/policy executor must enforce its authority",
+    "retry": "Query operation status before retrying a request with unknown remote execution; preserve idempotency scope"
+  }
+}
