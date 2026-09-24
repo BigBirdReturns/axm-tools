@@ -193,3 +193,7 @@ Verified while running `hot-aisle/campaign/` Runs 1-2:
 - Hot Aisle admin TUI accepts the team's registered SSH key directly (`ssh -tt admin.hotaisle.app`, no email code); it refuses connections after many logins in a short period. The API has `GET /virtual_machines/available/`.
 - Codex on the owner's ChatGPT account rejects `gpt-6-terra`; `gpt-6-astra` works.
 - `hot-aisle/campaign/research-2026-09/` is internal strategy, not site content: keep it off `main` before any push, or move it to a private repo.
+
+## Community native qualification, 24 September 2026
+
+A screen-reader-only absolute element inside a wide scrollable table can escape its scroll container and widen the document. Position the table scroll wrapper relatively so the hidden header stays in the correct containing block. Preserve document-overflow assertions; do not hide overflow to make them pass. Grid filter tracks and their children need explicit zero minimums for long workload options.
