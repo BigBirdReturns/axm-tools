@@ -79,6 +79,8 @@ are touching tells you how much care to take.
 
 ## 3. Map (snapshot, July 2026 — trust the tree over this list)
 
+- `shelf/` (added 2026-09-24): claims about compute filed side by side. Five-question card format (SPEC.md), stdlib validator, mechanical composition refusals and a which-cards-support-this-question check, a browser engine held to the CLI by one shared fixture, and `pull` that imports other hubs' cards into `data/staging/` as candidates. `data/cards.jsonl` is a byte-checked copy of the retained campaign record `hot-aisle/campaign/shelf/cards.jsonl`; `data/hubs.json`, `data/promotions.jsonl` and staged imports are human-owned. No scheduled work, no network at page load beyond the repo's own files.
+
 - `hot-aisle/` (updated 2026-09-22): v2 imports existing vLLM results, applies optional per-request gates and exports customer HTML plus source-bound calculation evidence. Repeats, compatibility holds and local recomputation are implemented; hardware benchmarks remain unexecuted. Standalone HTML, no uploads or scheduled work.
 
 - `mimo-one-gpu/` (added 2026-09-21): static one-GPU MiMo handoff and inspectable local experiment kit. Controller and browser qualification are separate from native model fit and quality, which remain NOT RUN. No backend, automatic acquisition, telemetry upload or scheduled work.
