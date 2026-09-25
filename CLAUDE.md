@@ -197,3 +197,7 @@ Verified while running `hot-aisle/campaign/` Runs 1-2:
 ## Community native qualification, 24 September 2026
 
 A screen-reader-only absolute element inside a wide scrollable table can escape its scroll container and widen the document. Position the table scroll wrapper relatively so the hidden header stays in the correct containing block. Preserve document-overflow assertions; do not hide overflow to make them pass. Grid filter tracks and their children need explicit zero minimums for long workload options.
+
+## Pelagos materializer workflow, 25 September 2026
+
+Every line of the Python multiline HTML string must remain inside the YAML `run` block, including its closing quotes. Unindented HTML made GitHub reject the workflow before its branch filter applied. Restore the YAML indentation while preserving the extracted Python string. Validate the outer workflow, extracted Python, generated workflow and shell syntax; exercise registration on disposable copies. Dispatching this materializer writes back to `feat/pelagos-governance-layer`, so it is not a syntax-check command.
