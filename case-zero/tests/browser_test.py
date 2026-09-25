@@ -120,7 +120,7 @@ def main() -> None:
         assert overflow <= 1
         page.evaluate("document.documentElement.style.fontSize='200%'")
         overflow_200 = page.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
-        assert overflow_200 <= 1
+        assert overflow_200 <= 1, page.evaluate("""() => [...document.querySelectorAll('body *')].filter(el => el.getBoundingClientRect().right > document.documentElement.clientWidth + 1).slice(0, 12).map(el => ({tag:el.tagName, id:el.id, class:el.className, right:el.getBoundingClientRect().right}))""")
 
         assert not external_requests, external_requests
         assert not console_errors, console_errors
