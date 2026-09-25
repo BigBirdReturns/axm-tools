@@ -201,3 +201,10 @@ A screen-reader-only absolute element inside a wide scrollable table can escape 
 ## Pelagos materializer workflow, 25 September 2026
 
 Every line of the Python multiline HTML string must remain inside the YAML `run` block, including its closing quotes. Unindented HTML made GitHub reject the workflow before its branch filter applied. Restore the YAML indentation while preserving the extracted Python string. Validate the outer workflow, extracted Python, generated workflow and shell syntax; exercise registration on disposable copies. Dispatching this materializer writes back to `feat/pelagos-governance-layer`, so it is not a syntax-check command.
+
+## Compute reference preparation, 25 September 2026
+
+- A Linux host can expose both integrated Intel graphics and a discrete NVIDIA GPU. Positional matching of display-class PCI functions to `nvidia-smi` rows assigns the wrong device. Join on `pci.bus_id`, normalizing its eight-digit domain to the four-digit sysfs form, and retain vendor identity.
+- A read-only GPU snapshot does not establish idle state. The observed machine was already doing work; its ambient power reading must not trigger an idle-power diagnosis. Fingerprint v3 records `idle_verified: false` by default. Hardware and link observations require workload-specific follow-up before attributing a performance cause.
+- The authenticated Hot Aisle TUI may finish loading its provisioning menu with `No items` while the account has available credit. This is a dated listing observation, not a failed create, a performance result, or evidence about future capacity.
+- On the frozen Run 3 trace, 3600 seconds at rate factor 0.95, 1800 at 1.9 and 900 at 3.8 retain the same 8,622 source arrivals. The shorter windows are distinct load conditions; never pool them as full-hour baseline repeats. Account observations and real node captures remain in private session custody.
