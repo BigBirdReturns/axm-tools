@@ -101,6 +101,7 @@ are touching tells you how much care to take.
   `organ-evolution/scripts/validate.py` and
   `tests/pages/verify_organ_evolution.mjs`.
 - `axm-witness/` — AXM Witness Department Ledger 0.9.2: an exact-byte, department-controlled local export-ledger pilot for authorized Flock-shaped exports, qualified 30/30 under native browser storage and WebCrypto. It proves department custody and decisions after receipt; vendor-declared completeness and pre-delivery origin remain external boundaries.
+- `case-zero/` — local-only external qualification workbench for one failed engagement; browser custody, deterministic runner, body-free preview, ten-job floor, and RedCat-owned client boundary.
 - `pta-tracker/` — the living tool: nightly legislation fetch for a K-6
   PTA, relevance filter, board report, offline PWA. Its README is the
   operating manual.

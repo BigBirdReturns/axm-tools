@@ -5,6 +5,7 @@ import hashlib
 import json
 import py_compile
 import re
+import tempfile
 from pathlib import Path
 
 TOOL = Path(__file__).resolve().parents[1]
@@ -48,9 +49,10 @@ def main() -> None:
     scripts = re.findall(r"<script>(.*?)</script>", page, flags=re.DOTALL | re.IGNORECASE)
     if len(scripts) != 1:
         raise SystemExit(f"expected one inline runtime, found {len(scripts)}")
-    Path("/tmp/case-zero-inline.js").write_text(scripts[0], encoding="utf-8", newline="\n")
+    (Path(tempfile.gettempdir()) / "case-zero-inline.js").write_text(scripts[0], encoding="utf-8", newline="\n")
 
-    py_compile.compile(str(RUNNER), doraise=True)
+    with tempfile.TemporaryDirectory(prefix="case-zero-compile-") as temporary:
+        py_compile.compile(str(RUNNER), cfile=str(Path(temporary) / "casezero.pyc"), doraise=True)
     for path in sorted((TOOL / "runner").glob("*.json")):
         json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_reject_duplicates)
 

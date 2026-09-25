@@ -87,6 +87,7 @@ def main() -> None:
         with page.expect_download() as local_download:
             page.locator("#exportLocal").click()
         local_packet = json.loads(Path(local_download.value.path()).read_text(encoding="utf-8"))
+        assert local_packet["state"]["state"] == "INTAKE_BOUND_PREVIEW"
         assert local_packet["manifest"]["source_count"] == 7
         assert local_packet["manifest"]["network_calls"] == 0
         assert local_packet["manifest"]["source_contents_exported"] == 0
@@ -94,6 +95,7 @@ def main() -> None:
         with page.expect_download() as safe_download:
             page.locator("#exportSafe").click()
         safe_packet = json.loads(Path(safe_download.value.path()).read_text(encoding="utf-8"))
+        assert safe_packet["state"]["state"] == "INTAKE_BOUND_PREVIEW"
         safe_sources = safe_packet["manifest"]["sources"]
         assert len(safe_sources) == 7
         assert all("source_alias" in row and "path" not in row for row in safe_sources)
@@ -108,6 +110,7 @@ def main() -> None:
         with page.expect_download() as held_download:
             page.locator("#exportSafe").click()
         held_text = Path(held_download.value.path()).read_text(encoding="utf-8")
+        assert json.loads(held_text)["state"]["state"] == "HOLD_REDACTION_REQUIRED"
         assert secret not in held_text
         assert "aws_access_key" in held_text
 
