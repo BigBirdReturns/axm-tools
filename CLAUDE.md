@@ -208,3 +208,16 @@ Every line of the Python multiline HTML string must remain inside the YAML `run`
 - A read-only GPU snapshot does not establish idle state. The observed machine was already doing work; its ambient power reading must not trigger an idle-power diagnosis. Fingerprint v3 records `idle_verified: false` by default. Hardware and link observations require workload-specific follow-up before attributing a performance cause.
 - The authenticated Hot Aisle TUI may finish loading its provisioning menu with `No items` while the account has available credit. This is a dated listing observation, not a failed create, a performance result, or evidence about future capacity.
 - On the frozen Run 3 trace, 3600 seconds at rate factor 0.95, 1800 at 1.9 and 900 at 3.8 retain the same 8,622 source arrivals. The shorter windows are distinct load conditions; never pool them as full-hour baseline repeats. Account observations and real node captures remain in private session custody.
+
+## Buyer placement research, 27 September 2026
+
+- SkyPilot's [official overview](https://docs.skypilot.ai/en/stable/overview.html)
+  documents cloud/region cost selection and capacity failover. Shadeform's
+  [official introduction](https://docs.shadeform.ai/getting-started/introduction)
+  documents GPU price/spec/availability discovery and deployment through one UI
+  and API. Multi-cloud selection itself is an existing service category; do not
+  present it as our novelty or infer their workload-specific quality from it.
+- The native Tier-Bench bridge replay selects a full-coverage evidence tier with
+  projected serial wall time 21,570.5 s against a 5,400 s deadline. Its separate
+  placement verdict now refuses that projection; concurrency 4 is a modeled
+  scenario, not a new throughput measurement. Preserve the source-class analogy.
