@@ -53,6 +53,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m py_compile .github/scripts/patch_axm_witness_theme_092.py
+          python -B -m unittest integration.tests.test_witness_receipt_preservation -v
           python .github/scripts/patch_axm_witness_theme_092.py
 
       - name: Commit the 0.9.2 release transaction
