@@ -1,0 +1,244 @@
+name: Manzanita v31 hosted Windows transfer controls v3
+
+on:
+  push:
+    branches:
+      - agent/manzanita-v31-origin-host-recovery-execution-v1
+    paths:
+      - '.github/workflows/manzanita-v31-hosted-private-source-visibility-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manzanita-v31-hosted-windows-transfer-controls-v3-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  qualify-hosted-windows-transfer-controls:
+    runs-on: windows-2025
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Exercise exact-name staging HOLD
+        shell: powershell
+        env:
+          ROOT: ${{ runner.temp }}\v31-stage-hold-v3
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          if (Test-Path -LiteralPath $env:ROOT) { Remove-Item -LiteralPath $env:ROOT -Recurse -Force }
+          New-Item -ItemType Directory -Path $env:ROOT -Force | Out-Null
+          $Wrong = Join-Path $env:ROOT 'MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip'
+          [IO.File]::WriteAllBytes($Wrong, [byte[]](1,2,3,4))
+          $Output = Join-Path $env:ROOT 'staged.zip'
+          $Receipt = Join-Path $env:ROOT 'V31_RUNNER_LOCAL_STAGE_WINDOWS_HOLD_SELF_TEST_RECEIPT_V3.json'
+          $Script = '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\stage_exact_bootstrap_from_local_custody.ps1'
+          $Prior = $env:V31_EXACT_BOOTSTRAP_PATH
+          try {
+            $env:V31_EXACT_BOOTSTRAP_PATH = $Wrong
+            $Arguments = @('-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',$Script,'-OutputPath',$Output,'-ReceiptPath',$Receipt,'-MaximumDirectoriesPerRoot','0')
+            $Process = Start-Process -FilePath 'powershell.exe' -ArgumentList $Arguments -Wait -PassThru -NoNewWindow
+          } finally {
+            $env:V31_EXACT_BOOTSTRAP_PATH = $Prior
+          }
+          if ($Process.ExitCode -ne 2) { throw "stage HOLD exit code is $($Process.ExitCode)" }
+          $Object = Get-Content -LiteralPath $Receipt -Raw -Encoding UTF8 | ConvertFrom-Json
+          if ($Object.result -ne 'HOLD_EXACT_BOOTSTRAP_NOT_PRESENT_IN_RUNNER_LOCAL_OR_SYNCED_CUSTODY') { throw "stage result is $($Object.result)" }
+          if ($Object.search.wrong_identity_candidates -ne 1) { throw 'wrong-identity candidate count differs' }
+          if ($Object.output.written.GetType().FullName -ne 'System.Boolean' -or $Object.output.written -ne $false) { throw 'stage HOLD wrote or malformed an output state' }
+          if (Test-Path -LiteralPath $Output) { throw 'stage HOLD created an output file' }
+
+      - name: Exercise temporary local-file source rewrite
+        shell: powershell
+        env:
+          RECEIPT: ${{ runner.temp }}\V31_LOCAL_FILE_SOURCE_BRIDGE_WINDOWS_SELF_TEST_RECEIPT_V3.json
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $SourcePath = '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\run_origin_host_recovery.ps1'
+          $Source = Get-Content -LiteralPath $SourcePath -Raw -Encoding UTF8
+          $Pattern = '(?m)^\$DownloadUrl = ''[^'']+''\r?$'
+          $Matches = [Regex]::Matches($Source, $Pattern)
+          $FileUri = ([Uri]([IO.Path]::GetFullPath((Join-Path $env:RUNNER_TEMP 'synthetic exact package.zip')))).AbsoluteUri
+          $Replacement = '$DownloadUrl = ' + [char]39 + $FileUri + [char]39
+          $Patched = [Regex]::Replace($Source, $Pattern, $Replacement, 1)
+          $Pass = ($Matches.Count -eq 1 -and $Patched -ne $Source -and $Patched -match [Regex]::Escape($FileUri))
+          $Receipt = [ordered]@{
+            schema = 'manzanita/v31-local-file-source-bridge-windows-self-test@3'
+            result = if ($Pass) { 'PASS_LOCAL_FILE_SOURCE_BRIDGE_REWRITE_EXACTLY_ONCE' } else { 'FAIL_LOCAL_FILE_SOURCE_BRIDGE_REWRITE' }
+            source_matches = $Matches.Count
+            file_uri_present = [bool]($Patched -match [Regex]::Escape($FileUri))
+            repository_source_modified = $false
+            recovery_invoked = $false
+            product_mutation = $false
+          }
+          [IO.File]::WriteAllText($env:RECEIPT, (($Receipt | ConvertTo-Json -Depth 10) + "`n"), [Text.UTF8Encoding]::new($false))
+          if (-not $Pass) { throw $Receipt.result }
+
+      - name: Classify private Drive visibility without retaining response bytes
+        shell: powershell
+        env:
+          ROOT: ${{ runner.temp }}\v31-private-source-v3
+          HEAD_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $ExpectedName = 'MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip'
+          $ExpectedBytes = 553074
+          $ExpectedSha256 = '2c4437c2f3c0cd7599b790ddc1a31315751db751daa3a81e4245e2a32b5f3738'
+          $DownloadUrl = 'https://drive.usercontent.google.com/download?id=1tX9hAVhNdThVUq6ozuIfrqn5vAhgSxU3&export=download&confirm=t'
+          if (Test-Path -LiteralPath $env:ROOT) { Remove-Item -LiteralPath $env:ROOT -Recurse -Force }
+          New-Item -ItemType Directory -Path $env:ROOT -Force | Out-Null
+          $Response = Join-Path $env:ROOT 'untrusted-response.bin'
+          $Headers = Join-Path $env:ROOT 'response-headers.txt'
+          $ReceiptPath = Join-Path $env:ROOT 'V31_HOSTED_PRIVATE_SOURCE_VISIBILITY_RECEIPT_V3.json'
+          $Receipt = [ordered]@{
+            schema = 'manzanita/v31-hosted-private-source-visibility@3'
+            result = 'FAIL_PRIVATE_SOURCE_VISIBILITY_NOT_CLASSIFIED'
+            generated_at = [DateTimeOffset]::UtcNow.ToString('o')
+            source = [ordered]@{
+              provider = 'Google Drive'
+              file_id = '1tX9hAVhNdThVUq6ozuIfrqn5vAhgSxU3'
+              filename = $ExpectedName
+              expected_bytes = $ExpectedBytes
+              expected_sha256 = $ExpectedSha256
+              repository_head_sha = $env:HEAD_SHA
+              run_id = [Int64]$env:RUN_ID
+              run_attempt = [int]$env:RUN_ATTEMPT
+              runner = 'windows-2025'
+              runner_authentication_to_drive = 'ABSENT'
+            }
+            response = [ordered]@{
+              curl_exit_code = $null
+              bytes = $null
+              sha256 = $null
+              content_class = $null
+              exact_package = $false
+              retained = $false
+            }
+            platform_replay = [ordered]@{ invoked = $false; observed = $false }
+            authority = [ordered]@{
+              operator_storage_inspected = $false
+              production_inputs_materialized = 0
+              receiving_intake_invoked = $false
+              production_admission_invoked = $false
+              product_mutation = $false
+              merge_authorized = $false
+              release_authorized = $false
+              public_route_effect = 'none'
+              pages_effect = 'none'
+              external_effect = 'source visibility observation only'
+            }
+            error = $null
+          }
+          try {
+            & curl.exe -L --silent --show-error --retry 2 --retry-delay 1 --dump-header $Headers --output $Response $DownloadUrl
+            $Receipt.response.curl_exit_code = $LASTEXITCODE
+            if ($LASTEXITCODE -ne 0) { throw "curl exited $LASTEXITCODE" }
+            $Receipt.response.bytes = (Get-Item -LiteralPath $Response).Length
+            $Receipt.response.sha256 = (Get-FileHash -LiteralPath $Response -Algorithm SHA256).Hash.ToLowerInvariant()
+            $Raw = [IO.File]::ReadAllBytes($Response)
+            $Prefix = [Text.Encoding]::UTF8.GetString($Raw, 0, [Math]::Min(4096, $Raw.Length))
+            if ($Receipt.response.bytes -eq $ExpectedBytes -and $Receipt.response.sha256 -eq $ExpectedSha256) {
+              $Receipt.response.content_class = 'EXACT_BOOTSTRAP_PACKAGE'
+              $Receipt.response.exact_package = $true
+              $Receipt.result = 'PASS_HOSTED_SOURCE_EXACT_PACKAGE_VISIBLE'
+            } elseif ($Prefix -match '<!doctype html>' -and $Prefix -match 'accounts\.google\.com') {
+              $Receipt.response.content_class = 'GOOGLE_ACCOUNTS_SIGN_IN_HTML'
+              $Receipt.result = 'HOLD_PRIVATE_DRIVE_SOURCE_REQUIRES_AUTHENTICATED_TRANSFER_OR_RUNNER_LOCAL_EXACT_STAGE'
+            } else {
+              $Receipt.response.content_class = 'NON_PACKAGE_RESPONSE'
+              $Receipt.result = 'HOLD_DRIVE_SOURCE_DID_NOT_RETURN_THE_EXACT_PACKAGE'
+            }
+          } catch {
+            $Receipt.error = $_.Exception.Message
+            $Receipt.result = 'FAIL_PRIVATE_SOURCE_VISIBILITY_PROBE_ABORTED'
+          } finally {
+            if (Test-Path -LiteralPath $Response) { Remove-Item -LiteralPath $Response -Force }
+            if (Test-Path -LiteralPath $Headers) { Remove-Item -LiteralPath $Headers -Force }
+            [IO.File]::WriteAllText($ReceiptPath, (($Receipt | ConvertTo-Json -Depth 30) + "`n"), [Text.UTF8Encoding]::new($false))
+          }
+
+      - name: Validate Windows controls and authority boundary
+        shell: powershell
+        env:
+          STAGE: ${{ runner.temp }}\v31-stage-hold-v3\V31_RUNNER_LOCAL_STAGE_WINDOWS_HOLD_SELF_TEST_RECEIPT_V3.json
+          BRIDGE: ${{ runner.temp }}\V31_LOCAL_FILE_SOURCE_BRIDGE_WINDOWS_SELF_TEST_RECEIPT_V3.json
+          VISIBILITY: ${{ runner.temp }}\v31-private-source-v3\V31_HOSTED_PRIVATE_SOURCE_VISIBILITY_RECEIPT_V3.json
+          VALIDATION: ${{ runner.temp }}\V31_HOSTED_WINDOWS_TRANSFER_CONTROLS_VALIDATION_V3.json
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $Stage = Get-Content -LiteralPath $env:STAGE -Raw -Encoding UTF8 | ConvertFrom-Json
+          $Bridge = Get-Content -LiteralPath $env:BRIDGE -Raw -Encoding UTF8 | ConvertFrom-Json
+          $Visibility = Get-Content -LiteralPath $env:VISIBILITY -Raw -Encoding UTF8 | ConvertFrom-Json
+          $Checks = [Collections.Generic.List[object]]::new()
+          function Check([string]$Name, [bool]$Pass, $Detail) {
+            $Checks.Add([ordered]@{ name = $Name; status = if ($Pass) { 'PASS' } else { 'FAIL' }; detail = $Detail }) | Out-Null
+          }
+          Check 'stage explicit HOLD' ($Stage.result -eq 'HOLD_EXACT_BOOTSTRAP_NOT_PRESENT_IN_RUNNER_LOCAL_OR_SYNCED_CUSTODY') $Stage.result
+          Check 'stage wrote no output' ($Stage.output.written.GetType().FullName -eq 'System.Boolean' -and $Stage.output.written -eq $false) $Stage.output.written
+          Check 'stage rejected one wrong identity' ($Stage.search.wrong_identity_candidates -eq 1) $Stage.search.wrong_identity_candidates
+          Check 'local file rewrite exact once' ($Bridge.result -eq 'PASS_LOCAL_FILE_SOURCE_BRIDGE_REWRITE_EXACTLY_ONCE' -and $Bridge.source_matches -eq 1) $Bridge.result
+          Check 'repository source unchanged' ($Bridge.repository_source_modified.GetType().FullName -eq 'System.Boolean' -and $Bridge.repository_source_modified -eq $false) $Bridge.repository_source_modified
+          $AllowedVisibility = @('PASS_HOSTED_SOURCE_EXACT_PACKAGE_VISIBLE','HOLD_PRIVATE_DRIVE_SOURCE_REQUIRES_AUTHENTICATED_TRANSFER_OR_RUNNER_LOCAL_EXACT_STAGE','HOLD_DRIVE_SOURCE_DID_NOT_RETURN_THE_EXACT_PACKAGE')
+          Check 'visibility classified' ($AllowedVisibility -contains $Visibility.result) $Visibility.result
+          Check 'visibility exact-package boolean' ($Visibility.response.exact_package.GetType().FullName -eq 'System.Boolean') $Visibility.response.exact_package.GetType().FullName
+          Check 'response retained boolean false' ($Visibility.response.retained.GetType().FullName -eq 'System.Boolean' -and $Visibility.response.retained -eq $false) $Visibility.response.retained
+          Check 'platform replay invoked boolean false' ($Visibility.platform_replay.invoked.GetType().FullName -eq 'System.Boolean' -and $Visibility.platform_replay.invoked -eq $false) $Visibility.platform_replay.invoked
+          Check 'platform replay observed boolean false' ($Visibility.platform_replay.observed.GetType().FullName -eq 'System.Boolean' -and $Visibility.platform_replay.observed -eq $false) $Visibility.platform_replay.observed
+          Check 'operator storage not inspected' ($Visibility.authority.operator_storage_inspected -eq $false) $Visibility.authority.operator_storage_inspected
+          Check 'no production input materialized' ($Visibility.authority.production_inputs_materialized -eq 0) $Visibility.authority.production_inputs_materialized
+          Check 'no product mutation' ($Visibility.authority.product_mutation -eq $false) $Visibility.authority.product_mutation
+          Check 'no merge or release authority' ($Visibility.authority.merge_authorized -eq $false -and $Visibility.authority.release_authorized -eq $false) "$($Visibility.authority.merge_authorized)/$($Visibility.authority.release_authorized)"
+          $Failed = @($Checks | Where-Object status -eq 'FAIL')
+          $Validation = [ordered]@{
+            schema = 'manzanita/v31-hosted-windows-transfer-controls-validation@3'
+            result = if ($Failed.Count -eq 0) { 'PASS_HOSTED_WINDOWS_TRANSFER_CONTROLS_V3' } else { 'FAIL_HOSTED_WINDOWS_TRANSFER_CONTROLS_V3' }
+            generated_at = [DateTimeOffset]::UtcNow.ToString('o')
+            checks_total = $Checks.Count
+            checks_passed = $Checks.Count - $Failed.Count
+            checks_failed = $Failed.Count
+            checks = $Checks
+            production_source_execution = $false
+            windows_platform_replay = $false
+            operator_storage_execution = $false
+            product_mutation = $false
+          }
+          [IO.File]::WriteAllText($env:VALIDATION, (($Validation | ConvertTo-Json -Depth 20) + "`n"), [Text.UTF8Encoding]::new($false))
+          if ($Failed.Count -ne 0) { throw $Validation.result }
+
+      - name: Retain qualified Windows control receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-hosted-windows-transfer-controls-v3-attempt-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}\v31-stage-hold-v3\V31_RUNNER_LOCAL_STAGE_WINDOWS_HOLD_SELF_TEST_RECEIPT_V3.json
+            ${{ runner.temp }}\V31_LOCAL_FILE_SOURCE_BRIDGE_WINDOWS_SELF_TEST_RECEIPT_V3.json
+            ${{ runner.temp }}\v31-private-source-v3\V31_HOSTED_PRIVATE_SOURCE_VISIBILITY_RECEIPT_V3.json
+            ${{ runner.temp }}\V31_HOSTED_WINDOWS_TRANSFER_CONTROLS_VALIDATION_V3.json
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Require qualified control result
+        if: always()
+        shell: powershell
+        env:
+          VALIDATION: ${{ runner.temp }}\V31_HOSTED_WINDOWS_TRANSFER_CONTROLS_VALIDATION_V3.json
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          if (-not (Test-Path -LiteralPath $env:VALIDATION -PathType Leaf)) { throw 'validation receipt absent' }
+          $Validation = Get-Content -LiteralPath $env:VALIDATION -Raw -Encoding UTF8 | ConvertFrom-Json
+          if ($Validation.result -ne 'PASS_HOSTED_WINDOWS_TRANSFER_CONTROLS_V3' -or $Validation.checks_failed -ne 0) { throw "validation result is $($Validation.result)" }
+          Write-Host $Validation.result
