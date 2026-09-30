@@ -80,6 +80,20 @@ def main() -> int:
     args = parser.parse_args()
     if args.timeout < 0 or args.timeout > 900:
         parser.error('Timeout must be between 0 and 900 seconds.')
+    if not (ROOT / WORKFLOW).exists():
+        # The product sources this gate qualified moved to BigBirdReturns/cantos on 2026-09-29,
+        # with their native CI. This repository publishes only demo and data pages, so there is
+        # nothing left here to hold; the gate passes by absence and says so in its receipt.
+        result = {'schema': 'second-run/publication-gate@1', 'state': 'PASS',
+                  'reason': 'No product sources in this repository; they live in BigBirdReturns/cantos '
+                            'and are gated there by its own pages.yml.',
+                  'deployment_commit': git('rev-parse', 'HEAD'),
+                  'checked_at': datetime.now(timezone.utc).isoformat()}
+        print(json.dumps(result, indent=2), flush=True)
+        if args.receipt:
+            args.receipt.parent.mkdir(parents=True, exist_ok=True)
+            args.receipt.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
+        return 0
     api = GitHub(args.repository or '')
     target = local_signature()
     head = git('rev-parse', 'HEAD')
