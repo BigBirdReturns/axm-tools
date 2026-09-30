@@ -1,0 +1,53 @@
+{
+  "schema": "manzanita/useful-plant-v30-operator-decision@1",
+  "candidate": "MW-USEFUL-PLANT-V30-NATIVE-REVIEW-001",
+  "generated_at": null,
+  "decision": "PENDING",
+  "operator": null,
+  "rationale": null,
+  "reviewed_receipts": {},
+  "criteria": [
+    {
+      "id": "living_object_primary",
+      "result": "PENDING",
+      "notes": null
+    },
+    {
+      "id": "placement_explainable",
+      "result": "PENDING",
+      "notes": null
+    },
+    {
+      "id": "evidence_burden_visible",
+      "result": "PENDING",
+      "notes": null
+    },
+    {
+      "id": "use_loop_complete",
+      "result": "PENDING",
+      "notes": null
+    },
+    {
+      "id": "seat_authority_changes",
+      "result": "PENDING",
+      "notes": null
+    },
+    {
+      "id": "household_stop_visible",
+      "result": "PENDING",
+      "notes": null
+    },
+    {
+      "id": "assistance_first_firewall",
+      "result": "PENDING",
+      "notes": null
+    }
+  ],
+  "operator_visual_acceptance": "ABSENT",
+  "release_authorized": false,
+  "merge_authorized": false,
+  "public_route_effect": "none",
+  "pages_deployment_effect": "none",
+  "external_effect": "none",
+  "claim_boundary": "A future operator decision on this visual surface does not itself authorize merge, release, public-route assembly, substitution of missing exact donors, or any external action."
+}
