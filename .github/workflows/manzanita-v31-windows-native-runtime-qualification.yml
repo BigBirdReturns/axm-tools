@@ -1,0 +1,74 @@
+name: Manzanita v31 Windows-native runtime qualification
+
+on:
+  pull_request:
+    paths:
+      - 'manzanita-next/recovery/v31-windows-native-runtime-qualification/**'
+      - '.github/workflows/manzanita-v31-windows-native-runtime-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manzanita-v31-windows-native-runtime-qualification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-windows-native-runtime:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify bounded source contract
+        shell: cmd
+        run: python -I -B manzanita-next\recovery\v31-windows-native-runtime-qualification\verify_source.py
+
+      - name: Parse with Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          $paths=@(
+            'manzanita-next/recovery/v31-windows-native-runtime-qualification/resolve_v31_python.ps1',
+            'manzanita-next/recovery/v31-windows-native-runtime-qualification/run_windows_runtime_qualification.ps1'
+          )
+          foreach($path in $paths){
+            $tokens=$null; $errors=$null
+            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tokens,[ref]$errors) | Out-Null
+            if($errors.Count -ne 0){$errors | Format-List | Out-String | Write-Error}
+          }
+
+      - name: Parse with PowerShell 7
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $paths=@(
+            'manzanita-next/recovery/v31-windows-native-runtime-qualification/resolve_v31_python.ps1',
+            'manzanita-next/recovery/v31-windows-native-runtime-qualification/run_windows_runtime_qualification.ps1'
+          )
+          foreach($path in $paths){
+            $tokens=$null; $errors=$null
+            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tokens,[ref]$errors) | Out-Null
+            if($errors.Count -ne 0){$errors | Format-List | Out-String | Write-Error}
+          }
+
+      - name: Execute exact CMD and Windows PowerShell path
+        shell: cmd
+        run: call manzanita-next\recovery\v31-windows-native-runtime-qualification\RUN_WINDOWS_RUNTIME_QUALIFICATION.cmd "%RUNNER_TEMP%\V31_WINDOWS_NATIVE_RUNTIME_QUALIFICATION_RECEIPT.json"
+
+      - name: Validate retained runtime receipt
+        shell: cmd
+        run: python -I -B manzanita-next\recovery\v31-windows-native-runtime-qualification\validate_runtime_receipt.py "%RUNNER_TEMP%\V31_WINDOWS_NATIVE_RUNTIME_QUALIFICATION_RECEIPT.json" --output "%RUNNER_TEMP%\V31_WINDOWS_NATIVE_RUNTIME_QUALIFICATION_RECEIPT.validation.json"
+
+      - name: Retain Windows-native qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-windows-native-runtime-qualification
+          path: |
+            ${{ runner.temp }}/V31_WINDOWS_NATIVE_RUNTIME_QUALIFICATION_RECEIPT.json
+            ${{ runner.temp }}/V31_WINDOWS_NATIVE_RUNTIME_QUALIFICATION_RECEIPT.validation.json
+            manzanita-next/recovery/v31-windows-native-runtime-qualification/SOURCE_VERIFICATION_RECEIPT.json
+          retention-days: 30
+          if-no-files-found: error
