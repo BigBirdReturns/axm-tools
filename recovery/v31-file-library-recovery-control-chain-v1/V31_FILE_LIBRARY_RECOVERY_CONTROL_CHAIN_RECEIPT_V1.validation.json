@@ -1,0 +1,339 @@
+{
+  "authority": {
+    "complete_five_input_set": false,
+    "controlling_state": "V14_REMAINS_GOVERNED_HOLD",
+    "exact_production_targets_materialized": [
+      "neighborhood_cached"
+    ],
+    "external_effect": "none",
+    "file_library_validation_documents_surfaced": 8,
+    "merge_authorized": false,
+    "pages_effect": "none",
+    "product_files_modified": 0,
+    "public_route_effect": "none",
+    "queue_advanced": false,
+    "raw_control_archive_cards_surfaced": 0,
+    "raw_control_packages_materialized": 0,
+    "release_authorized": false,
+    "terminal_pair": false,
+    "v15_successor_created": false,
+    "v2_intake_invoked": false
+  },
+  "checks": [
+    {
+      "detail": "manzanita/v31-file-library-recovery-control-chain-census@1",
+      "name": "census schema exact",
+      "pass": true
+    },
+    {
+      "detail": "manzanita/v31-file-library-recovery-control-chain-receipt@1",
+      "name": "receipt schema exact",
+      "pass": true
+    },
+    {
+      "detail": "HOLD_FILE_LIBRARY_RECOVERY_CONTROL_CHAIN_SURFACED_VALIDATIONS_ONLY_ORIGIN_HOST_PATH_ALREADY_EXECUTED_RAW_PRODUCTION_CARRIERS_NOT_MOUNTED",
+      "name": "classification exact",
+      "pass": true
+    },
+    {
+      "detail": 8,
+      "name": "eight direct source documents retained",
+      "pass": true
+    },
+    {
+      "detail": {
+        "raw_archive_cards_surfaced_in_retained_result_set": 0,
+        "scope_limit": "This is a retained-query result, not proof that no raw archive exists anywhere in File Library.",
+        "searched_exact_names": [
+          "MW_V31_ACCEPTED_PARENT_WINDOWS_RECOVERY_KIT_V1.zip",
+          "MW_V31_REMAINING_INPUTS_WINDOWS_RECOVERY_KIT_V1.zip",
+          "MW_V31_COMPLETE_WINDOWS_RECOVERY_HANDOFF_V2.zip",
+          "MW_V31_FILE_LIBRARY_DIRECT_EXPORT_BRIDGE_V1.zip",
+          "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V1.zip"
+        ],
+        "validation_or_checksum_documents_surfaced": true
+      },
+      "name": "raw archive query surfaced zero raw archive cards",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "direct-export bridge claims zero production materialization",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "operator bootstrap validation did not execute Windows host",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "V14 origin-host campaign already performed",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "V14 same-path rerun barred",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "historical graph run2 result exact",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "historical graph run2 coverage complete",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "historical graph run2 has zero gaps",
+      "pass": true
+    },
+    {
+      "detail": [
+        "neighborhood_cached"
+      ],
+      "name": "historical graph exact target is cached Neighborhood only",
+      "pass": true
+    },
+    {
+      "detail": [
+        "neighborhood_cached"
+      ],
+      "name": "fresh local scan exact target is cached Neighborhood only",
+      "pass": true
+    },
+    {
+      "detail": [
+        {
+          "basename": "neighborhood-cached.webp",
+          "bytes": 500586,
+          "sha256": "5ec9252f1615e86a239384a76a508554b2bd9e9221d5e202abce109e804f29d8",
+          "source": "manzanita-v31-historical-custody-graph-v1-run2.zip!/exact-hits/neighborhood_cached/neighborhood-cached.webp",
+          "source_class": "zip_member",
+          "target": "neighborhood_cached"
+        },
+        {
+          "basename": "neighborhood-cached.webp",
+          "bytes": 500586,
+          "sha256": "5ec9252f1615e86a239384a76a508554b2bd9e9221d5e202abce109e804f29d8",
+          "source": "v31-historical-run2/exact-hits/neighborhood_cached/neighborhood-cached.webp",
+          "source_class": "runtime_file",
+          "target": "neighborhood_cached"
+        }
+      ],
+      "name": "fresh local cached hit has exact target identity",
+      "pass": true
+    },
+    {
+      "detail": [],
+      "name": "fresh local scan finds no exact control packages",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blob_observations": 779,
+        "bytes_observed": 268813854,
+        "data_urls_decoded": 0,
+        "data_urls_observed": 0,
+        "oversize_members_skipped": 0,
+        "regular_files_scanned": 65,
+        "regular_zip_members_scanned": 714,
+        "scan_errors": 0,
+        "unique_blobs": 542,
+        "unsafe_archive_paths": 0,
+        "zip_containers_scanned": 23
+      },
+      "name": "fresh local scan has zero errors",
+      "pass": true
+    },
+    {
+      "detail": {
+        "blob_observations": 779,
+        "bytes_observed": 268813854,
+        "data_urls_decoded": 0,
+        "data_urls_observed": 0,
+        "oversize_members_skipped": 0,
+        "regular_files_scanned": 65,
+        "regular_zip_members_scanned": 714,
+        "scan_errors": 0,
+        "unique_blobs": 542,
+        "unsafe_archive_paths": 0,
+        "zip_containers_scanned": 23
+      },
+      "name": "fresh local scan has zero unsafe paths",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "complete set remains absent",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "V2 receiver withheld",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "terminal pair absent",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "queue remains held at V14",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "V15 not created",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "product files unmodified",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "merge authority held",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "release authority held",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "no public route effect",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "no Pages effect",
+      "pass": true
+    },
+    {
+      "detail": null,
+      "name": "no external effect",
+      "pass": true
+    },
+    {
+      "detail": [
+        "PASS_V31_PUBLIC_CONVERGENCE_PROVENANCE_BOUND_AND_EXACT_INPUTS_MATERIALIZED_ADMITTED_AND_PARENT_EXTRACTED",
+        "PASS_V31_EXACT_INPUTS_MATERIALIZED_ADMITTED_AND_PARENT_EXTRACTED"
+      ],
+      "name": "both required terminal strings retained as queue gate",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 5993,
+        "path": "V31_CURRENT_CONVERSATION_CARRIER_CARD_CUSTODY_CORRECTION_V1.json",
+        "sha256": "88bf4da94adc23ad1824a14342dba21a20f82fec300ccfab929ecde0c40b71a7"
+      },
+      "name": "required source exists: V31_CURRENT_CONVERSATION_CARRIER_CARD_CUSTODY_CORRECTION_V1.json",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 6863,
+        "path": "V31_CURRENT_CONVERSATION_CARRIER_CARD_CUSTODY_CORRECTION_V1.validation.json",
+        "sha256": "de244c05c18807088109870a6285c8ee1d21513dfee37acf5505529cb61baef1"
+      },
+      "name": "required source exists: V31_CURRENT_CONVERSATION_CARRIER_CARD_CUSTODY_CORRECTION_V1.validation.json",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 9155,
+        "path": "V31_FILE_LIBRARY_DIRECT_READBACK_ACQUISITION_V1.json",
+        "sha256": "5e4060f88fe7a531a602e627e86291aa88649a13ad1fe8377d6802494ab51f00"
+      },
+      "name": "required source exists: V31_FILE_LIBRARY_DIRECT_READBACK_ACQUISITION_V1.json",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 9526,
+        "path": "V31_FILE_LIBRARY_DIRECT_READBACK_ACQUISITION_V1.validation.json",
+        "sha256": "1b0909aaea034c84aa6bffb08ce1e044c354677ef17451a7f72a80119e88ae68"
+      },
+      "name": "required source exists: V31_FILE_LIBRARY_DIRECT_READBACK_ACQUISITION_V1.validation.json",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 7277,
+        "path": "V31_REMAINING_BLOCKER_DISTINCT_CUSTODY_ACQUISITION_V1.json",
+        "sha256": "f375b39e75819744d956e7c690dafcd7e2b9550c22b6f27e02aa17e3752796ea"
+      },
+      "name": "required source exists: V31_REMAINING_BLOCKER_DISTINCT_CUSTODY_ACQUISITION_V1.json",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 2070,
+        "path": "V31_REMAINING_BLOCKER_DISTINCT_CUSTODY_ACQUISITION_V1.validation.json",
+        "sha256": "8e047f6044fe8c89f297ce5129ca4c7c7cb6f2c885a0e70fee8a08c103e1b65b"
+      },
+      "name": "required source exists: V31_REMAINING_BLOCKER_DISTINCT_CUSTODY_ACQUISITION_V1.validation.json",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 562077,
+        "path": "v31-historical-run2/V31_HISTORICAL_CUSTODY_GRAPH_CENSUS_V1.json",
+        "sha256": "f1114ac7cd2729fa409ee6dc378b4a6c88cd422a70200a088d2e627b8bb3a279"
+      },
+      "name": "required source exists: V31_HISTORICAL_CUSTODY_GRAPH_CENSUS_V1.json",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 721,
+        "path": "v31-historical-run2/V31_HISTORICAL_CUSTODY_GRAPH_EXECUTION_RECEIPT_V1.json",
+        "sha256": "b3e63117218b996ba4b9b9598b7a97b0554205bdf69ad84bfc3a986f734071a3"
+      },
+      "name": "required source exists: V31_HISTORICAL_CUSTODY_GRAPH_EXECUTION_RECEIPT_V1.json",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 494,
+        "path": "v31-historical-run2/V31_HISTORICAL_CUSTODY_GRAPH_PUBLIC_SUMMARY_V1.json",
+        "sha256": "d792bdad4264b31500c57e6474cc13eefa58eedf98aa20410488ca04e6367c8a"
+      },
+      "name": "required source exists: V31_HISTORICAL_CUSTODY_GRAPH_PUBLIC_SUMMARY_V1.json",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 4288,
+        "path": "v31-historical-run2/V31_HISTORICAL_CUSTODY_GRAPH_EXACT_HITS_MANIFEST_V1.json",
+        "sha256": "fc3ba88357b93859b707e70bd75b63fc0ee689adedce5dfbaeb0bac3895a0ea7"
+      },
+      "name": "required source exists: V31_HISTORICAL_CUSTODY_GRAPH_EXACT_HITS_MANIFEST_V1.json",
+      "pass": true
+    },
+    {
+      "detail": {
+        "bytes": 725,
+        "path": "v31-historical-run2/V31_HISTORICAL_CUSTODY_GRAPH_SCANNER_REPAIR_RECEIPT_V1.json",
+        "sha256": "ce104da2300960f246f24c29c1e40ecedc3b0fe5f43aac030df1e1424298f702"
+      },
+      "name": "required source exists: V31_HISTORICAL_CUSTODY_GRAPH_SCANNER_REPAIR_RECEIPT_V1.json",
+      "pass": true
+    }
+  ],
+  "checks_failed": 0,
+  "checks_passed": 41,
+  "checks_total": 41,
+  "claim_boundary": "This validation proves the transaction metadata, local recursive census, direct validation-card identities, historical-run binding, and authority holds. It does not materialize a control archive or production input beyond the already recovered cached Neighborhood object.",
+  "observed_at_utc": "2026-09-02T18:22:00Z",
+  "result": "PASS",
+  "schema": "manzanita/v31-file-library-recovery-control-chain-receipt-validation@1"
+}
