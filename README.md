@@ -8,6 +8,10 @@ a year and still be working when you come back.
 
 ## Tools
 
+The Cantos instruments moved to their [own repository](https://github.com/BigBirdReturns/cantos) on 29 September 2026. Cantos is the umbrella for continuing evidence, judgment and work; Second Run is its execution and reuse program. The tools below are particular implementations within that wider scope.
+
+Old HTML addresses under the seven migrated directories redirect to the matching Cantos page. Publication stages frozen copies of the original non-HTML files for existing data and download links. These copies preserve the pre-move bytes; current sources and updates belong to Cantos. [`integration/cantos_compat.py`](integration/cantos_compat.py) verifies every destination against the Cantos Git tree before staging, after the existing release gate in each Pages publisher.
+
 | Tool | What it does | Interface |
 |------|--------------|-----------|
 | [`shelf/`](https://bigbirdreturns.github.io/cantos/shelf/) (moved to Cantos) | Claims about compute filed side by side: a five-question card format, a stdlib validator, mechanical refusal of invalid compositions, a "which cards can support this question" check, and a pull rule that imports other hubs' shelves as candidates without granting standing | [The shelf](https://bigbirdreturns.github.io/cantos/shelf/) — five cards, two model-stranger filings retained, nothing ranks |
@@ -122,4 +126,4 @@ and how to change things legitimately — written for the next maintainer,
 human or AI.
 ## Compute decision desk and workload instrument
 
-Start at `compute/` for the provider-neutral decision desk. `hot-aisle/` owns bounded evaluation and qualified records. Their explicit local publication seam, source authorities, commands and qualification boundaries are documented in [integration/README.md](integration/README.md). The integration workflow tests real localhost navigation, SSE and reconnect and builds both portable kits from source.
+The [compute desk](https://github.com/BigBirdReturns/cantos/tree/main/compute) and [workload instrument](https://github.com/BigBirdReturns/cantos/tree/main/hot-aisle) now live in Cantos. Use that checkout for execution and qualification; its [integration documentation](https://github.com/BigBirdReturns/cantos/blob/main/integration/README.md) records their source authorities, commands and boundaries. The retained integration files here support migration history and the axm-tools publication gate; this checkout no longer contains the moved execution sources.

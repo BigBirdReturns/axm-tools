@@ -1,5 +1,7 @@
 # Compute desk / qualification instrument integration
 
+**Moved, 29 September 2026.** The operations described below now run from the [Cantos repository](https://github.com/BigBirdReturns/cantos/tree/main/integration). Their component sources are no longer in axm-tools. This retained document is migration context. The active axm-tools responsibilities here are `release_gate.py` and `cantos_compat.py`, which stages historical page redirects and frozen non-HTML download/data bytes after the gate and before every Pages upload.
+
 The [shared operation runner](WORK.md) joins existing source intake, retained-run
 recomputation and dependency-sensitive changes. Its six-operation example runs
 from this checkout, then reuses checked results across request IDs and operators.

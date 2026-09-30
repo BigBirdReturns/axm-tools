@@ -14,7 +14,8 @@ Two facts to hold before your first edit: `main` is production (every
 commit publishes the repo root to the live site), and `git log` on `main`
 is the authoritative record of what actually happened.
 
-For compute/evidence continuation, `python -B integration/work.py --catalog`
-lists the available task classes and artifact contracts. Use the existing native
-operation and retained result where it applies; `integration/WORK.md` describes
-dependency checks, durable local custody and the planning/execution boundary.
+For compute/evidence continuation, use the [Cantos checkout](https://github.com/BigBirdReturns/cantos).
+There, `python -B integration/work.py --catalog` lists the task classes and
+artifact contracts. The moved execution sources are absent from this checkout.
+Here, `integration/cantos_compat.py` stages historical URL compatibility before
+Pages upload; see the dated migration note in `CONTINUITY.md`.

@@ -224,6 +224,23 @@ def patch_docs() -> None:
 
 def write_receipt(app_bytes: int, app_sha: str) -> None:
     RECEIPT.parent.mkdir(parents=True, exist_ok=True)
+    # The receipt also carries qualification evidence written by later CI jobs.
+    # Preserve that evidence only while it is still bound to these exact app
+    # bytes. A changed app gets a fresh receipt and must earn qualification again.
+    if RECEIPT.exists():
+        try:
+            existing = json.loads(RECEIPT.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            existing = None
+        if (
+            isinstance(existing, dict)
+            and existing.get("schema") == "axm-witness/theme-patch-qualification@1"
+            and existing.get("release") == RELEASE
+            and existing.get("base_application") == {"bytes": BASE_BYTES, "sha256": BASE_SHA256}
+            and existing.get("patched_application") == {"bytes": app_bytes, "sha256": app_sha}
+        ):
+            return
+
     receipt = {
         "schema": "axm-witness/theme-patch-qualification@1",
         "release": RELEASE,
