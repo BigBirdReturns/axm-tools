@@ -1,5 +1,7 @@
 # Shared operations, retained for the next request
 
+**Moved, 29 September 2026.** Run these operations from [Cantos](https://github.com/BigBirdReturns/cantos/blob/main/integration/WORK.md). This axm-tools copy is retained migration context; the moved native component sources are absent here.
+
 The floor improves by class, not by user. `work.py` supplies one execution and
 reuse path for nine existing deterministic operations. A different operator or
 provider does not require another implementation. The source owners still decide

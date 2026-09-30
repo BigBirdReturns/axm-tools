@@ -351,12 +351,27 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/configure-pages@v5
+      - name: Verify historical Cantos compatibility staging
+        run: python -B -m unittest integration.tests.test_cantos_compat -v
       - name: Require qualified compute sources before publishing the shared site
         env:
           GH_TOKEN: ${{ github.token }}
         run: python integration/release_gate.py --timeout 600 --receipt "${{ runner.temp }}/compute-publication-gate.json"
 
+      - name: Stage historical Cantos compatibility routes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python integration/cantos_compat.py stage --manifest-out "${{ runner.temp }}/cantos-compat-manifest.json"
+      - name: Retain Cantos compatibility receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: cantos-compat-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cantos-compat-manifest.json
+          if-no-files-found: error
+          retention-days: 30
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
