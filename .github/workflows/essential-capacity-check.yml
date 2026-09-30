@@ -1,0 +1,35 @@
+name: Essential Capacity candidate check
+
+on:
+  pull_request:
+    paths:
+      - "capacity-commons/**"
+      - ".github/workflows/essential-capacity-check.yml"
+      - "README.md"
+      - "index.html"
+      - "CONTINUITY.md"
+      - "CLAUDE.md"
+  push:
+    branches:
+      - "agent/essential-capacity-v0-1"
+    paths:
+      - "capacity-commons/**"
+      - ".github/workflows/essential-capacity-check.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate the source, ontology, component register, and qualification receipt
+        run: python capacity-commons/scripts/validate.py
+      - name: Parse the contained browser runtime
+        run: node --check capacity-commons/app.js
