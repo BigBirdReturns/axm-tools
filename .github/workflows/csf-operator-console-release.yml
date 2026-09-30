@@ -1,0 +1,57 @@
+name: clinical-site-fabric-operator-console-release
+
+on:
+  push:
+    branches:
+      - release/clinical-site-fabric-0.3.1-operator-console
+    paths:
+      - ".github/import-csf-operator-console/bootstrap.ready"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/clinical-site-fabric-0.3.1-operator-console
+
+      - name: Reconstruct verified operator console
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .github/import-csf-operator-console/part-* > /tmp/csf.html.gz.b64
+          base64 --decode /tmp/csf.html.gz.b64 > /tmp/csf.html.gz
+          echo "6172b4660f8d0b38887bcd030d8c10dbe33d8e53cb6b687dae272d6e4a689083  /tmp/csf.html.gz" | sha256sum --check --strict
+          gzip -dc /tmp/csf.html.gz > /tmp/csf.html
+          echo "154771f9ee8a98850801d1d41fb769ddbd2a24426a64365a51acba8d5b855046  /tmp/csf.html" | sha256sum --check --strict
+          cp /tmp/csf.html clinical-site-fabric/index.html
+          cp /tmp/csf.html clinical-site-fabric/Clinical_Site_Fabric_Offline.html
+
+      - name: Validate release surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'clinical-site-fabric/0.3.1' clinical-site-fabric/index.html
+          grep -q 'data-theme-choice="auto"' clinical-site-fabric/index.html
+          grep -q 'data-theme-choice="light"' clinical-site-fabric/index.html
+          grep -q 'data-theme-choice="dark"' clinical-site-fabric/index.html
+          grep -q 'One operational view across protocols' clinical-site-fabric/index.html
+          grep -q 'Safety obligation due within 24 hours' clinical-site-fabric/index.html
+          ! grep -q '>Figures<' clinical-site-fabric/index.html
+          ! grep -q '>Ecosystem<' clinical-site-fabric/index.html
+          cmp clinical-site-fabric/index.html clinical-site-fabric/Clinical_Site_Fabric_Offline.html
+
+      - name: Clean staging and commit release
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .github/import-csf-operator-console
+          rm .github/workflows/csf-operator-console-release.yml
+          git config user.name "clinical-site-fabric-release"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "clinical-site-fabric: deploy v0.3.1 operator console"
+          git push origin HEAD:release/clinical-site-fabric-0.3.1-operator-console
