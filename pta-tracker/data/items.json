@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-06T18:31:02.762471Z",
+  "generated": "2026-10-07T19:02:12.157044Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -23,13 +23,13 @@
       "source": "LAist Education",
       "scope": "state",
       "ok": true,
-      "kept": 1
+      "kept": 2
     },
     {
       "source": "CA Dept of Education",
       "scope": "state",
       "ok": true,
-      "kept": 2
+      "kept": 3
     },
     {
       "source": "Google News",
@@ -45,6 +45,30 @@
     }
   ],
   "items": [
+    {
+      "id": "ffac6a15340d",
+      "source": "LAist Education",
+      "title": "US Department of Education announces enforcement action against LAUSD",
+      "summary": "The U.S. Department of Education has launched an enforcement action against the Los Angeles Unified School District.",
+      "link": "https://laist.com/news/education/us-department-of-education-action-against-lausd",
+      "published": "Wed, 07 Oct 2026 18:30:00 GMT",
+      "priority": "normal",
+      "scope": "state",
+      "first_seen": "2026-10-07",
+      "bills": []
+    },
+    {
+      "id": "82228c4e786d",
+      "source": "CA Dept of Education",
+      "title": "Updated EL Identification Process Letter",
+      "summary": "The California Department of Education (CDE) is providing updated guidance regarding English learner (EL) identification and the calculation of the Unduplicated Pupil Count (UPC) used for Local Control Funding Formula (LCFF) supplemental and concentr",
+      "link": "http://www.cde.ca.gov/ds/ad/yr26ltr1006.asp",
+      "published": "Tue, 6 Oct 2026 17:55:00 PST",
+      "priority": "normal",
+      "scope": "state",
+      "first_seen": "2026-10-07",
+      "bills": []
+    },
     {
       "id": "ausd-mtg-2026-10-27",
       "source": "AUSD Board of Education",
