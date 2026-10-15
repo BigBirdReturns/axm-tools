@@ -1,0 +1,19 @@
+{
+  "schema": "manzanita-works/semantic-access-browser-audit@5",
+  "result": "PASS",
+  "valid_states_exercised": 117,
+  "invalid_controls_refused": 28,
+  "street_access_feature_counts": [
+    3,
+    3,
+    5
+  ],
+  "map_and_hold_geometry": 0,
+  "shade_and_water_image_geometry": 0,
+  "functional_seats": 5,
+  "mobile_horizontal_overflow": 0,
+  "console_errors": [],
+  "page_errors": [],
+  "external_requests": [],
+  "public_route_effect": "none"
+}
