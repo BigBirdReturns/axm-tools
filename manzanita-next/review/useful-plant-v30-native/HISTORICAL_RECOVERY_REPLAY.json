@@ -1,0 +1,14 @@
+{
+  "schema": "manzanita/useful-plant-v30-historical-recovery-replay@1",
+  "issued_at": "2026-08-27T15:20:00Z",
+  "purpose": "Retrigger the read-only historical independent-archive recovery with recovery.log, recovery-exit.json, and artifact retention enabled on every outcome.",
+  "source_commit": "8eda7e87fb8f6789f4392a328c7ab3435f122bdf",
+  "source_tree": "f695d10fd0651a99d33c52cc0ee9fd17307f1e90",
+  "source_archive_sha256": "a1c4c12053066c1c579111c9bea16a6acd50e4a0c6cf21120afc944d46e43b46",
+  "operator_visual_acceptance": "ABSENT",
+  "merge_authorized": false,
+  "release_authorized": false,
+  "public_route_effect": "none",
+  "pages_deployment_effect": "none",
+  "external_effect": "none"
+}

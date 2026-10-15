@@ -1,0 +1,118 @@
+{
+  "schema": "manzanita/useful-plant-v30-field-composition-contract@1",
+  "candidate_id": "MW-USEFUL-PLANT-V30-FIELD-COMPOSITION-001",
+  "parent_review_object": "MW-USEFUL-PLANT-V30-NATIVE-REVIEW-001",
+  "object_class": "bounded place-first visual successor",
+  "purpose": "Preserve the qualified use-loop, actor, evidence, and household-stop mechanisms while making the retained photographic place the primary interface.",
+  "entry_point": "field-composition.html",
+  "source_files": [
+    "field-composition.html",
+    "field-composition.css",
+    "field-composition.js",
+    "field_composition_review.py"
+  ],
+  "donor": {
+    "path": "manzanita/assets/plant.webp",
+    "bytes": 44620,
+    "sha256": "e6148cb9e0bbaf6b117dd5162f52bac2c805aa69e8f4b820fb7909dfece37a23",
+    "classification": "admitted_public_photographic_donor",
+    "exact_v29_claim": false,
+    "exact_retained_plant_claim": false
+  },
+  "operating_model": {
+    "use_loop": [
+      "recognize",
+      "place",
+      "tend",
+      "observe",
+      "use",
+      "return"
+    ],
+    "seats": [
+      "household",
+      "grower",
+      "neighbor",
+      "ecologist",
+      "responder"
+    ],
+    "zones": [
+      "identity",
+      "placement",
+      "care",
+      "yield",
+      "return"
+    ],
+    "household_stops": [
+      "pause",
+      "private",
+      "substitution"
+    ]
+  },
+  "visual_floor": {
+    "desktop_viewport": {
+      "width_css_px": 1600,
+      "height_css_px": 1000,
+      "photo_top_max_css_px": 1,
+      "photo_left_max_css_px": 1,
+      "photo_width_min_css_px": 1598,
+      "photo_height_min_css_px": 998,
+      "photo_first_viewport_area_ratio_min": 0.7,
+      "persistent_expressed_control_count_max": 3,
+      "single_overlay_area_ratio_max": 0.25
+    },
+    "mobile_viewport": {
+      "width_css_px": 390,
+      "height_css_px": 844,
+      "horizontal_overflow_max_css_px": 0,
+      "photo_height_ratio_min": 0.55,
+      "single_overlay_area_ratio_max": 0.25
+    },
+    "text_resize": {
+      "root_font_size_percent": 200,
+      "horizontal_overflow_max_css_px": 0,
+      "primary_action_reachable": true,
+      "household_control_reachable": true
+    },
+    "registration": {
+      "persistent_outline_count_before_interaction": 0,
+      "revealed_outline_count_after_zone_interaction": 1,
+      "geometry_class": "irregular low-weight local masks",
+      "labels_hidden_until_pointer_focus_or_selection": true
+    }
+  },
+  "behavior_floor": {
+    "all_six_modes_operable": true,
+    "all_five_seats_operable": true,
+    "all_five_zones_operable": true,
+    "all_three_household_stops_operable": true,
+    "url_state_survives_reload": true,
+    "all_buttons_have_accessible_names": true,
+    "keyboard_escape_closes_panels": true,
+    "reduced_motion_declared": true,
+    "print_path_declared": true,
+    "external_network_requests": 0,
+    "console_or_page_errors": 0,
+    "embedded_acceptance_control": false
+  },
+  "claim_boundary": {
+    "operator_visual_acceptance": "ABSENT",
+    "merge_authorized": false,
+    "release_authorized": false,
+    "public_route_effect": "none",
+    "pages_deployment_effect": "none",
+    "external_effect": "none",
+    "exact_v29_parent_admitted": false,
+    "exact_retained_plant_donors_admitted": false,
+    "inherited_rendered_locks_executed": false
+  },
+  "expected_review_views": [
+    "01-field-desktop-recognize.png",
+    "02-field-desktop-menu.png",
+    "03-field-desktop-zone.png",
+    "04-field-desktop-household-stop.png",
+    "05-field-mobile-390.png",
+    "06-field-text-200-percent.png"
+  ],
+  "next_gate": "human operator visual review after independent browser qualification",
+  "control_question": "Does the place communicate the living object and next household action before the user encounters the machinery that governs the system?"
+}

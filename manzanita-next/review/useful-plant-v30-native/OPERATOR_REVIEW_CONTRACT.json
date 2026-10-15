@@ -1,0 +1,61 @@
+{
+  "schema": "manzanita/useful-plant-v30-operator-review-contract@1",
+  "candidate": "MW-USEFUL-PLANT-V30-NATIVE-REVIEW-001",
+  "object_class": "SEPARATE_OPERATOR_VISUAL_ADMISSION_GATE",
+  "decision_states": [
+    "PENDING",
+    "ACCEPTED",
+    "REVISE",
+    "REJECTED"
+  ],
+  "criteria": [
+    {
+      "id": "living_object_primary",
+      "question": "Is the living object primary before overlays and metrics?"
+    },
+    {
+      "id": "placement_explainable",
+      "question": "Can a household see why a placement is proposed and reject it?"
+    },
+    {
+      "id": "evidence_burden_visible",
+      "question": "Does each claim expose its evidence tier and verification burden?"
+    },
+    {
+      "id": "use_loop_complete",
+      "question": "Does the work loop reach an observable household or ecological return?"
+    },
+    {
+      "id": "seat_authority_changes",
+      "question": "Do seat changes alter authority and recommended action rather than decoration?"
+    },
+    {
+      "id": "household_stop_visible",
+      "question": "Are privacy, pause, and substitution controls legible before escalation?"
+    },
+    {
+      "id": "assistance_first_firewall",
+      "question": "Does the surface remain useful without creating an insurance or enforcement weapon?"
+    }
+  ],
+  "required_receipts": [
+    "SOURCE_VERIFICATION_RECEIPT.json",
+    "BROWSER_REVIEW_RECEIPT.json",
+    "RENDERED_FLOOR_RECEIPT.json",
+    "COLD_REPLAY_RECEIPT.json"
+  ],
+  "authority_invariants": {
+    "release_authorized": false,
+    "merge_authorized": false,
+    "public_route_effect": "none",
+    "pages_deployment_effect": "none",
+    "external_effect": "none"
+  },
+  "pending_invariants": {
+    "operator_visual_acceptance": "ABSENT",
+    "operator": null,
+    "rationale": null
+  },
+  "accepted_scope": "A visual admission decision establishes only that the rendered Useful Plant v30 review surface is acceptable as a visual parent for the next bounded assembly step.",
+  "explicit_non_authority": "No operator decision created under this contract authorizes merge, release, public-route assembly, substitution of missing exact donors, insurance action, property scoring, resident ranking, punitive enforcement, or any other external effect."
+}
