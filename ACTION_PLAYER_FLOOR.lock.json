@@ -1,0 +1,32 @@
+{
+  "format": "axm-action-player-floor-lock/1",
+  "organ": "tools",
+  "adoptionState": "contract_staged",
+  "floor": {
+    "repository": "BigBirdReturns/tier-bench",
+    "custodyCommit": "738b357e8dcb452ce12b354a67ef373dbb5e321d",
+    "functionalCommit": "9cc2a1e8e1c1f3722ecbf78828c75e2afc50e895",
+    "catalogId": "actionfloor1_55eb8869417b3b36a28a309263624fe04ad07028f2254337a2f1548cd03b47d8",
+    "reportId": "actionfloorreport1_190434fd82b36c0877c55a4cde8cd2e4c0c0f64876d59907fa104f522b36f46e",
+    "intentId": "playerintent1_91647652ca3f387b114d5fa7cfab416e2d99c5f307098b6426a17f624cdfbe6c"
+  },
+  "coordination": {
+    "issue": "https://github.com/BigBirdReturns/axm-tools/issues/38",
+    "pullRequest": "https://github.com/BigBirdReturns/axm-tools/pull/39"
+  },
+  "owns": [
+    "trace_inspection",
+    "cue_inspection",
+    "presentation_response_inspection",
+    "first_divergence",
+    "minimal_reproducer"
+  ],
+  "forbidden": [
+    "trace_mutation",
+    "provider_selection",
+    "outcome_inference",
+    "human_receipt",
+    "product_acceptance"
+  ],
+  "productAccepted": false
+}
