@@ -1,0 +1,137 @@
+{
+  "schema": "manzanita/v31-windows-native-runtime-qualification-observation@1",
+  "object_id": "MW_V31_WINDOWS_NATIVE_RUNTIME_QUALIFICATION_V1",
+  "object_class": "bounded Windows-native qualification observation",
+  "disposition": "PASS_WITH_PRODUCTION_AND_OPERATOR_HOST_AUTHORITIES_HELD",
+  "repository": "BigBirdReturns/axm-tools",
+  "pull_request": 142,
+  "branch": "agent/manzanita-v31-windows-native-runtime-qualification",
+  "qualified_source_head": "8ecd86fe0a32a2da0f4ed50e509a96c87e65b933",
+  "workflow": {
+    "name": "Manzanita v31 Windows-native runtime qualification",
+    "run_id": 33531386064,
+    "run_number": 4,
+    "job_id": 99935133215,
+    "conclusion": "success",
+    "artifact": {
+      "id": 9809864919,
+      "name": "manzanita-v31-windows-native-runtime-qualification",
+      "bytes": 5235,
+      "sha256": "62363baedaafa25c65cd4681e7003b207d49ffd9f2ae96061ca12ba5f3f5af1f",
+      "created_at": "2026-09-01T16:22:48Z",
+      "expires_at": "2026-10-01T16:22:48Z"
+    }
+  },
+  "environment": {
+    "host_class": "github-hosted-windows-runner",
+    "operating_system": "Microsoft Windows Server 2025",
+    "os_version": "10.0.26100",
+    "runner_image": "windows-2025-vs2026",
+    "runner_image_version": "20260824.214.3",
+    "windows_powershell": {
+      "edition": "Desktop",
+      "version": "5.1.26100.33296",
+      "parse_result": "PASS"
+    },
+    "powershell_7_parse_result": "PASS"
+  },
+  "runtime": {
+    "resolver_result": "PASS_SUPPORTED_PYTHON_RUNTIME_RESOLVED",
+    "selected_source": "PATH_PY3_LAUNCHER",
+    "launcher": "C:\\Windows\\py.exe",
+    "prefix": ["-3"],
+    "version": [3, 14, 7],
+    "executable": "C:\\hostedtoolcache\\windows\\Python\\3.14.7\\x64\\python.exe",
+    "compatibility_aliases": ["py", "python", "python3"],
+    "alias_exit_codes": {
+      "py": 0,
+      "python": 0,
+      "python3": 0
+    },
+    "executable_continuity": "PASS",
+    "path_scope": "current_process_only",
+    "persistent_path_mutation": false,
+    "registry_mutation": false
+  },
+  "qualification": {
+    "source_verification": {"passed": 25, "total": 25},
+    "runtime_campaign": {"passed": 12, "total": 12},
+    "receipt_validation": {"passed": 18, "total": 18},
+    "terminal_result": "PASS_WINDOWS_NATIVE_RUNTIME_RESOLVER_AND_SHIMS_QUALIFIED",
+    "validation_result": "PASS_WINDOWS_NATIVE_RUNTIME_RECEIPT_VALIDATED"
+  },
+  "failure_and_repair_lineage": [
+    {
+      "run_number": 1,
+      "run_id": 33530850509,
+      "job_id": 99933324293,
+      "source_head": "d68dcde6a85770e55c1db468824c07976bea4f86",
+      "artifact_id": 9809650876,
+      "artifact_sha256": "29936a901c303564c4fa3d3ec47b8596e491a3200c03befd90f4f1e52896e89b",
+      "result": "FAIL_WINDOWS_NATIVE_RUNTIME_QUALIFICATION_NOT_COMPLETED",
+      "failure": "Cannot bind argument to parameter 'Rows' because it is an empty collection.",
+      "repair": "Admit an initially empty strongly typed candidate list with AllowEmptyCollection."
+    },
+    {
+      "run_number": 2,
+      "run_id": 33531004120,
+      "job_id": 99933845155,
+      "source_head": "6ae68eefc3c6af7dc7eba9bbe0b57404fadd35ba",
+      "artifact_id": 9809713145,
+      "artifact_sha256": "2f9f2048a01a99fcac53f139cea46b9b8d75fa0fafcb0d1f353336bed65501df",
+      "result": "FAIL_WINDOWS_NATIVE_RUNTIME_QUALIFICATION_NOT_COMPLETED",
+      "failure": "Unknown option: -3",
+      "repair": "Remove reliance on CMD SHIFT mutating percent-star argument expansion."
+    },
+    {
+      "run_number": 3,
+      "run_id": 33531210241,
+      "job_id": 99934535945,
+      "source_head": "03d71fb3f1b0fea78ec6d3cf73581fe0f03b4e0a",
+      "artifact_id": 9809792703,
+      "artifact_sha256": "ab65339c9ba221fbd971f7ef8d3e0ce4c7e4acfd20a582eb2066cd9c4dbd47ed",
+      "result": "FAIL_WINDOWS_NATIVE_RUNTIME_QUALIFICATION_NOT_COMPLETED",
+      "failure": "PowerShell -File parameter parsing consumed a forwarded hyphenated Python argument.",
+      "repair": "Route arbitrary caller arguments through an isolated Python subprocess driver."
+    },
+    {
+      "run_number": 4,
+      "run_id": 33531386064,
+      "job_id": 99935133215,
+      "source_head": "8ecd86fe0a32a2da0f4ed50e509a96c87e65b933",
+      "artifact_id": 9809864919,
+      "artifact_sha256": "62363baedaafa25c65cd4681e7003b207d49ffd9f2ae96061ca12ba5f3f5af1f",
+      "result": "PASS_WINDOWS_NATIVE_RUNTIME_RESOLVER_AND_SHIMS_QUALIFIED",
+      "failure": null,
+      "repair": null
+    }
+  ],
+  "authority": {
+    "github_hosted_windows_runtime_qualified": true,
+    "operator_workstation_execution_observed": false,
+    "operator_storage_search_observed": false,
+    "production_inputs_materialized": 0,
+    "required_production_inputs": 5,
+    "provenance_aware_intake_invoked": false,
+    "provenance_wrapper_invoked": false,
+    "underlying_v1_admission_invoked": false,
+    "accepted_parent_extracted": false,
+    "v31_created": false,
+    "product_files_modified": 0,
+    "operator_visual_acceptance": "ABSENT",
+    "merge_authorized": false,
+    "release_authorized": false,
+    "public_route_effect": "none",
+    "pages_effect": "none",
+    "external_effect": "none"
+  },
+  "evidence_ledger": {
+    "tier": "exact repository source, Windows PowerShell 5.1 and PowerShell 7 parsing, native Windows process execution, isolated runtime probes, process-local shim replay, machine receipts, artifact bytes, and independent readback",
+    "venue": "draft PR 142 and GitHub Actions runs 1 through 4",
+    "target": "Windows runtime resolution and py, python, and python3 alias continuity only",
+    "upside": "the retained operator bootstrap no longer depends on an untested Windows command-resolution assumption",
+    "downside": "the hosted runner is not the operator workstation and contains none of the production inputs",
+    "failure_mode": "promoting hosted-runner qualification into operator-host execution, production-byte recovery, admission, product construction, merge, release, Pages, or public-route standing"
+  },
+  "control_question": "Does the evidence establish Windows-native runtime and alias continuity while keeping every operator-host, production-input, provenance, admission, product, visual-acceptance, merge, release, Pages, public-route, and external-effect authority held?"
+}
