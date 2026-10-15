@@ -1,0 +1,140 @@
+name: Manzanita v31 self-hosted Windows recovery execution
+
+on:
+  push:
+    branches:
+      - agent/manzanita-v31-origin-host-recovery-execution-v1
+    paths:
+      - 'manzanita-next/recovery/v31-origin-host-recovery-execution-v1/**'
+      - '.github/workflows/manzanita-v31-origin-host-recovery-execution-v1.yml'
+  workflow_dispatch:
+    inputs:
+      exact_bootstrap_path:
+        description: Optional runner-local path to the exact V3 R1 bootstrap ZIP
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manzanita-v31-origin-host-recovery-execution-v1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  execute-self-hosted-windows-recovery:
+    runs-on: [self-hosted, Windows]
+    timeout-minutes: 180
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Verify bounded source and privacy contract
+        shell: powershell
+        env:
+          SOURCE_RECEIPT: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_SOURCE_VERIFICATION_RECEIPT_V1.json
+        run: >-
+          & '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\verify_origin_host_execution_source.ps1'
+          -OutputPath $env:SOURCE_RECEIPT
+
+      - name: Stage exact bootstrap from runner-local or synced custody
+        id: stage
+        continue-on-error: true
+        shell: powershell
+        env:
+          V31_EXACT_BOOTSTRAP_PATH: ${{ inputs.exact_bootstrap_path }}
+          STAGED_PACKAGE: ${{ runner.temp }}\v31-exact-bootstrap-source\MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip
+          STAGE_RECEIPT: ${{ runner.temp }}\V31_RUNNER_LOCAL_EXACT_BOOTSTRAP_STAGE_RECEIPT_V1.json
+        run: >-
+          & '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\stage_exact_bootstrap_from_local_custody.ps1'
+          -OutputPath $env:STAGED_PACKAGE
+          -ReceiptPath $env:STAGE_RECEIPT
+
+      - name: Build temporary local-file source bridge
+        if: steps.stage.outcome == 'success'
+        shell: powershell
+        env:
+          STAGED_PACKAGE: ${{ runner.temp }}\v31-exact-bootstrap-source\MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip
+          PATCHED_RUNNER: ${{ runner.temp }}\run_origin_host_recovery.local-source.ps1
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $SourcePath = '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\run_origin_host_recovery.ps1'
+          $Source = Get-Content -LiteralPath $SourcePath -Raw -Encoding UTF8
+          $FileUri = ([Uri]([IO.Path]::GetFullPath($env:STAGED_PACKAGE))).AbsoluteUri
+          $Pattern = '(?m)^\$DownloadUrl = ''[^'']+''\r?$'
+          $Replacement = '$DownloadUrl = ' + [char]39 + $FileUri + [char]39
+          $Patched = [Regex]::Replace($Source, $Pattern, $Replacement, 1)
+          if ($Patched -eq $Source -or $Patched -notmatch [Regex]::Escape($FileUri)) {
+            throw 'temporary local-file source bridge was not applied exactly once'
+          }
+          [IO.File]::WriteAllText($env:PATCHED_RUNNER, $Patched, [Text.UTF8Encoding]::new($false))
+
+      - name: Execute exact V3 R1 recovery campaign and deterministic collection
+        if: steps.stage.outcome == 'success'
+        id: execution
+        continue-on-error: true
+        shell: powershell
+        env:
+          SUMMARY_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.json
+          RETURN_PATH: ${{ runner.temp }}\MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip
+          PATCHED_RUNNER: ${{ runner.temp }}\run_origin_host_recovery.local-source.ps1
+        run: >-
+          & $env:PATCHED_RUNNER
+          -SummaryPath $env:SUMMARY_PATH
+          -ReturnPath $env:RETURN_PATH
+
+      - name: Validate execution summary, return envelope, privacy, and authority holds
+        if: steps.stage.outcome == 'success'
+        shell: powershell
+        env:
+          SUMMARY_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.json
+          RETURN_PATH: ${{ runner.temp }}\MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip
+          VALIDATION_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.validation.json
+        run: >-
+          & '.\manzanita-next\recovery\v31-origin-host-recovery-execution-v1\validate_origin_host_execution_summary.ps1'
+          -SummaryPath $env:SUMMARY_PATH
+          -ReturnPath $env:RETURN_PATH
+          -OutputPath $env:VALIDATION_PATH
+
+      - name: Retain privacy-bounded staging and recovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-origin-host-recovery-execution-v1-attempt-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}\V31_RUNNER_LOCAL_EXACT_BOOTSTRAP_STAGE_RECEIPT_V1.json
+            ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_SOURCE_VERIFICATION_RECEIPT_V1.json
+            ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.json
+            ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.validation.json
+            ${{ runner.temp }}\MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Require a governed PASS or explicit local-custody HOLD
+        if: always()
+        shell: powershell
+        env:
+          STAGE_RECEIPT: ${{ runner.temp }}\V31_RUNNER_LOCAL_EXACT_BOOTSTRAP_STAGE_RECEIPT_V1.json
+          VALIDATION_PATH: ${{ runner.temp }}\V31_ORIGIN_HOST_RECOVERY_EXECUTION_RECEIPT_V1.validation.json
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          if (-not (Test-Path -LiteralPath $env:STAGE_RECEIPT -PathType Leaf)) { throw 'stage receipt absent' }
+          $Stage = Get-Content -LiteralPath $env:STAGE_RECEIPT -Raw -Encoding UTF8 | ConvertFrom-Json
+          if ($Stage.result -eq 'HOLD_EXACT_BOOTSTRAP_NOT_PRESENT_IN_RUNNER_LOCAL_OR_SYNCED_CUSTODY') {
+            Write-Host $Stage.result
+            exit 0
+          }
+          if ($Stage.result -ne 'PASS_EXACT_BOOTSTRAP_STAGED_FROM_RUNNER_LOCAL_OR_SYNCED_CUSTODY') {
+            throw "stage result is $($Stage.result): $($Stage.error)"
+          }
+          if (-not (Test-Path -LiteralPath $env:VALIDATION_PATH -PathType Leaf)) { throw 'execution validation absent after exact staging' }
+          $Validation = Get-Content -LiteralPath $env:VALIDATION_PATH -Raw -Encoding UTF8 | ConvertFrom-Json
+          if ($Validation.result -ne 'PASS_V31_ORIGIN_HOST_RECOVERY_EXECUTION_SUMMARY_AND_RETURN_VALIDATED') {
+            throw "execution validation result is $($Validation.result)"
+          }
+          Write-Host $Validation.result

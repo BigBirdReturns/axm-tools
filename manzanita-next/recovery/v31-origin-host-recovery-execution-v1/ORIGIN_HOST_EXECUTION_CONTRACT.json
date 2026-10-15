@@ -1,0 +1,77 @@
+{
+  "schema": "manzanita/v31-origin-host-recovery-execution-contract@1",
+  "object_id": "MW_V31_ORIGIN_HOST_RECOVERY_EXECUTION_V1",
+  "object_class": "bounded self-hosted Windows recovery execution and exact-return collection",
+  "purpose": "Execute the exact V3 R1 recovery package on the repository owner's self-hosted Windows recovery seat, preserve a privacy-bounded machine receipt, and return only the package-governed deterministic collection for provenance-aware receiving intake.",
+  "actors": {
+    "self_hosted_windows_recovery_seat": "executes the exact package with its local Windows authority",
+    "source_custody": "binds package identity, workflow scope, result classification, and privacy controls",
+    "receiving_intake": "independently determines exact-object and provenance standing after return",
+    "operator": "retains authority over File Library export metadata and visual acceptance",
+    "release_authority": "retains merge, release, Pages, public-route, and product-mutation authority"
+  },
+  "workflow_scope": {
+    "trigger": "push to the exact execution branch or explicit workflow dispatch",
+    "runner_labels": ["self-hosted", "Windows"],
+    "pull_request_trigger": false,
+    "fork_execution": false,
+    "network_use": "exact package acquisition and Actions artifact return only",
+    "raw_arbitrary_file_upload": false,
+    "runner_name_retention": "SHA-256 only",
+    "computer_name_retention": "SHA-256 only",
+    "user_profile_retention": "not retained",
+    "actions_artifact_retention_days": 1
+  },
+  "source_package": {
+    "filename": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip",
+    "bytes": 553074,
+    "sha256": "2c4437c2f3c0cd7599b790ddc1a31315751db751daa3a81e4245e2a32b5f3738",
+    "download_url": "https://drive.usercontent.google.com/download?id=1tX9hAVhNdThVUq6ozuIfrqn5vAhgSxU3&export=download&confirm=t",
+    "release_root": "MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1"
+  },
+  "execution_sequence": [
+    "verify Windows host and administrator context",
+    "download and verify exact V3 R1 package",
+    "extract into RUNNER_TEMP",
+    "execute package-owned Windows platform replay",
+    "execute package-owned preparation",
+    "execute package-owned accepted-parent and remaining-input recovery lanes",
+    "execute deterministic return collection",
+    "classify the return collection without promoting it",
+    "retain privacy-bounded execution summary and package-governed return collection"
+  ],
+  "expected_entrypoints": {
+    "platform_replay": "RUN_WINDOWS_PLATFORM_REPLAY.cmd",
+    "prepare": "RUN_PREPARE_ONLY.cmd",
+    "recovery": "RUN_ALL_RECOVERY_ADMIN.cmd",
+    "collect": "RUN_COLLECT_RETURNS.cmd"
+  },
+  "expected_return": {
+    "filename": "MW_V31_OPERATOR_RETURN_COLLECTION_V3_R1.zip",
+    "standing": "candidate return only until provenance-aware V2 receiving intake",
+    "permitted_payload": "fixed-identity exact objects, PUBLIC_CONVERGENCE candidates, recognized safe envelopes, and package-generated manifests only"
+  },
+  "success_classification": {
+    "execution_completed": "PASS_SELF_HOSTED_WINDOWS_RECOVERY_EXECUTION_AND_RETURN_COLLECTION_OBSERVED",
+    "no_complete_return": "HOLD_SELF_HOSTED_WINDOWS_RECOVERY_EXECUTED_COMPLETE_PRODUCTION_SET_NOT_RETURNED",
+    "complete_candidate_return": "PASS_SELF_HOSTED_WINDOWS_RECOVERY_EXECUTED_COMPLETE_CANDIDATE_RETURN_PRESENT_RECEIVING_INTAKE_REQUIRED"
+  },
+  "queue_advancing_results": [
+    "PASS_V31_PUBLIC_CONVERGENCE_PROVENANCE_BOUND_AND_EXACT_INPUTS_MATERIALIZED_ADMITTED_AND_PARENT_EXTRACTED",
+    "PASS_V31_EXACT_INPUTS_MATERIALIZED_ADMITTED_AND_PARENT_EXTRACTED"
+  ],
+  "authority": {
+    "self_hosted_execution_authorized": true,
+    "receiving_intake_authority": false,
+    "production_admission_authority": false,
+    "accepted_parent_extraction_authority": false,
+    "inherited_baseline_replay_authority": false,
+    "v31_product_mutation_authority": false,
+    "operator_visual_acceptance": "ABSENT",
+    "merge_authorized": false,
+    "release_authorized": false,
+    "public_route_effect": "none",
+    "pages_effect": "none",
+    "external_effect": "none"
+  }
+}
