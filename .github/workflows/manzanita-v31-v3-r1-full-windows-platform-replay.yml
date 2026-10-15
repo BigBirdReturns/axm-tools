@@ -1,0 +1,81 @@
+name: Manzanita v31 V3 R1 full Windows platform replay
+
+on:
+  pull_request:
+    paths:
+      - 'manzanita-next/recovery/v31-v3-r1-full-windows-platform-replay/**'
+      - '.github/workflows/manzanita-v31-v3-r1-full-windows-platform-replay.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manzanita-v31-v3-r1-full-windows-platform-replay-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  replay-exact-v3-r1-package:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    env:
+      PACKAGE_NAME: MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip
+      PACKAGE_URL: https://drive.usercontent.google.com/download?id=1tX9hAVhNdThVUq6ozuIfrqn5vAhgSxU3&export=download&confirm=t
+      PACKAGE_EXTRACT_ROOT: ${{ runner.temp }}\v31-v3-r1-exact-package
+      V31_OPERATOR_WORKSPACE: ${{ runner.temp }}\v31-v3-r1-platform-replay-workspace
+      ACQUISITION_RECEIPT: ${{ runner.temp }}\V31_V3_R1_EXACT_PACKAGE_ACQUISITION_RECEIPT.json
+      REPLAY_RECEIPT: ${{ runner.temp }}\v31-v3-r1-platform-replay-workspace\evidence\V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1_WINDOWS_PLATFORM_REPLAY_RECEIPT.json
+      VALIDATION_RECEIPT: ${{ runner.temp }}\V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1_WINDOWS_PLATFORM_REPLAY_RECEIPT.validation.json
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify bounded source and authority contract
+        shell: cmd
+        run: python -I -B manzanita-next\recovery\v31-v3-r1-full-windows-platform-replay\verify_source.py
+
+      - name: Acquire, verify, and isolate exact V3 R1 package
+        shell: cmd
+        run: >-
+          python -I -B
+          manzanita-next\recovery\v31-v3-r1-full-windows-platform-replay\fetch_exact_v3_r1_package.py
+          --url "%PACKAGE_URL%"
+          --output "%RUNNER_TEMP%\%PACKAGE_NAME%"
+          --extract-root "%PACKAGE_EXTRACT_ROOT%"
+          --receipt "%ACQUISITION_RECEIPT%"
+
+      - name: Execute exact package-owned Windows platform replay
+        shell: cmd
+        run: >-
+          call "%PACKAGE_EXTRACT_ROOT%\MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1\RUN_WINDOWS_PLATFORM_REPLAY.cmd"
+
+      - name: Validate full-package replay and authority holds
+        shell: cmd
+        run: >-
+          python -I -B
+          manzanita-next\recovery\v31-v3-r1-full-windows-platform-replay\validate_windows_platform_replay.py
+          --replay-receipt "%REPLAY_RECEIPT%"
+          --acquisition-receipt "%ACQUISITION_RECEIPT%"
+          --package "%RUNNER_TEMP%\%PACKAGE_NAME%"
+          --output "%VALIDATION_RECEIPT%"
+
+      - name: Retain exact full-package Windows replay evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manzanita-v31-v3-r1-full-windows-platform-replay
+          path: |
+            ${{ runner.temp }}\MW_V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1.zip
+            ${{ runner.temp }}\V31_V3_R1_EXACT_PACKAGE_ACQUISITION_RECEIPT.json
+            ${{ runner.temp }}\v31-v3-r1-platform-replay-workspace\evidence\V31_WINDOWS_PYTHON_RUNTIME_RESOLUTION_RECEIPT_V3_R1.json
+            ${{ runner.temp }}\v31-v3-r1-platform-replay-workspace\evidence\V31_OPERATOR_PREPARATION_RECEIPT_V3_R1.json
+            ${{ runner.temp }}\v31-v3-r1-platform-replay-workspace\evidence\V31_OPERATOR_RETURN_COLLECTION_RECEIPT_V3_R1.json
+            ${{ runner.temp }}\v31-v3-r1-platform-replay-workspace\evidence\V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1_WINDOWS_PLATFORM_REPLAY_RECEIPT.json
+            ${{ runner.temp }}\V31_OPERATOR_EXECUTION_BOOTSTRAP_V3_R1_WINDOWS_PLATFORM_REPLAY_RECEIPT.validation.json
+            manzanita-next\recovery\v31-v3-r1-full-windows-platform-replay\SOURCE_VERIFICATION_RECEIPT.json
+          retention-days: 30
+          if-no-files-found: warn
