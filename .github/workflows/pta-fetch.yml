@@ -167,15 +167,23 @@ jobs:
           git config user.name "pta-tracker-bot"
           git config user.email "actions@users.noreply.github.com"
           git add pta-tracker/data/items.json pta-tracker/data/archive.json
+          git add pta-tracker/data/derived.json pta-tracker/data/gaps.json
           # build_schools.py just rewrote pta-tracker/<slug>/ for every school
           # in schools.json and swept away any slug no longer listed there -
           # stage that whole result (additions and removals alike) so the
           # per-school pages a viewer gets are always what this run built,
           # not a stale artifact-only copy that never made it into history.
           # The exclusions keep this from re-scanning data/ (handled by the
-          # line above; gaps.json and derived.json are rebuilt for the artifact)
-          # or scripts/ (source, never build output). Archive must be committed
-          # so the next clean runner retains every item aged out of the feed.
+          # line above) or scripts/ (source, never build output). Archive must
+          # be committed so the next clean runner retains every item aged out
+          # of the feed. derived.json and gaps.json are committed too, not left
+          # as artifact-only outputs: other workflows share the "pages"
+          # concurrency group and redeploy the whole site from a clean checkout
+          # (organ-evolution-observe runs about 50 minutes after this one), so
+          # an uncommitted file is overwritten on the live site within the hour.
+          # Verified 2026-10-21: the live derived.json and gaps.json still served
+          # the 2026-07-27 committed copies while the gap issue carried that
+          # day's fresh check, and the page showed no derived meeting card.
           #
           # Gated on the build's own outcome because continue-on-error lets a
           # failed build reach this step: staging a half-written or swept-away

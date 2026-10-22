@@ -404,9 +404,13 @@ axm-genesis `docs/LOCALIZATION.md`.
 
 ### September 2026 maintenance
 
-The nightly workflow commits both `items.json` and the append-only
-`archive.json`; generated `gaps.json` and `derived.json` remain deployment
-outputs. Retired hand-written cards are preserved in `parent.json`
+The nightly workflow commits `items.json`, the append-only `archive.json`,
+and (since October 21, 2026) the regenerated `gaps.json` and `derived.json`.
+The latter two were deployment-only outputs until a second Pages-deploying
+workflow in this repo (`organ-evolution-observe.yml`, same `pages`
+concurrency group) was found redeploying the site from a clean checkout
+within the hour, which put the July 27 copies back on the live page every
+night and hid the derived board-meeting cards. Retired hand-written cards are preserved in `parent.json`
 `archived_cards` (not displayed). Archiving a reminder does not establish
 what the board decided. Past meetings without verified outcomes remain
 curation gaps until their records are reviewed.
