@@ -299,3 +299,26 @@ they are kept here verbatim before the branch was deleted. Source tip
 - On W01 the checkout is reached over SMB (`\\w03-fab\estate\...`); git
   needs `-c safe.directory=*`, and the `origin` remote (`/srv/git/...`) is a
   W03-local path that is unreachable from W01 - fetch and push via `github`.
+
+## Workflows after the branch cleanup, 22 October 2026
+
+- Eleven Manzanita qualification workflows (`manzanita-design-constitution`,
+  `-eight-overlays`, `-estate-parity`, `-external-campaign-runner`,
+  `-five-roles`, `-public-demo`, `-release-control`,
+  `-resilience-qualification`, `-seven-apertures`, `-street-glide`,
+  `-whole-experience`) open with a check that fails any pull request whose
+  `origin/main...HEAD` diff reaches outside their own `manzanita-next/<dir>/`
+  or has no file inside it. An edit to one of those workflow files alone
+  therefore fails that workflow's own check. `manzanita-five-roles.yml` is
+  also byte-pinned by `manzanita-next/roles/RECOVERY_RECEIPT.json`. Their
+  `push:` triggers still name feature branches deleted on 2026-10-21. Those
+  triggers fire only if a branch of that name is pushed again, so they were
+  left as is.
+- `manzanita-working-model.yml` has a `live-readback` job on push to `main`
+  that waits five minutes for `.github/pages-deployment.json` to name the
+  triggering SHA. On 2026-09-30 it timed out (run 36676567136), so a merge
+  touching its watched paths can leave one red run that says nothing about
+  the merged change.
+- `programs/manzanita-99/custody/CUSTODY_MANIFEST.json` is not kept current
+  on `main`. `manzanita-donor-custody.yml` rebuilds it before validating, so
+  the committed copy going stale never fails CI.

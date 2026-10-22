@@ -2,7 +2,7 @@ name: Manzanita Works Operating Fabric Dreamboard v0.2.0
 
 on:
   push:
-    branches: [main, agent/manzanita-operating-dreamboard-v0-2]
+    branches: [main]
     paths:
       - "manzanita-works/**"
       - ".github/workflows/manzanita-works-dreamboard.yml"

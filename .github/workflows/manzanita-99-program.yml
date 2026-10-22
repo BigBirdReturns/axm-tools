@@ -1,12 +1,6 @@
 name: Manzanita 99 program
 
 on:
-  push:
-    branches:
-      - program/manzanita-99-design-rigor
-    paths:
-      - "programs/manzanita-99/**"
-      - "!programs/manzanita-99/custody/**"
   pull_request:
     paths:
       - "programs/manzanita-99/**"

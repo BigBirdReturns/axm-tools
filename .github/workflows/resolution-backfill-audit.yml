@@ -1,12 +1,6 @@
 name: Resolution backfill audit
 
 on:
-  push:
-    branches:
-      - audit/resolution-backfill-v1
-    paths:
-      - "resolution-backfill/**"
-      - ".github/workflows/resolution-backfill-audit.yml"
   pull_request:
     paths:
       - "resolution-backfill/**"
