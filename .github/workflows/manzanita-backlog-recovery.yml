@@ -1,12 +1,6 @@
 name: Manzanita backlog forensic recovery
 
 on:
-  push:
-    branches:
-      - agent/manzanita-backlog-recovery-095
-    paths:
-      - "programs/manzanita-99/recovery/**"
-      - ".github/workflows/manzanita-backlog-recovery.yml"
   pull_request:
     paths:
       - "programs/manzanita-99/recovery/**"

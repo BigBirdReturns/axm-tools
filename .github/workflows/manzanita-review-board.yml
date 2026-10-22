@@ -1,12 +1,6 @@
 name: Manzanita contained review board
 
 on:
-  push:
-    branches:
-      - agent/manzanita-review-board-027-v2
-    paths:
-      - "programs/manzanita-99/review-board/**"
-      - ".github/workflows/manzanita-review-board.yml"
   pull_request:
     paths:
       - "programs/manzanita-99/review-board/**"

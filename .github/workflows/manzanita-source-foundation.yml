@@ -1,12 +1,6 @@
 name: Manzanita v1.6 source foundation
 
 on:
-  push:
-    branches:
-      - build/manzanita-v1.6-source-foundation
-    paths:
-      - "manzanita-next/**"
-      - ".github/workflows/manzanita-source-foundation.yml"
   pull_request:
     paths:
       - "manzanita-next/**"

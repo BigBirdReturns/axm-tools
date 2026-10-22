@@ -2,7 +2,7 @@ name: Manzanita photographic substance
 
 on:
   push:
-    branches: [main, agent/manzanita-public-convergence-v1-6]
+    branches: [main]
     paths:
       - "manzanita/assets/**"
       - "programs/manzanita-public-convergence/visual_substance_test.py"
