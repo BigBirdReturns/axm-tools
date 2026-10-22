@@ -1,0 +1,25 @@
+{
+  "schema": "axm-community-lab/gradient-seed-manifest@1",
+  "program": "EOC007 / GRADIENT-LINUX-SEED-151-DISPATCH",
+  "seed_root": "home-lab-gradient/seed",
+  "claim_boundary": "Read-only evidence collection only; no process launch, no network access, no installer side effects.",
+  "collector": {
+    "source": "scripts/collect-linux.py",
+    "launcher": "scripts/collect-linux",
+    "schema": "seed/collect-linux-host-observation-2.schema.json",
+    "validator": "seed/collect-linux.validator.py"
+  },
+  "reconstruction": {
+    "script": "seed/reconstruct.py",
+    "expected_output_name": "<host-id>.json",
+    "expected_output_path_contract": "Operator passes a writable host-local path ending in `<host-id>.json` as --out-file."
+  },
+  "files": [
+    "scripts/collect-linux.py",
+    "scripts/collect-linux",
+    "seed/collect-linux-host-observation-2.schema.json",
+    "seed/collect-linux.validator.py",
+    "seed/reconstruct.py",
+    "seed/seed-manifest.json"
+  ]
+}

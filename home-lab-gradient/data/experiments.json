@@ -37,6 +37,7 @@
       ],
       "commands": [
         "powershell -ExecutionPolicy Bypass -File scripts/collect-windows.ps1 -HostId <control-host|heavy-host-a|heavy-host-b> -OutFile \"$env:LOCALAPPDATA\\AXM\\home-lab-gradient\\observations\\<host-id>.json\"",
+        "python scripts/collect-linux.py --host-id <host-id> --out-file \"~/.local/state/axm/home-lab-gradient/observations/<host-id>.json\"",
         "python scripts/lab.py qualify-estate <control-host.json> <heavy-host-a.json> <heavy-host-b.json>"
       ]
     },

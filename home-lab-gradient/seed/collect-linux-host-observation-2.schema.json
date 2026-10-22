@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "axm-community-lab/host-observation@2",
+  "type": "object",
+  "required": [
+    "schema",
+    "observed_at",
+    "platform",
+    "host_id",
+    "collector",
+    "system",
+    "cpu",
+    "memory",
+    "storage",
+    "graphics",
+    "network",
+    "runtime",
+    "clock",
+    "observation_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "axm-community-lab/host-observation@2"},
+    "observed_at": {"type": "string"},
+    "platform": {"const": "linux"},
+    "host_id": {"type": "string", "minLength": 1},
+    "collector": {
+      "type": "object",
+      "required": ["schema", "platform", "source_path", "source_sha256", "python_executable"],
+      "properties": {
+        "schema": {"const": "axm-community-lab/host-observation-collector@1"},
+        "platform": {"const": "linux"},
+        "source_path": {"type": "string"},
+        "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "python_executable": {
+          "type": "object",
+          "required": ["path", "sha256"],
+          "properties": {
+            "path": {"type": "string"},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        }
+      }
+    },
+    "system": {"type": "object"},
+    "cpu": {"type": "array"},
+    "memory": {"type": "object"},
+    "storage": {"type": "object"},
+    "graphics": {"type": "object"},
+    "network": {"type": "object"},
+    "runtime": {"type": "array"},
+    "clock": {"type": "object"},
+    "observation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

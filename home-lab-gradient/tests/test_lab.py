@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -11,12 +13,12 @@ SCRIPTS = ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 from lab import qualify_estate, scaffold_function, start_protocol  # noqa: E402
-from planner import PlannerError, read_json, sha256_json  # noqa: E402
+from planner import PlannerError, canonical_bytes, sha256_json  # noqa: E402
 
 
-def observation(host_id: str, gpu_uuid: str) -> dict:
+def observation(host_id: str, gpu_uuid: str, schema: str = "axm-community-lab/windows-host-observation@1") -> dict:
     return {
-        "schema": "axm-community-lab/windows-host-observation@1",
+        "schema": schema,
         "observed_at": "2026-08-05T00:00:00Z",
         "host_id": host_id,
         "system": {"computer_name": host_id, "os_caption": "Windows 11"},
@@ -53,7 +55,75 @@ def observation(host_id: str, gpu_uuid: str) -> dict:
     }
 
 
+def linux_observation(host_id: str, gpu_uuid: str | None = "GPU-LINUX", *, runtime_reason: str | None = None) -> dict:
+    collector = Path(SCRIPTS / "collect-linux.py")
+    collector_sha = hashlib.sha256(collector.read_bytes()).hexdigest()
+    rows = [
+        {"name": "python", "present": True, "path": "/usr/bin/python", "disabled": False, "disabled_reason": None},
+        {"name": "git", "present": True, "path": "/usr/bin/git", "disabled": False, "disabled_reason": None},
+        {"name": "ollama", "present": False, "path": None, "disabled": True, "disabled_reason": "command not found in the current process PATH"},
+        {"name": "docker", "present": False, "path": None, "disabled": True, "disabled_reason": "command not found in the current process PATH"},
+        {"name": "wsl", "present": False, "path": None, "disabled": True, "disabled_reason": runtime_reason or "not applicable on a native Linux host"},
+        {"name": "nvidia-smi", "present": True, "path": "/usr/bin/nvidia-smi", "disabled": False, "disabled_reason": None},
+    ]
+    return {
+        "schema": "axm-community-lab/host-observation@2",
+        "observed_at": "2026-08-05T00:00:00Z",
+        "platform": "linux",
+        "host_id": host_id,
+        "collector": {
+            "schema": "axm-community-lab/host-observation-collector@1",
+            "platform": "linux",
+            "source_path": str(collector),
+            "source_sha256": collector_sha,
+            "python_executable": {
+            "path": os.path.realpath(sys.executable),
+            "sha256": sha256_file(Path(sys.executable)),
+            },
+        },
+        "system": {
+            "hostname": "heavy-host-b",
+            "kernel": "6.6.0",
+            "os_release": "Ubuntu 24.04",
+            "architecture": "x86_64",
+        },
+        "cpu": [{"name": "Intel Xeon", "cores": 8, "logical_processors": 16}],
+        "memory": {"total_bytes": 34359738368, "modules": []},
+        "storage": {"physical_disks": [{"model": "NVMe", "size_bytes": 2000000000}], "logical_volumes": []},
+        "graphics": {
+            "adapters": [
+                {
+                    "name": "Intel Arc",
+                    "vendor_guess": "Intel",
+                    "pnp_device_id": "0000:00:02.0",
+                    "role_candidate": "igpu-candidate",
+                }
+            ],
+            "nvidia": [{"uuid": gpu_uuid, "name": "NVIDIA GeForce 4090", "pci_bus_id": "0000:01:00.0"}],
+        },
+        "network": {"adapters": [{"name": "eth0"}]},
+        "runtime": rows,
+        "clock": {"stopwatch_frequency_hz": 1000000000, "samples": []},
+    }
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+def observation_digest(observation: dict) -> str:
+    return hashlib.sha256(canonical_bytes({k: v for k, v in observation.items() if k != "observation_sha256"})).hexdigest()
+
+
 class LabTests(unittest.TestCase):
+    def write_observation(self, base: Path, item: dict, host_id: str) -> Path:
+        item["observation_sha256"] = observation_digest(item)
+        path = base / f"{host_id}.json"
+        path.write_text(json.dumps(item, indent=2) + "\n", encoding="utf-8")
+        return path
+
     def test_scaffold_binds_adapter_digest(self):
         with tempfile.TemporaryDirectory() as raw:
             contract_path, fixture_path = scaffold_function("test-function", Path(raw), model="qwen3.5:9b-q4_K_M", host="http://127.0.0.1:11434")
@@ -67,8 +137,7 @@ class LabTests(unittest.TestCase):
             state = base / "state"
             files = []
             for host_id, gpu_uuid in (("control-host", "GPU-4060"), ("heavy-host-a", "GPU-3090-A"), ("heavy-host-b", "GPU-3090-B")):
-                path = base / f"{host_id}.json"
-                path.write_text(json.dumps(observation(host_id, gpu_uuid), indent=2) + "\n", encoding="utf-8")
+                path = self.write_observation(base, observation(host_id, gpu_uuid), host_id)
                 files.append(path)
             receipt_path, receipt = qualify_estate(
                 observations=files,
@@ -83,6 +152,26 @@ class LabTests(unittest.TestCase):
             )
             self.assertTrue(receipt_path.is_file())
 
+    def test_mixed_windows_linux_qualify_pass(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = []
+            for host_id, gpu_uuid in (("control-host", "GPU-4060"), ("heavy-host-a", "GPU-3090-A")):
+                files.append(self.write_observation(base, observation(host_id, gpu_uuid), host_id))
+            files.append(self.write_observation(base, linux_observation("heavy-host-b", "GPU-3090-B"), "heavy-host-b"))
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T01:15:00Z",
+                ingest=False,
+            )
+            self.assertEqual(receipt["status"], "PASS")
+            self.assertEqual(
+                {item["capability"] for item in receipt["supports"]},
+                {"host_inventory", "device_identity"},
+            )
+
     def test_disabled_runtime_without_reason_blocks_census(self):
         with tempfile.TemporaryDirectory() as raw:
             base = Path(raw)
@@ -92,9 +181,8 @@ class LabTests(unittest.TestCase):
                 item = observation(host_id, gpu_uuid)
                 if host_id == "heavy-host-a":
                     item["runtime"][4]["disabled_reason"] = None
-                source = base / f"{host_id}.json"
-                source.write_text(json.dumps(item, indent=2) + "\n", encoding="utf-8")
-                files.append(source)
+                path = self.write_observation(base, item, host_id)
+                files.append(path)
             _, receipt = qualify_estate(
                 observations=files,
                 state_dir=state,
@@ -107,6 +195,224 @@ class LabTests(unittest.TestCase):
             )
             self.assertFalse(check["pass"])
             self.assertNotEqual(receipt["status"], "PASS")
+
+    def test_missing_runtime_row_blocks_qualification(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = []
+            for host_id, gpu_uuid in (("control-host", "GPU-4060"), ("heavy-host-a", "GPU-3090-A"), ("heavy-host-b", "GPU-3090-B")):
+                item = observation(host_id, gpu_uuid)
+                if host_id == "heavy-host-b":
+                    item["runtime"] = [row for row in item["runtime"] if row["name"] != "wsl"]
+                files.append(self.write_observation(base, item, host_id))
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T01:40:00Z",
+                ingest=False,
+            )
+            self.assertNotEqual(receipt["status"], "PASS")
+            self.assertEqual(receipt["checks"][2]["pass"], False)
+
+    def test_duplicate_runtime_row_blocks_qualification(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = []
+            for host_id, gpu_uuid in (("control-host", "GPU-4060"), ("heavy-host-a", "GPU-3090-A"), ("heavy-host-b", "GPU-3090-B")):
+                item = observation(host_id, gpu_uuid)
+                if host_id == "control-host":
+                    item["runtime"].append(item["runtime"][0])
+                files.append(self.write_observation(base, item, host_id))
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T01:50:00Z",
+                ingest=False,
+            )
+            self.assertNotEqual(receipt["status"], "PASS")
+
+    def test_linux_runtime_denominator_and_wsl_inapplicability(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = []
+            good_windows = observation("control-host", "GPU-4060")
+            good_windows["runtime"][5]["disabled_reason"] = "not applicable on a native Linux host"
+            files.append(self.write_observation(base, good_windows, "control-host"))
+            files.append(self.write_observation(base, observation("heavy-host-a", "GPU-3090-A"), "heavy-host-a"))
+            linux = linux_observation("heavy-host-b", "GPU-3090-B", runtime_reason=None)
+            linux["runtime"][4]["disabled_reason"] = "wrong value"
+            files.append(self.write_observation(base, linux, "heavy-host-b"))
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T02:05:00Z",
+                ingest=False,
+            )
+            self.assertNotEqual(receipt["status"], "PASS")
+            self.assertEqual(receipt["checks"][2]["pass"], False)
+
+    def test_observation_digest_tamper_is_rejected(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = []
+            for host_id, gpu_uuid in (("control-host", "GPU-4060"), ("heavy-host-a", "GPU-3090-A"), ("heavy-host-b", "GPU-3090-B")):
+                item = observation(host_id, gpu_uuid)
+                if host_id == "heavy-host-b":
+                    item["memory"]["total_bytes"] = 0
+                files.append(self.write_observation(base, item, host_id))
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T02:20:00Z",
+                ingest=False,
+            )
+            self.assertNotEqual(receipt["status"], "PASS")
+
+    def test_linux_collector_source_digest_tamper_is_rejected(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = [
+                self.write_observation(base, observation("control-host", "GPU-4060"), "control-host"),
+                self.write_observation(base, observation("heavy-host-a", "GPU-3090-A"), "heavy-host-a"),
+            ]
+            item = linux_observation("heavy-host-b", "GPU-3090-B")
+            item["collector"]["source_sha256"] = "0" * 64
+            files.append(self.write_observation(base, item, "heavy-host-b"))
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T02:40:00Z",
+                ingest=False,
+            )
+            self.assertNotEqual(receipt["status"], "PASS")
+            self.assertTrue(any("source_identity" in row for row in receipt["unresolved"]["source_identity"]))
+
+    def test_missing_physical_disks_is_rejected(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = [
+                self.write_observation(base, observation("control-host", "GPU-4060"), "control-host"),
+                self.write_observation(base, observation("heavy-host-a", "GPU-3090-A"), "heavy-host-a"),
+            ]
+            item = linux_observation("heavy-host-b", "GPU-3090-B")
+            item["storage"]["physical_disks"] = []
+            files.append(self.write_observation(base, item, "heavy-host-b"))
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T02:55:00Z",
+                ingest=False,
+            )
+            self.assertNotEqual(receipt["status"], "PASS")
+
+    def test_declared_igpu_without_observed_evidence_is_rejected(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            item = linux_observation("control-host", "GPU-4060")
+            item["host_id"] = "heavy-host-a"
+            item["graphics"]["adapters"] = []
+            files = [
+                self.write_observation(base, observation("control-host", "GPU-4060"), "control-host"),
+                self.write_observation(base, item, "heavy-host-a"),
+                self.write_observation(base, observation("heavy-host-b", "GPU-3090-B"), "heavy-host-b"),
+            ]
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T03:10:00Z",
+                ingest=False,
+            )
+            self.assertNotEqual(receipt["status"], "PASS")
+
+    def test_declared_nvidia_uuid_missing_is_rejected(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = [
+                self.write_observation(base, observation("control-host", "GPU-4060"), "control-host"),
+                self.write_observation(base, observation("heavy-host-a", "GPU-3090-A"), "heavy-host-a"),
+            ]
+            item = linux_observation("heavy-host-b", None)
+            files.append(self.write_observation(base, item, "heavy-host-b"))
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T03:25:00Z",
+                ingest=False,
+            )
+            self.assertNotEqual(receipt["status"], "PASS")
+
+    def test_private_fields_must_be_absent(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            files = [
+                self.write_observation(base, observation("control-host", "GPU-4060"), "control-host"),
+                self.write_observation(base, observation("heavy-host-a", "GPU-3090-A"), "heavy-host-a"),
+                self.write_observation(base, linux_observation("heavy-host-b", "GPU-3090-B"), "heavy-host-b"),
+            ]
+            bad = observation("control-host", "GPU-4060")
+            bad["network"]["serial_numbers_collected"] = "bad"
+            files[0] = self.write_observation(base, bad, "control-host")
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T03:40:00Z",
+                ingest=False,
+            )
+            self.assertNotEqual(receipt["status"], "PASS")
+            self.assertTrue(any("prohibited private field" in item for item in receipt["unresolved"]["privacy"]))
+
+    def test_synthetic_n01_observation_cannot_replace_physical(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            intended = linux_observation("heavy-host-b", "GPU-SYNTH")
+            intended["collector"]["source_sha256"] = "deadbeef" * 8
+            files = [
+                self.write_observation(base, observation("control-host", "GPU-4060"), "control-host"),
+                self.write_observation(base, observation("heavy-host-a", "GPU-3090-A"), "heavy-host-a"),
+                self.write_observation(base, intended, "heavy-host-b"),
+            ]
+            _, receipt = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T04:10:00Z",
+                ingest=False,
+            )
+            self.assertNotEqual(receipt["status"], "PASS")
+            self.assertIn("collector", receipt["unresolved"]["source_identity"][0])
+
+    def test_existing_windows_bytes_preserved(self):
+        with tempfile.TemporaryDirectory() as raw:
+            base = Path(raw)
+            state = base / "state"
+            source_path = base / "control-host.json"
+            raw_payload = observation("control-host", "GPU-4060")
+            raw_payload["observation_sha256"] = observation_digest(raw_payload)
+            source_path.write_text(json.dumps(raw_payload, indent=2) + "\n", encoding="utf-8")
+            files = [
+                source_path,
+                self.write_observation(base, observation("heavy-host-a", "GPU-3090-A"), "heavy-host-a"),
+                self.write_observation(base, linux_observation("heavy-host-b", "GPU-3090-B"), "heavy-host-b"),
+            ]
+            receipt_path, _ = qualify_estate(
+                observations=files,
+                state_dir=state,
+                generated_at="2026-08-05T04:25:00Z",
+                ingest=False,
+            )
+            observed = sha256_file(Path(source_path))
+            copied = Path(receipt_path.parent) / "inputs" / "control-host.json"
+            copied_digest = sha256_file(copied)
+            self.assertEqual(observed, copied_digest)
 
     def test_collector_uses_bom_free_utf8(self):
         source = (SCRIPTS / "collect-windows.ps1").read_text(encoding="utf-8")

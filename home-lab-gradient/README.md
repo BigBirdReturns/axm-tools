@@ -63,12 +63,20 @@ Use `--state-dir` before the subcommand to select a different directory. Observa
 
 ## Easy win 1: identify the estate
 
-Run the collector once on each Windows host with the declared host identity:
+Run the collector on each Windows host with the declared host identity:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/collect-windows.ps1 `
   -HostId control-host `
   -OutFile "$env:LOCALAPPDATA\AXM\home-lab-gradient\observations\control-host.json"
+```
+
+For Linux hosts, run:
+
+```bash
+python scripts/collect-linux.py \\
+  --host-id heavy-host-b \\
+  --out-file "$HOME/.local/state/axm/home-lab-gradient/observations/heavy-host-b.json"
 ```
 
 Repeat with `heavy-host-a` and `heavy-host-b`, then gather the three JSON files on the control host and qualify them:
@@ -78,7 +86,9 @@ python scripts/lab.py qualify-estate \
   control-host.json heavy-host-a.json heavy-host-b.json
 ```
 
-The collector uses built-in Windows and NVIDIA interfaces when present. It records CPU, RAM, physical storage, display adapters, NVIDIA UUIDs, PCI bus identities, driver versions, physical network link properties, runtime presence, wall-clock samples, and monotonic timer frequency. It deliberately omits serial numbers, MAC addresses, IP addresses, and the Windows machine GUID.
+The collector uses platform-native interfaces when present. It records CPU, RAM, physical storage, display adapters, NVIDIA UUIDs, PCI bus identities, driver versions, physical network link properties, runtime presence, wall-clock samples, and monotonic timer frequency. It deliberately omits serial numbers, MAC addresses, IP addresses, and the machine GUID.  
+
+The offline seed for Linux execution lives in `seed/` and includes `collect-linux.py`, a POSIX launcher, schema/validator, manifest, checksums, and a deterministic reconstruction script.
 
 A complete receipt promotes `host_inventory` and `device_identity` to `observed`. A partial receipt can promote host inventory while leaving unresolved accelerator identities explicit. It cannot admit workers, measure topology, or establish cross-host clock precision.
 
