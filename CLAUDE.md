@@ -222,6 +222,30 @@ Every line of the Python multiline HTML string must remain inside the YAML `run`
   placement verdict now refuses that projection; concurrency 4 is a modeled
   scenario, not a new throughput measurement. Preserve the source-class analogy.
 
+## Compute quirks recovered from an unmerged branch, 21 October 2026
+
+These three dated entries were written on `work/ha-capacity-supervisor-20260925`,
+which never merged. The compute code itself now lives in Cantos (verified
+blob-for-blob on 2026-10-21) but these field notes existed nowhere else, so
+they are kept here verbatim before the branch was deleted. Source tip
+`8a6716c4`, recorded in the project home's
+`sessions/branch-cleanup-20261021/branch-tips-before.txt`.
+
+### Compute supervisor handoff, 25 September 2026
+
+- On the current Windows key seat, a Python child launched with CREATE_NO_WINDOW from an SSH command did not survive the remote command ending: a delayed harmless witness never wrote its receipt. A registered Windows Task Scheduler action did survive the same N01-to-seat handoff and returned zero. The supervisor therefore wakes configured native tasks; its current interactive principal requires the owner to remain logged in. Requalify this behavior after service or account changes.
+- Git SSH ProxyJump on this Windows installation required the generated SSH config path with forward slashes and a quoted UserKnownHostsFile value for the account path containing spaces. Resolve peers and pins from Estate; keep provider host, team and key paths in private configuration. The verified route leaves the private key on its owning seat.
+
+### Scheduled compute connection repair, 26 September 2026 UTC
+
+- The local provider sample and harmless scheduled-worker witness did not qualify the scheduled provider connection. Eleven scheduled checks failed locally before reaching the provider: Windows sshd supplied `SHELL=cmd.exe`, incompatible with Git SSH's implicit ProxyJump shell command. Estate's existing child descriptor cleanup alone reproduced the failure; removing the incompatible SHELL value for that child reached the authenticated team. Keep the repair child-scoped and retain the failed observations as unknown, never no-capacity evidence.
+- The remote TUI also supplied inline SGR styles and could auto-enter the sole team before drawing its root handle list. Strip styles without inserting line breaks; gate the read-only provisioning key on the exact loaded team breadcrumb, idle account and correct key hint. A visible conflicting handle remains a hold. Failure status must propagate through Python, remote PowerShell and N01 while retaining campaign JSON, not merely the successful transport envelope.
+- Fable's actual first-baseline worker was denied permission to open the provider TUI by Claude Code auto review (`Real-World Transactions`), then returned process exit zero after recording `hold_permission_refused` / `not_acquired`. A preparation success and worker heartbeat do not establish operational tool permission or a running workload. Inspect the result disposition; surface this hold nonzero and stop the acquisition timer only with confirmed no allocation. Retain the refusal and obtain scoped permission before any retry; another tool or host is not clearance.
+
+### MI300X VF inventory, 26 September 2026 UTC
+
+- A rented MI300X VF exposed AMD PCI vendor/device `1002:74b5` with processing-accelerator class `0x120000`. The display-class-only probe reported zero GPUs while ROCm reported one MI300X VF. The successor admits that class only for AMD, retains vendor filtering, and passed a fresh native capture with one GPU; the original capture and manifest remain evidence. The full probe suite passed 21/21 on N01. This inventory correction does not change the frozen workload or establish a serving/benchmark result.
+
 ## PTA verification - October 21, 2026
 
 - **Two workflows deploy Pages from the same `pages` concurrency group.**
