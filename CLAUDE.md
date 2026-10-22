@@ -221,3 +221,57 @@ Every line of the Python multiline HTML string must remain inside the YAML `run`
   projected serial wall time 21,570.5 s against a 5,400 s deadline. Its separate
   placement verdict now refuses that projection; concurrency 4 is a modeled
   scenario, not a new throughput measurement. Preserve the source-class analogy.
+
+## PTA verification - October 21, 2026
+
+- **Two workflows deploy Pages from the same `pages` concurrency group.**
+  `organ-evolution-observe.yml` (cron 13:20 UTC, ran 18:07 UTC on Oct 21)
+  redeploys the whole site from a clean checkout about 50 minutes after
+  `pta-fetch.yml`. Anything fetch.py writes but does not commit is therefore
+  overwritten on the live site within the hour: live `derived.json` and
+  `gaps.json` still served the 2026-07-27 committed copies while issue #40
+  carried that day's fresh gap check, so the page showed no derived meeting
+  card for October 27. Fix: the nightly commit now stages both files. Any
+  future "machine writes it, Pages serves it" file must be committed too.
+- The gap issue (#40, label `tracker-gap`) is the reliable channel; it was
+  current every night even while the served `gaps.json` was stale.
+- Pages deploy failed once on Oct 13 (run 339, "Deploy to GitHub Pages"
+  step); the push-triggered run 340 the same evening succeeded. Transient.
+- **Simbli meeting ids:** Sep 22 = `MID=81149`, Oct 13 = `MID=86673`.
+  `MID=81150` redirects to the Simbli login page (not a public meeting).
+  Listing rows are not hrefs: each title is `javascript:ViewMeeting(S, MID,
+  ...)`, so read the MID from the row's `onclick`. The agenda body loads
+  after the page; the built-in browser's `get_page_text` returns only the
+  chrome, while `document.body.innerText` after a 3 s wait has the agenda.
+  The listing's "Minutes" column is empty for every 2026 meeting, and the
+  district's Adopted Minutes page stops at January 16, 2026, so recordings
+  remain the only outcome evidence.
+- **Recordings:** channel `@AUSDBoardmeeting`; Sep 22 = `lY1LQ9ErEyQ`,
+  Oct 13 = `A0YHSjbT5Js`. YouTube's transcript panel now renders
+  `transcript-segment-view-model` elements (not `ytd-transcript-segment-
+  renderer`); click the button whose aria-label is "Show transcript", wait
+  ~5 s, then read those elements. The Oct 13 agenda's adjournment line says
+  the next meeting is "October 27, 2027" - a district typo for 2026.
+- **CAASPP:** CDE News Release #26-44 (October 15, 2026) released 2025-26
+  CAASPP/ELPAC results and the 2026 California School Dashboard together.
+  `cde.ca.gov/ta/tg/ca/caasppresults.asp` answers datacenter curl with a
+  Radware captcha; the news-release pages and the built-in browser work.
+  AUSD News RSS has published nothing since June 3, 2026, so "district
+  usually comments" did not happen by October 21.
+- **Holly Avenue phone guidance** is posted: ha.ausd.net links an "AUSD
+  Smart Device Policy" PDF (Edlio upload dated 2026-08-07, 3 pages). Page 1
+  is the AUSD Elementary School Cell Phones and Smart Devices Policy: devices
+  highly discouraged; may not be used during school hours; must stay in
+  backpacks; parents contact students only through the office or classroom
+  staff; confiscation on violation. Pages 2-3 are the Chromebook technology
+  use agreement. The PDF uses Identity-H fonts; stdlib extraction needs the
+  ToUnicode CMaps (see S:\Scratch\Temp\pta-tracker-20261021\pdfcmap.py).
+- **Expanded learning:** AUSD's before/after-school provider is Right At
+  School (`ausd.net/apps/pages/RightAtSchool`), which lists a Holly Avenue
+  program contact. Link the district page; do not copy contacts into cards.
+- **CAPTA:** on Oct 21 the Take Action page showed no active alerts; the
+  Current Legislation page lists SB 747, SB 1048 and AB 2651 as the
+  co-sponsored/supported bills. No campaign recommendation follows from it.
+- On W01 the checkout is reached over SMB (`\\w03-fab\estate\...`); git
+  needs `-c safe.directory=*`, and the `origin` remote (`/srv/git/...`) is a
+  W03-local path that is unreachable from W01 - fetch and push via `github`.

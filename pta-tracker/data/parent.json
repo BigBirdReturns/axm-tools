@@ -10,31 +10,31 @@
     }
   },
   "note": "Curated by the VP Legislation, by hand. The nightly fetch never touches this file — parent cards are written consequences, not scraped headlines. Every card needs: kid_impact (one sentence, what changes for a student/family), owner (who actually decides), and at most one action. Keep kid_impact to ONE sentence at a 4th-6th grade reading level: the single-sentence form is the one with evidence behind it, and this audience reads it in four languages. Give any dated coming_up card an 'until' (YYYY-MM-DD): the page hides it the day after, so a past meeting can never sit there saying 'coming up'. Give any card a 'covers' array of items.json ids it accounts for — the nightly gap check flags every district hot item that no card covers, so an uncovered id is a card someone still owes. If an item can't be phrased as a consequence with an owner, it stays in the VP Desk. The watchlist is VP-Desk-only: known scheduled obligations with a date they're expected by — the page flags anything past due that isn't marked done, so a blank where a report should be never goes unnoticed.",
-  "updated": "2026-09-21",
+  "updated": "2026-10-21",
   "coming_up": [
     {
-      "id": "coming-board-2026-09-22",
+      "id": "coming-board-2026-10-27",
       "kind": "meeting",
-      "until": "2026-09-22",
-      "when": "2026-09-22T19:00",
+      "until": "2026-10-27",
+      "when": "2026-10-27T19:00",
       "location": "Arcadia Education Center Board Room, 150 S 3rd Ave, Arcadia, CA 91006",
-      "title": "September 22: learning materials, teacher assignments and facilities",
-      "kid_impact": "Parents can speak at the board's hearing on whether students have enough learning materials, before the board votes.",
-      "impact_area": "Classroom materials / district decisions",
+      "title": "October 27: AUSD Board of Education meets",
+      "kid_impact": "Board meetings are where district decisions get made — phone rules, budgets, calendars — before they ever reach a classroom.",
+      "impact_area": "District decisions",
       "owner": "AUSD Board of Education",
-      "time_sensitivity": "September 22 at 7 p.m.; agenda reviewed September 21, decisions still pending",
-      "source_url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=81149",
+      "time_sensitivity": "October 27 at 7 p.m.; the agenda usually posts on Simbli the Friday before (October 23). Checked October 21: not yet posted",
+      "source_url": "https://www.ausd.net/apps/pages/agenda",
       "covers": [
-        "ausd-mtg-2026-09-22"
+        "ausd-mtg-2026-10-27"
       ],
       "action": {
         "type": "read",
-        "label": "Read the September 22 agenda",
-        "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=81149"
+        "label": "Check the agenda on Simbli",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512"
       },
-      "reviewed_on": "2026-09-21",
-      "disposition": "Optional public participation; decisions pending",
-      "report_summary": "The September 22 AUSD board meeting is scheduled for 7 p.m. and includes a hearing on instructional materials. Decisions are pending; attendance is optional."
+      "reviewed_on": "2026-10-21",
+      "disposition": "Optional public participation; agenda pending",
+      "report_summary": "The next AUSD board meeting is Tuesday, October 27 at 7 p.m. The agenda was not yet posted on October 21; it usually appears on Simbli the Friday before. Attendance is optional."
     }
   ],
   "in_effect": [
@@ -45,7 +45,7 @@
       "kid_impact": "Students must silence and put away phones during class unless staff allow their use; each school sets any other permitted times.",
       "impact_area": "School day / devices",
       "owner": "Arcadia USD board sets the policy; each school implements it",
-      "time_sensitivity": "BP 5131.8 adopted June 23, 2026; verified September 21",
+      "time_sensitivity": "BP 5131.8 adopted June 23, 2026; Holly Avenue's posted elementary device rules verified October 21",
       "law_url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202320240AB3216",
       "law_label": "AB 3216 — Pupils: use of smartphones",
       "source_url": "https://simbli.eboardsolutions.com/Policy/ViewPolicy.aspx?S=36030512&revid=qalhvuFRp3WcLpRMvzHRFA==&ppage=0&st=mobile&mt=Exact&ptid=amIgTZiB9plushNjl6WXhfiOQ==&fromPageId=6",
@@ -57,10 +57,10 @@
         "label": "Read AUSD mobile-device rules",
         "url": "https://simbli.eboardsolutions.com/Policy/ViewPolicy.aspx?S=36030512&revid=qalhvuFRp3WcLpRMvzHRFA==&ppage=0&st=mobile&mt=Exact&ptid=amIgTZiB9plushNjl6WXhfiOQ==&fromPageId=6"
       },
-      "reviewed_on": "2026-09-21",
+      "reviewed_on": "2026-10-21",
       "disposition": "For information",
-      "verification_note": "District BP 5131.8 is adopted. School-specific permitted times and implementation still need confirmation. Consult the full policy for exceptions.",
-      "report_summary": "AUSD adopted its mobile-device policy on June 23. Students must silence and put away phones during instruction unless authorized. Schools set other permitted times; Holly Avenue details still need confirmation. See the policy for exceptions."
+      "verification_note": "District BP 5131.8 is adopted. Holly Avenue's website links the AUSD Elementary School Cell Phones and Smart Devices Policy (PDF posted August 2026, https://4.files.edl.io/2e5d/08/07/26/010512-daca9e8c-075c-44e4-b70e-0439c0ef9780.pdf): phones, smartwatches and other smart devices are highly discouraged, may not be used during school hours, must stay in backpacks, and parents reach students through the office or classroom staff; a device used in violation is confiscated for a parent to pick up. Consult the full policies for exceptions.",
+      "report_summary": "AUSD adopted its mobile-device policy on June 23. Holly Avenue's posted elementary rules: devices may not be used during school hours, must stay in backpacks, and parents reach students through the office. See the policies for exceptions."
     },
     {
       "id": "parent-sb848",
@@ -118,16 +118,16 @@
       "covers": [
         "ausd-mtg-2026-08-25"
       ],
-      "verification_note": "Agenda consent item F identifies the ELOP Plan 2026. Official meeting recording transcript: no consent items removed at 13:29; motion for A-J at 1:18:12 and passage at 1:18:31. Recording evidence, not signed minutes; no claim about school-specific eligibility or seats.",
+      "verification_note": "Agenda consent item F identifies the ELOP Plan 2026. Official meeting recording transcript: no consent items removed at 13:29; motion for A-J at 1:18:12 and passage at 1:18:31. Recording evidence, not signed minutes; no claim about school-specific eligibility or seats. Before- and after-school care at Holly Avenue is run by Right At School; the district's Right At School page (https://www.ausd.net/apps/pages/RightAtSchool) lists registration and the Holly Avenue program contact (verified October 21).",
       "verification_url": "https://www.youtube.com/watch?v=vw_1xjT_cBQ&t=4692",
       "action": {
         "type": "read",
         "label": "Read the expanded learning plan",
         "url": "https://simbli.eboardsolutions.com/Meetings/Attachment.aspx?S=36030512&AID=1672654&MID=75661"
       },
-      "reviewed_on": "2026-09-21",
+      "reviewed_on": "2026-10-21",
       "disposition": "For information",
-      "report_summary": "The district approved its expanded-learning plan on August 25. Families can review the plan for programs outside the regular school day; school-specific eligibility and available places still need confirmation."
+      "report_summary": "The district approved its expanded-learning plan on August 25. Before- and after-school care at Holly Avenue is run by Right At School; registration and the school's program contact are on the district's Right At School page."
     },
     {
       "id": "parent-arts-report-2026",
@@ -151,6 +151,74 @@
       "reviewed_on": "2026-09-21",
       "disposition": "For information",
       "report_summary": "The district approved its 2025-26 arts funding report on September 8. It is a report on funding, not a promise of new classes at Holly Avenue."
+    },
+    {
+      "id": "parent-materials-2026",
+      "kind": "district",
+      "title": "Board certified every student has textbooks and learning materials",
+      "kid_impact": "The board held its yearly public hearing and voted that every student has the textbooks and learning materials the state requires; tell the school office if your child is missing one.",
+      "impact_area": "Classroom materials",
+      "owner": "AUSD Board of Education",
+      "time_sensitivity": "Public hearing and vote September 22, 2026; recording reviewed October 21",
+      "source_url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=81149",
+      "covers": [
+        "ausd-mtg-2026-09-22"
+      ],
+      "verification_note": "Agenda action item II.a: Public Hearing and Action, Resolution No. 26-27-09, Sufficiency of Instructional Materials (the Education Code 60119 annual hearing covering English, math, science and social science). Official recording transcript: hearing opened 1:13:39 with no public comments and closed 1:13:48; motion 1:14:02; vote called 1:15:15; 'Motion carries' 1:15:21. The same meeting adopted Resolution 26-27-10 (annual authorization to assign teachers to subjects not on their credential; vote 1:18:04-1:18:13) and Resolution 26-27-11 (Hispanic Heritage Month), and approved consent items A-I at 2:10:30 with none removed. Recording evidence, not signed minutes.",
+      "verification_url": "https://www.youtube.com/watch?v=lY1LQ9ErEyQ&t=4515",
+      "action": {
+        "type": "read",
+        "label": "Read the September 22 agenda",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=81149"
+      },
+      "reviewed_on": "2026-10-21",
+      "disposition": "For information",
+      "report_summary": "On September 22 the board held its yearly public hearing and certified that every student has sufficient textbooks and learning materials; no one spoke at the hearing. The board also renewed its annual authorization for some teachers to teach subjects outside their credential. Families who find a missing textbook should tell the school office."
+    },
+    {
+      "id": "parent-spsa-2026",
+      "kind": "district",
+      "title": "School improvement plans approved for every school",
+      "kid_impact": "The board approved each school's School Plan for Student Achievement, the yearly plan for how Holly Avenue will use its funds to help students learn; ask the office how to read it.",
+      "impact_area": "School goals / funding",
+      "owner": "AUSD Board of Education",
+      "time_sensitivity": "Approved October 13, 2026 on the consent agenda; recording reviewed October 21",
+      "source_url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=86673",
+      "covers": [
+        "ausd-mtg-2026-10-13"
+      ],
+      "verification_note": "Agenda consent item IV.e, School Plans for Student Achievement (SPSA). Official recording transcript: no items removed from consent (26:54); motion to approve consent items A-E at 1:54:37; 'The motion carries' at 1:54:43; a board member's closing comment recognized the SPSA approval at 3:04:58. Also at this meeting, for information only: first reading of revised Board Policy 5141.21 on administering medication (staff proposed adding a stock albuterol inhaler program; no vote yet), and the Williams quarterly uniform-complaint summary was zero. A study session covered the district's Behavior Response Team. Recording evidence, not signed minutes; the Holly Avenue plan's contents were not reviewed here.",
+      "verification_url": "https://www.youtube.com/watch?v=A0YHSjbT5Js&t=6877",
+      "action": {
+        "type": "check",
+        "label": "Ask the office how to read Holly Avenue's plan",
+        "url": "{{school_site}}"
+      },
+      "reviewed_on": "2026-10-21",
+      "disposition": "For information",
+      "report_summary": "On October 13 the board approved every school's School Plan for Student Achievement on the consent agenda, including Holly Avenue's. The plan's contents were not reviewed for this update; families can ask the office how to read it. The board also heard a first reading of an updated medication policy (no vote yet) and a study session on the district's Behavior Response Team."
+    },
+    {
+      "id": "parent-caaspp-2026",
+      "kind": "state",
+      "title": "Spring 2026 state test results are out",
+      "kid_impact": "California released last spring's state test results and the 2026 School Dashboard on October 15, so families can look up how Holly Avenue did compared with the district and the state.",
+      "impact_area": "Test results / school performance",
+      "owner": "California Department of Education",
+      "time_sensitivity": "Released October 15, 2026; no district statement as of October 21",
+      "source_url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel44.asp",
+      "covers": [
+        "27f761130722"
+      ],
+      "verification_note": "CDE News Release #26-44 (October 15, 2026) released the 2025-26 CAASPP and ELPAC results together with the 2026 California School Dashboard; statewide, 49.3% of students met the English standard and 38.4% met the math standard. School- and district-level results are on the CAASPP results site and the Dashboard; Holly Avenue's numbers were not reviewed here, and the AUSD news feed had posted nothing since June 3.",
+      "action": {
+        "type": "read",
+        "label": "Read the state's results announcement",
+        "url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel44.asp"
+      },
+      "reviewed_on": "2026-10-21",
+      "disposition": "For information",
+      "report_summary": "California released spring 2026 state test results and the 2026 School Dashboard on October 15. Statewide, 49.3 percent of students met the English standard and 38.4 percent met the math standard. Holly Avenue's and the district's results are posted on the state sites and were not reviewed for this update; the district has not issued a statement."
     }
   ],
   "actions": [
@@ -216,11 +284,12 @@
     {
       "id": "watch-caaspp",
       "what": "CAASPP test results released",
-      "why": "State test scores land in the fall; district usually comments. Expect parent questions comparing Holly Avenue to district and state.",
+      "why": "Verified October 21: CDE News Release #26-44 (October 15, 2026) released the 2025-26 CAASPP/ELPAC results and the 2026 California School Dashboard together. AUSD had not posted a district comment (its news feed last updated June 3, 2026). Holly Avenue's own numbers still need a look before any parent comparison.",
       "expected_by": "2026-10-31",
-      "check_url": "https://www.ausd.net/apps/news/",
-      "check_label": "District news",
-      "status": "open"
+      "check_url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel44.asp",
+      "check_label": "CDE release #26-44 (Oct 15, 2026)",
+      "status": "done",
+      "verified_on": "2026-10-21"
     },
     {
       "id": "watch-board-reorg",
@@ -263,37 +332,80 @@
         "label": "Check the agenda on Simbli",
         "url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512"
       }
+    },
+    {
+      "id": "coming-board-2026-09-22",
+      "kind": "meeting",
+      "until": "2026-09-22",
+      "when": "2026-09-22T19:00",
+      "location": "Arcadia Education Center Board Room, 150 S 3rd Ave, Arcadia, CA 91006",
+      "title": "September 22: learning materials, teacher assignments and facilities",
+      "kid_impact": "Parents can speak at the board's hearing on whether students have enough learning materials, before the board votes.",
+      "impact_area": "Classroom materials / district decisions",
+      "owner": "AUSD Board of Education",
+      "time_sensitivity": "September 22 at 7 p.m.; agenda reviewed September 21, decisions still pending",
+      "source_url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=81149",
+      "covers": [
+        "ausd-mtg-2026-09-22"
+      ],
+      "action": {
+        "type": "read",
+        "label": "Read the September 22 agenda",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=81149"
+      },
+      "reviewed_on": "2026-09-21",
+      "disposition": "Optional public participation; decisions pending",
+      "report_summary": "The September 22 AUSD board meeting is scheduled for 7 p.m. and includes a hearing on instructional materials. Decisions are pending; attendance is optional.",
+      "archived_on": "2026-10-21",
+      "archive_note": "Replaced by parent-materials-2026 after the official September 22 recording was reviewed."
     }
   ],
   "publication_note": "Officer-prepared pilot for board review. This page does not represent an adopted PTA position or district guidance. Sources and unresolved questions are shown so the board can assess it before wider sharing.",
   "board_report": {
-    "reviewed_on": "2026-09-21",
-    "review_by": "2026-09-23",
+    "reviewed_on": "2026-10-21",
+    "review_by": "2026-10-28",
     "disposition": "For information and board feedback. No policy endorsement or advocacy vote is requested in this draft.",
     "request": "Please review the pilot and suggest corrections or missing family questions. Agree how future updates should be reviewed and shared through an existing PTA channel. No meeting or attendance is requested.",
     "card_ids": [
-      "parent-phones",
-      "parent-elop-2026",
-      "parent-arts-report-2026",
-      "coming-board-2026-09-22"
+      "parent-materials-2026",
+      "parent-spsa-2026",
+      "parent-caaspp-2026",
+      "coming-board-2026-10-27"
     ],
     "followups": [
       {
         "what": "Review the September 22 district meeting outcome; replace the agenda reminder with verified decisions.",
         "owner": "VP Legislation",
         "due": "2026-09-23",
-        "status": "open"
+        "status": "done",
+        "done_on": "2026-10-21",
+        "result": "Resolution 26-27-09 and the consent votes verified from the official recording; parent-materials-2026 replaces the reminder."
       },
       {
         "what": "Confirm the school-specific phone guidance and expanded-learning application/contact information before promising families details.",
         "owner": "VP Legislation; school office is the information source",
         "due": "2026-09-29",
-        "status": "open"
+        "status": "done",
+        "done_on": "2026-10-21",
+        "result": "Holly Avenue posts the AUSD elementary smart-device policy; the district's Right At School page carries expanded-learning registration and the school program contact."
       },
       {
         "what": "Record feedback from the full board, the agreed review/distribution process, and the next update date.",
         "owner": "VP Legislation, with PTA president",
-        "due": "2026-09-29",
+        "due": "2026-10-28",
+        "status": "open",
+        "note": "Not yet shared with the full board as of October 21; this is the officer's step."
+      },
+      {
+        "what": "Review the October 27 district meeting outcome; replace the agenda reminder with verified decisions.",
+        "owner": "VP Legislation",
+        "due": "2026-10-28",
+        "status": "open"
+      },
+      {
+        "what": "Check whether AUSD comments on the 2025-26 CAASPP/Dashboard results and whether Holly Avenue's results need a parent summary.",
+        "owner": "VP Legislation",
+        "due": "2026-11-17",
         "status": "open"
       }
     ],
@@ -311,6 +423,6 @@
         "url": "https://toolkit.capta.org/job-descriptions/legislative-advocacy-chairman/"
       }
     ],
-    "closing": "Next I will check the September 22 meeting outcomes and seek the school-specific phone and expanded-learning details. Please pass along family questions or corrections for a future update."
+    "closing": "Next I will check the October 27 meeting outcomes and watch for district comment on the state test results. Please pass along family questions or corrections for a future update."
   }
 }
