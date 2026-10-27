@@ -1,0 +1,42 @@
+name: Research Continuity qualification
+on:
+  push:
+    paths: ['research-continuity/**', '.github/workflows/research-continuity-check.yml']
+  pull_request:
+    paths: ['research-continuity/**', '.github/workflows/research-continuity-check.yml']
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact published source, custody boundary and runnable kit
+        run: python research-continuity/scripts/validate.py
+      - name: Native journal, cycle and measurement adversarial tests
+        run: node --test research-continuity/tests/*.test.cjs
+      - name: Install isolated test-only browser tooling
+        run: |
+          python -m pip install playwright==1.64.1
+          python -m playwright install --with-deps chromium
+      - name: Exercise real UI, cold handoff, offline export and responsive composition
+        env:
+          TMPDIR: ${{ runner.temp }}
+          EVIDENCE_DIR: ${{ runner.temp }}/research-continuity-browser
+        run: python research-continuity/tests/browser.py
+      - name: Keep the observed browser evidence
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: research-continuity-browser
+          path: ${{ runner.temp }}/research-continuity-browser
+          if-no-files-found: warn
+          retention-days: 30

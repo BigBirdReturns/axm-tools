@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Initial page ready, no precomputed outcome presented as a new run",
+    "Native evaluation: strict contract accepts A 5/12 and B 10/12; B wins",
+    "Explicit human review and frozen edition",
+    "Source correction produces a real stale-plan hold",
+    "Explicit readmission and reuse preserve old edition without renewing review",
+    "Contract revision changes the computed winner",
+    "Failed attempt retained without destroying prior result",
+    "Eight sensitivity cells recomputed; corrupted copy rejected",
+    "Generic measurement receipts: extract, derive, source correction, transitive invalidation and explicit re-extraction",
+    "Actual UI packet accepted by separate Node process and recomputed",
+    "Standalone offline workbench cold-opens with failed attempts and history preserved",
+    "Local packet import and explicit browser persistence survive reload",
+    "Bad cold import refused atomically without replacing the active work",
+    "Actual 390px browser journey without document overflow",
+    "Actual 320px browser journey without document overflow",
+    "200-percent composition at 640px viewport",
+    "No uncaught browser errors; zero unexpected network requests"
+  ],
+  "count": 17,
+  "browser": "155.0.8059.84",
+  "page_sha256": "844cbd8f1cc00686c61db53f221a6f081639704bd333e5e312ad9d17a87007aa",
+  "errors": [],
+  "unexpected_requests": [],
+  "base_kind": "loopback"
+}
