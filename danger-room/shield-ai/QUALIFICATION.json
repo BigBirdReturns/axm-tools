@@ -1,0 +1,76 @@
+{
+  "schema": "danger-room-shield-ai-qualification@1",
+  "release": "DDV-SIM-001",
+  "checkedOn": "2026-10-27",
+  "disposition": "Local application qualified for public demonstration with the evidence boundaries below.",
+  "automatedChecks": [
+    {
+      "command": "node danger-room/shield-ai/tests/app.test.js",
+      "result": "PASS",
+      "coverage": "SHA-256 fallback equivalence, nine views, full workflow without Web Crypto, suite completeness, retained regressions, accepted reload/import, rehashed tamper rejection and active-workspace preservation."
+    },
+    {
+      "command": "node danger-room/shield-ai/tests/engine.test.js",
+      "result": "PASS",
+      "coverage": "Determinism, real perturbations, fixed criteria, negative gates, fresh-seed regression and SHA-256 tamper rejection."
+    },
+    {
+      "command": "node danger-room/shield-ai/tests/business.test.js",
+      "result": "PASS",
+      "coverage": "Source-preserving reconciliation, exact technical scope, independent commercial gates, stale dates, separate pipeline/bookings, coverage and current-state briefs."
+    },
+    {
+      "command": "node danger-room/shield-ai/tests/capture.test.js",
+      "result": "PASS",
+      "coverage": "Original capture template, exact clock-domain arithmetic, reordered arrivals, CSV quoting/limits, sequence gaps, duplicates and negative latency."
+    }
+  ],
+  "browserChecks": {
+    "environment": "Chromium through managed static preview at an HTTP origin; SHA-256 software fallback was exercised.",
+    "result": "PASS",
+    "observed": [
+      "Original recorded replay reaches tick 55 with confidence 0/255 and HOLD.",
+      "Original labelled synthetic CSV yields 6 received, 1 explicit missing, 0 unrepresented gaps, 1 late arrival, 6–7 ms within-Pi queue latency.",
+      "Working day preserves a failing baseline, retains its curriculum case, executes fresh timing evaluation and regression, verifies the records and admits timing scope.",
+      "Pipeline reconciliation removes the duplicate from calculation and retains source records.",
+      "Engineering success leaves fictional customer acceptance false and commit at USD 0.",
+      "Explicit fictional customer acceptance moves the USD 420000 Meridian pursuit to commit.",
+      "Reload revalidates and restores accepted evidence; the fictional USD 420000 commit survives.",
+      "Changing to expanded scope revokes acceptance. Evaluation produces 10/13 passing cases with the retained regression, and failed bias cases block acceptance.",
+      "After the broader requirement fails, commercial commit returns to USD 0.",
+      "Standalone HTML renders the complete application with six embedded scripts and CSP content hashes."
+    ],
+    "repairedDuringVerification": [
+      "Added equivalent software SHA-256 for origins without Web Crypto; no relaxation of acceptance predicates.",
+      "Fixed account stage and coaching render fields.",
+      "Aligned camera CSV upload size with parser limit.",
+      "Escaped document-closing strings in the standalone builder so static preview injection cannot split an embedded script."
+    ]
+  },
+  "expectedReferenceResults": {
+    "timingFresh": {
+      "passed": 9,
+      "total": 9
+    },
+    "timingWithOneRetainedDropoutRegression": {
+      "passed": 10,
+      "total": 10
+    },
+    "expandedFresh": {
+      "passed": 9,
+      "total": 12,
+      "remainingFailure": "Biased observation"
+    },
+    "expandedWithOneRetainedDropoutRegression": {
+      "passed": 10,
+      "total": 13
+    }
+  },
+  "boundaries": [
+    "Commercial data are fictional; values demonstrate bookkeeping and gating behavior.",
+    "The native replay is historical evidence with sampled frames; it is not a fresh native execution.",
+    "Browser reference tests use ideal commanded actuation and do not qualify a physical vehicle or any Shield AI integration.",
+    "The workbench has local file intake and portable records, without live CRM, model service or communications integration.",
+    "Browser responsive styles are included; no mobile device execution claim is made."
+  ]
+}

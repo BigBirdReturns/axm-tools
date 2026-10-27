@@ -1,0 +1,58 @@
+{
+  "schema": "danger-room-shield-ai-provenance@1",
+  "release": "DDV-SIM-001",
+  "preparedFor": "Nacho Sanz-Pastor",
+  "preparedOn": "2026-10-27",
+  "publicEntry": "https://bigbirdreturns.github.io/axm-tools/danger-room/shield-ai/",
+  "sourceFoundation": {
+    "url": "https://bigbirdreturns.github.io/axm-tools/danger-room/",
+    "repository": "BigBirdReturns/axm-tools",
+    "path": "danger-room/index.html",
+    "blobSha": "228872b5daf705bb3adbb615678d887a549241dc",
+    "preservation": "Original page unchanged. Original embedded receipt and templates retained in recorded.js."
+  },
+  "roleSource": {
+    "url": "https://jobs.lever.co/shieldai/cb1b575b-abfb-4903-887e-0f3b7a0ee23f",
+    "role": "Director, International Simulation",
+    "reference": "R5920",
+    "observedOn": "2026-10-27"
+  },
+  "evidenceClasses": [
+    {
+      "id": "native-recorded",
+      "date": "2026-10-12",
+      "identity": "danger-room-collaborator-demo@1",
+      "controller": "fly0@1",
+      "sourceCommit": "9f3df5c348449d09c7a83cd00e4bd030e075dc92",
+      "ticks": 260,
+      "agents": 2,
+      "seed": 5,
+      "ledgerSha256": "851bda84d3267a1dcc1ea74eaed38d67a629a7374fbd25e68c86ecf2e0f5c479",
+      "limitation": "Extracted recorded samples and receipt; full temporary ledgers are not reconstructed or reverified by the viewer."
+    },
+    {
+      "id": "browser-executable",
+      "identity": "SimEngine 1.0.0",
+      "meaning": "Fresh seeded abstract industrial 2D motion and measurement quality experiment with complete local run records.",
+      "limitation": "Ideal commanded actuation and known path. Timing success does not resolve bias, validate physical dynamics, or prove external product integration."
+    },
+    {
+      "id": "commercial-example",
+      "meaning": "Fictional opportunities, people, partner records and USD amounts with actual local calculations.",
+      "limitation": "No private Shield AI or Aechelon company records. No real customer acceptance, revenue or staffing is asserted."
+    }
+  ],
+  "execution": {
+    "runtimeDependencies": [],
+    "externalServices": [],
+    "communications": "No outbound messaging or source-system writeback.",
+    "integrity": "SHA-256 content integrity and deterministic rerun comparison; no signature or independent attestation.",
+    "persistence": "Browser local storage plus explicit workspace file import/export."
+  },
+  "authorship": {
+    "team": "Dependable DaVincis",
+    "mode": "Agent-authored application executing deterministic local rules.",
+    "accountableHuman": "Jonathan"
+  },
+  "relatedPattern": "https://bigbirdreturns.github.io/axm-tools/pelagos-governance/"
+}

@@ -10,3 +10,7 @@ Open index.html or serve this directory from any static host. All UI, style, sam
 
 ## What can rot
 Browser Blob-download support or the surrounding site's hosting route may change. The HTML and raw embedded JSON remain recoverable as text. Recorded experiment results are dated and do not become new results when the page is republished. Revise the interface or templates without silently changing the retained execution receipt.
+
+## Simulation Director extension
+
+[Open the working application prepared for Nacho Sanz-Pastor](https://bigbirdreturns.github.io/axm-tools/danger-room/shield-ai/). The `shield-ai/` workbench joins the complete international simulation operating function to original replay/capture intake, fresh browser evaluation, retained failure curriculum, scoped acceptance and customer handoff. Its commercial records are fictional; native recorded evidence and new executable browser evidence retain separate identities. The original page and receipt above remain unchanged. See `shield-ai/README.md`, `PROVENANCE.json` and `QUALIFICATION.json` for operation, source lineage and verified scope.

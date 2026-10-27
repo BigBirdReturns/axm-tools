@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0d0c09">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; connect-src 'none'; font-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="A portable simulation leadership workbench joining commercial operations, engineering evidence and customer readiness.">
+  <title>Simulation Director · Dependable DaVincis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#view">Skip to workspace</a>
+  <header class="app-header">
+    <a class="brand" href="index.html" aria-label="Simulation Director home">
+      <span class="brand-mark" aria-hidden="true">D<span>↗</span></span>
+      <span class="brand-text"><span class="wordmark">Dependable DaVincis</span><span class="brand-module">Simulation Director</span></span>
+    </a>
+    <div class="header-context"><span class="live-dot" aria-hidden="true"></span> Local operating workspace</div>
+    <div class="header-actions">
+      <button class="btn small" id="theme-toggle" type="button">Theme</button>
+      <button class="btn small" id="import-workspace" type="button">Load workspace</button>
+      <button class="btn small primary" id="export-workspace" type="button">Export workspace <span aria-hidden="true">↗</span></button>
+    </div>
+  </header>
+  <div class="app-layout">
+    <aside class="sidebar" aria-label="Workspace sections">
+      <div class="sidebar-heading"><span class="eyebrow">Operating system</span><span class="sidebar-index">01—09</span></div>
+      <nav id="nav" aria-label="Main navigation"></nav>
+      <div class="sidebar-note"><span class="eyebrow">A connected practice</span><p>Commercial intent.<br>Engineering evidence.<br>Customer readiness.</p><span class="sidebar-rule"></span><p class="fine-print">Prepared for Nacho Sanz-Pastor · independent working application</p></div>
+    </aside>
+    <main id="view" tabindex="-1" aria-label="Simulation Director workspace"></main>
+  </div>
+  <footer class="app-footer"><span><span class="live-dot" aria-hidden="true"></span><span id="status" role="status">Workspace ready · runs locally in your browser</span></span><span class="footer-signature">DEPENDABLE DAVINCIS <span aria-hidden="true">/</span> SIMULATION DIRECTOR</span></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="dialog" aria-labelledby="dialog-title"><div class="dialog-heading"><h2 id="dialog-title">Workspace detail</h2><button class="btn small" id="dialog-close" type="button" aria-label="Close dialog">Close ×</button></div><div id="dialog-body"></div></dialog>
+  <input id="import-file" type="file" accept="application/json,.json" hidden>
+  <script src="data.js"></script>
+  <script src="recorded.js"></script>
+  <script src="engine.js"></script>
+  <script src="business.js"></script>
+  <script src="capture.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
