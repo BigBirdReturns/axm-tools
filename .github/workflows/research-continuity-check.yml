@@ -10,7 +10,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,26 +19,41 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify exact published source, custody boundary and runnable kit
+      - name: Verify exact source, published custody boundary and complete runnable kit
         run: python research-continuity/scripts/validate.py
-      - name: Native journal, cycle and measurement adversarial tests
+      - name: Native journal, judgment, discharge, measurement and reuse tests
         run: node --test research-continuity/tests/*.test.cjs
       - name: Install isolated test-only browser tooling
         run: |
           python -m pip install playwright==1.64.1
           test -x /opt/google/chrome/chrome
           /opt/google/chrome/chrome --version
-      - name: Exercise real UI, cold handoff, offline export and responsive composition
+      - name: Existing research and measurement journeys remain usable
         env:
           TEST_CHROME: /opt/google/chrome/chrome
           TMPDIR: ${{ runner.temp }}
-          EVIDENCE_DIR: ${{ runner.temp }}/research-continuity-browser
+          EVIDENCE_DIR: ${{ runner.temp }}/research-continuity-browser/research
         run: python research-continuity/tests/browser.py
-      - name: Keep the observed browser evidence
+      - name: Exercise actual retained judgment and cold successor handoff
+        env:
+          TEST_CHROME: /opt/google/chrome/chrome
+          TMPDIR: ${{ runner.temp }}
+          EVIDENCE_DIR: ${{ runner.temp }}/research-continuity-browser/judgment
+        run: python research-continuity/tests/judgment_browser.py
+      - name: Install the exact existing Genesis kernel in a separate test environment
+        run: |
+          python -m venv "${{ runner.temp }}/genesis-env"
+          "${{ runner.temp }}/genesis-env/bin/python" -m pip install 'axm-genesis[mldsa-compat] @ git+https://github.com/BigBirdReturns/axm-genesis.git@5fcd472d6119afc0e9bb80ffc91f9ccc8adde705'
+      - name: Compile and consume real Genesis origin and amendment in separate processes
+        env:
+          TMPDIR: ${{ runner.temp }}
+        run: |
+          "${{ runner.temp }}/genesis-env/bin/python" -B research-continuity/tests/genesis_roundtrip.py --out "${{ runner.temp }}/research-continuity-browser/genesis"
+      - name: Keep all observed verification and browser evidence
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: research-continuity-browser
+          name: retained-judgment-complete-qualification
           path: ${{ runner.temp }}/research-continuity-browser
           if-no-files-found: warn
-          retention-days: 30
+          retention-days: 90

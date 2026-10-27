@@ -1,64 +1,93 @@
-# Research Continuity 1.0.0
+# Research Continuity 2.0.0 — judgment that outlives its origin
 
-A working, local research-cycle workbench built from Cantos / Second Run. Its opening demonstration compares two retained sets of extraction responses, preserves the basis for the comparison, records failures, detects source/intent/method changes, checks reuse, and carries the working history to another operator.
+Live entry: https://bigbirdreturns.github.io/axm-tools/research-continuity/
 
-Public route: https://bigbirdreturns.github.io/axm-tools/research-continuity/
+The starting question is: what happened, why did it happen, and what does that require or constrain now? A result must carry its recorded rationale, rejected alternatives, scope, evidence, authority assumptions and unfinished obligations into the next decision. The originating person, model or session need not remain available.
 
-## Use it
+This application connects the existing AXM Genesis object and Cantos ResearchCore to that operational path. Genesis owns compilation, canonicalization, Merkle construction, hybrid signatures, artifact verification and amendment lineage. The exact ResearchCore source owns the native journal, revisions, dependency checks, reviews and frozen editions. This workbench supplies a bounded domain consumer and interface; it creates neither a replacement kernel nor a second journal.
 
-Open `index.html` and select **Run the working example**. The unchanged ResearchCore evaluator checks twelve original tasks per configuration, all attempts and timing, the full quoted cost, and the acceptance rule. Change the rule, correct a source version, introduce a failed attempt, or compute the sensitivity map. Source corrections hold dependent work until explicit readmission. New plans and human reviews remain separate. Export a full packet, an offline workbench, a frozen reviewed report, or a continuation note. The page supports native `second-run/task-run@1` imports with mandatory source metadata.
+## The complete path
 
-The opening input data and quotes are synthetic, not customer, provider, clinical or legal findings. A separate `data/native-witness.json` records actual execution of the existing Cantos native operations on the estate. It is retained evidence, not a live backend.
+1. Open **Retained judgment**. Recover the original decision, its actual explanation, considered alternatives, source pins, declared roles and obligations.
+2. Record current observations. Check conditions, observation freshness, authority validity, source revisions, deadlines and explicit expiry independently. A checksum passing never renews permission.
+3. Attempt a discharge. A wrong role, wrong case, wrong evidence kind, failed criterion or impossible time is refused and retained. Accepted inspection evidence discharges that obligation; other obligations remain owed. Waiver is separately named and authorized. Corrected discharge evidence requires reconsideration; an authorized reopening preserves the old disposition and permits a new evidence-backed discharge.
+4. Correct a source. The historical decision remains intact but requires reconsideration. An authorized successor pins the new basis and automatically inherits all existing obligations; it cannot silently redefine an old obligation under its identifier.
+5. Review and freeze an edition. Later changes leave that historical edition intact. Choose a past snapshot to answer a past question without injecting later evidence.
+6. Export the whole packet, an explanatory handoff, or a self-contained offline page. A fresh consumer replays the actual transitions and computes what remains applicable.
+7. Run the native adapter to compile that packet into a real Genesis shard. A fresh process or machine verifies it with an explicitly supplied public key, checks the expected artifact and consumer identity, and reconstructs the domain result. An amendment names its predecessor and preserves the complete earlier event prefix.
 
-## Measurement ledger
+The one-action example traverses an unauthorized attempt, inspection discharge, source correction and an explicit successor. The earlier restoration obligation remains open. The generic case editor supports different purposes, roles, conditions, retained source documents, obligations and acceptance criteria; the example is an input, not a hardcoded verdict.
 
-Select **Measurement ledger** to admit any local JSON source (2 MB maximum), its instrument, dataset version, locator and a textual re-execution instruction. Extract a finite numeric value by JSON Pointer and declare its unit and scale. Derive a ratio, sum or difference from two current source-addressed claims; sums/differences require matching units and scales, and named scales refuse generic arithmetic. A retained-value cross-check measures disagreement under an explicit tolerance without inventing independent instrumentation.
+## Native Genesis artifacts, not a browser imitation
 
-The built-in measurement example uses 120 fictional specimens and 90 passes. Correcting the pass source to 96 leaves the old claim and its 0.75 yield stale. Explicit re-extraction changes the claim, and explicit recomputation produces 0.8. Earlier frozen editions remain intact. Your own sources use the same code path. The Node checker re-extracts every measurement and recomputes every derivation when it cold-opens an exported packet.
+`downloads/retained-judgment-genesis.zip` contains two actual, kernel-compiled shards, their public fixture key and the native verification witness. Their source and content tables carry the complete exact-byte research packet, event quotations, consumer identity and continuation summary. The original and amendment are compiled in one pass each using `axm_build.compiler_generic.CompilerConfig` and `compile_generic_shard`; nothing is added after the seal.
 
-## Ownership
+The native checker invokes `axm_verify.logic.verify_shard` before opening the retained packet. It then uses only known, installed application code, checks the consumer source identity, and replays native journal and domain transitions in a fresh Node process. It never executes code or recorded shell instructions contained in an artifact. The supplied historical summary is a convenience; current obligations are recomputed.
 
-- `source/research-core.js` is an exact source projection of Cantos `research-desk/app.html#research-core`, pinned by commit and SHA-256 in `source/OWNER.json`. Native records, revisions, dependency states, grading, arithmetic, reviews, snapshots and verification remain owned there. Do not fork those operations into UI code.
-- `source/continuity.js` owns this bounded workflow: source receipts, local plan/output sequencing, attempts, source readmission and sensitivity views.
-- `source/measurements.js` owns JSON Pointer extraction, unit-checked arithmetic and retained cross-check observations, using the same native journal and dependency owner.
-- `source/ui.js` and `source/measurement-ui.js` own presentation and explicit user actions.
-- `scripts/build.py` embeds the pinned sources into one offline-capable page. No runtime cross-tool imports or third-party dependencies.
-- `scripts/native_bridge.py` invokes the existing Cantos work owner in an explicitly supplied local checkout, in separate fresh processes, and records cold / warm / changed-price outcomes plus native tests. It makes no provider requests.
-- All source files are steward-owned. `index.html`, `downloads/` and `data/qualification.json` are generated release artifacts. No scheduled content changes or user uploads exist.
+The actual test campaign covers hybrid verification, exact predecessor prefix, unfinished obligations, expiry despite intact signatures, wrong expected identity, wrong trusted key, altered content, missing content and reversed lineage. Test keys are generated by the kernel in memory. The private half is discarded before cold consumption and never published. The included public key establishes the demonstration's fixture identity only, not a real person's or institution's authority.
 
-## Scope
+Kernel source reference: `BigBirdReturns/axm-genesis@5fcd472d6119afc0e9bb80ffc91f9ccc8adde705`. The application contract is `research-continuity/retained-judgment@1`. This is a domain interpretation carried as ordinary Genesis content, not a newly standardized kernel profile.
 
-The browser actually evaluates retained responses, computes SHA-256 digests, verifies journals, preserves revisions and checked reviews, exports original bytes, and rejects altered packets. The command-line checker cold-replays the same native journal and recomputes the exact derived arithmetic. No shell, model output, or uploaded proof code is executed from a packet.
+## Use your own retained judgment
 
-Local sealing is an ordering and identity check. This is already-visible exploratory evidence, not a blinded study. An exported anchor digest or entered locator does not authenticate a remote witness or establish an external timestamp. A rebuilt whole history can pass a self-consistency check unless compared against an independently retained trusted prior digest. The output is not secret before UI reveal. Proof attachments remain unverified until an appropriate checker actually runs. Human names are attributed, not identity-authenticated. No claim of Lean verification, source truth, population reliability, investment/medical/legal approval, insurance, or third-party integration is made.
+Edit the case input on the page or load the downloadable template. Every case explicitly names the source contents, decision actor, permission scopes, validity window, observation freshness interval, scalar conditions, alternatives and obligation evidence criteria. Unknown observations stay unknown. The current consumer supports equality and numeric bounds, explicit role grants/revocation, source revision, discharge, waiver, explicit reopening, retraction and successor issuance. More general policy languages, authenticated institutional roles and automatic physical observations require their own integrations.
 
-Failed/held attempts remain in the native journal. A frozen report remains historical; later corrections make dependent current work stale rather than erasing old results. Full quote/bill scopes and every original task remain visible. Checked deterministic reuse is not zero-cost computation and is not a new model measurement.
+The page manages one operational case per portable packet, alongside the retained research instruments. Opening another packet is explicit and verified; a rejected import leaves existing work intact. Create another independent case in a fresh page or offline copy after exporting the current one. Re-execution instructions are text, not scripts that this page runs.
 
-## Verification
+Use the supplied kit with Node 22+ and Python 3.12+. The browser needs no backend, installation or account. The optional native path needs the real installed Genesis kernel:
+
+```sh
+python -m venv .genesis-env
+.genesis-env/bin/python -m pip install 'axm-genesis[mldsa-compat] @ git+https://github.com/BigBirdReturns/axm-genesis.git@5fcd472d6119afc0e9bb80ffc91f9ccc8adde705'
+
+node scripts/judgment_packet.cjs my-packet.json 2026-10-28T09:00:00Z
+
+.genesis-env/bin/python scripts/genesis_judgment.py seal my-packet.json new-shard \
+  --private-key /your/offline/publisher.key \
+  --publisher-id @your-publisher --publisher-name 'Your publisher' \
+  --created-at 2026-10-27T18:00:00Z
+
+.genesis-env/bin/python scripts/genesis_judgment.py consume new-shard \
+  --trusted-key /your/independently-held/publisher.pub \
+  --as-of 2026-10-28T09:00:00Z
+```
+
+For an amendment, pass `--supersedes sh1_<predecessor>` when sealing, and `--predecessor old-shard` when consuming. Use `--expected-id sh1_<retained-identity>` to compare against an identity retained independently. Real publisher key creation and custody remain with the established Genesis ceremony; this adapter has no default key and refuses to overwrite an existing shard.
+
+## Other retained instruments
+
+The earlier research cycle, generic measurement ledger, accepted-work economics and sensitivity view remain available. The source-addressed measurement path extracts numeric values from retained JSON using an explicit JSON Pointer, unit, scale, instrument and dataset version, then derives unit-checked calculations. Source corrections invalidate their dependent claims. Task evaluation retains all original tasks, retries, failures and complete billing scope. The existing Cantos runner remains the execution owner for its supported operations; its optional native bridge still records cold execution, checked reuse and selective recomputation.
+
+## Source owners and change control
+
+- `source/research-core.js`: exact unchanged native ResearchCore projection; pinned in `source/OWNER.json`.
+- `source/continuity.js`: existing research-cycle workflow and composite packet verification.
+- `source/measurements.js`: bounded source-addressed measurements and derivations.
+- `source/judgment.js`: declared domain state transitions and current applicability; every state replays from its retained causative input.
+- `source/judgment-ui.js`: retained-judgment interface and explicit operator actions.
+- `scripts/genesis_judgment.py`: extraction and native compile/verify adapter; no cryptographic implementation.
+- `scripts/judgment_packet.cjs`: cold journal/domain consumer, using installed known code only.
+- `scripts/build.py`: offline single-page and downloadable-kit generation. Production runtime imports no libraries from sibling tools or external services.
+
+All source is steward-owned. Generated page, kits and public qualification receipts are release artifacts. Test evidence belongs outside the source checkout until reviewed and admitted. No raw private partner data, access tokens or private keys belong in this public tree. The original kernel remains unchanged.
+
+## Qualification
 
 ```sh
 node --test research-continuity/tests/*.test.cjs
 python research-continuity/scripts/validate.py
-python research-continuity/scripts/build.py --check
-# Test-only Playwright installation belongs outside this tool.
 EVIDENCE_DIR=/your/scratch TEST_CHROME=/path/to/chrome python research-continuity/tests/browser.py
+EVIDENCE_DIR=/your/other-scratch TEST_CHROME=/path/to/chrome python research-continuity/tests/judgment_browser.py
+# In the explicit Genesis environment, with a NEW output directory:
+python research-continuity/tests/genesis_roundtrip.py --out /your/new-native-receipt
 ```
 
-From an extracted kit:
+The public receipts identify exact source bytes and finite observed tests. They do not claim exhaustive proof of the domain model, a natural-language compiler, independent instrument truth or production authorization. Genesis verifies the retained representation under the selected publisher key. A consumer determines applicability under its admitted rules. A real authority owns whether the result may be acted upon.
 
-```sh
-node scripts/check_packet.cjs my-packet.json --recompute
-python scripts/native_bridge.py --cantos /path/to/cantos --out /new/result-directory
-```
+## Privacy, persistence and recovery
 
-Use Python 3.12+ and Node 22+. The native bridge requires the existing public Cantos source and retained inputs; it installs nothing. Its fresh result directory is outside both source checkouts. Source-identity differences and failures remain visible.
-
-The local candidate passed 33 native/adversarial tests and 17 actual browser journey checks, including a generic measurement path, offline export, cold import, corruption refusal, mobile rendering and zero unexpected network requests. Exact source qualification lives in `data/qualification.json`; the browser receipt names its tested page hash. These checks are finite software qualification, not a formal proof.
-
-## Privacy and recovery
-
-The page has no server, account, telemetry, network computation or upload. Its CSP refuses network connections. User data is memory-only unless the user explicitly selects **Keep a copy in this browser**. Complete packets and offline exports include supplied source contents. Clear only this tool's storage with its own control. Export before browser/profile loss. A rejected import leaves the current workspace unchanged.
+Inputs stay local. The page has no account, upload, model call, analytics or execution backend; its CSP refuses runtime network connections. It stores work in memory unless the operator explicitly enables browser persistence. Complete packets and standalone exports include source text and therefore must be treated as private when the inputs are private. Export before clearing a profile. Prior v1 native packets remain valid without a fabricated judgment added to them.
 
 ## What can rot
 
-Browser Web Crypto, File/Blob download behavior, storage quotas, current Node/Python versions, native Cantos owner schemas, host availability, and GitHub Pages may change. Verification must expose a failure. A missing bill remains missing; a foreign proof artifact remains unverified. Changes to the upstream owner require an explicit source update and rerun of this tool's native and browser tests. No private counterpart's code, health details, credentials or private dashboard text belongs in the public tree.
+Browser crypto/storage/download behavior, installed Python/Node versions, native kernel dependencies, source-owner schemas and hosting can change. Identity mismatches, unsupported contracts, corrupt artifacts and missing state fail visibly. No silent migration changes a retained decision, no current review is inferred from an old review, and no successfully verified signature makes an expired decision current again.

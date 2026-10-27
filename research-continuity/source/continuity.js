@@ -3,7 +3,7 @@
 (function(root){'use strict';
 const C=root.ResearchCore||(typeof require!=='undefined'?require('./research-core.js'):null);
 if(!C)throw Error('Pinned ResearchCore is required.');
-const VERSION='1.0.0', CORE_SHA='6375c45ae35890250020ae24e3edfc18a9c9e3bc7f2fa92dd87e578e1d29f0a5';
+const VERSION='2.0.0', CORE_SHA='6375c45ae35890250020ae24e3edfc18a9c9e3bc7f2fa92dd87e578e1d29f0a5';
 const SOURCE_COMMIT='0c9594b4d0c302e5b6da41f32fb983256c0e1391';
 const actor='Local operator', stamp=()=>new Date().toISOString();
 const ref=r=>({id:r.id,revision:r.revision});
@@ -204,6 +204,8 @@ async function verify(packet){
   C.assert(created.get(commit.id+'@'+commit.revision)<created.get(d.id+'@'+d.revision),'Result was revealed before its local commitment.');
  }
  for(const p of records.filter(r=>r.data.schema==='research-continuity/proof-artifact@1'))C.assert(p.data.checker_status==='NOT_RUN'&&await C.hash(p.data.raw_text)===p.data.sha256,'Supplied proof identity or unverified boundary changed.');
+ if(root.RetainedJudgment)await root.RetainedJudgment.verify(w);
+ else C.assert(!records.some(r=>r.data.schema==='research-continuity/retained-judgment@1'),'This packet needs the retained judgment consumer; no partial verification.');
  return w;
 }
 async function tamperCheck(w){const packet=await C.pack(w),copy=C.clone(packet);copy.workspace.events[0].payload.summary+=' changed';let rejected=false,reason='';try{await verify(copy);}catch(e){rejected=true;reason=e.message;}return {rejected,reason,original_unchanged:await C.hash(w)===packet.sha256};}

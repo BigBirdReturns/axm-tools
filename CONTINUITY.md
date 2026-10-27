@@ -79,6 +79,9 @@ are touching tells you how much care to take.
 
 ## 3. Map (snapshot, July 2026 — trust the tree over this list)
 
+**27 October 2026 retained-judgment integration:** Research Continuity 2.0.0 now leads with the Genesis origin-to-successor path. The existing frozen kernel seals complete native packets in one pass; its verifier checks actual hybrid signatures and amendment lineage before the installed domain consumer replays reasons, scope and unfinished obligations. The consumer separately handles conditions, observation freshness, role declarations, discharge/waiver/reopening, source correction and successor issuance. Original Genesis/ResearchCore owners remain unchanged. Public fixtures and fresh-process/separate-node receipts are bounded software evidence; real source truth and institutional authorization remain external.
+
+
 **27 October 2026 addition:** `research-continuity/` is a self-contained browser workbench built around an exact, commit-pinned projection of Cantos ResearchCore. The native owner retains records, revisions, dependency validity, evaluation, reviews and packet replay. The new bounded workflow adds measurement intake, local cycle sequencing and explicit continuation. Its sources, generator, finite adversarial tests, browser campaign and runnable handoff belong to this directory. `source/OWNER.json` pins the copied native owner; updates require requalification. All public examples are synthetic or separately attributed retained public-source execution. Private partner content remains outside the public tree.
 
 

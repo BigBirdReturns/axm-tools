@@ -5,6 +5,7 @@ const fs=require('node:fs'),path=require('node:path');
 const C=require('../source/research-core.js');
 const L=require('../source/continuity.js');
 require('../source/measurements.js');
+require('../source/judgment.js');
 (async()=>{
  const file=process.argv[2];if(!file)throw Error('Usage: node scripts/check_packet.cjs packet.json --recompute');
  const stat=fs.statSync(file);if(stat.size>12000000)throw Error('Packet exceeds 12 MB.');
