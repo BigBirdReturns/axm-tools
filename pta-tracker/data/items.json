@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-26T18:44:58.121833Z",
+  "generated": "2026-10-27T17:04:43.757335Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -35,16 +35,28 @@
       "source": "Google News",
       "scope": "state",
       "ok": true,
-      "kept": 11
+      "kept": 16
     },
     {
       "source": "AUSD board schedule",
       "scope": "district",
       "ok": true,
-      "kept": 1
+      "kept": 2
     }
   ],
   "items": [
+    {
+      "id": "ausd-mtg-2026-11-17",
+      "source": "AUSD Board of Education",
+      "title": "AUSD board meeting \u2014 Tuesday, November 17 at 7:00 p.m.",
+      "summary": "Regular Board of Education meeting, Arcadia Education Center Board Room (unless the schedule notes otherwise). Agenda posts on Simbli the Friday before \u2014 worth a skim for anything parents will ask about.",
+      "link": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512",
+      "published": "2026-11-17",
+      "priority": "hot",
+      "scope": "district",
+      "first_seen": "2026-10-27",
+      "bills": []
+    },
     {
       "id": "0110a46024ef",
       "source": "Legislative Analyst\u2019s Office (.gov)",

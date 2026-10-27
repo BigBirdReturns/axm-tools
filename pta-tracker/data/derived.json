@@ -1,6 +1,6 @@
 {
   "note": "Machine-written every run, never hand-edited; facts scraped from the district, prose instantiated from human-written templates in parent.json. Delete it and the next run rebuilds it.",
-  "generated": "2026-10-26T18:44:58.123075Z",
+  "generated": "2026-10-27T17:04:43.758584Z",
   "coming_up": [
     {
       "id": "derived-board-2026-10-27",
@@ -18,6 +18,29 @@
       "source_url": "https://www.ausd.net/apps/pages/agenda",
       "covers": [
         "ausd-mtg-2026-10-27"
+      ],
+      "action": {
+        "type": "read",
+        "label": "Check the agenda on Simbli",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512"
+      }
+    },
+    {
+      "id": "derived-board-2026-11-17",
+      "kind": "meeting",
+      "derived": true,
+      "source_item": "ausd-mtg-2026-11-17",
+      "until": "2026-11-17",
+      "when": "2026-11-17T19:00",
+      "location": "Arcadia Education Center Board Room, 150 S 3rd Ave, Arcadia, CA 91006",
+      "title": "AUSD Board of Education meets Tuesday, November 17",
+      "kid_impact": "Board meetings are where district decisions get made \u2014 phone rules, budgets, calendars \u2014 before they ever reach a classroom.",
+      "impact_area": "District decisions",
+      "owner": "AUSD Board of Education",
+      "time_sensitivity": "Agenda posts on Simbli a few days before the meeting",
+      "source_url": "https://www.ausd.net/apps/pages/agenda",
+      "covers": [
+        "ausd-mtg-2026-11-17"
       ],
       "action": {
         "type": "read",
