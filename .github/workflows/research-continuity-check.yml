@@ -26,9 +26,11 @@ jobs:
       - name: Install isolated test-only browser tooling
         run: |
           python -m pip install playwright==1.64.1
-          python -m playwright install --with-deps chromium
+          test -x /opt/google/chrome/chrome
+          /opt/google/chrome/chrome --version
       - name: Exercise real UI, cold handoff, offline export and responsive composition
         env:
+          TEST_CHROME: /opt/google/chrome/chrome
           TMPDIR: ${{ runner.temp }}
           EVIDENCE_DIR: ${{ runner.temp }}/research-continuity-browser
         run: python research-continuity/tests/browser.py

@@ -28,8 +28,8 @@ for p in ROOT.rglob('*'):
     if p.resolve()==Path(__file__).resolve():continue
     if not p.is_file() or p.suffix.lower() not in ['.html','.js','.cjs','.py','.json','.md']:continue
     s=p.read_text(encoding='utf-8')
-    for marker in ['life.f8n.ai','ADPKD','PKD1','F8N-D08C','Eugene Yaroslavtsev']:
-        require(marker not in s,'Private counterpart content in public source: '+str(p.relative_to(ROOT)))
+    for pattern in [r'F8N-(?:[0-9A-F]{4}-){7}[0-9A-F]{4}',r'gh[pousr]_[A-Za-z0-9]{30,}',r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',r'browser-vault/captures/']:
+        require(not re.search(pattern,s),'Credential or private-capture reference in public source: '+str(p.relative_to(ROOT)))
 q=json.loads((ROOT/'data/qualification.json').read_text())
 require(q.get('status')=='PASS','Candidate lacks retained qualification.')
 for name,want in q.get('source_sha256',{}).items():
