@@ -1,0 +1,1026 @@
+{
+  "status": "PASS",
+  "schema": "civil-continuity/native-witness@1",
+  "observed_at": "2026-10-27T19:11:07.215532+00:00",
+  "summary": "Actual Genesis origin and successor verified in separate processes. Two delivery obligations, four field-verification obligations and the rejected over-allocation remain visible.",
+  "origin_id": "sh1_3480a73ff50c184d6722c28cb37d8f801598df069fef9da387abf11800d10da6",
+  "successor_id": "sh1_9abdb6a1e0abcfc8338ae7d50480340e0c739b11d573f62abed4541c85303c1d",
+  "fixture_key_sha256": "e058966552885368a5955e425875a35dc7c1cff552684c89a326cb7c0655dedd",
+  "checks": [
+    {
+      "name": "Original kernel artifact cold-opens with exact consumer",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Successor preserves full predecessor event prefix",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Both unresolved delivery obligations survive",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Stock rights remain consumed after short delivery",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Refused over-allocation remains visible",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Civil dependency and economic assessments recompute",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Physical field readiness remains unestablished",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Changed packet rejected by native kernel",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Wrong independent trust key rejected",
+      "pass": true,
+      "detail": null
+    }
+  ],
+  "consumer": {
+    "status": "PASS",
+    "packet_sha256": "c91d8eea8a0caf584c01f03e09489c864cd92d42a7c929aa00edbaa1e875d3f8",
+    "consumer_identity": "MATCH",
+    "ledger_replay": "PASS",
+    "case": "public-continuity-exercise",
+    "evidence_class": "synthetic",
+    "stock_rights": [
+      {
+        "seat": "west",
+        "lot": "lot-A",
+        "quota": 500,
+        "spent": 360,
+        "reserved": 0,
+        "available": 140
+      },
+      {
+        "seat": "east",
+        "lot": "lot-A",
+        "quota": 400,
+        "spent": 300,
+        "reserved": 0,
+        "available": 100
+      }
+    ],
+    "owed": [
+      {
+        "reservation": "e-r1",
+        "seat": "east",
+        "to": "shelter-B",
+        "units": 300,
+        "received": null,
+        "obligation": "Obtain recipient acknowledgment; dispatch is not delivery"
+      },
+      {
+        "reservation": "w-r1",
+        "seat": "west",
+        "to": "shelter-A",
+        "units": 360,
+        "received": 350,
+        "obligation": "Reconcile short delivery and preserve recipient receipt"
+      }
+    ],
+    "retained_actions": 5,
+    "refusals": 1,
+    "energy": {
+      "load_kw": 1.5,
+      "demand_kwh": 252,
+      "solar_kwh": 150,
+      "unserved_kwh": 58.002400000000094,
+      "curtailed_kwh": 0,
+      "final_stored_kwh": 24.646086956521735,
+      "first_unserved_hour": 42,
+      "feasible_in_model": false,
+      "trace": [
+        {
+          "day": 1,
+          "stored_kwh": 50.869565217391205,
+          "unserved_kwh": 0
+        },
+        {
+          "day": 2,
+          "stored_kwh": 20,
+          "unserved_kwh": 7.600000000000086
+        },
+        {
+          "day": 3,
+          "stored_kwh": 24.646086956521735,
+          "unserved_kwh": 21.100000000000087
+        },
+        {
+          "day": 4,
+          "stored_kwh": 24.646086956521735,
+          "unserved_kwh": 30.32560000000009
+        },
+        {
+          "day": 5,
+          "stored_kwh": 24.646086956521735,
+          "unserved_kwh": 39.551200000000094
+        },
+        {
+          "day": 6,
+          "stored_kwh": 24.646086956521735,
+          "unserved_kwh": 48.776800000000094
+        },
+        {
+          "day": 7,
+          "stored_kwh": 24.646086956521735,
+          "unserved_kwh": 58.002400000000094
+        }
+      ],
+      "scope": "Hourly energy accounting with an authored six-hour solar window; not a site design, weather forecast, electrical safety approval or battery quote."
+    },
+    "message_budget": {
+      "payload_bytes": 256,
+      "demand_bits_hour": 294912,
+      "capacity_bits_hour": 360000,
+      "utilization": 0.8192,
+      "single_object_seconds": 61.44,
+      "capacity_fits": true,
+      "deadline_fits": true,
+      "legal_and_rf_qualified": false,
+      "certification": "unknown",
+      "scope": "Declared aggregate shared-channel budget; no RF range, link reliability, regulatory compliance or real radio transmission established."
+    },
+    "field_verification": {
+      "case_id": "municipal-planning",
+      "as_of": "2026-10-27T04:00:00Z",
+      "judgment_id": "judgment-2",
+      "status": "APPLICABLE",
+      "applicable": true,
+      "scope": "Operate the declared planning exercise; no municipal authority, procurement, RF transmission or physical dispatch is granted.",
+      "conditions": [
+        {
+          "id": "planning-only",
+          "label": "Activity remains a planning exercise without external effects",
+          "state": "PASS",
+          "observed": true,
+          "operator": "eq",
+          "required": true,
+          "reason": "Declared condition satisfied"
+        }
+      ],
+      "source_status": [
+        {
+          "id": "municipal-consumer",
+          "pinned_revision": 1,
+          "current_revision": 1,
+          "current": true
+        },
+        {
+          "id": "resource-plan",
+          "pinned_revision": 2,
+          "current_revision": 2,
+          "current": true
+        }
+      ],
+      "obligations": [
+        {
+          "blocking": false,
+          "created_at": "2026-10-27T00:00:00Z",
+          "created_by": "judgment-1",
+          "criteria": [
+            {
+              "field": "accepted",
+              "id": "field-inventory-accepted",
+              "label": "Named responsible authority accepted the evidence",
+              "op": "eq",
+              "value": true
+            }
+          ],
+          "description": "Obtain timestamped stock, ownership, expiry, dietary classes and recipient demand.",
+          "due_at": "2026-10-28T00:00:00Z",
+          "evidence_kind": "field-verification",
+          "id": "field-inventory",
+          "owner": "Unassigned field owner",
+          "state": "OPEN",
+          "resolution": null
+        },
+        {
+          "blocking": false,
+          "created_at": "2026-10-27T00:00:00Z",
+          "created_by": "judgment-1",
+          "criteria": [
+            {
+              "field": "accepted",
+              "id": "field-power-accepted",
+              "label": "Named responsible authority accepted the evidence",
+              "op": "eq",
+              "value": true
+            }
+          ],
+          "description": "Measure critical loads, inspect generation/storage/inverter design and qualify islanded operation.",
+          "due_at": "2026-10-28T00:00:00Z",
+          "evidence_kind": "field-verification",
+          "id": "field-power",
+          "owner": "Unassigned field owner",
+          "state": "OPEN",
+          "resolution": null
+        },
+        {
+          "blocking": false,
+          "created_at": "2026-10-27T00:00:00Z",
+          "created_by": "judgment-1",
+          "criteria": [
+            {
+              "field": "accepted",
+              "id": "field-radio-accepted",
+              "label": "Named responsible authority accepted the evidence",
+              "op": "eq",
+              "value": true
+            }
+          ],
+          "description": "Obtain the exact certified radio, legal operating configuration and measured delivery/coverage results.",
+          "due_at": "2026-10-28T00:00:00Z",
+          "evidence_kind": "field-verification",
+          "id": "field-radio",
+          "owner": "Unassigned field owner",
+          "state": "OPEN",
+          "resolution": null
+        },
+        {
+          "blocking": false,
+          "created_at": "2026-10-27T00:00:00Z",
+          "created_by": "judgment-1",
+          "criteria": [
+            {
+              "field": "accepted",
+              "id": "field-authority-accepted",
+              "label": "Named responsible authority accepted the evidence",
+              "op": "eq",
+              "value": true
+            }
+          ],
+          "description": "Establish the real municipal scope, decision owners, privacy permissions and acceptance criteria.",
+          "due_at": "2026-10-28T00:00:00Z",
+          "evidence_kind": "field-verification",
+          "id": "field-authority",
+          "owner": "Unassigned field owner",
+          "state": "OPEN",
+          "resolution": null
+        }
+      ],
+      "open_obligations": 4,
+      "blockers": [],
+      "observation_at": "2026-10-27T00:00:00Z",
+      "next_action": "Continue only within the declared scope; complete the retained obligations before their deadlines.",
+      "authority_boundary": "Case-specific role declarations are checked, not authenticated. This result grants no external authority."
+    },
+    "civil_assessments": [
+      {
+        "input": {
+          "at": "2026-10-27T00:00:00Z",
+          "config": {
+            "as_of": "2026-10-27T00:00:00Z",
+            "assets": [
+              {
+                "fresh_hours": 12,
+                "id": "grid",
+                "label": "Grid connection",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Utility",
+                "requires": [],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "battery",
+                "label": "Local backup power within its qualified envelope",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Site steward",
+                "requires": [],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "internet",
+                "label": "Internet backhaul",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Carrier",
+                "requires": [],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "cloud",
+                "label": "Hosted scheduling service",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Service vendor",
+                "requires": [
+                  [
+                    "internet"
+                  ]
+                ],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "local-record",
+                "label": "Offline records and local procedures",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Local institution",
+                "requires": [
+                  [
+                    "grid",
+                    "battery"
+                  ]
+                ],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "paper",
+                "label": "Paper manifest and documented manual handoff",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Local institution",
+                "requires": [],
+                "status": "available",
+                "test_loss": false
+              },
+              {
+                "fresh_hours": 12,
+                "id": "radio",
+                "label": "Qualified local message bearer",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Local communications steward",
+                "requires": [
+                  [
+                    "grid",
+                    "battery"
+                  ]
+                ],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "runner",
+                "label": "Human courier / in-person confirmation",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Neighborhood operator",
+                "requires": [],
+                "status": "available",
+                "test_loss": false
+              },
+              {
+                "fresh_hours": 12,
+                "id": "primary-supply",
+                "label": "Normal wholesale inflow",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Supplier",
+                "requires": [],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "local-stock",
+                "label": "Counted local shelf-stable reserve",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Stock custodian",
+                "requires": [],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "labor",
+                "label": "Named available operators",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Participating institution",
+                "requires": [],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "tools",
+                "label": "Inspected shared repair tools",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Tool library",
+                "requires": [],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "water",
+                "label": "Locally available usable water",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Water custodian",
+                "requires": [],
+                "status": "available",
+                "test_loss": true
+              },
+              {
+                "fresh_hours": 12,
+                "id": "cold-store",
+                "label": "Cold storage within qualified conditions",
+                "observed_at": "2026-10-27T00:00:00Z",
+                "owner": "Facility steward",
+                "requires": [
+                  [
+                    "grid",
+                    "battery"
+                  ]
+                ],
+                "status": "available",
+                "test_loss": true
+              }
+            ],
+            "evidence_class": "synthetic",
+            "schema": "civil-continuity/fabric@1",
+            "services": [
+              {
+                "fallback": "Use only preassigned local stock rights, paper manifests and recipient counts when disconnected.",
+                "id": "food",
+                "label": "Food distribution",
+                "normal_value": "Independent stores share stock visibility and delivery without surrendering ownership.",
+                "outcome": "Recipient acknowledgment and discrepancy resolution; dispatch alone does not close delivery.",
+                "owner": "Food service coordinator",
+                "requires": [
+                  [
+                    "local-stock",
+                    "primary-supply"
+                  ],
+                  [
+                    "local-record",
+                    "paper"
+                  ],
+                  [
+                    "labor"
+                  ],
+                  [
+                    "radio",
+                    "runner"
+                  ]
+                ]
+              },
+              {
+                "fallback": "Retain inspection sheets and local tool custody; stop unsafe equipment.",
+                "id": "repair",
+                "label": "Maintenance and shared tools",
+                "normal_value": "Routine inspection and repair avoid downtime and establish a usable baseline.",
+                "outcome": "Inspection, accepted repair and condition evidence, not tool checkout alone.",
+                "owner": "Maintenance steward",
+                "requires": [
+                  [
+                    "tools"
+                  ],
+                  [
+                    "labor"
+                  ],
+                  [
+                    "local-record",
+                    "paper"
+                  ]
+                ]
+              },
+              {
+                "fallback": "Document local measurements and the permitted hold window; quarantine uncertain lots.",
+                "id": "cold-chain",
+                "label": "Cold-chain observation",
+                "normal_value": "Retain temperature history and catch equipment degradation during ordinary operations.",
+                "outcome": "Observed condition within product-specific limits; no invented safe temperature.",
+                "owner": "Facility operator",
+                "requires": [
+                  [
+                    "cold-store"
+                  ],
+                  [
+                    "labor"
+                  ],
+                  [
+                    "local-record",
+                    "paper"
+                  ]
+                ]
+              },
+              {
+                "fallback": "Known local points of contact and bounded manual handoff.",
+                "id": "support",
+                "label": "Water and neighbor support",
+                "normal_value": "Coordinate water, access, practical help and reliable handoffs.",
+                "outcome": "Counted delivery and recipient acknowledgment without creating a resident score.",
+                "owner": "Community service coordinator",
+                "requires": [
+                  [
+                    "water"
+                  ],
+                  [
+                    "labor"
+                  ],
+                  [
+                    "radio",
+                    "runner"
+                  ],
+                  [
+                    "local-record",
+                    "paper"
+                  ]
+                ]
+              }
+            ]
+          },
+          "removed": [
+            "grid",
+            "internet",
+            "cloud",
+            "primary-supply",
+            "radio"
+          ]
+        },
+        "kind": "fabric",
+        "result": {
+          "as_of": "2026-10-27T00:00:00Z",
+          "assets": [
+            {
+              "available": false,
+              "id": "grid",
+              "label": "Grid connection",
+              "owner": "Utility",
+              "paths": [],
+              "reasons": [
+                "Removed in this scenario"
+              ]
+            },
+            {
+              "available": true,
+              "id": "battery",
+              "label": "Local backup power within its qualified envelope",
+              "owner": "Site steward",
+              "paths": [],
+              "reasons": []
+            },
+            {
+              "available": false,
+              "id": "internet",
+              "label": "Internet backhaul",
+              "owner": "Carrier",
+              "paths": [],
+              "reasons": [
+                "Removed in this scenario"
+              ]
+            },
+            {
+              "available": false,
+              "id": "cloud",
+              "label": "Hosted scheduling service",
+              "owner": "Service vendor",
+              "paths": [
+                {
+                  "alternatives": [
+                    "internet"
+                  ],
+                  "usable": []
+                }
+              ],
+              "reasons": [
+                "Removed in this scenario",
+                "No independently available dependency among internet"
+              ]
+            },
+            {
+              "available": true,
+              "id": "local-record",
+              "label": "Offline records and local procedures",
+              "owner": "Local institution",
+              "paths": [
+                {
+                  "alternatives": [
+                    "grid",
+                    "battery"
+                  ],
+                  "usable": [
+                    "battery"
+                  ]
+                }
+              ],
+              "reasons": []
+            },
+            {
+              "available": true,
+              "id": "paper",
+              "label": "Paper manifest and documented manual handoff",
+              "owner": "Local institution",
+              "paths": [],
+              "reasons": []
+            },
+            {
+              "available": false,
+              "id": "radio",
+              "label": "Qualified local message bearer",
+              "owner": "Local communications steward",
+              "paths": [
+                {
+                  "alternatives": [
+                    "grid",
+                    "battery"
+                  ],
+                  "usable": [
+                    "battery"
+                  ]
+                }
+              ],
+              "reasons": [
+                "Removed in this scenario"
+              ]
+            },
+            {
+              "available": true,
+              "id": "runner",
+              "label": "Human courier / in-person confirmation",
+              "owner": "Neighborhood operator",
+              "paths": [],
+              "reasons": []
+            },
+            {
+              "available": false,
+              "id": "primary-supply",
+              "label": "Normal wholesale inflow",
+              "owner": "Supplier",
+              "paths": [],
+              "reasons": [
+                "Removed in this scenario"
+              ]
+            },
+            {
+              "available": true,
+              "id": "local-stock",
+              "label": "Counted local shelf-stable reserve",
+              "owner": "Stock custodian",
+              "paths": [],
+              "reasons": []
+            },
+            {
+              "available": true,
+              "id": "labor",
+              "label": "Named available operators",
+              "owner": "Participating institution",
+              "paths": [],
+              "reasons": []
+            },
+            {
+              "available": true,
+              "id": "tools",
+              "label": "Inspected shared repair tools",
+              "owner": "Tool library",
+              "paths": [],
+              "reasons": []
+            },
+            {
+              "available": true,
+              "id": "water",
+              "label": "Locally available usable water",
+              "owner": "Water custodian",
+              "paths": [],
+              "reasons": []
+            },
+            {
+              "available": true,
+              "id": "cold-store",
+              "label": "Cold storage within qualified conditions",
+              "owner": "Facility steward",
+              "paths": [
+                {
+                  "alternatives": [
+                    "grid",
+                    "battery"
+                  ],
+                  "usable": [
+                    "battery"
+                  ]
+                }
+              ],
+              "reasons": []
+            }
+          ],
+          "eligible_services": 4,
+          "removed": [
+            "grid",
+            "internet",
+            "cloud",
+            "primary-supply",
+            "radio"
+          ],
+          "scope": "Dependency reachability under declared resource observations only. It establishes neither capacity, concurrent allocation, physical availability, authority nor completed service.",
+          "services": [
+            {
+              "actual_service_delivered": false,
+              "dependencies": [
+                {
+                  "alternatives": [
+                    "local-stock",
+                    "primary-supply"
+                  ],
+                  "usable": [
+                    "local-stock"
+                  ]
+                },
+                {
+                  "alternatives": [
+                    "local-record",
+                    "paper"
+                  ],
+                  "usable": [
+                    "local-record",
+                    "paper"
+                  ]
+                },
+                {
+                  "alternatives": [
+                    "labor"
+                  ],
+                  "usable": [
+                    "labor"
+                  ]
+                },
+                {
+                  "alternatives": [
+                    "radio",
+                    "runner"
+                  ],
+                  "usable": [
+                    "runner"
+                  ]
+                }
+              ],
+              "eligible_path": true,
+              "fallback": "Use only preassigned local stock rights, paper manifests and recipient counts when disconnected.",
+              "id": "food",
+              "label": "Food distribution",
+              "normal_value": "Independent stores share stock visibility and delivery without surrendering ownership.",
+              "outcome": "Recipient acknowledgment and discrepancy resolution; dispatch alone does not close delivery.",
+              "owner": "Food service coordinator",
+              "requires": [
+                [
+                  "local-stock",
+                  "primary-supply"
+                ],
+                [
+                  "local-record",
+                  "paper"
+                ],
+                [
+                  "labor"
+                ],
+                [
+                  "radio",
+                  "runner"
+                ]
+              ],
+              "unresolved": []
+            },
+            {
+              "actual_service_delivered": false,
+              "dependencies": [
+                {
+                  "alternatives": [
+                    "tools"
+                  ],
+                  "usable": [
+                    "tools"
+                  ]
+                },
+                {
+                  "alternatives": [
+                    "labor"
+                  ],
+                  "usable": [
+                    "labor"
+                  ]
+                },
+                {
+                  "alternatives": [
+                    "local-record",
+                    "paper"
+                  ],
+                  "usable": [
+                    "local-record",
+                    "paper"
+                  ]
+                }
+              ],
+              "eligible_path": true,
+              "fallback": "Retain inspection sheets and local tool custody; stop unsafe equipment.",
+              "id": "repair",
+              "label": "Maintenance and shared tools",
+              "normal_value": "Routine inspection and repair avoid downtime and establish a usable baseline.",
+              "outcome": "Inspection, accepted repair and condition evidence, not tool checkout alone.",
+              "owner": "Maintenance steward",
+              "requires": [
+                [
+                  "tools"
+                ],
+                [
+                  "labor"
+                ],
+                [
+                  "local-record",
+                  "paper"
+                ]
+              ],
+              "unresolved": []
+            },
+            {
+              "actual_service_delivered": false,
+              "dependencies": [
+                {
+                  "alternatives": [
+                    "cold-store"
+                  ],
+                  "usable": [
+                    "cold-store"
+                  ]
+                },
+                {
+                  "alternatives": [
+                    "labor"
+                  ],
+                  "usable": [
+                    "labor"
+                  ]
+                },
+                {
+                  "alternatives": [
+                    "local-record",
+                    "paper"
+                  ],
+                  "usable": [
+                    "local-record",
+                    "paper"
+                  ]
+                }
+              ],
+              "eligible_path": true,
+              "fallback": "Document local measurements and the permitted hold window; quarantine uncertain lots.",
+              "id": "cold-chain",
+              "label": "Cold-chain observation",
+              "normal_value": "Retain temperature history and catch equipment degradation during ordinary operations.",
+              "outcome": "Observed condition within product-specific limits; no invented safe temperature.",
+              "owner": "Facility operator",
+              "requires": [
+                [
+                  "cold-store"
+                ],
+                [
+                  "labor"
+                ],
+                [
+                  "local-record",
+                  "paper"
+                ]
+              ],
+              "unresolved": []
+            },
+            {
+              "actual_service_delivered": false,
+              "dependencies": [
+                {
+                  "alternatives": [
+                    "water"
+                  ],
+                  "usable": [
+                    "water"
+                  ]
+                },
+                {
+                  "alternatives": [
+                    "labor"
+                  ],
+                  "usable": [
+                    "labor"
+                  ]
+                },
+                {
+                  "alternatives": [
+                    "radio",
+                    "runner"
+                  ],
+                  "usable": [
+                    "runner"
+                  ]
+                },
+                {
+                  "alternatives": [
+                    "local-record",
+                    "paper"
+                  ],
+                  "usable": [
+                    "local-record",
+                    "paper"
+                  ]
+                }
+              ],
+              "eligible_path": true,
+              "fallback": "Known local points of contact and bounded manual handoff.",
+              "id": "support",
+              "label": "Water and neighbor support",
+              "normal_value": "Coordinate water, access, practical help and reliable handoffs.",
+              "outcome": "Counted delivery and recipient acknowledgment without creating a resident score.",
+              "owner": "Community service coordinator",
+              "requires": [
+                [
+                  "water"
+                ],
+                [
+                  "labor"
+                ],
+                [
+                  "radio",
+                  "runner"
+                ],
+                [
+                  "local-record",
+                  "paper"
+                ]
+              ],
+              "unresolved": []
+            }
+          ],
+          "total_services": 4
+        },
+        "schema": "civil-continuity/assessment@1"
+      },
+      {
+        "input": {
+          "currency": "USD",
+          "individual": {
+            "administration": 80,
+            "capital_allocation": 50,
+            "energy": 50,
+            "maintenance": 30,
+            "paid_labor": 200,
+            "procurement": 100,
+            "purchased_units": 1000,
+            "spoilage_fraction": 0.08,
+            "storage": 80,
+            "transport": 300,
+            "unit_purchase_cost": 2
+          },
+          "shared": {
+            "administration": 120,
+            "capital_allocation": 80,
+            "energy": 60,
+            "maintenance": 50,
+            "paid_labor": 250,
+            "procurement": 140,
+            "purchased_units": 1000,
+            "spoilage_fraction": 0.05,
+            "storage": 100,
+            "transport": 180,
+            "unit_purchase_cost": 2
+          }
+        },
+        "kind": "economics",
+        "result": {
+          "cooperative_advantage_in_supplied_case": true,
+          "currency": "USD",
+          "expected_savings_fraction": 0.0014205062830086046,
+          "field_validated": false,
+          "individual": {
+            "cost_per_usable_unit": 3.141304347826087,
+            "expected_usable_units": 920,
+            "purchased_units": 1000,
+            "scope": "Scenario accounting over supplied costs and loss fractions. Labor and maintenance are explicit costs; no market price advantage or food quality is inferred.",
+            "total_cost": 2890
+          },
+          "shared": {
+            "cost_per_usable_unit": 3.136842105263158,
+            "expected_usable_units": 950,
+            "purchased_units": 1000,
+            "scope": "Scenario accounting over supplied costs and loss fractions. Labor and maintenance are explicit costs; no market price advantage or food quality is inferred.",
+            "total_cost": 2980
+          },
+          "unit_difference": 0.004462242562929042
+        },
+        "schema": "civil-continuity/assessment@1"
+      }
+    ],
+    "operational_ready": false,
+    "reason": "Declared demonstration inputs; physical inventory, delivery, radio and authority remain unverified."
+  },
+  "key_class": "Disposable test identity. Private half never written and deleted before consumer runs. Not institutional authority.",
+  "scope": "Authored synthetic inputs and public source references; no physical deliveries, radio operation or municipal acceptance."
+}

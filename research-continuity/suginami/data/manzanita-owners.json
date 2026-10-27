@@ -1,0 +1,252 @@
+{
+  "working_model": {
+    "path": "manzanita-working-model/WORKING_MODEL_CONTRACT.json",
+    "sha256": "0705f5318cd374b7bc10d9bc1203d8d2e8b718475de580a26422c5fe34e84269",
+    "schema": "manzanita-works/working-model-contract@2",
+    "public_stage_labels": {
+      "signal": "Need",
+      "source": "Evidence",
+      "authority": "Decision owner",
+      "safe_action": "Safe next step",
+      "fallback": "Backup path",
+      "closure": "Outcome",
+      "learning": "Next improvement"
+    },
+    "pilot_gates": [
+      {
+        "id": "problem",
+        "public_label": "concrete need",
+        "requirement": "case type plus a concrete statement of who is affected, what is failing, and what outcome would count"
+      },
+      {
+        "id": "sponsor",
+        "public_label": "who owns the promise",
+        "requirement": "a named person or organizational role that accepts accountability and stop authority"
+      },
+      {
+        "id": "operator",
+        "public_label": "who keeps the work running",
+        "requirement": "a named and funded day-to-day operating role"
+      },
+      {
+        "id": "basis",
+        "public_label": "where and with what",
+        "requirement": "venue, participants, resources, lawful access, and partners"
+      },
+      {
+        "id": "stop",
+        "public_label": "what is allowed and what stops the pilot",
+        "requirement": "permitted actions, prohibited consequences, and an explicit stop condition"
+      }
+    ],
+    "invariants": [
+      "Evidence and preparation do not grant access, spend, work, publication, representation, or release authority.",
+      "Assistance and place evidence may not become risk, eligibility, enforcement, resident, property, or other adverse standing.",
+      "Sources, decisions, holds, receipts, and handoffs must remain legible after the original person leaves."
+    ],
+    "export_standing": {
+      "schema": "manzanita-works/bounded-pilot-preparation@2",
+      "format": "local_json_download",
+      "blank_value": "UNRESOLVED",
+      "complete_standing": "PREPARED_FOR_ACCOUNTABLE_REVIEW_NOT_ACCEPTED",
+      "incomplete_standing": "INCOMPLETE_PREPARATION_HELD",
+      "network_request": false,
+      "external_effect": "none"
+    }
+  },
+  "operating_fabric": {
+    "path": "manzanita-works/data.js",
+    "sha256": "d8a6b11aa352e63dd86e8bb0b217e28d7dac7c5beeb8b347c20010218703ea0f",
+    "release": "mw-operating-dreamboard-v0.2.0",
+    "capacities": [
+      {
+        "id": "tools",
+        "label": "Tools",
+        "icon": "🔧",
+        "desc": "Physical equipment and custody."
+      },
+      {
+        "id": "time",
+        "label": "Time",
+        "icon": "◷",
+        "desc": "Verified human contribution."
+      },
+      {
+        "id": "talent",
+        "label": "Talent",
+        "icon": "◎",
+        "desc": "Skills and accountable service."
+      },
+      {
+        "id": "pilotage",
+        "label": "Pilotage",
+        "icon": "◉",
+        "desc": "Navigation and bounded handoff."
+      },
+      {
+        "id": "money",
+        "label": "Money",
+        "icon": "＄",
+        "desc": "Dues, rentals, donations, grants."
+      },
+      {
+        "id": "mobility",
+        "label": "Mobility",
+        "icon": "♢",
+        "desc": "Transport, repair, access."
+      },
+      {
+        "id": "knowledge",
+        "label": "Knowledge",
+        "icon": "▤",
+        "desc": "Procedures, teaching, institutional memory."
+      },
+      {
+        "id": "space",
+        "label": "Space",
+        "icon": "⌂",
+        "desc": "Rooms, storage, workshops, land."
+      }
+    ],
+    "programs": [
+      {
+        "id": "essential-tools",
+        "label": "Essential Tools",
+        "icon": "🔧",
+        "note": "tool custody",
+        "capacities": [
+          "tools",
+          "space",
+          "money"
+        ],
+        "own": "Program purpose, member relationship, local policy, canonical tool references, accepted custody receipts.",
+        "commodity": "MyTurn or another inventory system performs reservations, checkout, return, and fees.",
+        "next": "Define the exact export and reconciliation contract."
+      },
+      {
+        "id": "essential-time",
+        "label": "Essential Time",
+        "icon": "◷",
+        "note": "contribution and credits",
+        "capacities": [
+          "time",
+          "talent",
+          "pilotage"
+        ],
+        "own": "Credit policy, eligible performance, acceptance authority, named participant accounts, portable receipts.",
+        "commodity": "Time-bank workflow donors may inform interface and operations.",
+        "next": "Operate one real low-consequence contribution chain."
+      },
+      {
+        "id": "essential-pilotage",
+        "label": "Essential Pilotage",
+        "icon": "◉",
+        "note": "human navigation and handoff",
+        "capacities": [
+          "pilotage",
+          "time",
+          "knowledge"
+        ],
+        "own": "Scope, referral boundary, accepted service, contribution recognition, next accountable provider.",
+        "commodity": "Scheduling, messaging, forms, maps, and directories remain replaceable.",
+        "next": "Define recipient acknowledgement and steward acceptance."
+      },
+      {
+        "id": "mobility",
+        "label": "Mobility / E-bike",
+        "icon": "♢",
+        "note": "repair and access",
+        "capacities": [
+          "mobility",
+          "tools",
+          "talent",
+          "money"
+        ],
+        "own": "Project purpose, participants, eligibility, safety, local authority, condition and custody semantics.",
+        "commodity": "Tool custody now; hardware and mesh adapters later.",
+        "next": "Map repair, access, custody, and instruction events."
+      },
+      {
+        "id": "prevention",
+        "label": "Prevention & Support",
+        "icon": "♢",
+        "note": "purpose-limited service",
+        "capacities": [
+          "time",
+          "talent",
+          "pilotage",
+          "space",
+          "knowledge"
+        ],
+        "own": "Purpose limitation, privacy, safety, service authority, acceptance, referral and evidence boundary.",
+        "commodity": "Forms, scheduling, messaging, donor tooling, and specialist systems remain replaceable.",
+        "next": "Admit only bounded capacity needs into the commons."
+      },
+      {
+        "id": "stewardship",
+        "label": "Stewardship / Place",
+        "icon": "▲",
+        "note": "evidence and safe action",
+        "capacities": [
+          "knowledge",
+          "tools",
+          "time",
+          "money"
+        ],
+        "own": "Place interpretation, evidence class, purpose firewall, safe-action logic, local authority and handoff.",
+        "commodity": "External data and provider services remain bounded inputs.",
+        "next": "Carry qualified needs into Attention or the commons."
+      },
+      {
+        "id": "money",
+        "label": "Money / Fundraising",
+        "icon": "＄",
+        "note": "dues, rentals, donations, restrictions",
+        "capacities": [
+          "money"
+        ],
+        "own": "Constituent continuity, purpose, project allocation, restrictions, commitments, receipts, durable transaction references.",
+        "commodity": "Givebutter, Network for Good, Stripe, Square, and later rails move money or render views.",
+        "next": "Build the dashboard as a projection over canonical identity, purpose, project, restriction, processor, and receipt."
+      }
+    ],
+    "rules": [
+      {
+        "id": "identity",
+        "icon": "◎",
+        "label": "Identity",
+        "note": "Manzanita owns the relationships and record.",
+        "detail": "A vendor account may reference a person or organization, but it does not become the canonical relationship."
+      },
+      {
+        "id": "authority",
+        "icon": "⚖",
+        "label": "Authority",
+        "note": "A dashboard does not create standing.",
+        "detail": "No interface, model, or processor may manufacture acceptance, obligation, credit, representation, or external effect."
+      },
+      {
+        "id": "evidence",
+        "icon": "☑",
+        "label": "Evidence",
+        "note": "Accepted work must be receipted.",
+        "detail": "Intent, commitment, performed event, acknowledgement, acceptance, credit, settlement, and custody close remain distinct."
+      },
+      {
+        "id": "handoff",
+        "icon": "↪",
+        "label": "Handoff",
+        "note": "Pilotage prepares the next safe action.",
+        "detail": "The next accountable provider receives only the bounded context, evidence, purpose, and authority required."
+      },
+      {
+        "id": "perimeter",
+        "icon": "◌",
+        "label": "Commodity perimeter",
+        "note": "MyTurn, processors, fundraising platforms, OSS, and hardware are replaceable machinery.",
+        "detail": "The organization must be able to reconstruct its own operating record after supplier loss."
+      }
+    ]
+  },
+  "scope": "Read-only projection from existing public owners. Source owners remain separate; no municipal adoption or new institutional authority."
+}

@@ -248,3 +248,8 @@ The owner requested the combined desk and runner. `compute/` is the provider-neu
 ## Research Desk public handoff, 22 September 2026
 
 `research-desk/` supplies a plain-language landing page, the preserved single-file Research Desk 1.0.0 app, supported input contracts and synthetic example reports with replayable history. No backend or new workflow exists. The app is an independent build for inspection, not a BEP adoption or integration claim. Workspace data lives in memory until explicitly exported. Native publication checks and exact original-app identity are recorded in that directory. Existing compute and Hot Aisle tools remain unchanged.
+
+
+### Civil continuity application, 27 October 2026
+
+Research Continuity now hosts `research-continuity/suginami/`, a self-contained civil-resilience application. It projects the exact public Manzanita operating-fabric and working-model contracts rather than replacing them. The code joins declared resource dependencies, bounded offline food rights, acknowledgment obligations, full landed cost, power/water and message budgets to the existing native ResearchCore and Genesis path. The 76-facility municipal listing is public source data, not a readiness declaration. Independent site owners, vendors and authorities remain distinct. Private partner messages and non-civil designs are excluded. A separate qualification workflow exercises the child page; the existing full-site publisher remains the only delivery path.
