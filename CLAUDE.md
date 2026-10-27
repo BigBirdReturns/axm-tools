@@ -322,3 +322,8 @@ they are kept here verbatim before the branch was deleted. Source tip
 - `programs/manzanita-99/custody/CUSTODY_MANIFEST.json` is not kept current
   on `main`. `manzanita-donor-custody.yml` rebuilds it before validating, so
   the committed copy going stale never fails CI.
+
+## Danger Room portable browser checks, 27 October 2026
+
+- The managed HTTP preview did not expose Web Crypto `subtle`. Its passing reference suite correctly remained unaccepted because its runs lacked digests. `danger-room/shield-ai/engine.js` now uses the same SHA-256 over canonical UTF-8 bytes through Web Crypto or a tested local fallback. Preserve complete suite, regression and deterministic rerun checks; a hash alone is not evidence validity. `tests/app.test.js` exercises the no-Web-Crypto path and rehashed falsification rejection.
+- The static preview server inserted live-reload markup at a literal closing body tag inside an embedded JavaScript template, splitting the standalone script. The optional standalone exporter now escapes document-closing strings before hashing the embedded scripts. JavaScript restores the same generated HTML. Both the ordinary multi-file page and the standalone output were checked in the browser; the original Danger Room receipt and page remain unchanged.
