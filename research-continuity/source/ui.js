@@ -1,10 +1,11 @@
 (function(){'use strict';
+document.body.dataset.ready='loading';
 const L=globalThis.Continuity,C=L.C,$=s=>document.querySelector(s),esc=C.escape,STORAGE='axm.research-continuity.v1';
 let ws=null,busy=false,view=null,sourceFile=null;
 const money=x=>x===null||x===undefined?'unavailable':'$'+Number(x).toFixed(3);
 const badge=(text,state='')=>'<span class="badge '+state+'">'+esc(text)+'</span>';
 function tell(text,bad=false){$('#message').className='notice '+(bad?'bad':'good');$('#message').textContent=text;}
-function tab(name){document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===name?'true':'false'));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+name));}
+function tab(name){document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===name?'true':'false'));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+name));if(window.JudgmentUI)window.JudgmentUI.onTab(name);}
 function download(name,text,type='application/json'){const a=document.createElement('a'),u=URL.createObjectURL(new Blob([text],{type}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),15000);}
 async function saveLocal(){if(!$('#persist').checked)return;try{localStorage.setItem(STORAGE,JSON.stringify(await L.pack(ws)));$('#storage-status').textContent='A checked packet is retained in this browser. It is not an off-device backup.';}catch(e){$('#storage-status').textContent='Local persistence failed: '+e.message;$('#persist').checked=false;}}
 async function act(label,fn,msg){if(busy)return;busy=true;$('#busy').textContent=label+'…';try{const next=await fn();if(next)ws=next;await render();await saveLocal();if(msg)tell(typeof msg==='function'?msg():msg);}catch(e){tell(e.message,true);}finally{busy=false;$('#busy').textContent='';}}
@@ -40,8 +41,9 @@ async function render(){
  $('#compute').disabled=!v.plan;$('#reveal').disabled=!committedHidden;$('#review').disabled=!d||!v.current.current;$('#freeze').disabled=!v.review?.ready;$('#export-report').disabled=!v.reports.length;
  $('#readmit-a').disabled=v.sources[0].current.current;
  if(window.MeasurementUI)window.MeasurementUI.render(ws);
+ if(window.JudgmentUI)await window.JudgmentUI.render(ws);
 }
-$('#run-example').onclick=()=>act('Running local example',async()=>{let next=await L.seal(ws);next=await L.compute(next);return L.reveal(next);},'Evaluation completed on this device. Inspect accepted work, complete cost, and the exact retained basis.');
+$('#run-example').onclick=()=>{tab('cycle');return act('Running local example',async()=>{let next=await L.seal(ws);next=await L.compute(next);return L.reveal(next);},'Evaluation completed on this device. Inspect accepted work, complete cost, and the exact retained basis.')};
 $('#open-handoff').onclick=()=>tab('sources');
 $('#seal').onclick=()=>act('Sealing basis',()=>L.seal(ws),'Current basis sealed locally. External anchoring remains separate.');
 $('#compute').onclick=()=>act('Evaluating retained work',()=>L.compute(ws),()=>view.latestAttempt?.data.mode==='reused'?'Checked reuse: existing output matched its pinned computation. No model inference.':view.latestAttempt?.data.state==='HELD'?'Attempt held and preserved: the sealed basis changed.':'Output committed. Reveal it to inspect the result.');

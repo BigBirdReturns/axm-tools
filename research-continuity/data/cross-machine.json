@@ -1,0 +1,146 @@
+{
+  "schema": "research-continuity/cross-machine-witness@1",
+  "status": "PASS",
+  "observed_at": "2026-10-27T18:09:27.668153+00:00",
+  "producer_host": "OCTO-W03",
+  "consumer_host": "OCTO-N01",
+  "kernel_commit": "5fcd472d6119afc0e9bb80ffc91f9ccc8adde705",
+  "handoff_sha256": "40f5a147be95e454b301f579aa58e9fb15f24720d2496d7d8c1320e8efed90de",
+  "expected_shard": "sh1_4386bb8680be51f133c090e297af042c114a9de487951d16141a1b63946bf342",
+  "kernel_verdict": "PASS",
+  "consumer_identity": "MATCH",
+  "predecessor": {
+    "status": "PRESERVED_PREFIX",
+    "shard_id": "sh1_2556189921fa224c456fc31c1ad6a7f88331228e208f175c386c4daf6acaa379",
+    "events": 11
+  },
+  "current": {
+    "case_id": "temporary-substitution",
+    "as_of": "2026-10-27T15:00:00Z",
+    "judgment_id": "judgment-2",
+    "status": "APPLICABLE",
+    "applicable": true,
+    "scope": "Continue replacement B on line 2 within the revised load envelope; all unresolved earlier obligations remain due.",
+    "conditions": [
+      {
+        "id": "load-limit",
+        "label": "Load stays within the qualified envelope",
+        "state": "PASS",
+        "observed": 50,
+        "operator": "lte",
+        "required": 55,
+        "reason": "Declared condition satisfied"
+      },
+      {
+        "id": "thermal-limit",
+        "label": "Temperature stays within the qualified envelope",
+        "state": "PASS",
+        "observed": 40,
+        "operator": "lte",
+        "required": 60,
+        "reason": "Declared condition satisfied"
+      },
+      {
+        "id": "assembly-match",
+        "label": "The installed assembly is the approved replacement",
+        "state": "PASS",
+        "observed": "B",
+        "operator": "eq",
+        "required": "B",
+        "reason": "Declared condition satisfied"
+      }
+    ],
+    "source_status": [
+      {
+        "id": "incident",
+        "pinned_revision": 1,
+        "current_revision": 1,
+        "current": true
+      },
+      {
+        "id": "qualification",
+        "pinned_revision": 2,
+        "current_revision": 2,
+        "current": true
+      },
+      {
+        "id": "resolution-inspect-replacement",
+        "pinned_revision": 1,
+        "current_revision": 1,
+        "current": true
+      }
+    ],
+    "obligations": [
+      {
+        "blocking": false,
+        "created_at": "2026-10-26T09:00:00Z",
+        "created_by": "judgment-1",
+        "criteria": [
+          {
+            "field": "result",
+            "id": "inspection-pass",
+            "label": "Inspection passes",
+            "op": "eq",
+            "value": "pass"
+          },
+          {
+            "field": "assembly",
+            "id": "inspected-assembly",
+            "label": "Inspection concerns replacement B",
+            "op": "eq",
+            "value": "B"
+          }
+        ],
+        "description": "Inspect replacement B and retain the observed inspection result.",
+        "due_at": "2026-10-27T18:00:00Z",
+        "evidence_kind": "inspection",
+        "id": "inspect-replacement",
+        "owner": "Inspector",
+        "state": "DISCHARGED",
+        "resolution": {
+          "actor": "Inspector",
+          "at": "2026-10-27T12:00:00Z",
+          "evidence": {
+            "id": "resolution-inspect-replacement",
+            "revision": 1,
+            "sha256": "55c36508083ea9e6e6c40ea0ab5cdee1bf96c0663ba697919dd3e840055af134"
+          },
+          "kind": "DISCHARGED",
+          "obligation_id": "inspect-replacement",
+          "reason": "Inspected assembly B against the retained criteria; the supplied record reports a pass."
+        }
+      },
+      {
+        "blocking": false,
+        "created_at": "2026-10-26T09:00:00Z",
+        "created_by": "judgment-1",
+        "criteria": [
+          {
+            "field": "result",
+            "id": "restoration-pass",
+            "label": "Restoration completed",
+            "op": "eq",
+            "value": "complete"
+          }
+        ],
+        "description": "Restore the original or explicitly authorize an alternative before the temporary decision expires.",
+        "due_at": "2026-10-29T18:00:00Z",
+        "evidence_kind": "restoration",
+        "id": "restore-original",
+        "owner": "Operations lead",
+        "state": "OPEN",
+        "resolution": null
+      }
+    ],
+    "open_obligations": 1,
+    "blockers": [],
+    "observation_at": "2026-10-27T09:00:00Z",
+    "next_action": "Continue only within the declared scope; complete the retained obligations before their deadlines.",
+    "authority_boundary": "Case-specific role declarations are checked, not authenticated. This result grants no external authority."
+  },
+  "original_rationale": "The original assembly failed. The retained qualification supports a temporary replacement within a smaller operating envelope. Inspection and restoration remain owed.",
+  "successor_rationale": "The corrected source reduces the permitted load. The successor retains the earlier inspection and restoration obligations rather than silently deleting them.",
+  "refused_transitions": 1,
+  "origin_process_or_private_key_transferred": false,
+  "scope": "Fresh process and separate physical estate node. Same pinned application consumer, independently installed kernel. Authored synthetic case and throwaway fixture identity; no physical inspection or institutional authorization."
+}

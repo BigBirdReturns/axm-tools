@@ -19,7 +19,7 @@ subprocess.run([sys.executable,str(ROOT/'scripts/build.py'),'--check'],check=Tru
 html=(ROOT/'index.html').read_text();page=Page();page.feed(html)
 require(page.csp and "connect-src 'none'" in page.csp,'Network-computation boundary missing.')
 require(all('src' not in x for x in page.scripts),'Runtime scripts must remain self-contained.')
-for name in ['source/continuity.js','source/ui.js','source/measurements.js','source/measurement-ui.js']:
+for name in ['source/continuity.js','source/ui.js','source/measurements.js','source/measurement-ui.js','source/judgment.js','source/judgment-ui.js']:
     source=(ROOT/name).read_text()
     for pattern in [r'\bfetch\s*\(',r'\bXMLHttpRequest\b',r'\bsendBeacon\s*\(',r'\bWebSocket\s*\(']:
         require(not re.search(pattern,source),name+' contains an unexpected network operation.')
@@ -45,6 +45,19 @@ with zipfile.ZipFile(kit) as z:
         require(not path.is_absolute() and '..' not in path.parts and path.parts[0]=='research-continuity','Unsafe kit path.')
         local=ROOT.joinpath(*path.parts[1:]);require(local.is_file(),'Kit member no longer exists: '+member)
         require(z.read(member)==local.read_bytes(),'Kit differs from current source: '+member)
-    for name in ['index.html','source/measurements.js','scripts/check_packet.cjs','scripts/native_bridge.py','tests/engine.test.cjs','tests/measurements.test.cjs']:
+    for name in ['index.html','source/measurements.js','scripts/check_packet.cjs','scripts/native_bridge.py','tests/engine.test.cjs','tests/measurements.test.cjs','source/judgment.js','source/judgment-ui.js','scripts/genesis_judgment.py','scripts/judgment_packet.cjs','tests/genesis_roundtrip.py','tests/judgment_browser.py','downloads/retained-judgment-genesis.zip']:
         require('research-continuity/'+name in z.namelist(),'Incomplete runnable kit: '+name)
+g=json.loads((ROOT/'data/genesis-witness.json').read_text())
+x=json.loads((ROOT/'data/cross-machine.json').read_text())
+require(g['status']=='PASS' and len(g['checks'])>=9 and all(c['pass'] for c in g['checks']),'Genesis witness is incomplete.')
+require(x['status']=='PASS' and x['expected_shard']==g['successor_id'] and x['origin_process_or_private_key_transferred'] is False,'Separate-machine witness differs from the released artifact.')
+for name,want in g['consumer_sources'].items():require(digest(ROOT/name)==want,'Genesis artifact consumer changed: '+name)
+with zipfile.ZipFile(ROOT/'downloads/retained-judgment-genesis.zip') as z:
+    require(z.testzip() is None,'Genesis artifact archive CRC failed.')
+    for name in z.namelist():
+        require(not Path(name).is_absolute() and '..' not in Path(name).parts,'Unsafe native artifact path.')
+        require(not name.endswith(('.key','.pem')),'Private key-shaped artifact in public download.')
+    artifact_receipt=json.loads(z.read('GENESIS-WITNESS.json'))
+    require(artifact_receipt['successor_id']==g['successor_id'],'Native artifact identity differs from public receipt.')
+    require(hashlib.sha256(z.read('fixture-publisher.pub')).hexdigest()==g['publisher_key_sha256'],'Public fixture key changed.')
 print(json.dumps({'status':'PASS','native_owner_sha256':owner['sha256'],'page_sha256':digest(ROOT/'index.html'),'kit_sha256':digest(kit),'custody':'public-safe fixtures and independent code only; no private source copied','runtime_network':'none'},indent=2))
