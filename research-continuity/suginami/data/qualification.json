@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "release": "civil-continuity/1.0.0",
+  "at": "2026-10-27T19:15:50.134571+00:00",
+  "native_tests": 47,
+  "browser_checks": 20,
+  "genesis_checks": 9,
+  "physical_successor": "OCTO-N01",
+  "source_sha256": {
+    "README.md": "6c84c8667917e78242e71db3376329945983ffe6545288c149453bb8db1247b5",
+    "app.js": "1f04bcc98cbb1bff976efa7384861b448fb754bbf62888ad544123bc5d6b3d3f",
+    "assurance.js": "7d56b3aa666b292a5a39cc6440a1ff253472e91162a2b84c43b4be094fdc2774",
+    "browser.py": "d6e2fb6167cf8ff0c57941affd9d157e0f65f3439db203c6cb7f98360a245782",
+    "build.py": "a2c8799a6386e7e61ed8b7159011493081a9ce82626664c60a8224303c951488",
+    "create.cjs": "718753bdf747151ad2bcac03d592e271ffc6c03ac7112801a29de3f41f124aa9",
+    "data/basis.json": "e79783da08352693b9cb3629b98cd2ace97255e635a32e220b047d35f566bdce",
+    "data/manzanita-owners.json": "e1bce99eb0fdcfc5af9b31edbcbc38f371d504c4e7f94115c8fff6b7daa36718",
+    "data/official-facilities.json": "1a2b150ca35e07b2a840eb9db27852e859b76f98cc2728109e46b9d749eb9b42",
+    "fabric.js": "00a207ee4f2735cf1837b32f0155412fbf6bda758a62c05444d9b0062d91d940",
+    "fabric.test.cjs": "f27328c61968007a39d3f086137f345e68f17a680c987fec808fa114c2200843",
+    "index.template.html": "226fad0cefcb8058f87ce9302023f616a19a1b769996a43c58076742ae6eae4e",
+    "municipal.js": "c5f9466367b541a57025bf1db10b46a7a5bb00ab81ceb46c69f5d0ff909fdc28",
+    "native_test.py": "3b95981f81d56fe9d97865b2a8fe0ddba6518e09eebab95009347989464222fe",
+    "packet.cjs": "ecf1bf44d6e66c7bcb79e60b77c54a3a46a4bdca1234af389ab68a3566eafdc2",
+    "seal.py": "7b52ad761216672580cde9dd162c7179967c404016efa9cf2b6014d402142df5",
+    "tests.cjs": "81dd5470c7e1c4a326ded6c488f99565ea985e7d4d18c08e6001aaab5434da7e",
+    "validate.py": "c979cd67b3d80ff324cddc7a3e28c73332e385e9290a11b0bad72deeacd86ab1",
+    "workflow.js": "91b2b753142fd71fac55b7cb13b40ffae220112f7b8e2d7c8a98f33a961e6e68"
+  },
+  "scope": "Civil software exercise over authored resource assumptions and attributed public source facts. No actual deployment, field qualification or authorization.",
+  "qualification_note": "Nested custody scanner constructs its own detection signature without presenting it to the parent as an actual private-capture reference. Detection semantics and domain/browser source are unchanged."
+}

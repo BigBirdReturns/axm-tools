@@ -91,3 +91,7 @@ Inputs stay local. The page has no account, upload, model call, analytics or exe
 ## What can rot
 
 Browser crypto/storage/download behavior, installed Python/Node versions, native kernel dependencies, source-owner schemas and hosting can change. Identity mismatches, unsupported contracts, corrupt artifacts and missing state fail visibly. No silent migration changes a retained decision, no current review is inferred from an old review, and no successfully verified signature makes an expired decision current again.
+
+## Connected civil-resilience application
+
+The [`suginami/`](suginami/) working case composes the existing Manzanita capacity and pilot contracts, public municipal sources, food-allocation rights, full-cost cooperation, power/water accounting and bounded message budgets. Native Genesis artifacts carry the connected judgments and unresolved obligations to a second physical estate node. The parent kernel and ResearchCore remain unchanged; this is an independent civilian application, not evidence of municipal adoption or deployed infrastructure.

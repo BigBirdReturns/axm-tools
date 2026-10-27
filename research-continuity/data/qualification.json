@@ -5,7 +5,7 @@
   "source_sha256": {
     "source/OWNER.json": "0f31f5e964d78e3993657ed42ac359c1317ac6c2db5c26d4557a0b86f4ba33db",
     "source/continuity.js": "06e9fe2d08821bc8cba83b9c0396ae8682502f3336ab198eca55e51bab3fec8c",
-    "source/index.template.html": "65d4bca0e03b9f8b98aa1d98a7ecdf4d4f59bea5761d66958d5d37b1214da116",
+    "source/index.template.html": "9c1116f6f49d175d5329dae746bbf331208f30f7d37817a97186eff30a1993cb",
     "source/judgment-ui.js": "3e0cc3525ebe3c9a2e4d7047991316cd440c18b672379bc0b1b61412e9a3d5fe",
     "source/judgment.js": "1bd15c81562da15392b727177730748ccf47a7f7d90d2f4ec0daf1e4048fc4a6",
     "source/measurement-ui.js": "ee002b710aed4be23be3bf4f56511ef938e62631db4ea17530c3fa961f6482c5",
@@ -41,5 +41,6 @@
     "Complete domain theorem",
     "External precommitment",
     "Private third-party integration"
-  ]
+  ],
+  "change_note": "Existing entry now links the civil continuity application; domain and kernel consumer source identities unchanged. Browser regression required before publication."
 }

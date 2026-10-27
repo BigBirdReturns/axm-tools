@@ -1,0 +1,60 @@
+{
+  "status": "PASS",
+  "schema": "civil-continuity/cross-machine@1",
+  "observed_at": "2026-10-27T19:11:48.657521+00:00",
+  "producer": "OCTO-W03",
+  "consumer": "OCTO-N01",
+  "shard_id": "sh1_9abdb6a1e0abcfc8338ae7d50480340e0c739b11d573f62abed4541c85303c1d",
+  "kernel_status": "PASS",
+  "predecessor": {
+    "status": "PRESERVED_PREFIX",
+    "shard_id": "sh1_3480a73ff50c184d6722c28cb37d8f801598df069fef9da387abf11800d10da6",
+    "events": 10
+  },
+  "stock_rights": [
+    {
+      "seat": "west",
+      "lot": "lot-A",
+      "quota": 500,
+      "spent": 360,
+      "reserved": 0,
+      "available": 140
+    },
+    {
+      "seat": "east",
+      "lot": "lot-A",
+      "quota": 400,
+      "spent": 300,
+      "reserved": 0,
+      "available": 100
+    }
+  ],
+  "owed": [
+    {
+      "reservation": "e-r1",
+      "seat": "east",
+      "to": "shelter-B",
+      "units": 300,
+      "received": null,
+      "obligation": "Obtain recipient acknowledgment; dispatch is not delivery"
+    },
+    {
+      "reservation": "w-r1",
+      "seat": "west",
+      "to": "shelter-A",
+      "units": 360,
+      "received": 350,
+      "obligation": "Reconcile short delivery and preserve recipient receipt"
+    }
+  ],
+  "refused_overallocation": 1,
+  "retained_civil_assessments": [
+    "fabric",
+    "economics"
+  ],
+  "field_obligations": 4,
+  "private_key_transferred": false,
+  "original_session_required": false,
+  "physical_readiness": false,
+  "scope": "Same known application consumer in a fresh process on another physical estate node. Synthetic inputs; actual kernel signature and domain replay. No municipal authority or physical delivery established."
+}

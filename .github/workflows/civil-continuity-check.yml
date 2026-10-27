@@ -1,0 +1,51 @@
+name: Civil Continuity qualification
+on:
+  push:
+    paths: ['research-continuity/suginami/**', '.github/workflows/civil-continuity-check.yml', 'manzanita-works/data.js', 'manzanita-working-model/WORKING_MODEL_CONTRACT.json']
+  pull_request:
+    paths: ['research-continuity/suginami/**', '.github/workflows/civil-continuity-check.yml', 'manzanita-works/data.js', 'manzanita-working-model/WORKING_MODEL_CONTRACT.json']
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exact source owners, public custody and complete offline kit
+        run: python research-continuity/suginami/validate.py
+      - name: Stock rights, conservation, missing dependencies and full-cost tests
+        run: node --test research-continuity/suginami/tests.cjs research-continuity/suginami/fabric.test.cjs
+      - name: Install browser tooling for tests only
+        run: |
+          python -m pip install playwright==1.64.1
+          test -x /opt/google/chrome/chrome
+      - name: Operate all six work areas and cold offline handoff
+        env:
+          TEST_CHROME: /opt/google/chrome/chrome
+          TMPDIR: ${{ runner.temp }}
+          EVIDENCE_DIR: ${{ runner.temp }}/civil-continuity/browser
+        run: python research-continuity/suginami/browser.py
+      - name: Install unchanged explicit Genesis kernel in isolated test environment
+        run: |
+          python -m venv "${{ runner.temp }}/civil-genesis"
+          "${{ runner.temp }}/civil-genesis/bin/python" -m pip install 'axm-genesis[mldsa-compat] @ git+https://github.com/BigBirdReturns/axm-genesis.git@5fcd472d6119afc0e9bb80ffc91f9ccc8adde705'
+      - name: Real Genesis original and successor, fresh domain consumer
+        env:
+          TMPDIR: ${{ runner.temp }}
+        run: '"${{ runner.temp }}/civil-genesis/bin/python" -B research-continuity/suginami/native_test.py --out "${{ runner.temp }}/civil-continuity/genesis"'
+      - name: Preserve observed evidence
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: civil-continuity-qualification
+          path: ${{ runner.temp }}/civil-continuity
+          if-no-files-found: warn
+          retention-days: 90
