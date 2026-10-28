@@ -128,3 +128,7 @@ human or AI.
 ## Compute decision desk and workload instrument
 
 The [compute desk](https://github.com/BigBirdReturns/cantos/tree/main/compute) and [workload instrument](https://github.com/BigBirdReturns/cantos/tree/main/hot-aisle) now live in Cantos. Use that checkout for execution and qualification; its [integration documentation](https://github.com/BigBirdReturns/cantos/blob/main/integration/README.md) records their source authorities, commands and boundaries. The retained integration files here support migration history and the axm-tools publication gate; this checkout no longer contains the moved execution sources.
+
+## Atmark storefront and catalogue workshop
+
+[Open the independent preview](https://bigbirdreturns.github.io/axm-tools/atmark/) · [Source and operating instructions](atmark/README.md). A free, local-first toolkit for a public 53-listing subset: source-bound catalogue normalisation, review queues, comparisons, CSV intake, image preparation and portable export. It contains no seller write integration. Qualification is retained in `atmark/data/qualification.json`.
