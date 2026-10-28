@@ -1,0 +1,3464 @@
+{
+  "schema_version": 1,
+  "version": "1.0.0",
+  "captured_at": "2026-10-28T17:53:55.614682+00:00",
+  "built_at": "2026-10-28T18:17:42.623259+00:00",
+  "source_packet_sha256": "f2d1997501d52c939e3dc652c4b4f79bfce47ab703783425aac37014c36740ec",
+  "source_method": "Assisted transcription of accessible public web-index results and followed listing/image links. Not raw HTML custody, not an authenticated seller export.",
+  "coverage": {
+    "complete": false,
+    "listing_records": 53,
+    "expected_total": null,
+    "reported_store_counts": [
+      {
+        "count": 659,
+        "url": "https://www.ebay.com/str/atmarksstore",
+        "freshness": "Indexed about two weeks earlier"
+      },
+      {
+        "count": 1665,
+        "url": "https://www.ebay.com/str/atmarksstore?_trksid=p4429486.m3561.l161211",
+        "freshness": "Indexed on retrieval day"
+      }
+    ],
+    "reason": "Direct automated request returned HTTP 403. Public snapshots disagree on current store total; no completeness percentage is defensible."
+  },
+  "items": [
+    {
+      "id": "227552589910",
+      "sku": "ebay:227552589910",
+      "physical_inventory_id": null,
+      "source_hash": "cdf0e3a79d2c977deccfab48bc0cb366a1234e6c9184a521e656f1efc987b28f",
+      "original": {
+        "item_id": "227552589910",
+        "seller": "atmarktradinginc",
+        "title": "AMD Radeon PRO WX 3100 WX3100 4GB GDDR5 Graphics Video Card High Profile",
+        "price_min": 34.99,
+        "price_max": 34.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227552589910",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "out-of-stock-observed",
+        "condition": "Used",
+        "image_urls": [
+          "https://i.ebayimg.com/images/g/hNsAAeSw9g1qwyHx/s-l500.webp"
+        ],
+        "aspects": {},
+        "availability_source": "https://www.ebay.com/itm/227552589910"
+      },
+      "title": "AMD Radeon PRO WX 3100 WX3100 4GB GDDR5 Graphics Video Card High Profile",
+      "family": "AMD Radeon PRO WX 3100 WX3100 4GB GDDR5 Graphics Video Card High Profile",
+      "category": "Graphics",
+      "specs": {
+        "GPU": "WX 3100"
+      },
+      "aspects": {},
+      "price_min": 34.99,
+      "price_max": 34.99,
+      "currency": "USD",
+      "availability": "out-of-stock-observed",
+      "url": "https://www.ebay.com/itm/227552589910",
+      "image": "https://i.ebayimg.com/images/g/hNsAAeSw9g1qwyHx/s-l500.webp",
+      "media": {
+        "source_url": "https://i.ebayimg.com/images/g/hNsAAeSw9g1qwyHx/s-l500.webp",
+        "listing_url": "https://www.ebay.com/itm/227552589910",
+        "sha256": "2d7bf4907729b01111109101ac94fcadc3e625792b4c1938c405ad0b0e945da9",
+        "bytes": 17810,
+        "width": 500,
+        "height": 345,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "availability",
+          "severity": "hold",
+          "note": "The followed item page reports out of stock. The older store snapshot still contains this item.",
+          "sources": [
+            "https://www.ebay.com/itm/227552589910"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227543292463",
+      "sku": "ebay:227543292463",
+      "physical_inventory_id": null,
+      "source_hash": "bd99f89b1bbba636e608cbe8b1ab2fbb2616533e03ba8af83fd629302439c319",
+      "original": {
+        "item_id": "227543292463",
+        "seller": "atmarktradinginc",
+        "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD P1000 Win 10 Pro CTO",
+        "price_min": 999.0,
+        "price_max": 1399.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227543292463",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "Used",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/CZEAAeSwYwZqupGs/s-l500.jpg"
+        ],
+        "aspects": {
+          "Processor Speed": "3.10 GHz",
+          "GPU": "NVIDIA Quadro P1000",
+          "Operating System": "Windows 10 Pro"
+        },
+        "variations": {
+          "RAM Size": [
+            "32 GB",
+            "64 GB"
+          ],
+          "PCIe SSD": [
+            "1 TB",
+            "2 TB"
+          ]
+        }
+      },
+      "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD P1000 Windows 10 Pro",
+      "family": "HP Z2 G5",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i9-10900",
+        "GPU": "P1000",
+        "OS": "Windows 10 Pro"
+      },
+      "aspects": {
+        "Processor Speed": "3.10 GHz",
+        "GPU": "NVIDIA Quadro P1000",
+        "Operating System": "Windows 10 Pro"
+      },
+      "price_min": 999.0,
+      "price_max": 1399.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227543292463",
+      "image": "https://i.ebayimg.com/thumbs/images/g/CZEAAeSwYwZqupGs/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/CZEAAeSwYwZqupGs/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227543292463",
+        "sha256": "6969e4b472a4ea1693b208241d3df4eab9418d2076adc4af3a0cad93a208dc1b",
+        "bytes": 31163,
+        "width": 355,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "clock-conflict",
+          "severity": "review",
+          "note": "Title says 2.8 GHz; item specifics say 3.10 GHz. Resolve CPU identity and base/turbo meaning before editing.",
+          "sources": [
+            "https://www.ebay.com/itm/227543292463"
+          ]
+        },
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {
+        "RAM Size": [
+          "32 GB",
+          "64 GB"
+        ],
+        "PCIe SSD": [
+          "1 TB",
+          "2 TB"
+        ]
+      },
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227543292462",
+      "sku": "ebay:227543292462",
+      "physical_inventory_id": null,
+      "source_hash": "8262958f8fcce36c3eacad82302572ff42f3a2453eff3533d3681b10e063e0ac",
+      "original": {
+        "item_id": "227543292462",
+        "seller": "atmarktradinginc",
+        "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD P1000 Win 11 Pro CTO",
+        "price_min": 999.0,
+        "price_max": 1399.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227543292462",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD P1000 Windows 11 Pro",
+      "family": "HP Z2 G5",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i9-10900",
+        "GPU": "P1000",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 999.0,
+      "price_max": 1399.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227543292462",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227543292466",
+      "sku": "ebay:227543292466",
+      "physical_inventory_id": null,
+      "source_hash": "0d820852c8fcbcc9356257a5790049e409a0f04481513b5248182ac1c4d5dba7",
+      "original": {
+        "item_id": "227543292466",
+        "seller": "atmarktradinginc",
+        "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD P2000 Win 11 Pro CTO",
+        "price_min": 1099.0,
+        "price_max": 1499.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227543292466",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD P2000 Windows 11 Pro",
+      "family": "HP Z2 G5",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i9-10900",
+        "GPU": "P2000",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 1099.0,
+      "price_max": 1499.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227543292466",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227543292465",
+      "sku": "ebay:227543292465",
+      "physical_inventory_id": null,
+      "source_hash": "516cfa88a8eca94f55228abf295c8871fa48e716921b946902372d276051689a",
+      "original": {
+        "item_id": "227543292465",
+        "seller": "atmarktradinginc",
+        "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD P2000 Win 10 Pro CTO",
+        "price_min": 1099.0,
+        "price_max": 1499.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227543292465",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD P2000 Windows 10 Pro",
+      "family": "HP Z2 G5",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i9-10900",
+        "GPU": "P2000",
+        "OS": "Windows 10 Pro"
+      },
+      "aspects": {},
+      "price_min": 1099.0,
+      "price_max": 1499.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227543292465",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227543292461",
+      "sku": "ebay:227543292461",
+      "physical_inventory_id": null,
+      "source_hash": "2606ff0f80de819661ecaa2b69d7444dce73e9c807b6d6dd44a85964b70e7cd6",
+      "original": {
+        "item_id": "227543292461",
+        "seller": "atmarktradinginc",
+        "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD Win 10 Pro CTO",
+        "price_min": 899.0,
+        "price_max": 1299.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227543292461",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD Windows 10 Pro",
+      "family": "HP Z2 G5",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i9-10900",
+        "OS": "Windows 10 Pro"
+      },
+      "aspects": {},
+      "price_min": 899.0,
+      "price_max": 1299.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227543292461",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226924094753",
+      "sku": "ebay:226924094753",
+      "physical_inventory_id": null,
+      "source_hash": "c6cfec9a9a562ffeea16a079e529e7e07a92339fb7229662d8fb7c1e540dd3b6",
+      "original": {
+        "item_id": "226924094753",
+        "seller": "atmarktradinginc",
+        "title": "M.2 Flexbay Caddy Module - Dell Precision T5820 T7820 T7920 066XHV - NO SSD",
+        "price_min": 42.99,
+        "price_max": 42.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226924094753",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/hU0AAeSwSz1ooMzO/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "M.2 Flexbay Caddy Module - Dell Precision T5820 T7820 T7920 066XHV - NO SSD",
+      "family": "M.2 Flexbay Caddy Module - Dell Precision T5820 T7820 T7920 066XHV - NO SSD",
+      "category": "Parts & upgrades",
+      "specs": {},
+      "aspects": {},
+      "price_min": 42.99,
+      "price_max": 42.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226924094753",
+      "image": "https://i.ebayimg.com/thumbs/images/g/hU0AAeSwSz1ooMzO/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/hU0AAeSwSz1ooMzO/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/226924094753",
+        "sha256": "d81da7d0868a844a69be542839d2677827cb0194d1d928792d212137de6043e6",
+        "bytes": 49750,
+        "width": 500,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "accessory-exclusion",
+          "severity": "review",
+          "note": "The photograph shows a 512GB-labelled insert; the title explicitly excludes the SSD. Keep NO SSD prominent and photograph the actual included parts.",
+          "sources": [
+            "https://www.ebay.com/itm/226924094753"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227089850796",
+      "sku": "ebay:227089850796",
+      "physical_inventory_id": null,
+      "source_hash": "6f0061e60c96d9caadc555f2e6825fa56ddf02c3c92559c63f230f5f33da87bb",
+      "original": {
+        "item_id": "227089850796",
+        "seller": "atmarktradinginc",
+        "title": "Lenovo Think Station P520C Barebone w/ 500W PS CPU Heat Sink and Fan",
+        "price_min": 115.0,
+        "price_max": 115.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227089850796",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/UWMAAeSwUoNpHkCr/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Lenovo ThinkStation P520C Barebone w/ 500W PS CPU Heat Sink and Fan",
+      "family": "Lenovo ThinkStation P520C",
+      "category": "Barebones",
+      "specs": {},
+      "aspects": {},
+      "price_min": 115.0,
+      "price_max": 115.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227089850796",
+      "image": "https://i.ebayimg.com/thumbs/images/g/UWMAAeSwUoNpHkCr/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/UWMAAeSwUoNpHkCr/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227089850796",
+        "sha256": "b9c746e4fbbfa7c868740d3c2641e70688f2626e511324c778cdd4bf49aa11c0",
+        "bytes": 32155,
+        "width": 342,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226982854872",
+      "sku": "ebay:226982854872",
+      "physical_inventory_id": null,
+      "source_hash": "8d0ca5741ea85073aafc75483260ff3d73f32b55c213a2cc4d80322efa161e60",
+      "original": {
+        "item_id": "226982854872",
+        "seller": "atmarktradinginc",
+        "title": "SRF7C Intel Xeon E-2286G 4.0Ghz 6-Core 12MB 95W FCLGA1151 CPU",
+        "price_min": 109.0,
+        "price_max": 109.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226982854872",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/FogAAeSw1G9ozZQZ/s-l500.jpg"
+        ],
+        "aspects": {},
+        "additional_observations": [
+          {
+            "source_url": "https://www.ebay.com/str/atmarksstore?_trksid=p4429486.m3561.l161211",
+            "price_min": 105,
+            "price_max": 105,
+            "freshness": "Indexed on retrieval day; differs from retained older snapshot."
+          }
+        ]
+      },
+      "title": "SRF7C Intel Xeon E-2286G 4.0Ghz 6-Core 12MB 95W FCLGA1151 CPU",
+      "family": "SRF7C Intel Xeon E-2286G 4.0Ghz 6-Core 12MB 95W FCLGA1151 CPU",
+      "category": "Processors",
+      "specs": {
+        "CPU": "E-2286G"
+      },
+      "aspects": {},
+      "price_min": 109.0,
+      "price_max": 109.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226982854872",
+      "image": "https://i.ebayimg.com/thumbs/images/g/FogAAeSw1G9ozZQZ/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/FogAAeSw1G9ozZQZ/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/226982854872",
+        "sha256": "9e62ad015b8be5078fc68b0efd95f998dbe2115750286b5e688bdde8ab434953",
+        "bytes": 91616,
+        "width": 375,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "price-conflict",
+          "severity": "review",
+          "note": "A later public observation shows $105, while the retained store snapshot shows $109. No automated price change is proposed.",
+          "sources": [
+            "https://www.ebay.com/str/atmarksstore?_trksid=p4429486.m3561.l161211"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227021997060",
+      "sku": "ebay:227021997060",
+      "physical_inventory_id": null,
+      "source_hash": "ab62469fe82db0e662d74a9da018f867bde735a621a7018327092f61cc701d3f",
+      "original": {
+        "item_id": "227021997060",
+        "seller": "atmarktradinginc",
+        "title": "Lenovo FSP500-50ETN 500W Power Supply For ThinkStation P520C FRU P/N: 00PC743",
+        "price_min": 33.99,
+        "price_max": 33.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227021997060",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/images/g/6b4AAeSwROFo69ui/s-l140.webp"
+        ],
+        "aspects": {}
+      },
+      "title": "Lenovo FSP500-50ETN 500W Power Supply For ThinkStation P520C FRU P/N: 00PC743",
+      "family": "Lenovo FSP500-50ETN 500W Power Supply For ThinkStation P520C FRU P/N: 00PC743",
+      "category": "Parts & upgrades",
+      "specs": {},
+      "aspects": {},
+      "price_min": 33.99,
+      "price_max": 33.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227021997060",
+      "image": "https://i.ebayimg.com/images/g/6b4AAeSwROFo69ui/s-l140.webp",
+      "media": {
+        "source_url": "https://i.ebayimg.com/images/g/6b4AAeSwROFo69ui/s-l140.webp",
+        "listing_url": "https://www.ebay.com/itm/227021997060",
+        "sha256": "cbaab129ff25469701bea190ece24e24130d4692029a25f05de0b7d6bb99efef",
+        "bytes": 2098,
+        "width": 140,
+        "height": 93,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "photo-resolution",
+          "severity": "review",
+          "note": "The captured source is below 500 pixels on its longest side. Obtain a larger original; no detail is synthesized.",
+          "sources": [
+            "https://www.ebay.com/help/selling/listings/adding-pictures-listing?id=4148"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226078854314",
+      "sku": "ebay:226078854314",
+      "physical_inventory_id": null,
+      "source_hash": "e582d08baaa01d95ca39c7e06c5848ae87afb53448651937f764e3ea44927aa3",
+      "original": {
+        "item_id": "226078854314",
+        "seller": "atmarktradinginc",
+        "title": "Dell 01M0D 1.2TB 10K SAS 2.5 inch Hard Drive with Tray",
+        "price_min": 36.99,
+        "price_max": 36.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226078854314",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/br4AAOSwmKNmEIkg/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Dell 01M0D 1.2TB 10K SAS 2.5 inch Hard Drive with Tray",
+      "family": "Dell 01M0D 1.2TB 10K SAS 2.5 inch Hard Drive with Tray",
+      "category": "Memory & storage",
+      "specs": {},
+      "aspects": {},
+      "price_min": 36.99,
+      "price_max": 36.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226078854314",
+      "image": "https://i.ebayimg.com/thumbs/images/g/br4AAOSwmKNmEIkg/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/br4AAOSwmKNmEIkg/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/226078854314",
+        "sha256": "d28f912153c8cc5c48b7f96f8ba7ba0f042a10f4a4dc7ebe403bdcccfb5a2c91",
+        "bytes": 37176,
+        "width": 500,
+        "height": 330,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227473686089",
+      "sku": "ebay:227473686089",
+      "physical_inventory_id": null,
+      "source_hash": "cec6b5814e82fab0bc5c5591d511643fd7649a02fac8832d56b90739dd10c87d",
+      "original": {
+        "item_id": "227473686089",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision 3650 Tower i7-11700K 3.6GHz DDR4 SSD Windows 11 BTO",
+        "price_min": 699.0,
+        "price_max": 1799.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227473686089",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/FMYAAOSwXfZl-zL5/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Dell Precision 3650 Tower i7-11700K 3.6GHz DDR4 SSD Windows 11",
+      "family": "Dell Precision 3650",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i7-11700K",
+        "OS": "Windows 11"
+      },
+      "aspects": {},
+      "price_min": 699.0,
+      "price_max": 1799.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227473686089",
+      "image": null,
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/FMYAAOSwXfZl-zL5/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227473686089",
+        "sha256": "c9f136fcba2db17821ae7c864fe07e96005a2a97035a7f3f5c8a6789f0ccc3cf",
+        "bytes": 52974,
+        "width": 500,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "photo-model-conflict",
+          "severity": "hold",
+          "note": "This listing for Precision 3650 uses the same image URL as a Precision 3630 listing; the pictured front badge reads Precision 3630. This image is withheld from its product card.",
+          "sources": [
+            "https://www.ebay.com/itm/227473686089",
+            "https://www.ebay.com/itm/226202561474"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226915589914",
+      "sku": "ebay:226915589914",
+      "physical_inventory_id": null,
+      "source_hash": "7c29c631bfd3c4b8484c28ffa982d186a3a13b447d622e3080749b8a29211dac",
+      "original": {
+        "item_id": "226915589914",
+        "seller": "atmarktradinginc",
+        "title": "Intel Xeon W-1350 3.30 Ghz 6 Cores 12 Threads LGA 1200 SRKPA CPU Processor",
+        "price_min": 85.99,
+        "price_max": 85.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226915589914",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "Intel Xeon W-1350 3.30 Ghz 6 Cores 12 Threads LGA 1200 SRKPA CPU Processor",
+      "family": "Intel Xeon W-1350 3.30 Ghz 6 Cores 12 Threads LGA 1200 SRKPA CPU Processor",
+      "category": "Processors",
+      "specs": {
+        "CPU": "W-1350"
+      },
+      "aspects": {},
+      "price_min": 85.99,
+      "price_max": 85.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226915589914",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227156017474",
+      "sku": "ebay:227156017474",
+      "physical_inventory_id": null,
+      "source_hash": "e7c7b85545c6e1c5c5ea0ca7444483fa0acaa12f99ae8223c6487105b48618d4",
+      "original": {
+        "item_id": "227156017474",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision 7820 2x Xeon Gold 6136 3.0GHz DDR4 SSD +HD RTX 3090 W10P CTO",
+        "price_min": 3499.0,
+        "price_max": 6499.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227156017474",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "Used",
+        "image_urls": [
+          "https://i.ebayimg.com/images/g/poYAAOSwGflnspFO/s-l140.webp"
+        ],
+        "aspects": {
+          "Color": "Gold",
+          "Model": "Precision 7820",
+          "GPU": "NVIDIA GeForce RTX 3090",
+          "Operating System": "Windows 10 Pro"
+        }
+      },
+      "title": "Dell Precision 7820 2x Xeon Gold 6136 3.0GHz DDR4 SSD +HD RTX 3090 Windows 10 Pro",
+      "family": "Dell Precision 7820",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "2 × Xeon Gold 6136",
+        "GPU": "RTX 3090",
+        "OS": "Windows 10 Pro"
+      },
+      "aspects": {
+        "Color": "Gold",
+        "Model": "Precision 7820",
+        "GPU": "NVIDIA GeForce RTX 3090",
+        "Operating System": "Windows 10 Pro"
+      },
+      "price_min": 3499.0,
+      "price_max": 6499.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227156017474",
+      "image": "https://i.ebayimg.com/images/g/poYAAOSwGflnspFO/s-l140.webp",
+      "media": {
+        "source_url": "https://i.ebayimg.com/images/g/poYAAOSwGflnspFO/s-l140.webp",
+        "listing_url": "https://www.ebay.com/itm/227156017474",
+        "sha256": "ea3f0030c435ae11aa9ea4298cbfc3679c6b6d4b73b9deb9986470f3350a2558",
+        "bytes": 3992,
+        "width": 82,
+        "height": 140,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "color-field",
+          "severity": "review",
+          "note": "The Color field says Gold beside a Xeon Gold CPU. Inspect the unit before replacing this field.",
+          "sources": [
+            "https://www.ebay.com/itm/227156017474"
+          ]
+        },
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "photo-resolution",
+          "severity": "review",
+          "note": "The captured source is below 500 pixels on its longest side. Obtain a larger original; no detail is synthesized.",
+          "sources": [
+            "https://www.ebay.com/help/selling/listings/adding-pictures-listing?id=4148"
+          ]
+        },
+        {
+          "code": "title-length",
+          "severity": "review",
+          "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226023384754",
+      "sku": "ebay:226023384754",
+      "physical_inventory_id": null,
+      "source_hash": "660bc7c34f216f91d816ff2f515c1197be7ee1c09384c42f60d129bfa1232c48",
+      "original": {
+        "item_id": "226023384754",
+        "seller": "atmarktradinginc",
+        "title": "HPE P02509-B21 DL380 Gen10 Intel Xeon-Gold 6240 2.6GHz/18-core/150W Processor",
+        "price_min": 199.0,
+        "price_max": 199.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226023384754",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HPE P02509-B21 DL380 Gen10 Intel Xeon-Gold 6240 2.6GHz/18-core/150W Processor",
+      "family": "HPE P02509-B21 DL380 Gen10 Intel Xeon-Gold 6240 2.6GHz/18-core/150W Processor",
+      "category": "Parts & upgrades",
+      "specs": {
+        "CPU": "Xeon Gold 6240"
+      },
+      "aspects": {},
+      "price_min": 199.0,
+      "price_max": 199.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226023384754",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227044751366",
+      "sku": "ebay:227044751366",
+      "physical_inventory_id": null,
+      "source_hash": "2d4c0b2e7b11a441f82e287ae05a8ba8b5cf2332d9b6fb5f67452cd73f433d10",
+      "original": {
+        "item_id": "227044751366",
+        "seller": "atmarktradinginc",
+        "title": "Lenovo ThinkStation Intel Virtual RAID On CPU VROC Basic for NVMe SSDs 00FC973",
+        "price_min": 199.0,
+        "price_max": 199.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227044751366",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "Lenovo ThinkStation Intel Virtual RAID On CPU VROC Basic for NVMe SSDs 00FC973",
+      "family": "Lenovo ThinkStation Intel Virtual RAID On CPU VROC Basic for NVMe SSDs 00FC973",
+      "category": "Parts & upgrades",
+      "specs": {},
+      "aspects": {},
+      "price_min": 199.0,
+      "price_max": 199.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227044751366",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227214545714",
+      "sku": "ebay:227214545714",
+      "physical_inventory_id": null,
+      "source_hash": "1f4e5980e0a363085a8c335c7e5be4830fd4c2c73ded7fd3bcfcd558a3114385",
+      "original": {
+        "item_id": "227214545714",
+        "seller": "atmarktradinginc",
+        "title": "SK Hynix 4GB DDR4 3200MHz 1Rx16 PC4-3200AA HMA851U6DJR6N-XN",
+        "price_min": 21.99,
+        "price_max": 21.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227214545714",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/65wAAeSwVRhpjhhX/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "SK Hynix 4GB DDR4 3200MHz 1Rx16 PC4-3200AA HMA851U6DJR6N-XN",
+      "family": "SK Hynix 4GB DDR4 3200MHz 1Rx16 PC4-3200AA HMA851U6DJR6N-XN",
+      "category": "Memory & storage",
+      "specs": {},
+      "aspects": {},
+      "price_min": 21.99,
+      "price_max": 21.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227214545714",
+      "image": "https://i.ebayimg.com/thumbs/images/g/65wAAeSwVRhpjhhX/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/65wAAeSwVRhpjhhX/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227214545714",
+        "sha256": "71976055535481760242317fd227894fd775c3055c442a1724a6e01fa4dc3cfa",
+        "bytes": 53508,
+        "width": 500,
+        "height": 375,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227021998569",
+      "sku": "ebay:227021998569",
+      "physical_inventory_id": null,
+      "source_hash": "033af07a787e75b5e674165a2ea1115b3740fbc9f5d126d5f482030940dea86d",
+      "original": {
+        "item_id": "227021998569",
+        "seller": "atmarktradinginc",
+        "title": "Lenovo P410 P520C Heatsink / Fan 01EF049",
+        "price_min": 19.99,
+        "price_max": 19.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227021998569",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "Lenovo P410 P520C Heatsink / Fan 01EF049",
+      "family": "Lenovo P410 P520C Heatsink / Fan 01EF049",
+      "category": "Parts & upgrades",
+      "specs": {},
+      "aspects": {},
+      "price_min": 19.99,
+      "price_max": 19.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227021998569",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226020926795",
+      "sku": "ebay:226020926795",
+      "physical_inventory_id": null,
+      "source_hash": "67453160768e141a0bbfc827cf625e217301e6922502cd219f18681cb1bc69a9",
+      "original": {
+        "item_id": "226020926795",
+        "seller": "atmarktradinginc",
+        "title": "HPE P02503-B21 DL380 GEN10 INTEL XEON GOLD CPU KIT 6234 8 CORE 3.30GHZ 130W",
+        "price_min": 159.0,
+        "price_max": 159.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226020926795",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HPE P02503-B21 DL380 GEN10 INTEL XEON GOLD CPU KIT 6234 8 CORE 3.30GHZ 130W",
+      "family": "HPE P02503-B21 DL380 GEN10 INTEL XEON GOLD CPU KIT 6234 8 CORE 3.30GHZ 130W",
+      "category": "Parts & upgrades",
+      "specs": {},
+      "aspects": {},
+      "price_min": 159.0,
+      "price_max": 159.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226020926795",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227194890648",
+      "sku": "ebay:227194890648",
+      "physical_inventory_id": null,
+      "source_hash": "13be291ebe15b289889ec02ab2630d7a225d0e97b28cefcf66d3353bc6e23a50",
+      "original": {
+        "item_id": "227194890648",
+        "seller": "atmarktradinginc",
+        "title": "INTEL Xeon E-2234 SRFAX 3.6 GHz Quad Core",
+        "price_min": 29.99,
+        "price_max": 29.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227194890648",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/yTwAAeSwGL5pfE1E/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "INTEL Xeon E-2234 SRFAX 3.6 GHz Quad Core",
+      "family": "INTEL Xeon E-2234 SRFAX 3.6 GHz Quad Core",
+      "category": "Processors",
+      "specs": {
+        "CPU": "E-2234"
+      },
+      "aspects": {},
+      "price_min": 29.99,
+      "price_max": 29.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227194890648",
+      "image": "https://i.ebayimg.com/thumbs/images/g/yTwAAeSwGL5pfE1E/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/yTwAAeSwGL5pfE1E/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227194890648",
+        "sha256": "1a4fb42c4337dc7c5db0498923bc5e298c4e8edc956494344d8beffa0fe28689",
+        "bytes": 56020,
+        "width": 375,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226840550409",
+      "sku": "ebay:226840550409",
+      "physical_inventory_id": null,
+      "source_hash": "126d0213c5af1e231ddf3bd503795f4288f9faa3858888d9a58d1d4a89a400f7",
+      "original": {
+        "item_id": "226840550409",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision Workstation 5820 Xeon Barebones w Flex Bay 950W",
+        "price_min": 239.0,
+        "price_max": 239.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226840550409",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/8kcAAOSwio9jWxzZ/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Dell Precision Workstation 5820 Xeon Barebones w Flex Bay 950W",
+      "family": "Dell Precision 5820",
+      "category": "Barebones",
+      "specs": {},
+      "aspects": {},
+      "price_min": 239.0,
+      "price_max": 239.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226840550409",
+      "image": "https://i.ebayimg.com/thumbs/images/g/8kcAAOSwio9jWxzZ/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/8kcAAOSwio9jWxzZ/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/226840550409",
+        "sha256": "7c0ac1ef6fe15f23e567547ea1311d89906e9036fdf9adc7bb93ceae9020d200",
+        "bytes": 34173,
+        "width": 375,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226959711677",
+      "sku": "ebay:226959711677",
+      "physical_inventory_id": null,
+      "source_hash": "9c044dd5e9f5fb46a6e7578cb0a1d3ee039a11ffe70b85d94346168755ec7e8a",
+      "original": {
+        "item_id": "226959711677",
+        "seller": "atmarktradinginc",
+        "title": "Lenovo ThinkStation P340 i9-10900K 3.7GHz DDR4 SSD P2000 Win 11 CTO",
+        "price_min": 999.0,
+        "price_max": 1499.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226959711677",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/AmQAAOSw6shlfce6/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Lenovo ThinkStation P340 i9-10900K 3.7GHz DDR4 SSD P2000 Win 11",
+      "family": "Lenovo ThinkStation P340",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i9-10900K",
+        "GPU": "P2000",
+        "OS": "Windows 11"
+      },
+      "aspects": {},
+      "price_min": 999.0,
+      "price_max": 1499.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226959711677",
+      "image": "https://i.ebayimg.com/thumbs/images/g/AmQAAOSw6shlfce6/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/AmQAAOSw6shlfce6/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/226959711677",
+        "sha256": "a7f5f86774448a51e313b9c71db479c650332cc80d10d958045d546b92fd1c16",
+        "bytes": 42815,
+        "width": 500,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227097072770",
+      "sku": "ebay:227097072770",
+      "physical_inventory_id": null,
+      "source_hash": "f894aaf0ee29dd2fb84c688522ca67a34a5c2e3e6954cd09b252bb9775343534",
+      "original": {
+        "item_id": "227097072770",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision 3560 15.6\" FHD Touch i7 2.8Ghz 16GB 1TB T500 Win 11 Pro",
+        "price_min": 649.0,
+        "price_max": 649.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227097072770",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/LwMAAOSww~Ni1vnr/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Dell Precision 3560 15.6\" FHD Touch i7 2.8Ghz 16GB 1TB T500 Windows 11 Pro",
+      "family": "Dell Precision 3560",
+      "category": "Laptops",
+      "specs": {
+        "GPU": "T500",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 649.0,
+      "price_max": 649.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227097072770",
+      "image": "https://i.ebayimg.com/thumbs/images/g/LwMAAOSww~Ni1vnr/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/LwMAAOSww~Ni1vnr/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227097072770",
+        "sha256": "df57766918f10a1d522031804a044b569c71f1f110aad347cf281ca84872ac85",
+        "bytes": 38006,
+        "width": 500,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227214542247",
+      "sku": "ebay:227214542247",
+      "physical_inventory_id": null,
+      "source_hash": "8062af1daef4805a40afab8cd2b919c523cdae06032d9d5555c85a7d74383900",
+      "original": {
+        "item_id": "227214542247",
+        "seller": "atmarktradinginc",
+        "title": "SK hynix 4GB DDR4 SDRAM PC4-2133P DIMM 288-Pin RAM HMA451U6MFR8N-TF",
+        "price_min": 19.99,
+        "price_max": 19.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227214542247",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/NZkAAeSw5EhpjheV/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "SK hynix 4GB DDR4 SDRAM PC4-2133P DIMM 288-Pin RAM HMA451U6MFR8N-TF",
+      "family": "SK hynix 4GB DDR4 SDRAM PC4-2133P DIMM 288-Pin RAM HMA451U6MFR8N-TF",
+      "category": "Memory & storage",
+      "specs": {},
+      "aspects": {},
+      "price_min": 19.99,
+      "price_max": 19.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227214542247",
+      "image": "https://i.ebayimg.com/thumbs/images/g/NZkAAeSw5EhpjheV/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/NZkAAeSw5EhpjheV/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227214542247",
+        "sha256": "b80fbf0f8772d2fc16e0c872b0bdaaa41d79b5f112f5f20e0fb2bb2c33831b25",
+        "bytes": 16329,
+        "width": 500,
+        "height": 177,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226074499897",
+      "sku": "ebay:226074499897",
+      "physical_inventory_id": null,
+      "source_hash": "c51a2ebb3a2dd2cea4630c3c281f238feae8770f23b92d7b4bca89de18655be1",
+      "original": {
+        "item_id": "226074499897",
+        "seller": "atmarktradinginc",
+        "title": "Lenovo ThinkStation P330 G2 Tower i7-9700 3.0 GHz DDR4 SSD + SSD P2000 W 11 CTO",
+        "price_min": 699.0,
+        "price_max": 2099.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226074499897",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/images/g/mugAAOSwpylmDJEg/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Lenovo ThinkStation P330 G2 Tower i7-9700 3.0 GHz DDR4 SSD + SSD P2000 Windows 11",
+      "family": "Lenovo ThinkStation P330 Gen 2",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i7-9700",
+        "GPU": "P2000",
+        "OS": "Windows 11"
+      },
+      "aspects": {},
+      "price_min": 699.0,
+      "price_max": 2099.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226074499897",
+      "image": "https://i.ebayimg.com/images/g/mugAAOSwpylmDJEg/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/images/g/mugAAOSwpylmDJEg/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/226074499897",
+        "sha256": "9fd542f71b9a32af6b4a84eb66911781fc48d6ae0b6538ff968fb9b198744fc1",
+        "bytes": 21951,
+        "width": 375,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "title-length",
+          "severity": "review",
+          "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227153756282",
+      "sku": "ebay:227153756282",
+      "physical_inventory_id": null,
+      "source_hash": "fbd4cf81337f696a1b62133803b699724acc5ecaac0004bd8e47e3f14203fce6",
+      "original": {
+        "item_id": "227153756282",
+        "seller": "atmarktradinginc",
+        "title": "HP Z6 G4 Xeon Gold 6154 3.0GHz DDR4 SSD +HD RTX 3090 Win 11 Pro CTO",
+        "price_min": 2799.0,
+        "price_max": 4699.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227153756282",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/h9EAAOSwfVxmFt80/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "HP Z6 G4 Xeon Gold 6154 3.0GHz DDR4 SSD +HD RTX 3090 Windows 11 Pro",
+      "family": "HP Z6 G4",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "Xeon Gold 6154",
+        "GPU": "RTX 3090",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 2799.0,
+      "price_max": 4699.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227153756282",
+      "image": "https://i.ebayimg.com/thumbs/images/g/h9EAAOSwfVxmFt80/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/h9EAAOSwfVxmFt80/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227153756282",
+        "sha256": "7537d86a180e024489aa9bb57cfb87512023a326fda2a7a5e3af752325e0f0f0",
+        "bytes": 29338,
+        "width": 500,
+        "height": 375,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226378244866",
+      "sku": "ebay:226378244866",
+      "physical_inventory_id": null,
+      "source_hash": "d015972d63f3e553adfef6ae5fc8cffdb730179b319de8dc45d98d318a73f1e5",
+      "original": {
+        "item_id": "226378244866",
+        "seller": "atmarktradinginc",
+        "title": "Lenovo Think Station P330 SFF Gen 2 Xeon E-2276 2.8Ghz 64GB 1TB SSD Win 11 Pro",
+        "price_min": 599.0,
+        "price_max": 599.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226378244866",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/xbQAAOSwsJ5jnM9-/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Lenovo ThinkStation P330 SFF Gen 2 Xeon E-2276 2.8Ghz 64GB 1TB SSD Windows 11 Pro",
+      "family": "Lenovo ThinkStation P330 SFF Gen 2",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "E-2276",
+        "RAM": "64 GB",
+        "Storage": "1 TB SSD",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 599.0,
+      "price_max": 599.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226378244866",
+      "image": "https://i.ebayimg.com/thumbs/images/g/xbQAAOSwsJ5jnM9-/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/xbQAAOSwsJ5jnM9-/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/226378244866",
+        "sha256": "f379c55c413d829adaf4f1d61c98c910fd0d2d5adab083b64306c0085856f265",
+        "bytes": 26617,
+        "width": 500,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "title-length",
+          "severity": "review",
+          "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227153767226",
+      "sku": "ebay:227153767226",
+      "physical_inventory_id": null,
+      "source_hash": "9b2866134e648c5f30344830d78303ccf5e0d0d5e973d4d8c6dc6a7c77707f4e",
+      "original": {
+        "item_id": "227153767226",
+        "seller": "atmarktradinginc",
+        "title": "HP Z6 G4 Xeon Gold 6136 3.0GHz DDR4 SSD +HD P4000 Win 10 Pro CTO",
+        "price_min": 1599.0,
+        "price_max": 3499.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227153767226",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z6 G4 Xeon Gold 6136 3.0GHz DDR4 SSD +HD P4000 Windows 10 Pro",
+      "family": "HP Z6 G4",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "Xeon Gold 6136",
+        "GPU": "P4000",
+        "OS": "Windows 10 Pro"
+      },
+      "aspects": {},
+      "price_min": 1599.0,
+      "price_max": 3499.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227153767226",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227543292464",
+      "sku": "ebay:227543292464",
+      "physical_inventory_id": null,
+      "source_hash": "2b58b4168a89ea103bf34e18a98316be92e1aee22a25cebcd742a113828de879",
+      "original": {
+        "item_id": "227543292464",
+        "seller": "atmarktradinginc",
+        "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD Win 11 Pro CTO",
+        "price_min": 899.0,
+        "price_max": 1299.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227543292464",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z2 G5 Tower i9-10900 2.8GHz DDR4 SSD Windows 11 Pro",
+      "family": "HP Z2 G5",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i9-10900",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 899.0,
+      "price_max": 1299.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227543292464",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "225749481734",
+      "sku": "ebay:225749481734",
+      "physical_inventory_id": null,
+      "source_hash": "ae6ba99662ebed97662d8ab3f4f40dabd3ef42754de32c0af8d07b9faf9c762d",
+      "original": {
+        "item_id": "225749481734",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision 3430 Desktop Core i7 3.2Ghz 64GB 2TB SSD Win 11 Pro",
+        "price_min": 749.0,
+        "price_max": 749.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/225749481734",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/l3kAAOSwYEhjx0Sp/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Dell Precision 3430 Desktop Core i7 3.2Ghz 64GB 2TB SSD Windows 11 Pro",
+      "family": "Dell Precision 3430",
+      "category": "Workstations & desktops",
+      "specs": {
+        "RAM": "64 GB",
+        "Storage": "2 TB SSD",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 749.0,
+      "price_max": 749.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/225749481734",
+      "image": "https://i.ebayimg.com/thumbs/images/g/l3kAAOSwYEhjx0Sp/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/l3kAAOSwYEhjx0Sp/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/225749481734",
+        "sha256": "ee172dc75952523a27ed7c6f0bf9f90114995750a6aeb04a6a4cc5dc25bf5458",
+        "bytes": 18509,
+        "width": 500,
+        "height": 375,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "photo-model-review",
+          "severity": "review",
+          "note": "The front model badge is not established by this capture. Confirm the image matches Precision 3430.",
+          "sources": [
+            "https://www.ebay.com/itm/225749481734"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226929518990",
+      "sku": "ebay:226929518990",
+      "physical_inventory_id": null,
+      "source_hash": "d0f6e95e8460c41f71ff416135e5e4cfd12dd2c7e147370a3903cd63559ec577",
+      "original": {
+        "item_id": "226929518990",
+        "seller": "atmarktradinginc",
+        "title": "Intel SRKP9 Xeon W-1350P 4.00GHz 6-Core Socket 1200 CPU Processor Emerald Rapids",
+        "price_min": 109.0,
+        "price_max": 109.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226929518990",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "Used",
+        "image_urls": [],
+        "aspects": {
+          "Socket Type": "Socket P",
+          "Processor Model": "Inte Xeon W-1350P",
+          "MPN": "SRKP9",
+          "Number of Cores": "6"
+        }
+      },
+      "title": "Intel Xeon W-1350P SRKP9 6-Core 4.0GHz LGA1200 Rocket Lake CPU",
+      "family": "Intel Xeon W-1350P SRKP9 6-Core 4.0GHz LGA1200 Rocket Lake CPU",
+      "category": "Processors",
+      "specs": {
+        "CPU": "W-1350P"
+      },
+      "aspects": {
+        "Socket Type": "FCLGA1200",
+        "Processor Model": "Inte Xeon W-1350P",
+        "MPN": "SRKP9",
+        "Number of Cores": "6"
+      },
+      "price_min": 109.0,
+      "price_max": 109.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226929518990",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "cpu-generation",
+          "severity": "confirmed-correction",
+          "note": "Intel identifies W-1350P as Rocket Lake; the source title says Emerald Rapids.",
+          "sources": [
+            "https://www.intel.com/content/www/us/en/products/sku/212264/intel-xeon-w1350p-processor-12m-cache-up-to-5-10-ghz/specifications.html",
+            "https://www.ebay.com/itm/226929518990"
+          ]
+        },
+        {
+          "code": "cpu-socket",
+          "severity": "confirmed-correction",
+          "note": "Intel specifies FCLGA1200; the source item specifics say Socket P.",
+          "sources": [
+            "https://www.intel.com/content/www/us/en/products/sku/212264/intel-xeon-w1350p-processor-12m-cache-up-to-5-10-ghz/specifications.html",
+            "https://www.ebay.com/itm/226929518990"
+          ]
+        }
+      ],
+      "corrections": [
+        {
+          "field": "title",
+          "before": "Intel SRKP9 Xeon W-1350P 4.00GHz 6-Core Socket 1200 CPU Processor Emerald Rapids",
+          "after": "Intel Xeon W-1350P SRKP9 6-Core 4.0GHz LGA1200 Rocket Lake CPU",
+          "evidence": "https://www.intel.com/content/www/us/en/products/sku/212264/intel-xeon-w1350p-processor-12m-cache-up-to-5-10-ghz/specifications.html"
+        },
+        {
+          "field": "Socket Type",
+          "before": "Socket P",
+          "after": "FCLGA1200",
+          "evidence": "https://www.intel.com/content/www/us/en/products/sku/212264/intel-xeon-w1350p-processor-12m-cache-up-to-5-10-ghz/specifications.html"
+        }
+      ],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226074499898",
+      "sku": "ebay:226074499898",
+      "physical_inventory_id": null,
+      "source_hash": "2f9799fef073d78aeaad57744c5f3b24d695c57f305d62f1cccdc29d24d7b58e",
+      "original": {
+        "item_id": "226074499898",
+        "seller": "atmarktradinginc",
+        "title": "Lenovo ThinkStation P330 G2 Tower i7-9700 3.0 GHz DDR4 SSD + SSD P1000 W 11 CTO",
+        "price_min": 599.0,
+        "price_max": 1999.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226074499898",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "Lenovo ThinkStation P330 G2 Tower i7-9700 3.0 GHz DDR4 SSD + SSD P1000 Windows 11",
+      "family": "Lenovo ThinkStation P330 Gen 2",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i7-9700",
+        "GPU": "P1000",
+        "OS": "Windows 11"
+      },
+      "aspects": {},
+      "price_min": 599.0,
+      "price_max": 1999.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226074499898",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "title-length",
+          "severity": "review",
+          "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "225765943824",
+      "sku": "ebay:225765943824",
+      "physical_inventory_id": null,
+      "source_hash": "91dc3cfec1548243ff5c5cff2124f70499e200fece264576ec4e556e2701b1a0",
+      "original": {
+        "item_id": "225765943824",
+        "seller": "atmarktradinginc",
+        "title": "DELL Precision/ XPS PCIe card holder 0DPXPF",
+        "price_min": 13.5,
+        "price_max": 13.5,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/225765943824",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "DELL Precision/ XPS PCIe card holder 0DPXPF",
+      "family": "DELL Precision/ XPS PCIe card holder 0DPXPF",
+      "category": "Parts & upgrades",
+      "specs": {},
+      "aspects": {},
+      "price_min": 13.5,
+      "price_max": 13.5,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/225765943824",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226190772910",
+      "sku": "ebay:226190772910",
+      "physical_inventory_id": null,
+      "source_hash": "aca05100dded2915f32ed7a5d748174970cf46750c254402725003c2974b48ef",
+      "original": {
+        "item_id": "226190772910",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision 3640 Tower Xeon W-1270 3.4GHz DDR4 SSD + SSD P620 W 10 CTO",
+        "price_min": 799.0,
+        "price_max": 1599.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226190772910",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/images/g/0PsAAOSwDGhnsoHI/s-l140.webp"
+        ],
+        "aspects": {}
+      },
+      "title": "Dell Precision 3640 Tower Xeon W-1270 3.4GHz DDR4 SSD + SSD P620 Windows 10",
+      "family": "Dell Precision 3640",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "W-1270",
+        "GPU": "P620",
+        "OS": "Windows 10"
+      },
+      "aspects": {},
+      "price_min": 799.0,
+      "price_max": 1599.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226190772910",
+      "image": "https://i.ebayimg.com/images/g/0PsAAOSwDGhnsoHI/s-l140.webp",
+      "media": {
+        "source_url": "https://i.ebayimg.com/images/g/0PsAAOSwDGhnsoHI/s-l140.webp",
+        "listing_url": "https://www.ebay.com/itm/226190772910",
+        "sha256": "6265e2abcd08ad55700ee30ad2fc4b83bd3464a14ca7b668bf89d3efb937dfdb",
+        "bytes": 4142,
+        "width": 140,
+        "height": 140,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "photo-resolution",
+          "severity": "review",
+          "note": "The captured source is below 500 pixels on its longest side. Obtain a larger original; no detail is synthesized.",
+          "sources": [
+            "https://www.ebay.com/help/selling/listings/adding-pictures-listing?id=4148"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227059640622",
+      "sku": "ebay:227059640622",
+      "physical_inventory_id": null,
+      "source_hash": "03e4073431f9fc61766c8a5a4a17d98ee91207794b4591148b0167de370a6f29",
+      "original": {
+        "item_id": "227059640622",
+        "seller": "atmarktradinginc",
+        "title": "HP Z6 G4 Front Fan / GPU Guide Assembly 915748-001 PVA120G12S",
+        "price_min": 35.99,
+        "price_max": 35.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227059640622",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z6 G4 Front Fan / GPU Guide Assembly 915748-001 PVA120G12S",
+      "family": "HP Z6 G4 Front Fan / GPU Guide Assembly 915748-001 PVA120G12S",
+      "category": "Parts & upgrades",
+      "specs": {},
+      "aspects": {},
+      "price_min": 35.99,
+      "price_max": 35.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227059640622",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227030135504",
+      "sku": "ebay:227030135504",
+      "physical_inventory_id": null,
+      "source_hash": "06e44fdcacad29d065952b947be4e0c6747418c2131673ff90b3a1352dcb3ffd",
+      "original": {
+        "item_id": "227030135504",
+        "seller": "atmarktradinginc",
+        "title": "HP Z2 G5 Tower Workstation CPU Cooling Heatsink P/N: L97053-001 Tested Working",
+        "price_min": 89.0,
+        "price_max": 89.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227030135504",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z2 G5 Tower Workstation CPU Cooling Heatsink P/N: L97053-001 Tested Working",
+      "family": "HP Z2 G5 Tower Workstation CPU Cooling Heatsink P/N: L97053-001 Tested Working",
+      "category": "Parts & upgrades",
+      "specs": {},
+      "aspects": {},
+      "price_min": 89.0,
+      "price_max": 89.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227030135504",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227153767227",
+      "sku": "ebay:227153767227",
+      "physical_inventory_id": null,
+      "source_hash": "2fd4c39be49353d55cbae1cedf293f4a9ffffa17108fb34991da757f6deba052",
+      "original": {
+        "item_id": "227153767227",
+        "seller": "atmarktradinginc",
+        "title": "HP Z6 G4 Xeon Gold 6136 3.0GHz DDR4 SSD +HD RTX 3080 Win 10 Pro CTO",
+        "price_min": 1999.0,
+        "price_max": 3899.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227153767227",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z6 G4 Xeon Gold 6136 3.0GHz DDR4 SSD +HD RTX 3080 Windows 10 Pro",
+      "family": "HP Z6 G4",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "Xeon Gold 6136",
+        "GPU": "RTX 3080",
+        "OS": "Windows 10 Pro"
+      },
+      "aspects": {},
+      "price_min": 1999.0,
+      "price_max": 3899.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227153767227",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227470731473",
+      "sku": "ebay:227470731473",
+      "physical_inventory_id": null,
+      "source_hash": "0e639f3c5916eed7f2168db1f512d66f2a7eca0eb71aacab2f0be1c829043870",
+      "original": {
+        "item_id": "227470731473",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision 3650 Tower i7-11700 2.5GHz DDR4 SSD Windows 11 BTO",
+        "price_min": 699.0,
+        "price_max": 1799.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227470731473",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "Dell Precision 3650 Tower i7-11700 2.5GHz DDR4 SSD Windows 11",
+      "family": "Dell Precision 3650",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i7-11700",
+        "OS": "Windows 11"
+      },
+      "aspects": {},
+      "price_min": 699.0,
+      "price_max": 1799.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227470731473",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227153767229",
+      "sku": "ebay:227153767229",
+      "physical_inventory_id": null,
+      "source_hash": "a4054c54ef1e1dffcd9801a6aed9eeb9ab057628488ef4b809e36f94d7ae79e2",
+      "original": {
+        "item_id": "227153767229",
+        "seller": "atmarktradinginc",
+        "title": "HP Z6 G4 Xeon Gold 6136 3.0GHz DDR4 SSD +HD P4000 Win 11 Pro CTO",
+        "price_min": 1599.0,
+        "price_max": 3499.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227153767229",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z6 G4 Xeon Gold 6136 3.0GHz DDR4 SSD +HD P4000 Windows 11 Pro",
+      "family": "HP Z6 G4",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "Xeon Gold 6136",
+        "GPU": "P4000",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 1599.0,
+      "price_max": 3499.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227153767229",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227083143913",
+      "sku": "ebay:227083143913",
+      "physical_inventory_id": null,
+      "source_hash": "0b8d7d30bd25505fb92812e2591749cc7e92df1aad86827d5f41961009650480",
+      "original": {
+        "item_id": "227083143913",
+        "seller": "atmarktradinginc",
+        "title": "NVIDIA Quadro P400 Video Card 2 GB FH",
+        "price_min": 26.99,
+        "price_max": 26.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227083143913",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/YDIAAeSwHHtpGr0~/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "NVIDIA Quadro P400 Video Card 2 GB FH",
+      "family": "NVIDIA Quadro P400 Video Card 2 GB FH",
+      "category": "Graphics",
+      "specs": {
+        "GPU": "P400"
+      },
+      "aspects": {},
+      "price_min": 26.99,
+      "price_max": 26.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227083143913",
+      "image": "https://i.ebayimg.com/thumbs/images/g/YDIAAeSwHHtpGr0~/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/YDIAAeSwHHtpGr0~/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227083143913",
+        "sha256": "2c83f88391aec4085fcbfe367ea5e64ee08e87f57cbaedf6a25beb7a61cf7561",
+        "bytes": 34931,
+        "width": 500,
+        "height": 375,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227034752776",
+      "sku": "ebay:227034752776",
+      "physical_inventory_id": null,
+      "source_hash": "bf952c94f77262b2a9e9b6d80c92cc54870a69a856b9b035fda1eab2db24efc1",
+      "original": {
+        "item_id": "227034752776",
+        "seller": "atmarktradinginc",
+        "title": "Dell OptiPlex 7490 24\" FHD AIO Core i7-10700 Build to Order Win 10",
+        "price_min": 599.0,
+        "price_max": 999.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227034752776",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/2iEAAOSwPChoD6J7/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Dell OptiPlex 7490 24\" FHD AIO Core i7-10700 Build to Order Win 10",
+      "family": "Dell OptiPlex 7490",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i7-10700",
+        "OS": "Windows 10"
+      },
+      "aspects": {},
+      "price_min": 599.0,
+      "price_max": 999.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227034752776",
+      "image": "https://i.ebayimg.com/thumbs/images/g/2iEAAOSwPChoD6J7/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/2iEAAOSwPChoD6J7/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227034752776",
+        "sha256": "9688f6e445d6ef8cf9c67d4d4a8c503fd503aa2aad05742bd0a4fc4d56f38904",
+        "bytes": 60352,
+        "width": 500,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227153756287",
+      "sku": "ebay:227153756287",
+      "physical_inventory_id": null,
+      "source_hash": "da48beb2bde039bc14c85416193a02cf8db011dd8f748d356a3a608e67de937f",
+      "original": {
+        "item_id": "227153756287",
+        "seller": "atmarktradinginc",
+        "title": "HP Z6 G4 Xeon Gold 6154 3.0GHz DDR4 SSD +HD RTX 3080 Win 11 Pro CTO",
+        "price_min": 1999.0,
+        "price_max": 3899.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227153756287",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z6 G4 Xeon Gold 6154 3.0GHz DDR4 SSD +HD RTX 3080 Windows 11 Pro",
+      "family": "HP Z6 G4",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "Xeon Gold 6154",
+        "GPU": "RTX 3080",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 1999.0,
+      "price_max": 3899.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227153756287",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227153778762",
+      "sku": "ebay:227153778762",
+      "physical_inventory_id": null,
+      "source_hash": "86e65225b1c441f9034b79d7f742d08bafdbb97767b30b1dbef0c1281bb874c4",
+      "original": {
+        "item_id": "227153778762",
+        "seller": "atmarktradinginc",
+        "title": "HP Z6 G4 Xeon Gold 6240 2.6GHz DDR4 SSD +HD P4000 Win 11 Pro CTO",
+        "price_min": 1599.0,
+        "price_max": 3499.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227153778762",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Z6 G4 Xeon Gold 6240 2.6GHz DDR4 SSD +HD P4000 Windows 11 Pro",
+      "family": "HP Z6 G4",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "Xeon Gold 6240",
+        "GPU": "P4000",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 1599.0,
+      "price_max": 3499.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227153778762",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227041294074",
+      "sku": "ebay:227041294074",
+      "physical_inventory_id": null,
+      "source_hash": "99212552eeac035551832e3ada1be43b230fae263bf1dd080ec4efb0aa122f56",
+      "original": {
+        "item_id": "227041294074",
+        "seller": "atmarktradinginc",
+        "title": "HP Pro 400 G9 SFF Core i5-12500 3.0Ghz 16GB 512GB SSD Windows 11 Pro",
+        "price_min": 429.0,
+        "price_max": 429.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227041294074",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/aD4AAeSw4bdo-75a/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "HP Pro 400 G9 SFF Core i5-12500 3.0Ghz 16GB 512GB SSD Windows 11 Pro",
+      "family": "HP Pro 400 G9 SFF",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i5-12500",
+        "RAM": "16 GB",
+        "Storage": "512 GB SSD",
+        "OS": "Windows 11 Pro"
+      },
+      "aspects": {},
+      "price_min": 429.0,
+      "price_max": 429.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227041294074",
+      "image": "https://i.ebayimg.com/thumbs/images/g/aD4AAeSw4bdo-75a/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/aD4AAeSw4bdo-75a/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227041294074",
+        "sha256": "240d2dfed3b86ea348e1478b26839613aff3a052ec2274cf10915afc015c4766",
+        "bytes": 15836,
+        "width": 500,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226982899687",
+      "sku": "ebay:226982899687",
+      "physical_inventory_id": null,
+      "source_hash": "d761b3be4c4267033a1a7239a57123f5819cb5d57209a567a1e354ead5f3fb9b",
+      "original": {
+        "item_id": "226982899687",
+        "seller": "atmarktradinginc",
+        "title": "Lenovo T16 16\" FHD+ Touchscreen Laptop Core i7 3.5GHz CTO Win 10",
+        "price_min": 799.0,
+        "price_max": 1099.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226982899687",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/uQkAAOSwJKNlmAiF/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Lenovo T16 16\" FHD+ Touchscreen Laptop Core i7 3.5GHz Win 10",
+      "family": "Lenovo T16",
+      "category": "Laptops",
+      "specs": {
+        "OS": "Windows 10"
+      },
+      "aspects": {},
+      "price_min": 799.0,
+      "price_max": 1099.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226982899687",
+      "image": "https://i.ebayimg.com/thumbs/images/g/uQkAAOSwJKNlmAiF/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/uQkAAOSwJKNlmAiF/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/226982899687",
+        "sha256": "8a0e82920f332612e7a3a4d4ba476d1d43a70a498c44ed00a7fbd290cc7e03f8",
+        "bytes": 47180,
+        "width": 500,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "225387109046",
+      "sku": "ebay:225387109046",
+      "physical_inventory_id": null,
+      "source_hash": "badda909ea58794d32c1cc3372ade1ac9db96c41a7c73659ae8e90ab01361807",
+      "original": {
+        "item_id": "225387109046",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision 3430 Desktop Core i7 3.2Ghz 32GB 1TB SSD Win 10 Pro",
+        "price_min": 449.0,
+        "price_max": 449.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/225387109046",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "Dell Precision 3430 Desktop Core i7 3.2Ghz 32GB 1TB SSD Windows 10 Pro",
+      "family": "Dell Precision 3430",
+      "category": "Workstations & desktops",
+      "specs": {
+        "RAM": "32 GB",
+        "Storage": "1 TB SSD",
+        "OS": "Windows 10 Pro"
+      },
+      "aspects": {},
+      "price_min": 449.0,
+      "price_max": 449.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/225387109046",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226953280140",
+      "sku": "ebay:226953280140",
+      "physical_inventory_id": null,
+      "source_hash": "7d522033f160fa7c47ffddcc7b71bc70073caf0d6f7044fb4971930474b18d4e",
+      "original": {
+        "item_id": "226953280140",
+        "seller": "atmarktradinginc",
+        "title": "Dell 804P1 Precision T7820 7820 Intel C621 Workstation Motherboard LGA3647 DDR4",
+        "price_min": 159.0,
+        "price_max": 159.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226953280140",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/uUgAAeSwMexotilh/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Dell 804P1 Precision T7820 7820 Intel C621 Workstation Motherboard LGA3647 DDR4",
+      "family": "Dell 804P1 Precision T7820 7820 Intel C621 Workstation Motherboard LGA3647 DDR4",
+      "category": "Parts & upgrades",
+      "specs": {},
+      "aspects": {},
+      "price_min": 159.0,
+      "price_max": 159.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226953280140",
+      "image": "https://i.ebayimg.com/thumbs/images/g/uUgAAeSwMexotilh/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/uUgAAeSwMexotilh/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/226953280140",
+        "sha256": "f5dc3fa0f8ed626dcd802fc325f5c0d57a6c97da77fe5878cf7f1b0452d78647",
+        "bytes": 53174,
+        "width": 500,
+        "height": 475,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227066060316",
+      "sku": "ebay:227066060316",
+      "physical_inventory_id": null,
+      "source_hash": "0c5028b690647486dfaaff74de0b96ea3c9d2f10f6fcc9a14507b2b59115ca80",
+      "original": {
+        "item_id": "227066060316",
+        "seller": "atmarktradinginc",
+        "title": "Lenovo P520c Front Bezel 01EF790",
+        "price_min": 28.99,
+        "price_max": 28.99,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227066060316",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/oVcAAeSwXPhpD95N/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Lenovo P520c Front Bezel 01EF790",
+      "family": "Lenovo P520c Front Bezel 01EF790",
+      "category": "Parts & upgrades",
+      "specs": {},
+      "aspects": {},
+      "price_min": 28.99,
+      "price_max": 28.99,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227066060316",
+      "image": "https://i.ebayimg.com/thumbs/images/g/oVcAAeSwXPhpD95N/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/oVcAAeSwXPhpD95N/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227066060316",
+        "sha256": "5283dcd9004c653c815507aa06ee5ffc3e36a105b07f10860de47724fe8034c9",
+        "bytes": 41432,
+        "width": 500,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226202561474",
+      "sku": "ebay:226202561474",
+      "physical_inventory_id": null,
+      "source_hash": "051fb14d931c500a85e14cf9862bf7da8679614ccea4c24bf5497234b796b70f",
+      "original": {
+        "item_id": "226202561474",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision 3630 Tower Xeon E-2288G 3.7GHz DDR4 SSD + SSD P1000 W 10 CTO",
+        "price_min": 1049.0,
+        "price_max": 2449.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226202561474",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/FMYAAOSwXfZl-zL5/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Dell Precision 3630 Tower Xeon E-2288G 3.7GHz DDR4 SSD + SSD P1000 Windows 10",
+      "family": "Dell Precision 3630",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "E-2288G",
+        "GPU": "P1000",
+        "OS": "Windows 10"
+      },
+      "aspects": {},
+      "price_min": 1049.0,
+      "price_max": 2449.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226202561474",
+      "image": "https://i.ebayimg.com/thumbs/images/g/FMYAAOSwXfZl-zL5/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/FMYAAOSwXfZl-zL5/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/226202561474",
+        "sha256": "c9f136fcba2db17821ae7c864fe07e96005a2a97035a7f3f5c8a6789f0ccc3cf",
+        "bytes": 52974,
+        "width": 500,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227543075829",
+      "sku": "ebay:227543075829",
+      "physical_inventory_id": null,
+      "source_hash": "f7e31b271fbc1132ce00897094a6e97de45f9b3085c4e2c09998fefc8df2fdd2",
+      "original": {
+        "item_id": "227543075829",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision 3620 Tower i7-7700K 4.2GHz DDR4 SSD P2000 W 10 CTO",
+        "price_min": 599.0,
+        "price_max": 1099.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227543075829",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/wI0AAeSw8uNqumel/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Dell Precision 3620 Tower i7-7700K 4.2GHz DDR4 SSD P2000 Windows 10",
+      "family": "Dell Precision 3620",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i7-7700K",
+        "GPU": "P2000",
+        "OS": "Windows 10"
+      },
+      "aspects": {},
+      "price_min": 599.0,
+      "price_max": 1099.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227543075829",
+      "image": "https://i.ebayimg.com/thumbs/images/g/wI0AAeSw8uNqumel/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/wI0AAeSw8uNqumel/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227543075829",
+        "sha256": "33cbb4648e10a756bdb32c00161024bd29ab13e3ba1fa00073cae6ecccf5627c",
+        "bytes": 29594,
+        "width": 261,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227047686725",
+      "sku": "ebay:227047686725",
+      "physical_inventory_id": null,
+      "source_hash": "59314d8ab14eb151a7d57026092618432450b3d093c052350c78368b6135435e",
+      "original": {
+        "item_id": "227047686725",
+        "seller": "atmarktradinginc",
+        "title": "Intel Pentium Gold G7400 3.7GHz Socket LGA 1700 Desktop CPU Processor",
+        "price_min": 109.0,
+        "price_max": 109.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227047686725",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [
+          "https://i.ebayimg.com/thumbs/images/g/NecAAeSwkeZpAPoi/s-l500.jpg"
+        ],
+        "aspects": {}
+      },
+      "title": "Intel Pentium Gold G7400 3.7GHz Socket LGA 1700 Desktop CPU Processor",
+      "family": "Intel Pentium Gold G7400 3.7GHz Socket LGA 1700 Desktop CPU Processor",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "G7400"
+      },
+      "aspects": {},
+      "price_min": 109.0,
+      "price_max": 109.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227047686725",
+      "image": "https://i.ebayimg.com/thumbs/images/g/NecAAeSwkeZpAPoi/s-l500.jpg",
+      "media": {
+        "source_url": "https://i.ebayimg.com/thumbs/images/g/NecAAeSwkeZpAPoi/s-l500.jpg",
+        "listing_url": "https://www.ebay.com/itm/227047686725",
+        "sha256": "55165ee9422bdc63d297074a22dcfbf4f2f14d5e3d08f2a101d9f37d8ce5b10e",
+        "bytes": 65071,
+        "width": 440,
+        "height": 500,
+        "capture_run_started_at": "2026-10-28T17:58:49Z",
+        "operation": "Original bytes; full-frame display only",
+        "identity_status": "unit-unverified",
+        "display_status": "source-frame-preserved",
+        "rights_status": "reference-only; original rights holders retain rights"
+      },
+      "photo_status": "listing-image-unverified",
+      "issues": [],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "226061315835",
+      "sku": "ebay:226061315835",
+      "physical_inventory_id": null,
+      "source_hash": "f1bcd575f9fe5a0a7179b1d8022ec5acd9b41e5f1a32a894b9cefff18384774b",
+      "original": {
+        "item_id": "226061315835",
+        "seller": "atmarktradinginc",
+        "title": "Dell Precision 3630 Tower i7-9700 3.0 GHz DDR4 SSD + SSD P620 W 11 CTO",
+        "price_min": 749.0,
+        "price_max": 1049.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/226061315835",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "Dell Precision 3630 Tower i7-9700 3.0 GHz DDR4 SSD + SSD P620 Windows 11",
+      "family": "Dell Precision 3630",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i7-9700",
+        "GPU": "P620",
+        "OS": "Windows 11"
+      },
+      "aspects": {},
+      "price_min": 749.0,
+      "price_max": 1049.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/226061315835",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [],
+      "corrections": [],
+      "configurable": true,
+      "variations": {},
+      "publication_state": "review-only"
+    },
+    {
+      "id": "227041294076",
+      "sku": "ebay:227041294076",
+      "physical_inventory_id": null,
+      "source_hash": "ca4ad5df71d1b7946da08b3842cc8e2d993afe59e0b6c6646831dd739b3acfec",
+      "original": {
+        "item_id": "227041294076",
+        "seller": "atmarktradinginc",
+        "title": "HP Pro 400 G9 SFF Core i5-12500 3.0Ghz 16GB 512GB SSD Windows 10 Pro",
+        "price_min": 429.0,
+        "price_max": 429.0,
+        "currency": "USD",
+        "url": "https://www.ebay.com/itm/227041294076",
+        "source_url": "https://www.ebay.com/str/atmarksstore",
+        "source_kind": "public_web_index_observation",
+        "source_freshness": "Store snapshot indexed about two weeks before retrieval; item pages have different cache dates. Check eBay for current terms.",
+        "availability": "unverified",
+        "condition": "not-captured",
+        "image_urls": [],
+        "aspects": {}
+      },
+      "title": "HP Pro 400 G9 SFF Core i5-12500 3.0Ghz 16GB 512GB SSD Windows 10 Pro",
+      "family": "HP Pro 400 G9 SFF",
+      "category": "Workstations & desktops",
+      "specs": {
+        "CPU": "i5-12500",
+        "RAM": "16 GB",
+        "Storage": "512 GB SSD",
+        "OS": "Windows 10 Pro"
+      },
+      "aspects": {},
+      "price_min": 429.0,
+      "price_max": 429.0,
+      "currency": "USD",
+      "availability": "unverified",
+      "url": "https://www.ebay.com/itm/227041294076",
+      "image": null,
+      "media": {},
+      "photo_status": "photo-needed",
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ],
+      "corrections": [],
+      "configurable": false,
+      "variations": {},
+      "publication_state": "review-only"
+    }
+  ],
+  "os_groups": [
+    {
+      "ids": [
+        "227543292463",
+        "227543292462"
+      ],
+      "family": "HP Z2 G5",
+      "reason": "Same title-level hardware, different OS; grouping proposal only. Quantities remain independent and unknown."
+    },
+    {
+      "ids": [
+        "227543292466",
+        "227543292465"
+      ],
+      "family": "HP Z2 G5",
+      "reason": "Same title-level hardware, different OS; grouping proposal only. Quantities remain independent and unknown."
+    },
+    {
+      "ids": [
+        "227543292461",
+        "227543292464"
+      ],
+      "family": "HP Z2 G5",
+      "reason": "Same title-level hardware, different OS; grouping proposal only. Quantities remain independent and unknown."
+    },
+    {
+      "ids": [
+        "227153767226",
+        "227153767229"
+      ],
+      "family": "HP Z6 G4",
+      "reason": "Same title-level hardware, different OS; grouping proposal only. Quantities remain independent and unknown."
+    },
+    {
+      "ids": [
+        "227041294074",
+        "227041294076"
+      ],
+      "family": "HP Pro 400 G9 SFF",
+      "reason": "Same title-level hardware, different OS; grouping proposal only. Quantities remain independent and unknown."
+    }
+  ],
+  "shared_images": [
+    {
+      "url": "https://i.ebayimg.com/thumbs/images/g/FMYAAOSwXfZl-zL5/s-l500.jpg",
+      "ids": [
+        "227473686089",
+        "226202561474"
+      ]
+    }
+  ],
+  "conflicts": [],
+  "issues": [
+    {
+      "code": "availability",
+      "severity": "hold",
+      "note": "The followed item page reports out of stock. The older store snapshot still contains this item.",
+      "sources": [
+        "https://www.ebay.com/itm/227552589910"
+      ],
+      "item_id": "227552589910"
+    },
+    {
+      "code": "clock-conflict",
+      "severity": "review",
+      "note": "Title says 2.8 GHz; item specifics say 3.10 GHz. Resolve CPU identity and base/turbo meaning before editing.",
+      "sources": [
+        "https://www.ebay.com/itm/227543292463"
+      ],
+      "item_id": "227543292463"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "227543292463"
+    },
+    {
+      "code": "os-sibling",
+      "severity": "organization",
+      "note": "Show related OS offers together without ending or merging any listing.",
+      "sources": [],
+      "item_id": "227543292463"
+    },
+    {
+      "code": "os-sibling",
+      "severity": "organization",
+      "note": "Show related OS offers together without ending or merging any listing.",
+      "sources": [],
+      "item_id": "227543292462"
+    },
+    {
+      "code": "os-sibling",
+      "severity": "organization",
+      "note": "Show related OS offers together without ending or merging any listing.",
+      "sources": [],
+      "item_id": "227543292466"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "227543292465"
+    },
+    {
+      "code": "os-sibling",
+      "severity": "organization",
+      "note": "Show related OS offers together without ending or merging any listing.",
+      "sources": [],
+      "item_id": "227543292465"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "227543292461"
+    },
+    {
+      "code": "os-sibling",
+      "severity": "organization",
+      "note": "Show related OS offers together without ending or merging any listing.",
+      "sources": [],
+      "item_id": "227543292461"
+    },
+    {
+      "code": "accessory-exclusion",
+      "severity": "review",
+      "note": "The photograph shows a 512GB-labelled insert; the title explicitly excludes the SSD. Keep NO SSD prominent and photograph the actual included parts.",
+      "sources": [
+        "https://www.ebay.com/itm/226924094753"
+      ],
+      "item_id": "226924094753"
+    },
+    {
+      "code": "price-conflict",
+      "severity": "review",
+      "note": "A later public observation shows $105, while the retained store snapshot shows $109. No automated price change is proposed.",
+      "sources": [
+        "https://www.ebay.com/str/atmarksstore?_trksid=p4429486.m3561.l161211"
+      ],
+      "item_id": "226982854872"
+    },
+    {
+      "code": "photo-resolution",
+      "severity": "review",
+      "note": "The captured source is below 500 pixels on its longest side. Obtain a larger original; no detail is synthesized.",
+      "sources": [
+        "https://www.ebay.com/help/selling/listings/adding-pictures-listing?id=4148"
+      ],
+      "item_id": "227021997060"
+    },
+    {
+      "code": "photo-model-conflict",
+      "severity": "hold",
+      "note": "This listing for Precision 3650 uses the same image URL as a Precision 3630 listing; the pictured front badge reads Precision 3630. This image is withheld from its product card.",
+      "sources": [
+        "https://www.ebay.com/itm/227473686089",
+        "https://www.ebay.com/itm/226202561474"
+      ],
+      "item_id": "227473686089"
+    },
+    {
+      "code": "color-field",
+      "severity": "review",
+      "note": "The Color field says Gold beside a Xeon Gold CPU. Inspect the unit before replacing this field.",
+      "sources": [
+        "https://www.ebay.com/itm/227156017474"
+      ],
+      "item_id": "227156017474"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "227156017474"
+    },
+    {
+      "code": "photo-resolution",
+      "severity": "review",
+      "note": "The captured source is below 500 pixels on its longest side. Obtain a larger original; no detail is synthesized.",
+      "sources": [
+        "https://www.ebay.com/help/selling/listings/adding-pictures-listing?id=4148"
+      ],
+      "item_id": "227156017474"
+    },
+    {
+      "code": "title-length",
+      "severity": "review",
+      "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+      "sources": [],
+      "item_id": "227156017474"
+    },
+    {
+      "code": "title-length",
+      "severity": "review",
+      "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+      "sources": [],
+      "item_id": "226074499897"
+    },
+    {
+      "code": "title-length",
+      "severity": "review",
+      "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+      "sources": [],
+      "item_id": "226378244866"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "227153767226"
+    },
+    {
+      "code": "os-sibling",
+      "severity": "organization",
+      "note": "Show related OS offers together without ending or merging any listing.",
+      "sources": [],
+      "item_id": "227153767226"
+    },
+    {
+      "code": "os-sibling",
+      "severity": "organization",
+      "note": "Show related OS offers together without ending or merging any listing.",
+      "sources": [],
+      "item_id": "227543292464"
+    },
+    {
+      "code": "photo-model-review",
+      "severity": "review",
+      "note": "The front model badge is not established by this capture. Confirm the image matches Precision 3430.",
+      "sources": [
+        "https://www.ebay.com/itm/225749481734"
+      ],
+      "item_id": "225749481734"
+    },
+    {
+      "code": "cpu-generation",
+      "severity": "confirmed-correction",
+      "note": "Intel identifies W-1350P as Rocket Lake; the source title says Emerald Rapids.",
+      "sources": [
+        "https://www.intel.com/content/www/us/en/products/sku/212264/intel-xeon-w1350p-processor-12m-cache-up-to-5-10-ghz/specifications.html",
+        "https://www.ebay.com/itm/226929518990"
+      ],
+      "item_id": "226929518990"
+    },
+    {
+      "code": "cpu-socket",
+      "severity": "confirmed-correction",
+      "note": "Intel specifies FCLGA1200; the source item specifics say Socket P.",
+      "sources": [
+        "https://www.intel.com/content/www/us/en/products/sku/212264/intel-xeon-w1350p-processor-12m-cache-up-to-5-10-ghz/specifications.html",
+        "https://www.ebay.com/itm/226929518990"
+      ],
+      "item_id": "226929518990"
+    },
+    {
+      "code": "title-length",
+      "severity": "review",
+      "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+      "sources": [],
+      "item_id": "226074499898"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "226190772910"
+    },
+    {
+      "code": "photo-resolution",
+      "severity": "review",
+      "note": "The captured source is below 500 pixels on its longest side. Obtain a larger original; no detail is synthesized.",
+      "sources": [
+        "https://www.ebay.com/help/selling/listings/adding-pictures-listing?id=4148"
+      ],
+      "item_id": "226190772910"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "227153767227"
+    },
+    {
+      "code": "os-sibling",
+      "severity": "organization",
+      "note": "Show related OS offers together without ending or merging any listing.",
+      "sources": [],
+      "item_id": "227153767229"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "227034752776"
+    },
+    {
+      "code": "os-sibling",
+      "severity": "organization",
+      "note": "Show related OS offers together without ending or merging any listing.",
+      "sources": [],
+      "item_id": "227041294074"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "226982899687"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "225387109046"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "226202561474"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "227543075829"
+    },
+    {
+      "code": "os-support",
+      "severity": "review",
+      "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+      "sources": [
+        "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+      ],
+      "item_id": "227041294076"
+    },
+    {
+      "code": "os-sibling",
+      "severity": "organization",
+      "note": "Show related OS offers together without ending or merging any listing.",
+      "sources": [],
+      "item_id": "227041294076"
+    }
+  ],
+  "metrics": {
+    "items": 53,
+    "families": 38,
+    "images": 28,
+    "confirmed_corrections": 2,
+    "review_findings": 39,
+    "os_groups": 5,
+    "out_of_stock": 1
+  },
+  "authority": {
+    "live_store_writes": false,
+    "stock_verified": false,
+    "seller_endorsement": false,
+    "image_rights": "Seller / original rights holders. Images shown as attributed listing references in an independent demonstration; no blanket redistribution license is asserted."
+  }
+}

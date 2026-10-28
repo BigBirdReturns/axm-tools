@@ -1,0 +1,660 @@
+{
+  "live_writes": false,
+  "scope": "review-only proposals",
+  "input_sha256": "f2d1997501d52c939e3dc652c4b4f79bfce47ab703783425aac37014c36740ec",
+  "changes": [
+    {
+      "item_id": "227552589910",
+      "expected_source_hash": "cdf0e3a79d2c977deccfab48bc0cb366a1234e6c9184a521e656f1efc987b28f",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "availability",
+          "severity": "hold",
+          "note": "The followed item page reports out of stock. The older store snapshot still contains this item.",
+          "sources": [
+            "https://www.ebay.com/itm/227552589910"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "227543292463",
+      "expected_source_hash": "bd99f89b1bbba636e608cbe8b1ab2fbb2616533e03ba8af83fd629302439c319",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "clock-conflict",
+          "severity": "review",
+          "note": "Title says 2.8 GHz; item specifics say 3.10 GHz. Resolve CPU identity and base/turbo meaning before editing.",
+          "sources": [
+            "https://www.ebay.com/itm/227543292463"
+          ]
+        },
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "227543292462",
+      "expected_source_hash": "8262958f8fcce36c3eacad82302572ff42f3a2453eff3533d3681b10e063e0ac",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "227543292466",
+      "expected_source_hash": "0d820852c8fcbcc9356257a5790049e409a0f04481513b5248182ac1c4d5dba7",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "227543292465",
+      "expected_source_hash": "516cfa88a8eca94f55228abf295c8871fa48e716921b946902372d276051689a",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "227543292461",
+      "expected_source_hash": "2606ff0f80de819661ecaa2b69d7444dce73e9c807b6d6dd44a85964b70e7cd6",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "226924094753",
+      "expected_source_hash": "c6cfec9a9a562ffeea16a079e529e7e07a92339fb7229662d8fb7c1e540dd3b6",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "accessory-exclusion",
+          "severity": "review",
+          "note": "The photograph shows a 512GB-labelled insert; the title explicitly excludes the SSD. Keep NO SSD prominent and photograph the actual included parts.",
+          "sources": [
+            "https://www.ebay.com/itm/226924094753"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "227089850796",
+      "expected_source_hash": "6f0061e60c96d9caadc555f2e6825fa56ddf02c3c92559c63f230f5f33da87bb",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "226982854872",
+      "expected_source_hash": "8d0ca5741ea85073aafc75483260ff3d73f32b55c213a2cc4d80322efa161e60",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "price-conflict",
+          "severity": "review",
+          "note": "A later public observation shows $105, while the retained store snapshot shows $109. No automated price change is proposed.",
+          "sources": [
+            "https://www.ebay.com/str/atmarksstore?_trksid=p4429486.m3561.l161211"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "227021997060",
+      "expected_source_hash": "ab62469fe82db0e662d74a9da018f867bde735a621a7018327092f61cc701d3f",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "photo-resolution",
+          "severity": "review",
+          "note": "The captured source is below 500 pixels on its longest side. Obtain a larger original; no detail is synthesized.",
+          "sources": [
+            "https://www.ebay.com/help/selling/listings/adding-pictures-listing?id=4148"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "226078854314",
+      "expected_source_hash": "e582d08baaa01d95ca39c7e06c5848ae87afb53448651937f764e3ea44927aa3",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227473686089",
+      "expected_source_hash": "cec6b5814e82fab0bc5c5591d511643fd7649a02fac8832d56b90739dd10c87d",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "photo-model-conflict",
+          "severity": "hold",
+          "note": "This listing for Precision 3650 uses the same image URL as a Precision 3630 listing; the pictured front badge reads Precision 3630. This image is withheld from its product card.",
+          "sources": [
+            "https://www.ebay.com/itm/227473686089",
+            "https://www.ebay.com/itm/226202561474"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "226915589914",
+      "expected_source_hash": "7c29c631bfd3c4b8484c28ffa982d186a3a13b447d622e3080749b8a29211dac",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227156017474",
+      "expected_source_hash": "e7c7b85545c6e1c5c5ea0ca7444483fa0acaa12f99ae8223c6487105b48618d4",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "color-field",
+          "severity": "review",
+          "note": "The Color field says Gold beside a Xeon Gold CPU. Inspect the unit before replacing this field.",
+          "sources": [
+            "https://www.ebay.com/itm/227156017474"
+          ]
+        },
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "photo-resolution",
+          "severity": "review",
+          "note": "The captured source is below 500 pixels on its longest side. Obtain a larger original; no detail is synthesized.",
+          "sources": [
+            "https://www.ebay.com/help/selling/listings/adding-pictures-listing?id=4148"
+          ]
+        },
+        {
+          "code": "title-length",
+          "severity": "review",
+          "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "226023384754",
+      "expected_source_hash": "660bc7c34f216f91d816ff2f515c1197be7ee1c09384c42f60d129bfa1232c48",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227044751366",
+      "expected_source_hash": "2d4c0b2e7b11a441f82e287ae05a8ba8b5cf2332d9b6fb5f67452cd73f433d10",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227214545714",
+      "expected_source_hash": "1f4e5980e0a363085a8c335c7e5be4830fd4c2c73ded7fd3bcfcd558a3114385",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227021998569",
+      "expected_source_hash": "033af07a787e75b5e674165a2ea1115b3740fbc9f5d126d5f482030940dea86d",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "226020926795",
+      "expected_source_hash": "67453160768e141a0bbfc827cf625e217301e6922502cd219f18681cb1bc69a9",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227194890648",
+      "expected_source_hash": "13be291ebe15b289889ec02ab2630d7a225d0e97b28cefcf66d3353bc6e23a50",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "226840550409",
+      "expected_source_hash": "126d0213c5af1e231ddf3bd503795f4288f9faa3858888d9a58d1d4a89a400f7",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "226959711677",
+      "expected_source_hash": "9c044dd5e9f5fb46a6e7578cb0a1d3ee039a11ffe70b85d94346168755ec7e8a",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227097072770",
+      "expected_source_hash": "f894aaf0ee29dd2fb84c688522ca67a34a5c2e3e6954cd09b252bb9775343534",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227214542247",
+      "expected_source_hash": "8062af1daef4805a40afab8cd2b919c523cdae06032d9d5555c85a7d74383900",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "226074499897",
+      "expected_source_hash": "c51a2ebb3a2dd2cea4630c3c281f238feae8770f23b92d7b4bca89de18655be1",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "title-length",
+          "severity": "review",
+          "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "227153756282",
+      "expected_source_hash": "fbd4cf81337f696a1b62133803b699724acc5ecaac0004bd8e47e3f14203fce6",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "226378244866",
+      "expected_source_hash": "d015972d63f3e553adfef6ae5fc8cffdb730179b319de8dc45d98d318a73f1e5",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "title-length",
+          "severity": "review",
+          "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "227153767226",
+      "expected_source_hash": "9b2866134e648c5f30344830d78303ccf5e0d0d5e973d4d8c6dc6a7c77707f4e",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "227543292464",
+      "expected_source_hash": "2b58b4168a89ea103bf34e18a98316be92e1aee22a25cebcd742a113828de879",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "225749481734",
+      "expected_source_hash": "ae6ba99662ebed97662d8ab3f4f40dabd3ef42754de32c0af8d07b9faf9c762d",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "photo-model-review",
+          "severity": "review",
+          "note": "The front model badge is not established by this capture. Confirm the image matches Precision 3430.",
+          "sources": [
+            "https://www.ebay.com/itm/225749481734"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "226929518990",
+      "expected_source_hash": "d0f6e95e8460c41f71ff416135e5e4cfd12dd2c7e147370a3903cd63559ec577",
+      "corrections": [
+        {
+          "field": "title",
+          "before": "Intel SRKP9 Xeon W-1350P 4.00GHz 6-Core Socket 1200 CPU Processor Emerald Rapids",
+          "after": "Intel Xeon W-1350P SRKP9 6-Core 4.0GHz LGA1200 Rocket Lake CPU",
+          "evidence": "https://www.intel.com/content/www/us/en/products/sku/212264/intel-xeon-w1350p-processor-12m-cache-up-to-5-10-ghz/specifications.html"
+        },
+        {
+          "field": "Socket Type",
+          "before": "Socket P",
+          "after": "FCLGA1200",
+          "evidence": "https://www.intel.com/content/www/us/en/products/sku/212264/intel-xeon-w1350p-processor-12m-cache-up-to-5-10-ghz/specifications.html"
+        }
+      ],
+      "issues": [
+        {
+          "code": "cpu-generation",
+          "severity": "confirmed-correction",
+          "note": "Intel identifies W-1350P as Rocket Lake; the source title says Emerald Rapids.",
+          "sources": [
+            "https://www.intel.com/content/www/us/en/products/sku/212264/intel-xeon-w1350p-processor-12m-cache-up-to-5-10-ghz/specifications.html",
+            "https://www.ebay.com/itm/226929518990"
+          ]
+        },
+        {
+          "code": "cpu-socket",
+          "severity": "confirmed-correction",
+          "note": "Intel specifies FCLGA1200; the source item specifics say Socket P.",
+          "sources": [
+            "https://www.intel.com/content/www/us/en/products/sku/212264/intel-xeon-w1350p-processor-12m-cache-up-to-5-10-ghz/specifications.html",
+            "https://www.ebay.com/itm/226929518990"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "226074499898",
+      "expected_source_hash": "2f9799fef073d78aeaad57744c5f3b24d695c57f305d62f1cccdc29d24d7b58e",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "title-length",
+          "severity": "review",
+          "note": "The display title exceeds 80 characters. Review the marketplace title before publication.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "225765943824",
+      "expected_source_hash": "91dc3cfec1548243ff5c5cff2124f70499e200fece264576ec4e556e2701b1a0",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "226190772910",
+      "expected_source_hash": "aca05100dded2915f32ed7a5d748174970cf46750c254402725003c2974b48ef",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "photo-resolution",
+          "severity": "review",
+          "note": "The captured source is below 500 pixels on its longest side. Obtain a larger original; no detail is synthesized.",
+          "sources": [
+            "https://www.ebay.com/help/selling/listings/adding-pictures-listing?id=4148"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "227059640622",
+      "expected_source_hash": "03e4073431f9fc61766c8a5a4a17d98ee91207794b4591148b0167de370a6f29",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227030135504",
+      "expected_source_hash": "06e44fdcacad29d065952b947be4e0c6747418c2131673ff90b3a1352dcb3ffd",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227153767227",
+      "expected_source_hash": "2fd4c39be49353d55cbae1cedf293f4a9ffffa17108fb34991da757f6deba052",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "227470731473",
+      "expected_source_hash": "0e639f3c5916eed7f2168db1f512d66f2a7eca0eb71aacab2f0be1c829043870",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227153767229",
+      "expected_source_hash": "a4054c54ef1e1dffcd9801a6aed9eeb9ab057628488ef4b809e36f94d7ae79e2",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "227083143913",
+      "expected_source_hash": "0b8d7d30bd25505fb92812e2591749cc7e92df1aad86827d5f41961009650480",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227034752776",
+      "expected_source_hash": "bf952c94f77262b2a9e9b6d80c92cc54870a69a856b9b035fda1eab2db24efc1",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "227153756287",
+      "expected_source_hash": "da48beb2bde039bc14c85416193a02cf8db011dd8f748d356a3a608e67de937f",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227153778762",
+      "expected_source_hash": "86e65225b1c441f9034b79d7f742d08bafdbb97767b30b1dbef0c1281bb874c4",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227041294074",
+      "expected_source_hash": "99212552eeac035551832e3ada1be43b230fae263bf1dd080ec4efb0aa122f56",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "item_id": "226982899687",
+      "expected_source_hash": "d761b3be4c4267033a1a7239a57123f5819cb5d57209a567a1e354ead5f3fb9b",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "225387109046",
+      "expected_source_hash": "badda909ea58794d32c1cc3372ade1ac9db96c41a7c73659ae8e90ab01361807",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "226953280140",
+      "expected_source_hash": "7d522033f160fa7c47ffddcc7b71bc70073caf0d6f7044fb4971930474b18d4e",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227066060316",
+      "expected_source_hash": "0c5028b690647486dfaaff74de0b96ea3c9d2f10f6fcc9a14507b2b59115ca80",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "226202561474",
+      "expected_source_hash": "051fb14d931c500a85e14cf9862bf7da8679614ccea4c24bf5497234b796b70f",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "227543075829",
+      "expected_source_hash": "f7e31b271fbc1132ce00897094a6e97de45f9b3085c4e2c09998fefc8df2fdd2",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        }
+      ]
+    },
+    {
+      "item_id": "227047686725",
+      "expected_source_hash": "59314d8ab14eb151a7d57026092618432450b3d093c052350c78368b6135435e",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "226061315835",
+      "expected_source_hash": "f1bcd575f9fe5a0a7179b1d8022ec5acd9b41e5f1a32a894b9cefff18384774b",
+      "corrections": [],
+      "issues": []
+    },
+    {
+      "item_id": "227041294076",
+      "expected_source_hash": "ca4ad5df71d1b7946da08b3842cc8e2d993afe59e0b6c6646831dd739b3acfec",
+      "corrections": [],
+      "issues": [
+        {
+          "code": "os-support",
+          "severity": "review",
+          "note": "Disclose the installed edition and applicable support/ESU status; inspect licensing and eligibility rather than assuming them.",
+          "sources": [
+            "https://learn.microsoft.com/en-us/lifecycle/products/windows-10-home-and-pro"
+          ]
+        },
+        {
+          "code": "os-sibling",
+          "severity": "organization",
+          "note": "Show related OS offers together without ending or merging any listing.",
+          "sources": []
+        }
+      ]
+    }
+  ],
+  "preconditions": [
+    "Refresh seller-authoritative records",
+    "Match each SKU to physical inventory",
+    "Approve every before/after diff",
+    "Verify category and variation rules",
+    "Separately authorize an authenticated seller write integration"
+  ]
+}
