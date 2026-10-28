@@ -1,0 +1,120 @@
+name: MARY local build verification
+on:
+  push:
+    branches: [mary-local-release-20261028]
+    paths: [.github/workflows/mary-local-build.yml]
+permissions:
+  contents: read
+concurrency:
+  group: mary-local-release-20261028
+  cancel-in-progress: false
+jobs:
+  recipient:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - name: Fetch the exact approved public build kit
+        shell: python
+        run: |
+          import hashlib, pathlib, urllib.request, zipfile, io
+          url = 'https://octo-n01.tail932aa0.ts.net/mary-release-20261028/MARY-Local-0.3.0-candidate.zip'
+          with urllib.request.urlopen(url, timeout=60) as r:
+              data = r.read(8 * 1024 * 1024 + 1)
+          assert len(data) <= 8 * 1024 * 1024
+          assert hashlib.sha256(data).hexdigest() == 'f913e6fd8ba646e77c493fef86244884ff8f2cd6d3005afba02bd9f67909e4df'
+          with zipfile.ZipFile(io.BytesIO(data)) as z:
+              assert sum(i.file_size for i in z.infolist()) < 32 * 1024 * 1024
+              for i in z.infolist():
+                  p = pathlib.PurePosixPath(i.filename)
+                  assert p.parts[0] == 'mary-local' and '..' not in p.parts and not p.is_absolute()
+                  assert not i.is_dir()
+                  target = pathlib.Path(*p.parts)
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(z.read(i))
+      - name: Build the recipient application on Windows
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          set "LOCALAPPDATA=%RUNNER_TEMP%\mary-profile"
+          cd mary-local
+          call Install.cmd --no-launch --install-dir "%RUNNER_TEMP%\mary-app" --home "%RUNNER_TEMP%\mary-home"
+          if errorlevel 1 exit /b 1
+      - name: Build the recipient application on Linux or macOS
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          export XDG_DATA_HOME="$RUNNER_TEMP/mary-profile"
+          cd mary-local
+          sh Install.sh --no-launch --install-dir "$RUNNER_TEMP/mary-app" --home "$RUNNER_TEMP/mary-home"
+      - name: Exercise the installed wheels and actual kernel-to-work path
+        shell: python
+        run: |
+          import json, os, pathlib, subprocess
+          base = pathlib.Path(os.environ['RUNNER_TEMP'])
+          current = json.loads((base / 'mary-app/CURRENT.json').read_text())
+          script = base / 'mary-installed-check.py'
+          script.write_text('''from pathlib import Path
+          import json, os
+          from mary_workbench.jobs import Workbench
+          from mary_workbench.server import create_app
+          from fastapi.testclient import TestClient
+          base=Path(os.environ['RUNNER_TEMP']); home=base/'mary-home'
+          source=base/'source-notes.txt'; source.write_text('The Alder review owner is Morgan. The budget is 1250 units.\\n',encoding='utf-8')
+          w=Workbench(home)
+          try:
+              item=w.sources.admit(source)
+              assert '1250' in w.sources.search('budget')[0]['text']
+              result=w.submit({'request_id':'ci-recipient-calculation-001','message':'0.1 + 0.2','action':'calculate'},wait=True)
+              assert result['status']=='completed',result
+              assert '3/10' in result['result']['text']
+              assert result.get('journal')
+              assert w.artifact(result['id'],result['artifacts'][0]['name']).is_file()
+          finally:w.close()
+          with TestClient(create_app(home)) as client:
+              assert client.get('/api/status').status_code==401
+              token=(home/'keys/web.token').read_text()
+              assert client.get('/api/status',headers={'Authorization':'Bearer '+token}).status_code==200
+              assert client.get('/app.js').status_code==200
+          print('Installed source custody, Genesis verification, Spectra retrieval, exact work, sealed journal and authenticated API: PASS')
+          ''', encoding='utf-8')
+          subprocess.run([current['python'], '-B', str(script)], check=True)
+  retain:
+    needs: recipient
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Retain only the verified public package
+        shell: python
+        run: |
+          import hashlib, io, json, os, pathlib, urllib.request, zipfile
+          with urllib.request.urlopen('https://octo-n01.tail932aa0.ts.net/mary-release-20261028/MARY-Local-0.3.0-candidate.zip', timeout=60) as r:
+              data=r.read(8*1024*1024+1)
+          assert hashlib.sha256(data).hexdigest()=='f913e6fd8ba646e77c493fef86244884ff8f2cd6d3005afba02bd9f67909e4df'
+          with zipfile.ZipFile(io.BytesIO(data)) as z:
+              for i in z.infolist():
+                  p=pathlib.PurePosixPath(i.filename)
+                  assert p.parts[0]=='mary-local' and '..' not in p.parts and not p.is_absolute()
+                  target=pathlib.Path(*p.parts);target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(z.read(i))
+          folder=pathlib.Path('mary-local')
+          (folder/'MARY-Local-0.3.0.zip').write_bytes(data)
+          (folder/'CI-ACCEPTANCE.json').write_text(json.dumps({'status':'PASS','scope':'Fresh managed-Python recipient build plus installed Forge/Genesis/Spectra/exact-work/journal/API path','platforms':['ubuntu-latest','windows-latest','macos-latest'],'run_id':os.environ['GITHUB_RUN_ID'],'commit':os.environ['GITHUB_SHA'],'build_zip_sha256':hashlib.sha256(data).hexdigest(),'model_or_gpu_qualification':'not inferred from installer checks'},indent=2)+'\n')
+      - name: Commit the tested release snapshot without unrelated paths
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- mary-local
+          if ! git diff --cached --quiet; then
+            git commit -m 'Retain the three-platform verified MARY local build kit'
+            git push origin HEAD:mary-local-release-20261028
+          fi
