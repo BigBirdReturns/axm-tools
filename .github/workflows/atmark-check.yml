@@ -17,35 +17,32 @@ jobs:
       - uses: actions/setup-python@v7.0.0
         with:
           python-version: '3.12'
-      # BEGIN bounded initial correction
-      - name: Apply the hash-bound initial source correction
+      - name: Bounded initial source correction on the gift branch
         if: github.event_name == 'push' && github.ref == 'refs/heads/feat/atmark-store-20261028'
         run: |
           python - <<'PY'
           import subprocess
           from pathlib import Path
-          p=Path('atmark/app.js')
-          assert subprocess.check_output(['git','hash-object',str(p)],text=True).strip()=='56245ec26c3cf3228bf86fa13cccc59a089a942d'
-          t=p.read_text();assert t.count('maximumFractionDigits:0')==2
-          p.write_text(t.replace('maximumFractionDigits:0','maximumFractionDigits:2'))
-          p=Path('atmark/tests/browser_test.py')
-          assert subprocess.check_output(['git','hash-object',str(p)],text=True).strip()=='be3d03c98ad321c413cb07b91d9e9829b2e4be16'
-          t=p.read_text();assert t.count("page.locator('.product-photo img')")==1
-          t=t.replace("page.locator('.product-photo img')","page.locator('#products .product-photo img')").replace("page.locator('.product-photo').inner_text()","page.locator('#products .product-photo').inner_text()")
-          anchor="            page.locator('[data-view=\"workbench\"]').first.click();"
-          assert t.count(anchor)==1
-          test="            page.locator('#search').fill('226924094753');good('observed price retains exact cents', '$42.99' in page.locator('#products').inner_text());page.locator('#clear-filters').click()\n"
-          p.write_text(t.replace(anchor,test+anchor,1))
-          p=Path('.github/workflows/atmark-check.yml');t=p.read_text()
-          start=t.index('      # BEGIN bounded initial correction\n');end=t.index('      # END bounded initial correction\n')+len('      # END bounded initial correction\n')
-          p.write_text(t[:start]+t[end:])
+          p=Path('atmark/app.js');sha=subprocess.check_output(['git','hash-object',str(p)],text=True).strip()
+          assert sha in {'56245ec26c3cf3228bf86fa13cccc59a089a942d','034b2d9efaf0b295f8a12bca1a8e14dd5f623f33'}
+          if sha=='56245ec26c3cf3228bf86fa13cccc59a089a942d':
+            t=p.read_text();assert t.count('maximumFractionDigits:0')==2;p.write_text(t.replace('maximumFractionDigits:0','maximumFractionDigits:2'))
+          p=Path('atmark/tests/browser_test.py');t=p.read_text()
+          if 'observed price retains exact cents' not in t:
+            assert subprocess.check_output(['git','hash-object',str(p)],text=True).strip()=='be3d03c98ad321c413cb07b91d9e9829b2e4be16'
+            assert t.count("page.locator('.product-photo img')")==1
+            t=t.replace("page.locator('.product-photo img')","page.locator('#products .product-photo img')").replace("page.locator('.product-photo').inner_text()","page.locator('#products .product-photo').inner_text()")
+            anchor="            page.locator('[data-view=\"workbench\"]').first.click();";assert t.count(anchor)==1
+            test="            page.locator('#search').fill('226924094753');good('observed price retains exact cents', '$42.99' in page.locator('#products').inner_text());page.locator('#clear-filters').click()\n"
+            p.write_text(t.replace(anchor,test+anchor,1))
           PY
           git config user.name 'atmark-build-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add -- atmark/app.js atmark/tests/browser_test.py .github/workflows/atmark-check.yml
-          git commit -m 'atmark: keep exact cents and test visible photo custody independently'
-          git push origin HEAD:feat/atmark-store-20261028
-      # END bounded initial correction
+          git add -- atmark/app.js atmark/tests/browser_test.py
+          if ! git diff --cached --quiet; then
+            git commit -m 'atmark: keep exact cents and test visible photo custody independently'
+            git push origin HEAD:feat/atmark-store-20261028
+          fi
       - name: Source integrity and catalogue regression tests
         run: |
           python atmark/scripts/catalog.py verify
