@@ -1,0 +1,24 @@
+{
+  "method": "PyMuPDF native page text, whitespace normalized; no OCR, no pixel identity claim",
+  "biological": {
+    "pages_each": 136,
+    "equal_native_text_pages": 136,
+    "byte_identical": false
+  },
+  "arborist": {
+    "pages_each": 100,
+    "equal_native_text_pages": 92,
+    "different_native_text_pages": [
+      3,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "byte_identical": false,
+    "interpretation": "Page 3 formatting/bullet variation; map pages 29\u201335 differ in text encoding. Different extracted text does not by itself demonstrate different drawn geometry."
+  }
+}

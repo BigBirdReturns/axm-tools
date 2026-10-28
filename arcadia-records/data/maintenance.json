@@ -1,0 +1,8 @@
+{
+  "status": "scheduled_checks_enabled",
+  "cadence": "hourly",
+  "registered_at": "2026-10-27T18:20:15-07:00",
+  "first_scheduled_check": "2026-10-27T19:21:15-07:00",
+  "future_new_receipt_end_to_end_tested": false,
+  "note": "Hourly scoped Gmail checks are registered and enabled. The initial recovery and publication were executed interactively. Future new-receipt intake has not yet been demonstrated; errors must be surfaced, not reported as success. The earlier event-trigger registration failed and is superseded by scheduled checks."
+}
