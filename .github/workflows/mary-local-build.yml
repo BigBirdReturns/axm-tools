@@ -24,11 +24,11 @@ jobs:
         shell: python
         run: |
           import hashlib, pathlib, urllib.request, zipfile, io
-          url = 'https://octo-n01.tail932aa0.ts.net/mary-release-20261028/MARY-Local-0.3.0-candidate.zip'
+          url = 'https://octo-n01.tail932aa0.ts.net/mary-release-20261028/MARY-Local-0.3.0-25e8accc.zip'
           with urllib.request.urlopen(url, timeout=60) as r:
               data = r.read(8 * 1024 * 1024 + 1)
           assert len(data) <= 8 * 1024 * 1024
-          assert hashlib.sha256(data).hexdigest() == 'f913e6fd8ba646e77c493fef86244884ff8f2cd6d3005afba02bd9f67909e4df'
+          assert hashlib.sha256(data).hexdigest() == '25e8accc35ed7d3392d5d2736e6516e203a56af1c33ced66b85b2fca1cd326d8'
           with zipfile.ZipFile(io.BytesIO(data)) as z:
               assert sum(i.file_size for i in z.infolist()) < 32 * 1024 * 1024
               for i in z.infolist():
@@ -97,9 +97,9 @@ jobs:
         shell: python
         run: |
           import hashlib, io, json, os, pathlib, urllib.request, zipfile
-          with urllib.request.urlopen('https://octo-n01.tail932aa0.ts.net/mary-release-20261028/MARY-Local-0.3.0-candidate.zip', timeout=60) as r:
+          with urllib.request.urlopen('https://octo-n01.tail932aa0.ts.net/mary-release-20261028/MARY-Local-0.3.0-25e8accc.zip', timeout=60) as r:
               data=r.read(8*1024*1024+1)
-          assert hashlib.sha256(data).hexdigest()=='f913e6fd8ba646e77c493fef86244884ff8f2cd6d3005afba02bd9f67909e4df'
+          assert hashlib.sha256(data).hexdigest()=='25e8accc35ed7d3392d5d2736e6516e203a56af1c33ced66b85b2fca1cd326d8'
           with zipfile.ZipFile(io.BytesIO(data)) as z:
               for i in z.infolist():
                   p=pathlib.PurePosixPath(i.filename)
@@ -107,7 +107,7 @@ jobs:
                   target=pathlib.Path(*p.parts);target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(z.read(i))
           folder=pathlib.Path('mary-local')
           (folder/'MARY-Local-0.3.0.zip').write_bytes(data)
-          (folder/'CI-ACCEPTANCE.json').write_text(json.dumps({'status':'PASS','scope':'Fresh managed-Python recipient build plus installed Forge/Genesis/Spectra/exact-work/journal/API path','platforms':['ubuntu-latest','windows-latest','macos-latest'],'run_id':os.environ['GITHUB_RUN_ID'],'commit':os.environ['GITHUB_SHA'],'build_zip_sha256':hashlib.sha256(data).hexdigest(),'model_or_gpu_qualification':'not inferred from installer checks'},indent=2)+'\n')
+          (folder/'CI-ACCEPTANCE.json').write_text(json.dumps({'status':'PASS','scope':'Fresh managed-Python recipient build plus installed Forge/Genesis/Spectra/exact-work/journal/API path','platforms':['ubuntu-latest','windows-latest','macos-latest'],'run_id':os.environ['GITHUB_RUN_ID'],'commit':os.environ['GITHUB_SHA'],'build_zip_sha256':hashlib.sha256(data).hexdigest(),'model_or_gpu_qualification':'not inferred from installer checks','prior_failed_candidate':'Preserved in workflow history; macOS process-limit incompatibility corrected without weakening source or task checks.'},indent=2)+'\n')
       - name: Commit the tested release snapshot without unrelated paths
         shell: bash
         run: |
