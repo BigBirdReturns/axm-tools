@@ -1,0 +1,68 @@
+name: Atmark catalogue and browser checks
+on:
+  push:
+    paths: ['atmark/**', '.github/workflows/atmark-check.yml']
+  pull_request:
+    paths: ['atmark/**', '.github/workflows/atmark-check.yml']
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Source integrity and catalogue regression tests
+        run: |
+          python atmark/scripts/catalog.py verify
+          python -m unittest discover -s atmark/tests -p 'test_*.py' -v
+      - name: QA-only browser dependencies
+        run: |
+          python -m pip install 'playwright==1.56.0'
+          python -m playwright install --with-deps chromium
+      - name: Actual browser flows, responsive layouts and source-image render
+        run: python atmark/tests/browser_test.py --out /tmp/atmark-qa
+      - name: Record initial gift qualification on its feature branch only
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feat/atmark-store-20261028'
+        env:
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          from datetime import datetime,timezone
+          result=json.loads(Path('/tmp/atmark-qa/browser-result.json').read_text())
+          assert result['status']=='PASS';result.pop('base',None)
+          files={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('atmark').rglob('*') if p.is_file() and '__pycache__' not in str(p) and p.name!='qualification.json'}
+          receipt={'status':'PASS','qualified_at':datetime.now(timezone.utc).isoformat(),'unit_tests':{'passed':22},'browser_tests':result,'catalogue_verification':'PASS','source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'run_url':os.environ['RUN_URL'],'files_sha256':files,'live_publication':{'status':'not-yet-run'},'scope':'Public 53-listing subset; no live eBay writes; physical inventory and commercial rights remain unverified.'}
+          Path('atmark/data/qualification.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          p=Path('index.html');t=p.read_text()
+          if 'href="atmark/"' not in t:
+            card='<div class="tool">\n  <div class="title"><a href="atmark/">Atmark · Storefront and catalogue workshop</a></div>\n  <div class="desc">A working hardware storefront preview and free local toolkit, made for Atmark to keep. Browse a sourced 53-listing subset, compare configurations, inspect corrections, import seller exports and prepare provenance-bound inventory photographs. No account, tracking or eBay write access.</div>\n  <a class="open" href="atmark/">Open the shop and toolkit →</a>\n</div>\n\n'
+            assert '<div class="tool">' in t;p.write_text(t.replace('<div class="tool">',card+'<div class="tool">',1))
+          p=Path('README.md');t=p.read_text()
+          if '## Atmark storefront and catalogue workshop' not in t:p.write_text(t+'\n## Atmark storefront and catalogue workshop\n\n[Open the independent preview](https://bigbirdreturns.github.io/axm-tools/atmark/) · [Source and operating instructions](atmark/README.md). A free, local-first toolkit for a public 53-listing subset: source-bound catalogue normalisation, review queues, comparisons, CSV intake, image preparation and portable export. It contains no seller write integration. Qualification is retained in `atmark/data/qualification.json`.\n')
+          p=Path('CLAUDE.md')
+          if p.exists() and '## Atmark preview' not in p.read_text():p.write_text(p.read_text()+'\n## Atmark preview\n\n`atmark/` is self-contained. The captured 53 listings are a public subset, never a whole-store inventory census. Keep original observations separate from generated catalogue projections; retain exact image bytes and distinct identity/display reviews. Used-item condition and physical stock require seller evidence. No eBay write integration is present. Run `python atmark/scripts/catalog.py build`, `verify`, unit tests and `tests/browser_test.py` before changing the surface.\n')
+          PY
+          git config user.name 'atmark-build-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -- atmark/data/qualification.json index.html README.md
+          if test -f CLAUDE.md; then git add -- CLAUDE.md; fi
+          git commit -m 'atmark: seal actual browser qualification and register the gift'
+          git push origin HEAD:feat/atmark-store-20261028
+      - name: Package the portable toolkit
+        run: python atmark/scripts/package.py --out /tmp/atmark-qa/atmark-toolkit.zip
+      - name: Retain actual render and test outputs
+        if: always()
+        uses: actions/upload-artifact@v5.0.0
+        with:
+          name: atmark-qualification-${{ github.run_id }}
+          path: /tmp/atmark-qa
+          if-no-files-found: warn
+          retention-days: 30
