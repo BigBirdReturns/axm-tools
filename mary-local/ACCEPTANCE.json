@@ -1,0 +1,131 @@
+{
+  "schema": "mary/release-acceptance@1",
+  "version": "0.3.0",
+  "standing": "buildable single-owner local workbench",
+  "as_of_utc": "2026-10-28T05:51:35.216752+00:00",
+  "code_sha256": {
+    "mary_workbench/sources.py": "764e1f509f3686c5b3aeee846e1d0a584be9aa611d4fa78514ec1cabd79d71a4",
+    "mary_workbench/recovery.py": "a8f2b64c670daac493fd9b2598bc9249795d970402eacdc9f8542cc4a2bbde5f",
+    "mary_workbench/supplier-lock.json": "237dd4e749fbf9c9fffe972f5e9cebc3276e931a51df526749bce738d6ae08fb",
+    "mary_workbench/binary-suppliers.json": "53360a2d2e0be1f8a82fd30b032eb2e48abd211d85d37e7b2248a6a72de21923",
+    "mary_workbench/managed.py": "c763971eef9a68670ca45c61cb3df4aa2b8862d59ed1398dc68af6b3cf70d5f3",
+    "mary_workbench/server.py": "9663066a58d34082f8e28dfb22827cd276c7a8d37b9f8ea69d6598a8f8b5aa41",
+    "mary_workbench/worker.py": "161b16e8615c3494a340a30c7a5e93076fab3e5d0a4f5b3b9071d78961209a9d",
+    "mary_workbench/axm.py": "f8ca063aefd117b3e25b0b262ad9a6feb7ea0c26e63eef5136e7234035452b4f",
+    "mary_workbench/calculations.py": "8dad678b8b8496d88e049b4118a5a21eee66c1092211634ca7f1c3cf130390ef",
+    "mary_workbench/jobs.py": "f04e9788f0f1d882fd3af6a30613d1a3b1a047cfb88abfb33a2940e7783a7b74",
+    "mary_workbench/common.py": "b4b3f783684a669750cea05608537c687653f8b9229bd8397befeb7ab47b5f17",
+    "mary_workbench/process.py": "ed475c228b5c2380c97c7090fdba6c0f6399bbea67ac731feebe48b82c01d5b7",
+    "mary_workbench/cli.py": "882ee76cdd806dd985f60542f67fc234253927d209efb9f2dd5396e96e839820",
+    "mary_workbench/journal.py": "acd982018ef4f9a67cd46ff39646bee64160e6f4bbbefe157444fa990873f3f7",
+    "mary_workbench/hardware.py": "0d19f5386a5a5520fe8debda48013026e3e34929f8572b1716f84ecacb11a717",
+    "mary_workbench/tools.py": "ee2092039868091d1146a8c001eedc761eb6af8620b4791258a645495702f864",
+    "mary_workbench/models.py": "dd9916db81638409fe1367ae93288e5372ce322446e67e01828bdaf060838afc",
+    "mary_workbench/__init__.py": "b75b15b704000902a7af28821a184cdb847df261ae1dab6e22523bc6b4c834c1",
+    "mary_workbench/static/index.html": "c9968007201d51d72533b349f3f0cbe696ea4f9359cf3cdc976078907e10bee6",
+    "mary_workbench/static/app.js": "d88c9fdb2694ae75ee17471e607234aa835a875e51e7761473e400b0925da23b",
+    "mary_workbench/vendor/ods/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "mary_workbench/vendor/ods/ods/scripts/select-model.py": "c8d64aa79e588ec8abba28a9cb00af3092ffe2d9b4fdceed1b4f9ceb6de593ac",
+    "mary_workbench/vendor/ods/ods/config/model-library.json": "b303830461e1c59c235645dc7c977993d7d017eb8837ccde65e4cd0bce8f3e3d",
+    "mary_workbench/vendor/ods/ods/extensions/services/dashboard-api/model_selection.py": "381cfdd470ad7d11e905b21d717eeb3a117437b410986fc37f039b09b6813344",
+    "mary_workbench/vendor/ods/ods/extensions/services/dashboard-api/model_memory.py": "f4e004f823bae568aefc8631fd4a5196ff0ebbc6cf9a430c2967ccb5d83ad000"
+  },
+  "observed": {
+    "native_software_suite": {
+      "passed": 34,
+      "scope": "source identity/custody, resumable import, current/history withdrawal, source/index corruption, capacity reuse, constrained exact calculations, checked tables, real work artifacts, idempotence, checkpoint adoption and HTTP authorization"
+    },
+    "real_local_model": {
+      "status": "PASS",
+      "backend": "CPU only",
+      "model_profile": "Qwen3.5 4B Q4_K_M / llama.cpp b11429 / 8192 context / four threads",
+      "calibration_cases": 3,
+      "useful_work": "Source-grounded explanation from a real MARY project record, verified evidence IDs supplied by the context container, Markdown and JSON artifacts, Genesis-sealed work journal",
+      "boundary": "Calibration is visible and task-scoped; output interpretation remains a draft for human review. This is not universal model certification."
+    },
+    "actual_browser": {
+      "status": "PASS",
+      "engine": "Chromium",
+      "cases": [
+        "owner authentication and token removal",
+        "real exact-work submission",
+        "accepted artifact download",
+        "source upload and exact original download",
+        "hardware observation",
+        "recovery controls",
+        "desktop and 390px mobile layout"
+      ],
+      "external_requests": 0,
+      "console_errors": 0
+    },
+    "encrypted_restore": {
+      "status": "PASS",
+      "engine": "restic 0.19.1",
+      "checks": [
+        "new-directory restoration",
+        "owner key preservation",
+        "Genesis source verification",
+        "search-index rebuild",
+        "prior completed-task continuity",
+        "accepted artifact byte identity",
+        "model qualification invalidation"
+      ],
+      "physical_boundary": "The exercised restore used the same host; independent-device custody must be established by the recipient."
+    },
+    "recipient_windows": {
+      "status": "PASS",
+      "system": "Windows 11 x64",
+      "python": "managed 3.12.15",
+      "checks": [
+        "actual Install.cmd",
+        "included Core/Genesis/MARY wheels",
+        "Unicode original roundtrip",
+        "actual Forge/Genesis/Spectra query",
+        "exact calculation artifact",
+        "Genesis work journal",
+        "authenticated installed API"
+      ],
+      "gpu_inference": false
+    },
+    "recipient_nuc": {
+      "status": "PASS",
+      "system": "Intel NUC6i7KYK / Linux x86_64",
+      "checks": [
+        "actual Install.sh",
+        "managed Python 3.12.15",
+        "included hash-verified wheels",
+        "installed kernel/keypair and exact-tool check"
+      ],
+      "accelerator_observed": "MI100 over Thunderbolt; the installation check did not use it",
+      "mi50_validation": false
+    },
+    "independent_hosted_builds": {
+      "ubuntu": "passed previous candidate",
+      "windows": "passed previous candidate",
+      "macos": "prior candidate exposed unsupported RLIMIT_AS; corrected final candidate must pass CI-ACCEPTANCE.json"
+    }
+  },
+  "release_boundaries": [
+    "single owner and loopback interface; no public multi-tenant server",
+    "native same-user parsing is resource-bounded, not a hostile-document sandbox",
+    "no automatic send, purchase, original deletion or system configuration",
+    "text interaction is complete; live microphone/speaker and transcription profile are not claimed",
+    "OpenAI-compatible model aliases identify a route, not an immutable model-weight hash",
+    "new GPU and model combinations require commissioning on the actual device",
+    "MI50/gfx906 is a candidate legacy-runtime profile, not a physically qualified release target",
+    "context backup excludes external model weights and runtime/dependency caches; retain those separately for offline replacement-host recovery",
+    "manual hash-verified versioned installation; no autonomous updater or universal supply-chain security claim",
+    "current-state source lifecycle is explicit; background connector synchronization and household/team ACLs remain separate profiles"
+  ],
+  "changes_after_local_semantic_run": {
+    "scope": [
+      "portable process-limit adaptation for macOS",
+      "parent RSS/CPU observation on all platforms",
+      "grouped narrative evidence-label verification",
+      "recipient presentation and managed-Python alias location"
+    ],
+    "semantic_prompt_or_context_selection_changed": false,
+    "acceptance_method": "targeted native regression plus fresh hosted recipient runs; no claim that earlier bytes already passed later checks"
+  },
+  "public_scope": "Only selected owner-authored release source, public dependency pins, build scripts and sanitized acceptance. No private Estate history, source documents, keys, model weights or font files."
+}

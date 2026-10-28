@@ -1,0 +1,210 @@
+{
+  "schema": "mary/build-manifest@1",
+  "version": "0.3.0",
+  "files": {
+    "ACCEPTANCE.json": {
+      "size": 7655,
+      "sha256": "81cf250205a81bea8c7cb999b09eb8884ea7f8cbc7e6eee6481a098c15bcf42c"
+    },
+    "BUILD.md": {
+      "size": 9871,
+      "sha256": "aaa2329c3363ddd54749efbb8e76551f1258b7a3be3f49da7fef606fb6a372d6"
+    },
+    "Install.cmd": {
+      "size": 1671,
+      "sha256": "71428f2253461993bd92ce9ffd84a39e550f33d6f8dab237a07a1e54a534538c"
+    },
+    "Install.sh": {
+      "size": 2051,
+      "sha256": "2e7f6de34ee0a8e32a8012a2d01b1ebf943db1971a0706e0d20f593cc239f988"
+    },
+    "LICENSE": {
+      "size": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "NOTICE": {
+      "size": 473,
+      "sha256": "d1ccd27838d2de248b4783b3a072bdc2912d3d961501244973671500b3c550b8"
+    },
+    "README.md": {
+      "size": 2379,
+      "sha256": "3440a13517c8a760c3b0693b5c396bee781e4cf83e9459a50a8649c2e891703f"
+    },
+    "SOURCE-PROVENANCE.json": {
+      "size": 1682,
+      "sha256": "8d5b91d3422033bbd13765bba03780a69ab2dfe288cfc3ce8127479d8aa20f38"
+    },
+    "bootstrap-tools.json": {
+      "size": 1665,
+      "sha256": "99cb2a3812f4dabfb42794915baa2af6592d4970ad5e219a8e7fe0f0a5159c43"
+    },
+    "bootstrap.py": {
+      "size": 6336,
+      "sha256": "99f39e938fd7aed2c8b0d3d62464de3f542176aaa093407dac03524669424227"
+    },
+    "requirements.in": {
+      "size": 805,
+      "sha256": "d3f54411cfd08474e039732916945a8be1954ec7a94533ea7f5577475840cf29"
+    },
+    "requirements.lock": {
+      "size": 69594,
+      "sha256": "afadb2202ed8487c8b8d0cccb646b663b3109ddee0d749ef1330761d8784bdf1"
+    },
+    "source/LICENSE": {
+      "size": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "source/NOTICE": {
+      "size": 473,
+      "sha256": "d1ccd27838d2de248b4783b3a072bdc2912d3d961501244973671500b3c550b8"
+    },
+    "source/mary/__init__.py": {
+      "size": 108,
+      "sha256": "24c70bfc2a7c4de90ed3e5fc0bda5b2e19d4df6d60748254232e7069f448aeef"
+    },
+    "source/mary/__main__.py": {
+      "size": 61,
+      "sha256": "df9b2bf05b6b5d9c5de957952a79654bb8c096dfdd5a25a682682790be1d90c0"
+    },
+    "source/mary/canonical.py": {
+      "size": 1618,
+      "sha256": "048505f0eaea526266770bc40be09f5d9256aa94b763f4bd3e198e67f1d65fab"
+    },
+    "source/mary/errors.py": {
+      "size": 100,
+      "sha256": "5f11535663501006ef911dc6645fc0003f47ed453c3dae62e1a61bc5bd7104e3"
+    },
+    "source/mary/ledger.py": {
+      "size": 2837,
+      "sha256": "503da4cb6d5030ce7b7b277660723f40a69c351f3bf784a5140edf2faa6739c3"
+    },
+    "source/mary_workbench/__init__.py": {
+      "size": 108,
+      "sha256": "b75b15b704000902a7af28821a184cdb847df261ae1dab6e22523bc6b4c834c1"
+    },
+    "source/mary_workbench/axm.py": {
+      "size": 10739,
+      "sha256": "f8ca063aefd117b3e25b0b262ad9a6feb7ea0c26e63eef5136e7234035452b4f"
+    },
+    "source/mary_workbench/binary-suppliers.json": {
+      "size": 5351,
+      "sha256": "53360a2d2e0be1f8a82fd30b032eb2e48abd211d85d37e7b2248a6a72de21923"
+    },
+    "source/mary_workbench/calculations.py": {
+      "size": 12690,
+      "sha256": "8dad678b8b8496d88e049b4118a5a21eee66c1092211634ca7f1c3cf130390ef"
+    },
+    "source/mary_workbench/cli.py": {
+      "size": 6461,
+      "sha256": "882ee76cdd806dd985f60542f67fc234253927d209efb9f2dd5396e96e839820"
+    },
+    "source/mary_workbench/common.py": {
+      "size": 7827,
+      "sha256": "b4b3f783684a669750cea05608537c687653f8b9229bd8397befeb7ab47b5f17"
+    },
+    "source/mary_workbench/hardware.py": {
+      "size": 4731,
+      "sha256": "0d19f5386a5a5520fe8debda48013026e3e34929f8572b1716f84ecacb11a717"
+    },
+    "source/mary_workbench/jobs.py": {
+      "size": 24701,
+      "sha256": "f04e9788f0f1d882fd3af6a30613d1a3b1a047cfb88abfb33a2940e7783a7b74"
+    },
+    "source/mary_workbench/journal.py": {
+      "size": 4021,
+      "sha256": "acd982018ef4f9a67cd46ff39646bee64160e6f4bbbefe157444fa990873f3f7"
+    },
+    "source/mary_workbench/managed.py": {
+      "size": 12079,
+      "sha256": "c763971eef9a68670ca45c61cb3df4aa2b8862d59ed1398dc68af6b3cf70d5f3"
+    },
+    "source/mary_workbench/models.py": {
+      "size": 8853,
+      "sha256": "dd9916db81638409fe1367ae93288e5372ce322446e67e01828bdaf060838afc"
+    },
+    "source/mary_workbench/process.py": {
+      "size": 4356,
+      "sha256": "ed475c228b5c2380c97c7090fdba6c0f6399bbea67ac731feebe48b82c01d5b7"
+    },
+    "source/mary_workbench/recovery.py": {
+      "size": 14017,
+      "sha256": "a8f2b64c670daac493fd9b2598bc9249795d970402eacdc9f8542cc4a2bbde5f"
+    },
+    "source/mary_workbench/server.py": {
+      "size": 11381,
+      "sha256": "9663066a58d34082f8e28dfb22827cd276c7a8d37b9f8ea69d6598a8f8b5aa41"
+    },
+    "source/mary_workbench/sources.py": {
+      "size": 16778,
+      "sha256": "764e1f509f3686c5b3aeee846e1d0a584be9aa611d4fa78514ec1cabd79d71a4"
+    },
+    "source/mary_workbench/static/app.js": {
+      "size": 17073,
+      "sha256": "d88c9fdb2694ae75ee17471e607234aa835a875e51e7761473e400b0925da23b"
+    },
+    "source/mary_workbench/supplier-lock.json": {
+      "size": 727,
+      "sha256": "237dd4e749fbf9c9fffe972f5e9cebc3276e931a51df526749bce738d6ae08fb"
+    },
+    "source/mary_workbench/tools.py": {
+      "size": 4152,
+      "sha256": "ee2092039868091d1146a8c001eedc761eb6af8620b4791258a645495702f864"
+    },
+    "source/mary_workbench/vendor/ods/LICENSE": {
+      "size": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "source/mary_workbench/vendor/ods/ods/config/model-library.json": {
+      "size": 165491,
+      "sha256": "b303830461e1c59c235645dc7c977993d7d017eb8837ccde65e4cd0bce8f3e3d"
+    },
+    "source/mary_workbench/vendor/ods/ods/extensions/services/dashboard-api/model_memory.py": {
+      "size": 24703,
+      "sha256": "f4e004f823bae568aefc8631fd4a5196ff0ebbc6cf9a430c2967ccb5d83ad000"
+    },
+    "source/mary_workbench/vendor/ods/ods/extensions/services/dashboard-api/model_selection.py": {
+      "size": 27621,
+      "sha256": "381cfdd470ad7d11e905b21d717eeb3a117437b410986fc37f039b09b6813344"
+    },
+    "source/mary_workbench/vendor/ods/ods/scripts/select-model.py": {
+      "size": 27594,
+      "sha256": "c8d64aa79e588ec8abba28a9cb00af3092ffe2d9b4fdceed1b4f9ceb6de593ac"
+    },
+    "source/mary_workbench/worker.py": {
+      "size": 5772,
+      "sha256": "161b16e8615c3494a340a30c7a5e93076fab3e5d0a4f5b3b9071d78961209a9d"
+    },
+    "source/pyproject.toml": {
+      "size": 1157,
+      "sha256": "5d0aaca9f2677d05a70c27fab5adf92932bb28fabfa6ee38ccb14c36fdc8641c"
+    },
+    "source/tests/workbench/test_sources.py": {
+      "size": 3922,
+      "sha256": "bde0dc959a5d0fa25badb3f3b7eaeb6514f62f94a1dcc6f2ccdae7fe989121ac"
+    },
+    "source/tests/workbench/test_tasks.py": {
+      "size": 2630,
+      "sha256": "9208632f5dc6dcb9f4322fb66db402e359890b48b02dce2e3284065f4e1fdc3b"
+    },
+    "source/tests/workbench/test_workbench.py": {
+      "size": 4829,
+      "sha256": "944c7f6e38c646c5762cf009283f1f3573395a1c0481f4c70777aa7094e2938d"
+    },
+    "wheels/.gitignore": {
+      "size": 1,
+      "sha256": "684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1"
+    },
+    "wheels/axm_core-1.1.0-py3-none-any.whl": {
+      "size": 133256,
+      "sha256": "dfcb197d7820c6c3f37dddc3b8a15d45743d71cebc71ac67f4589d90dc2208d3"
+    },
+    "wheels/axm_genesis-1.0.0-py3-none-any.whl": {
+      "size": 51404,
+      "sha256": "491cff0bd5fc68c68508166daf14f1ac24369fddcffabaa98af18a9ba430445a"
+    },
+    "wheels/mary_portable-0.3.0-py3-none-any.whl": {
+      "size": 131975,
+      "sha256": "a8edf7563fc19504609843a0e0dc4b910b6dbbb8a5587062b2076faab5fe7a1a"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "scope": "Fresh managed-Python recipient build plus installed Forge/Genesis/Spectra/exact-work/journal/API path",
+  "platforms": [
+    "ubuntu-latest",
+    "windows-latest",
+    "macos-latest"
+  ],
+  "run_id": "40640506613",
+  "commit": "a5f80160f7ad4a6c01ce5f16a893f7cca924c884",
+  "build_zip_sha256": "25e8accc35ed7d3392d5d2736e6516e203a56af1c33ced66b85b2fca1cd326d8",
+  "model_or_gpu_qualification": "not inferred from installer checks",
+  "prior_failed_candidate": "Preserved in workflow history; macOS process-limit incompatibility corrected without weakening source or task checks."
+}

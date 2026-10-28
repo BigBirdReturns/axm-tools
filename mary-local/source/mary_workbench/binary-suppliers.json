@@ -1,0 +1,111 @@
+{
+  "schema": "mary/binary-suppliers@1",
+  "tools": {
+    "restic": {
+      "repository": "restic/restic",
+      "version": "v0.19.1",
+      "release_id": 349118645,
+      "assets": {
+        "restic_0.19.1_linux_amd64.bz2": {
+          "url": "https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_amd64.bz2",
+          "sha256": "f415415624dcc452f2a02b8c33641791a8c6d6d3b65bbb3543fcf9a25151585c",
+          "size": 10107515
+        },
+        "restic_0.19.1_linux_arm64.bz2": {
+          "url": "https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_arm64.bz2",
+          "sha256": "a5f64aaab53d51e311fa3829124c5b703f2d14cf187d8640b6be3b2b49376465",
+          "size": 9044264
+        },
+        "restic_0.19.1_darwin_amd64.bz2": {
+          "url": "https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_darwin_amd64.bz2",
+          "sha256": "c38d579622cf602f665234c5a8c315030b6cf70656028fe6dc29a786b60e5f35",
+          "size": 10518038
+        },
+        "restic_0.19.1_darwin_arm64.bz2": {
+          "url": "https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_darwin_arm64.bz2",
+          "sha256": "7be0a144ccc377880f294204aa271d76e4b79554b42a751151d425ce6ebac143",
+          "size": 9733199
+        },
+        "restic_0.19.1_windows_amd64.zip": {
+          "url": "https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_windows_amd64.zip",
+          "sha256": "da948ad707ed690426473aaba2046cd61f8f90f6f0e7dab6be0d5796531de67d",
+          "size": 11237567
+        }
+      }
+    },
+    "uv": {
+      "repository": "astral-sh/uv",
+      "version": "0.13.5",
+      "release_id": 420219944,
+      "assets": {
+        "uv-x86_64-unknown-linux-gnu.tar.gz": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-unknown-linux-gnu.tar.gz",
+          "sha256": "f68d291c75783122dad58ab77def0e13f3233f358731db5d6d7e8715603b928f",
+          "size": 16682639
+        },
+        "uv-aarch64-unknown-linux-gnu.tar.gz": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-aarch64-unknown-linux-gnu.tar.gz",
+          "sha256": "4bb69cf95ed13f23713bb7bc09f241896ea0c75b7c557e615a20604b82f9c403",
+          "size": 15914298
+        },
+        "uv-x86_64-apple-darwin.tar.gz": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-apple-darwin.tar.gz",
+          "sha256": "b0f52b0e3945b4107d89024ea38e625683011fbfc05a0d98f9fa2d6dcee28c66",
+          "size": 17167423
+        },
+        "uv-aarch64-apple-darwin.tar.gz": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-aarch64-apple-darwin.tar.gz",
+          "sha256": "743f85035a1996ecb350659e01cd9faea9709829be09b1b4b03c73eaf3c9cd73",
+          "size": 14365303
+        },
+        "uv-x86_64-pc-windows-msvc.zip": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-x86_64-pc-windows-msvc.zip",
+          "sha256": "a38b8d1902b7cfbc76b423ba1bb456f623f42064cdc72628b6075b89afd1019a",
+          "size": 15264056
+        },
+        "uv-aarch64-pc-windows-msvc.zip": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-aarch64-pc-windows-msvc.zip",
+          "sha256": "09f47edf90726084a70f9426f6e3ca4f46e9bf7cbf23b1716ec64d60b055fae3",
+          "size": 15439089
+        }
+      }
+    },
+    "llama.cpp": {
+      "repository": "ggml-org/llama.cpp",
+      "version": "b11429",
+      "commit": "d81235049384534c167caea52b85a694f6103d14",
+      "assets": {
+        "llama-b11429-bin-ubuntu-x64.tar.gz": {
+          "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11429/llama-b11429-bin-ubuntu-x64.tar.gz",
+          "sha256": "f6d25dde8f51133143d1453da4fd5f73b145127177612a283bf7995957af3392",
+          "size": 17693462
+        },
+        "llama-b11429-bin-ubuntu-arm64.tar.gz": {
+          "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11429/llama-b11429-bin-ubuntu-arm64.tar.gz",
+          "sha256": "ed44c0f79c3d02424f62bdc87e106318b0b89f49050e2e80c5f352723d14e00b",
+          "size": 13682895
+        },
+        "llama-b11429-bin-macos-x64.tar.gz": {
+          "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11429/llama-b11429-bin-macos-x64.tar.gz",
+          "sha256": "29ac3ea02be6bd143e824973f2cc5fa74bc4094393a9eaab0ff6814f19dd8522",
+          "size": 11487431
+        },
+        "llama-b11429-bin-macos-arm64.tar.gz": {
+          "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11429/llama-b11429-bin-macos-arm64.tar.gz",
+          "sha256": "740288ec6887be94280a5dfa25b5e23a78285cab104519e6c7e218904ee82459",
+          "size": 11971406
+        },
+        "llama-b11429-bin-win-cpu-x64.zip": {
+          "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11429/llama-b11429-bin-win-cpu-x64.zip",
+          "sha256": "1283323272b04cd07905816a597a0da810918102de958f4ff6f7bbaa70ed2efe",
+          "size": 19398918
+        },
+        "llama-b11429-bin-win-cpu-arm64.zip": {
+          "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11429/llama-b11429-bin-win-cpu-arm64.zip",
+          "sha256": "ee0f631a9e58b146ff50714099d9cb498906af3143a773b580093a9214a8d1e5",
+          "size": 12229035
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "release": "0.3.0",
+  "owners": [
+    {
+      "component": "axm-genesis",
+      "repository": "BigBirdReturns/axm-genesis",
+      "commit": "9074e7fb2e9cedde692b248cdd0c6a805e77d8ac",
+      "source_archive_sha256": "5a6fd31d52a92e77ef0115c48928b6d2ea344f6f06b7b72437be44cedeba4ee8",
+      "source_url": "https://github.com/BigBirdReturns/axm-genesis/tree/9074e7fb2e9cedde692b248cdd0c6a805e77d8ac"
+    },
+    {
+      "component": "axm-core",
+      "repository": "BigBirdReturns/axm-core",
+      "commit": "91ec2708eb28a9760c8a9967f589a12d6e87b114",
+      "source_archive_sha256": "45c5776aff52f2f9fc0ff950645da77b6fdb455f88b81a266ee28f5c2faa8afa",
+      "source_url": "https://github.com/BigBirdReturns/axm-core/tree/91ec2708eb28a9760c8a9967f589a12d6e87b114"
+    }
+  ],
+  "ods": {
+    "source": "Osmantic/ODS",
+    "commit": "b627277991ab1a292becf46d3966ec53f70c85e5",
+    "files": {
+      "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "ods/scripts/select-model.py": "c8d64aa79e588ec8abba28a9cb00af3092ffe2d9b4fdceed1b4f9ceb6de593ac",
+      "ods/config/model-library.json": "b303830461e1c59c235645dc7c977993d7d017eb8837ccde65e4cd0bce8f3e3d",
+      "ods/extensions/services/dashboard-api/model_memory.py": "f4e004f823bae568aefc8631fd4a5196ff0ebbc6cf9a430c2967ccb5d83ad000",
+      "ods/extensions/services/dashboard-api/model_selection.py": "381cfdd470ad7d11e905b21d717eeb3a117437b410986fc37f039b09b6813344"
+    },
+    "role": "configuration candidate supplier, not execution authority"
+  },
+  "private_original_repository": "not published",
+  "release_license": "Apache-2.0 for selected owner-authored source; upstream licenses preserved"
+}

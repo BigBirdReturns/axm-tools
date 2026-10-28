@@ -1,0 +1,25 @@
+[project]
+name = "mary-portable"
+version = "0.3.0"
+description = "An owned local context workspace and human-authorized machine shell."
+requires-python = ">=3.11,<3.15"
+dependencies = [
+  "axm-core[mldsa-compat] @ git+https://github.com/BigBirdReturns/axm-core.git@91ec2708eb28a9760c8a9967f589a12d6e87b114",
+  "fastapi>=0.115,<1", "uvicorn>=0.30,<1", "httpx>=0.28,<1", "filelock>=3.16,<5",
+  "pypdf>=6,<7", "openpyxl==3.1.5", "sympy==1.14.0", "psutil>=6,<8"
+]
+[project.optional-dependencies]
+voice = ["faster-whisper>=1.1,<2"]
+dev = ["pytest>=8,<10", "build>=1,<2"]
+[project.scripts]
+mary = "mary_workbench.cli:main"
+mary-workbench = "mary_workbench.cli:main"
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+[tool.setuptools]
+packages = ["mary", "mary_workbench"]
+[tool.setuptools.package-data]
+mary_workbench = ["static/*.html", "static/*.js", "binary-suppliers.json", "vendor/ods/LICENSE", "vendor/ods/ods/scripts/*.py", "vendor/ods/ods/config/*.json", "vendor/ods/ods/extensions/services/dashboard-api/*.py", "supplier-lock.json", "profiles/*.json"]
+[tool.pytest.ini_options]
+testpaths = ["tests/workbench"]
