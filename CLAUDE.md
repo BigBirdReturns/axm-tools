@@ -327,3 +327,7 @@ they are kept here verbatim before the branch was deleted. Source tip
 
 - The managed HTTP preview did not expose Web Crypto `subtle`. Its passing reference suite correctly remained unaccepted because its runs lacked digests. `danger-room/shield-ai/engine.js` now uses the same SHA-256 over canonical UTF-8 bytes through Web Crypto or a tested local fallback. Preserve complete suite, regression and deterministic rerun checks; a hash alone is not evidence validity. `tests/app.test.js` exercises the no-Web-Crypto path and rehashed falsification rejection.
 - The static preview server inserted live-reload markup at a literal closing body tag inside an embedded JavaScript template, splitting the standalone script. The optional standalone exporter now escapes document-closing strings before hashing the embedded scripts. JavaScript restores the same generated HTML. Both the ordinary multi-file page and the standalone output were checked in the browser; the original Danger Room receipt and page remain unchanged.
+
+## Atmark preview
+
+`atmark/` is self-contained. The captured 53 listings are a public subset, never a whole-store inventory census. Keep original observations separate from generated catalogue projections; retain exact image bytes and distinct identity/display reviews. Used-item condition and physical stock require seller evidence. No eBay write integration is present. Run `python atmark/scripts/catalog.py build`, `verify`, unit tests and `tests/browser_test.py` before changing the surface.
