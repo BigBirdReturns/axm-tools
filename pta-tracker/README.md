@@ -36,6 +36,69 @@ changes as needed. Success means a useful report delivered and questions followe
 through, not a zero gap count. The initial board-review brief and optional sharing message are in `board-brief.html`;
 its dated handout is a snapshot, while the generator is the repeatable workflow.
 
+## Monthly meeting pack - current handoff (October 28, 2026)
+
+The actual path is **Holly Avenue > VP Desk > Generate board report draft**.
+An optional meeting-date field labels the local draft; it is never saved to the
+public JSON and never renews source review. **Copy speaking script** supplies a
+short spoken version; **Copy report** includes the fuller sourced handout,
+requested discussion, open follow-ups, limits and source links. **Print handout**
+prints only that report. Clear removes both drafts and their controls.
+
+Maintain `board_report.spoken_intro`, optional `spoken_request`, and each selected
+card's `spoken_summary` for a brief presentation. Fallback is the reviewed report
+summary, never scraped feed headlines. `limitations` and `resources` remain in
+the written report. Real date checks apply to both versions; a past agenda is
+spoken as a pending outcome, not an upcoming meeting. Review windows expire
+independently of nightly feed freshness. A historical vote receipt may retain
+its original review date; updating the report does not pretend it was rewatched.
+
+For each regular PTA meeting, prepare 1-4 useful updates, give a short oral
+report, provide the written version through the PTA's existing channel, and
+record actual presentation, questions, owners and the next date in its minutes.
+The State PTA role guide asks for a legislative report at every meeting:
+https://capta.org/toolkit/home/job-descriptions/legislative-advocacy-chair/ .
+Do not backdate missed reports or infer local endorsement from an officer's draft.
+Private invitations, submission deadlines and internal correspondence stay out
+of this public repository. No new notification automation was installed.
+
+October 28 source review:
+
+- CDE release 26-44 is readable in the local browser and confirms the October 15
+  release. The separate CAASPP entry page presented a CAPTCHA; the official
+  Dashboard provided Holly Avenue results without it. The reviewed school is
+  CDS `19642616011175`, year 2026. ELA is Green, +36.6 distance from proficiency,
+  down 5.8 points (402 students); math is Blue, +44.3, change -0.2 (397 students).
+  The disabilities group is Orange in ELA and Red in math (35 each). Keep score
+  distances distinct from percent proficient; these aggregates do not explain
+  causes. Detailed source: https://www.caschooldashboard.org/reports/19642616011175/2026/academic-performance .
+- The October 27 agenda is Simbli `MID=86679`; medication policy BP 5141.21 is
+  consent item IV.e, second reading. The recording is `E_5SQbMDW_I`; captions
+  and a transcript were unavailable. The vote is **not verified**. Its reminder
+  was archived while the outcome remains open in the watchlist and report.
+- Simbli also lists an October 30, 8:30 a.m. planning meeting, `MID=97729`, for
+  discussion of the remainder of the fiscal year. The ordinary schedule alone
+  missed this additional meeting. The next regular district meeting is
+  November 17, 7 p.m. Neither date is a PTA meeting.
+- State PTA action alerts showed none active; its current-legislation page was
+  checked. This is a dated observation, not an enduring no-action conclusion.
+
+Next source review is due **October 30**, before treating a later meeting draft
+as current: verify the October 27 vote, review October 30 planning outcomes,
+and recheck alerts. The Holly Avenue school-plan content still needs review.
+Existing September 22 and October 13 vote receipts remain dated October 21.
+Public hosting still contains the earlier release until these changes are
+explicitly deployed; local generated reports are usable dated drafts.
+
+Validation: `node pta-tracker/scripts/test_board_report.mjs` exercises the actual
+embedded generators with an independent fixture (invalid calendar dates,
+expired/future windows, missing sources/cards, school scope, past meetings,
+speech, copy failure, print lifecycle and clearing). Run
+`python3 -B pta-tracker/scripts/build_schools.py` after page edits. Browser QA
+on the generated Holly Avenue route confirmed meeting-date labeling, full
+report, 161-word speech and no horizontal overflow. The local machine feed is
+older than the live nightly feed; its stale banner was not relabeled as fresh.
+
 ## How it works
 
 1. A GitHub Action (`.github/workflows/pta-fetch.yml`) runs nightly. It can

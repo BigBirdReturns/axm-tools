@@ -140,7 +140,16 @@ document.documentElement.lang=(function(){
     background:var(--card);border:1px solid var(--soft);border-left:3px solid var(--underline);
     border-radius:4px;padding:.5rem .75rem;margin:0 0 1.5rem}
   footer{margin-top:2.5rem;font-size:.75rem;color:var(--muted);border-top:1px solid var(--soft);padding-top:.8rem}
-  @media print{.controls,.viewswitch,footer{display:none}}
+  #speech-report{display:none;white-space:pre-wrap;background:var(--card);border:1px solid var(--soft);padding:1.2rem;margin-top:1.2rem;font-size:.92rem}
+  @media print{
+    .controls,.viewswitch,footer{display:none}
+    body.print-handout header,body.print-handout .xlnote,body.print-handout #parent,
+    body.print-handout #desk > :not(#report){display:none!important}
+    body.print-handout #desk{display:block!important;max-width:none;margin:0;padding:0}
+    body.print-handout #report{display:block!important;border:0;margin:0;padding:0;
+      color:#111;background:#fff;font-size:10pt;line-height:1.4;overflow-wrap:anywhere}
+    body.print-handout{background:#fff;color:#111;max-width:none;padding:0;margin:0}
+  }
 </style>
 </head>
 <body>
@@ -226,12 +235,17 @@ document.documentElement.lang=(function(){
     <button data-f="district" aria-pressed="false">Our district</button>
     <button data-f="hot" aria-pressed="false">Priority only</button>
     <button id="gen" data-i18n="btn.gen">Generate board report draft</button>
+    <label>Meeting date <input id="meeting-date" type="date"></label>
+    <button id="speech" style="display:none">Copy speaking script</button>
+    <button id="print-report" style="display:none">Print handout</button>
     <button id="clear-report" style="display:none" data-i18n="btn.clear">Clear draft</button>
     <button id="copy" style="display:none" data-i18n="btn.copy">Copy report</button>
     <button id="share" style="display:none" data-i18n="btn.share">Share report</button>
   </div>
   <p><a id="board-brief-link">Board review brief and suggested sharing message</a></p>
   <div id="report" role="status" aria-live="polite"></div>
+  <h3 id="speech-label" style="display:none">Speaking script</h3>
+  <div id="speech-report" role="status" aria-live="polite"></div>
   <div class="controls">
     <input id="q" type="search" placeholder="Search the whole timeline — every item ever tracked"
            data-i18n-ph="search.ph" data-i18n-al="search.aria" aria-label="Search the timeline">
@@ -945,15 +959,18 @@ document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{
 function buildBoardReport(p,now=new Date()){
   if(!p||p==="__err"||!p.board_report)return "Report unavailable: curated report data has not loaded. Retry after checking the data source.";
   const r=p.board_report;
+  const iso=/^\d{4}-\d{2}-\d{2}$/;
+  const validDate=v=>iso.test(v||"")&&(()=>{const d=new Date(v+"T00:00:00Z");return !isNaN(d.getTime())&&d.toISOString().slice(0,10)===v})() ;
   const today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
-  if(!r.review_by||today>r.review_by)return "REVIEW REQUIRED: this board draft was due for review "+(r.review_by||"before use")+". Update the selected cards, meeting outcomes, follow-ups and review date before generating another report. A healthy news feed does not renew this review.";
-  if(!r.reviewed_on||!Array.isArray(r.card_ids)||!r.card_ids.length||r.card_ids.length>4)return "REVIEW REQUIRED: choose one to four sourced updates and record the report review date.";
+  if(!validDate(r.reviewed_on)||!validDate(r.review_by)||r.reviewed_on>r.review_by||today<r.reviewed_on||today>r.review_by)return "REVIEW REQUIRED: this board draft has an invalid or expired review window. Update the selected cards, meeting outcomes, follow-ups and review date before generating another report.";
+  if(!Array.isArray(r.card_ids)||!r.card_ids.length||r.card_ids.length>4)return "REVIEW REQUIRED: choose one to four sourced updates and record the report review date.";
   const cards=[...(p.coming_up||[]),...(p.in_effect||[])].filter(inSchoolScope);
   const selected=(r.card_ids||[]).map(id=>cards.find(c=>c.id===id));
-  if(selected.some(c=>!c||!c.source_url||!c.reviewed_on))return "REVIEW REQUIRED: a selected card is missing, out of this school's scope, or lacks a source/review date.";
+  if(selected.some(c=>!c||!c.source_url||!validDate(c.reviewed_on)||c.reviewed_on>r.reviewed_on))return "REVIEW REQUIRED: a selected card is missing, out of this school's scope, or has an invalid review date/source.";
   let out="PTA LEGISLATION UPDATE - DRAFT\n";
-  out+="Jonathan Sandhu, VP Legislation | Information checked "+r.reviewed_on+"\n\n";
-  out+="For information. No PTA vote or position is proposed in this update.\n\n";
+  out+="Jonathan Sandhu, VP Legislation | Information checked "+r.reviewed_on+" | Review by "+r.review_by+"\n\n";
+  out+=(r.disposition||"For information. No PTA vote or position is proposed in this update.")+"\n\n";
+  if(r.request)out+="REQUEST\n"+r.request+"\n\n";
   const sources=[];
   for(const c of selected){
     const n=sources.length+1;
@@ -964,23 +981,40 @@ function buildBoardReport(p,now=new Date()){
     }
     sources.push("["+n+"] "+c.title+": "+c.source_url+(c.verification_url?"\n    Vote confirmation (official recording): "+c.verification_url:""));
   }
+  const open=(r.followups||[]).filter(f=>f.status!=="done");
+  if(open.length)out+="OPEN FOLLOW-UPS\n"+open.map(f=>"- "+f.what+" ("+(f.owner||"owner pending")+", due "+(f.due||"date pending")+", "+(f.status||"open")+")").join("\n")+"\n\n";
+  if(Array.isArray(r.limitations)&&r.limitations.length)out+="LIMITATIONS\n- "+r.limitations.join("\n- ")+"\n\n";
+  if((r.resources||[]).length)out+="RESOURCES\n"+r.resources.map(x=>"- "+x.label+": "+x.url).join("\n")+"\n\n";
   if(r.closing)out+=r.closing+"\n\n";
   out+="SOURCES\n"+sources.join("\n");
   return out;
 }
 const clearReportBtn=document.getElementById("clear-report");
+const speechBtn=document.getElementById("speech"),printBtn=document.getElementById("print-report"),speechReport=document.getElementById("speech-report"),meetingDate=document.getElementById("meeting-date");
+function buildSpeakingScript(p,now=new Date()){
+  const gate=buildBoardReport(p,now);
+  if(!gate.startsWith("PTA LEGISLATION UPDATE - DRAFT"))return gate;
+  const r=p.board_report;
+  const today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
+  const cards=[...(p.coming_up||[]),...(p.in_effect||[])].filter(inSchoolScope);
+  const selected=r.card_ids.map(id=>cards.find(c=>c.id===id));
+  const summaries=selected.map(c=>c.until&&c.until<today
+    ? "Follow-up required: "+c.title+". Its scheduled date has passed; outcomes remain unverified."
+    : c.spoken_summary||c.report_summary||c.kid_impact);
+  return [r.spoken_intro||"Here is this month's PTA legislation update.",...summaries,r.spoken_request||r.request||"",r.closing||""].filter(Boolean).join("\n\n");
+}
 document.getElementById("gen").onclick=()=>{
-  const text=buildBoardReport(PARENT);
-  const ready=text.startsWith("PTA LEGISLATION UPDATE - DRAFT");
-  report.textContent=text;report.style.display="block";
-  clearReportBtn.style.display="inline-block";
-  copyBtn.textContent=t("btn.copy");
-  copyBtn.style.display=ready?"inline-block":"none";
-  shareBtn.style.display=ready&&navigator.share?"inline-block":"none";
+  document.body.classList.remove("print-handout");
+  speechBtn.textContent="Copy speaking script";
+  const text=buildBoardReport(PARENT);const ready=text.startsWith("PTA LEGISLATION UPDATE - DRAFT");
+  report.textContent=meetingDate.value?"MEETING DATE: "+meetingDate.value+"\n\n"+text:text;report.style.display="block";clearReportBtn.style.display="inline-block";
+  copyBtn.textContent=t("btn.copy");copyBtn.style.display=ready?"inline-block":"none";shareBtn.style.display=ready&&navigator.share?"inline-block":"none";
+  speechReport.textContent=ready?buildSpeakingScript(PARENT):"";document.getElementById("speech-label").style.display=ready?"block":"none";speechReport.style.display=ready?"block":"none";speechBtn.style.display=ready?"inline-block":"none";printBtn.style.display=ready?"inline-block":"none";
 };
+speechBtn.onclick=()=>navigator.clipboard.writeText(speechReport.textContent).catch(()=>{speechBtn.textContent="Copy failed - select the script manually";});printBtn.onclick=()=>{document.body.classList.add("print-handout");window.print();};window.addEventListener("afterprint",()=>document.body.classList.remove("print-handout"));
 clearReportBtn.onclick=()=>{
-  report.textContent="";report.style.display="none";
-  clearReportBtn.style.display="none";copyBtn.style.display="none";shareBtn.style.display="none";
+  report.textContent="";speechReport.textContent="";document.getElementById("speech-label").style.display="none";document.body.classList.remove("print-handout");report.style.display="none";
+  clearReportBtn.style.display="none";copyBtn.style.display="none";shareBtn.style.display="none";speechBtn.style.display="none";printBtn.style.display="none";speechReport.style.display="none";
   copyBtn.textContent=t("btn.copy");
   document.getElementById("gen").focus();
 };

@@ -10,31 +10,31 @@
     }
   },
   "note": "Curated by the VP Legislation, by hand. The nightly fetch never touches this file — parent cards are written consequences, not scraped headlines. Every card needs: kid_impact (one sentence, what changes for a student/family), owner (who actually decides), and at most one action. Keep kid_impact to ONE sentence at a 4th-6th grade reading level: the single-sentence form is the one with evidence behind it, and this audience reads it in four languages. Give any dated coming_up card an 'until' (YYYY-MM-DD): the page hides it the day after, so a past meeting can never sit there saying 'coming up'. Give any card a 'covers' array of items.json ids it accounts for — the nightly gap check flags every district hot item that no card covers, so an uncovered id is a card someone still owes. If an item can't be phrased as a consequence with an owner, it stays in the VP Desk. The watchlist is VP-Desk-only: known scheduled obligations with a date they're expected by — the page flags anything past due that isn't marked done, so a blank where a report should be never goes unnoticed.",
-  "updated": "2026-10-21",
+  "updated": "2026-10-28",
   "coming_up": [
     {
-      "id": "coming-board-2026-10-27",
+      "id": "coming-board-2026-10-30",
       "kind": "meeting",
-      "until": "2026-10-27",
-      "when": "2026-10-27T19:00",
-      "location": "Arcadia Education Center Board Room, 150 S 3rd Ave, Arcadia, CA 91006",
-      "title": "October 27: AUSD Board of Education meets",
-      "kid_impact": "Board meetings are where district decisions get made — phone rules, budgets, calendars — before they ever reach a classroom.",
-      "impact_area": "District decisions",
+      "until": "2026-10-30",
+      "when": "2026-10-30T08:30",
+      "location": "Arcadia Education Center Boardroom, 150 South Third Avenue, Arcadia, CA 91006",
+      "title": "October 30: district board planning session",
+      "kid_impact": "The board and staff will discuss plans for the rest of the school year, and families can read the agenda.",
+      "impact_area": "District planning",
       "owner": "AUSD Board of Education",
-      "time_sensitivity": "October 27 at 7 p.m.; the agenda usually posts on Simbli the Friday before (October 23). Checked October 21: not yet posted",
-      "source_url": "https://www.ausd.net/apps/pages/agenda",
+      "time_sensitivity": "October 30 at 8:30 a.m.; agenda reviewed October 28; this is a district meeting, not a PTA meeting",
+      "source_url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=97729",
+      "reviewed_on": "2026-10-28",
+      "disposition": "Optional public participation; no outcome yet",
       "covers": [
-        "ausd-mtg-2026-10-27"
+        "ausd-mtg-2026-10-30"
       ],
       "action": {
         "type": "read",
-        "label": "Check the agenda on Simbli",
-        "url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512"
+        "label": "Read the planning agenda",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=97729"
       },
-      "reviewed_on": "2026-10-21",
-      "disposition": "Optional public participation; agenda pending",
-      "report_summary": "The next AUSD board meeting is Tuesday, October 27 at 7 p.m. The agenda was not yet posted on October 21; it usually appears on Simbli the Friday before. Attendance is optional."
+      "report_summary": "AUSD has an additional board planning session October 30 at 8:30 a.m. The agenda is discussion of the remainder of the fiscal year; it does not establish a decision."
     }
   ],
   "in_effect": [
@@ -173,7 +173,8 @@
       },
       "reviewed_on": "2026-10-21",
       "disposition": "For information",
-      "report_summary": "On September 22 the board held its yearly public hearing and certified that every student has sufficient textbooks and learning materials; no one spoke at the hearing. The board also renewed its annual authorization for some teachers to teach subjects outside their credential. Families who find a missing textbook should tell the school office."
+      "report_summary": "Catch-up from September 22: the board certified sufficient instructional materials after its annual public hearing. That is a district certification, not an independent check of every classroom; families should report missing materials to the school office.",
+      "spoken_summary": "For catch-up, the district certified sufficient textbooks and learning materials in September. Families should still tell the school office about anything missing."
     },
     {
       "id": "parent-spsa-2026",
@@ -196,29 +197,34 @@
       },
       "reviewed_on": "2026-10-21",
       "disposition": "For information",
-      "report_summary": "On October 13 the board approved every school's School Plan for Student Achievement on the consent agenda, including Holly Avenue's. The plan's contents were not reviewed for this update; families can ask the office how to read it. The board also heard a first reading of an updated medication policy (no vote yet) and a study session on the district's Behavior Response Team."
+      "report_summary": "On October 13, the district board approved School Plans for Student Achievement, including Holly Avenue's. The tracker retains an agenda and official-recording receipt for that vote. The plan's actual goals and allocations still need review before we describe particular services or spending.",
+      "spoken_summary": "The district approved Holly Avenue's School Plan for Student Achievement on October 13. My next step is to connect the new results to the plan's goals and supports, without promising services we have not verified."
     },
     {
       "id": "parent-caaspp-2026",
-      "kind": "state",
-      "title": "Spring 2026 state test results are out",
-      "kid_impact": "California released last spring's state test results and the 2026 School Dashboard on October 15, so families can look up how Holly Avenue did compared with the district and the state.",
+      "kind": "district",
+      "title": "Holly Avenue's 2026 Dashboard: strengths and a reading concern",
+      "kid_impact": "Holly Avenue's state report shows strong overall math results and a drop in English scores, giving families a reason to ask about learning support.",
       "impact_area": "Test results / school performance",
       "owner": "California Department of Education",
-      "time_sensitivity": "Released October 15, 2026; no district statement as of October 21",
-      "source_url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel44.asp",
+      "time_sensitivity": "2026 Dashboard checked October 28; reports prior-year results, not a current classroom diagnosis",
+      "source_url": "https://www.caschooldashboard.org/reports/19642616011175/2026/academic-performance",
       "covers": [
         "27f761130722"
       ],
-      "verification_note": "CDE News Release #26-44 (October 15, 2026) released the 2025-26 CAASPP and ELPAC results together with the 2026 California School Dashboard; statewide, 49.3% of students met the English standard and 38.4% met the math standard. School- and district-level results are on the CAASPP results site and the Dashboard; Holly Avenue's numbers were not reviewed here, and the AUSD news feed had posted nothing since June 3.",
+      "verification_note": "Official 2026 school Dashboard, CDS 19642616011175: ELA Green, 36.6 points above proficient, declined 5.8 points, 402 students; mathematics Blue, 44.3 points above proficient, maintained (-0.2 points), 397 students. Students with disabilities: ELA Orange, 81.1 points below proficient, increased 16 points, 35 students; math Red, 104.5 points below proficient, declined 6.4 points, 35 students. These are aggregate distance-from-proficiency measures, not percentages proficient, and do not establish why scores changed. CDE release #26-44 confirms statewide release October 15. No district-news absence claim is inferred from a quiet RSS feed.",
       "action": {
         "type": "read",
-        "label": "Read the state's results announcement",
-        "url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel44.asp"
+        "label": "Read Holly Avenue academic results",
+        "url": "https://www.caschooldashboard.org/reports/19642616011175/2026/academic-performance"
       },
-      "reviewed_on": "2026-10-21",
+      "reviewed_on": "2026-10-28",
       "disposition": "For information",
-      "report_summary": "California released spring 2026 state test results and the 2026 School Dashboard on October 15. Statewide, 49.3 percent of students met the English standard and 38.4 percent met the math standard. Holly Avenue's and the district's results are posted on the state sites and were not reviewed for this update; the district has not issued a statement."
+      "report_summary": "Holly Avenue's 2026 Dashboard rates English language arts Green: 36.6 points above proficient, down 5.8 points (402 students). Math is Blue: 44.3 points above proficient, essentially unchanged (-0.2 points; 397 students). Students with disabilities are Orange in English and Red in math (35 students per measure). These are score distances, not percent passing. Ask how the school plan addresses reading trends and supports students who need more help.",
+      "schools": [
+        "ha"
+      ],
+      "spoken_summary": "Holly Avenue's new Dashboard is strong overall in math, but English scores declined. Students with disabilities have a weaker math rating than the school overall. I suggest asking how our school plan addresses reading and targeted learning support."
     }
   ],
   "actions": [
@@ -284,12 +290,12 @@
     {
       "id": "watch-caaspp",
       "what": "CAASPP test results released",
-      "why": "Verified October 21: CDE News Release #26-44 (October 15, 2026) released the 2025-26 CAASPP/ELPAC results and the 2026 California School Dashboard together. AUSD had not posted a district comment (its news feed last updated June 3, 2026). Holly Avenue's own numbers still need a look before any parent comparison.",
+      "why": "CDE released the statewide results October 15. Holly Avenue's 2026 academic Dashboard was reviewed October 28 and is summarized in parent-caaspp-2026. A review of its school plan and district-level comparison remains separate follow-up work.",
       "expected_by": "2026-10-31",
       "check_url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel44.asp",
       "check_label": "CDE release #26-44 (Oct 15, 2026)",
       "status": "done",
-      "verified_on": "2026-10-21"
+      "verified_on": "2026-10-28"
     },
     {
       "id": "watch-board-reorg",
@@ -308,6 +314,15 @@
       "expected_by": "2027-02-01",
       "check_url": "https://ha.ausd.net",
       "check_label": "Holly Avenue site",
+      "status": "open"
+    },
+    {
+      "id": "watch-oct27-outcome",
+      "what": "Verify the October 27 medication-policy vote",
+      "why": "Agenda MID=86679 consent item IV.e is BP 5141.21 revision/second reading. Official recording E_5SQbMDW_I is posted, but captions/transcript were unavailable October 28. Approval and school rollout are not verified; do not infer a vote from the recommendation.",
+      "expected_by": "2026-10-30",
+      "check_url": "https://www.youtube.com/watch?v=E_5SQbMDW_I",
+      "check_label": "October 27 official recording",
       "status": "open"
     }
   ],
@@ -358,19 +373,44 @@
       "report_summary": "The September 22 AUSD board meeting is scheduled for 7 p.m. and includes a hearing on instructional materials. Decisions are pending; attendance is optional.",
       "archived_on": "2026-10-21",
       "archive_note": "Replaced by parent-materials-2026 after the official September 22 recording was reviewed."
+    },
+    {
+      "id": "coming-board-2026-10-27",
+      "kind": "meeting",
+      "until": "2026-10-27",
+      "when": "2026-10-27T19:00",
+      "location": "Arcadia Education Center Board Room, 150 S 3rd Ave, Arcadia, CA 91006",
+      "title": "October 27: AUSD Board of Education meets",
+      "kid_impact": "Board meetings are where district decisions get made — phone rules, budgets, calendars — before they ever reach a classroom.",
+      "impact_area": "District decisions",
+      "owner": "AUSD Board of Education",
+      "time_sensitivity": "October 27 at 7 p.m.; the agenda usually posts on Simbli the Friday before (October 23). Checked October 21: not yet posted",
+      "source_url": "https://www.ausd.net/apps/pages/agenda",
+      "covers": [
+        "ausd-mtg-2026-10-27"
+      ],
+      "action": {
+        "type": "read",
+        "label": "Check the agenda on Simbli",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/SB_MeetingListing.aspx?S=36030512"
+      },
+      "reviewed_on": "2026-10-21",
+      "disposition": "Optional public participation; agenda pending",
+      "report_summary": "The next AUSD board meeting is Tuesday, October 27 at 7 p.m. The agenda was not yet posted on October 21; it usually appears on Simbli the Friday before. Attendance is optional.",
+      "archived_on": "2026-10-28",
+      "archive_note": "Agenda MID=86679 now reviewed. Recording E_5SQbMDW_I exists but captions/transcript unavailable at review; vote outcome remains explicitly open in watchlist and report. Archiving the reminder does not establish approval."
     }
   ],
   "publication_note": "Officer-prepared pilot for board review. This page does not represent an adopted PTA position or district guidance. Sources and unresolved questions are shown so the board can assess it before wider sharing.",
   "board_report": {
-    "reviewed_on": "2026-10-21",
-    "review_by": "2026-10-28",
-    "disposition": "For information and board feedback. No policy endorsement or advocacy vote is requested in this draft.",
-    "request": "Please review the pilot and suggest corrections or missing family questions. Agree how future updates should be reviewed and shared through an existing PTA channel. No meeting or attendance is requested.",
+    "reviewed_on": "2026-10-28",
+    "review_by": "2026-10-30",
+    "disposition": "Officer-prepared informational update. No PTA policy endorsement or advocacy vote is requested.",
+    "request": "Please allow a short legislation update at each regular PTA meeting and send family questions for follow-up. Please ask the principal how the school plan addresses reading trends and targeted learning support.",
     "card_ids": [
-      "parent-materials-2026",
       "parent-spsa-2026",
       "parent-caaspp-2026",
-      "coming-board-2026-10-27"
+      "parent-materials-2026"
     ],
     "followups": [
       {
@@ -390,39 +430,65 @@
         "result": "Holly Avenue posts the AUSD elementary smart-device policy; the district's Right At School page carries expanded-learning registration and the school program contact."
       },
       {
-        "what": "Record feedback from the full board, the agreed review/distribution process, and the next update date.",
-        "owner": "VP Legislation, with PTA president",
-        "due": "2026-10-28",
-        "status": "open",
-        "note": "Not yet shared with the full board as of October 21; this is the officer's step."
-      },
-      {
-        "what": "Review the October 27 district meeting outcome; replace the agenda reminder with verified decisions.",
+        "what": "Confirm October 27 BP 5141.21 vote and review October 30 planning outcome before the next presentation.",
         "owner": "VP Legislation",
-        "due": "2026-10-28",
+        "due": "2026-10-30",
         "status": "open"
       },
       {
-        "what": "Check whether AUSD comments on the 2025-26 CAASPP/Dashboard results and whether Holly Avenue's results need a parent summary.",
-        "owner": "VP Legislation",
+        "what": "Read Holly Avenue school-plan goals and ask how they address the Dashboard reading trend and learning-support gaps.",
+        "owner": "VP Legislation; principal is the information source",
         "due": "2026-11-17",
+        "status": "open"
+      },
+      {
+        "what": "Agree the recurring report slot and submission process; record actual presentation and board feedback in the PTA minutes.",
+        "owner": "VP Legislation, with PTA president",
+        "due": "At the next PTA meeting",
         "status": "open"
       }
     ],
     "resources": [
       {
-        "label": "California State PTA positions on current legislation",
-        "url": "https://capta.org/advocacy/current-legislation/"
+        "label": "October 27 district agenda (second reading is not proof of approval)",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=86679"
       },
       {
-        "label": "California State PTA action alerts",
+        "label": "October 27 official recording; outcome review pending",
+        "url": "https://www.youtube.com/watch?v=E_5SQbMDW_I"
+      },
+      {
+        "label": "October 30 planning agenda",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=97729"
+      },
+      {
+        "label": "AUSD regular board schedule",
+        "url": "https://www.ausd.net/apps/pages/agenda"
+      },
+      {
+        "label": "CDE October 15 results release",
+        "url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel44.asp"
+      },
+      {
+        "label": "California State PTA action alerts (checked October 28)",
         "url": "https://capta.org/advocacy/take-action/"
       },
       {
+        "label": "California State PTA current legislation (checked October 28)",
+        "url": "https://capta.org/advocacy/current-legislation/"
+      },
+      {
         "label": "Legislative Advocacy Chair role",
-        "url": "https://toolkit.capta.org/job-descriptions/legislative-advocacy-chairman/"
+        "url": "https://capta.org/toolkit/home/job-descriptions/legislative-advocacy-chair/"
       }
     ],
-    "closing": "Next I will check the October 27 meeting outcomes and watch for district comment on the state test results. Please pass along family questions or corrections for a future update."
+    "closing": "California State PTA showed no active action alerts when checked October 28. I will verify the medication-policy outcome and follow up on school-plan questions; no advocacy campaign is proposed in this report.",
+    "spoken_intro": "Here is my legislation and district-policy update. I am restarting a short, sourced report for our regular meetings.",
+    "limitations": [
+      "October 27 medication policy: the agenda lists BP 5141.21 as consent item IV.e for a second reading. The recording is available, but no transcript was available at review. The vote and Holly Avenue implementation remain unverified.",
+      "AUSD has an October 30 planning meeting at 8:30 a.m.; the next regular district meeting is November 17 at 7 p.m. Recheck outcomes before a later PTA presentation. These district dates are not PTA meetings.",
+      "Historical September/October approvals use retained agenda-plus-recording receipts reviewed October 21, not signed minutes. Dashboard ratings describe aggregate prior-year outcomes and do not explain causes."
+    ],
+    "spoken_request": "Please make this a regular short agenda item and send me family questions to follow up."
   }
 }
