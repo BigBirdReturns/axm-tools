@@ -4,7 +4,7 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let catalog, selected=new Set(), category='All', limit=16, imported=null, photo=null;
 const viewNames=['shop','workbench','photos','take'];
-const price=i=>i.price_min===null?'Price not captured':new Intl.NumberFormat('en-US',{style:'currency',currency:i.currency||'USD',maximumFractionDigits:0}).format(i.price_min)+(i.price_max!==null&&i.price_max!==i.price_min?'–'+new Intl.NumberFormat('en-US',{style:'currency',currency:i.currency||'USD',maximumFractionDigits:0}).format(i.price_max):'');
+const price=i=>i.price_min===null?'Price not captured':new Intl.NumberFormat('en-US',{style:'currency',currency:i.currency||'USD',maximumFractionDigits:2}).format(i.price_min)+(i.price_max!==null&&i.price_max!==i.price_min?'–'+new Intl.NumberFormat('en-US',{style:'currency',currency:i.currency||'USD',maximumFractionDigits:2}).format(i.price_max):'');
 const safeImage=u=>{try{const p=new URL(u,location.href);return p.protocol==='https:'&&p.hostname==='i.ebayimg.com'&&!p.username&&!p.password?u:null}catch{return null}};
 const sourceLink=u=>{try{const p=new URL(u);return p.protocol==='https:'&&['www.ebay.com','www.intel.com','learn.microsoft.com','developer.ebay.com'].includes(p.hostname)&&!p.username&&!p.password?u:'#'}catch{return '#'}};
 function go(view){if(!viewNames.includes(view))view='shop';$$('.view').forEach(e=>e.hidden=e.id!=='view-'+view);$$('.nav').forEach(e=>e.classList.toggle('active',e.dataset.view===view));history.replaceState(null,'','#'+view);window.scrollTo({top:0,behavior:'instant'})}
