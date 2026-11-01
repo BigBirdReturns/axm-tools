@@ -36,7 +36,7 @@ changes as needed. Success means a useful report delivered and questions followe
 through, not a zero gap count. The initial board-review brief and optional sharing message are in `board-brief.html`;
 its dated handout is a snapshot, while the generator is the repeatable workflow.
 
-## Monthly meeting pack - current handoff (October 28, 2026)
+## Monthly meeting pack - current handoff (November 1, 2026)
 
 The actual path is **Holly Avenue > VP Desk > Generate board report draft**.
 An optional meeting-date field labels the local draft; it is never saved to the
@@ -62,33 +62,32 @@ Do not backdate missed reports or infer local endorsement from an officer's draf
 Private invitations, submission deadlines and internal correspondence stay out
 of this public repository. No new notification automation was installed.
 
-October 28 source review:
+November 1 source review supersedes the October 28 pending items:
 
-- CDE release 26-44 is readable in the local browser and confirms the October 15
-  release. The separate CAASPP entry page presented a CAPTCHA; the official
-  Dashboard provided Holly Avenue results without it. The reviewed school is
-  CDS `19642616011175`, year 2026. ELA is Green, +36.6 distance from proficiency,
-  down 5.8 points (402 students); math is Blue, +44.3, change -0.2 (397 students).
-  The disabilities group is Orange in ELA and Red in math (35 each). Keep score
-  distances distinct from percent proficient; these aggregates do not explain
-  causes. Detailed source: https://www.caschooldashboard.org/reports/19642616011175/2026/academic-performance .
-- The October 27 agenda is Simbli `MID=86679`; medication policy BP 5141.21 is
-  consent item IV.e, second reading. The recording is `E_5SQbMDW_I`; captions
-  and a transcript were unavailable. The vote is **not verified**. Its reminder
-  was archived while the outcome remains open in the watchlist and report.
-- Simbli also lists an October 30, 8:30 a.m. planning meeting, `MID=97729`, for
-  discussion of the remainder of the fiscal year. The ordinary schedule alone
-  missed this additional meeting. The next regular district meeting is
-  November 17, 7 p.m. Neither date is a PTA meeting.
-- State PTA action alerts showed none active; its current-legislation page was
-  checked. This is a dated observation, not an enduring no-action conclusion.
+- Current BP 5141.21 is marked ADOPTED, last revised/reviewed October 27.
+  The policy permits emergency albuterol stock; Holly Avenue availability,
+  procedures and the vote tally are not established. The source is the current
+  policy-library record, not an inference from an agenda or unavailable captions.
+- Official Holly Avenue SPSA attachment AID=1752059 was read, particularly
+  pages 43-44 and 48. It lists $64,900 for supplemental instruction, tutoring,
+  progress monitoring and special-education/tiered supports. These are planned
+  provisions, not actual spending or a service-access guarantee. The PDF cover's
+  pending approval label is stale; the retained October 13 recording receipt
+  remains the approval evidence.
+- Holly Avenue 2026 academic Dashboard figures and subgroup/sample-count
+  context were rechecked November 1. Keep score distances distinct from
+  percentages proficient and avoid causal claims from aggregate results.
+- State PTA alerts still showed none active November 1; the current-legislation
+  page was reviewed. Do not infer a local advocacy campaign or ongoing no-action
+  conclusion from this dated observation.
+- October 30 MID=97729 still shows a planning/discussion agenda and no published
+  outcome/minutes in that record. The reminder is archived without implying a
+  decision. The next regular district meeting is November 17 at 7 p.m.
 
-Next source review is due **October 30**, before treating a later meeting draft
-as current: verify the October 27 vote, review October 30 planning outcomes,
-and recheck alerts. The Holly Avenue school-plan content still needs review.
-Existing September 22 and October 13 vote receipts remain dated October 21.
-Public hosting still contains the earlier release until these changes are
-explicitly deployed; local generated reports are usable dated drafts.
+The report is reviewed November 1 for use through November 2. Source review
+must be renewed before a later presentation. Public hosting remains the earlier
+release until these local changes are explicitly deployed. Private scheduling,
+email access and delivery arrangements stay outside this public repository.
 
 Validation: `node pta-tracker/scripts/test_board_report.mjs` exercises the actual
 embedded generators with an independent fixture (invalid calendar dates,

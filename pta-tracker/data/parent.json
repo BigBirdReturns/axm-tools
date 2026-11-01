@@ -10,33 +10,8 @@
     }
   },
   "note": "Curated by the VP Legislation, by hand. The nightly fetch never touches this file — parent cards are written consequences, not scraped headlines. Every card needs: kid_impact (one sentence, what changes for a student/family), owner (who actually decides), and at most one action. Keep kid_impact to ONE sentence at a 4th-6th grade reading level: the single-sentence form is the one with evidence behind it, and this audience reads it in four languages. Give any dated coming_up card an 'until' (YYYY-MM-DD): the page hides it the day after, so a past meeting can never sit there saying 'coming up'. Give any card a 'covers' array of items.json ids it accounts for — the nightly gap check flags every district hot item that no card covers, so an uncovered id is a card someone still owes. If an item can't be phrased as a consequence with an owner, it stays in the VP Desk. The watchlist is VP-Desk-only: known scheduled obligations with a date they're expected by — the page flags anything past due that isn't marked done, so a blank where a report should be never goes unnoticed.",
-  "updated": "2026-10-28",
-  "coming_up": [
-    {
-      "id": "coming-board-2026-10-30",
-      "kind": "meeting",
-      "until": "2026-10-30",
-      "when": "2026-10-30T08:30",
-      "location": "Arcadia Education Center Boardroom, 150 South Third Avenue, Arcadia, CA 91006",
-      "title": "October 30: district board planning session",
-      "kid_impact": "The board and staff will discuss plans for the rest of the school year, and families can read the agenda.",
-      "impact_area": "District planning",
-      "owner": "AUSD Board of Education",
-      "time_sensitivity": "October 30 at 8:30 a.m.; agenda reviewed October 28; this is a district meeting, not a PTA meeting",
-      "source_url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=97729",
-      "reviewed_on": "2026-10-28",
-      "disposition": "Optional public participation; no outcome yet",
-      "covers": [
-        "ausd-mtg-2026-10-30"
-      ],
-      "action": {
-        "type": "read",
-        "label": "Read the planning agenda",
-        "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=97729"
-      },
-      "report_summary": "AUSD has an additional board planning session October 30 at 8:30 a.m. The agenda is discussion of the remainder of the fiscal year; it does not establish a decision."
-    }
-  ],
+  "updated": "2026-11-01",
+  "coming_up": [],
   "in_effect": [
     {
       "id": "parent-phones",
@@ -180,25 +155,25 @@
       "id": "parent-spsa-2026",
       "kind": "district",
       "title": "School improvement plans approved for every school",
-      "kid_impact": "The board approved each school's School Plan for Student Achievement, the yearly plan for how Holly Avenue will use its funds to help students learn; ask the office how to read it.",
+      "kid_impact": "Holly Avenue's school plan includes tutoring and other learning supports, and families can ask how to get help.",
       "impact_area": "School goals / funding",
       "owner": "AUSD Board of Education",
-      "time_sensitivity": "Approved October 13, 2026 on the consent agenda; recording reviewed October 21",
+      "time_sensitivity": "Approved October 13; plan content reviewed November 1",
       "source_url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=86673",
       "covers": [
         "ausd-mtg-2026-10-13"
       ],
-      "verification_note": "Agenda consent item IV.e, School Plans for Student Achievement (SPSA). Official recording transcript: no items removed from consent (26:54); motion to approve consent items A-E at 1:54:37; 'The motion carries' at 1:54:43; a board member's closing comment recognized the SPSA approval at 3:04:58. Also at this meeting, for information only: first reading of revised Board Policy 5141.21 on administering medication (staff proposed adding a stock albuterol inhaler program; no vote yet), and the Williams quarterly uniform-complaint summary was zero. A study session covered the district's Behavior Response Team. Recording evidence, not signed minutes; the Holly Avenue plan's contents were not reviewed here.",
+      "verification_note": "Agenda consent item IV.e, School Plans for Student Achievement (SPSA). Official recording transcript: no items removed from consent (26:54); motion to approve consent items A-E at 1:54:37; 'The motion carries' at 1:54:43; a board member's closing comment recognized the SPSA approval at 3:04:58. Also at this meeting, for information only: first reading of revised Board Policy 5141.21 on administering medication (staff proposed adding a stock albuterol inhaler program; no vote yet), and the Williams quarterly uniform-complaint summary was zero. A study session covered the district's Behavior Response Team. Recording evidence, not signed minutes; the Holly Avenue plan's contents were not reviewed here. November 1: reviewed official Holly Avenue SPSA attachment AID=1752059, pages 43-44 and 48. Goal 1 action 4 lists $64,900 for supplemental instruction, with targeted help/tutoring and progress monitoring. Goal 1 action 5 describes special-education support. Goal 3 describes MTSS coordination. The document cover retains October 13 (pending); approval continues to rely on the retained official recording receipt, not that cover. Plan content is not implementation/spending evidence.",
       "verification_url": "https://www.youtube.com/watch?v=A0YHSjbT5Js&t=6877",
       "action": {
-        "type": "check",
-        "label": "Ask the office how to read Holly Avenue's plan",
-        "url": "{{school_site}}"
+        "type": "read",
+        "label": "Read Holly Avenue school plan",
+        "url": "https://simbli.eboardsolutions.com/Meetings/Attachment.aspx?S=36030512&AID=1752059&MID=86673"
       },
-      "reviewed_on": "2026-10-21",
+      "reviewed_on": "2026-11-01",
       "disposition": "For information",
-      "report_summary": "On October 13, the district board approved School Plans for Student Achievement, including Holly Avenue's. The tracker retains an agenda and official-recording receipt for that vote. The plan's actual goals and allocations still need review before we describe particular services or spending.",
-      "spoken_summary": "The district approved Holly Avenue's School Plan for Student Achievement on October 13. My next step is to connect the new results to the plan's goals and supports, without promising services we have not verified."
+      "report_summary": "The board approved Holly Avenue's 2026-27 school plan on October 13. Goal 1 lists $64,900 for supplemental instruction, including tutoring and progress monitoring (pages 43-44), alongside special-education supports. Goal 3 calls for coordinated academic, behavior and well-being support (page 48). These are plan provisions, not proof of actual spending, enrollment or individual service availability.",
+      "spoken_summary": "Holly Avenue's approved school plan lists $64,900 for supplemental instruction, including tutoring and progress monitoring. It also describes special-education and tiered supports. A useful follow-up is how the new results will guide those supports and how families can access help."
     },
     {
       "id": "parent-caaspp-2026",
@@ -207,24 +182,47 @@
       "kid_impact": "Holly Avenue's state report shows strong overall math results and a drop in English scores, giving families a reason to ask about learning support.",
       "impact_area": "Test results / school performance",
       "owner": "California Department of Education",
-      "time_sensitivity": "2026 Dashboard checked October 28; reports prior-year results, not a current classroom diagnosis",
+      "time_sensitivity": "Official 2026 Dashboard rechecked November 1; aggregate prior-year results",
       "source_url": "https://www.caschooldashboard.org/reports/19642616011175/2026/academic-performance",
       "covers": [
         "27f761130722"
       ],
-      "verification_note": "Official 2026 school Dashboard, CDS 19642616011175: ELA Green, 36.6 points above proficient, declined 5.8 points, 402 students; mathematics Blue, 44.3 points above proficient, maintained (-0.2 points), 397 students. Students with disabilities: ELA Orange, 81.1 points below proficient, increased 16 points, 35 students; math Red, 104.5 points below proficient, declined 6.4 points, 35 students. These are aggregate distance-from-proficiency measures, not percentages proficient, and do not establish why scores changed. CDE release #26-44 confirms statewide release October 15. No district-news absence claim is inferred from a quiet RSS feed.",
+      "verification_note": "Official 2026 school Dashboard, CDS 19642616011175: ELA Green, 36.6 points above proficient, declined 5.8 points, 402 students; mathematics Blue, 44.3 points above proficient, maintained (-0.2 points), 397 students. Students with disabilities: ELA Orange, 81.1 points below proficient, increased 16 points, 35 students; math Red, 104.5 points below proficient, declined 6.4 points, 35 students. These are aggregate distance-from-proficiency measures, not percentages proficient, and do not establish why scores changed. CDE release #26-44 confirms statewide release October 15. No district-news absence claim is inferred from a quiet RSS feed. Same school, year, figures, color ratings and sample counts rechecked on the official Dashboard November 1.",
       "action": {
         "type": "read",
         "label": "Read Holly Avenue academic results",
         "url": "https://www.caschooldashboard.org/reports/19642616011175/2026/academic-performance"
       },
-      "reviewed_on": "2026-10-28",
+      "reviewed_on": "2026-11-01",
       "disposition": "For information",
       "report_summary": "Holly Avenue's 2026 Dashboard rates English language arts Green: 36.6 points above proficient, down 5.8 points (402 students). Math is Blue: 44.3 points above proficient, essentially unchanged (-0.2 points; 397 students). Students with disabilities are Orange in English and Red in math (35 students per measure). These are score distances, not percent passing. Ask how the school plan addresses reading trends and supports students who need more help.",
       "schools": [
         "ha"
       ],
       "spoken_summary": "Holly Avenue's new Dashboard is strong overall in math, but English scores declined. Students with disabilities have a weaker math rating than the school overall. I suggest asking how our school plan addresses reading and targeted learning support."
+    },
+    {
+      "id": "parent-medication-2026",
+      "kind": "district",
+      "title": "Medication policy revision is adopted",
+      "kid_impact": "AUSD updated its medication policy, and families can ask the school office how its medication procedures apply to their child.",
+      "impact_area": "School health / medication",
+      "owner": "AUSD board and district health staff",
+      "time_sensitivity": "Adopted policy record revised October 27; verified November 1",
+      "source_url": "https://simbli.eboardsolutions.com/Policy/ViewPolicy.aspx?S=36030512&revid=6Heuta5b29MHRplusKrdHjNqg==&ptid=amIgTZiB9plushNjl6WXhfiOQ==",
+      "reviewed_on": "2026-11-01",
+      "disposition": "For information; school availability not verified",
+      "covers": [
+        "ausd-mtg-2026-10-27"
+      ],
+      "verification_note": "November 1 local-browser policy-library review: BP 5141.21 is marked ADOPTED, original adoption February 28, 2023, last revised/reviewed October 27, 2026. Its text permits the district to stock albuterol inhalers for emergency respiratory distress; this is permission, not a mandate or evidence of Holly Avenue stock, staffing or rollout. The actual vote tally was not verified; the current adopted policy record is the evidence. October 27 recording still showed captions unavailable.",
+      "report_summary": "AUSD's policy library now marks BP 5141.21, Administering Medication and Monitoring Health Conditions, adopted with an October 27 revision. The policy permits the district to stock emergency albuterol inhalers at schools. Holly Avenue's stock and procedures have not been verified; families should use the school office for individual medication arrangements.",
+      "spoken_summary": "The district medication policy is now confirmed adopted with an October 27 revision. It allows emergency albuterol inhalers to be stocked at schools. That does not confirm Holly Avenue's current supply, so families should check medication arrangements with the school office.",
+      "action": {
+        "type": "read",
+        "label": "Read adopted BP 5141.21",
+        "url": "https://simbli.eboardsolutions.com/Policy/ViewPolicy.aspx?S=36030512&revid=6Heuta5b29MHRplusKrdHjNqg==&ptid=amIgTZiB9plushNjl6WXhfiOQ=="
+      }
     }
   ],
   "actions": [
@@ -295,7 +293,7 @@
       "check_url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel44.asp",
       "check_label": "CDE release #26-44 (Oct 15, 2026)",
       "status": "done",
-      "verified_on": "2026-10-28"
+      "verified_on": "2026-11-01"
     },
     {
       "id": "watch-board-reorg",
@@ -318,12 +316,13 @@
     },
     {
       "id": "watch-oct27-outcome",
-      "what": "Verify the October 27 medication-policy vote",
-      "why": "Agenda MID=86679 consent item IV.e is BP 5141.21 revision/second reading. Official recording E_5SQbMDW_I is posted, but captions/transcript were unavailable October 28. Approval and school rollout are not verified; do not infer a vote from the recommendation.",
+      "what": "October 27 medication-policy revision confirmed adopted",
+      "why": "Verified November 1 from the current policy library: BP 5141.21 is ADOPTED and last revised/reviewed October 27. This establishes the adopted policy version, not the vote tally or school-specific implementation.",
       "expected_by": "2026-10-30",
-      "check_url": "https://www.youtube.com/watch?v=E_5SQbMDW_I",
-      "check_label": "October 27 official recording",
-      "status": "open"
+      "check_url": "https://simbli.eboardsolutions.com/Policy/ViewPolicy.aspx?S=36030512&revid=6Heuta5b29MHRplusKrdHjNqg==&ptid=amIgTZiB9plushNjl6WXhfiOQ==",
+      "check_label": "Adopted BP 5141.21",
+      "status": "done",
+      "verified_on": "2026-11-01"
     }
   ],
   "archived_cards": [
@@ -399,18 +398,44 @@
       "report_summary": "The next AUSD board meeting is Tuesday, October 27 at 7 p.m. The agenda was not yet posted on October 21; it usually appears on Simbli the Friday before. Attendance is optional.",
       "archived_on": "2026-10-28",
       "archive_note": "Agenda MID=86679 now reviewed. Recording E_5SQbMDW_I exists but captions/transcript unavailable at review; vote outcome remains explicitly open in watchlist and report. Archiving the reminder does not establish approval."
+    },
+    {
+      "id": "coming-board-2026-10-30",
+      "kind": "meeting",
+      "until": "2026-10-30",
+      "when": "2026-10-30T08:30",
+      "location": "Arcadia Education Center Boardroom, 150 South Third Avenue, Arcadia, CA 91006",
+      "title": "October 30: district board planning session",
+      "kid_impact": "The board and staff will discuss plans for the rest of the school year, and families can read the agenda.",
+      "impact_area": "District planning",
+      "owner": "AUSD Board of Education",
+      "time_sensitivity": "October 30 at 8:30 a.m.; agenda reviewed October 28; this is a district meeting, not a PTA meeting",
+      "source_url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=97729",
+      "reviewed_on": "2026-10-28",
+      "disposition": "Optional public participation; no outcome yet",
+      "covers": [
+        "ausd-mtg-2026-10-30"
+      ],
+      "action": {
+        "type": "read",
+        "label": "Read the planning agenda",
+        "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=97729"
+      },
+      "report_summary": "AUSD has an additional board planning session October 30 at 8:30 a.m. The agenda is discussion of the remainder of the fiscal year; it does not establish a decision.",
+      "archived_on": "2026-11-01",
+      "archive_note": "Scheduled date passed. November 1 review found agenda discussion only and no posted minutes/outcome in this Simbli record; no decision inferred."
     }
   ],
   "publication_note": "Officer-prepared pilot for board review. This page does not represent an adopted PTA position or district guidance. Sources and unresolved questions are shown so the board can assess it before wider sharing.",
   "board_report": {
-    "reviewed_on": "2026-10-28",
-    "review_by": "2026-10-30",
-    "disposition": "Officer-prepared informational update. No PTA policy endorsement or advocacy vote is requested.",
-    "request": "Please allow a short legislation update at each regular PTA meeting and send family questions for follow-up. Please ask the principal how the school plan addresses reading trends and targeted learning support.",
+    "reviewed_on": "2026-11-01",
+    "review_by": "2026-11-02",
+    "disposition": "For information. No motion, PTA policy endorsement or advocacy campaign is requested.",
+    "request": "Suggested follow-up with the principal: how are the new Dashboard results being used to target the school plan's learning supports, and how can families learn what help is available?",
     "card_ids": [
+      "parent-medication-2026",
       "parent-spsa-2026",
-      "parent-caaspp-2026",
-      "parent-materials-2026"
+      "parent-caaspp-2026"
     ],
     "followups": [
       {
@@ -430,65 +455,64 @@
         "result": "Holly Avenue posts the AUSD elementary smart-device policy; the district's Right At School page carries expanded-learning registration and the school program contact."
       },
       {
-        "what": "Confirm October 27 BP 5141.21 vote and review October 30 planning outcome before the next presentation.",
+        "what": "Verify the October 27 medication-policy revision",
         "owner": "VP Legislation",
-        "due": "2026-10-30",
-        "status": "open"
+        "status": "done",
+        "done_on": "2026-11-01",
+        "result": "Current adopted BP 5141.21 is revised/reviewed October 27; no vote-tally or school-rollout claim."
       },
       {
-        "what": "Read Holly Avenue school-plan goals and ask how they address the Dashboard reading trend and learning-support gaps.",
+        "what": "Ask how new school results guide learning supports and how families can find available help.",
         "owner": "VP Legislation; principal is the information source",
         "due": "2026-11-17",
         "status": "open"
       },
       {
-        "what": "Agree the recurring report slot and submission process; record actual presentation and board feedback in the PTA minutes.",
-        "owner": "VP Legislation, with PTA president",
+        "what": "Confirm school-specific medication arrangements before sharing availability details.",
+        "owner": "VP Legislation; school office/district health staff are the information source",
+        "due": "2026-11-17",
+        "status": "open"
+      },
+      {
+        "what": "Record actual report delivery, questions and agreed next steps in the PTA minutes.",
+        "owner": "VP Legislation, with PTA secretary",
         "due": "At the next PTA meeting",
         "status": "open"
       }
     ],
     "resources": [
       {
-        "label": "October 27 district agenda (second reading is not proof of approval)",
-        "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=86679"
+        "label": "Adopted BP 5141.21, revision dated October 27",
+        "url": "https://simbli.eboardsolutions.com/Policy/ViewPolicy.aspx?S=36030512&revid=6Heuta5b29MHRplusKrdHjNqg==&ptid=amIgTZiB9plushNjl6WXhfiOQ=="
       },
       {
-        "label": "October 27 official recording; outcome review pending",
-        "url": "https://www.youtube.com/watch?v=E_5SQbMDW_I"
+        "label": "Holly Avenue 2026-27 school plan, pages 43-44 and 48",
+        "url": "https://simbli.eboardsolutions.com/Meetings/Attachment.aspx?S=36030512&AID=1752059&MID=86673"
       },
       {
-        "label": "October 30 planning agenda",
+        "label": "California State PTA alerts, checked November 1",
+        "url": "https://capta.org/advocacy/take-action/"
+      },
+      {
+        "label": "California State PTA legislation positions, checked November 1",
+        "url": "https://capta.org/advocacy/current-legislation/"
+      },
+      {
+        "label": "October 30 planning record; no outcome inferred",
         "url": "https://simbli.eboardsolutions.com/SB_Meetings/ViewMeeting.aspx?S=36030512&MID=97729"
       },
       {
         "label": "AUSD regular board schedule",
         "url": "https://www.ausd.net/apps/pages/agenda"
-      },
-      {
-        "label": "CDE October 15 results release",
-        "url": "https://www.cde.ca.gov/nr/ne/yr26/yr26rel44.asp"
-      },
-      {
-        "label": "California State PTA action alerts (checked October 28)",
-        "url": "https://capta.org/advocacy/take-action/"
-      },
-      {
-        "label": "California State PTA current legislation (checked October 28)",
-        "url": "https://capta.org/advocacy/current-legislation/"
-      },
-      {
-        "label": "Legislative Advocacy Chair role",
-        "url": "https://capta.org/toolkit/home/job-descriptions/legislative-advocacy-chair/"
       }
     ],
-    "closing": "California State PTA showed no active action alerts when checked October 28. I will verify the medication-policy outcome and follow up on school-plan questions; no advocacy campaign is proposed in this report.",
-    "spoken_intro": "Here is my legislation and district-policy update. I am restarting a short, sourced report for our regular meetings.",
+    "closing": "California State PTA showed no active action alerts when checked November 1. The next regular AUSD board meeting is November 17 at 7 p.m.",
+    "spoken_intro": "I have three legislation and district-policy updates for this month.",
     "limitations": [
-      "October 27 medication policy: the agenda lists BP 5141.21 as consent item IV.e for a second reading. The recording is available, but no transcript was available at review. The vote and Holly Avenue implementation remain unverified.",
-      "AUSD has an October 30 planning meeting at 8:30 a.m.; the next regular district meeting is November 17 at 7 p.m. Recheck outcomes before a later PTA presentation. These district dates are not PTA meetings.",
-      "Historical September/October approvals use retained agenda-plus-recording receipts reviewed October 21, not signed minutes. Dashboard ratings describe aggregate prior-year outcomes and do not explain causes."
+      "The adopted medication policy is verified; its vote tally and Holly Avenue implementation are not. The school plan describes intended supports, not actual spending or guaranteed service places.",
+      "The 2026 Dashboard reports prior-year aggregate results. Score distances are not percentages proficient and do not identify the causes of change.",
+      "The October 30 planning record still shows a discussion agenda without posted minutes or outcome at November 1 review. No new decision is attributed to that session."
     ],
-    "spoken_request": "Please make this a regular short agenda item and send me family questions to follow up."
+    "spoken_request": "I welcome family questions to follow up through our PTA and school channels."
   }
 }
