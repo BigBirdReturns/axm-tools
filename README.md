@@ -133,3 +133,6 @@ The [compute desk](https://github.com/BigBirdReturns/cantos/tree/main/compute) a
 ## Atmark storefront and catalogue workshop
 
 [Open the independent preview](https://bigbirdreturns.github.io/axm-tools/atmark/) · [Source and operating instructions](atmark/README.md). A free, local-first toolkit for a public 53-listing subset: source-bound catalogue normalisation, review queues, comparisons, CSV intake, image preparation and portable export. It contains no seller write integration. Qualification is retained in `atmark/data/qualification.json`.
+
+
+Field Desk 2.0 redesign: the public retained-work/review/ now uses a coherent seven-view shell, source-derived native SVG atlas, universal search, preserved evidence history, detailed action cards and a readable bilingual library. The original map remains available as a source-fidelity view. No native private runtime or user journal was replaced.

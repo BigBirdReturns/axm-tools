@@ -18,3 +18,4 @@ jobs:
         run: |
           python3 -B retained-work/scripts/check.py
           python3 -B retained-work/scripts/check_map.py
+          python3 -B retained-work/scripts/check_product.py

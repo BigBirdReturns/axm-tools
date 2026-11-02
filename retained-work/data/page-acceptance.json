@@ -1,217 +1,244 @@
 {
-  "schema": "retained-work/public-map-acceptance@2",
-  "release": "1.1.0",
+  "schema": "retained-work/product-acceptance@2",
+  "public_product": "Suginami Field Desk 2.0.0",
+  "private_native_release": "1.1.0, unchanged",
   "status": "PASS",
-  "page_sha256": "06a0c3bc4fe74ed986161bcf49da3d0a0e0955ceefb0abb3fda40e4aa4bc146e",
-  "map_files": {
-    "map/index.html": "12edeb54e8ff25dbb69e17045c322f6750a95e4dba2bf070613def18bd872a56",
-    "map/bridge.js": "fbbd5451935f1673ff5995b121bca65b5b16eb559f74aded8cb94f6efef86897",
-    "map/assets/index-CfXUNPWr.js": "93fd6ebe6bbc03d11b1d88389de05b810b987d7e01196b28e14e283fe12e5ea4",
-    "map/assets/data-wdyG7mqn.js": "bf899c15cb1fe6205d6dc8319c1722aab5d857b56bd62efd42d39424f7e9d8e5",
-    "review/index.html": "74a2739f4e9238e80db6944e56e70a09055126b587375688ac602257ef20dfe8",
-    "review/core.js": "2f0a7091ea6f3fc4a1666c0ed5af289c203f5962e0b55504e06044f5d05272fd",
-    "review/app.js": "162849bab5a3acead5b760501b079387aed08ad145330027a803fba2af40b0cd",
-    "data/map-data.json": "200b9c043441deb52b561e3ff7856aef38e219aecd609fa47500c8948f5bd051",
-    "data/access-ledger.json": "f137ddafffd66c0a87f2afc2a2df1637bc5f5b1b8efab2525262e24b05280178"
+  "product_browser_checks": 99,
+  "brief_browser_checks": 39,
+  "static_checks": {
+    "check.py": 20,
+    "check_map.py": 23,
+    "check_product.py": 27
   },
-  "static_brief_checks": 20,
-  "static_map_checks": 23,
-  "actual_map_browser_checks": 62,
-  "actual_brief_browser_checks": 39,
-  "original_archive_sha256": "88e7524c2a6dc831f3cb4c70d6f5220458dcc79edd68fdbdbd5e948c5d2e986f",
-  "map_checks": [
+  "source_hashes": {
+    "review/index.html": "d51b63a25c2c44d9e282fffd63737a70af5ea0d80282abdf685ceb5d18f99518",
+    "review/app.js": "4dc92bd1de037a81c8c984000916efa2ad657252e2242ef038ab89fe586aac73",
+    "review/product.css": "76b39442602cf4762f44a73cc07b25fb9b888d7fc4ad94e265c5ae3f00777047",
+    "review/atlas.js": "6fd3e06e16bd7aeb8cef6eec284e72b0dc564251c2612138b30021171a79ae8f",
+    "review/icons.js": "73ad16b7602fa13efd77d3124d446c383ca0b75433c25cb140774ad6ed77772a",
+    "review/core.js": "2f0a7091ea6f3fc4a1666c0ed5af289c203f5962e0b55504e06044f5d05272fd",
+    "data/geography.js": "4d336b575e1c4931cb1c705dc3215d46fd633fa730419e42fb3f69cf891283dd",
+    "assets/suginami-atlas.svg": "5c956f20fb555c42b0281f696e8cae557f6c50c8b9a9bf68241c7656d414dc8d"
+  },
+  "brief_sha256": "8d87c435cb0748a3f3dc8fe7ea3eb64dd6f52b86d263812a2a12d990edce023d",
+  "checks": [
     {
-      "name": "actual_original_map_drawn",
+      "name": "ready_with_original_data",
       "pass": true,
       "detail": null
     },
     {
-      "name": "nine_layer_controls",
+      "name": "single_app_no_map_iframe",
       "pass": true,
       "detail": null
     },
     {
-      "name": "original_full_dataset_retained",
+      "name": "keyboard_command_palette_opens",
       "pass": true,
       "detail": null
     },
     {
-      "name": "author_provenance_notice_visible",
+      "name": "keyboard_escape_closes_palette",
       "pass": true,
       "detail": null
     },
     {
-      "name": "layer_toggle_0",
+      "name": "nine_layers",
       "pass": true,
       "detail": null
     },
     {
-      "name": "layer_toggle_1",
+      "name": "map_fills_available_canvas",
       "pass": true,
       "detail": null
     },
     {
-      "name": "layer_toggle_2",
+      "name": "layer_ward",
       "pass": true,
       "detail": null
     },
     {
-      "name": "layer_toggle_3",
+      "name": "layer_smb",
       "pass": true,
       "detail": null
     },
     {
-      "name": "layer_toggle_4",
+      "name": "layer_chome",
       "pass": true,
       "detail": null
     },
     {
-      "name": "layer_toggle_5",
+      "name": "layer_stations",
       "pass": true,
       "detail": null
     },
     {
-      "name": "layer_toggle_6",
+      "name": "layer_care",
       "pass": true,
       "detail": null
     },
     {
-      "name": "layer_toggle_7",
+      "name": "layer_accountants",
       "pass": true,
       "detail": null
     },
     {
-      "name": "layer_toggle_8",
+      "name": "layer_anime",
       "pass": true,
       "detail": null
     },
     {
-      "name": "all_ten_original_actions_present",
+      "name": "layer_shotengai",
       "pass": true,
       "detail": null
     },
     {
-      "name": "map_report_is_not_review_acceptance",
+      "name": "layer_landprice",
       "pass": true,
       "detail": null
     },
     {
-      "name": "map_reload_recovers_report",
+      "name": "actual_place_search",
       "pass": true,
       "detail": null
     },
     {
-      "name": "map_export_matches_event_count",
+      "name": "feature_inspector_source",
       "pass": true,
       "detail": null
     },
     {
-      "name": "original_fact_select_exposes_review_link",
+      "name": "zoom",
       "pass": true,
       "detail": null
     },
     {
-      "name": "map_to_exact_claim_navigation",
+      "name": "fit",
       "pass": true,
       "detail": null
     },
     {
-      "name": "embedded_map_selection_reaches_parent",
+      "name": "visible_station_labels_do_not_overlap",
       "pass": true,
       "detail": null
     },
     {
-      "name": "45_searchable_claims",
+      "name": "safe_route_#bogus",
       "pass": true,
       "detail": null
     },
     {
-      "name": "claim_search_filters_original_content",
+      "name": "safe_route_#claim=%",
       "pass": true,
       "detail": null
     },
     {
-      "name": "selection_links_exact_claim",
+      "name": "safe_route_#action=%",
       "pass": true,
       "detail": null
     },
     {
-      "name": "absent_quote_refused_without_mutation",
+      "name": "safe_route_#place=%",
       "pass": true,
       "detail": null
     },
     {
-      "name": "malformed_source_url_refused",
+      "name": "global_search",
       "pass": true,
       "detail": null
     },
     {
-      "name": "unicode_quote_exactly_bound",
+      "name": "exact_claim_route",
       "pass": true,
       "detail": null
     },
     {
-      "name": "author_grade_unchanged_after_binding",
+      "name": "metadata_only_source_draft_preserved",
       "pass": true,
       "detail": null
     },
     {
-      "name": "review_is_separate_attributed_event",
+      "name": "bad_quote_refused",
       "pass": true,
       "detail": null
     },
     {
-      "name": "ten_action_details",
+      "name": "draft_preserved_across_navigation",
       "pass": true,
       "detail": null
     },
     {
-      "name": "stale_fix_description_has_current_disposition",
+      "name": "quote_exact",
       "pass": true,
       "detail": null
     },
     {
-      "name": "separate_action_review_recorded",
+      "name": "separate_review_event",
       "pass": true,
       "detail": null
     },
     {
-      "name": "missing_cost_is_not_zero",
+      "name": "source_calendar_and_offset_preserved",
       "pass": true,
       "detail": null
     },
     {
-      "name": "negative_savings_saved",
+      "name": "insufficient_review_not_green_acceptance",
       "pass": true,
       "detail": null
     },
     {
-      "name": "produced_not_automatically_adopted",
+      "name": "coverage_uses_real_saved_events",
       "pass": true,
       "detail": null
     },
     {
-      "name": "same_operation_id_is_idempotent",
+      "name": "view_navigation_resets_reading_position",
       "pass": true,
       "detail": null
     },
     {
-      "name": "operation_identity_conflict_refused",
+      "name": "ten_action_cards_and_five_dates",
       "pass": true,
       "detail": null
     },
     {
-      "name": "self_rehashed_wrong_quote_import_refused",
+      "name": "report_not_acceptance",
       "pass": true,
       "detail": null
     },
     {
-      "name": "divergent_history_preserves_current_work",
+      "name": "missing_cost_not_zero",
       "pass": true,
       "detail": null
     },
     {
-      "name": "encrypted_export_contains_no_plain_source",
+      "name": "live_negative_cost_preview",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "negative_cost_saved",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "stages_remain_distinct",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "readable_history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "download_five_events",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "encrypted_not_plaintext",
       "pass": true,
       "detail": null
     },
@@ -221,27 +248,32 @@
       "detail": null
     },
     {
-      "name": "restoring_same_history_is_idempotent",
+      "name": "restore_exact_history",
       "pass": true,
       "detail": null
     },
     {
-      "name": "fresh_workspace_starts_empty",
+      "name": "all_fourteen_items",
       "pass": true,
       "detail": null
     },
     {
-      "name": "fresh_workspace_restore_preserves_exact_head",
+      "name": "document_filter",
       "pass": true,
       "detail": null
     },
     {
-      "name": "restored_source_review_cost_survive_reload",
+      "name": "original_document_access",
       "pass": true,
       "detail": null
     },
     {
-      "name": "access_ledger_reaches_actual_items",
+      "name": "document_has_readable_inline_structure",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "document_bilingual_section_navigation",
       "pass": true,
       "detail": null
     },
@@ -251,17 +283,107 @@
       "detail": null
     },
     {
-      "name": "review_no_overflow_en_1440",
+      "name": "no_overflow_en_1440_overview",
       "pass": true,
       "detail": null
     },
     {
-      "name": "review_no_overflow_en_390",
+      "name": "no_overflow_en_1440_map",
       "pass": true,
       "detail": null
     },
     {
-      "name": "review_no_overflow_en_320",
+      "name": "no_overflow_en_1440_claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_1440_actions",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_1440_costs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_1440_history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_1440_library",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_390_overview",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_390_map",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_390_claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_390_actions",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_390_costs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_390_history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_390_library",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_320_overview",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_320_map",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_320_claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_320_actions",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_320_costs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_320_history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_en_320_library",
       "pass": true,
       "detail": null
     },
@@ -271,71 +393,146 @@
       "detail": null
     },
     {
-      "name": "review_no_overflow_ja_1440",
+      "name": "no_overflow_ja_1440_overview",
       "pass": true,
       "detail": null
     },
     {
-      "name": "review_no_overflow_ja_390",
+      "name": "no_overflow_ja_1440_map",
       "pass": true,
       "detail": null
     },
     {
-      "name": "review_no_overflow_ja_320",
+      "name": "no_overflow_ja_1440_claims",
       "pass": true,
       "detail": null
     },
     {
-      "name": "map_language_preference",
+      "name": "no_overflow_ja_1440_actions",
       "pass": true,
       "detail": null
     },
     {
-      "name": "map_no_overflow_1440",
+      "name": "no_overflow_ja_1440_costs",
       "pass": true,
       "detail": null
     },
     {
-      "name": "map_no_overflow_390",
+      "name": "no_overflow_ja_1440_history",
       "pass": true,
       "detail": null
     },
     {
-      "name": "map_no_overflow_320",
+      "name": "no_overflow_ja_1440_library",
       "pass": true,
       "detail": null
     },
     {
-      "name": "downloaded_kit_all_manifest_entries_match",
+      "name": "no_overflow_ja_390_overview",
       "pass": true,
       "detail": null
     },
     {
-      "name": "downloaded_offline_kit_opens_working_desk",
+      "name": "no_overflow_ja_390_map",
       "pass": true,
       "detail": null
     },
     {
-      "name": "downloaded_offline_kit_draws_original_map",
+      "name": "no_overflow_ja_390_claims",
       "pass": true,
       "detail": null
     },
     {
-      "name": "no_page_exceptions",
+      "name": "no_overflow_ja_390_actions",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_ja_390_costs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_ja_390_history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_ja_390_library",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_ja_320_overview",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_ja_320_map",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_ja_320_claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_ja_320_actions",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_ja_320_costs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_ja_320_history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_overflow_ja_320_library",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "reload_history_and_language",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "saved_source_visible_after_reload",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "zero_page_errors",
       "pass": true,
       "detail": []
     },
     {
-      "name": "no_external_data_requests",
+      "name": "zero_external_requests",
       "pass": true,
       "detail": []
     }
   ],
-  "offline_kit": {
-    "status": "PACKAGED",
-    "zip_bytes": 353452,
-    "zip_sha256": "a2cebb5e8e9558ac71e51c32c7375ceb6546c85acdc87bb9174773043aa33dfc",
-    "manifest_files": 27
-  },
-  "scope": "Actual original-map and local browser workflow acceptance with isolated user fixtures. No native/private source runtime or customer authority is implied. Live deployment separately verified after publication."
+  "geographic_layers": 9,
+  "geographic_features": 656,
+  "original_claims": 45,
+  "original_relations": 15,
+  "original_actions": 10,
+  "access_entries": 14,
+  "original_journal_engine_unchanged": true,
+  "original_geographic_module_unchanged": true,
+  "visual_inspection": [
+    "desktop overview",
+    "desktop atlas",
+    "mobile atlas",
+    "research detail",
+    "document reader",
+    "bilingual project hero"
+  ],
+  "scope": "Public UX and existing browser-local workflows on exact candidate bytes. Historical native qualification, source truth and customer adoption remain separate. Live deployment and offline-package launch are checked separately."
 }

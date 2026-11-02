@@ -1,19 +1,35 @@
 {
-  "schema": "retained-work/access-ledger@2",
+  "schema": "retained-work/access-ledger@3",
   "date": "2026-11-01 Pacific",
   "scope": "Public map and browser-local work, linked existing public applications, explicitly private native runtime and unobserved external inputs.",
   "items": [
     {
-      "id": "map",
+      "id": "field-guide",
       "title": {
-        "en": "Original interactive Suginami map",
-        "ja": "元の杉並インタラクティブ地図"
+        "en": "Using Suginami Field Desk",
+        "ja": "杉並フィールドデスクの使い方"
       },
       "description": {
-        "en": "The actual supplied geographic application: all nine layers, 45 claims, 15 relations and ten proposed actions.",
-        "ja": "提供された地理アプリそのもの。九レイヤー、45主張、15関係、十アクションを保持します。"
+        "en": "A complete English/Japanese guide to the atlas, search, source review, action plan, costs, documents and browser recovery.",
+        "ja": "地図、検索、出典審査、行動計画、費用、資料、ブラウザー復旧の英語・日本語説明。"
       },
-      "href": "../map/",
+      "href": "../library/FIELD_DESK_GUIDE_EN_JA.md",
+      "status": {
+        "en": "PRODUCT GUIDE · EN / JA",
+        "ja": "製品の操作説明 · 英語 / 日本語"
+      }
+    },
+    {
+      "id": "map",
+      "title": {
+        "en": "Suginami atlas and original geography",
+        "ja": "杉並アトラスと原資料の地理"
+      },
+      "description": {
+        "en": "All nine original layers in the redesigned atlas: place search, source inspectors, layer presets, zoom, pan and an accessible list. The original compiled view remains available.",
+        "ja": "元の九レイヤーを新しい地図で探索。場所検索、出典検査、レイヤーセット、拡大縮小、移動、一覧を備えます。元のアプリ表示も残ります。"
+      },
+      "href": "#map",
       "status": {
         "en": "RUNS IN THE BROWSER",
         "ja": "ブラウザーで動作"

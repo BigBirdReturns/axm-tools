@@ -1,0 +1,341 @@
+{
+  "schema": "retained-work/public-map-acceptance@2",
+  "release": "1.1.0",
+  "status": "PASS",
+  "page_sha256": "06a0c3bc4fe74ed986161bcf49da3d0a0e0955ceefb0abb3fda40e4aa4bc146e",
+  "map_files": {
+    "map/index.html": "12edeb54e8ff25dbb69e17045c322f6750a95e4dba2bf070613def18bd872a56",
+    "map/bridge.js": "fbbd5451935f1673ff5995b121bca65b5b16eb559f74aded8cb94f6efef86897",
+    "map/assets/index-CfXUNPWr.js": "93fd6ebe6bbc03d11b1d88389de05b810b987d7e01196b28e14e283fe12e5ea4",
+    "map/assets/data-wdyG7mqn.js": "bf899c15cb1fe6205d6dc8319c1722aab5d857b56bd62efd42d39424f7e9d8e5",
+    "review/index.html": "74a2739f4e9238e80db6944e56e70a09055126b587375688ac602257ef20dfe8",
+    "review/core.js": "2f0a7091ea6f3fc4a1666c0ed5af289c203f5962e0b55504e06044f5d05272fd",
+    "review/app.js": "162849bab5a3acead5b760501b079387aed08ad145330027a803fba2af40b0cd",
+    "data/map-data.json": "200b9c043441deb52b561e3ff7856aef38e219aecd609fa47500c8948f5bd051",
+    "data/access-ledger.json": "f137ddafffd66c0a87f2afc2a2df1637bc5f5b1b8efab2525262e24b05280178"
+  },
+  "static_brief_checks": 20,
+  "static_map_checks": 23,
+  "actual_map_browser_checks": 62,
+  "actual_brief_browser_checks": 39,
+  "original_archive_sha256": "88e7524c2a6dc831f3cb4c70d6f5220458dcc79edd68fdbdbd5e948c5d2e986f",
+  "map_checks": [
+    {
+      "name": "actual_original_map_drawn",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "nine_layer_controls",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "original_full_dataset_retained",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "author_provenance_notice_visible",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "layer_toggle_0",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "layer_toggle_1",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "layer_toggle_2",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "layer_toggle_3",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "layer_toggle_4",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "layer_toggle_5",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "layer_toggle_6",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "layer_toggle_7",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "layer_toggle_8",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "all_ten_original_actions_present",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "map_report_is_not_review_acceptance",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "map_reload_recovers_report",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "map_export_matches_event_count",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "original_fact_select_exposes_review_link",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "map_to_exact_claim_navigation",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "embedded_map_selection_reaches_parent",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "45_searchable_claims",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "claim_search_filters_original_content",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "selection_links_exact_claim",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "absent_quote_refused_without_mutation",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "malformed_source_url_refused",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unicode_quote_exactly_bound",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "author_grade_unchanged_after_binding",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review_is_separate_attributed_event",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "ten_action_details",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "stale_fix_description_has_current_disposition",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "separate_action_review_recorded",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "missing_cost_is_not_zero",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "negative_savings_saved",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "produced_not_automatically_adopted",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "same_operation_id_is_idempotent",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "operation_identity_conflict_refused",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "self_rehashed_wrong_quote_import_refused",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "divergent_history_preserves_current_work",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "encrypted_export_contains_no_plain_source",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "wrong_password_refused",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "restoring_same_history_is_idempotent",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "fresh_workspace_starts_empty",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "fresh_workspace_restore_preserves_exact_head",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "restored_source_review_cost_survive_reload",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "access_ledger_reaches_actual_items",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "language_en",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review_no_overflow_en_1440",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review_no_overflow_en_390",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review_no_overflow_en_320",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "language_ja",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review_no_overflow_ja_1440",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review_no_overflow_ja_390",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review_no_overflow_ja_320",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "map_language_preference",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "map_no_overflow_1440",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "map_no_overflow_390",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "map_no_overflow_320",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "downloaded_kit_all_manifest_entries_match",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "downloaded_offline_kit_opens_working_desk",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "downloaded_offline_kit_draws_original_map",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_page_exceptions",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "no_external_data_requests",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "offline_kit": {
+    "status": "PACKAGED",
+    "zip_bytes": 353452,
+    "zip_sha256": "a2cebb5e8e9558ac71e51c32c7375ceb6546c85acdc87bb9174773043aa33dfc",
+    "manifest_files": 27
+  },
+  "scope": "Actual original-map and local browser workflow acceptance with isolated user fixtures. No native/private source runtime or customer authority is implied. Live deployment separately verified after publication."
+}
