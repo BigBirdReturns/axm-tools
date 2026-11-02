@@ -41,8 +41,8 @@ def main():
  check('no_native_api_imitation','/api/' not in bridge and '/api/' not in core and '/api/' not in app)
  check('browser_state_durability_and_integrity','navigator.locks.request' in core and 'event_checksum' in core and 'source_checksum' in core and 'divergent_history_preserved' in core)
  check('encrypted_export_distinct_from_native','suginami/public-browser-encrypted@1' in core and 'contains_signing_keys:false' in core)
- check('all_inclusion_dispositions_exposed',len(json.loads((ROOT/'data/access-ledger.json').read_bytes())['items'])==13)
- check('direct_map_and_desk_on_front_door','href="review/"' in (ROOT/'index.html').read_text() and 'href="map/"' in (ROOT/'index.html').read_text())
+ check('all_inclusion_dispositions_exposed',{x['id'] for x in json.loads((ROOT/'data/access-ledger.json').read_bytes())['items']}=={'field-guide','map','claims','actions','costs','recovery','native','pilot','mathematics','continuity','research','peer','business','unresolved'})
+ check('direct_map_and_desk_on_front_door',bool(re.search(r'href="review/(?:\?[^"]*)?"',(ROOT/'index.html').read_text())) and 'href="map/"' in (ROOT/'index.html').read_text())
  check('no_font_files_distributed',not any(f.suffix in ['.woff','.woff2','.ttf','.otf'] for f in ROOT.rglob('*')))
  check('no_font_face_requests','@font-face' not in (ROOT/'map/assets/index-Xv0lQ5x8.css').read_text())
  forbidden=[r'C:\\Users\\',r'/mnt/w03data/',r'/home/jonathan/',r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',r'gh[pousr]_[A-Za-z0-9]{20,}']

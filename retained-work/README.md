@@ -1,45 +1,57 @@
-# Retained Work 1.1: the actual map and working desk
+# Retained Work and Suginami Field Desk 2.0
 
-The public entry now includes the original Suginami geographic application and a working browser-local review desk, in addition to the bilingual engineering/commercial explanation. The earlier 1.0 publication described the map but did not let a recipient use it. This successor fixes that delivery gap rather than claiming the description was the product.
+Open `review/` for the working product. Open the directory's `index.html` for the full bilingual project explanation, finite-model and operational evidence, conceptual overlaps and proposed engagement. `map/` preserves the original supplied compiled map as an alternative view. The native Suginami 1.1 application remains a separate private runtime; Field Desk 2.0 is the public browser-local product, not a new native release.
 
-## Open the work
+## Product structure
 
-- `review/`: the unified map, all 45 claims, all 15 original relationships, ten actions, source/quotation bindings, separate reviews, paired costs, delivery stages, history and recovery.
-- `map/`: the actual supplied nine-layer map in full-screen form. Its original geographic data module is byte-identical to the supplied archive; the application has narrowly scoped path, journal, language and attribution changes.
-- `index.html`: the complete English/Japanese system map, seven-region overlap diagram, historical evidence and proposed engagement.
-- `data/access-ledger.json`: every component's actual access location and status, including what remains private or genuinely unobserved. A local installation is not described as a public web service.
-- `downloads/Suginami_Public_Map_Kit.zip`: the complete static map, desk, public baseline data, explanations and a standard-library loopback launcher. No fonts, private runtime, keys or customer records are included.
+Field Desk has one application shell and seven views: Overview, Atlas, Research, Action plan, Costs & delivery, History & recovery, and Library & access. Global search, available through Ctrl/Command K, finds original claims, actions, place records and documents in both languages. Claims, actions and selected places have explicit routes. The atlas is a native SVG component, not an iframe containing another application's navigation.
 
-The original map remains the geographic starting point. Its author-assigned grades, action wording, dependency graph, proposed deadlines and identifiers remain attributed original material. The old `45 facts · 22 sources` presentation now identifies 45 author claims and incomplete primary-source records. A separate dated note explains why the old fix-map action text no longer describes the supplied build. No original claim is silently certified or rewritten.
+The redesigned map uses the exact geographic object extracted from the supplied data module. It retains all nine layers, 656 geometric features, 45 claims, 15 authored relationships and ten action/dependency records. Source fields and original object identities remain inspectable. Business shading represents supplied establishment counts per neighborhood; it does not invent area-normalized density. The rail layer contains 14 station points and four approximate lines. Source attribution and limitations are visible in the feature inspector. Collision-aware labels, layer presets, feature search, keyboard pan/zoom, fit controls and a searchable/paginated place list provide alternate access.
 
-## Browser-local operation and recovery
+Research separates author grades, local source attachments and subsequent reviews. Source quotation matching is an exact local test, while a separate attributed review records scope and interpretation. In-session source drafts, including metadata-only drafts, follow their claim across navigation. Saved records continue to use the existing journal. Action cards expose original instructions, proposed dates, prerequisites, successors, linked claims and attributed comments. Progress reports do not become artifact acceptance automatically.
 
-The map and review desk share one browser-local journal under `suginami-public-journal-v1`. Progress reports and evidence-backed local review are different event types. Source binding preserves supplied UTF-8 text, exact quotation and its character span, declared source URL/time and content hash. An attributed review is separate from matching the quote. Self-reported actors, local hashes and the original author's grade establish neither source authenticity nor an institution's authority.
+Costs include all six existing categories and preserve negative results. Delivery stages stay distinct. History provides a readable timeline plus the exact event record, plain export/import and encrypted browser backup. Library provides categorized access to fourteen actual public tools, guides, evidence descriptions and named external-input boundaries. Public Markdown guides open in a formatted reader with bilingual section navigation and original downloads.
 
-Writes serialize through Web Locks and atomically replace one localStorage value. The journal validates sequence, unique operation IDs, an event hash chain, source text hashes and quote spans. Reloads reconstruct saved state; an idempotent retry adds no duplicate. Import accepts a matching history or a valid extension. Divergent histories are preserved by refusal rather than overwritten. Clearing browser storage can erase this local copy, so export meaningful work. A browser which lacks the required lock or cryptography API fails visibly rather than silently writing a weaker record.
+## Assets, data and custody
 
-Plain exports contain the operator-supplied source text and actor names. They remain local files until deliberately shared. Passphrase backups use WebCrypto AES-GCM with PBKDF2-SHA256 at 250,000 iterations, a random salt and IV, and a minimum 12-character passphrase. Offline guessing resistance depends on the passphrase. The application retains no passphrase. This browser journal has no signing key; its backup is deliberately distinct from the private native workspace's scrypt-based encrypted recovery. Do not enter secrets or confidential client data on a shared public-site origin.
+`assets/suginami-atlas.svg` is drawn from the supplied polygons and station/rail geometry. `assets/field-mark.svg` and `review/icons.js` are original UI symbols, not substitutes for the AXM/SCG identity. System fonts are used; no font file is distributed. No external photographs, imagery service, tile server, geocoder, model, API key, analytics or billing dependency is introduced. `assets/ASSETS.json` and `data/geography-provenance.json` retain the exact source identities and projection boundary.
 
-Cost records preserve six categories on each side: collection, original checking, reuse checking, human review, maintenance and exceptions. Missing values are refused and negative net savings remain negative. Declared scenarios and operator-reported measurements remain distinguishable; measurements require an evidence identity and still represent the actor's report, not an independent audit. Produced, verified, delivered, acknowledged, understood and adopted remain six separate recorded stages.
+The original `map/assets/data-wdyG7mqn.js` remains byte-identical. `data/geography.js` is a reviewed static projection for the redesigned renderer; it is not a new observation. The original 45 claims and their grades remain author supplied. Missing primary-source originals are not invented. Raw geography, source dates, affiliations and public-source facts do not acquire independent authority through improved visual design.
 
-## The native product and existing bodies of work
+The existing `review/core.js`, journal key and schema remain byte-identical to the prior public release. There is no migration, journal clearing or replacement. Saved browser history and its hash/sequence/quote checks remain authoritative for this browser workspace. Source dates retain their written calendar day and timezone instead of silently becoming a different date in the viewing machine's timezone. Local actor identities remain self-reported.
 
-The installed Suginami 1.1 runtime remains the authority for actual NTA signature verification, new invoice-case production and first-admission checks, receiving rules, signed peer identities, and native full-workspace recovery. The public browser desk does not imitate its `/api` endpoints, invoke the estate, or promote local browser records into native receiving authority. The actual bilingual operating guide and pilot sheet are downloadable under `library/`. The owner's existing desktop launcher is unchanged. Browser exports can be handled as supplied evidence files; no automatic browser-to-native state merge is claimed.
+User records stay in the visitor's browser unless explicitly exported. Plain exports include supplied text and recorder names. This public-site origin is unsuitable for confidential client data or secrets. The native installation retains official NTA signature verification, case production/admission, signed peer identities and native whole-workspace recovery. No public-page control impersonates those services, uploads user records, reaches estate machines, sends messages or makes institutional decisions.
 
-Research Continuity, the civil-continuity application, Cantos and the prior procedure-reuse instrument retain their public owners and direct links. The finite mathematical result and operational-floor precedent remain in the main brief with their exact bounded source projections. The original private technical PDF, partner manuscripts and correspondence remain in the installed Related work library or their original custody; they are not silently represented as downloadable public originals.
+## Files
 
-## Offline kit
+All files are steward-owned. There is no new scheduler or machine-written source state.
 
-Extract `Suginami_Public_Map_Kit.zip`. On Windows run `START_MAP.cmd`; with Python 3 run `python -B scripts/serve_local.py`. The loopback helper serves only the extracted public tool directory, defaults to port 8770 and opens `/review/`. It requires no third-party package, account, credential or external source fetch. Browser-local storage belongs to the local origin, separate from GitHub Pages; use the explicit journal export/import to continue your work there. Existing other public applications require a connection and are linked to their real public addresses.
+- `review/index.html`, `product.css`, `app.js`, `atlas.js`, `icons.js`: product shell, design system, controller and native cartography.
+- `review/core.js`: unchanged browser-journal authority.
+- `assets/`: original source-derived cartography and interface assets, with provenance.
+- `data/map-data.*`: original claims, actions and relationships.
+- `data/geography.js`, `geography-provenance.json`: exact original geometric object and identity.
+- `data/access-ledger.json`: fourteen explicit access dispositions.
+- `map/`: retained original compiled geographic application, its public journal bridge and presentation-only polish.
+- `library/FIELD_DESK_GUIDE_EN_JA.md`: current public-product operating guide. The native 1.1 operating guide and pilot sheet retain their original scope.
+- `index.html`, `engagement-brief.md`: complete bilingual project and commercial explanation, with the same source-derived visual system.
+- `data/evidence.json`, `operations.json`, `finite-model.json`: historical qualification projections, not fresh external audits.
+- `scripts/check.py`, `check_map.py`, `check_product.py`: stdlib static/source/custody checks.
 
-## Source and acceptance
+## Qualification and publication
 
-`data/SOURCE_MAP.json` records the supplied archive hash and original/published identities of every map asset. `data/map-data.json` preserves the extracted claim, relation and action objects. `scripts/check_map.py` verifies source identity, reference closure, data counts, asset hashes, dependency acyclicity, local runtime closure and public custody. `scripts/check.py` continues to check the explanatory surface. The actual browser campaign exercises the original geographic interface, all nine controls, local writes and reloads, source binding, separate review, costs, stage recording, malformed inputs, export, encryption and restored state on a fresh local origin. Browser acceptance and live readback remain separate records.
+Run all three static validators from the repository root. Native browser acceptance separately exercises the actual product, both languages and 1440/390/320 layouts. It checks original data, all layers, place search, zoom/fit, exact routes, malformed route recovery, source drafts, quote refusal, review separation, costs, stages, journal exports, encrypted restore, real document access, reload continuity and absence of external requests. Public live readback verifies exact deployed bytes and reruns the browser paths after the unchanged normal Pages pipeline.
 
-The old page's acceptance remains historical in `data/page-acceptance-1.0.0.json`. The current page/map acceptance is identified separately. No old receipt is rewritten to imply a new test. Prior Suginami native test counts remain component evidence rather than tests of this public UI.
+The existing shared-site publisher, release gate and Cantos compatibility stage remain unchanged. The `retained-work-check.yml` workflow checks this directory; it is not a second publisher. Private runtime data, keys, credentials, original correspondence and native operator state remain outside the public tree.
 
-## Ownership and publication
+## Offline use
 
-All committed files in this tool are steward-owned. Visitor journals live only in their browser and never enter repository commits. There is no new server, account, scheduled job, public write endpoint, analytics service or second Pages publisher. The existing main-push publication path and its existing qualification/compatibility stages remain unchanged. No automatic outbound communication, institutional enrollment, financial commitment, tax submission or insurance decision occurs.
+Download `downloads/Suginami_Public_Map_Kit.zip`, extract it, and run `START_MAP.cmd` on Windows or `python3 -B scripts/serve_local.py` elsewhere with Python 3.11 or newer. The stdlib server binds only to localhost and opens the same product. All required code and source data are included. Related external projects still require their own destination or connection. Export/import carries browser journals between public and local origins; the application never silently transfers them.
 
-Japanese application copy is a working translation, not an approved legal translation. Original source quotations and taxonomy values preserve their original language and status. The original font-containing ZIP and all font files remain outside distribution.
+The main explanatory page additionally supports a self-contained HTML save. The functional atlas and desk use the complete kit because their real modules and data must accompany them.
+
+## Evidence and completion boundaries
+
+Historical software tests are scoped to their exact paths. Improved styling does not establish a customer, institutional acceptance, professional translation approval, measured labor savings or an insurance guarantee. The proposed implementation remains $35,000 for six weeks, with $17,500 at signing and $17,500 upon contractual acceptance; the separate audit proposal remains $15,000. Existing intellectual-property and authority boundaries remain controlling.
+
+Japanese interface text and guides are working explanatory copy. Original source wording and historical documents remain in their original languages where appropriate. New observations, supported defects or specifically authorized scope changes warrant new work; a fresh conversation does not reopen completed calculations merely to reconstruct context.
