@@ -14,7 +14,6 @@ Old HTML addresses under the seven migrated directories redirect to the matching
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
-| [`retained-work/`](retained-work/) | Actual Suginami map and browser-local claim/action/evidence desk, plus bilingual architecture, scoped evidence and proposed engagement | [Open the complete brief](https://bigbirdreturns.github.io/axm-tools/retained-work/) |
 | [`research-continuity/`](research-continuity/) | Retained-judgment workbench: original reasons and alternatives, current conditions, explicit obligations/discharge/reopening, successor history, native Genesis sealing and separate-machine verification; connected measurement and research instruments | [Run Research Continuity](https://bigbirdreturns.github.io/axm-tools/research-continuity/) |
 | [`shelf/`](https://bigbirdreturns.github.io/cantos/shelf/) (moved to Cantos) | Claims about compute filed side by side: a five-question card format, a stdlib validator, mechanical refusal of invalid compositions, a "which cards can support this question" check, and a pull rule that imports other hubs' shelves as candidates without granting standing | [The shelf](https://bigbirdreturns.github.io/cantos/shelf/) — five cards, two model-stranger filings retained, nothing ranks |
 | [`research-desk/`](https://bigbirdreturns.github.io/cantos/research-desk/) (moved to Cantos) | Compare supplied task results and costs, trace corrections into affected conclusions, and export reviewed client reports; includes a five-minute synthetic example and single-file offline app | [Open Research Desk](https://bigbirdreturns.github.io/cantos/research-desk/) |
@@ -134,5 +133,3 @@ The [compute desk](https://github.com/BigBirdReturns/cantos/tree/main/compute) a
 
 [Open the independent preview](https://bigbirdreturns.github.io/axm-tools/atmark/) · [Source and operating instructions](atmark/README.md). A free, local-first toolkit for a public 53-listing subset: source-bound catalogue normalisation, review queues, comparisons, CSV intake, image preparation and portable export. It contains no seller write integration. Qualification is retained in `atmark/data/qualification.json`.
 
-
-Field Desk 2.0 redesign: the public retained-work/review/ now uses a coherent seven-view shell, source-derived native SVG atlas, universal search, preserved evidence history, detailed action cards and a readable bilingual library. The original map remains available as a source-fidelity view. No native private runtime or user journal was replaced.

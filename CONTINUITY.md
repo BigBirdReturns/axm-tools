@@ -248,23 +248,3 @@ The owner requested the combined desk and runner. `compute/` is the provider-neu
 ## Research Desk public handoff, 22 September 2026
 
 `research-desk/` supplies a plain-language landing page, the preserved single-file Research Desk 1.0.0 app, supported input contracts and synthetic example reports with replayable history. No backend or new workflow exists. The app is an independent build for inspection, not a BEP adoption or integration claim. Workspace data lives in memory until explicitly exported. Native publication checks and exact original-app identity are recorded in that directory. Existing compute and Hot Aisle tools remain unchanged.
-
-
-### Civil continuity application, 27 October 2026
-
-Research Continuity now hosts `research-continuity/suginami/`, a self-contained civil-resilience application. It projects the exact public Manzanita operating-fabric and working-model contracts rather than replacing them. The code joins declared resource dependencies, bounded offline food rights, acknowledgment obligations, full landed cost, power/water and message budgets to the existing native ResearchCore and Genesis path. The 76-facility municipal listing is public source data, not a readiness declaration. Independent site owners, vendors and authorities remain distinct. Private partner messages and non-civil designs are excluded. A separate qualification workflow exercises the child page; the existing full-site publisher remains the only delivery path.
-
-
-## Retained Work public share brief, 1 November 2026 Pacific
-
-The owner explicitly selected this repository's hosted project pages, rather than a replacement axm.tools domain site. `retained-work/` connects the partner-supplied business hypothesis, existing AXM/Cantos/Second Run and peer mechanisms, installed Suginami 1.1 operator, separately scoped mathematical and operational precedents, and proposed paid engagement. It is a self-contained English/Japanese public brief with illustrative browser controls, not a live estate endpoint or redistribution of private runtime/source bodies. Source hashes and selective receipts preserve their original limits. No new publisher or scheduler is introduced; existing public tools are linked rather than runtime-imported. The original full-domain candidate and its unapproved image/contact choices remain unchanged. All new files are steward-owned.
-
-
-## Suginami public map and working desk, 1 November 2026 Pacific
-
-The owner identified that Retained Work described the map without publishing the usable geographic application. The public successor now serves `retained-work/map/` from the exact supplied map archive and `retained-work/review/` for all original claims, relations and actions, local source/quotation bindings, separately attributed reviews, costs, delivery stages and journal recovery. No original data/grade is promoted. The public data module is byte-identical; map paths, journal adapter, locale and source-grade disclosures are explicit modifications. Visitor work stays browser-local until export and has no institutional signing authority. The native Suginami 1.1 service/keys remain under the existing installed owner. The access ledger names what actually opens, downloads, remains native or awaits real outside evidence. An offline static kit and explicit local launcher preserve the browser path. Existing publisher, gates and cross-tool ownership remain unchanged. The old page receipt is retained as historical; current map/desk acceptance is separate.
-
-
-## Suginami Field Desk product redesign, 1 November 2026 Pacific
-
-The owner requested a cohesive asset, UX and UI redesign beyond the earlier connected pages. `retained-work/review/` is now a seven-view Field Desk with native source-derived cartography rather than an embedded map application, complete bilingual search and detail navigation, a source/review master-detail interface, action/dependency cards, cost feedback, readable history, document reading and recovery. Original compiled map/data, author grades, journal engine/schema and native private service retain their authorities. New SVG assets derive from the supplied geographic object; no roads, positions, imagery or source conclusions were invented. `check_product.py` pins inherited engine and geography bytes and documents preserved source counts. Existing publisher/gates are unchanged. Public source hashes, browser acceptance and live publication remain distinct.
