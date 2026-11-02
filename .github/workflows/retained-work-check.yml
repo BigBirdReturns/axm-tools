@@ -1,0 +1,18 @@
+name: Retained Work public brief checks
+on:
+  pull_request:
+    branches: [main]
+    paths: ['retained-work/**', '.github/workflows/retained-work-check.yml']
+  push:
+    branches: [main]
+    paths: ['retained-work/**', '.github/workflows/retained-work-check.yml']
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check self-containment, evidence boundaries and public custody
+        run: python3 -B retained-work/scripts/check.py
