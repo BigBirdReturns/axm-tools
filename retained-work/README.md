@@ -1,41 +1,45 @@
-# Retained Work: complete shareable project brief
+# Retained Work 1.1: the actual map and working desk
 
-This is the public `axm-tools/retained-work/` reading and explanation surface, not a replacement for the axm.tools homepage or a hosted copy of the private Estate. It connects the partner-supplied reusable-verification hypothesis, AXM/Cantos/Second Run execution and provenance, the delivered Suginami 1.1 operator workspace, separately scoped mathematical and operational precedents, and the proposed commercial engagement.
+The public entry now includes the original Suginami geographic application and a working browser-local review desk, in addition to the bilingual engineering/commercial explanation. The earlier 1.0 publication described the map but did not let a recipient use it. This successor fixes that delivery gap rather than claiming the description was the product.
 
-Open `index.html` directly or serve this directory with any static server. The complete bilingual explanation, conceptual Venn diagram, evidence projection, six-state illustrative reliance simulator and local cost-scenario calculator work without a backend. The page makes no automatic external requests. Language preference is the only persisted browser setting; no private sources, identity keys, accounts, emails, uploads, payments or machine-control connections are accepted. Links and separately downloadable files require access to their destinations. The page's Save control writes the self-contained explanation for offline reading.
+## Open the work
 
-## What each surface means
+- `review/`: the unified map, all 45 claims, all 15 original relationships, ten actions, source/quotation bindings, separate reviews, paired costs, delivery stages, history and recovery.
+- `map/`: the actual supplied nine-layer map in full-screen form. Its original geographic data module is byte-identical to the supplied archive; the application has narrowly scoped path, journal, language and attribution changes.
+- `index.html`: the complete English/Japanese system map, seven-region overlap diagram, historical evidence and proposed engagement.
+- `data/access-ledger.json`: every component's actual access location and status, including what remains private or genuinely unobserved. A local installation is not described as a public web service.
+- `downloads/Suginami_Public_Map_Kit.zip`: the complete static map, desk, public baseline data, explanations and a standard-library loopback launcher. No fonts, private runtime, keys or customer records are included.
 
-The Venn diagram describes three complementary sets of requirements: A, the business proposition and reviewed obligation; B, execution and evidence; C, the actual customer and authority. A∩B identifies the delivered reference application. A∩B∩C identifies a paid, independently relied-on outcome, which is not yet established. Circle area and overlap do not encode market size, organizational ownership, equity, endorsement or a claimed integration with Muse.
+The original map remains the geographic starting point. Its author-assigned grades, action wording, dependency graph, proposed deadlines and identifiers remain attributed original material. The old `45 facts · 22 sources` presentation now identifies 45 author claims and incomplete primary-source records. A separate dated note explains why the old fix-map action text no longer describes the supplied build. No original claim is silently certified or rewritten.
 
-The installed Suginami workspace is an independently operated private local application. Its 236 bilingual entries, 35 native operator checks, 54 browser checks and five observer checks are historical source-bound results. The earlier two-physical-seat qualification remains separately dated and scoped. The public page neither starts that application nor replays its private domain validators. Its public evidence file is an explicitly selected projection of retained owner records, with original file hashes and check names. Hashes identify source bytes; they do not prove hidden source interpretation, independent third-party review or business adoption.
+## Browser-local operation and recovery
 
-The operational-floor projection preserves its actual denominators: 160 declared accepted assertions, 154 hash-linked, six uncovered, 158 receipt references and 153 distinct primary byte identities; a separate 13-file check; and 227 completed regression tests with four skips inside that total. These are an internal precedent, not realized customer economics. The finite-model appendix preserves the original factor-to-tuple-state result and its boundaries; it does not publish private partner material or claim a Lean theorem, universal contract semantics, compact closure or calibrated insurance.
+The map and review desk share one browser-local journal under `suginami-public-journal-v1`. Progress reports and evidence-backed local review are different event types. Source binding preserves supplied UTF-8 text, exact quotation and its character span, declared source URL/time and content hash. An attributed review is separate from matching the quote. Self-reported actors, local hashes and the original author's grade establish neither source authenticity nor an institution's authority.
 
-The two offers are proposals: $35,000 for six weeks, $17,500 at signing and $17,500 upon contractual acceptance; a separate $15,000 five-to-seven-day audit, $7,500 at commencement and $7,500 on delivery. A signed scope must identify the actual buyer, authorization, deliverables, acceptance, existing-IP treatment and change control. No payment, accepted purchase order or sent demand is inferred. The original full-domain candidate, unapproved third-party image and contact email remain untouched and unpublished by this directory.
+Writes serialize through Web Locks and atomically replace one localStorage value. The journal validates sequence, unique operation IDs, an event hash chain, source text hashes and quote spans. Reloads reconstruct saved state; an idempotent retry adds no duplicate. Import accepts a matching history or a valid extension. Divergent histories are preserved by refusal rather than overwritten. Clearing browser storage can erase this local copy, so export meaningful work. A browser which lacks the required lock or cryptography API fails visibly rather than silently writing a weaker record.
 
-## Files and ownership
+Plain exports contain the operator-supplied source text and actor names. They remain local files until deliberately shared. Passphrase backups use WebCrypto AES-GCM with PBKDF2-SHA256 at 250,000 iterations, a random salt and IV, and a minimum 12-character passphrase. Offline guessing resistance depends on the passphrase. The application retains no passphrase. This browser journal has no signing key; its backup is deliberately distinct from the private native workspace's scrypt-based encrypted recovery. Do not enter secrets or confidential client data on a shared public-site origin.
 
-All files here are steward-owned. There is no scheduled job or machine-updated state.
+Cost records preserve six categories on each side: collection, original checking, reuse checking, human review, maintenance and exceptions. Missing values are refused and negative net savings remain negative. Declared scenarios and operator-reported measurements remain distinguishable; measurements require an evidence identity and still represent the actor's report, not an independent audit. Produced, verified, delivered, acknowledged, understood and adopted remain six separate recorded stages.
 
-- `index.html`: complete bilingual page and local illustrative controls.
-- `engagement-brief.md`: English/Japanese proposed scope.
-- `data/evidence.json`: selected local release/acceptance fields and original identities.
-- `data/operations.json`: scoped internal operating precedent.
-- `data/finite-model.json`: finite-model handoff and native probe boundaries.
-- `scripts/check.py`: standard-library static, custody and source-consistency checks.
-- `data/page-acceptance.json`, when present: a separate actual browser/static acceptance of this public page, not reuse of private application acceptance.
+## The native product and existing bodies of work
 
-The native owners remain authoritative for execution. This public directory shares explanations and reviewed projections; it does not take custody of private original archives, operational databases, runtime keys or source code. Existing public workbenches are linked, not imported at runtime. This preserves the repository's one-self-contained-directory convention.
+The installed Suginami 1.1 runtime remains the authority for actual NTA signature verification, new invoice-case production and first-admission checks, receiving rules, signed peer identities, and native full-workspace recovery. The public browser desk does not imitate its `/api` endpoints, invoke the estate, or promote local browser records into native receiving authority. The actual bilingual operating guide and pilot sheet are downloadable under `library/`. The owner's existing desktop launcher is unchanged. Browser exports can be handled as supplied evidence files; no automatic browser-to-native state merge is claimed.
 
-## Qualification and publication
+Research Continuity, the civil-continuity application, Cantos and the prior procedure-reuse instrument retain their public owners and direct links. The finite mathematical result and operational-floor precedent remain in the main brief with their exact bounded source projections. The original private technical PDF, partner manuscripts and correspondence remain in the installed Related work library or their original custody; they are not silently represented as downloadable public originals.
 
-Run `python -B retained-work/scripts/check.py` from the repository root. Actual browser acceptance separately exercises English/Japanese switching, all seven Venn regions, six illustrative states, missing and negative cost inputs, offline export, and narrow layouts. Browser receipts retain the exact inspected HTML identity. A static pass is not a browser pass; a local pass is not a live deployment.
+## Offline kit
 
-The existing `pta-fetch.yml` publisher deploys the repository root on main pushes through its existing compute release gate and Cantos compatibility stage. This page adds no second publisher, backend, external runtime or billing dependency. Root directory navigation lists the page. Live acceptance must compare the actual hosted bytes and exercise the published URL after the normal deployment completes.
+Extract `Suginami_Public_Map_Kit.zip`. On Windows run `START_MAP.cmd`; with Python 3 run `python -B scripts/serve_local.py`. The loopback helper serves only the extracted public tool directory, defaults to port 8770 and opens `/review/`. It requires no third-party package, account, credential or external source fetch. Browser-local storage belongs to the local origin, separate from GitHub Pages; use the explicit journal export/import to continue your work there. Existing other public applications require a connection and are linked to their real public addresses.
 
-## What can rot
+## Source and acceptance
 
-The page is a dated public snapshot. A newer native release does not silently refresh these results. Source changes require a new reviewed projection and current page acceptance. Linked public workbenches or repository paths may move; check them before updating links. Browser storage can be unavailable, in which case language selection still works for the current session. Public static hosting grants no confidentiality to content committed here. Keep all private sources and unapproved identity/contact assets outside the tree.
+`data/SOURCE_MAP.json` records the supplied archive hash and original/published identities of every map asset. `data/map-data.json` preserves the extracted claim, relation and action objects. `scripts/check_map.py` verifies source identity, reference closure, data counts, asset hashes, dependency acyclicity, local runtime closure and public custody. `scripts/check.py` continues to check the explanatory surface. The actual browser campaign exercises the original geographic interface, all nine controls, local writes and reloads, source binding, separate review, costs, stage recording, malformed inputs, export, encryption and restored state on a fresh local origin. Browser acceptance and live readback remain separate records.
 
-Japanese copy is working explanatory translation, not an approved legal or professional translation. The user's explicit November 1, 2026 instruction authorized shareable pages in the axm-tools repository; this directory's scoped public exposition does not release the underlying private implementation or establish any partner's endorsement.
+The old page's acceptance remains historical in `data/page-acceptance-1.0.0.json`. The current page/map acceptance is identified separately. No old receipt is rewritten to imply a new test. Prior Suginami native test counts remain component evidence rather than tests of this public UI.
+
+## Ownership and publication
+
+All committed files in this tool are steward-owned. Visitor journals live only in their browser and never enter repository commits. There is no new server, account, scheduled job, public write endpoint, analytics service or second Pages publisher. The existing main-push publication path and its existing qualification/compatibility stages remain unchanged. No automatic outbound communication, institutional enrollment, financial commitment, tax submission or insurance decision occurs.
+
+Japanese application copy is a working translation, not an approved legal translation. Original source quotations and taxonomy values preserve their original language and status. The original font-containing ZIP and all font files remain outside distribution.
