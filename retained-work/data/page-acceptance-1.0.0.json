@@ -1,0 +1,209 @@
+{
+  "schema": "retained-work/page-acceptance@1",
+  "page_sha256": "ff37eb08f53e741fefe4b15b77876e2c6f0660e6fa095a18a1dc584afacbc73e",
+  "static_checks": 20,
+  "browser_checks": 39,
+  "translation_pairs": 200,
+  "checks": [
+    {
+      "name": "one_main_heading",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "english_entry",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "public_runtime_is_static",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "overlap_a",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "overlap_b",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "overlap_c",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "overlap_ab",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "overlap_ac",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "overlap_bc",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "overlap_abc",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "seven_distinct_overlap_explanations",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "commercial_center_is_not_claimed_observed",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "keyboard_overlap_navigation",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "scenario_unchanged",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "scenario_changed",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "scenario_revoked",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "scenario_expired",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "scenario_purpose",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "scenario_future",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "export_remains_explicitly_illustrative",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "missing_cost_is_not_zero",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "negative_work_savings_preserved",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "scenario_cost_not_customer_measurement",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "numeric_overflow_refused",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "negative_duration_refused",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "japanese_complete_visible_pairs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "japanese_accessible_diagram",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "language_preference_survives_reload",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_page_overflow_ja_1440",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_page_overflow_ja_390",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_page_overflow_ja_320",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_page_overflow_en_1440",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_page_overflow_en_390",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_page_overflow_en_320",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "offline_export_contains_evidence",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "offline_saved_page_executes",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "offline_overlap_remains_working",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "no_browser_exceptions",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "no_external_automatic_requests",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "mode": "actual loopback HTTP and saved-file navigation",
+  "browser": "Brave / Chromium on physical interactive seat",
+  "scope": "Acceptance of the public explanatory page and explicitly illustrative controls, not domain execution or customer adoption.",
+  "page_visually_inspected": true,
+  "publication_status_at_validation": "local candidate; live readback is separate"
+}

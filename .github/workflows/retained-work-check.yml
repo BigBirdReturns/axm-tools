@@ -15,4 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check self-containment, evidence boundaries and public custody
-        run: python3 -B retained-work/scripts/check.py
+        run: |
+          python3 -B retained-work/scripts/check.py
+          python3 -B retained-work/scripts/check_map.py

@@ -1,0 +1,227 @@
+{
+  "schema": "retained-work/access-ledger@2",
+  "date": "2026-11-01 Pacific",
+  "scope": "Public map and browser-local work, linked existing public applications, explicitly private native runtime and unobserved external inputs.",
+  "items": [
+    {
+      "id": "map",
+      "title": {
+        "en": "Original interactive Suginami map",
+        "ja": "元の杉並インタラクティブ地図"
+      },
+      "description": {
+        "en": "The actual supplied geographic application: all nine layers, 45 claims, 15 relations and ten proposed actions.",
+        "ja": "提供された地理アプリそのもの。九レイヤー、45主張、15関係、十アクションを保持します。"
+      },
+      "href": "../map/",
+      "status": {
+        "en": "RUNS IN THE BROWSER",
+        "ja": "ブラウザーで動作"
+      }
+    },
+    {
+      "id": "claims",
+      "title": {
+        "en": "Complete claim and relationship review",
+        "ja": "主張・関係の全体審査"
+      },
+      "description": {
+        "en": "Original words and grades, searches, exact source text/quote binding and separate attributed review.",
+        "ja": "元の文言・評価、検索、出典本文と引用の結び付け、別個の帰属付き審査。"
+      },
+      "href": "#claims",
+      "status": {
+        "en": "RUNS LOCALLY",
+        "ja": "ローカルで動作"
+      }
+    },
+    {
+      "id": "actions",
+      "title": {
+        "en": "Original actions and dependencies",
+        "ja": "元の行動と依存関係"
+      },
+      "description": {
+        "en": "All original instructions, deadlines, related claims, persistent reports and evidence-backed local review.",
+        "ja": "元の指示、期限、関連主張、保存される報告、証拠付きローカル審査。"
+      },
+      "href": "#actions",
+      "status": {
+        "en": "RUNS LOCALLY",
+        "ja": "ローカルで動作"
+      }
+    },
+    {
+      "id": "costs",
+      "title": {
+        "en": "Cost records and six delivery stages",
+        "ja": "費用記録と六つの受渡し段階"
+      },
+      "description": {
+        "en": "Complete paired-cost categories preserve negative savings; delivery/adoption stages remain separate attributed records.",
+        "ja": "対応する総費用は負の削減も保持。受渡し・採用段階は別個の帰属付き記録。"
+      },
+      "href": "#costs",
+      "status": {
+        "en": "RUNS LOCALLY",
+        "ja": "ローカルで動作"
+      }
+    },
+    {
+      "id": "recovery",
+      "title": {
+        "en": "Browser journal recovery",
+        "ja": "ブラウザー記録の復旧"
+      },
+      "description": {
+        "en": "Plain export/import, integrity checks, divergent-history refusal and passphrase-encrypted backup of this browser workspace.",
+        "ja": "平文入出力、整合性確認、競合履歴の拒否、このブラウザー環境の暗号化バックアップ。"
+      },
+      "href": "#history",
+      "status": {
+        "en": "RUNS LOCALLY",
+        "ja": "ローカルで動作"
+      }
+    },
+    {
+      "id": "native",
+      "title": {
+        "en": "Suginami native operator 1.1",
+        "ja": "杉並ネイティブ操作環境1.1"
+      },
+      "description": {
+        "en": "Signed NTA source intake, case production and import, receiving policies, peer identity and full operating-workspace recovery remain in the existing installed application.",
+        "ja": "署名付きNTA読込み、案件作成・取込み、受領条件、相手識別、完全な運用復旧は既存導入アプリで実行します。"
+      },
+      "href": "../library/OPERATOR_GUIDE_EN_JA.md",
+      "status": {
+        "en": "INSTALLED NATIVE PRODUCT; GUIDE PUBLIC",
+        "ja": "導入済みネイティブ製品・説明は公開"
+      },
+      "reason": {
+        "en": "Public map/review controls do not impersonate the native signature validator or expose its private service. Its existing desktop entry is preserved.",
+        "ja": "公開地図・審査はネイティブ署名検証を装わず、非公開サービスを公開しません。既存デスクトップ入口を保持します。"
+      }
+    },
+    {
+      "id": "pilot",
+      "title": {
+        "en": "Bilingual pilot sheet",
+        "ja": "二言語の実証資料"
+      },
+      "description": {
+        "en": "The actual generated English/Japanese pilot sheet, including the unit of work and participant/economic boundaries.",
+        "ja": "作業単位と参加・経済性の境界を含む、実際に作成した英語・日本語資料。"
+      },
+      "href": "../library/PILOT_ONE_PAGER.md",
+      "status": {
+        "en": "DOWNLOADABLE DOCUMENT",
+        "ja": "保存可能な文書"
+      }
+    },
+    {
+      "id": "mathematics",
+      "title": {
+        "en": "Finite obligation-Hamiltonian result",
+        "ja": "有限の義務ハミルトニアン成果"
+      },
+      "description": {
+        "en": "The existing public explanation and exact native-result projection preserve the theorem scope and test denominators.",
+        "ja": "既存の公開説明と正確な検証抜粋で定理範囲と試験件数を保持します。"
+      },
+      "href": "../#operating-floor",
+      "status": {
+        "en": "EXPLANATION + EVIDENCE",
+        "ja": "説明と証拠"
+      },
+      "reason": {
+        "en": "The complete original private technical handoff remains in the installed Related work library. No private partner manuscript or correspondence is republished.",
+        "ja": "完全な元の非公開技術資料は導入環境の関連成果に保持。相手の非公開原稿・通信は再公開しません。"
+      }
+    },
+    {
+      "id": "continuity",
+      "title": {
+        "en": "Civil continuity application",
+        "ja": "地域継続性アプリケーション"
+      },
+      "description": {
+        "en": "Open the already public working stock, dispatch, receipt and successor-handoff application under its own qualification.",
+        "ja": "既に公開されている在庫・発送・受領・後任引継ぎの作業アプリを、その検証範囲で開きます。"
+      },
+      "href": "https://bigbirdreturns.github.io/axm-tools/research-continuity/suginami/",
+      "status": {
+        "en": "EXISTING PUBLIC APPLICATION",
+        "ja": "既存の公開アプリ"
+      }
+    },
+    {
+      "id": "research",
+      "title": {
+        "en": "Research Continuity",
+        "ja": "Research Continuity"
+      },
+      "description": {
+        "en": "Original evidence, judgment, revisions, obligations and successor work retain their existing public owner.",
+        "ja": "元の証拠、判断、改訂、義務、後継作業は既存の公開主体を保持します。"
+      },
+      "href": "https://bigbirdreturns.github.io/axm-tools/research-continuity/",
+      "status": {
+        "en": "EXISTING PUBLIC APPLICATION",
+        "ja": "既存の公開アプリ"
+      }
+    },
+    {
+      "id": "peer",
+      "title": {
+        "en": "Signed peer-exchange proof",
+        "ja": "署名付き相手交換の検証"
+      },
+      "description": {
+        "en": "The public native receipt records two physical owner-controlled seats and independent receiving dispositions.",
+        "ja": "公開抜粋は所有者管理下の二実機と独立した受領判断を記録します。"
+      },
+      "href": "../data/evidence.json",
+      "status": {
+        "en": "INSPECTABLE HISTORICAL EVIDENCE",
+        "ja": "検査可能な履歴証拠"
+      },
+      "reason": {
+        "en": "Creating a real partner identity and sending packets remain the native operator’s actions, not actions performed by this website.",
+        "ja": "実際の相手識別作成や送信はネイティブ操作者の行為であり、サイトが実行しません。"
+      }
+    },
+    {
+      "id": "business",
+      "title": {
+        "en": "Full architecture, overlap and proposed engagement",
+        "ja": "全体構成・重なり・業務提案"
+      },
+      "description": {
+        "en": "The seven-region diagram, component owners, $35,000 applied engagement and separate audit remain accessible.",
+        "ja": "七領域の図、構成主体、35,000米ドルの適用業務、別の監査提案を保持します。"
+      },
+      "href": "../",
+      "status": {
+        "en": "PUBLIC BILINGUAL BRIEF",
+        "ja": "公開二言語説明"
+      }
+    },
+    {
+      "id": "unresolved",
+      "title": {
+        "en": "Original primary sources and actual outside adoption",
+        "ja": "元の一次出典と実際の外部採用"
+      },
+      "description": {
+        "en": "Original claim grades are not promoted. Missing source originals, actual customer consent and measured business use remain explicitly unobserved inputs.",
+        "ja": "元評価を昇格しません。不足する原出典、実際の同意、実測業務利用は未観測入力として明示します。"
+      },
+      "href": null,
+      "status": {
+        "en": "REQUIRES ACTUAL SOURCE/PARTY INPUT",
+        "ja": "実際の出典・当事者入力が必要"
+      }
+    }
+  ]
+}

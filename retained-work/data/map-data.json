@@ -1,0 +1,1688 @@
+{
+  "facts": [
+    {
+      "factId": "F-CAPTURE-AWARENESS-GAP",
+      "claim": "94.4% of randomly sampled residents had no awareness of participatory budgeting. Program visibility near zero.",
+      "claimJa": "無作為抽出した住民の94.4%が参加型予算を知らなかった。事業の認知度はほぼゼロ。",
+      "dimension": "participation",
+      "targetGroup": "CAPTURE",
+      "evidenceGrade": "verified",
+      "factType": "participation_metric"
+    },
+    {
+      "factId": "F-CAPTURE-SURVEY-RESPONSE",
+      "claim": "Participatory budget survey: 377/2000 (18.9% response). 94.4% unaware program existed. Random sample, not self-selected.",
+      "claimJa": "参加型予算アンケート:回答377/2000件(回答率18.9%)。94.4%が制度の存在を知らなかった。無作為抽出で、自己選択ではない。",
+      "dimension": "participation",
+      "targetGroup": "CAPTURE",
+      "evidenceGrade": "verified",
+      "factType": "participation_metric"
+    },
+    {
+      "factId": "F-CARE-NATIONAL-CLOSURES",
+      "claim": "Japan 2025: 653 care facility closures/dissolutions (+6.6%), 176 bankruptcies (record high).",
+      "claimJa": "2025年の全国の介護事業所の休廃業・解散は653件(+6.6%)、倒産は176件で過去最多。",
+      "dimension": "care_capacity",
+      "targetGroup": "CARE",
+      "evidenceGrade": "national-proxy",
+      "factType": "care_facility_event"
+    },
+    {
+      "factId": "F-CARE-SUGINAMI-CLOSURES",
+      "claim": "At least 3 home care support offices closed in Suginami summer 2026 (Jun 26, Aug 10, Aug 31).",
+      "claimJa": "杉並区で2026年夏に、少なくとも3か所の居宅介護支援事業所が廃止された(6/26、8/10、8/31)。",
+      "dimension": "care_capacity",
+      "targetGroup": "CARE",
+      "evidenceGrade": "verified",
+      "factType": "care_facility_event"
+    },
+    {
+      "factId": "F-CARE-WORKER-SUPPORT",
+      "claim": "Care worker housing allowance 10,000 yen/month. Non-regular staff 44% of 6000. Reappointment cap removed.",
+      "claimJa": "介護従事者の住宅手当は月1万円。非正規職員は6,000人のうち44%。再任用の上限を撤廃。",
+      "dimension": "labor",
+      "targetGroup": "CARE",
+      "evidenceGrade": "verified",
+      "factType": "policy_commitment"
+    },
+    {
+      "factId": "F-CARE-ZERO-WAITLIST",
+      "claim": "Zero waitlisted children for 7 consecutive years. But after-school clubs still have waitlist.",
+      "claimJa": "待機児童ゼロが7年連続。ただし学童クラブにはなお待機がある。",
+      "dimension": "care_capacity",
+      "targetGroup": "CARE",
+      "evidenceGrade": "cross-checked",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-CLIFF-AGING",
+      "claim": "Aging rate: 21.1% (2025) to 25.0% (2040). +3.9pp in 15 years.",
+      "claimJa": "高齢化率は2025年の21.1%から2040年に25.0%へ(15年で+3.9ポイント)。",
+      "dimension": "demographic",
+      "targetGroup": "CLIFF",
+      "evidenceGrade": "verified",
+      "factType": "demographic_projection"
+    },
+    {
+      "factId": "F-CLIFF-POP-PEAK",
+      "claim": "Population peaks 2035 at 584,534. Declines to 581,086 by 2040.",
+      "claimJa": "人口は2035年に584,534人でピークとなり、2040年には581,086人に減少。",
+      "dimension": "demographic",
+      "targetGroup": "CLIFF",
+      "evidenceGrade": "verified",
+      "factType": "demographic_projection"
+    },
+    {
+      "factId": "F-CLIFF-WORKING-AGE",
+      "claim": "Working age population peaks ~398K (2030), drops to 381K by 2040 (-4.2%).",
+      "claimJa": "生産年齢人口は2030年ごろに約39.8万人でピークとなり、2040年には38.1万人(-4.2%)に減少。",
+      "dimension": "demographic",
+      "targetGroup": "CLIFF",
+      "evidenceGrade": "verified",
+      "factType": "demographic_projection"
+    },
+    {
+      "factId": "F-COUNCIL-CHILDREN-RIGHTS",
+      "claim": "Children rights ordinance passed 31-16. LDP bloc voted against.",
+      "claimJa": "子どもの権利条例が31対16で可決。自民党会派は反対。",
+      "dimension": "political",
+      "targetGroup": "COUNCIL",
+      "evidenceGrade": "verified",
+      "factType": "political_opposition_vote"
+    },
+    {
+      "factId": "F-COUNCIL-FACILITY-REJECT",
+      "claim": "Facility reorganization (Amanuma) rejected 5-3 in committee. First mayor-submitted bill rejected in 33 years.",
+      "claimJa": "施設再編(天沼)が委員会で5対3で否決。区長提出の議案が否決されたのは33年ぶり。",
+      "dimension": "political",
+      "targetGroup": "COUNCIL",
+      "evidenceGrade": "verified",
+      "factType": "political_opposition_vote"
+    },
+    {
+      "factId": "F-COUNCIL-LDP-SEATS",
+      "claim": "LDP council seats halved: 16 to 9 after 2023 election. Kishimoto agenda passes with thin 51-62% margins.",
+      "claimJa": "2023年の選挙で自民党の区議会議席が16から9へ半減。岸本区政の議案は51〜62%の薄い差で可決。",
+      "dimension": "political",
+      "targetGroup": "COUNCIL",
+      "evidenceGrade": "verified",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-COUNCIL-MINPAKU",
+      "claim": "Kishimoto isolated on minpaku regulation: 21 of 23 ward mayors petitioned LDP, Suginami did not join.",
+      "claimJa": "民泊規制で岸本区長は孤立:23区のうち21区の区長が自民党に要望書を出したが、杉並区は加わらなかった。",
+      "dimension": "political",
+      "targetGroup": "COUNCIL",
+      "evidenceGrade": "analogy",
+      "factType": "unfulfilled_promise"
+    },
+    {
+      "factId": "F-COUNCIL-NUCLEAR-BAN",
+      "claim": "Nuclear weapons ban treaty opinion letter rejected 21-26. Only agenda item LDP successfully blocked.",
+      "claimJa": "核兵器禁止条約に関する意見書は21対26で否決。自民党が阻止できた唯一の議題。",
+      "dimension": "political",
+      "targetGroup": "COUNCIL",
+      "evidenceGrade": "verified",
+      "factType": "political_opposition_vote"
+    },
+    {
+      "factId": "F-COUNCIL-PARTNERSHIP",
+      "claim": "De facto couple partnership extension: LDP walked out rather than recording no-vote.",
+      "claimJa": "事実婚カップルへのパートナーシップ制度の拡大:自民党は反対票を投じる代わりに退席した。",
+      "dimension": "political",
+      "targetGroup": "COUNCIL",
+      "evidenceGrade": "verified",
+      "factType": "political_opposition_vote"
+    },
+    {
+      "factId": "F-DIGITAL-PEPPOL",
+      "claim": "JP PINT v1.1.3 (Jun 2026). Only 4 government agencies piloting. No published adoption numbers. B2B nascent.",
+      "claimJa": "JP PINT v1.1.3(2026年6月)。試行中の政府機関は4つのみ。普及実績の公表なし。B2Bは初期段階。",
+      "dimension": "digital_infra",
+      "targetGroup": "DIGITAL",
+      "evidenceGrade": "verified",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-ELECTION-BULLYING",
+      "claim": "12 serious bullying cases as of April 2026, 9 (75%) still under investigation.",
+      "claimJa": "2026年4月時点で重大ないじめが12件、うち9件(75%)が調査中。",
+      "dimension": "safety",
+      "targetGroup": "ELECTION",
+      "evidenceGrade": "analogy",
+      "factType": "care_facility_event"
+    },
+    {
+      "factId": "F-ELECTION-GAP-ASAGAYA",
+      "claim": "Asagaya Station NE redevelopment proceeding despite pledge to pause projects lacking resident consent.",
+      "claimJa": "住民の合意がない事業は止めるという公約にもかかわらず、阿佐ケ谷駅北東の再開発は進行中。",
+      "dimension": "accountability",
+      "targetGroup": "ELECTION",
+      "evidenceGrade": "cross-checked",
+      "factType": "unfulfilled_promise"
+    },
+    {
+      "factId": "F-ELECTION-GAP-BICYCLE",
+      "claim": "Most bike-friendly ward pledge unmet. Mayor self-acknowledged.",
+      "claimJa": "「最も自転車に優しい区」にするという公約は未達。区長自身が認めている。",
+      "dimension": "livability",
+      "targetGroup": "ELECTION",
+      "evidenceGrade": "verified",
+      "factType": "unfulfilled_promise"
+    },
+    {
+      "factId": "F-ELECTION-GAP-INVOICE",
+      "claim": "Invoice system halt pledge impossible after national implementation Oct 2023.",
+      "claimJa": "インボイス制度を止めるという公約は、2023年10月の全国実施により実現不可能に。",
+      "dimension": "accountability",
+      "targetGroup": "ELECTION",
+      "evidenceGrade": "verified",
+      "factType": "unfulfilled_promise"
+    },
+    {
+      "factId": "F-ELECTION-GAP-RATE",
+      "claim": "Kishimoto pledge achievement rate ranges 38.8-58.4% across 4 methods; strictest 48.5% of 101 items",
+      "claimJa": "岸本区長の公約達成率は、4つの手法で38.8〜58.4%。最も厳格な手法では101項目中48.5%。",
+      "dimension": "accountability",
+      "targetGroup": "ELECTION",
+      "evidenceGrade": "cross-checked",
+      "factType": "scorecard_rating"
+    },
+    {
+      "factId": "F-ELECTION-GAP-ROUTE132",
+      "claim": "Route 132 road widening freeze pledge reversed. Land purchases continuing.",
+      "claimJa": "補助132号線の拡幅凍結の公約は覆った。用地取得は継続中。",
+      "dimension": "accountability",
+      "targetGroup": "ELECTION",
+      "evidenceGrade": "cross-checked",
+      "factType": "unfulfilled_promise"
+    },
+    {
+      "factId": "F-ELECTION-LUNCH",
+      "claim": "Free school lunches implemented Oct 2023. 64 schools, 29,500 students.",
+      "claimJa": "2023年10月に学校給食の無償化を実施。64校・29,500人。",
+      "dimension": "welfare",
+      "targetGroup": "ELECTION",
+      "evidenceGrade": "verified",
+      "factType": "policy_commitment"
+    },
+    {
+      "factId": "F-ELECTION-SCORECARD",
+      "claim": "Independent GES-R scorecard: 63.4/100 (B+). Measurability weakest at 56%.",
+      "claimJa": "第三者のGES-Rスコアカードで63.4/100(B+)。測定可能性が最も弱く56%。",
+      "dimension": "accountability",
+      "targetGroup": "ELECTION",
+      "evidenceGrade": "cross-checked",
+      "factType": "scorecard_rating"
+    },
+    {
+      "factId": "F-ELECTION-WAGE",
+      "claim": "Public contract worker minimum wage rose 37%: 1,093 to 1,500 yen.",
+      "claimJa": "公契約の労働者の最低賃金が37%上昇:1,093円から1,500円。",
+      "dimension": "labor",
+      "targetGroup": "ELECTION",
+      "evidenceGrade": "verified",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-FISCAL-DEBT",
+      "claim": "Ward debt declining: 35.6B to 34.8B yen. No deficit bonds.",
+      "claimJa": "区の債務は356億円から348億円へ減少。赤字地方債なし。",
+      "dimension": "fiscal_health",
+      "targetGroup": "FISCAL",
+      "evidenceGrade": "verified",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-FISCAL-ELASTICITY",
+      "claim": "Fiscal elasticity 80.9% (FY2024). Above 80% = rigid expenditure.",
+      "claimJa": "経常収支比率(財政の弾力性)は80.9%(2024年度)。80%超は支出が硬直的。",
+      "dimension": "fiscal_health",
+      "targetGroup": "FISCAL",
+      "evidenceGrade": "verified",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-FISCAL-FUND-BALANCE",
+      "claim": "Fund balance grew 36.4%: 74.9B to 102.2B yen.",
+      "claimJa": "基金残高が36.4%増:749億円から1,022億円。",
+      "dimension": "fiscal_health",
+      "targetGroup": "FISCAL",
+      "evidenceGrade": "verified",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-FISCAL-NET-ASSETS",
+      "claim": "Net asset ratio 91.7%. Future generation burden 5.0%.",
+      "claimJa": "純資産比率91.7%。将来世代負担比率5.0%。",
+      "dimension": "fiscal_health",
+      "targetGroup": "FISCAL",
+      "evidenceGrade": "verified",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-FISCAL-POWER-INDEX",
+      "claim": "Fiscal power index 0.59, down 0.1. Below 1.0 = transfer-dependent.",
+      "claimJa": "財政力指数0.59(0.1低下)。1.0未満は交付金に依存。",
+      "dimension": "fiscal_health",
+      "targetGroup": "FISCAL",
+      "evidenceGrade": "verified",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-FISCAL-REVENUE",
+      "claim": "FY2024: revenue 246.7B, expenditure 234.0B yen. Operating surplus.",
+      "claimJa": "2024年度:歳入2,467億円、歳出2,340億円。黒字。",
+      "dimension": "fiscal_health",
+      "targetGroup": "FISCAL",
+      "evidenceGrade": "verified",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-FISCAL-WARD-TAX",
+      "claim": "Ward tax 69.6B yen (29.5%). Fiscal adjustment grants 51.4B (21.8%).",
+      "claimJa": "区税696億円(29.5%)。財政調整交付金514億円(21.8%)。",
+      "dimension": "fiscal_dependency",
+      "targetGroup": "FISCAL",
+      "evidenceGrade": "verified",
+      "factType": "revenue_structure"
+    },
+    {
+      "factId": "F-HOUSING-COMMERCIAL-2026",
+      "claim": "Commercial land ¥4.87M/tsubo (+17.6% YoY). Nearly doubled from ¥2.54M (2017).",
+      "claimJa": "商業地は坪487万円(前年比+17.6%)。2017年の254万円からほぼ倍増。",
+      "dimension": "affordability",
+      "targetGroup": "HOUSING",
+      "evidenceGrade": "verified",
+      "factType": "land_price_trend"
+    },
+    {
+      "factId": "F-HOUSING-CONDO-9YR",
+      "claim": "Apartment prices up 50.2% in 9 years.",
+      "claimJa": "マンション価格が9年で50.2%上昇。",
+      "dimension": "affordability",
+      "targetGroup": "HOUSING",
+      "evidenceGrade": "cross-checked",
+      "factType": "land_price_trend"
+    },
+    {
+      "factId": "F-HOUSING-RESIDENTIAL-2026",
+      "claim": "Residential land ¥2.35M/tsubo (+8.5% YoY), accelerating.",
+      "claimJa": "住宅地は坪235万円(前年比+8.5%)。上昇が加速。",
+      "dimension": "affordability",
+      "targetGroup": "HOUSING",
+      "evidenceGrade": "verified",
+      "factType": "land_price_trend"
+    },
+    {
+      "factId": "F-HOUSING-RIGHT",
+      "claim": "2nd term: housing as a right. Safety-net housing registration.",
+      "claimJa": "2期目:住まいは権利。住宅セーフティネットの登録住宅。",
+      "dimension": "affordability",
+      "targetGroup": "HOUSING",
+      "evidenceGrade": "verified",
+      "factType": "policy_commitment"
+    },
+    {
+      "factId": "F-INCUMBENT-NO-LOCK",
+      "claim": "School DX plan names no vendor. No freee/MF lock-in at ward level.",
+      "claimJa": "学校DX計画はベンダー名を挙げていない。区レベルでfreee/MFへのロックインはなし。",
+      "dimension": "digital_infra",
+      "targetGroup": "INCUMBENT",
+      "evidenceGrade": "verified",
+      "factType": "policy_commitment"
+    },
+    {
+      "factId": "F-RECENT-ABSENT",
+      "claim": "Mayor abroad Jul 13-Aug 4 (22 days) for family care overseas.",
+      "claimJa": "区長が7月13日〜8月4日(22日間)、家族の介護のため海外に滞在。",
+      "dimension": "governance",
+      "targetGroup": "RECENT",
+      "evidenceGrade": "verified",
+      "factType": "fiscal_metric"
+    },
+    {
+      "factId": "F-RECENT-AFTERSCHOOL",
+      "claim": "Zero after-school club waitlist by FY2028.",
+      "claimJa": "2028年度までに学童クラブの待機ゼロ。",
+      "dimension": "care_capacity",
+      "targetGroup": "RECENT",
+      "evidenceGrade": "verified",
+      "factType": "policy_commitment"
+    },
+    {
+      "factId": "F-RECENT-AI-TRANSPORT",
+      "claim": "AI on-demand transport under study. 2nd term commitment.",
+      "claimJa": "AIオンデマンド交通を検討中。2期目の公約。",
+      "dimension": "digital",
+      "targetGroup": "RECENT",
+      "evidenceGrade": "verified",
+      "factType": "policy_commitment"
+    },
+    {
+      "factId": "F-RECENT-DIGITAL-CURRENCY",
+      "claim": "Digital local currency feasibility study. No timeline.",
+      "claimJa": "地域デジタル通貨の導入可能性を調査。時期は未定。",
+      "dimension": "digital",
+      "targetGroup": "RECENT",
+      "evidenceGrade": "verified",
+      "factType": "policy_commitment"
+    },
+    {
+      "factId": "F-RECENT-MISINFO",
+      "claim": "External experts to counter misinformation. Novel for a ward.",
+      "claimJa": "外部の専門家を活用して偽情報に対処。区として新しい取り組み。",
+      "dimension": "digital",
+      "targetGroup": "RECENT",
+      "evidenceGrade": "verified",
+      "factType": "policy_commitment"
+    },
+    {
+      "factId": "F-RECENT-SILVER-PASS",
+      "claim": "Silver Pass purchase subsidy for 70+ residents. New initiative.",
+      "claimJa": "70歳以上の区民にシルバーパスの購入費を補助。新規の取り組み。",
+      "dimension": "welfare",
+      "targetGroup": "RECENT",
+      "evidenceGrade": "verified",
+      "factType": "policy_commitment"
+    },
+    {
+      "factId": "F-SUCCESSION-NO-EVIDENCE",
+      "claim": "No evidence of national political ambitions. Independent.",
+      "claimJa": "国政進出の意向を示す証拠はない。無所属。",
+      "dimension": "political",
+      "targetGroup": "SUCCESSION",
+      "evidenceGrade": "analogy",
+      "factType": "participation_metric"
+    },
+    {
+      "factId": "F-TNI-GAP",
+      "claim": "TNI: 1400+ cases globally. No Suginami remunicipalisation documented.",
+      "claimJa": "TNI:世界で1,400件超の事例。杉並区で再公営化の記録はない。",
+      "dimension": "municipalism",
+      "targetGroup": "TNI",
+      "evidenceGrade": "analogy",
+      "factType": "unfulfilled_promise"
+    }
+  ],
+  "edges": [
+    {
+      "fromFactId": "F-CAPTURE-AWARENESS-GAP",
+      "toFactId": "F-ELECTION-SCORECARD",
+      "edgeType": "produces",
+      "annotation": "Low awareness -> vague KPIs -> low measurability",
+      "annotationJa": "認知度が低い → KPIが曖昧 → 測定可能性が低い"
+    },
+    {
+      "fromFactId": "F-CAPTURE-SURVEY-RESPONSE",
+      "toFactId": "F-CAPTURE-AWARENESS-GAP",
+      "edgeType": "produces",
+      "annotation": "Low response stems from near-zero awareness",
+      "annotationJa": "回答率の低さは、認知度がほぼゼロであることに起因"
+    },
+    {
+      "fromFactId": "F-CARE-NATIONAL-CLOSURES",
+      "toFactId": "F-CARE-SUGINAMI-CLOSURES",
+      "edgeType": "produces",
+      "annotation": "National trend manifests locally",
+      "annotationJa": "全国的な傾向が地域に現れる"
+    },
+    {
+      "fromFactId": "F-CARE-WORKER-SUPPORT",
+      "toFactId": "F-CARE-SUGINAMI-CLOSURES",
+      "edgeType": "blocks",
+      "annotation": "10K/month may slow but not stop closures",
+      "annotationJa": "月1万円は廃止を遅らせても止められない"
+    },
+    {
+      "fromFactId": "F-CLIFF-AGING",
+      "toFactId": "F-CARE-NATIONAL-CLOSURES",
+      "edgeType": "produces",
+      "annotation": "Aging drives care demand while closures reduce supply",
+      "annotationJa": "高齢化で介護需要が増える一方、廃止で供給が減る"
+    },
+    {
+      "fromFactId": "F-CLIFF-AGING",
+      "toFactId": "F-FISCAL-ELASTICITY",
+      "edgeType": "produces",
+      "annotation": "Elderly share locks spending into mandatory care",
+      "annotationJa": "高齢者の比率が上がると、支出が義務的な介護に固定される"
+    },
+    {
+      "fromFactId": "F-CLIFF-WORKING-AGE",
+      "toFactId": "F-FISCAL-WARD-TAX",
+      "edgeType": "produces",
+      "annotation": "Shrinking working-age erodes ward tax post-2030",
+      "annotationJa": "生産年齢人口の減少で、2030年以降は区税が目減りする"
+    },
+    {
+      "fromFactId": "F-COUNCIL-FACILITY-REJECT",
+      "toFactId": "F-ELECTION-GAP-ASAGAYA",
+      "edgeType": "refines",
+      "annotation": "Development pledges hardest to keep",
+      "annotationJa": "開発に関する公約が最も守りにくい"
+    },
+    {
+      "fromFactId": "F-ELECTION-GAP-RATE",
+      "toFactId": "F-COUNCIL-LDP-SEATS",
+      "edgeType": "refines",
+      "annotation": "Low achievement arms opposition",
+      "annotationJa": "達成率が低いと野党に追い風になる"
+    },
+    {
+      "fromFactId": "F-FISCAL-FUND-BALANCE",
+      "toFactId": "F-FISCAL-DEBT",
+      "edgeType": "depends_on",
+      "annotation": "Strong balance sheet masks structural rigidity",
+      "annotationJa": "強い貸借対照表が、構造的な硬直性を覆い隠す"
+    },
+    {
+      "fromFactId": "F-FISCAL-POWER-INDEX",
+      "toFactId": "F-FISCAL-WARD-TAX",
+      "edgeType": "depends_on",
+      "annotation": "Power <1.0 = transfer-dependent",
+      "annotationJa": "指数が1.0未満 = 交付金に依存"
+    },
+    {
+      "fromFactId": "F-HOUSING-COMMERCIAL-2026",
+      "toFactId": "F-HOUSING-RESIDENTIAL-2026",
+      "edgeType": "produces",
+      "annotation": "Commercial surge spills into residential",
+      "annotationJa": "商業地の高騰が住宅地に波及"
+    },
+    {
+      "fromFactId": "F-HOUSING-RESIDENTIAL-2026",
+      "toFactId": "F-CLIFF-POP-PEAK",
+      "edgeType": "blocks",
+      "annotation": "Rising prices displace young families",
+      "annotationJa": "価格の上昇が若い世帯を押し出す"
+    },
+    {
+      "fromFactId": "F-RECENT-DIGITAL-CURRENCY",
+      "toFactId": "F-DIGITAL-PEPPOL",
+      "edgeType": "depends_on",
+      "annotation": "Digital currency needs Peppol infrastructure",
+      "annotationJa": "デジタル通貨にはPeppolの基盤が必要"
+    },
+    {
+      "fromFactId": "F-TNI-GAP",
+      "toFactId": "F-RECENT-AI-TRANSPORT",
+      "edgeType": "refines",
+      "annotation": "AI transport could be first municipalisation",
+      "annotationJa": "AI交通が最初の再公営化になり得る"
+    }
+  ],
+  "actions": [
+    {
+      "id": "fix-map",
+      "track": "setup",
+      "deps": [],
+      "deadline": {
+        "kind": "undated"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "wardWide": true,
+      "layers": [
+        "smb"
+      ],
+      "facts": [],
+      "source": "ACW errata E10 · E12 · E13",
+      "text": {
+        "ja": {
+          "short": "地図修正",
+          "title": "地図の不具合3件を直し、人に見せられる状態にする",
+          "why": "事業所密度の層が全域でゼロ表示(町丁目名の漢数字と半角数字が一致しない)。層の切替5/11が押せない。外部CDNがないと真っ白になる。直るまで誰にも見せられない。",
+          "next": "町丁目名を正規化して結合し、切替パネルのz-indexを1000以上にし、React・Leaflet(約290KB)を同梱して読込失敗に備える。",
+          "where": "区全域(事業所密度の層)"
+        },
+        "en": {
+          "short": "Fix map",
+          "title": "Fix the three map defects so it can be shown",
+          "why": "The SMB layer renders all zeros (kanji vs ASCII numerals in chōme names), 5 of 11 layer toggles can’t be clicked, and the page is blank without the CDN. Until these are fixed the map can’t be shown to anyone.",
+          "next": "Normalize chōme names before the join; raise the toggle panel z-index to 1000+; vendor React and Leaflet (~290 KB) and guard the load.",
+          "where": "Ward-wide (SMB layer)"
+        }
+      },
+      "geo": {
+        "kind": "none"
+      },
+      "verdicts": []
+    },
+    {
+      "id": "festa",
+      "track": "field",
+      "deps": [
+        "fix-map"
+      ],
+      "deadline": {
+        "kind": "dated",
+        "date": "2026-11-07"
+      },
+      "position": [
+        1,
+        0
+      ],
+      "wardWide": false,
+      "layers": [
+        "anime"
+      ],
+      "facts": [
+        "F-DIGITAL-PEPPOL"
+      ],
+      "source": "Calendar Nov 7–8 · layer: anime (6, partial)",
+      "text": {
+        "ja": {
+          "short": "フェスタ",
+          "title": "すぎなみフェスタ(11/7–8):アニメスタジオと接点をつくる",
+          "why": "アニメ関連6か所の層は「フリーランス請求書発行主体の密度」を測っている(名簿は部分的)。フェスタは、取引先の登録確認を今どうしているかを直接聞ける最初の機会。",
+          "next": "取引先の登録状況をどう確認しているか、どれだけ時間がかかるかを聞く。",
+          "where": "アニメ関連6か所(杉並アニメーションミュージアムを含む)"
+        },
+        "en": {
+          "short": "Festa",
+          "title": "Suginami Festa (Nov 7–8): meet the anime studios",
+          "why": "The anime layer (6 sites, partial list) measures freelance invoice-issuer density. The Festa is the first chance to ask directly how they check counterparties’ registration today.",
+          "next": "Ask how they verify counterparty registration today and how long it takes.",
+          "where": "6 anime-related sites (including the Suginami Animation Museum)"
+        }
+      },
+      "geo": {
+        "kind": "layerPoints",
+        "layer": "anime"
+      },
+      "verdicts": []
+    },
+    {
+      "id": "one-pager",
+      "track": "setup",
+      "deps": [
+        "fix-map"
+      ],
+      "deadline": {
+        "kind": "undated"
+      },
+      "position": [
+        1,
+        1
+      ],
+      "wardWide": false,
+      "layers": [
+        "factAnchors"
+      ],
+      "facts": [
+        "F-ELECTION-SCORECARD",
+        "F-ELECTION-GAP-INVOICE",
+        "F-INCUMBENT-NO-LOCK"
+      ],
+      "source": "ACW cycle T4 ruling · one-pager d9f758ec",
+      "text": {
+        "ja": {
+          "short": "一枚紙",
+          "title": "一枚紙を修正(「です」→「の候補は」)し、Fuji-san経由で区に渡す",
+          "why": "載せる数字は4つだけ:¥14億/年、820 m、45件がオフライン表示、事業所の22.5%。実証地区を「候補」と書き、決定を区に残す。第三者評価で最も弱い「測定可能性」(56%)にも重なる。",
+          "next": "2文字の修正を入れて再封印し、Fuji-sanに渡す。",
+          "where": "杉並区役所と産業振興センター"
+        },
+        "en": {
+          "short": "One-pager",
+          "title": "Amend the one-pager (です → の候補は) and hand it to the ward via Fuji-san",
+          "why": "Four numbers only: ¥14億/yr, 820 m, 45 facts offline, 22.5% of establishments. Calling the pilot area a candidate leaves the decision with the ward. It also meets the independent scorecard’s weakest score, measurability (56%).",
+          "next": "Make the 2-character edit, re-seal, and give it to Fuji-san.",
+          "where": "Ward Office and Industry Promotion Center"
+        }
+      },
+      "geo": {
+        "kind": "locations",
+        "locationIndexes": [
+          0,
+          1
+        ],
+        "anchorLocation": 0,
+        "offsetY": 30
+      },
+      "verdicts": []
+    },
+    {
+      "id": "count-accountants",
+      "track": "acct",
+      "deps": [],
+      "deadline": {
+        "kind": "undated"
+      },
+      "position": [
+        0,
+        2
+      ],
+      "wardWide": false,
+      "layers": [
+        "accountants"
+      ],
+      "facts": [],
+      "source": "Layer: accountants (31, partial · zeiri4.com)",
+      "text": {
+        "ja": {
+          "short": "税理士数",
+          "title": "税理士の人数を確定する(東京税理士会 杉並支部の会員数)",
+          "why": "地図の31事務所は部分的な名簿(zeiri4.com)。会員数が分かれば、「一件の承諾で減らせる確認の数」を実数で出せる。",
+          "next": "東京税理士会 杉並支部の会員数を、出典付きで取得する。",
+          "where": "税理士事務所31か所"
+        },
+        "en": {
+          "short": "Headcount",
+          "title": "Confirm how many accountants there are (Tokyo Tax Accountants Association, Suginami branch)",
+          "why": "The 31 offices on the map are a partial directory (zeiri4.com). With the branch headcount we can state, as a number, how many checks one yes removes.",
+          "next": "Get the branch’s member count with its source.",
+          "where": "31 tax accountant offices"
+        }
+      },
+      "geo": {
+        "kind": "layerPoints",
+        "layer": "accountants"
+      },
+      "verdicts": []
+    },
+    {
+      "id": "outreach",
+      "track": "acct",
+      "deps": [
+        "count-accountants"
+      ],
+      "deadline": {
+        "kind": "dated",
+        "date": "2026-11-15"
+      },
+      "position": [
+        1,
+        2
+      ],
+      "wardWide": false,
+      "layers": [
+        "accountants",
+        "stations"
+      ],
+      "facts": [
+        "F-ELECTION-GAP-INVOICE"
+      ],
+      "source": "Calendar Nov 15 · ACW T1 (W1 = 820 m, p = 0.012)",
+      "text": {
+        "ja": {
+          "short": "説明会",
+          "title": "会計士向けの説明の場(11/15):荻窪・阿佐ケ谷の半径400 m",
+          "why": "意思決定の数は、商店街側が約13,500件、会計士側が約200件。数の少ない側から入る。",
+          "next": "会計士が1件承諾すると減る確認の数を、確定した人数で示す。",
+          "where": "荻窪駅・阿佐ケ谷駅(半径400 m)"
+        },
+        "en": {
+          "short": "Outreach",
+          "title": "Accountant outreach (Nov 15): Ogikubo and Asagaya, 400 m radius",
+          "why": "About 13,500 decisions sit with shops against about 200 with accountants, so go in through the smaller side.",
+          "next": "Show how many checks one accountant’s yes removes, using the confirmed headcount.",
+          "where": "Ogikubo and Asagaya stations (400 m radius)"
+        }
+      },
+      "geo": {
+        "kind": "stations",
+        "stations": [
+          "荻窪",
+          "阿佐ケ谷"
+        ],
+        "radiusMeters": 400,
+        "anchorStation": "荻窪"
+      },
+      "verdicts": [
+        {
+          "speaker": "Bryan",
+          "ja": "商店が証明し、税務署が受け取り、会計士が拒否権を持つ。関門を外せば成立する。",
+          "en": "Shop proves, tax office receives, accountant holds the veto. Works if the gate is removed."
+        },
+        {
+          "speaker": "Emmy",
+          "ja": "供給側の台帳は正しいが、買い手が違う(商店ではなく会計士/区)。区を顧客に、会計士を伝道者に。",
+          "en": "The supplier ledger is right; the buyer is wrong (shop vs accountant/ward). Ward as customer, accountant as evangelist."
+        }
+      ]
+    },
+    {
+      "id": "pick-pilot",
+      "track": "pilot",
+      "deps": [
+        "outreach"
+      ],
+      "deadline": {
+        "kind": "undated"
+      },
+      "position": [
+        2,
+        2
+      ],
+      "wardWide": false,
+      "layers": [
+        "smb",
+        "stations"
+      ],
+      "facts": [],
+      "source": "ACW T3 (τ-b = 0.774) · T4 Emmy",
+      "text": {
+        "ja": {
+          "short": "地区決定",
+          "title": "実証地区を決める:高円寺の3駅か荻窪か",
+          "why": "事業所は高円寺3駅圏が4,391(区の22.5%、21丁目で1丁目あたり209)、荻窪が2,863(14丁目で204)。密度は同水準で、高円寺が多く見えるのは範囲の取り方のため。荻窪は産業振興センターの所在地。",
+          "next": "丁目の区分に依らない半径(400・600・800 m)で、方南町を含む15駅を再計算してから決める。",
+          "where": "高円寺・新高円寺・東高円寺・荻窪(半径600 m)"
+        },
+        "en": {
+          "short": "Pick area",
+          "title": "Choose the pilot area: Kōenji’s three stations or Ogikubo",
+          "why": "Kōenji’s three-station area has 4,391 establishments (22.5% of the ward; 209 per chōme over 21 chōme); Ogikubo has 2,863 (204 per chōme over 14). Density ties, so Kōenji’s lead comes from how the area is drawn. Ogikubo hosts the Industry Promotion Center.",
+          "next": "Recompute with partition-free radii (400, 600, 800 m) on all 15 stations incl. Hōnanchō, then decide.",
+          "where": "Kōenji, Shin-Kōenji, Higashi-Kōenji, Ogikubo (600 m rings)"
+        }
+      },
+      "geo": {
+        "kind": "stations",
+        "stations": [
+          "高円寺",
+          "新高円寺",
+          "東高円寺",
+          "荻窪"
+        ],
+        "radiusMeters": 600,
+        "anchorStation": "高円寺"
+      },
+      "verdicts": []
+    },
+    {
+      "id": "pilot",
+      "track": "pilot",
+      "deps": [
+        "pick-pilot",
+        "one-pager"
+      ],
+      "deadline": {
+        "kind": "dated",
+        "date": "2026-12-01"
+      },
+      "position": [
+        3,
+        2
+      ],
+      "wardWide": false,
+      "layers": [
+        "smb",
+        "stations"
+      ],
+      "facts": [
+        "F-DIGITAL-PEPPOL"
+      ],
+      "source": "Calendar Dec 1",
+      "text": {
+        "ja": {
+          "short": "実証",
+          "title": "実証を始める(12/1):選んだ1地区で検証の台帳を回す",
+          "why": "問いは一つ:第三者が再確認なしに記録を使うか。2027/4/1の撤退テストに向けた最初のデータになる。",
+          "next": "地区・参加者・測る数字を、開始前に封印する。",
+          "where": "高円寺・新高円寺・東高円寺(候補、半径600 m)"
+        },
+        "en": {
+          "short": "Pilot",
+          "title": "Start the pilot (Dec 1): run the verification ledger in one chosen area",
+          "why": "One question: does a third party rely on the record without re-verifying? This is the first data for the Apr 1, 2027 exit test.",
+          "next": "Seal the area, the participants and the numbers to measure before the start.",
+          "where": "Kōenji trio (candidate, 600 m rings)"
+        }
+      },
+      "geo": {
+        "kind": "stations",
+        "stations": [
+          "高円寺",
+          "新高円寺",
+          "東高円寺"
+        ],
+        "radiusMeters": 600,
+        "anchorStation": "新高円寺"
+      },
+      "verdicts": []
+    },
+    {
+      "id": "winter-bound",
+      "track": "resilience",
+      "deps": [
+        "fix-map"
+      ],
+      "deadline": {
+        "kind": "undated"
+      },
+      "position": [
+        2,
+        1
+      ],
+      "wardWide": true,
+      "layers": [
+        "stations",
+        "care",
+        "careClosures"
+      ],
+      "facts": [
+        "F-CARE-SUGINAMI-CLOSURES",
+        "F-FISCAL-ELASTICITY"
+      ],
+      "source": "ACW T2 (offline, S2) · T3 (energy exposure is not additive)",
+      "text": {
+        "ja": {
+          "short": "冬の上限",
+          "title": "冬の停電・通信断に備える:区全体の最大損失の上限を計算する",
+          "why": "同じ計算で、通信が落ちたときに確認コストがどこまで増えるかの上限が出る。平時は確認、危機時は保険料(パラメトリック保険のトリガー)の基準になる。ページが外部通信なしで起動することが前提。",
+          "next": "区の確認ネットワークを組み、通信が落ちる割合ごとの追加コストの上限を出す。",
+          "where": "区全域(駅・介護事業所・廃止3件)"
+        },
+        "en": {
+          "short": "Winter cap",
+          "title": "Prepare for a winter power or network outage: bound the ward’s worst-case exposure",
+          "why": "The same computation that verifies in peacetime caps the extra verification cost when networks fail, and prices a parametric trigger. It needs the page to boot with zero network.",
+          "next": "Build the ward’s verification network and compute the added-cost bound for each fraction of nodes offline.",
+          "where": "Ward-wide (stations, care offices, 3 closures)"
+        }
+      },
+      "geo": {
+        "kind": "none"
+      },
+      "verdicts": []
+    },
+    {
+      "id": "feb-check",
+      "track": "gate",
+      "deps": [
+        "pilot",
+        "winter-bound"
+      ],
+      "deadline": {
+        "kind": "dated",
+        "date": "2027-02-15"
+      },
+      "position": [
+        4,
+        1
+      ],
+      "wardWide": true,
+      "layers": [],
+      "facts": [],
+      "source": "Verdicts: Ilya, Takizaki · Calendar Jan 15, Feb 15",
+      "text": {
+        "ja": {
+          "short": "2/15",
+          "title": "2/15の見極め:第三者がゼロコストで協力するか",
+          "why": "1/15の確定申告期に、最初の負荷のデータが出る。それを使って、協力のコストがゼロかどうかを判定する。",
+          "next": "申告期の負荷データで、協力のコストを測る。",
+          "where": "区全域"
+        },
+        "en": {
+          "short": "Feb 15",
+          "title": "Feb 15 check: does a third party cooperate at zero cost?",
+          "why": "The Jan 15 filing season produces the first load data. Use it to judge whether cooperation really costs nothing.",
+          "next": "Measure the cost of cooperation from the filing-season load.",
+          "where": "Ward-wide"
+        }
+      },
+      "geo": {
+        "kind": "none"
+      },
+      "verdicts": [
+        {
+          "speaker": "Ilya",
+          "ja": "証明コストは固定で、崖のように増える。マージン9.5%。2027年2月が正念場。",
+          "en": "Proof cost is fixed and rises cliff-wise. Margin 9.5%. Feb 2027 is do-or-die."
+        },
+        {
+          "speaker": "Takizaki",
+          "ja": "人が8割、仕組みが2割(下限¥1,570/時)。ロジックを台帳へ移せば成立する。",
+          "en": "80% heads, 20% mechanism (¥1,570/hr lower bound). Yes if the logic moves to the ledger."
+        }
+      ]
+    },
+    {
+      "id": "exit-test",
+      "track": "gate",
+      "deps": [
+        "feb-check"
+      ],
+      "deadline": {
+        "kind": "dated",
+        "date": "2027-04-01"
+      },
+      "position": [
+        5,
+        1
+      ],
+      "wardWide": true,
+      "layers": [],
+      "facts": [],
+      "source": "Hard exit test 2027-04-01 · Mar 15 Emmy check",
+      "text": {
+        "ja": {
+          "short": "撤退",
+          "title": "4/1の撤退テスト:第三者が再確認なしに記録を使っていなければ、杉並から撤退",
+          "why": "事前に決めた撤退条件。3/15に「抽象の水準は正しいか」(Emmy)を確認してから判定する。",
+          "next": "判定は、実証の開始前に封印した数字で行う。",
+          "where": "区全域"
+        },
+        "en": {
+          "short": "Exit",
+          "title": "Apr 1 exit test: if no third party uses the record without re-verifying, leave Suginami",
+          "why": "The exit condition was fixed in advance. Mar 15 checks whether the abstraction level is right (Emmy) before the call.",
+          "next": "Decide on the numbers sealed before the pilot began.",
+          "where": "Ward-wide"
+        }
+      },
+      "geo": {
+        "kind": "none"
+      },
+      "verdicts": []
+    }
+  ],
+  "smbJoins": [
+    {
+      "kind": "joined",
+      "keyCode": "13115001001",
+      "establishments": 131
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115001002",
+      "establishments": 254
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115002001",
+      "establishments": 182
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115002002",
+      "establishments": 145
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115002003",
+      "establishments": 263
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115002004",
+      "establishments": 152
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115003001",
+      "establishments": 186
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115003002",
+      "establishments": 57
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115003003",
+      "establishments": 111
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115003004",
+      "establishments": 88
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115003005",
+      "establishments": 65
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115004001",
+      "establishments": 88
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115004002",
+      "establishments": 142
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115004003",
+      "establishments": 221
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115004004",
+      "establishments": 151
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115005001",
+      "establishments": 67
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115005002",
+      "establishments": 90
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115005003",
+      "establishments": 273
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115005004",
+      "establishments": 134
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115006001",
+      "establishments": 245
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115006002",
+      "establishments": 102
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115006003",
+      "establishments": 205
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115007001",
+      "establishments": 124
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115007002",
+      "establishments": 135
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115007003",
+      "establishments": 126
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115008001",
+      "establishments": 37
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115008002",
+      "establishments": 64
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115008003",
+      "establishments": 57
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115009001",
+      "establishments": 75
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115009002",
+      "establishments": 53
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115010001",
+      "establishments": 188
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115010002",
+      "establishments": 149
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115011001",
+      "establishments": 273
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115011002",
+      "establishments": 315
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115011003",
+      "establishments": 442
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115011004",
+      "establishments": 625
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115011005",
+      "establishments": 123
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115012001",
+      "establishments": 60
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115012002",
+      "establishments": 430
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115012003",
+      "establishments": 375
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115012004",
+      "establishments": 62
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115013001",
+      "establishments": 551
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115013002",
+      "establishments": 174
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115013003",
+      "establishments": 441
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115014001",
+      "establishments": 253
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115014002",
+      "establishments": 262
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115014003",
+      "establishments": 90
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115014004",
+      "establishments": 113
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115014005",
+      "establishments": 64
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115014006",
+      "establishments": 59
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115015001",
+      "establishments": 50
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115015002",
+      "establishments": 115
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115015003",
+      "establishments": 389
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115016001",
+      "establishments": 47
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115016002",
+      "establishments": 61
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115016003",
+      "establishments": 75
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115017001",
+      "establishments": 47
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115017002",
+      "establishments": 34
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115017003",
+      "establishments": 53
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115017004",
+      "establishments": 11
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115018001",
+      "establishments": 104
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115018002",
+      "establishments": 60
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115018003",
+      "establishments": 86
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115018004",
+      "establishments": 148
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115018005",
+      "establishments": 211
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115019001",
+      "establishments": 107
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115019002",
+      "establishments": 100
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115019003",
+      "establishments": 101
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115019004",
+      "establishments": 258
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115019005",
+      "establishments": 658
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115020001",
+      "establishments": 71
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115020002",
+      "establishments": 39
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115020003",
+      "establishments": 57
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115020004",
+      "establishments": 112
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115021001",
+      "establishments": 635
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115021002",
+      "establishments": 163
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115021003",
+      "establishments": 60
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115021004",
+      "establishments": 94
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115022001",
+      "establishments": 65
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115022002",
+      "establishments": 211
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115022003",
+      "establishments": 341
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115022004",
+      "establishments": 83
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115023001",
+      "establishments": 47
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115023002",
+      "establishments": 225
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115023003",
+      "establishments": 383
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115023004",
+      "establishments": 160
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115023005",
+      "establishments": 60
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115024001",
+      "establishments": 35
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115024002",
+      "establishments": 54
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115024003",
+      "establishments": 93
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115024004",
+      "establishments": 47
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115025001",
+      "establishments": 58
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115025002",
+      "establishments": 41
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115025003",
+      "establishments": 81
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115026001",
+      "establishments": 132
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115026002",
+      "establishments": 68
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115026003",
+      "establishments": 42
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115026004",
+      "establishments": 73
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115027001",
+      "establishments": 141
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115027002",
+      "establishments": 92
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115027003",
+      "establishments": 93
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115027004",
+      "establishments": 52
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115027005",
+      "establishments": 68
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115028001",
+      "establishments": 66
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115028002",
+      "establishments": 166
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115028003",
+      "establishments": 127
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115028004",
+      "establishments": 90
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115028005",
+      "establishments": 112
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115029001",
+      "establishments": 123
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115029002",
+      "establishments": 160
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115029003",
+      "establishments": 105
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115029004",
+      "establishments": 62
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115030001",
+      "establishments": 74
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115030002",
+      "establishments": 52
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115030003",
+      "establishments": 62
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115030004",
+      "establishments": 39
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115031001",
+      "establishments": 56
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115031002",
+      "establishments": 79
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115031003",
+      "establishments": 236
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115032001",
+      "establishments": 73
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115032002",
+      "establishments": 74
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115032003",
+      "establishments": 70
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115032004",
+      "establishments": 87
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115032005",
+      "establishments": 86
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115033001",
+      "establishments": 48
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115033002",
+      "establishments": 84
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115033003",
+      "establishments": 158
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115033004",
+      "establishments": 134
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115033005",
+      "establishments": 180
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115034001",
+      "establishments": 57
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115034002",
+      "establishments": 103
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115034003",
+      "establishments": 182
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115034004",
+      "establishments": 126
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115035001",
+      "establishments": 173
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115035002",
+      "establishments": 109
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115035003",
+      "establishments": 33
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115036001",
+      "establishments": 300
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115036002",
+      "establishments": 56
+    },
+    {
+      "kind": "joined",
+      "keyCode": "13115036003",
+      "establishments": 28
+    }
+  ],
+  "gauges": {
+    "smbExpected": 19533,
+    "smbDelivered": 19533,
+    "smbMissing": 0
+  }
+}
