@@ -1,4 +1,4 @@
-# Decision Continuity: local evaluation kit 0.2.1
+# Decision Continuity: local evaluation kit 0.3.0
 
 Independent AXM evaluation aligned to the publicly described fiChains workflow. Synthetic examples are labeled. This is not an Aankhen release or a proprietary fiChains integration. The public page is the interactive entrance; this folder is the source-distributed local investigator. Python 3.10+ is required. No pip packages, cloud accounts or model credentials are required for the core.
 
@@ -32,3 +32,7 @@ This release has no live ERP connector, proprietary fiChains data, general auton
 ## Layout
 
 `decision_floor/` owns extraction, search, reconciliation and report generation. `app.py` and `ui/` are the local console; `tests/` and `tools/novel_case_oracle.py` provide portable checks. `sample_inputs/` contains only authored synthetic exports. `workflow/` is the new public-facing replay copied for offline use. `MANIFEST.json` is generated for the complete distribution. Original engine version 0.2 is retained; distribution 0.2.1 changes presentation, delivery and packaging.
+
+## Optional sovereign peer exchange
+
+The independent file-based exchange uses each organization's own original source vault and signing key, a manually pinned counterparty public key, and a local contract governing disclosed fields. An Ed25519 packet can be compared with another organization's matching operational records; returned human dispositions remain signed statements, never source-system writeback. Requires a local OpenSSL executable for the peer exchange only. Core ingestion and investigation remain stdlib-only. Run `python tools/peer_replay.py --output /private/synthetic-peer-receipt.json` to exercise two fresh independent synthetic recorders. Read `PEER_EXCHANGE.md` for contract setup, explicit disclosure, limits and the exact CLI path.

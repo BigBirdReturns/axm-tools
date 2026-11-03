@@ -235,6 +235,15 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      # The Decision Floor bundle includes an optional Ed25519 peer exchange.
+      # Verify its published package and isolated two-party contract before
+      # deploying the shared Pages root; a bad exchange cannot ship silently.
+      - name: Verify Decision Floor public artifact
+        run: python -B decision-floor/scripts/build_release.py --check
+      - name: Recheck Decision Floor bilateral protocol
+        working-directory: decision-floor/offline
+        run: python -B -m unittest discover -s tests -p test_peer_exchange.py -v
+
       - name: Upload site
         uses: actions/upload-pages-artifact@v5.0.0
         with:

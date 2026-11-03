@@ -4,14 +4,14 @@
   "status": "PASS",
   "manifest": {
     "status": "PASS",
-    "expected_files": 56,
+    "expected_files": 61,
     "failures": [],
     "unmanifested": []
   },
   "unit_test_exit_code": 0,
   "unit_test_summary": [
     "----------------------------------------------------------------------",
-    "Ran 22 tests in 3.193s",
+    "Ran 31 tests in 5.761s",
     "",
     "OK"
   ],
@@ -28,6 +28,6 @@
     "network_attempts": 0,
     "failures": []
   },
-  "elapsed_seconds": 5.83,
+  "elapsed_seconds": 7.43,
   "limitations": "No live ERP qualification, local browser HTTP navigation not guaranteed in managed test environments, external source authenticity not established"
 }

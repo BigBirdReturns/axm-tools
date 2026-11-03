@@ -1,0 +1,14 @@
+{
+  "schema": "axm-decision-peer-qualification/1",
+  "status": "PASS",
+  "evidence_class": "fully synthetic, no customer data",
+  "recorders": 2,
+  "signed_claims": 5,
+  "corroborated_records": 4,
+  "contradictions": 1,
+  "conflicting_record_id": "PO-908-2",
+  "source_bytes_shared": 0,
+  "human_review_returned": "contested",
+  "tamper_rejected": true,
+  "production_system_authority_verified": false
+}

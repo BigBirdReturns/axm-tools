@@ -19,3 +19,7 @@ No scheduled work, telemetry, external fonts, external runtime fetch or business
 ## Rot
 
 Public product descriptions, source mappings, browser APIs and deployment services can change. Broken source links do not silently update the evidence. Report schema changes must be explicitly admitted; unsupported input fails visibly. Keep original release sources, source locators and distribution manifests. Rebuild and test before changing the published release.
+
+## Sovereign recorder-to-recorder exchange (0.3.0)
+
+The locally runnable evaluation now includes an optional contract-scoped Ed25519 witness exchange between two independent vaults. It preserves original signed statements and verifies them against manually enrolled peer keys; a conflicting PO record becomes a review rather than a rewritten fact. Run `python tools/peer_replay.py --output /private/synthetic-peer-receipt.json` from the extracted kit. Details, security boundaries, and human authority limitations are in `offline/PEER_EXCHANGE.md`. The public page and `data/peer-qualification.json` contain synthetic claims only. No source-system integration or legal determination is implied.
