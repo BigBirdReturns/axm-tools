@@ -1,0 +1,43 @@
+name: Decision Floor qualified public release
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/decision-floor-release/**'
+      - '.github/scripts/materialize_decision_floor.py'
+      - '.github/workflows/decision-floor-release.yml'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: decision-floor-release
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Rebuild and independently qualify the public tool and download
+        run: python .github/scripts/materialize_decision_floor.py
+      - name: Commit only the qualified public product and directory entries
+        run: |
+          git config user.name "decision-floor-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add decision-floor README.md index.html CONTINUITY.md
+          if ! git diff --cached --quiet; then
+            git commit -m "decision-floor: publish qualified fiChains workflow and offline evaluation kit"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Dispatch the existing gated Pages publisher
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pta-fetch.yml --ref main
