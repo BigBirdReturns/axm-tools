@@ -48,6 +48,7 @@ the tool layout, so don't try to fit them into it.
 
 | Area | What it is | Surface |
 |------|------------|---------|
+| [`publications/`](publications/) | Reviewed publication references, canonical FakeSoap articles and their linked tools; generated from a portable public catalog | [Publication index](https://bigbirdreturns.github.io/axm-tools/publications/) |
 | [`identity/`](identity/) | The AXM / SCG identity system: the pixel-dandelion mark, its four-token palette and type, frozen release bundles, and the provenance law (`SCG_MARK_CONSTITUTION.md`) that governs every rendering | [live showcase](https://bigbirdreturns.github.io/axm-tools/identity/) — self-contained page, no Action |
 
 `identity/` is deliberately **not** a tool: no `scripts/`, no `data/`, no
@@ -77,8 +78,9 @@ add and none of them can break each other:
   and scoped per tool: `.github/workflows/<tool>-<job>.yml`, touching only
   that tool's `data/`.
 - **GitHub Pages deploys from Actions** (Settings → Pages → Source
-  "GitHub Actions"). A tool's workflow uploads the *repo root* as the
-  Pages artifact after refreshing its data, so each tool is reachable at
+  "GitHub Actions"). A tool's workflow calls the shared
+  publication action after refreshing its data; it stages the public repo
+  tree and binds the uploaded artifact to a live build marker, so each tool is reachable at
   `/<tool>/` and this repo's root page is just a directory of them. The
   deploy step must live in the same workflow as any data commit: pushes
   made with the built-in `GITHUB_TOKEN` never trigger other workflows, so
@@ -115,7 +117,7 @@ for the local-device path that fills `observed.json`.
    including an honest "what can rot" section.
 2. Add `.github/workflows/<tool>-<job>.yml` for any scheduled work; make
    total failure exit nonzero, and if the workflow commits data, end it
-   with the upload-artifact + deploy-pages steps (see `pta-fetch.yml`).
+   with `./.github/actions/publish-site` (see `pta-fetch.yml`).
 3. Pre-seed `<tool>/data/` so the page renders before the first run.
 4. Add the tool to the table above and to the root `index.html`.
 
@@ -134,3 +136,15 @@ The [compute desk](https://github.com/BigBirdReturns/cantos/tree/main/compute) a
 
 [Open the independent preview](https://bigbirdreturns.github.io/axm-tools/atmark/) · [Source and operating instructions](atmark/README.md). A free, local-first toolkit for a public 53-listing subset: source-bound catalogue normalisation, review queues, comparisons, CSV intake, image preparation and portable export. It contains no seller write integration. Qualification is retained in `atmark/data/qualification.json`.
 
+
+
+## Publication and deployment records
+
+All four full-site publishers use the existing GitHub Actions token and the
+same local composite action. Their collectors, schedules and `pages`
+concurrency group retain ownership. The action preserves the compute
+release gate and historical Cantos routes, builds the reviewed publication
+index, verifies the upload tar against an exact file manifest, then reads
+the deployed marker and indexes back before retaining a receipt. See
+[`integration/PUBLISHING.md`](integration/PUBLISHING.md) for source, artifact
+and deployment identities and the recovery procedure.

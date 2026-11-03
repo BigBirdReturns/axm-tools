@@ -5,7 +5,7 @@ name: PTA tracker fetch + deploy
 # workflows (GitHub's anti-recursion rule) — so a standalone on:push Pages
 # workflow would deploy on human merges but silently skip every nightly
 # refresh. Deploying right here, in the same run that fetched the data,
-# keeps the site and the repo atomic and needs no push event at all.
+# keeps collection and publication in one run without a second push event.
 
 on:
   schedule:
@@ -19,6 +19,7 @@ permissions:
   actions: read
   contents: write
   pages: write
+  deployments: read
   id-token: write
   issues: write
 
@@ -37,6 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
         with:
+          ref: main
           fetch-depth: 0
 
       - uses: actions/setup-python@v7.0.0
@@ -202,78 +204,8 @@ jobs:
             git push
           fi
 
-      - name: Build AXM Readiness offline launcher
-        run: python acceptance-assets/build_offline.py
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v6.0.0
-
-      # the whole repo root is the site: / is the tool directory,
-      # /pta-tracker/ is the tracker — same layout for every future tool.
-      # The artifact name carries the attempt number because artifacts
-      # survive job re-runs: with the default fixed name, re-running a
-      # failed deploy finds its own attempt's upload AND the previous
-      # attempt's, and deploy-pages refuses to pick between two artifacts
-      # named "github-pages".
-      - name: Verify historical Cantos compatibility staging
-        run: python -B -m unittest integration.tests.test_cantos_compat -v
-
-      - name: Require qualified compute sources before publishing the shared site
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python integration/release_gate.py --timeout 600 --receipt "${{ runner.temp }}/compute-publication-gate.json"
-
-      - name: Stage historical Cantos compatibility routes
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python integration/cantos_compat.py stage --manifest-out "${{ runner.temp }}/cantos-compat-manifest.json"
-      - name: Retain Cantos compatibility receipt
-        uses: actions/upload-artifact@v4
-        with:
-          name: cantos-compat-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/cantos-compat-manifest.json
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Upload site
-        uses: actions/upload-pages-artifact@v5.0.0
-        with:
-          path: .
-          name: github-pages-attempt-${{ github.run_attempt }}
-
-      - name: Deploy to GitHub Pages
+      - name: Publish the verified shared site
         id: deploy
-        uses: actions/deploy-pages@v5.0.1
+        uses: ./.github/actions/publish-site
         with:
-          artifact_name: github-pages-attempt-${{ github.run_attempt }}
-
-      # A successful deploy writes a tiny receipt back to main. The push uses
-      # GITHUB_TOKEN and therefore does not recursively trigger this workflow.
-      # This gives maintainers a durable answer to "what artifact is live?"
-      # without trusting the Pages UI or a CDN cache.
-      - name: Record successful Pages deployment
-        env:
-          PAGE_URL: ${{ steps.deploy.outputs.page_url }}
-        run: |
-          python - <<'PY'
-          import json, os
-          from datetime import datetime, timezone
-          from pathlib import Path
-
-          receipt = {
-              "deployed_at": datetime.now(timezone.utc).isoformat(),
-              "source_sha": os.environ["GITHUB_SHA"],
-              "run_id": os.environ["GITHUB_RUN_ID"],
-              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
-              "page_url": os.environ.get("PAGE_URL", ""),
-              "axm_readiness_release": "readiness-equipment-evidence/1.0",
-          }
-          Path(".github/pages-deployment.json").write_text(
-              json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
-          )
-          PY
-          git config user.name "pages-deploy-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add .github/pages-deployment.json
-          git commit -m "pages: record successful deployment" || exit 0
-          git push
+          token: ${{ github.token }}

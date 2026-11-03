@@ -1,0 +1,39 @@
+name: Publication catalog and Pages mechanics
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/actions/publish-site/**
+      - .github/workflows/publication-check.yml
+      - .github/workflows/pta-fetch.yml
+      - .github/workflows/organ-evolution-observe.yml
+      - .github/workflows/axm-witness-0.9.2.yml
+      - .github/workflows/axm-witness-live-readback-0.9.2.yml
+      - integration/**
+      - publications/**
+  push:
+    branches: [main]
+    paths:
+      - .github/actions/publish-site/**
+      - .github/workflows/publication-check.yml
+      - integration/**
+      - publications/**
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Verify exact artifact custody, release gates and catalog admission
+        run: |
+          python -B -m unittest integration.tests.test_pages_publication integration.tests.test_release_gate integration.tests.test_cantos_compat -v
+          python -B -m unittest discover -s publications/tests -v
+          python -B publications/scripts/catalog.py check

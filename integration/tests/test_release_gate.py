@@ -40,21 +40,28 @@ class ReleaseGateTests(unittest.TestCase):
         with patch.object(gate, 'git', return_value=' M compute/index.html'):
             with self.assertRaises(RuntimeError): gate.local_signature()
     def test_all_full_site_publishers_have_gate_before_upload(self):
+        shared=(gate.ROOT/'.github/actions/publish-site/action.yml').read_text(encoding='utf-8')
+        self.assertLess(shared.index('integration/release_gate.py --timeout'),shared.index('uses: actions/upload-pages-artifact@'))
         publishers=[]
         for p in (gate.ROOT/'.github/workflows').glob('*.yml'):
             text=p.read_text(encoding='utf-8')
-            if 'uses: actions/upload-pages-artifact@' not in text: continue
+            self.assertNotIn('uses: actions/upload-pages-artifact@',text,p.name)
+            if 'uses: ./.github/actions/publish-site' not in text: continue
             publishers.append(p.name)
-            self.assertIn('python integration/release_gate.py',text,p.name)
-            self.assertLess(text.index('python integration/release_gate.py'), text.index('uses: actions/upload-pages-artifact@'),p.name)
             self.assertIn('actions: read',text,p.name)
-        self.assertEqual(len(publishers),4)
+            self.assertIn('deployments: read',text,p.name)
+        self.assertEqual(set(publishers),set(gate.PUBLISHERS))
     def test_gate_cannot_be_soft_failed(self):
+        shared=(gate.ROOT/'.github/actions/publish-site/action.yml').read_text(encoding='utf-8')
+        segment=shared[shared.index('    - name: Require qualified compute sources'):]
+        segment=segment.split('\n    - ',1)[0]
+        self.assertNotIn('continue-on-error',segment)
+        self.assertNotIn('|| true',segment)
         for name in gate.PUBLISHERS:
             text=(gate.ROOT/'.github/workflows'/name).read_text(encoding='utf-8')
-            segment=text[text.index('      - name: Require qualified compute sources'):]
-            segment=segment.split('\n      - ',1)[0]
-            self.assertNotIn('continue-on-error',segment)
-            self.assertNotIn('|| true',segment)
+            call=text[text.index('      - name: Publish the verified shared site'):]
+            call=call.split('\n      - ',1)[0]
+            self.assertNotIn('continue-on-error',call)
+            self.assertNotIn('|| true',call)
 
 if __name__=='__main__': unittest.main()
