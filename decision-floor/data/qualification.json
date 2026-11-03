@@ -1,5 +1,5 @@
 {
-  "build": "Decision Floor distribution 0.2.1 / engine 0.2",
+  "build": "Decision Floor distribution 0.3.0 / engine 0.2",
   "qualification": "local independent proof on this machine",
   "status": "PASS",
   "manifest": {
@@ -11,7 +11,7 @@
   "unit_test_exit_code": 0,
   "unit_test_summary": [
     "----------------------------------------------------------------------",
-    "Ran 31 tests in 5.761s",
+    "Ran 31 tests in 5.851s",
     "",
     "OK"
   ],
@@ -28,6 +28,6 @@
     "network_attempts": 0,
     "failures": []
   },
-  "elapsed_seconds": 7.43,
+  "elapsed_seconds": 7.58,
   "limitations": "No live ERP qualification, local browser HTTP navigation not guaranteed in managed test environments, external source authenticity not established"
 }

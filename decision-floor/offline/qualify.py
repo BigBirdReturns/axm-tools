@@ -37,7 +37,7 @@ def main():
     except json.JSONDecodeError:synthetic={'outcome':'FAIL','detail':oracle.stderr[-2000:]}
     manifest=manifest_verify()
     status='PASS' if baseline.returncode==0 and oracle.returncode==0 and manifest['status']=='PASS' else 'FAIL'
-    result={'build':'Decision Floor distribution 0.2.1 / engine 0.2','qualification':'local independent proof on this machine',
+    result={'build':'Decision Floor distribution 0.3.0 / engine 0.2','qualification':'local independent proof on this machine',
             'status':status,'manifest':manifest,'unit_test_exit_code':baseline.returncode,
             'unit_test_summary':baseline.stderr.strip().splitlines()[-4:],
             'synthetic':synthetic,'elapsed_seconds':round(time.monotonic()-start,2),

@@ -31,7 +31,7 @@ This release has no live ERP connector, proprietary fiChains data, general auton
 
 ## Layout
 
-`decision_floor/` owns extraction, search, reconciliation and report generation. `app.py` and `ui/` are the local console; `tests/` and `tools/novel_case_oracle.py` provide portable checks. `sample_inputs/` contains only authored synthetic exports. `workflow/` is the new public-facing replay copied for offline use. `MANIFEST.json` is generated for the complete distribution. Original engine version 0.2 is retained; distribution 0.2.1 changes presentation, delivery and packaging.
+`decision_floor/` owns extraction, search, reconciliation and report generation. `app.py` and `ui/` are the local console; `tests/` and `tools/novel_case_oracle.py` provide portable checks. `sample_inputs/` contains only authored synthetic exports. `workflow/` is the new public-facing replay copied for offline use. `MANIFEST.json` is generated for the complete distribution. Original engine version 0.2 is retained; distribution 0.3.0 changes presentation, delivery and packaging.
 
 ## Optional sovereign peer exchange
 
