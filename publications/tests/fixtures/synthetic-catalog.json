@@ -1,0 +1,45 @@
+{
+  "schema": "publication-catalog/0.1",
+  "entries": [
+    {
+      "schema": "publication-catalog-entry/0.1",
+      "id": "qualification-only",
+      "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "state": "published",
+      "title": "Synthetic qualification fixture",
+      "excerpt": "Synthetic release evidence for tests only; not an actual published article.",
+      "canonical_url": "https://example.org/qualification-only/",
+      "tags": [
+        "Qualification"
+      ],
+      "sources": [
+        {
+          "id": "fixture",
+          "title": "Public fixture source",
+          "url": "https://example.org/evidence/",
+          "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      ],
+      "links": [
+        {
+          "title": "Fixture tool",
+          "url": "https://example.org/tool/",
+          "relation": "tool",
+          "release": "fixture-1"
+        }
+      ],
+      "release": {
+        "schema": "publication-release/0.1",
+        "publication_id": "qualification-only",
+        "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "canonical_url": "https://example.org/qualification-only/",
+        "readback": {
+          "url": "https://example.org/qualification-only/",
+          "http_status": 200,
+          "observed_at": "2026-11-03T20:00:00Z",
+          "html_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        }
+      }
+    }
+  ]
+}

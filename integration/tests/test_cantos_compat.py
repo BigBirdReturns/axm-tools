@@ -232,31 +232,34 @@ class CantosCompatibilityTests(unittest.TestCase):
 
     def test_every_pages_publisher_tests_gates_stages_and_fetches_history(self) -> None:
         repo = Path(compat.__file__).resolve().parents[1]
-        native_test = "python -B -m unittest integration.tests.test_cantos_compat -v"
+        shared = (repo / ".github/actions/publish-site/action.yml").read_text(encoding="utf-8")
+        test_at = shared.index("integration.tests.test_cantos_compat")
+        gate_at = shared.index("integration/release_gate.py --timeout")
+        stage_at = shared.index("integration/cantos_compat.py stage")
+        upload_at = shared.index("actions/upload-pages-artifact")
+        self.assertLess(test_at, gate_at)
+        self.assertLess(gate_at, stage_at)
+        self.assertLess(stage_at, upload_at)
+        self.assertIn("GH_TOKEN: ${{ inputs.token }}", shared)
+        self.assertIn("${{ runner.temp }}/cantos-compat-manifest.json", shared)
+        retention = shared[shared.index("- name: Retain publication and compatibility evidence"):]
+        self.assertIn("if: always()", retention)
+        self.assertIn("actions/upload-artifact@v4", retention)
+        self.assertIn("retention-days: 90", retention)
         for workflow in compat.PUBLISHERS:
-            path = repo / ".github" / "workflows" / workflow
-            source = path.read_text(encoding="utf-8")
+            source = (repo / ".github/workflows" / workflow).read_text(encoding="utf-8")
             with self.subTest(workflow=workflow):
-                test_at = source.index(native_test)
-                gate_at = source.index("integration/release_gate.py --timeout")
-                stage_at = source.index("integration/cantos_compat.py stage")
-                upload_at = source.index("actions/upload-pages-artifact")
-                receipt_at = source.rfind("actions/upload-artifact@v4", stage_at, upload_at)
-                self.assertLess(test_at, gate_at)
-                self.assertLess(gate_at, stage_at)
-                self.assertLess(stage_at, receipt_at)
-                self.assertLess(receipt_at, upload_at)
-                stage_begin = source.rfind("      - name: Stage historical Cantos compatibility routes", 0, stage_at)
-                stage_and_receipt = source[stage_begin:upload_at]
-                self.assertIn("GH_TOKEN: ${{ github.token }}", stage_and_receipt)
-                self.assertIn("name: cantos-compat-${{ github.run_id }}-${{ github.run_attempt }}", stage_and_receipt)
-                self.assertIn("path: ${{ runner.temp }}/cantos-compat-manifest.json", stage_and_receipt)
-                self.assertIn("if-no-files-found: error", stage_and_receipt)
-                self.assertIn("retention-days: 30", stage_and_receipt)
-                checkout_at = source.rfind("actions/checkout", 0, stage_at)
-                fetch_depth_at = source.find("fetch-depth: 0", checkout_at, stage_at)
+                call_at = source.index("uses: ./.github/actions/publish-site")
+                self.assertEqual(source.count("uses: ./.github/actions/publish-site"), 1)
+                self.assertNotIn("actions/upload-pages-artifact", source)
+                self.assertNotIn("actions/deploy-pages", source)
+                self.assertIn("group: pages", source)
+                self.assertIn("cancel-in-progress: false", source)
+                checkout_at = source.rfind("actions/checkout", 0, call_at)
                 self.assertGreaterEqual(checkout_at, 0)
-                self.assertGreaterEqual(fetch_depth_at, checkout_at)
+                checkout = source[checkout_at:call_at]
+                self.assertIn("fetch-depth: 0", checkout)
+                self.assertIn("ref: main", checkout)
 
 
 if __name__ == "__main__":

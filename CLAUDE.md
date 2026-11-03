@@ -331,3 +331,19 @@ they are kept here verbatim before the branch was deleted. Source tip
 ## Atmark preview
 
 `atmark/` is self-contained. The captured 53 listings are a public subset, never a whole-store inventory census. Keep original observations separate from generated catalogue projections; retain exact image bytes and distinct identity/display reviews. Used-item condition and physical stock require seller evidence. No eBay write integration is present. Run `python atmark/scripts/catalog.py build`, `verify`, unit tests and `tests/browser_test.py` before changing the surface.
+
+
+## Shared Pages receipt, 3 November 2026
+
+- The four full-site publishers already used one `pages` concurrency group.
+  Receipt coverage differed: PTA wrote `.github/pages-deployment.json`,
+  while Organ did not. PTA used event `GITHUB_SHA` after committing new
+  feed data. The shared action records both trigger and post-refresh
+  checkout revisions and verifies the actual uploaded tar.
+- `actions/deploy-pages` exposes `page_url`, not its internal deployment
+  identifier. The receipt queries the GitHub environment deployment ID
+  and correlates its status log URL with this exact workflow run. A status
+  can still be `in_progress` while its owning job writes the receipt; the
+  separate readback proves the deployed marker and indexes at that moment.
+- The fresh public tree contained no root `CNAME`. That observation does
+  not identify the hosting provider behind the separate axm.tools apex.

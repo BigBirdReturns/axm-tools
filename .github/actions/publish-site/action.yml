@@ -1,0 +1,98 @@
+name: Publish the shared static site
+description: Preserve release gates, bind exact artifact bytes, and retain a verified live Pages receipt.
+inputs:
+  token:
+    description: Existing workflow token; no additional account or secret.
+    required: true
+outputs:
+  page_url:
+    description: URL returned by GitHub Pages.
+    value: ${{ steps.deployment.outputs.page_url }}
+runs:
+  using: composite
+  steps:
+    - name: Build the established offline readiness launcher
+      shell: bash
+      run: python acceptance-assets/build_offline.py
+
+    - name: Verify publication mechanics and historical compatibility
+      shell: bash
+      run: |
+        python -B -m unittest integration.tests.test_pages_publication integration.tests.test_cantos_compat integration.tests.test_release_gate -v
+        python -B -m unittest discover -s publications/tests -v
+        python -B publications/scripts/catalog.py build
+
+    - name: Configure Pages
+      uses: actions/configure-pages@v6.0.0
+
+    - name: Require qualified compute sources before publishing the shared site
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+      run: python -B integration/release_gate.py --timeout 600 --receipt "${{ runner.temp }}/compute-publication-gate.json"
+
+    - name: Stage historical Cantos compatibility routes
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+      run: python -B integration/cantos_compat.py stage --manifest-out "${{ runner.temp }}/cantos-compat-manifest.json"
+
+    - name: Stage the exact public tree and its build marker
+      shell: bash
+      run: |
+        python -B integration/pages_publication.py prepare \
+          --stage "${{ runner.temp }}/axm-pages-${{ github.run_id }}-${{ github.run_attempt }}" \
+          --receipt "${{ runner.temp }}/pages-publication.json" \
+          --artifact-name "github-pages-${{ github.run_id }}-${{ github.run_attempt }}"
+
+    - name: Upload the staged site
+      id: upload
+      uses: actions/upload-pages-artifact@v5.0.0
+      with:
+        path: ${{ runner.temp }}/axm-pages-${{ github.run_id }}-${{ github.run_attempt }}
+        name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+
+    - name: Verify the exact uploaded artifact and current source
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        ARTIFACT_ID: ${{ steps.upload.outputs.artifact_id }}
+      run: |
+        python -B integration/pages_publication.py bind-artifact \
+          --receipt "${{ runner.temp }}/pages-publication.json" \
+          --archive "${{ runner.temp }}/artifact.tar" --artifact-id "$ARTIFACT_ID"
+        python -B integration/pages_publication.py assert-current
+
+    - name: Deploy GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v5.0.1
+      with:
+        artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+
+    - name: Read back the exact build marker and public indexes
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+      run: |
+        python -B integration/pages_publication.py readback \
+          --receipt "${{ runner.temp }}/pages-publication.json" --page-url "$PAGE_URL"
+
+    - name: Retain the successful deployment receipt on current main
+      shell: bash
+      run: |
+        python -B integration/pages_publication.py commit \
+          --receipt "${{ runner.temp }}/pages-publication.json" \
+          --worktree "${{ runner.temp }}/axm-pages-receipt-${{ github.run_id }}-${{ github.run_attempt }}"
+
+    - name: Retain publication and compatibility evidence
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: pages-publication-${{ github.run_id }}-${{ github.run_attempt }}
+        path: |
+          ${{ runner.temp }}/pages-publication.json
+          ${{ runner.temp }}/compute-publication-gate.json
+          ${{ runner.temp }}/cantos-compat-manifest.json
+        if-no-files-found: warn
+        retention-days: 90

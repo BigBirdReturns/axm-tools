@@ -67,6 +67,10 @@ are touching tells you how much care to take.
 - The site deploy runs in the same workflow as any data commit (CI-token
   pushes do not trigger other workflows — re-verify this property on any
   new platform before trusting a standalone deploy job).
+- Full-site publication mechanics live in `.github/actions/publish-site`.
+  Each collector still owns its workflow and data. Shared publication
+  infrastructure creates no runtime dependency between individual tools.
+  `integration/PUBLISHING.md` owns the artifact and live-receipt procedure.
 - Python, stdlib only. The *language* is convention; the "no third-party
   packages" property behind it is invariant #2.
 
@@ -253,3 +257,17 @@ The owner requested the combined desk and runner. `compute/` is the provider-neu
 ## Decision Continuity public evaluation (2026-11-03)
 
 `decision-floor/` is a self-contained independent AXM evaluation of the public fiChains workflow. Its synthetic histories are rebuilt from the shipped offline reconciliation engine. Read its README before changing evidence semantics. The browser preserves statements and separate event/source-record clocks, refuses conflicting approvals, and imports a local report without upload. The product mark is attributed, with no endorsement or live-integration claim. `scripts/build_release.py` freshly extracts and qualifies the source kit; `scripts/browser_test.py` exercises real Chromium, CSP, original-byte hashes, mobile layout and local File API import. The release capsule under `.github/decision-floor-release/` is the retained one-time source-transfer record, not a second runtime. Current source and generated artifacts live under the tool directory. Normal Pages publication retains the existing shared release gate and Cantos compatibility staging.
+
+
+## Publication references, 3 November 2026
+
+`publications/` is a reference area. Its public catalog admits only entries
+with matching publication identity, revision and canonical-URL readback
+evidence. The generator uses stdlib Python and emits a standalone static
+index. Source packets, draft articles and credential files remain with
+their private owner. Every full-site publisher invokes the same action;
+its receipt separates the workflow trigger from the checkout actually
+uploaded and records the tar digest, provider artifact digest and ID,
+observed environment deployment ID and exact live marker/index readback.
+The inherited `source_sha` field remains a documented trigger alias for
+older receipt readers; new readers use `trigger_sha` and `built_sha`.
