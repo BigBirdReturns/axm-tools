@@ -2,9 +2,9 @@
   "schema": "manzanita-works/working-model-public-release-receipt@3",
   "result": "PASS_PUBLIC_WORKING_MODEL_V1_1_RELEASED_NO_INSTITUTIONAL_EFFECT",
   "release": "mw-working-model-v1.1.0",
-  "recorded_at": "2026-11-02T08:17:29.911302+00:00",
-  "source_sha": "13ccbcaab4bfa347da28e0c83352575b8775698b",
-  "repository_head_when_recorded": "362e53f5b9681a2841d22c19068ac4e62fd177f8",
+  "recorded_at": "2026-11-03T22:59:28.653131+00:00",
+  "source_sha": "8dbd79c19a905dda64df8183e80bf15b371de438",
+  "repository_head_when_recorded": "db51e186323dfe083ceb1bd8013b2b0c0bf3375c",
   "page_url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
   "root_url": "https://bigbirdreturns.github.io/axm-tools/",
   "proofs": {
@@ -23,10 +23,10 @@
     "schema": "manzanita-works/working-model-live-byte-readback@3",
     "result": "PASS_EXACT_LIVE_RELEASE_BYTES",
     "release": "mw-working-model-v1.1.0",
-    "source_sha": "13ccbcaab4bfa347da28e0c83352575b8775698b",
+    "source_sha": "8dbd79c19a905dda64df8183e80bf15b371de438",
     "page_url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
     "root_url": "https://bigbirdreturns.github.io/axm-tools/",
-    "observed_at": "2026-11-02T08:15:14.559762+00:00",
+    "observed_at": "2026-11-03T22:57:45.922352+00:00",
     "attempt": 1,
     "root_directory_link": true,
     "files": {
@@ -114,7 +114,7 @@
     "schema": "manzanita-works/working-model-live-browser@6",
     "result": "PASS_LIVE_WORKING_MODEL_CHROMIUM_RELEASE_CAMPAIGN",
     "release": "mw-working-model-v1.1.0",
-    "source_sha": "13ccbcaab4bfa347da28e0c83352575b8775698b",
+    "source_sha": "8dbd79c19a905dda64df8183e80bf15b371de438",
     "page_url": "https://bigbirdreturns.github.io/axm-tools/manzanita-working-model/",
     "scenarios": 4,
     "stages_per_scenario": 7,
@@ -142,19 +142,19 @@
     "program_external_effect": "none"
   },
   "pages_deployment": {
-    "deployed_at": "2026-11-02T08:17:25.200846+00:00",
-    "source_sha": "13ccbcaab4bfa347da28e0c83352575b8775698b",
-    "run_id": "41411594034",
+    "deployed_at": "2026-11-03T22:59:23.665203+00:00",
+    "source_sha": "8dbd79c19a905dda64df8183e80bf15b371de438",
+    "run_id": "41735071680",
     "run_attempt": "1",
     "page_url": "https://bigbirdreturns.github.io/axm-tools/",
     "axm_readiness_release": "readiness-equipment-evidence/1.0"
   },
   "workflow": {
-    "run_id": 41411594199,
+    "run_id": 41735071678,
     "run_attempt": 1,
-    "artifact_id": 13125931262,
-    "artifact_url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/41411594199/artifacts/13125931262",
-    "artifact_digest": "30d6c13c4ebc618bb1237b3e98bc68642c51edae611f5cfe1f1bd179aa1d2935"
+    "artifact_id": 13276734135,
+    "artifact_url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/41735071678/artifacts/13276734135",
+    "artifact_digest": "7949b071052cd08ada8a0118f23e300532c665bef304ca8de8fd843ed414b34a"
   },
   "authority": {
     "repository_owner_publication_authority_exercised": true,
