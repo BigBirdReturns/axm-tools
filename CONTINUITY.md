@@ -248,3 +248,8 @@ The owner requested the combined desk and runner. `compute/` is the provider-neu
 ## Research Desk public handoff, 22 September 2026
 
 `research-desk/` supplies a plain-language landing page, the preserved single-file Research Desk 1.0.0 app, supported input contracts and synthetic example reports with replayable history. No backend or new workflow exists. The app is an independent build for inspection, not a BEP adoption or integration claim. Workspace data lives in memory until explicitly exported. Native publication checks and exact original-app identity are recorded in that directory. Existing compute and Hot Aisle tools remain unchanged.
+
+
+## Decision Continuity public evaluation (2026-11-03)
+
+`decision-floor/` is a self-contained independent AXM evaluation of the public fiChains workflow. Its synthetic histories are rebuilt from the shipped offline reconciliation engine. Read its README before changing evidence semantics. The browser preserves statements and separate event/source-record clocks, refuses conflicting approvals, and imports a local report without upload. The product mark is attributed, with no endorsement or live-integration claim. `scripts/build_release.py` freshly extracts and qualifies the source kit; `scripts/browser_test.py` exercises real Chromium, CSP, original-byte hashes, mobile layout and local File API import. The release capsule under `.github/decision-floor-release/` is the retained one-time source-transfer record, not a second runtime. Current source and generated artifacts live under the tool directory. Normal Pages publication retains the existing shared release gate and Cantos compatibility staging.

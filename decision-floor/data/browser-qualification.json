@@ -1,0 +1,149 @@
+{
+  "status": "PASS",
+  "scope": "Actual Chromium page, CSP, DOM interaction and local file import; synthetic records only",
+  "browser": "Chrome/156.0.8078.47",
+  "checks": [
+    {
+      "name": "Actual static page loaded with CSP",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "First recorded PO discrepancy",
+      "pass": true,
+      "observed": [
+        "+5,000 units",
+        "4h 15m"
+      ]
+    },
+    {
+      "name": "Explicit book-cost comparison",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Unknown floor remains unknown",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Desktop has no horizontal overflow",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "No future approval leaks into baseline",
+      "pass": true,
+      "observed": [
+        "\u2013",
+        "Not independently measurable A completed assessment receipt is required."
+      ]
+    },
+    {
+      "name": "Agreement does not imply implementation",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Question carries source evidence links",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Source modal contains original bytes and digest",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Evidence search filters exact record",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Independent closed-loop receipts converge",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "All original synthetic files rehash",
+      "pass": true,
+      "observed": "12 source hashes match"
+    },
+    {
+      "name": "SHA-256 reference 0",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "SHA-256 reference 3",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "SHA-256 reference 24",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "SHA-256 reference 6000",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Outcome measured against explicit policy",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "New case has new entities and values",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Local file import works without upload",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Timezone-free input rejected",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Conflicting approvals are refused",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "Imported labels cannot execute markup",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "390px mobile layout has no horizontal overflow",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "name": "No JavaScript exceptions",
+      "pass": true,
+      "observed": []
+    },
+    {
+      "name": "No outbound application requests",
+      "pass": true,
+      "observed": []
+    },
+    {
+      "name": "No CSP script or style failures",
+      "pass": true,
+      "observed": null
+    }
+  ],
+  "passed": 26,
+  "javascript_errors": 0,
+  "outbound_requests": [],
+  "elapsed_seconds": 7.77,
+  "network_boundary": "Initial static resources only; local import remained in browser memory",
+  "customer_integration": "Not exercised"
+}

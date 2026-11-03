@@ -1,0 +1,33 @@
+{
+  "build": "Decision Floor distribution 0.2.1 / engine 0.2",
+  "qualification": "local independent proof on this machine",
+  "status": "PASS",
+  "manifest": {
+    "status": "PASS",
+    "expected_files": 56,
+    "failures": [],
+    "unmanifested": []
+  },
+  "unit_test_exit_code": 0,
+  "unit_test_summary": [
+    "----------------------------------------------------------------------",
+    "Ran 22 tests in 3.193s",
+    "",
+    "OK"
+  ],
+  "synthetic": {
+    "version": "0.2",
+    "qualification": "synthetic property checks, not real customer evidence",
+    "seed": 931527,
+    "cases": 1000,
+    "assertions": 9005,
+    "outcome": "PASS",
+    "source_versions": 10,
+    "event_count": 13500,
+    "vault_integrity": "PASS",
+    "network_attempts": 0,
+    "failures": []
+  },
+  "elapsed_seconds": 5.83,
+  "limitations": "No live ERP qualification, local browser HTTP navigation not guaranteed in managed test environments, external source authenticity not established"
+}

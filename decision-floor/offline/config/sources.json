@@ -1,0 +1,46 @@
+{
+  "schema": "decision-floor-mapping/0.1",
+  "notice": "Declarative field mapping for the synthetic sample. Replace file globs, source-system labels, and field names with the authorized organization's actual export schemas. Nonmatching documents remain searchable evidence, never silently interpreted as events.",
+  "sources": [
+    {
+      "pattern":"sales_forecast.csv","kind":"forecast","system":"Sales forecast export",
+      "fields":{"record_id":"Revision_ID","site":"Factory","sku":"Part_Number","period":"Plan_Month","quantity":"Units","occurred_at":"Effective_At","recorded_at":"System_Captured_At","authority":"Owner","notes":"Change_Note"}
+    },
+    {
+      "pattern":"sop_decisions.csv","kind":"decision","system":"S&OP decision register",
+      "fields":{"record_id":"Decision_ID","site":"Plant","sku":"Material","period":"Period","quantity":"New_Target_Units","occurred_at":"Approved_At","recorded_at":"Entered_At","authority":"Approver","status":"Status","notes":"Reason"}
+    },
+    {
+      "pattern":"meeting_promises.csv","kind":"promise","system":"Meeting action tracker",
+      "fields":{"record_id":"Action_ID","site":"Plant","sku":"Material","period":"Period","quantity":"Promised_Units","occurred_at":"Spoken_At","recorded_at":"Written_At","due_at":"Due_At","owner":"Responsible","decision_id":"Related_Decision","track":"System_Target","notes":"Verbatim_Promise"}
+    },
+    {
+      "pattern":"erp_production*.csv","kind":"plan","system":"ERP/MRP revision ledger",
+      "fields":{"record_id":"Schedule_Revision","site":"Facility","sku":"Item","period":"Period","quantity":"Planned_Units","occurred_at":"Effective_Time","recorded_at":"Extract_Record_Time","authority":"Approved_By","notes":"Change_Memo"}
+    },
+    {
+      "pattern":"procurement_po.csv","kind":"commitment","system":"Procurement PO ledger",
+      "fields":{"record_id":"PO_Revision","site":"Ship_To","sku":"SKU","period":"Fiscal_Month","quantity":"Committed_Units","occurred_at":"Committed_Time","recorded_at":"Stored_At","authority":"Buyer","notes":"Vendor_Note"}
+    },
+    {
+      "pattern":"mes_output.csv","kind":"floor","system":"MES cumulative production counter",
+      "fields":{"record_id":"Shift_Receipt","site":"Plant_ID","sku":"Item_Code","period":"Production_Month","quantity":"Cumulative_Good_Units","occurred_at":"Shift_End_Time","recorded_at":"MES_Posted_Time","authority":"Line_Supervisor","notes":"Shift_Comment"}
+    },
+    {
+      "pattern":"warehouse_stock.csv","kind":"outcome","system":"WMS physical inventory count",
+      "fields":{"record_id":"Count_ID","site":"Site","sku":"SKU","period":"Reporting_Period","quantity":"On_Hand_Units","occurred_at":"Counted_At","recorded_at":"WMS_Recorded_At","authority":"Count_Owner","notes":"Reconciliation_Note"}
+    },
+    {
+      "pattern":"inventory_policy.csv","kind":"inventory_target","system":"Finance stock policy register",
+      "fields":{"record_id":"Policy_ID","site":"Site","sku":"SKU","period":"Reporting_Period","quantity":"Approved_Buffer_Units","occurred_at":"Policy_Effective_At","recorded_at":"Documented_At","authority":"Controller","notes":"Policy_Basis"}
+    },
+    {
+      "pattern":"cost_master.csv","kind":"unit_cost","system":"Cost accounting snapshot",
+      "fields":{"record_id":"Cost_Revision","site":"Site","sku":"SKU","period":"Reporting_Period","quantity":"Standard_Unit_Cost_USD","occurred_at":"Valuation_At","recorded_at":"Ledger_Recorded_At","authority":"Cost_Controller","notes":"Currency_Note"}
+    },
+    {
+      "pattern":"customer_orders.jsonl","kind":"sales_actual","system":"Customer order execution ledger",
+      "fields":{"record_id":"order_receipt","site":"site","sku":"sku","period":"period","quantity":"shipped_units_total","occurred_at":"shipped_at","recorded_at":"posted_at","authority":"confirmed_by","notes":"note"}
+    }
+  ]
+}
