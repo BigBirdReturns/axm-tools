@@ -1,0 +1,89 @@
+name: Knowledge Pack public release
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/knowledge-pack-release.json'
+      - '.github/scripts/stage_knowledge_pack.py'
+      - '.github/workflows/knowledge-pack-release.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: knowledge-pack-public-release
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version: '1.27.3'
+          cache: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Fetch the immutable accepted public source outside the publishing tree
+        run: |
+          python - <<'PY'
+          import json,os,re,subprocess
+          from pathlib import Path
+          c=json.loads(Path('.github/knowledge-pack-release.json').read_text())
+          assert c['source_repository']=='BigBirdReturns/axm-core'
+          assert c['source_path']=='examples/knowledge-pack' and c['target_path']=='knowledge-pack'
+          assert re.fullmatch('[0-9a-f]{40}',c['source_commit'])
+          dest=Path(os.environ['RUNNER_TEMP'])/'knowledge-pack-source'
+          subprocess.run(['git','clone','--filter=blob:none','--no-checkout','https://github.com/BigBirdReturns/axm-core.git',str(dest)],check=True)
+          subprocess.run(['git','-C',str(dest),'checkout','--detach',c['source_commit']],check=True)
+          actual=subprocess.check_output(['git','-C',str(dest),'rev-parse','HEAD'],text=True).strip()
+          assert actual==c['source_commit']
+          with open(os.environ['GITHUB_ENV'],'a') as f:
+              f.write('KP_SOURCE='+str(dest)+'\nKP_COMMIT='+actual+'\n')
+          PY
+      - name: Reproduce native and WebAssembly qualification
+        run: |
+          cd "$KP_SOURCE/examples/knowledge-pack"
+          python scripts/build.py --test --web --native
+          python scripts/browser_test.py
+      - name: Stage only the qualified public tool and directory links
+        run: python .github/scripts/stage_knowledge_pack.py --source "$KP_SOURCE" --source-commit "$KP_COMMIT"
+      - name: Commit scoped output without replacing concurrent work
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- knowledge-pack index.html README.md CONTINUITY.md .github/knowledge-pack-release-receipt.json
+          if git diff --cached --name-only | grep -vE '^(knowledge-pack/|index.html$|README.md$|CONTINUITY.md$|\.github/knowledge-pack-release-receipt.json$)'; then
+            echo 'Unexpected staged path'; exit 1
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish Knowledge Pack browser verifier, reproducible source and public fixtures'
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
+          git rev-parse HEAD
+      - name: Use the existing gated Pages publisher
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pta-fetch.yml --repo "$GITHUB_REPOSITORY" --ref main
+      - name: Retain publication qualification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: knowledge-pack-publication-${{ github.run_id }}
+          path: |
+            .github/knowledge-pack-release-receipt.json
+            knowledge-pack/PUBLICATION.json
+            knowledge-pack/SHA256SUMS.txt
+          if-no-files-found: warn
+          retention-days: 30
