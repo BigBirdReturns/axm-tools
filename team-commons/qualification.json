@@ -1,0 +1,131 @@
+{
+  "release": "team-commons/0.2.0",
+  "status": "PASS",
+  "engine_checks": 22,
+  "real_browser_checks": 22,
+  "checks": [
+    {
+      "name": "Desktop real click produces shortage",
+      "pass": true
+    },
+    {
+      "name": "Correction and historical shortage retained",
+      "pass": true
+    },
+    {
+      "name": "Fresh case remains unresolved before mapping",
+      "pass": true
+    },
+    {
+      "name": "Real click applies reviewed lesson",
+      "pass": true
+    },
+    {
+      "name": "Workspace downloads contain retained sources",
+      "pass": true
+    },
+    {
+      "name": "Actual file restore recovers prior result",
+      "pass": true
+    },
+    {
+      "name": "inventory browser kit opens",
+      "pass": true
+    },
+    {
+      "name": "inventory kit excludes private core",
+      "pass": true
+    },
+    {
+      "name": "maintenance browser kit opens",
+      "pass": true
+    },
+    {
+      "name": "maintenance kit excludes private core",
+      "pass": true
+    },
+    {
+      "name": "allocation browser kit opens",
+      "pass": true
+    },
+    {
+      "name": "allocation kit excludes private core",
+      "pass": true
+    },
+    {
+      "name": "Stage tabs support keyboard navigation",
+      "pass": true
+    },
+    {
+      "name": "In-page logic suite passes",
+      "pass": true
+    },
+    {
+      "name": "No page JS exceptions",
+      "pass": true
+    },
+    {
+      "name": "No third-party page requests",
+      "pass": true
+    },
+    {
+      "name": "Desktop layout has no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "Actual mobile viewport is 390px",
+      "pass": true
+    },
+    {
+      "name": "Mobile initial layout has no overflow",
+      "pass": true
+    },
+    {
+      "name": "Mobile real tap completes example",
+      "pass": true
+    },
+    {
+      "name": "Mobile result has no overflow",
+      "pass": true
+    },
+    {
+      "name": "Offline copy works with network blocked",
+      "pass": true
+    }
+  ],
+  "downloads": [
+    {
+      "name": "inventory-browser-kit.zip",
+      "sha256": "c28ff644edbd12fe0aac662e9a02a14d0d1f8704d3887512e89071cc3951ed08",
+      "bytes": 21719,
+      "actual_browser_download": true
+    },
+    {
+      "name": "maintenance-browser-kit.zip",
+      "sha256": "aed2c3fd1d1e472522a1ade2c4caac498f5260792f25a06e78cc25d06493bf6f",
+      "bytes": 21227,
+      "actual_browser_download": true
+    },
+    {
+      "name": "allocation-browser-kit.zip",
+      "sha256": "ca6abc65b14a29b4dcd1917a571a7bef58b23d2048512e66341143fd92cc3144",
+      "bytes": 21202,
+      "actual_browser_download": true
+    }
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 1280,
+      "height": 900
+    }
+  ],
+  "scope": "Synthetic local-browser lab. Actual Chromium clicks, file imports, downloads and offline execution. Same-author verification; not institutional independent acceptance."
+}
