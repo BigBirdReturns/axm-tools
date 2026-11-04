@@ -331,3 +331,7 @@ they are kept here verbatim before the branch was deleted. Source tip
 ## Atmark preview
 
 `atmark/` is self-contained. The captured 53 listings are a public subset, never a whole-store inventory census. Keep original observations separate from generated catalogue projections; retain exact image bytes and distinct identity/display reviews. Used-item condition and physical stock require seller evidence. No eBay write integration is present. Run `python atmark/scripts/catalog.py build`, `verify`, unit tests and `tests/browser_test.py` before changing the surface.
+
+## BOSC recipient identity, November 4, 2026
+
+The current official header mark is `https://bosctechlabs.com/wp-content/uploads/2026/02/header_logo.svg`: white BOSC lettering with lime accents, designed for a dark surface. Current public CSS specifies lime `#A8CF45`, blue `#1C4D86`, Poppins typography and a blue-to-black hero gradient. `bosc-delivery-lab/brand-provenance.json` records source URLs and exact downloaded asset identities; fonts are self-hosted with their OFL license. The public review inspects retained runs and makes no local-service `/api/` probes. A GitHub Pages visit cannot execute the separately downloadable Python worker.

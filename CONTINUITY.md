@@ -262,3 +262,7 @@ The owner requested the combined desk and runner. `compute/` is the provider-neu
 ## Knowledge Pack publication, November 2026
 
 `knowledge-pack/` is generated from the pinned public AXM Core reference by `.github/workflows/knowledge-pack-release.yml`. The owning source, compiler, tests and transport proposal remain in AXM Core. The static tool runs cryptographic verification in the visitor’s browser, has no upload endpoint, and exposes the actual downloadable artifacts and public conformance vectors. Its demo-key trust scope remains explicit. Existing Pages release gates and other tools are unchanged.
+
+## BOSC delivery review, November 4, 2026
+
+`bosc-delivery-lab/` is a self-contained AXM reconstruction of BOSC Tech Labs’ published receptionist and agency-delivery workflow. The official recipient branding is attributed; all measured outcomes belong to the synthetic AXM implementation. The read-only page inspects recorded outcomes from committed `evidence.json`, including the raw model’s retained M10 failure and the separately tested confirmation boundary. The downloadable Python standard-library kit contains unchanged accepted runtime sources and frozen criteria. It executes fresh local trials without a hosted API. Private continuity and machine control metadata remain outside the public projection. The existing Pages publishers, shared release gate and Cantos compatibility stage retain their ownership.

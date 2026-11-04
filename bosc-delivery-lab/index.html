@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Prepared for BOSC Tech Labs: an AXM receptionist delivery review with recorded acceptance, model qualification, caller confirmation and reproducible handover.">
+  <meta name="theme-color" content="#081523">
+  <meta name="release" content="BOSC-AXM-20261104-v1">
+  <meta property="og:title" content="BOSC delivery review | AI Receptionist">
+  <meta property="og:description" content="A familiar receptionist workflow, with inspectable execution evidence and a runnable handover. Prepared by AXM for the BOSC team.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bigbirdreturns.github.io/axm-tools/bosc-delivery-lab/">
+  <link rel="canonical" href="https://bigbirdreturns.github.io/axm-tools/bosc-delivery-lab/">
+  <link rel="icon" href="assets/bosc-pear.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/poppins-v24-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <title>BOSC delivery review | AI Receptionist · AXM</title>
+</head>
+<body>
+<a class="skip" href="#review">Skip to the delivery review</a>
+<div class="masthead">
+  <header class="wrap topbar">
+    <a href="https://bosctechlabs.com/" class="company" aria-label="BOSC Tech Labs official website"><img src="assets/header_logo.svg" width="118" height="52" alt="BOSC"></a>
+    <div class="recipient"><span>Prepared for the BOSC team</span><span>Independent delivery review by <a href="../">AXM</a></span></div>
+    <a class="header-link" href="#handover">Source &amp; handover <span aria-hidden="true">↗</span></a>
+  </header>
+  <div class="wrap hero">
+    <div class="hero-copy">
+      <p class="eyebrow"><span></span> AI Delivery Partner Review · November 9–10</p>
+      <h1>AI Receptionist<br><span>Delivery Lab</span></h1>
+      <p class="lead">Your published workflow, reconstructed as a working engagement. Follow an appointment request through policy, execution, acceptance and handover.</p>
+      <div class="hero-actions"><a class="button lime" href="#acceptance/C07">Inspect the acceptance <span aria-hidden="true">↗</span></a><a class="button outline" href="downloads/AXM-BOSC-Replay.zip" download>Get the runnable source</a></div>
+      <p class="hero-note">Prepared by AXM for discussion with BOSC. All measured results below come from this synthetic laboratory implementation.</p>
+    </div>
+    <aside class="run-card" aria-label="Recorded receptionist scenarios">
+      <div class="run-top"><span class="eyebrow">RECORDED EXECUTION</span><span class="record-date">04 NOV 2026</span></div>
+      <div class="scenario-choices" id="scenario-choices" aria-label="Choose a recorded scenario"></div>
+      <div id="scenario-result" aria-live="polite"><p class="loading">Loading retained execution evidence…</p></div>
+      <div class="record-note">These controls inspect recorded runs. The source package executes fresh trials.</div>
+    </aside>
+  </div>
+</div>
+<div class="wrap metrics" id="metrics" aria-label="Measured laboratory outcomes"></div>
+<main class="wrap" id="review" tabindex="-1">
+  <div id="load-error" role="alert" hidden></div>
+  <nav class="tabs" role="tablist" aria-label="Delivery review sections">
+    <button id="tab-workflow" role="tab" aria-selected="true" aria-controls="workflow">Workflow</button>
+    <button id="tab-acceptance" role="tab" aria-selected="false" aria-controls="acceptance" tabindex="-1">Acceptance</button>
+    <button id="tab-model" role="tab" aria-selected="false" aria-controls="model" tabindex="-1">Model &amp; confirmation</button>
+    <button id="tab-handover" role="tab" aria-selected="false" aria-controls="handover" tabindex="-1">Handover &amp; reuse</button>
+    <button id="tab-sources" role="tab" aria-selected="false" aria-controls="sources" tabindex="-1">Sources</button>
+  </nav>
+
+  <section id="workflow" role="tabpanel" aria-labelledby="tab-workflow">
+    <div class="section-heading"><p class="eyebrow green">01 / THE ENGAGEMENT</p><h2>From client brief to accepted handover</h2><p>The agency retains the client relationship and architectural decisions. The delivery pod receives explicit scope; acceptance and successor operation leave inspectable records.</p></div>
+    <div class="workflow-grid" id="workflow-cards"></div>
+    <div class="two-col">
+      <article class="panel"><span class="kicker">RECEPTIONIST WORKFLOW</span><h3>Clinic rules become executable policy</h3><ul class="clean-list" id="scope-list"></ul><p class="subtle">Availability, booking changes, conflict checks, notification obligations and human escalation mirror the responsibilities in BOSC’s published receptionist offer.</p></article>
+      <article class="panel blue-panel"><span class="kicker">ACCEPTANCE OWNER</span><h3>The customer’s state supplies the answer</h3><p>A worker’s completion message is checked against separately observed appointment state. False success, duplicate requests and lost replies have distinct outcomes and retained receipts.</p><a class="text-link" href="#acceptance/C07">Inspect the false-success experiment <span aria-hidden="true">↗</span></a><p class="subtle">Criteria were separately authored before implementation inspection. This is an internal laboratory evaluation.</p></article>
+    </div>
+  </section>
+
+  <section id="acceptance" role="tabpanel" aria-labelledby="tab-acceptance" hidden>
+    <div class="section-heading"><p class="eyebrow green">02 / CUSTOMER ACCEPTANCE</p><h2>Every result has a named test</h2><p id="acceptance-caption"></p></div>
+    <div class="case-tools"><label for="case-filter">Find a scenario</label><input id="case-filter" type="search" placeholder="Try retry, policy, handover…"><span id="case-count">19 scenarios</span></div>
+    <div class="case-layout"><div class="case-list" id="case-list" aria-label="Acceptance scenarios"></div><article class="panel case-detail" id="case-detail" aria-live="polite"></article></div>
+    <aside class="note-panel"><h3>A deliberately misleading callback</h3><p id="negative-control"></p></aside>
+  </section>
+
+  <section id="model" role="tabpanel" aria-labelledby="tab-model" hidden>
+    <div class="section-heading"><p class="eyebrow green">03 / INTENT &amp; AUTHORITY</p><h2>The model proposed a time the caller had not chosen</h2><p id="model-caption"></p></div>
+    <div class="failure-panel"><div><span class="status fail">M10 · RETAINED FAILURE</span><blockquote id="failure-input"></blockquote></div><div class="failure-outcomes"><div><span class="kicker">OBSERVED MODEL PROPOSAL</span><strong id="failure-proposal">Book at 09:00</strong><p>The caller explicitly remained undecided.</p></div><div><span class="kicker">CONFIRMATION BOUNDARY</span><strong>0 worker calls · 0 appointments</strong><p>The unapproved proposal remained pending for human review.</p></div></div></div>
+    <div class="two-col model-summary"><article class="panel"><span class="kicker">LANGUAGE QUALIFICATION</span><h3>15 of 16 exact intents matched</h3><p id="model-summary"></p></article><article class="panel"><span class="kicker">SEPARATE APPROVAL</span><h3>12 confirmation cases passed</h3><p id="confirmation-summary"></p></article></div>
+    <div class="panel"><div class="panel-title"><h3>Inspect all 16 model outcomes</h3><span class="subtle">One frozen prompt · One request per case</span></div><div class="table-scroll"><table><thead><tr><th scope="col">Case &amp; input</th><th scope="col">Expected action</th><th scope="col">Observed action</th><th scope="col">Result</th></tr></thead><tbody id="model-rows"></tbody></table></div></div>
+    <details class="panel"><summary>Inspect the 12 confirmation cases</summary><div id="confirmation-cases"></div></details>
+    <p class="boundary" id="confirmation-boundary"></p>
+  </section>
+
+  <section id="handover" role="tabpanel" aria-labelledby="tab-handover" hidden>
+    <div class="section-heading"><p class="eyebrow green">04 / SUCCESSION &amp; REUSE</p><h2>Carry the accepted work into the next engagement</h2><p>The successor receives source, policy, criteria and replay instructions. The second clinic changes its operating rules while preserving the accepted engine.</p></div>
+    <div class="two-col"><article class="panel"><span class="status pass">C13 · RESTORATION PASSED</span><h3>Restore the customer’s state</h3><p id="handover-summary"></p></article><article class="panel"><span class="status pass">C14 · REUSE PASSED</span><h3>Change the clinic, retain the engine</h3><div class="clinic-comparison"><div><span>Clinic Alpha</span><strong>09:00</strong><small>Opening time · policy v1</small></div><div><span>Clinic Beta</span><strong>10:00</strong><small>Opening time · policy v2</small></div></div><p id="reuse-summary"></p></article></div>
+    <div class="download-panel"><div><p class="eyebrow">REPRODUCIBLE HANDOVER</p><h3>Run it under your own observation</h3><p>The source kit includes the accepted engine, frozen criteria, synthetic fixtures and retained model proposals. Python 3.10+ and the standard library are sufficient for both trials.</p><a class="button lime" href="downloads/AXM-BOSC-Replay.zip" download>Download the replay kit <span aria-hidden="true">↓</span></a><a class="button outline" href="evidence.json" download>Download the evidence JSON</a></div><div><span class="command-label">After extracting the kit, run:</span><pre>python run_lab.py --output runs/acceptance-001
+python model/confirmation_trial.py --output runs/confirmation-001</pre><p class="small">Each run keeps new receipts. Confirmation replays the retained proposals and makes no new model calls.</p></div></div>
+    <details class="panel"><summary>Production acceptance still required</summary><ul class="clean-list" id="limits"></ul></details>
+  </section>
+
+  <section id="sources" role="tabpanel" aria-labelledby="tab-sources" hidden>
+    <div class="section-heading"><p class="eyebrow green">05 / SOURCE &amp; RESULT PROVENANCE</p><h2>Published responsibilities, observed laboratory outcomes</h2><p>BOSC’s pages ground the workflow. AXM’s retained runs ground the measurements. Vendor claims remain attributed to their sources.</p></div>
+    <div class="source-list" id="source-list"></div>
+    <details class="panel"><summary>Original receipt and acceptance identities</summary><p class="subtle">This public JSON is a derived projection. Original receipt hashes identify the retained records; projected content has its own identity.</p><div class="table-scroll"><table><thead><tr><th scope="col">Original artifact</th><th scope="col">SHA-256</th></tr></thead><tbody id="provenance-rows"></tbody></table></div><a class="text-link" href="evidence.json" download>Download the full public projection ↗</a></details>
+    <div class="brand-note"><img src="assets/bosc-pear.svg" alt="" width="25" height="38"><p>BOSC’s logo, lime and blue palette, and Poppins typography come from its published identity. <a href="brand-provenance.json">Brand asset provenance</a>. This recipient-specific review was independently built by AXM.</p></div>
+  </section>
+  <noscript><div class="panel">This review uses JavaScript to display the committed evidence. You can still <a href="evidence.json">read the evidence JSON</a> and <a href="downloads/AXM-BOSC-Replay.zip">download the runnable source</a>.</div></noscript>
+</main>
+<footer><div class="wrap footer-inner"><div><strong>Prepared for BOSC Tech Labs</strong><p>Independent implementation and evaluation by AXM · November 4, 2026</p></div><div><a href="https://github.com/BigBirdReturns/axm-tools/tree/main/bosc-delivery-lab">Source &amp; reproducibility ↗</a><p>Recorded synthetic evidence · <span class="release-id">BOSC-AXM-20261104-v1</span></p></div></div></footer>
+<script src="app.js" defer></script>
+</body>
+</html>

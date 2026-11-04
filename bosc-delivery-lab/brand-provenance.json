@@ -1,0 +1,144 @@
+{
+  "schema": "bosc-public-identity-observation/1",
+  "observed_date": "2026-11-04",
+  "evidence_method": "Direct retrieval of current official BOSC HTML, CSS, logo and font assets, with exact file hashes and visual inspection of the official logo.",
+  "sources": [
+    {
+      "id": "B01",
+      "url": "https://bosctechlabs.com/",
+      "web_ref": "turn10view0",
+      "evidence": "Current homepage HTML supplies official logo, self-hosted Poppins links, global brand variables, font weights and content width."
+    },
+    {
+      "id": "B02",
+      "url": "https://bosctechlabs.com/solution/ai-receptionist/",
+      "web_ref": "turn10view1",
+      "evidence": "Current solution HTML supplies split hero, white headings, rounded capability cards, darker challenge section, workflow progression, outcomes and FAQ structure."
+    },
+    {
+      "id": "B03",
+      "url": "https://bosctechlabs.com/case-study/ai-voice-intelligence-patient-communication/",
+      "evidence": "Current Auralie HTML supplies challenge, approach, architecture, features and business-impact structure. Vendor metrics remain separate from this lab."
+    },
+    {
+      "id": "B04",
+      "url": "https://bosctechlabs.com/service/ai-app-development/",
+      "web_ref": "turn11view2",
+      "evidence": "Current service copy supplies workflow, feasibility, architecture, integration, evaluation, guardrail and operational-ownership terminology."
+    },
+    {
+      "id": "B05",
+      "url": "https://bosctechlabs.com/wp-content/themes/bosc-tech-labs/blocks/home/home-hero-new/home-hero-new.css?ver=6.9.7",
+      "evidence": "Direct native HTTP fetch supplies exact hero gradient, Poppins typography, responsive title, centered width and button geometry."
+    },
+    {
+      "id": "B06",
+      "url": "https://bosctechlabs.com/wp-content/themes/bosc-tech-labs/style.css?ver=1792403700",
+      "evidence": "Direct native HTTP fetch supplies repeated primary palette, card corners, lime outlines, gradients and hover treatment."
+    }
+  ],
+  "identity": {
+    "logo": {
+      "file": "assets/header_logo.svg",
+      "width": 118,
+      "height": 52,
+      "appearance": "White BOSC wordmark; a lime striped pear forms the O, with a lime inner accent inside C.",
+      "background": "Dark field; preserve original proportions and fills."
+    },
+    "symbol": {
+      "file": "assets/bosc-pear.svg",
+      "width": 33,
+      "height": 52
+    },
+    "colors": {
+      "bosc_green": "#A8CF45",
+      "bosc_blue": "#1C4D86",
+      "bosc_dark_grey": "#3D3D3D",
+      "hero_white": "#F8F8F8",
+      "black": "#000000",
+      "white": "#FFFFFF",
+      "cta_hover": "#B8DF5E"
+    },
+    "hero_gradient": "linear-gradient(296deg,#1C4D86 0%,#000000 71.1%)",
+    "typography": {
+      "family": "Poppins, sans-serif",
+      "global_body_weight": 300,
+      "heading_weight": 500,
+      "hero_subtitle_weight": 400,
+      "hero_title_css": "clamp(2rem, 4.2vw, 5rem)",
+      "hero_title_line_height": 1.25,
+      "receptionist_h1": "2.5rem / 1.2",
+      "auralie_h1": "36px / 1.2"
+    },
+    "layout": {
+      "global_content_width": "1320px",
+      "homepage_hero_content_width": "1100px",
+      "homepage_hero_alignment": "center",
+      "service_and_case_hero": "columns with white text and supporting image",
+      "primary_cta": "Lime fill, black Poppins500 text, 6px corner radius, minimum 48px height",
+      "cards": "10px and 16px corners recur; alternating white/light surfaces and dark blue image-backed sections."
+    }
+  },
+  "assets": [
+    {
+      "file": "assets/poppins-v24-300-latin.woff2",
+      "source_url": "https://bosctechlabs.com/wp-content/uploads/bosc-fonts/poppins-v24-300-latin.woff2",
+      "sha256": "78bc3aa78faec288bbb3bf26c9a0fa4eb67b1e69da94a17233c5cab60525efdb",
+      "usage": "Official-site Poppins font; accompanied by SIL OFL 1.1.",
+      "bytes": 7840
+    },
+    {
+      "file": "assets/poppins-v24-400-latin.woff2",
+      "source_url": "https://bosctechlabs.com/wp-content/uploads/bosc-fonts/poppins-v24-400-latin.woff2",
+      "sha256": "7d93459d86585bfcdbb7e0376056226adb25821ee54b96236fe2123e9560929f",
+      "usage": "Official-site Poppins font; accompanied by SIL OFL 1.1.",
+      "bytes": 7884
+    },
+    {
+      "file": "assets/poppins-v24-500-latin.woff2",
+      "source_url": "https://bosctechlabs.com/wp-content/uploads/bosc-fonts/poppins-v24-500-latin.woff2",
+      "sha256": "cd36de204aca2d5fa263a731f7c20009b5e3d754ba1f1e03c33e93a48f3e7446",
+      "usage": "Official-site Poppins font; accompanied by SIL OFL 1.1.",
+      "bytes": 7748
+    },
+    {
+      "file": "assets/bosc-pear.svg",
+      "source_url": "https://bosctechlabs.com/wp-content/uploads/2026/02/bosc-pear.svg",
+      "sha256": "09c49cd409328e3fccaf6c0c72d0d510966471ba64c67daf64b93dbab32bacd8",
+      "usage": "Unmodified official BOSC identity asset; identify the intended recipient, preserve attribution.",
+      "bytes": 4537
+    },
+    {
+      "file": "assets/header_logo.svg",
+      "source_url": "https://bosctechlabs.com/wp-content/uploads/2026/02/header_logo.svg",
+      "sha256": "5eea93f27810718cf368fc87742488b2c78008d4ef77009fd095918707cbeda4",
+      "usage": "Unmodified official BOSC identity asset; identify the intended recipient, preserve attribution.",
+      "bytes": 7617
+    },
+    {
+      "file": "assets/OFL-Poppins.txt",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/main/ofl/poppins/OFL.txt",
+      "sha256": "4c3caa31f553f5569596e7a138e92e060f10b277ed2e4f9f899cf056d6bb4e9f",
+      "bytes": 4386,
+      "usage": "SIL Open Font License 1.1 for Poppins; retained with font distribution."
+    }
+  ],
+  "design_recommendation": {
+    "classification": "our proposed adaptation",
+    "recipient_attribution": "Prepared for BOSC Tech Labs \u00b7 AXM delivery review",
+    "principle": "Use familiar palette, logo, typography and engagement terminology while keeping ownership and measured evidence explicit.",
+    "evidence_labels": [
+      "Transaction acceptance: 19/19 cases, 132/132 assertions",
+      "Explicit confirmation: 12/12 cases, 72 case checks plus 3 global checks",
+      "Fixed-prompt model: 15/16 exact intents, 16/16 valid JSON; M10 retained",
+      "Browser QA: 16/16 checks; separate execution layer"
+    ],
+    "excluded_implications": [
+      "Official BOSC product or endorsement",
+      "Partnership agreement",
+      "Measurement of BOSC performance",
+      "Production qualification",
+      "Verified ROI or operational savings"
+    ]
+  }
+}
