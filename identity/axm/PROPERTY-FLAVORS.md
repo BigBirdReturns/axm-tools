@@ -44,6 +44,10 @@ last.
 Condensed + IBM Plex — is the family thread they all share; the accent is what
 makes each itself.)*
 
+## MARY Team Commons
+
+`axm-tools/team-commons/` uses Cream Editorial for the working exercise and Dark Ecosystem for the team station section. Bone/paper, olive and pine identify collaborative state; ember remains reserved for findings and errors. Barlow Condensed / IBM Plex are named with local system fallbacks, with no downloaded font dependency. The contribution-diagram favicon is not the SCG mark.
+
 ## When you add or move a property
 
 1. Pick its flavor here **before** styling the page, and add a row.
