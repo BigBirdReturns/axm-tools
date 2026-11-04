@@ -258,3 +258,7 @@ The owner requested the combined desk and runner. `compute/` is the provider-neu
 ## Decision Floor sovereign peer exchange (2026-11-03)
 
 `decision-floor/offline/decision_floor/peer.py` adds an explicit manual contract boundary between independent source vaults. Ed25519 signed, limited-field statements are verified against separately enrolled keys, checked for chain forks and matched against the receiver's exact event identity. Returned human review is a signed declaration, not authorization to modify a source system. `decision-floor/offline/PEER_EXCHANGE.md` describes the trust and test contract. Both Windows and Linux acceptance plus a cross-host W03/W01 packet round trip are retained in axm-tools/sessions/decision-peer-20261103, not public keys. The Pages publisher rechecks the peer tests and release hash before upload. External origin authenticity, Genesis hybrid attestation, enterprise access controls and timestamp authority remain unqualified.
+
+## Knowledge Pack publication, November 2026
+
+`knowledge-pack/` is generated from the pinned public AXM Core reference by `.github/workflows/knowledge-pack-release.yml`. The owning source, compiler, tests and transport proposal remain in AXM Core. The static tool runs cryptographic verification in the visitor’s browser, has no upload endpoint, and exposes the actual downloadable artifacts and public conformance vectors. Its demo-key trust scope remains explicit. Existing Pages release gates and other tools are unchanged.

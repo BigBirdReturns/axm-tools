@@ -135,3 +135,6 @@ The [compute desk](https://github.com/BigBirdReturns/cantos/tree/main/compute) a
 
 [Open the independent preview](https://bigbirdreturns.github.io/axm-tools/atmark/) · [Source and operating instructions](atmark/README.md). A free, local-first toolkit for a public 53-listing subset: source-bound catalogue normalisation, review queues, comparisons, CSV intake, image preparation and portable export. It contains no seller write integration. Qualification is retained in `atmark/data/qualification.json`.
 
+## Knowledge Pack public reference
+
+[Open the browser demo](https://bigbirdreturns.github.io/axm-tools/knowledge-pack/) or [inspect its source and tests](https://github.com/BigBirdReturns/axm-core/tree/main/examples/knowledge-pack). Real local WebAssembly verification, downloadable packages and native readers, and a reproducible transport reference.

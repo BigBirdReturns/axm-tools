@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "profile": "axm-pack-preview/0.1",
+  "source_repository": "BigBirdReturns/axm-core",
+  "source_commit": "a6d20573f02e9f28c0426901284fa5bcbb5b9df2",
+  "workflow_run": "41754853589",
+  "native_conformance_cases": 26,
+  "wasm_conformance_cases": 26,
+  "browser_checks": 16,
+  "offline_verification_exercised": true,
+  "source_archive": "984d65362ff51da689e20b01b04b69c710e6c17cb83c6532a43fcd0eb0a95364",
+  "runtime": "Static browser files; all package verification runs locally in a WebAssembly worker. No file-upload endpoint.",
+  "trust": "Demo public key is distributed with the example. Independent publisher authentication is not claimed."
+}
