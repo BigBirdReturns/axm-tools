@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-04T01:35:09.308902Z",
+  "generated": "2026-11-04T02:09:49.506522Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -28,8 +28,8 @@
     {
       "source": "CA Dept of Education",
       "scope": "state",
-      "ok": true,
-      "kept": 1
+      "ok": false,
+      "error": "HTTP Error 303: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error messag"
     },
     {
       "source": "Google News",
