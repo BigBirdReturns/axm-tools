@@ -1,0 +1,42 @@
+name: Estate action study qualified release
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/estate-action-study/**'
+      - '.github/workflows/estate-action-study.yml'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: estate-action-study-release
+  cancel-in-progress: false
+jobs:
+  qualify-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Materialize public-safe study and verify actual browser behavior
+        run: python .github/estate-action-study/materialize.py
+      - name: Commit only the authored study and its product entrance
+        run: |
+          git config user.name "estate-case-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add decision-floor/estate decision-floor/index.html
+          if ! git diff --cached --quiet; then
+            git commit -m "decision-floor: publish recorded Estate action case study"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Dispatch existing gated Pages publisher
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pta-fetch.yml --ref main
