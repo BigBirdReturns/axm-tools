@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'"><meta name="description" content="A recorded operational case of inherited decisions: original intent, propagation, measured effects, corrections and preserved obligations. Includes an interactive action study."><title>Decision inheritance | The Estate action case study</title>
+<style>
+:root{--ink:#112d3e;--sub:#536b79;--line:#d8e4ea;--paper:#f3f7f9;--blue:#087ca8;--navy:#102d40;--cyan:#00b1ef;--amber:#995a14;--green:#176b56}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font:15px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff}a{color:var(--blue)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #00a8df;outline-offset:4px}button:disabled{opacity:.5;cursor:default}h1,h2,h3,p{margin-top:0}h1,h2,h3{line-height:1.15;letter-spacing:-.035em}p{margin-bottom:17px}.wrap{max-width:1232px;margin:auto;padding:0 36px}.top{border-bottom:1px solid var(--line)}.top .wrap{height:84px;display:flex;align-items:center;justify-content:space-between;gap:25px}.mark{display:flex;gap:15px;align-items:center;text-decoration:none;color:var(--ink)}.mark b{font-size:25px;letter-spacing:-1px}.mark span{border-left:1px solid var(--line);padding-left:15px;font-size:12px;line-height:1.4}.top nav{display:flex;gap:24px;font-size:12px;font-weight:650}.top nav a{color:var(--sub);text-decoration:none}.eyebrow{font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:15px}.hero{padding-top:63px;padding-bottom:38px;display:grid;grid-template-columns:1.5fr 1fr;gap:52px;align-items:center}.hero h1{font-size:clamp(36px,4.7vw,63px);max-width:720px;margin-bottom:22px}.hero .lead{font-size:18px;color:var(--sub);max-width:640px}.label{display:inline-block;background:#eaf6fb;border:1px solid #d0e9f4;border-radius:5px;padding:5px 10px;font-size:10px;font-weight:700;color:#16617f}.hero-note{padding:28px 30px;background:var(--navy);color:#e9f5fb;border-radius:12px;position:relative}.hero-note:before{content:"";position:absolute;left:0;top:25px;bottom:25px;width:4px;background:var(--cyan)}.hero-note h2{font-size:25px;line-height:1.25;letter-spacing:-.02em}.hero-note p{font-size:13px;color:#b7d3e2}.hero-note .eyebrow{color:#69d6fb}.hero-note small{font-size:10px;display:block;color:#94b6c9;border-top:1px solid #355064;padding-top:16px}.button{display:inline-flex;gap:14px;align-items:center;justify-content:center;border:1px solid var(--blue);background:var(--blue);color:white;border-radius:6px;padding:11px 16px;text-decoration:none;font-size:12px;font-weight:750}.button.secondary{background:#fff;color:var(--blue);border-color:#bfd7e2}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:23px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding-bottom:41px}.metric{border-left:1px solid var(--line);padding-left:25px}.metric:first-child{border:0;padding-left:0}.metric b{display:block;font-size:33px;letter-spacing:-1.4px}.metric span{font-size:12px;display:block;color:var(--sub)}.metric small{font-size:10px;color:var(--sub)}.band{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:49px 0}.findings{display:grid;grid-template-columns:1fr 1fr;gap:30px 48px}.finding h3{font-size:19px;margin:0 0 10px}.finding p{font-size:13px;color:var(--sub);margin:0}.finding .n{color:var(--blue);font-weight:800;font-size:12px;display:block;margin-bottom:9px}.chapter{padding-top:52px;padding-bottom:45px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:25px}.section-head h2{font-size:32px;margin:0}.section-head p{max-width:440px;margin:0;color:var(--sub);font-size:12px}.workbench{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;display:grid;grid-template-columns:242px 1fr;box-shadow:0 10px 32px #12374808}.case-nav{padding:16px;background:#f7fafb;border-right:1px solid var(--line)}.case-nav button{width:100%;text-align:left;padding:12px 13px;border:1px solid transparent;background:transparent;border-radius:6px;display:block;font-size:12px;line-height:1.4;color:var(--sub);margin-bottom:4px}.case-nav button[aria-selected="true"]{background:#e9f5fa;color:#075f81;border-color:#b6dce9;font-weight:750}.case-nav button span{font-size:9px;letter-spacing:.09em;display:block;margin-bottom:3px;opacity:.7}.case-main{padding:30px;min-width:0}.case-main h3{font-size:28px;margin:9px 0 15px}.case-status{font-size:10px;border:1px solid #cfdde5;padding:5px 9px;border-radius:4px;display:inline-block;color:var(--sub)}.chain{display:grid;grid-template-columns:1fr 1fr;gap:21px;margin-top:25px}.chain article{border-top:2px solid #96c7da;padding-top:12px}.chain article h4{font-size:10px;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;margin:0 0 8px}.chain article p{font-size:13px;line-height:1.65;margin:0}.chain article.measure{border-color:#bd874a}.carry{background:#eef5f2;border-left:3px solid #24745d;padding:14px 17px;margin-top:24px}.carry strong{font-size:11px;color:var(--green)}.carry p{margin:5px 0 0;font-size:12px}.analogue{margin:21px 0;font-size:13px;color:var(--sub)}.analogue strong{color:var(--ink)}.source-links{display:flex;gap:7px;flex-wrap:wrap}.source-links button{padding:6px 9px;font-size:10px;color:var(--blue);border:1px solid var(--line);border-radius:4px;background:#fff}.source-label{font-size:10px;color:var(--sub);margin-top:17px}.lab{background:var(--navy);color:#e6f0f7;border-radius:12px;padding:31px;margin-top:38px}.lab .eyebrow{color:#67d4f9}.lab h3{font-size:26px;margin:0 0 12px}.lab .intro{font-size:12px;color:#afc9d9;max-width:750px}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:22px 0}.tabs button{padding:8px 13px;border:1px solid #476779;background:transparent;color:#c4dbe7;border-radius:5px;font-size:11px}.tabs button[aria-selected="true"]{background:#d8f2ff;color:#0c4e6a;border-color:#d8f2ff}.lab label{display:block;font-size:12px;margin-bottom:12px}.lab select{background:#fff;color:var(--ink);border-radius:4px;padding:8px 10px;border:1px solid #aac8d7;margin-left:8px;font-size:12px}.lab input[type=range]{width:min(100%,440px);display:block;margin:15px 0;accent-color:var(--cyan)}.compare{display:grid;grid-template-columns:1fr 1fr;gap:15px}.compare>div{background:#1c3b50;border:1px solid #3a586b;border-radius:7px;padding:18px}.compare span{font-size:10px;color:#b9d4e4;display:block}.compare b{display:block;font-size:27px;letter-spacing:-.035em;margin:8px 0}.compare small{font-size:11px;color:#adc9d9;display:block}.lab-note{font-size:12px;margin:19px 0 0;border-left:3px solid #68c9ed;padding-left:13px;color:#c1dce9}.hidden{display:none!important}.contract{display:grid;grid-template-columns:1.4fr 1fr;gap:35px;padding-top:44px}.contract h3{font-size:26px;margin-bottom:16px}.contract p{font-size:13px;color:var(--sub)}.contract dl{margin:0}.contract dt{font-size:10px;color:var(--blue);letter-spacing:.07em;text-transform:uppercase;font-weight:750;margin-top:17px}.contract dd{font-size:13px;margin:5px 0 0}.contract-side{padding:25px;background:#f2f6f8;border:1px solid var(--line);border-radius:8px}.contract-side h4{font-size:15px;margin:0 0 10px}.contract textarea{width:100%;height:110px;padding:11px;font-size:12px;border:1px solid #c7dbe4;border-radius:5px;resize:vertical;background:white}.contract label{display:block;font-size:11px;margin:14px 0 7px}.contract .button{margin-top:15px}.boundary{font-size:10px!important;margin:13px 0 0}.translation{background:#f8fafb}.translation table{width:100%;border-collapse:collapse}.translation th,.translation td{text-align:left;border-bottom:1px solid var(--line);padding:16px 18px;vertical-align:top;font-size:12px}.translation th{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}.translation td:first-child{font-weight:700;width:24%}.translation h2{font-size:29px}.table-scroll{overflow:auto}.article{max-width:860px}.article h2{font-size:32px}.article h3{font-size:20px;margin-top:29px}.article p{color:var(--sub);font-size:14px}.article b{color:var(--ink)}.footnote{font-size:11px!important;border-top:1px solid var(--line);padding-top:21px}.source-register{border-top:1px solid var(--line);padding:20px 0}.source-register summary{font-weight:700;cursor:pointer;font-size:13px}.register-item{padding:13px 0;border-bottom:1px solid var(--line);font-size:12px}.register-item code{font-size:10px;word-break:break-all;color:var(--sub);display:block}.register-item span{font-size:10px;display:block;color:var(--sub)}.footer{border-top:1px solid var(--line);font-size:10px;color:var(--sub);padding:25px 0}.footer .wrap{display:flex;justify-content:space-between;gap:25px}.footer strong{color:var(--ink)}dialog{max-width:700px;width:calc(100% - 32px);padding:30px;border:1px solid #c8dce6;border-radius:10px;color:var(--ink);box-shadow:0 20px 80px #061e3955}dialog::backdrop{background:#09203380}dialog h2{font-size:24px;margin-right:30px}dialog p{font-size:13px;color:var(--sub)}dialog code{display:block;font-size:11px;word-break:break-all;background:#f2f7fa;padding:15px;border-radius:5px;margin-bottom:18px}.close{position:absolute;right:15px;top:12px;background:white;border:0;font-size:25px;color:var(--sub)}.toast{font-size:11px;color:var(--green);margin-top:12px;min-height:18px}@media(max-width:850px){.hero{grid-template-columns:1fr;gap:25px;padding-top:38px}.hero-note{max-width:none}.top nav{gap:13px}.section-head{align-items:start;flex-direction:column;gap:12px}.workbench{grid-template-columns:1fr}.case-nav{border-right:0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:4px}.case-nav button{margin:0}.contract{grid-template-columns:1fr}.section-head p{max-width:700px}.findings{gap:25px}.hero h1{max-width:650px}.translation table{min-width:650px}}@media(max-width:520px){.wrap{padding-left:20px;padding-right:20px}.top .wrap{height:73px}.mark span{font-size:10px}.top nav{display:none}.hero h1{font-size:39px}.hero .lead{font-size:16px}.hero-note{padding:24px}.metrics{grid-template-columns:1fr;gap:14px}.metric,.metric:first-child{border:0;border-top:1px solid var(--line);padding:12px 0 0}.metric b{font-size:29px;display:inline-block;min-width:110px}.metric span{display:inline-block}.metric small{display:block}.findings{grid-template-columns:1fr}.chapter{padding-top:35px}.section-head h2{font-size:28px}.case-main{padding:23px 18px}.case-main h3{font-size:25px}.chain{grid-template-columns:1fr;gap:19px}.case-nav{padding:10px}.case-nav button{font-size:11px;padding:10px}.lab{padding:24px 18px}.lab select{margin:8px 0 0;display:block}.compare{grid-template-columns:1fr}.compare b{font-size:25px}.contract-side{padding:21px}.footer .wrap{flex-direction:column;gap:10px}.article h2{font-size:28px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{.top nav,.actions,.case-nav,.lab,.contract-side,.source-links,.button{display:none!important}.hero,.workbench,.contract{display:block}.hero-note{background:#fff;color:#112d3e;border:1px solid #bbb}.hero-note p,.hero-note small{color:#333}.wrap{padding:0;max-width:100%}.chapter,.band{padding-top:20px;padding-bottom:20px}.case-main{padding:15px}.chain{grid-template-columns:1fr 1fr}.footnote{font-size:10px!important}}
+</style></head><body>
+<header class="top"><div class="wrap"><a class="mark" href="https://bigbirdreturns.github.io/axm-tools/decision-floor/"><b>AXM</b><span>Decision Continuity<br>Recorded action case</span></a><nav><a href="#findings">What we learned</a><a href="#chains">Decision chains</a><a href="#action">Next action</a></nav></div></header>
+<main><section class="hero wrap"><div><p class="eyebrow">THE ESTATE / JULY–NOVEMBER 2026</p><h1>Decisions that outlived their assumptions.</h1><p class="lead">The owner created the policies. The recorded history exposed what their interaction had become: inherited instructions, lingering dependencies and work whose stated status diverged from execution.</p><span class="label">Real operational record · supply-chain analogue</span><div class="actions"><a class="button" href="#chains">Follow a decision <span>↗</span></a><a class="button secondary" href="#lab">Replay the consequence</a></div></div><aside class="hero-note"><p class="eyebrow">THE CENTRAL FINDING</p><h2>Agreement and authorship did not make the resulting system visible.</h2><p>One accountable human and successive agents reproduced a coordination failure without requiring competing departments. The durable record made the inherited behavior inspectable and correctable.</p><small>Interpretation of this case. It demonstrates the mechanism, not its prevalence across enterprises.</small></aside></section>
+<section class="metrics wrap"><div class="metric"><b>43</b><span>Retained policy/tooling changes</span><small>Actual Git patches in the private corpus.</small></div><div class="metric"><b>555</b><span>Unique reset targets</span><small>570 modifications, including amendments.</small></div><div class="metric"><b>87.47%</b><span>Smaller central policy</span><small>Byte reduction; task-speed benefit unmeasured.</small></div></section>
+<section class="band" id="findings"><div class="wrap findings"><article class="finding"><span class="n">01 / INHERITANCE</span><h3>A reasonable local rule can create a later system problem.</h3><p>Guardrails, recovery instructions and entry procedures answered real needs. Their assumptions, lifetimes and combined effects needed the same traceability as the decisions themselves.</p></article><article class="finding"><span class="n">02 / OBSERVATION</span><h3>Completion is an evidence transition.</h3><p>Two recorded workers failed while their wrappers returned success. The revised mapping fixes reporting. It keeps actual workload failure visible instead of converting a corrected dashboard into a completed job.</p></article><article class="finding"><span class="n">03 / RECOVERY</span><h3>A correction should preserve the original obligation.</h3><p>The reset reduced recurring instructions while retaining custody, spending controls, project acceptance and historical bytes. Recovery becomes possible because the original reason and the replacement coexist.</p></article><article class="finding"><span class="n">04 / KNOWLEDGE</span><h3>A recorder gives the owner a view that authorship never supplied.</h3><p>The corpus joins what was intended, where it propagated, what ran and what changed. It preserves ten reconstructed decision chains and explicit missing references rather than inventing a complete story.</p></article></div></section>
+<section class="chapter wrap" id="chains"><div class="section-head"><div><p class="eyebrow">ORIGINAL CHOICE → INHERITED EFFECT → CORRECTION</p><h2>Inspect the decision, not just the incident.</h2></div><p>Each chain separates retained measurements, historical accounts, interpretation and proposed next work. Source bytes stay in the owner-controlled recorder.</p></div><div class="workbench"><div class="case-nav" role="tablist" aria-label="Recorded decision chains" id="case-nav"></div><article class="case-main" id="case-panel" role="tabpanel" tabindex="0"><span class="case-status" id="case-state"></span><h3 id="case-title"></h3><div class="chain"><article><h4>Original purpose</h4><p id="case-intent"></p></article><article><h4>Inherited mechanism</h4><p id="case-mechanism"></p></article><article class="measure"><h4>Recorded measurement</h4><p id="case-measured"></p></article><article><h4>Historical intervention</h4><p id="case-change"></p></article></div><div class="carry"><strong>CARRY FORWARD</strong><p id="case-retain"></p></div><p class="analogue"><strong>Supply-chain analogue: </strong><span id="case-analogue"></span></p><div class="source-label" id="case-tier"></div><div class="source-links" id="case-sources"></div></article></div>
+<section class="lab" id="lab"><p class="eyebrow">INTERACTIVE REPLAY / NO SOURCE-SYSTEM WRITEBACK</p><h3>Change the question from “what happened?” to “what would count as corrected?”</h3><p class="intro">These deterministic replays use recorded quantities and tested state mappings. They do not run a new model, change a live guard, or estimate a monetary return.</p><div class="tabs" role="tablist" aria-label="Replay model"><button id="tab-exit" role="tab" aria-selected="true" data-tab="exit">Completion signal</button><button id="tab-input" role="tab" aria-selected="false" data-tab="input">Repeated input</button><button id="tab-version" role="tab" aria-selected="false" data-tab="version">Versioned state</button></div><div id="lab-exit" role="tabpanel"><label>Recorded worker outcome <select id="outcome"><option value="usage_meter_unavailable">Usage telemetry unavailable</option><option value="failed">Failed</option><option value="completed">Completed</option></select></label><div class="compare"><div><span>PRIOR WRAPPER RULE</span><b id="exit-old">Exit 0</b><small id="old-meaning">Parent sees process success.</small></div><div><span>CORRECTED WRAPPER RULE</span><b id="exit-new">Exit 1</b><small id="new-meaning">Parent sees an unsuccessful outcome.</small></div></div><p class="lab-note" id="exit-note"></p></div><div id="lab-input" class="hidden" role="tabpanel"><label for="loads">Assumed full policy reads: <b id="load-count">100</b></label><input id="loads" type="range" min="1" max="1000" value="100"><div class="compare"><div><span>45,918 BYTES × ASSUMED READS</span><b id="input-old"></b><small>Original central policy payload.</small></div><div><span>5,755 BYTES × ASSUMED READS</span><b id="input-new"></b><small>Revised central policy payload.</small></div></div><p class="lab-note" id="input-note"></p></div><div id="lab-version" class="hidden" role="tabpanel"><label>Observation boundary <select id="snapshot"><option value="apply">Eight apply receipts</option><option value="later">Later readback after concurrent update</option></select></label><div class="compare"><div><span>ORIGINAL EIGHT PROMPTS</span><b>97,304 characters</b><small>Same eight-prompt population.</small></div><div><span id="version-label">AT APPLY</span><b id="version-total"></b><small id="version-change"></small></div></div><p class="lab-note" id="version-note"></p></div></section>
+<section class="contract" id="action"><div><p class="eyebrow">THE NEXT STEP / AN EVIDENCE-BOUND CHANGE</p><h3>Turn this finding into a decision contract.</h3><p>The selected case supplies the proposed action, accountable function, preserved obligations and acceptance test. Exporting creates a reviewable proposal; authority and execution remain separate decisions.</p><dl><dt>Proposed action</dt><dd id="next-action"></dd><dt>Decision owner</dt><dd id="next-owner"></dd><dt>Acceptance measurement</dt><dd id="next-accept"></dd><dt>Failure condition</dt><dd id="next-failure"></dd></dl></div><aside class="contract-side"><h4 id="export-title">Selected decision</h4><p>Keep the source versions and the reason for the rule attached to the next intervention.</p><label for="judgment">Your judgment or local context</label><textarea id="judgment" maxlength="3000" placeholder="Optional. Stays in this browser and the file you choose to export."></textarea><button class="button" id="export-action">Export the proposed change ↓</button><div class="toast" role="status" id="export-status"></div><p class="boundary">No upload, account, telemetry or background task. No approval is inferred. The exported state is PROPOSED, never EXECUTED.</p></aside></section></section>
+<section class="translation band"><div class="wrap"><p class="eyebrow">FROM THE ESTATE TO S&OP</p><h2>The same causal structure, a different operating surface.</h2><div class="table-scroll"><table><thead><tr><th>Estate observation</th><th>Supply-chain interpretation</th><th>The operational question</th></tr></thead><tbody><tr><td>Copied operating policies</td><td>Inherited safety stock, order minima, allocations or approval routes.</td><td>Which assumption still authorizes this rule, and where is it enforced?</td></tr><tr><td>Wrapper success / worker failure</td><td>An action marked complete while the operational plan remains unchanged.</td><td>Which independent receipt establishes that the commitment was executed?</td></tr><tr><td>Prompt versions changed concurrently</td><td>Functions plan against different forecast and accounting snapshots.</td><td>Are these genuinely conflicting facts, or different entities, versions and observation times?</td></tr><tr><td>Redundant verification continued</td><td>Repeated counts, escalations or holds after the acceptance requirement was met.</td><td>What is the terminal condition, and which change would legitimately reopen it?</td></tr><tr><td>A safeguard blocked useful work</td><td>A valid control depends on a changed source-system behavior.</td><td>How can we restore compatibility while preserving the risk boundary?</td></tr></tbody></table></div><p class="footnote">These mappings are analytical analogies. The underlying Estate incidents are recorded; no fiChains customer data, operational integration or measured supply-chain saving is claimed.</p></div></section>
+<section class="chapter wrap"><article class="article"><p class="eyebrow">WRITTEN ACTION CASE STUDY</p><h2>What the recorder taught its own operator.</h2><p>The Estate accumulated instructions through repeated attempts to make work safer, cheaper and recoverable. Each successive agent inherited the resulting operating environment. The owner had authorized the local choices, yet the combined effects remained distributed across source files, role entries, hooks, memory and scheduled prompts. The essential failure was that <b>authorship did not provide a current, measurable view of inherited behavior</b>.</p><h3>1. The consequential object is a decision with a lifetime.</h3><p>A decision needs its original purpose and evidence, the conditions under which it applies, the places that execute it, the observations that test it, and the authority that can amend it. The November reset illustrates why. Editing a central document was one change; reconciling 555 targets and preserving 570 amendments was the propagation problem. A recorder can reveal that distinction even when one person owns the whole system.</p><h3>2. The floor must be measured independently of the report.</h3><p>The strongest bounded before-and-after result is the launcher correction. Original W01 and N01 outcomes disagreed with their successful outer exits. The amended mapping passes completion through and makes failures visible. That corrects a reporting mechanism. The underlying missing-usage attempt still requires a separate execution test. Treating those as separate states prevents the same false completion from recurring in the case study itself.</p><h3>3. A recovery preserves the old reason while changing the mechanism.</h3><p>The spending boundary existed for a documented reason: a 60,000-token stopping threshold was observed at 83,374 tokens because the enforcement boundary permitted an in-flight response to finish. The later missing-usage stop establishes a compatibility problem, not permission to remove accounting. Likewise, the migration history supports reusing accepted evidence rather than rereading a degraded source indefinitely. In both cases the useful question is which implementation should change while the original obligation remains.</p><h3>4. A useful record can explain a disagreement before assigning blame.</h3><p>Eight prompts changed, while ten tasks were active. Their combined length was 39,829 characters at apply and 42,095 in a later readback after a concurrent update. Those numbers describe different populations or successive states. By retaining each boundary, the recorder turns an apparent contradiction into a reconstructible sequence. The same discipline applies to a forecast, an approved PO and a later accounting extract.</p><h3>5. The commercial mechanism is demonstrated at the recovery boundary.</h3><p>The same owner whose decisions contributed to the problem benefits from retaining their history. The evidence makes the failure diagnosable, identifies what can be changed and protects the valid reasons for earlier choices. That supports the recoverability thesis in this case. It does not establish enterprise willingness to disclose errors, contractual incentives or liability outcomes across independent organizations.</p><h3>6. The next product is active decision lineage.</h3><p>The retrospective becomes actionable when a changed assumption identifies affected rules and commitments, generates a scoped proposed amendment, preserves its obligations and requires downstream readback. The action contract above implements the proposal and acceptance definition. Continuous detection, verified business authority and automatic cross-system propagation remain further engineering boundaries. The present study creates no hidden worker and changes no operational control.</p><p class="footnote"><b>Scope and provenance.</b> This study uses a snapshot of nine retained evidence roots, selected policy/tooling Git history, current W01 target files, referenced executions and the W01 TierDesk job archive. It is not every decision across the Estate’s lifetime. The admitted corpus contains 29,804 source versions, 20,827 distinct objects and 6,626 parsed native jobs. The independent corpus check rehashed every archived object; the action-study check revalidated 30 located references across ten chains. One of 22 declared historical receipt digests remains absent. Queue and outage figures attributed to the controller remain historical accounts; they are not promoted to direct inspection of unavailable original logs. No matched-task speedup or causal financial saving has been measured.</p></article><details class="source-register"><summary>Inspect the source register and verification boundary</summary><p class="footnote">Original files remain in the private recorder. These locators identify the retained byte version and starting line; a hash is an integrity address, not public access to the source or proof of original truth. The reviewed source projection has SHA-256 <code id="projection-digest"></code>.</p><div id="sources"></div></details></section>
+</main><footer class="footer"><div class="wrap"><div><strong>AXM / Decision Continuity</strong><br>Estate action study 1.0 · original evidence retained privately</div><div><a href="https://bigbirdreturns.github.io/axm-tools/decision-floor/">Open the fiChains workflow evaluation ↗</a><br>Independent AXM work. No customer endorsement or data implied.</div></div></footer>
+<dialog id="source-dialog"><button class="close" id="close-source" aria-label="Close source">×</button><p class="eyebrow">RETAINED SOURCE LOCATOR</p><h2 id="source-title"></h2><p id="source-file"></p><code id="source-hash"></code><p id="source-line"></p><p>This byte version is held in the owner-controlled evidence vault. The selected source references were rehashed locally with zero failures. The public case explains the measured finding while keeping the underlying private operational corpus local.</p></dialog>
+<script type="application/json" id="study-data">{
+  "schema": "axm/estate-action-study@1",
+  "release": "1.0",
+  "case_period": "July–November 2026",
+  "source_projection_sha256": "6e646f82a08d285b7f998188bbc5d50d1ee8e413a4ec659701979a47044a324e",
+  "verification": {
+    "selected_lineages": 10,
+    "located_references": 30,
+    "hash_failures": 0
+  },
+  "metrics": {
+    "source_versions": 29804,
+    "source_objects": 20827,
+    "native_jobs": 6626,
+    "git_decisions": 43,
+    "policy_sections": 26,
+    "changes": 570,
+    "targets": 555,
+    "receipts": 22,
+    "receipt_digests_present": 21,
+    "policy_before": 45918,
+    "policy_after": 5755,
+    "prompt_before": 97304,
+    "prompt_applied": 39829,
+    "prompt_later": 42095,
+    "source_bytes": 135192207
+  },
+  "sources": {
+    "policy_old": {
+      "name": "Original central instructions",
+      "file": "3d078b77dd8f77b4e29c00148452b66ddc06a7e41fc612be238c49c4baef1dfd.txt",
+      "sha256": "3d078b77dd8f77b4e29c00148452b66ddc06a7e41fc612be238c49c4baef1dfd",
+      "line": 113
+    },
+    "policy_new": {
+      "name": "Revised central instructions",
+      "file": "AGENTS.md",
+      "sha256": "9303959f42779315b4a54dc3b68be90700ae6973e493d45883dd034837ae6676",
+      "line": 11
+    },
+    "guard": {
+      "name": "Cache-inclusive stop measurement",
+      "file": "W01-cached-stop-check.json",
+      "sha256": "bf3b8a031db29cca3c64ff2b67424477ff216fc529867be1f7a7462fe2207827",
+      "line": 28
+    },
+    "review": {
+      "name": "Original guard review",
+      "file": "review-disposition.md",
+      "sha256": "9d0e49182bf7a29178eceb861d9cdc0c6c274e4e6059655df70a001a272973cd",
+      "line": 6
+    },
+    "cold": {
+      "name": "W01 cold-entry diagnosis",
+      "file": "w01-cold-entry-diagnostic.json",
+      "sha256": "e2da98e4bcda1fdc583ca2cfd1fbc6473e880131904a88852815e9b5e1dc6052",
+      "line": 9
+    },
+    "cold_n01": {
+      "name": "N01 cold-entry result",
+      "file": "collected-octo-n01-cold-entry-summary.json",
+      "sha256": "f38e8acb85e5518e84a4cd237d17a81204e045f6df828f9372d7062ff70242be",
+      "line": 7
+    },
+    "exit": {
+      "name": "Corrected exit-code proof",
+      "file": "w01-exit-status-proof.json",
+      "sha256": "a2a2000b98afa6acf4e66fb237d659cd6012a4bceb5fcba853afbaf95cf86a5b",
+      "line": 1
+    },
+    "controller": {
+      "name": "Migration controller account",
+      "file": "CONTROLLER.md",
+      "sha256": "62f2f6af20487b10bbc8bebba909426015101f264262ab84c9f0abb9e314159a",
+      "line": 158
+    },
+    "status": {
+      "name": "Timestamped migration counters",
+      "file": "STATUS.log",
+      "sha256": "a4663cac86a73bb9b77f533878d8f5b880c9cd13035eeb4f7d3779993f0c145d",
+      "line": 10
+    },
+    "apply": {
+      "name": "Eight prompt apply receipts",
+      "file": "automation-apply-results.json",
+      "sha256": "da554f7d5e663cf19ff76315d8ca339f307f464eb618755ebe97bdc0dfe3536d",
+      "line": 1
+    },
+    "readback": {
+      "name": "Subsequent prompt readback",
+      "file": "automation-final-readback.json",
+      "sha256": "994fb00e5c53122080874c187aa2dfae8161fed7f7b04d9668d643ad8d27f598",
+      "line": 153
+    },
+    "manifest": {
+      "name": "Reset manifest and task populations",
+      "file": "estate-policy-reset-manifest.json",
+      "sha256": "37c9f0bd95473b384d1ad42fa82dc3a79d33578ce51423c636b8e11a1dfd53bb",
+      "line": 16420
+    },
+    "targets": {
+      "name": "Reconciled target ledger",
+      "file": "final-counts-inventory.json",
+      "sha256": "1ff3aeb1c798ee631d491033223d0e66cfb2416f29e52a2971bed38c157637b9",
+      "line": 16
+    },
+    "protection": {
+      "name": "Final source-root and protection checks",
+      "file": "w03-final-coverage-summary.json",
+      "sha256": "b7e63a71a5dbdef819d6a55b0fed4b961a97b38d37a823d2e42e8ae872d44dc6",
+      "line": 21
+    },
+    "retention": {
+      "name": "Retained source snapshot",
+      "file": "source-retention.json",
+      "sha256": "525fa2b6f405d98c6e3e76253da9c420f23b62bafdcddee65b43e3f2068d9064",
+      "line": 22
+    },
+    "offhost": {
+      "name": "Independent off-host retention",
+      "file": "offhost-retention.json",
+      "sha256": "d0d8cca851419c7a6603b7fe0ece6b1b6f88316b85e6dbe2095c0c9f3f730a6c",
+      "line": 10
+    },
+    "controller_rehash": {
+      "name": "Migration acceptance and rehash stop",
+      "file": "CONTROLLER.md",
+      "sha256": "62f2f6af20487b10bbc8bebba909426015101f264262ab84c9f0abb9e314159a",
+      "line": 257
+    },
+    "controller_queue": {
+      "name": "Recorded queue classifications",
+      "file": "CONTROLLER.md",
+      "sha256": "62f2f6af20487b10bbc8bebba909426015101f264262ab84c9f0abb9e314159a",
+      "line": 22
+    },
+    "status_outage": {
+      "name": "00:32 migration status observation",
+      "file": "STATUS.log",
+      "sha256": "a4663cac86a73bb9b77f533878d8f5b880c9cd13035eeb4f7d3779993f0c145d",
+      "line": 3
+    }
+  },
+  "cases": [
+    {
+      "id": "inheritance",
+      "title": "A policy became recurring input",
+      "tier": "Retained bytes + migration receipts",
+      "intent": "Preserve hard-won routing, custody, recovery and spending lessons across successive agents.",
+      "mechanism": "Current rules, historical incidents and project particulars accumulated in a central document. A full startup read made all of those layers recurring input.",
+      "measured": "45,918 → 5,755 bytes; 26 original sections retained. The difference is 40,163 bytes per full load, or 87.47%.",
+      "change": "One current operating policy governs common behavior; project facts and historical reasons remain separately retrievable.",
+      "state": "Document change verified; task-speed benefit unmeasured",
+      "retain": "Custody, spending limits, original reasons, project acceptance and actual user authority.",
+      "analogue": "A temporary buffer, supplier exception or approval route remains active after its original conditions change.",
+      "action": "Attach applicability conditions, an accountable owner and a review trigger to each active rule, then compare matched tasks before and after the intake change.",
+      "owner": "Operating-policy owner",
+      "accept": "Same task, source and runtime; record total wall time, input volume, tools, failures and accepted result. Preserve protections in both runs.",
+      "failure": "A smaller prompt with a worse or unverified result does not pass.",
+      "refs": [
+        "policy_old",
+        "policy_new",
+        "targets"
+      ]
+    },
+    {
+      "id": "completion",
+      "title": "The status surface concealed failure",
+      "tier": "Native exit codes + post-change proof",
+      "intent": "Return a structured result so a parent could inspect a worker outcome.",
+      "mechanism": "The wrapper emitted a successful process exit even when its inner worker failed. A caller using only that outer signal could advance the wrong state.",
+      "measured": "W01: outer 0 / inner 1. N01: outer 0 / inner −9. The amendment maps completed → 0, usage unavailable → 1, failed → 1.",
+      "change": "The wrapper now propagates an unsuccessful outcome. Reporting is repaired; the failed work remains failed.",
+      "state": "Reporting correction tested",
+      "retain": "Original failed invocations, diagnostic results and the spending boundary.",
+      "analogue": "A meeting action is marked complete while the PO or production schedule still carries the previous quantity.",
+      "action": "Bind completion to the downstream receipt that actually discharges the commitment, and preserve reporting success separately from operating success.",
+      "owner": "Workflow integrator",
+      "accept": "A parent must refuse success for each failed child state; an actual completed child must still pass.",
+      "failure": "Submission, a green slide, or an exit wrapper alone cannot discharge an execution obligation.",
+      "refs": [
+        "cold",
+        "cold_n01",
+        "exit"
+      ]
+    },
+    {
+      "id": "guard",
+      "title": "A good control met a changed operating condition",
+      "tier": "Reviewed rule + native failure trace",
+      "intent": "Bound spending, count cached input and stop work when usage could not be observed.",
+      "mechanism": "A reviewed two-second missing-usage rule later stopped cold-entry work after commentary, before any tool execution. The compatibility assumption became consequential.",
+      "measured": "The earlier 60,000-token threshold stopped at 83,374: 23,374 tokens of response-boundary overshoot. The later W01 attempt lasted 62.36 seconds and made zero tool calls.",
+      "change": "The reset retains accounting protections and exposes telemetry failure. It does not demonstrate a repaired inference path.",
+      "state": "Compatibility repair remains open",
+      "retain": "Inclusive accounting, finite limits, invocation identity and independent usage evidence.",
+      "analogue": "A finance or procurement control still assumes a reporting cadence that its source system no longer supplies.",
+      "action": "Qualify the meter against the actual runtime event contract in an isolated test; keep spending protections and preserve the failed trace.",
+      "owner": "Runtime/accounting integrator",
+      "accept": "A fresh worker completes useful work with independently observed usage, correct exit reporting and unchanged approved spending limits.",
+      "failure": "Relaxing the guard, bypassing accounting or calling missing data zero would conceal the problem.",
+      "refs": [
+        "guard",
+        "review",
+        "cold"
+      ]
+    },
+    {
+      "id": "rehash",
+      "title": "Assurance work lost its stopping condition",
+      "tier": "Timestamped counters + controller account",
+      "intent": "Protect a degraded source during a large data migration with copy, stream, coverage and hash checks.",
+      "mechanism": "A finisher scheduled another large-file rehash after accepted evidence already existed. The procedure kept executing after the decision could be closed.",
+      "measured": "965,090 small files already verified. Rehash began 09:27; the 10:14 counter showed 296 GB. The operator stopped it at 10:26: a 59-minute recorded interval.",
+      "change": "The rule now admits the existing acceptance package and reserves rereads for an observed defect that justifies them.",
+      "state": "Stop and policy amendment recorded",
+      "retain": "Named residuals, coverage, copy summaries and verified stream evidence.",
+      "analogue": "Repeated inventory reconciliation or a quality hold continues after the accepted release evidence exists.",
+      "action": "Give each assurance obligation an explicit terminal condition and reuse the accepted receipt until a relevant input changes.",
+      "owner": "Acceptance owner",
+      "accept": "An unchanged, valid receipt discharges its scoped obligation; changed source identity or a real defect reopens it.",
+      "failure": "59 minutes is observed elapsed time, not a measured promise of 59 minutes saved on every future job.",
+      "refs": [
+        "controller_rehash",
+        "status",
+        "policy_old"
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "An invisible dependency inherited a short lifetime",
+      "tier": "Controller account + status counters",
+      "intent": "Carry a migration across an authenticated transport while retaining checkpoints.",
+      "mechanism": "The transport belonged to an interactive agent process. Its restart removed a dependency from work that was supposed to continue independently.",
+      "measured": "The 00:32 observation recorded 0 MB/s and 328 retries in the preceding hour. The controller account reports about 327,000 network-path error lines.",
+      "change": "The resulting rule assigns transfer dependencies to a task or service rather than the conversational process.",
+      "state": "Incident and ownership amendment recorded",
+      "retain": "Pinned endpoints, checkpoints and the existing transfer owner.",
+      "analogue": "A supplier interface depends on a buyer’s session, private spreadsheet or unattended mailbox.",
+      "action": "Expose the dependency owner and required lifetime in the commitment; test owner restart with a disposable transfer.",
+      "owner": "Transport/service owner",
+      "accept": "A controlled session loss preserves the service-owned dependency and resumes from the same checkpoint without duplicate side effects.",
+      "failure": "A rule saying service-owned is not itself proof of restart resilience.",
+      "refs": [
+        "controller",
+        "status_outage",
+        "policy_old"
+      ]
+    },
+    {
+      "id": "workload",
+      "title": "The queue preserved objects without classifying work",
+      "tier": "Queue-derived figures in retained controller account",
+      "intent": "Preserve the content of a failing storage environment.",
+      "mechanism": "Regenerable caches and build environments entered the same small-file workflow as irreplaceable records.",
+      "measured": "826,726 of 2,188,321 small files were build, environment or cache artifacts: 37.78% of the recorded queue.",
+      "change": "Triage distinguishes regenerable environments, repository bundles, historical holds and source material.",
+      "state": "Classification recorded; original queue unavailable here",
+      "retain": "Irreplaceable data, recovery evidence and explicit deletion authority.",
+      "analogue": "An inventory plan treats every unit as equivalent even though criticality, replenishment and obsolescence differ.",
+      "action": "Carry recovery class and regeneration cost into work admission, without deleting historical material merely because it is reproducible.",
+      "owner": "Data/workload owner",
+      "accept": "A sample of the regenerable class rebuilds correctly; independently measured transfer work falls while required recovery coverage remains.",
+      "failure": "A queue share is not a measured runtime or cash saving.",
+      "refs": [
+        "controller_queue",
+        "policy_old"
+      ]
+    },
+    {
+      "id": "versions",
+      "title": "Different snapshots looked like a contradiction",
+      "tier": "Apply receipts + later readback",
+      "intent": "Keep recurring project instructions useful as work advanced.",
+      "mechanism": "Prompts accumulated operating history, while another task updated MARY concurrently. Counts without population and time mixed distinct states.",
+      "measured": "Eight changed prompts: 97,304 → 39,829 characters at apply. Later readback: 42,095 after an owner update. Ten active tasks is a different population.",
+      "change": "Shared policy is referenced once; project state stays with its owner. Apply and later-readback versions both remain.",
+      "state": "Versioned change verified",
+      "retain": "Schedules, enabled states, project objectives and the subsequent owner’s update.",
+      "analogue": "Sales, Finance and Procurement answer using different forecast revisions or reporting periods.",
+      "action": "Bind every comparison to entity, population, version, effective time and observation time before asking which value is correct.",
+      "owner": "Cross-functional decision owner",
+      "accept": "A reconciliation explains each difference using the correct source version, or opens a specific missing-evidence question.",
+      "failure": "An intentional later revision must not be classified as a failed earlier deployment.",
+      "refs": [
+        "apply",
+        "readback",
+        "manifest"
+      ]
+    },
+    {
+      "id": "propagation",
+      "title": "Authorship did not reveal the deployment surface",
+      "tier": "Deduplicated six-host change ledger",
+      "intent": "Make local entry points and project instructions useful to each worker.",
+      "mechanism": "Shared instructions were copied into roots, roles, generators, hooks and memory surfaces. An owner could approve each change without seeing its combined reach.",
+      "measured": "570 recorded changes affected 555 unique targets across six hosts, retained in 22 receipts. Fifteen extra entries are amendments, not extra targets.",
+      "change": "Common policy has one owner; project entries preserve local facts and point to the current policy.",
+      "state": "Declared active-entry census reconciled",
+      "retain": "Every amendment, before/after digest and project-specific obligation.",
+      "analogue": "An approved planning change must propagate into forecast, PO, allocation, production and accounting systems.",
+      "action": "Compile the dependency and deployment set from the decision, then require readback at each affected boundary.",
+      "owner": "Change/deployment owner",
+      "accept": "Every declared consumer reports the intended version, or remains explicitly outstanding; historical backups do not regain live authority.",
+      "failure": "Editing the source of truth alone does not establish propagation.",
+      "refs": [
+        "targets",
+        "policy_new"
+      ]
+    },
+    {
+      "id": "protection",
+      "title": "Simplification needed to preserve the reason for the rule",
+      "tier": "Retained native configuration and AST checks",
+      "intent": "Protect permissions, quotas, resources, project evidence and custody.",
+      "mechanism": "Stale prose and valid executable controls occupied adjacent files. A broad cleanup could otherwise erase the protection along with the clutter.",
+      "measured": "The final-pass record reports 24 unchanged configurations and 15 hook-message sources revised with non-string AST preservation.",
+      "change": "Instruction text changed while protected runtime settings and project obligations remained.",
+      "state": "Scoped preservation checks recorded",
+      "retain": "Permissions, metadata, resource reservations, spending and project acceptance.",
+      "analogue": "A faster approval path must preserve credit exposure, quality constraints and contractual limits.",
+      "action": "Declare preserved invariants before migration; check them independently after the change.",
+      "owner": "Control owner and independent verifier",
+      "accept": "The changed behavior meets its target and every retained invariant passes on actual deployed bytes.",
+      "failure": "Removing an inconvenient protection is a changed risk decision, not a free efficiency gain.",
+      "refs": [
+        "protection",
+        "policy_new"
+      ]
+    },
+    {
+      "id": "memory",
+      "title": "Historical evidence and current authority needed separate states",
+      "tier": "Retained source and off-host copy receipts",
+      "intent": "Retain operational history so work and recovery survive individual sessions.",
+      "mechanism": "The same preserved text could be retrieved as evidence or misread as a present order. Erasing it would destroy the reasons needed for correction.",
+      "measured": "A 439-file source snapshot, 4,038,374 uncompressed bytes, and a 653,688-byte off-host bundle were retained; shared HEAD and index stayed unchanged.",
+      "change": "Historical material remains inspectable while current instructions determine execution.",
+      "state": "Retention recorded; no lifetime-completeness claim",
+      "retain": "Original statements, superseded versions, failed attempts and recovery coordinates.",
+      "analogue": "Old price agreements and forecasts must remain auditable without becoming today’s purchase authority.",
+      "action": "Store validity and supersession explicitly so historical retrieval cannot silently reactivate a retired instruction.",
+      "owner": "Evidence and policy owner",
+      "accept": "Replay retrieves the old reason and its measured consequences while present execution selects the current authorized rule.",
+      "failure": "The current corpus lacks one declared historical receipt digest; preserve that gap rather than reconstruct its bytes.",
+      "refs": [
+        "retention",
+        "offhost",
+        "policy_new"
+      ]
+    }
+  ]
+}
+</script>
+<script>
+'use strict';
+const DATA=JSON.parse(document.getElementById('study-data').textContent), $=id=>document.getElementById(id);let selected=0;
+const text=(id,value)=>{$(id).textContent=value;};const fmt=n=>n.toLocaleString('en-US');
+function openSource(id){const s=DATA.sources[id];text('source-title',s.name);text('source-file',s.file);text('source-hash',s.sha256);text('source-line','Start at line '+s.line+'. Source classification follows the selected case.');$('source-dialog').showModal();}
+function choose(i){selected=i;const c=DATA.cases[i];document.querySelectorAll('#case-nav button').forEach((b,k)=>b.setAttribute('aria-selected',String(k===i)));for(const k of ['title','intent','mechanism','measured','change','retain','analogue'])text('case-'+k,c[k]);text('case-state',c.state);text('case-tier','Evidence: '+c.tier);text('next-action',c.action);text('next-owner',c.owner);text('next-accept',c.accept);text('next-failure',c.failure);text('export-title',c.title);text('export-status','');$('case-sources').replaceChildren();for(const id of c.refs){const b=document.createElement('button');b.textContent=DATA.sources[id].name;b.onclick=()=>openSource(id);$('case-sources').append(b);}location.hash&&location.hash.startsWith('#case-')&&(history.replaceState(null,'','#case-'+c.id));}
+DATA.cases.forEach((c,i)=>{const b=document.createElement('button');b.setAttribute('role','tab');b.setAttribute('aria-controls','case-panel');b.id='case-button-'+c.id;b.setAttribute('aria-selected',String(i===0));const n=document.createElement('span');n.textContent=String(i+1).padStart(2,'0')+' / RECORDED CHAIN';b.append(n,document.createTextNode(c.title));b.onclick=()=>choose(i);$('case-nav').append(b);});
+function exitReplay(){const status=$('outcome').value,ok=status==='completed';text('exit-old','Exit 0');text('exit-new',ok?'Exit 0':'Exit 1');text('old-meaning',ok?'Successful process signal.':'Parent sees process success despite an unsuccessful worker outcome.');text('new-meaning',ok?'Completed outcome passes.':'Parent sees an unsuccessful outcome.');text('exit-note',ok?'Both rules report completion for a completed child. A real downstream acceptance receipt is still required.':'The corrected reporting rule exposes the failed work. It does not repair the work or discharge its original obligation. This is a rule replay, not a fresh runtime test.');}
+function inputReplay(){const n=Number($('loads').value);text('load-count',fmt(n));text('input-old',fmt(45918*n)+' bytes');text('input-new',fmt(5755*n)+' bytes');text('input-note',fmt(40163*n)+' fewer bytes under the stated assumption of '+fmt(n)+' full reads. This is exact payload arithmetic, not measured tokens, money or time saved.');}
+function versionReplay(){const later=$('snapshot').value==='later',value=later?42095:39829;text('version-label',later?'LATER READBACK':'AT APPLY');text('version-total',fmt(value)+' characters');text('version-change',later?'+2,266 characters after a concurrent owner update.':'−57,475 characters in the eight apply receipts.');text('version-note','Eight updated prompts and ten active tasks are different populations. '+(later?'The later update is preserved as its own version, not evidence that the earlier apply failed.':'Compare the apply receipts to their own before state; keep later owner updates separately.'));}
+function tab(name){for(const k of ['exit','input','version']){$('lab-'+k).classList.toggle('hidden',k!==name);$('tab-'+k).setAttribute('aria-selected',String(k===name));}}
+function actionPacket(){const c=DATA.cases[selected];return {schema:'axm/decision-inheritance-action@1',state:'PROPOSED',case_id:c.id,case_title:c.title,created_at:new Date().toISOString(),source_projection_sha256:DATA.source_projection_sha256,evidence:c.refs.map(id=>({...DATA.sources[id]})),observed:c.measured,existing_intervention:c.change,existing_intervention_state:c.state,proposed_action:c.action,owner_role:c.owner,authority:'Not granted by this export; require local owner approval',preserve:c.retain,acceptance:c.accept,failure_condition:c.failure,reviewer_note:$('judgment').value,rollback:'Retain the original version and failed attempt; adopt or restore only under scoped owner authority.',execution_receipt:null,system_writeback:false};}
+$('export-action').onclick=()=>{const p=actionPacket(),blob=new Blob([JSON.stringify(p,null,2)+'\n'],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='AXM_proposed_change_'+p.case_id+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);text('export-status','Proposed change exported. No approval or execution recorded.');};
+$('close-source').onclick=()=>$('source-dialog').close();$('outcome').onchange=exitReplay;$('loads').oninput=inputReplay;$('snapshot').onchange=versionReplay;document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+text('projection-digest',DATA.source_projection_sha256);for(const [id,s] of Object.entries(DATA.sources)){const item=document.createElement('div');item.className='register-item';const b=document.createElement('button');b.className='button secondary';b.textContent=s.name;b.onclick=()=>openSource(id);const code=document.createElement('code');code.textContent=s.sha256;const label=document.createElement('span');label.textContent=s.file+' · start line '+s.line;item.append(b,label,code);$('sources').append(item);}
+choose(0);exitReplay();inputReplay();versionReplay();window.STUDY_TEST={choose,tab,actionPacket,data:DATA,exitReplay,inputReplay,versionReplay};
+</script></body></html>

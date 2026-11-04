@@ -1,0 +1,108 @@
+{
+  "status": "PASS",
+  "scope": "Actual public-safe page over HTTP/HTTPS; no private corpus or model run",
+  "url": "http://127.0.0.1:33083/index.html",
+  "browser": "Chrome/156.0.8078.47",
+  "passed": 24,
+  "checks": [
+    {
+      "name": "Actual HTTP page loaded",
+      "pass": true
+    },
+    {
+      "name": "Restrictive network CSP",
+      "pass": true
+    },
+    {
+      "name": "Ten choices",
+      "pass": true
+    },
+    {
+      "name": "Choice 0 retains acceptance and proposed-only state",
+      "pass": true
+    },
+    {
+      "name": "Choice 1 retains acceptance and proposed-only state",
+      "pass": true
+    },
+    {
+      "name": "Choice 2 retains acceptance and proposed-only state",
+      "pass": true
+    },
+    {
+      "name": "Choice 3 retains acceptance and proposed-only state",
+      "pass": true
+    },
+    {
+      "name": "Choice 4 retains acceptance and proposed-only state",
+      "pass": true
+    },
+    {
+      "name": "Choice 5 retains acceptance and proposed-only state",
+      "pass": true
+    },
+    {
+      "name": "Choice 6 retains acceptance and proposed-only state",
+      "pass": true
+    },
+    {
+      "name": "Choice 7 retains acceptance and proposed-only state",
+      "pass": true
+    },
+    {
+      "name": "Choice 8 retains acceptance and proposed-only state",
+      "pass": true
+    },
+    {
+      "name": "Choice 9 retains acceptance and proposed-only state",
+      "pass": true
+    },
+    {
+      "name": "Source locator opens",
+      "pass": true
+    },
+    {
+      "name": "Exit mapping completed",
+      "pass": true
+    },
+    {
+      "name": "Exit mapping failed",
+      "pass": true
+    },
+    {
+      "name": "Exit mapping usage_meter_unavailable",
+      "pass": true
+    },
+    {
+      "name": "Exact input arithmetic, no speedup claim",
+      "pass": true
+    },
+    {
+      "name": "Snapshot apply",
+      "pass": true
+    },
+    {
+      "name": "Snapshot later",
+      "pass": true
+    },
+    {
+      "name": "Desktop overflow absent",
+      "pass": true
+    },
+    {
+      "name": "Mobile overflow absent",
+      "pass": true
+    },
+    {
+      "name": "No JavaScript exceptions",
+      "pass": true
+    },
+    {
+      "name": "No external application requests",
+      "pass": true
+    }
+  ],
+  "javascript_errors": 0,
+  "outbound_requests": [],
+  "local_html_sha256": "372b0cd1ae5c081698639c803e17e5f2bcbbecf54fc74dc2639e22b4007b3df2"
+}
