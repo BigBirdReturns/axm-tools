@@ -35,8 +35,12 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
+      # ref: main, not the triggering commit. A run queued behind another in
+      # the "pages" group would otherwise start already behind that run's bot
+      # commits, and rewrite the same data lines they just wrote.
       - uses: actions/checkout@v7.0.1
         with:
+          ref: main
           fetch-depth: 0
 
       - uses: actions/setup-python@v7.0.0
@@ -200,6 +204,19 @@ jobs:
           # tree would turn "tonight's page build broke" into "the committed
           # pages are broken too." Nothing staged means the last good build
           # stays live and only the data refresh lands.
+          #
+          # Every run restamps items.json, derived.json and gaps.json, so a run
+          # that found nothing new still has a diff. Only the nightly run keeps
+          # that bare refresh: the page raises its stale alert from the committed
+          # items.json `generated` once a redeploy from a clean checkout puts it
+          # back, so it has to move every day. Commits for a merge add nothing,
+          # and each one is another push that can lose a race. The unstaged
+          # stamps stay in the tree, so this run still deploys them.
+          #
+          # bot_commit.py land, not git push: main moves during a run (merge
+          # bursts, and the release workflows push about 30 seconds after the
+          # merge that started this one), and a rejected push here skips the
+          # deploy. See the 6 November 2026 entry in CLAUDE.md.
           if [ "$SCHOOLS_BUILT" = "success" ]; then
             git add -A -- pta-tracker ':!pta-tracker/data' ':!pta-tracker/scripts'
           else
@@ -207,9 +224,12 @@ jobs:
           fi
           if git diff --cached --quiet; then
             echo "No new items."
+          elif [ "$GITHUB_EVENT_NAME" != "schedule" ] && python -B pta-tracker/scripts/bot_commit.py stamp-only; then
+            echo "Only refresh timestamps changed; the nightly run commits those."
+            git reset --quiet
           else
             git commit -m "pta-tracker: nightly data refresh"
-            git push
+            python -B pta-tracker/scripts/bot_commit.py land
           fi
 
       - name: Build AXM Readiness offline launcher
@@ -295,4 +315,4 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add .github/pages-deployment.json
           git commit -m "pages: record successful deployment" || exit 0
-          git push
+          python -B pta-tracker/scripts/bot_commit.py land

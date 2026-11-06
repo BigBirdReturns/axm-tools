@@ -1,0 +1,31 @@
+name: PTA bot commit check
+
+# pta-fetch.yml only runs on main, so nothing exercises its commit and receipt
+# steps before they reach production. This replays those steps, read straight
+# out of pta-fetch.yml, against main moving underneath them.
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pta-fetch.yml'
+      - '.github/workflows/pta-check.yml'
+      - 'pta-tracker/scripts/bot_commit.py'
+      - 'pta-tracker/scripts/test_bot_commit.py'
+
+permissions:
+  contents: read
+
+jobs:
+  bot-commit:
+    name: Bot commits survive main moving
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Replay the bot commit steps
+        run: python -B pta-tracker/scripts/test_bot_commit.py -v

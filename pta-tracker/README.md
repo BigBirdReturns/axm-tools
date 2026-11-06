@@ -492,7 +492,10 @@ The latter two were deployment-only outputs until a second Pages-deploying
 workflow in this repo (`organ-evolution-observe.yml`, same `pages`
 concurrency group) was found redeploying the site from a clean checkout
 within the hour, which put the July 27 copies back on the live page every
-night and hid the derived board-meeting cards. Retired hand-written cards are preserved in `parent.json`
+night and hid the derived board-meeting cards. Since November 6, 2026 a run
+triggered by a merge commits these files only when something besides their
+timestamps changed; the nightly run always commits, because the page's stale
+alert reads the committed `generated` stamp. Retired hand-written cards are preserved in `parent.json`
 `archived_cards` (not displayed). Archiving a reminder does not establish
 what the board decided. Past meetings without verified outcomes remain
 curation gaps until their records are reviewed.
