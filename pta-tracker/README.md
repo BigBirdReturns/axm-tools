@@ -36,7 +36,7 @@ changes as needed. Success means a useful report delivered and questions followe
 through, not a zero gap count. The initial board-review brief and optional sharing message are in `board-brief.html`;
 its dated handout is a snapshot, while the generator is the repeatable workflow.
 
-## Monthly meeting pack - current handoff (November 1, 2026)
+## Monthly meeting pack - current handoff (November 6, 2026)
 
 The actual path is **Holly Avenue > VP Desk > Generate board report draft**.
 An optional meeting-date field labels the local draft; it is never saved to the
@@ -84,10 +84,30 @@ November 1 source review supersedes the October 28 pending items:
   outcome/minutes in that record. The reminder is archived without implying a
   decision. The next regular district meeting is November 17 at 7 p.m.
 
-The report is reviewed November 1 for use through November 2. Source review
-must be renewed before a later presentation. Public hosting remains the earlier
-release until these local changes are explicitly deployed. Private scheduling,
-email access and delivery arrangements stay outside this public repository.
+November 6 source review supersedes the November 1 vote limitation:
+
+- Recording `E_5SQbMDW_I` now has auto-generated captions; check again before
+  calling captions unavailable. Agenda `MID=86679` lists BP 5141.21 as consent
+  item IV.e. The captions show no items removed from consent (0:41:51), a motion
+  on consent items A through H (1:59:13) and "the motion carries" (1:59:30) on a
+  voice vote. No numeric tally was announced, so do not call it unanimous. These
+  are captions, not signed minutes, and they garble names; cite timecodes rather
+  than captioned names. Holly Avenue implementation remains unverified.
+- BP 4100, 4200 and 4300 had first readings October 27 as information items.
+  The board indicated they would return on consent; that is not an approval.
+- The Simbli listing ended at October 30 with no upcoming meetings, so the
+  November 17 agenda was not posted. `watch-nov17-agenda` tracks it.
+- October 30 `MID=97729` is unchanged: discussion agenda, no minutes or outcome.
+- State PTA alerts showed none active. The current-legislation page says the
+  2026 session ended September 30 and the next begins in January 2027.
+- School plan and Dashboard figures were not rechecked; their cards keep their
+  November 1 review dates.
+
+The report is reviewed November 6 for use through November 13, when the
+November 17 agenda should be posted. Source review must be renewed before a later
+presentation. The October 28, November 1 and November 6 reviews were deployed
+November 6. Private scheduling, email access and delivery arrangements stay
+outside this public repository.
 
 Validation: `node pta-tracker/scripts/test_board_report.mjs` exercises the actual
 embedded generators with an independent fixture (invalid calendar dates,
