@@ -1,0 +1,109 @@
+{
+  "schema": "axm-i3x-capture/1",
+  "evidence_class": "public-demo-api-capture",
+  "base_url": "https://api.i3x.dev/v1",
+  "captured_at": "2026-11-09T18:39:18.391855+00:00",
+  "production_data": false,
+  "remote_writes": false,
+  "records": [
+    {
+      "id": "info",
+      "url": "https://api.i3x.dev/v1/info",
+      "method": "GET",
+      "request": null,
+      "status": 200,
+      "captured_at": "2026-11-09T18:39:18.639733+00:00",
+      "body": "{\"success\":true,\"result\":{\"specVersion\":\"1.0\",\"serverVersion\":\"release\",\"serverName\":\"I3X API Prototype\",\"capabilities\":{\"query\":{\"history\":true},\"update\":{\"current\":true,\"history\":false},\"subscribe\":{\"stream\":true}}}}",
+      "sha256": "ad1c51e70c2ab77ccee8dc80c5e338ed5e2bdcdfb22f47750f4c94075de3d4ca"
+    },
+    {
+      "id": "namespaces",
+      "url": "https://api.i3x.dev/v1/namespaces",
+      "method": "GET",
+      "request": null,
+      "status": 200,
+      "captured_at": "2026-11-09T18:39:18.930205+00:00",
+      "body": "{\"success\":true,\"result\":[{\"uri\":\"https://cesmii.org/i3x\",\"displayName\":\"I3X\"},{\"uri\":\"https://isa.org/isa95\",\"displayName\":\"ISA95\"},{\"uri\":\"https://abelara.com/equipment\",\"displayName\":\"Abelara Equipment\"},{\"uri\":\"https://thinkiq.com/equipment\",\"displayName\":\"ThinkIQ Equipment\"}]}",
+      "sha256": "0415d29316db2c6bacb6aa62e0e9932bc29aa725fcdb4b52752a2b6f143e6c02"
+    },
+    {
+      "id": "objecttypes",
+      "url": "https://api.i3x.dev/v1/objecttypes",
+      "method": "GET",
+      "request": null,
+      "status": 200,
+      "captured_at": "2026-11-09T18:39:19.189462+00:00",
+      "body": "{\"success\":true,\"result\":[{\"elementId\":\"work-center-type\",\"displayName\":\"WorkCenterType\",\"namespaceUri\":\"https://isa.org/isa95\",\"sourceTypeId\":\"WorkCenterType\",\"version\":null,\"schema\":{\"description\":\"ISA-95 Work Center - organizational container with HasChildren relationships\",\"type\":\"object\"},\"related\":{\"relationshipType\":\"HasChildren\",\"types\":[\"https://isa.org/isa95:work-unit-type\"]}},{\"elementId\":\"work-unit-type\",\"displayName\":\"WorkUnitType\",\"namespaceUri\":\"https://isa.org/isa95\",\"sourceTypeId\":\"WorkUnitType\",\"version\":null,\"schema\":{\"description\":\"ISA-95 Work Unit - can be simple or complex with HasComponent relationships to child elements\",\"type\":\"object\"},\"related\":{\"relationshipType\":\"HasComponent\"}},{\"elementId\":\"state-type\",\"displayName\":\"StateType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"StateType\",\"version\":null,\"schema\":{\"type\":\"object\",\"properties\":{\"timestamp\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"color\":{\"type\":\"string\"},\"type\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"description\"]},\"metadata\":{\"type\":\"object\",\"properties\":{\"source\":{\"type\":\"string\"},\"uri\":{\"type\":\"string\"},\"asset\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"description\"]},\"previousState\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"color\":{\"type\":\"string\"},\"type\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"description\"]}},\"required\":[\"id\",\"name\",\"description\",\"color\",\"type\"]},\"additionalInfo\":{\"type\":\"object\",\"properties\":{\"runTime\":{\"type\":\"integer\"},\"lastFillTime\":{\"type\":\"string\"},\"mode\":{\"type\":\"string\"},\"operator\":{\"type\":\"string\"}},\"required\":[\"runTime\",\"lastFillTime\",\"mode\",\"operator\"]}},\"required\":[\"source\",\"uri\",\"asset\"]}},\"required\":[\"timestamp\",\"description\",\"color\",\"type\",\"metadata\"]},\"related\":null},{\"elementId\":\"product-type\",\"displayName\":\"ProductType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"ProductType\",\"version\":null,\"schema\":{\"description\":\"Product metadata container - no records, metadata only\",\"type\":\"object\"},\"related\":null},{\"elementId\":\"production-type\",\"displayName\":\"ProductionType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"ProductionType\",\"version\":null,\"schema\":{\"description\":\"Production container - no records, organizational metadata with HasChildren relationships\",\"type\":\"object\"},\"related\":{\"relationshipType\":\"HasChildren\",\"types\":[\"https://abelara.com/equipment:product-type\"]}},{\"elementId\":\"measurements-type\",\"displayName\":\"MeasurementsType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"MeasurementsType\",\"version\":null,\"schema\":{\"description\":\"Composite measurements container - no records, composed of measurement-type children\",\"type\":\"object\"},\"related\":{\"relationshipType\":\"HasComponent\",\"types\":[\"https://abelara.com/equipment:measurement-type\"]}},{\"elementId\":\"measurement-type\",\"displayName\":\"MeasurementType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"MeasurementType\",\"version\":null,\"schema\":{\"description\":\"Composite measurement type composed of value and health subtypes, with tolerance metadata in records\",\"type\":\"object\",\"properties\":{\"tolerance\":{\"type\":\"number\",\"description\":\"Acceptable deviation from target value\"},\"inTolerance\":{\"type\":\"boolean\",\"description\":\"Whether current value is within tolerance\"},\"value\":{\"type\":\"number\",\"description\":\"Composed child: measurement value\"},\"health\":{\"type\":\"integer\",\"description\":\"Composed child: measurement health indicator\"}},\"required\":[\"tolerance\",\"inTolerance\"]},\"related\":{\"relationshipType\":\"HasComponent\",\"types\":[\"https://abelara.com/equipment:measurement-value-type\",\"https://abelara.com/equipment:measurement-health-type\"]}},{\"elementId\":\"measurement-value-type\",\"displayName\":\"MeasurementValueType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"MeasurementValueType\",\"version\":null,\"schema\":{\"type\":\"number\"},\"related\":null},{\"elementId\":\"measurement-health-type\",\"displayName\":\"MeasurementHealthType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"MeasurementHealthType\",\"version\":null,\"schema\":{\"type\":\"integer\"},\"related\":null},{\"elementId\":\"sensor-type\",\"displayName\":\"SensorType\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"sourceTypeId\":\"1001\",\"version\":null,\"schema\":{\"type\":\"number\"},\"related\":null},{\"elementId\":\"temperature-sensor-type\",\"displayName\":\"TemperatureSensorType\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"sourceTypeId\":\"1002\",\"version\":null,\"schema\":{\"description\":\"Base temperature sensor reporting a reading with unit\",\"type\":\"object\",\"properties\":{\"temperature\":{\"type\":\"number\"},\"unit\":{\"type\":\"string\"}},\"required\":[\"temperature\",\"unit\"]},\"related\":null},{\"elementId\":\"precision-temperature-sensor-type\",\"displayName\":\"PrecisionTemperatureSensorType\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"sourceTypeId\":\"1003\",\"version\":null,\"schema\":{\"description\":\"Temperature sensor extended with accuracy and calibration metadata, using allOf to inherit temperature-sensor-type\",\"allOf\":[{\"description\":\"Base temperature sensor reporting a reading with unit\",\"type\":\"object\",\"properties\":{\"temperature\":{\"type\":\"number\"},\"unit\":{\"type\":\"string\"}},\"required\":[\"temperature\",\"unit\"]},{\"type\":\"object\",\"properties\":{\"accuracy\":{\"type\":\"number\",\"description\":\"Measurement accuracy in +/- degrees\"},\"calibrationDate\":{\"type\":\"string\",\"description\":\"ISO 8601 date of last calibration\"}},\"required\":[\"accuracy\",\"calibrationDate\"]}]},\"related\":{\"relationshipType\":\"InheritsFrom\",\"types\":[\"https://thinkiq.com/equipment:temperature-sensor-type\"]}}]}",
+      "sha256": "75a660cf532cdd35a9cdfeee4a6cf3637e12a9b2db7bf5ca17cf163c58ab8629"
+    },
+    {
+      "id": "relationshiptypes",
+      "url": "https://api.i3x.dev/v1/relationshiptypes",
+      "method": "GET",
+      "request": null,
+      "status": 200,
+      "captured_at": "2026-11-09T18:39:19.458888+00:00",
+      "body": "{\"success\":true,\"result\":[{\"elementId\":\"HasParent\",\"displayName\":\"HasParent\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"HasParent\",\"reverseOf\":\"HasChildren\"},{\"elementId\":\"HasChildren\",\"displayName\":\"HasChildren\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"HasChildren\",\"reverseOf\":\"HasParent\"},{\"elementId\":\"HasComponent\",\"displayName\":\"HasComponent\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"HasComponent\",\"reverseOf\":\"ComponentOf\"},{\"elementId\":\"ComponentOf\",\"displayName\":\"ComponentOf\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"ComponentOf\",\"reverseOf\":\"HasComponent\"},{\"elementId\":\"InheritedBy\",\"displayName\":\"InheritedBy\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"InheritedBy\",\"reverseOf\":\"InheritsFrom\"},{\"elementId\":\"InheritsFrom\",\"displayName\":\"InheritsFrom\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"InheritsFrom\",\"reverseOf\":\"InheritedBy\"},{\"elementId\":\"Monitors\",\"displayName\":\"Monitors\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"relationshipId\":\"Monitors\",\"reverseOf\":\"MonitoredBy\"},{\"elementId\":\"MonitoredBy\",\"displayName\":\"MonitoredBy\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"relationshipId\":\"MonitoredBy\",\"reverseOf\":\"Monitors\"},{\"elementId\":\"SuppliesTo\",\"displayName\":\"SuppliesTo\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"relationshipId\":\"SuppliesTo\",\"reverseOf\":\"SuppliedBy\"},{\"elementId\":\"SuppliedBy\",\"displayName\":\"SuppliedBy\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"relationshipId\":\"SuppliedBy\",\"reverseOf\":\"SuppliesTo\"}]}",
+      "sha256": "2d4662400d49e34d41edc07b85cd702dd1b0d87806ab0ed1ee843028824cb7d7"
+    },
+    {
+      "id": "objects",
+      "url": "https://api.i3x.dev/v1/objects",
+      "method": "GET",
+      "request": null,
+      "status": 200,
+      "captured_at": "2026-11-09T18:39:19.736829+00:00",
+      "body": "{\"success\":true,\"result\":[{\"elementId\":\"pump-station\",\"displayName\":\"pump-station\",\"typeElementId\":\"work-center-type\",\"parentId\":null,\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"pump-101\",\"displayName\":\"pump-101\",\"typeElementId\":\"work-unit-type\",\"parentId\":\"pump-station\",\"isComposition\":true,\"isExtended\":false},{\"elementId\":\"pump-101-state\",\"displayName\":\"pump-101 State\",\"typeElementId\":\"state-type\",\"parentId\":\"pump-101\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"pump-101-production\",\"displayName\":\"pump-101 Production\",\"typeElementId\":\"production-type\",\"parentId\":\"pump-101\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"pump-101-production-product\",\"displayName\":\"pump-101 Product\",\"typeElementId\":\"product-type\",\"parentId\":\"pump-101-production\",\"isComposition\":false,\"isExtended\":true},{\"elementId\":\"pump-101-measurements\",\"displayName\":\"pump-101 Measurements\",\"typeElementId\":\"measurements-type\",\"parentId\":\"pump-101\",\"isComposition\":true,\"isExtended\":false},{\"elementId\":\"pump-101-bearing-temperature\",\"displayName\":\"pump-101 Bearing Temperature\",\"typeElementId\":\"measurement-type\",\"parentId\":\"pump-101-measurements\",\"isComposition\":true,\"isExtended\":false},{\"elementId\":\"pump-101-measurements-bearing-temperature-value\",\"displayName\":\"Pump 101 Bearing Temperature Value\",\"typeElementId\":\"measurement-value-type\",\"parentId\":\"pump-101-bearing-temperature\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"pump-101-measurements-bearing-temperature-health\",\"displayName\":\"Pump 101 Bearing Health\",\"typeElementId\":\"measurement-health-type\",\"parentId\":\"pump-101-bearing-temperature\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"tank-201\",\"displayName\":\"tank-201\",\"typeElementId\":\"work-unit-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"unused-tank\",\"displayName\":\"ReserveTank-Unused\",\"typeElementId\":\"work-unit-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"sensor-001\",\"displayName\":\"TempSensor-101\",\"typeElementId\":\"sensor-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"sensor-002\",\"displayName\":\"PrecisionTempSensor-301\",\"typeElementId\":\"precision-temperature-sensor-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"sensor-003\",\"displayName\":\"TempSensor-VendorX\",\"typeElementId\":\"temperature-sensor-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":true}]}",
+      "sha256": "e75e08688f83784dfeac485c06fa3a12e998a89d0678fd2ff144b1b2d2a7cb6b"
+    },
+    {
+      "id": "related",
+      "url": "https://api.i3x.dev/v1/objects/related",
+      "method": "POST",
+      "request": {
+        "elementIds": [
+          "pump-101"
+        ],
+        "includeMetadata": true
+      },
+      "status": 200,
+      "captured_at": "2026-11-09T18:39:19.876450+00:00",
+      "body": "{\"success\":true,\"results\":[{\"success\":true,\"elementId\":\"pump-101\",\"result\":[{\"sourceRelationship\":\"HasParent\",\"object\":{\"elementId\":\"pump-station\",\"displayName\":\"pump-station\",\"typeElementId\":\"work-center-type\",\"parentId\":null,\"isComposition\":false,\"isExtended\":false,\"metadata\":{\"typeNamespaceUri\":\"https://isa.org/isa95\",\"sourceTypeId\":\"WorkCenterType\",\"description\":\"West facility pump station supplying coolant to the primary production area\",\"relationships\":{\"HasChildren\":[\"pump-101\",\"tank-201\",\"unused-tank\",\"sensor-001\",\"sensor-002\",\"sensor-003\"]},\"system\":{\"operationStartDate\":\"July 1, 1980\",\"lastMaintainedDate\":\"August 1, 2001\",\"sourceRelationship\":\"HasParent\"}}}},{\"sourceRelationship\":\"HasComponent\",\"object\":{\"elementId\":\"pump-101-state\",\"displayName\":\"pump-101 State\",\"typeElementId\":\"state-type\",\"parentId\":\"pump-101\",\"isComposition\":false,\"isExtended\":false,\"metadata\":{\"typeNamespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"StateType\",\"relationships\":{\"ComponentOf\":\"pump-101\"},\"system\":{\"sourceRelationship\":\"HasComponent\"}}}},{\"sourceRelationship\":\"HasComponent\",\"object\":{\"elementId\":\"pump-101-production\",\"displayName\":\"pump-101 Production\",\"typeElementId\":\"production-type\",\"parentId\":\"pump-101\",\"isComposition\":false,\"isExtended\":false,\"metadata\":{\"typeNamespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"ProductionType\",\"relationships\":{\"ComponentOf\":\"pump-101\",\"HasChildren\":[\"pump-101-production-product\"]},\"system\":{\"sourceRelationship\":\"HasComponent\"}}}},{\"sourceRelationship\":\"HasComponent\",\"object\":{\"elementId\":\"pump-101-measurements\",\"displayName\":\"pump-101 Measurements\",\"typeElementId\":\"measurements-type\",\"parentId\":\"pump-101\",\"isComposition\":true,\"isExtended\":false,\"metadata\":{\"typeNamespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"MeasurementsType\",\"relationships\":{\"ComponentOf\":\"pump-101\",\"HasComponent\":[\"pump-101-bearing-temperature\"]},\"system\":{\"sourceRelationship\":\"HasComponent\"}}}},{\"sourceRelationship\":\"SuppliesTo\",\"object\":{\"elementId\":\"tank-201\",\"displayName\":\"tank-201\",\"typeElementId\":\"work-unit-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":false,\"metadata\":{\"typeNamespaceUri\":\"https://isa.org/isa95\",\"sourceTypeId\":\"WorkUnitType\",\"description\":\"Primary coolant storage tank on the west production line, capacity 500L\",\"relationships\":{\"HasParent\":\"pump-station\",\"SuppliedBy\":\"pump-101\",\"MonitoredBy\":\"sensor-001\"},\"system\":{\"sourceRelationship\":\"SuppliesTo\"}}}}]}]}",
+      "sha256": "23e459f3903a70e04165f1ce80a90f890349e11bf0cdd8e183a8304fef999676"
+    },
+    {
+      "id": "value",
+      "url": "https://api.i3x.dev/v1/objects/value",
+      "method": "POST",
+      "request": {
+        "elementIds": [
+          "pump-101-state",
+          "pump-101-production",
+          "pump-101-measurements-bearing-temperature-value"
+        ],
+        "maxDepth": 1
+      },
+      "status": 200,
+      "captured_at": "2026-11-09T18:39:20.036807+00:00",
+      "body": "{\"success\":true,\"results\":[{\"success\":true,\"elementId\":\"pump-101-state\",\"result\":{\"isComposition\":false,\"value\":{\"timestamp\":\"2026-11-09T18:39:19Z\",\"description\":\"Pump is in maintenance\",\"color\":\"#800080\",\"type\":{\"id\":0,\"name\":\"Maintenance\",\"description\":\"Equipment under maintenance\"},\"metadata\":{\"source\":\"plc-controller\",\"uri\":\"opc://plc1/DB1.DBW0\",\"asset\":{\"id\":0,\"name\":\"Pump-101\",\"description\":\"Centrifugal water pump for cooling system\"}}},\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:39:19Z\"}},{\"success\":true,\"elementId\":\"pump-101-production\",\"result\":{\"isComposition\":false,\"value\":null,\"quality\":\"GoodNoData\",\"timestamp\":\"2026-11-09T18:39:19.964587Z\"}},{\"success\":true,\"elementId\":\"pump-101-measurements-bearing-temperature-value\",\"result\":{\"isComposition\":false,\"value\":9.861194578590506e-114,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:39:19Z\"}}]}",
+      "sha256": "9a61f288135619b0f4f3858c9292ff0a24049839cd7d221faaae8fe3348a7e2f"
+    },
+    {
+      "id": "history",
+      "url": "https://api.i3x.dev/v1/objects/history",
+      "method": "POST",
+      "request": {
+        "elementIds": [
+          "pump-101-measurements-bearing-temperature-value"
+        ],
+        "startTime": "2026-11-09T18:37:18.391855+00:00",
+        "endTime": "2026-11-09T18:39:18.391855+00:00",
+        "maxDepth": 1
+      },
+      "status": 200,
+      "captured_at": "2026-11-09T18:39:20.316487+00:00",
+      "body": "{\"success\":true,\"results\":[{\"success\":true,\"elementId\":\"pump-101-measurements-bearing-temperature-value\",\"result\":{\"isComposition\":false,\"values\":[{\"value\":1.115919897677669e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:39:18Z\"},{\"value\":1.1773457861209782e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:39:18Z\"},{\"value\":1.0860597505472057e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:39:18Z\"},{\"value\":1.1994600197473832e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:39:18Z\"},{\"value\":1.8366166640175766e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:38:48Z\"},{\"value\":1.7383771819534753e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:38:48Z\"},{\"value\":1.8012266172299556e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:38:48Z\"},{\"value\":1.6843246694353165e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:38:48Z\"},{\"value\":2.1204072174651814e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:38:18Z\"},{\"value\":1.961282684442028e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:38:17Z\"},{\"value\":1.989498039063666e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:38:17Z\"},{\"value\":2.124348411354537e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:38:17Z\"},{\"value\":3.72036803262362e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:37:47Z\"},{\"value\":3.879265235934406e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:37:47Z\"},{\"value\":3.564126189411553e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:37:47Z\"},{\"value\":3.462583541474875e-113,\"quality\":\"Good\",\"timestamp\":\"2026-11-09T18:37:47Z\"}]}}]}",
+      "sha256": "542a78cfd704234582b5206c7735b574e541a0c51cc4608cbc08233d7350d794"
+    }
+  ]
+}

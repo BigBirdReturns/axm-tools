@@ -1,0 +1,272 @@
+{
+  "schema": "axm-i3x-test-report/1",
+  "engine": "axm-i3x-proof/0.1.0",
+  "engine_sha256": "d627248b52d8b19dd9b696b2f7f5d1b611c00600f0e8be36671008886e550509",
+  "capture_sha256": "eee7071719deb444f5ac570b9a29c197b6781abd31084d64317f4d9b28dd2585",
+  "status": "PASS",
+  "passed": 65,
+  "total": 65,
+  "checks": [
+    {
+      "name": "Team Commons: Three individual stations remain inconclusive",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Complementary evidence finds shortage",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Every contributor retains source and row",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Changed bytes rejected",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Anonymous release rejected",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Missing serviceable is unknown",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Missing allocation is unknown",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Correction changes dependent result",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Correction preserves old result and packet history",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Unresolved replacement conflict rejected",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Orphan successor rejected",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Fresh schema initially unresolved",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Reviewed lesson resolves fresh case",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Executable mapping rejected",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Different challenge version rejected",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Duplicate contribution is idempotent",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Contradictory quantities remain conflict",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Cross-seat workspace recomputes retained result",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Altered workspace rejected",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Rehashed but false saved conclusion rejected",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Changed lesson rejected",
+      "pass": true
+    },
+    {
+      "name": "Team Commons: Exported lesson replays on a recipient",
+      "pass": true
+    },
+    {
+      "name": "Eight read-only API responses retained",
+      "pass": true
+    },
+    {
+      "name": "Public demo pump context can be resolved",
+      "pass": true
+    },
+    {
+      "name": "Baseline is shortage",
+      "pass": true
+    },
+    {
+      "name": "Each team alone remains inconclusive",
+      "pass": true
+    },
+    {
+      "name": "No device or production authority",
+      "pass": true
+    },
+    {
+      "name": "Correction makes prior decision stale",
+      "pass": true
+    },
+    {
+      "name": "Correction retains original decision",
+      "pass": true
+    },
+    {
+      "name": "Corrected result has one issuable part",
+      "pass": true
+    },
+    {
+      "name": "New evaluation closes only the stale calculation",
+      "pass": true
+    },
+    {
+      "name": "Cold restore recomputes both conclusions",
+      "pass": true
+    },
+    {
+      "name": "Raw tampering rejected",
+      "pass": true
+    },
+    {
+      "name": "Rehashed false conclusion rejected",
+      "pass": true
+    },
+    {
+      "name": "Removed source cannot retain a conclusion",
+      "pass": true
+    },
+    {
+      "name": "Different engine cannot silently accept capsule",
+      "pass": true
+    },
+    {
+      "name": "Captured API byte tampering rejected",
+      "pass": true
+    },
+    {
+      "name": "Bad state produces an inconclusive context",
+      "pass": true
+    },
+    {
+      "name": "Uncertain state produces an inconclusive context",
+      "pass": true
+    },
+    {
+      "name": "GoodNoData state produces an inconclusive context",
+      "pass": true
+    },
+    {
+      "name": "Partial response is not complete evidence",
+      "pass": true
+    },
+    {
+      "name": "supplier-release: baseline fixture",
+      "pass": true
+    },
+    {
+      "name": "supplier-release: corrected fixture",
+      "pass": true
+    },
+    {
+      "name": "supplier-release: correction changes retained inputs",
+      "pass": true
+    },
+    {
+      "name": "supplier-release: missing remains unknown",
+      "pass": true
+    },
+    {
+      "name": "quality-hold: baseline fixture",
+      "pass": true
+    },
+    {
+      "name": "quality-hold: corrected fixture",
+      "pass": true
+    },
+    {
+      "name": "quality-hold: correction changes retained inputs",
+      "pass": true
+    },
+    {
+      "name": "quality-hold: missing remains unknown",
+      "pass": true
+    },
+    {
+      "name": "energy-per-good-unit: baseline fixture",
+      "pass": true
+    },
+    {
+      "name": "energy-per-good-unit: corrected fixture",
+      "pass": true
+    },
+    {
+      "name": "energy-per-good-unit: correction changes retained inputs",
+      "pass": true
+    },
+    {
+      "name": "energy-per-good-unit: missing remains unknown",
+      "pass": true
+    },
+    {
+      "name": "shift-handover: baseline fixture",
+      "pass": true
+    },
+    {
+      "name": "shift-handover: corrected fixture",
+      "pass": true
+    },
+    {
+      "name": "shift-handover: correction changes retained inputs",
+      "pass": true
+    },
+    {
+      "name": "shift-handover: missing remains unknown",
+      "pass": true
+    },
+    {
+      "name": "application-change: baseline fixture",
+      "pass": true
+    },
+    {
+      "name": "application-change: corrected fixture",
+      "pass": true
+    },
+    {
+      "name": "application-change: correction changes retained inputs",
+      "pass": true
+    },
+    {
+      "name": "application-change: missing remains unknown",
+      "pass": true
+    },
+    {
+      "name": "spares-other-asset: baseline fixture",
+      "pass": true
+    },
+    {
+      "name": "spares-other-asset: corrected fixture",
+      "pass": true
+    },
+    {
+      "name": "spares-other-asset: correction changes retained inputs",
+      "pass": true
+    },
+    {
+      "name": "spares-other-asset: missing remains unknown",
+      "pass": true
+    }
+  ],
+  "limits": "Same-author software tests on public demo captures and synthetic business records; not CESMII certification or plant qualification."
+}

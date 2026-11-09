@@ -1,0 +1,122 @@
+{
+  "schema": "axm-i3x-browser-qualification/1",
+  "observed_at": "2026-11-09T18:39:35.950Z",
+  "checks": [
+    {
+      "name": "Desktop page initializes",
+      "pass": true
+    },
+    {
+      "name": "Desktop has no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "Independent identity is visible",
+      "pass": true
+    },
+    {
+      "name": "Seven scored opportunities render",
+      "pass": true
+    },
+    {
+      "name": "Baseline button computes shortage",
+      "pass": true
+    },
+    {
+      "name": "Export is available after computation",
+      "pass": true
+    },
+    {
+      "name": "Correction marks the retained decision stale",
+      "pass": true
+    },
+    {
+      "name": "Correction requires explicit re-evaluation",
+      "pass": true
+    },
+    {
+      "name": "Old decision survives before re-evaluation",
+      "pass": true
+    },
+    {
+      "name": "Re-evaluation computes one issuable seal",
+      "pass": true
+    },
+    {
+      "name": "Both decisions are visible",
+      "pass": true
+    },
+    {
+      "name": "Actual browser download contains two decisions",
+      "pass": true
+    },
+    {
+      "name": "Cold replay verifies both decisions",
+      "pass": true
+    },
+    {
+      "name": "Fresh context has no prior state",
+      "pass": true
+    },
+    {
+      "name": "Fresh browser recomputes actual downloaded capsule",
+      "pass": true
+    },
+    {
+      "name": "Corrupted import is visibly rejected",
+      "pass": true
+    },
+    {
+      "name": "Rejected import preserves accepted workspace",
+      "pass": true
+    },
+    {
+      "name": "Browser executes complete adversarial suite",
+      "pass": true
+    },
+    {
+      "name": "Alternate recipe actually calculates corrected denominator",
+      "pass": true
+    },
+    {
+      "name": "Source archive is an actual ZIP download",
+      "pass": true
+    },
+    {
+      "name": "Downloaded standalone works with network disabled",
+      "pass": true
+    },
+    {
+      "name": "Offline fresh recipient recomputes export",
+      "pass": true
+    },
+    {
+      "name": "Mobile viewport is actually 390 pixels",
+      "pass": true
+    },
+    {
+      "name": "Mobile has no document-level horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "Mobile touch completes correction workflow",
+      "pass": true
+    },
+    {
+      "name": "No JavaScript exceptions",
+      "pass": true
+    },
+    {
+      "name": "No third-party runtime network requests",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "requests": [],
+  "source_sha256": "d627248b52d8b19dd9b696b2f7f5d1b611c00600f0e8be36671008886e550509",
+  "test_origin": "http://127.0.0.1:38793/cesmii-proof/",
+  "status": "PASS",
+  "passed": 27,
+  "total": 27,
+  "browser": "158.0.8127.18"
+}

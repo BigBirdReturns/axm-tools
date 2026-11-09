@@ -266,3 +266,8 @@ The owner requested the combined desk and runner. `compute/` is the provider-neu
 ## BOSC delivery review, November 4, 2026
 
 `bosc-delivery-lab/` is a self-contained AXM reconstruction of BOSC Tech Labs’ published receptionist and agency-delivery workflow. The official recipient branding is attributed; all measured outcomes belong to the synthetic AXM implementation. The read-only page inspects recorded outcomes from committed `evidence.json`, including the raw model’s retained M10 failure and the separately tested confirmation boundary. The downloadable Python standard-library kit contains unchanged accepted runtime sources and frozen criteria. It executes fresh local trials without a hosted API. Private continuity and machine control metadata remain outside the public projection. The existing Pages publishers, shared release gate and Cantos compatibility stage retain their ownership.
+
+
+## CESMII / i3X proof, 9 November 2026
+
+`cesmii-proof/` is an independent, self-contained application lab. Its owner README separates public demo evidence, synthetic organizational inputs and unqualified production behavior. The exact Team Commons core is copied and source-hashed at build time; there is no shared browser runtime. The bounded collector only discovers and reads the explicitly selected API. Retained source timestamps never become current observations by rebuilding. The dedicated CI preserves a one-time public capture, tests logic and actual browser transfer, and commits generated source assets before main publication. No private introductions or correspondence are public inputs.
