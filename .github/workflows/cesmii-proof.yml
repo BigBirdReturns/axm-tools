@@ -1,0 +1,59 @@
+name: CESMII independent proof
+on:
+  push:
+    branches: [main, publish/cesmii-proof-20261109]
+    paths: ['cesmii-proof/**', 'team-commons/core.js', '.github/workflows/cesmii-proof.yml']
+  pull_request:
+    paths: ['cesmii-proof/**', 'team-commons/core.js', '.github/workflows/cesmii-proof.yml']
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: cesmii-proof-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Retain a bounded public read-only capture once
+        run: |
+          if [ ! -f cesmii-proof/data/capture.json ]; then
+            python cesmii-proof/capture.py --out cesmii-proof/data/capture.json
+          fi
+      - name: Build and test exact retained source
+        run: |
+          python cesmii-proof/build.py
+          node cesmii-proof/tests/verify.cjs
+          python cesmii-proof/build.py
+          python cesmii-proof/register.py
+      - name: Install isolated browser test tooling
+        run: |
+          npm install --prefix "$RUNNER_TEMP/cesmii-test" --no-save playwright@1
+          "$RUNNER_TEMP/cesmii-test/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Exercise download, fresh-client import, offline and mobile
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/cesmii-test/node_modules/playwright
+          PROOF_TEST_OUTPUT: ${{ runner.temp }}/cesmii-browser
+        run: |
+          node cesmii-proof/tests/browser.cjs
+          cp "$PROOF_TEST_OUTPUT/report.json" cesmii-proof/data/browser-qualification.json
+          python cesmii-proof/build.py
+          git diff --check
+      - name: Retain qualified generated assets on the publication branch
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/publish/cesmii-proof-20261109'
+        run: |
+          git config user.name "axm-proof-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add cesmii-proof index.html README.md CONTINUITY.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Retain qualified i3X capture, offline proof and browser evidence"
+            git push origin HEAD:publish/cesmii-proof-20261109
+          fi
