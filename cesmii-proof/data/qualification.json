@@ -1,11 +1,11 @@
 {
   "schema": "axm-i3x-test-report/1",
   "engine": "axm-i3x-proof/0.1.0",
-  "engine_sha256": "d627248b52d8b19dd9b696b2f7f5d1b611c00600f0e8be36671008886e550509",
+  "engine_sha256": "443229c7f1beda7590252f4605724b95a725a25bd53bd84f37f3febfe40bea1d",
   "capture_sha256": "eee7071719deb444f5ac570b9a29c197b6781abd31084d64317f4d9b28dd2585",
   "status": "PASS",
-  "passed": 65,
-  "total": 65,
+  "passed": 67,
+  "total": 67,
   "checks": [
     {
       "name": "Team Commons: Three individual stations remain inconclusive",
@@ -265,6 +265,14 @@
     },
     {
       "name": "spares-other-asset: missing remains unknown",
+      "pass": true
+    },
+    {
+      "name": "Engine identity binds the copied Team Commons implementation",
+      "pass": true
+    },
+    {
+      "name": "Engine identity binds the i3X decision implementation",
       "pass": true
     }
   ],

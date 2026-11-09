@@ -1,25 +1,26 @@
 {
   "schema": "axm-i3x-file-manifest/1",
   "files": {
+    "ASSESSMENT.md": "3e86fbb2bda9ebca39e2e9dba9bb6fa18ff98c980b6309935d2ce8aaf18494d1",
     "README.md": "5dc761a482c051b6771021d526fa96669b62b7084b11984534c9d09261d7addb",
     "app.js": "5f0813a71d1ca345946b16f08a866f62d0dc8350cf36eaeea5601c0b9b3f8c43",
-    "build-meta.json": "8082209d1bdddb56c329d3065a8dde4e7f29b015be6491f4b012654e7cbaf414",
-    "build.py": "7da050adfd76936c46b38994367b3b9fb0a8526acd11bc6cbf3934b36664debc",
+    "build-meta.json": "d42b881d335a2b2946c8f83e67d1e4f0c02ba1a4674b1b92b2d7a07fef82de2b",
+    "build.py": "358cdd2ea22ecf07a9b931c1fb3e2925361f855d9f0c69dea0f30e3e74b0aa2c",
     "capture.py": "16991bf7de8eca26c3dbadf7a82c32d049a15b3d1666555f355abbaf462ec986",
     "commons-core.js": "0158ea96c0c99a4f479e37573bacf26916348318e2811b75196ce390cab36cdd",
-    "data/browser-qualification.json": "2fa28fbfa9ac99f66744b812fb300e3c1c92f279f0bc3deb379fd6c5b6c8f9ad",
+    "data/browser-qualification.json": "34684314f5d393971eeeece964cee62b8720a07de81c8355e9847c83b8a467f8",
     "data/capture.json": "05c58d87fc866f85a20c5be4679c22dab9ebca922a4c6ef96bb3ac96156b6d4c",
-    "data/qualification.json": "c98ea0fac68fbd21fb38cd5992ce04e91b6a390484fc9092a0e7faa9a9b4c12e",
-    "data.js": "ee83e659e428902ba4717e931bd4ee5665622299e5fce7b9e4485520fbff92df",
+    "data/qualification.json": "d0078b141610174e4f96aede7497bbc4f17e8343aa1f6ce5009b5fa822eaae6f",
+    "data.js": "a8a406d50a8c2b6b373bcffe311fe439d659fc56d486e2fe5cee5a1a26c19ccd",
     "engine.js": "d627248b52d8b19dd9b696b2f7f5d1b611c00600f0e8be36671008886e550509",
     "favicon.svg": "91e2133321de46f63687fca6dff89a9029a005ecc66521b78ce5f4f2ea0bd074",
     "index.html": "6761efc6a3a3c795ea95c8863a6a6058b64bfcc5618eb50d1f14f1eeb3d7e27a",
-    "offline.html": "2e8ecf894d935125858b58fa6db8bf8a198db3ab4fcd43fb0d33231d1014477e",
+    "offline.html": "2ee06e8db5c4ca948914770e328cc9ce5de2b43784588e6570a231bfb0528fdc",
     "register.py": "3b2cbe6a687a6906b015a05ecaa4ae974629ecaebcdc870f8680af407e6754b2",
     "research.json": "4f7b54c79476f21f7daa425bd08ad648beeef93ee84e8b016f3d59381c7e2ee9",
     "scenarios.json": "6e43dce411dc980c3fc0c56c43251197b7b1019361aeb2b72687a140b0f96487",
     "style.css": "0a5a976e66948cb34f2c88030c4f46e58401c5ad97cd9f8454ff53342e94739b",
     "tests/browser.cjs": "03e4654b011dd482921f452f6f975951c5e96eabb58cda210e77aec3df64423e",
-    "tests/verify.cjs": "5222a24a5f4ea6466fae7394e450a16d162a97b6d91dfbdbc3487197c20b350b"
+    "tests/verify.cjs": "f24c755b244fd7fa0d88b21bca2a59b11a944505f3ada3f7501b7988527eeacb"
   }
 }
