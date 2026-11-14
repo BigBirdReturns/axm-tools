@@ -1,0 +1,45 @@
+# Copy into your own repository after placing the kit at agent-flywheel/.
+# Work and credentials belong to that repository's configured environment.
+name: Run agent research
+on:
+  workflow_dispatch:
+    inputs:
+      request_path:
+        description: Repository path to the exported work packet
+        required: true
+        default: research/work.json
+      model:
+        description: Model identifier at the configured compatible endpoint
+        required: true
+        default: anthropic/claude-sonnet-5.5
+      preset:
+        description: Choose custom for another OpenAI-compatible provider
+        type: choice
+        options: [sonnet, flash, local, custom]
+        default: sonnet
+permissions:
+  contents: read
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute bounded research
+        env:
+          REQUEST_PATH: ${{ inputs.request_path }}
+          REQUEST_PRESET: ${{ inputs.preset }}
+          FLYWHEEL_ENDPOINT: ${{ vars.FLYWHEEL_ENDPOINT }}
+          FLYWHEEL_MODEL: ${{ inputs.model }}
+          FLYWHEEL_API_KEY: ${{ secrets.FLYWHEEL_API_KEY }}
+        run: node agent-flywheel/scripts/run.mjs --preset "$REQUEST_PRESET" --request "$REQUEST_PATH" --output "$RUNNER_TEMP/research-result.json"
+      - name: Retain the complete result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-research-result
+          path: ${{ runner.temp }}/research-result.json
+          if-no-files-found: warn

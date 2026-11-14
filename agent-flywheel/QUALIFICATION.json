@@ -1,0 +1,53 @@
+{
+  "schema": "axm.agent-flywheel.qualification.v1",
+  "version": "1.0.0",
+  "verified_on": "2026-11-14",
+  "implementation_status": "qualified for the documented public tool contract",
+  "automated_tests": {
+    "command": "node --test tests/*.test.mjs",
+    "passed": 30,
+    "failed": 0,
+    "engine": 15,
+    "provider_protocol": 13,
+    "portable_cli": 2
+  },
+  "native_browser": {
+    "command": "node tests/browser.mjs --out <directory-outside-source>",
+    "browser": "Microsoft Edge, fresh isolated profile",
+    "passed": 38,
+    "failed": 0,
+    "runtime_exceptions": 0,
+    "console_errors": 0,
+    "external_requests": 0,
+    "deliberate_loopback_provider_fixtures": 2,
+    "desktop_width": 1440,
+    "mobile_width": 390,
+    "visually_inspected": true,
+    "exercised": [
+      "visitor evidence paste and file upload",
+      "keyless handoff and manual clipboard fallback",
+      "planned-call budget and explicit demonstration provenance",
+      "candidate execution and fixed-reference comparisons",
+      "work and report downloads, report import and tamper rejection",
+      "custom endpoint and model settings",
+      "credential exclusion from exports and persistent storage",
+      "failed and cancelled provider requests with retained partial reports",
+      "desktop and mobile layouts"
+    ]
+  },
+  "demonstration": {
+    "evidence_class": "synthetic support-routing cases and deterministic adapter",
+    "model_calls": 0,
+    "adapter_calls": 31,
+    "heldout_cases": 4,
+    "baseline_passed": 2,
+    "candidate_passed": 4,
+    "regressions": 0,
+    "independent_report_verification": true
+  },
+  "provider_observations": "Public model catalogs and unauthenticated CORS preflights are dated in SOURCES.json. Protocol tests use controlled responses.",
+  "qualification_scope": "Prompt interventions evaluated against a frozen supplied workload. Integrity verification recomputes outcomes from retained evidence; it does not attest provider identity independently.",
+  "live_inference_benchmark": false,
+  "production_deployment": false,
+  "private_organizational_inputs": false
+}

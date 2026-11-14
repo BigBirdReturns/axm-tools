@@ -1,0 +1,81 @@
+{
+  "schema": "axm.agent-flywheel.sources.v1",
+  "verified_on": "2026-11-14",
+  "purpose": "Primary-source provenance for editable model presets and browser transport. Recommended application budgets are engineering choices, not provider quality guarantees.",
+  "presets": [
+    {
+      "id": "sonnet",
+      "model": "anthropic/claude-sonnet-5.5",
+      "native_model": "claude-sonnet-5-5",
+      "canonical_slug_observed": "anthropic/claude-sonnet-5.5-20260928",
+      "recommended": {"effort": "high", "max_tokens": 16384, "sampling": "provider default; omit temperature, top_p and top_k"},
+      "observed_supported_efforts": ["max", "xhigh", "high", "medium", "low"],
+      "sources": [
+        "https://openrouter.ai/anthropic/claude-sonnet-5.5",
+        "https://platform.claude.com/docs/en/models/sonnet-5-5/migration-guide",
+        "https://openrouter.ai/api/v1/models"
+      ]
+    },
+    {
+      "id": "flash",
+      "model": "google/gemini-3.8-flash",
+      "native_model": "gemini-3.8-flash",
+      "canonical_slug_observed": "google/gemini-3.8-flash-20260902",
+      "recommended": {"effort": "medium", "max_tokens": 8192, "sampling": "provider default"},
+      "observed_supported_efforts": ["high", "medium", "low"],
+      "sources": [
+        "https://openrouter.ai/google/gemini-3.8-flash",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+        "https://openrouter.ai/api/v1/models"
+      ]
+    },
+    {
+      "id": "local",
+      "model": "qwen3.8:27b",
+      "alternative_served_model": "Qwen/Qwen3.8-27B",
+      "recommended": {"effort": "medium", "max_tokens": 8192, "temperature": 1.0, "top_p": 0.95, "server_context_tokens": 32768},
+      "documented_supported_efforts": ["xhigh", "medium", "low"],
+      "notes": "The vendor also recommends top_k=20 for thinking mode. Configure server-only parameters in the chosen inference runtime. The architecture context limit does not imply that the local server has allocated that context.",
+      "sources": [
+        "https://ollama.com/library/qwen3.8",
+        "https://huggingface.co/Qwen/Qwen3.8-27B",
+        "https://docs.ollama.com/api/openai-compatibility",
+        "https://docs.ollama.com/faq"
+      ]
+    }
+  ],
+  "transport_observations": [
+    {
+      "method": "OPTIONS",
+      "url": "https://openrouter.ai/api/v1/chat/completions",
+      "origin": "https://axm.tools",
+      "status": 204,
+      "access_control_allow_origin": "*",
+      "relevant_allowed_headers": ["Authorization", "Content-Type", "HTTP-Referer", "X-Openrouter-Title"],
+      "inference_performed": false
+    },
+    {
+      "method": "OPTIONS",
+      "url": "https://openrouter.ai/api/v1/auth/keys",
+      "origin": "https://axm.tools",
+      "status": 204,
+      "access_control_allow_origin": "*",
+      "inference_performed": false
+    },
+    {
+      "method": "GET",
+      "url": "https://openrouter.ai/api/v1/models",
+      "access_control_allow_origin": "*",
+      "inference_performed": false
+    }
+  ],
+  "integration_sources": [
+    "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens",
+    "https://openrouter.ai/docs/guides/overview/auth/oauth",
+    "https://docs.ollama.com/api/openai-compatibility",
+    "https://docs.ollama.com/faq",
+    "https://developer.chrome.com/blog/local-network-access"
+  ],
+  "pricing_policy": "Read current model/provider pricing before estimating costs. Promotional website prices and the selected route can differ. Retain returned usage and cost when supplied; absent cost is unknown rather than zero.",
+  "validation_boundary": "Provider inference tests use controlled Fetch responses. Public catalog and CORS checks are live read-only observations. No live model-quality or paid-inference result is asserted."
+}

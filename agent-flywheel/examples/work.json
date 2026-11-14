@@ -1,0 +1,202 @@
+{
+  "schema": "axm.agent-flywheel.work.v1",
+  "goal": "Investigate and improve a synthetic integer-parity classifier using supplied reference labels.",
+  "taskContract": "Classify the signed base-10 integer in the input. Return exactly EVEN when it is divisible by two, otherwise ODD. Return no explanation.",
+  "baselinePrompt": "Return EVEN for every input.",
+  "evidence": {
+    "records": [
+      {
+        "expected": "EVEN",
+        "feedback": null,
+        "has_expected": true,
+        "has_input": true,
+        "has_output": true,
+        "human_score": null,
+        "id": "dev-even",
+        "input": "8",
+        "judge_score": null,
+        "output": "EVEN",
+        "raw": {
+          "expected": "EVEN",
+          "id": "dev-even",
+          "input": "8",
+          "output": "EVEN",
+          "split": "development"
+        },
+        "source": {
+          "filename": "synthetic-parity-cases.json",
+          "index": 0
+        },
+        "split": "development"
+      },
+      {
+        "expected": "ODD",
+        "feedback": null,
+        "has_expected": true,
+        "has_input": true,
+        "has_output": true,
+        "human_score": null,
+        "id": "dev-odd",
+        "input": "7",
+        "judge_score": null,
+        "output": "EVEN",
+        "raw": {
+          "expected": "ODD",
+          "id": "dev-odd",
+          "input": "7",
+          "output": "EVEN",
+          "split": "development"
+        },
+        "source": {
+          "filename": "synthetic-parity-cases.json",
+          "index": 1
+        },
+        "split": "development"
+      },
+      {
+        "expected": "EVEN",
+        "feedback": null,
+        "has_expected": true,
+        "has_input": true,
+        "has_output": false,
+        "human_score": null,
+        "id": "hold-even",
+        "input": "42",
+        "judge_score": null,
+        "output": null,
+        "raw": {
+          "expected": "EVEN",
+          "id": "hold-even",
+          "input": "42",
+          "split": "heldout"
+        },
+        "source": {
+          "filename": "synthetic-parity-cases.json",
+          "index": 2
+        },
+        "split": "heldout"
+      },
+      {
+        "expected": "ODD",
+        "feedback": null,
+        "has_expected": true,
+        "has_input": true,
+        "has_output": false,
+        "human_score": null,
+        "id": "hold-odd",
+        "input": "19",
+        "judge_score": null,
+        "output": null,
+        "raw": {
+          "expected": "ODD",
+          "id": "hold-odd",
+          "input": "19",
+          "split": "heldout"
+        },
+        "source": {
+          "filename": "synthetic-parity-cases.json",
+          "index": 3
+        },
+        "split": "heldout"
+      },
+      {
+        "expected": "EVEN",
+        "feedback": null,
+        "has_expected": true,
+        "has_input": true,
+        "has_output": false,
+        "human_score": null,
+        "id": "reg-zero",
+        "input": "0",
+        "judge_score": null,
+        "output": null,
+        "raw": {
+          "expected": "EVEN",
+          "id": "reg-zero",
+          "input": "0",
+          "split": "regression"
+        },
+        "source": {
+          "filename": "synthetic-parity-cases.json",
+          "index": 4
+        },
+        "split": "regression"
+      },
+      {
+        "expected": "EVEN",
+        "feedback": null,
+        "has_expected": true,
+        "has_input": true,
+        "has_output": false,
+        "human_score": null,
+        "id": "reg-negative",
+        "input": "-4",
+        "judge_score": null,
+        "output": null,
+        "raw": {
+          "expected": "EVEN",
+          "id": "reg-negative",
+          "input": "-4",
+          "split": "regression"
+        },
+        "source": {
+          "filename": "synthetic-parity-cases.json",
+          "index": 5
+        },
+        "split": "regression"
+      }
+    ],
+    "documents": [],
+    "warnings": []
+  },
+  "mode": "improve",
+  "metric": "exact",
+  "candidateLimit": 2,
+  "caseLimit": 6,
+  "maxCalls": 40,
+  "seed": 17,
+  "assignments": {
+    "dev-even": "development",
+    "dev-odd": "development",
+    "hold-even": "heldout",
+    "hold-odd": "heldout",
+    "reg-zero": "regression",
+    "reg-negative": "regression"
+  },
+  "splits": {
+    "development": [
+      "dev-odd",
+      "dev-even"
+    ],
+    "heldout": [
+      "hold-odd",
+      "hold-even"
+    ],
+    "regression": [
+      "reg-zero",
+      "reg-negative"
+    ]
+  },
+  "stats": {
+    "records": 6,
+    "labeled": 6,
+    "documents": 0,
+    "warnings": []
+  },
+  "plannedCalls": 15,
+  "budget": {
+    "maxCalls": 40,
+    "plannedCalls": 15,
+    "evaluationCases": 6,
+    "diagnosticCalls": 1
+  },
+  "limitations": [
+    "Supplied references define this experiment; model-proposed tests are kept separate.",
+    "Qualification concerns the frozen held-out workload, not a production deployment."
+  ],
+  "work_id": "work-ec39ee8644eddee46ef2",
+  "integrity": {
+    "algorithm": "SHA-256",
+    "sha256": "ec39ee8644eddee46ef25386c9356b8d857abc7353b900fe56291098c76aee0a"
+  }
+}

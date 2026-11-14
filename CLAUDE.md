@@ -335,3 +335,10 @@ they are kept here verbatim before the branch was deleted. Source tip
 ## BOSC recipient identity, November 4, 2026
 
 The current official header mark is `https://bosctechlabs.com/wp-content/uploads/2026/02/header_logo.svg`: white BOSC lettering with lime accents, designed for a dark surface. Current public CSS specifies lime `#A8CF45`, blue `#1C4D86`, Poppins typography and a blue-to-black hero gradient. `bosc-delivery-lab/brand-provenance.json` records source URLs and exact downloaded asset identities; fonts are self-hosted with their OFL license. The public review inspects retained runs and makes no local-service `/api/` probes. A GitHub Pages visit cannot execute the separately downloadable Python worker.
+
+
+## Agent Flywheel model transport, 14 November 2026
+
+OpenRouter's public catalog and unauthenticated browser preflights were readable; the chat-completions preflight permitted Authorization and Content-Type with a wildcard allowed origin. This was a transport observation, with no inference call. Sonnet 5.5 uses adaptive reasoning and rejects explicit temperature/top-p/top-k overrides, so its preset sends effort and an output cap while omitting sampling fields. Retain dated provider sources and editable endpoint/model fields. A custom endpoint requires the compatible preset, rather than the OpenRouter-origin restriction.
+
+The browser engine uses Web Crypto SHA-256 and therefore requires HTTPS or localhost. Its Node runner uses the same digest with the built-in crypto fallback. Native browser qualification serves a fresh loopback origin and uses an isolated test profile; its generated outputs stay outside the distributable directory.

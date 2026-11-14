@@ -1,0 +1,107 @@
+{
+  "schema": "axm.agent-flywheel.release.v1",
+  "version": "1.0.0",
+  "source_digest": "b3ec690a3c43c0081cdf2a03d9a59893a843cf804ca45cd6111492bf893e571d",
+  "files": [
+    {
+      "path": "MODEL_GUIDE.md",
+      "sha256": "66b68940e75cf3d08e61428c8137e29a0ce64ef73b7a7559a292e424397098a1",
+      "bytes": 5131
+    },
+    {
+      "path": "PROMPT.txt",
+      "sha256": "eab68f0fbf6ffa77849fea7038a438868ad83726d4fe9d36d0805721c5661e02",
+      "bytes": 1766
+    },
+    {
+      "path": "QUALIFICATION.json",
+      "sha256": "83be619994e484ef80746be17d44e50cc8afc538fef2d7e68778a99c506126ec",
+      "bytes": 2105
+    },
+    {
+      "path": "README.md",
+      "sha256": "dd27b7a9f57338f5ba1a2d0f4c4d20312d14e21ce0a2b893dde31442da436616",
+      "bytes": 10707
+    },
+    {
+      "path": "SOURCES.json",
+      "sha256": "7ee90cce5fa4ced68cf4392a78ccd4dd2c49b478af840058083fe58aa94c68b0",
+      "bytes": 3752
+    },
+    {
+      "path": "app.mjs",
+      "sha256": "ae56e8524a922c0facce91844146ca099b816f4f2e99d9a5e605d797b745e357",
+      "bytes": 51630
+    },
+    {
+      "path": "engine.mjs",
+      "sha256": "4caad594dbac837ff1395068ef8c74d4c4a3925d2e08dd23f4b5b3b186974900",
+      "bytes": 46522
+    },
+    {
+      "path": "examples/research-workflow.yml",
+      "sha256": "b2b2f8f25aec708199cc20f873e41f2f25ae30a4318d0f99cea59fc03bc60a08",
+      "bytes": 1623
+    },
+    {
+      "path": "examples/work.json",
+      "sha256": "fb45fb7ecc7a1754ff1be5123b12f9468b49ea21b33041549e09b3320e17544d",
+      "bytes": 5020
+    },
+    {
+      "path": "index.html",
+      "sha256": "da59581b7c96e9912dad9ef1569e115ce1c50935e9ab5cfd9c9921f87ddacf0e",
+      "bytes": 3885
+    },
+    {
+      "path": "providers.mjs",
+      "sha256": "6b7a86710dfabb7c10d147a212a673d0e76e5c1b62eee0ec56255ea054363652",
+      "bytes": 18590
+    },
+    {
+      "path": "sample.mjs",
+      "sha256": "d8635d565c492ae0520b22b235efa21f270bbc9d6cc2c44c31a1c4af7157e331",
+      "bytes": 6805
+    },
+    {
+      "path": "scripts/build_release.py",
+      "sha256": "acf88c56de39c3d1cc27b59be544009f4ad73e836413d47073144b5b0ea2ae27",
+      "bytes": 3161
+    },
+    {
+      "path": "scripts/run.mjs",
+      "sha256": "489aac6b0ffa98fb0ee18d6a10ac4061f9206545450a2bd8c992e22005d7d502",
+      "bytes": 5497
+    },
+    {
+      "path": "styles.css",
+      "sha256": "f9362effba7c27095d9e02267865d79a65edd9901e03c6ecc1466caef1e9671a",
+      "bytes": 30395
+    },
+    {
+      "path": "tests/browser.mjs",
+      "sha256": "4f26c6df3167b9aa75520679773b4842d2c27aa205d4f533b969e79623b417a2",
+      "bytes": 20106
+    },
+    {
+      "path": "tests/cli.test.mjs",
+      "sha256": "706444dea2aa65d29bffebd37ff0ca831ec3eaa21611a1d1ba785165dee5e36f",
+      "bytes": 1944
+    },
+    {
+      "path": "tests/engine.test.mjs",
+      "sha256": "bbaba71df8e326bdf16f2ea58a491363b5e39aa1ea0427fab73d6227f54d3e38",
+      "bytes": 14225
+    },
+    {
+      "path": "tests/providers.test.mjs",
+      "sha256": "ba99eeac3d0b4d0b4df178b0831bb6da4b04bbba33ca88a521661b84ff7f94c7",
+      "bytes": 10847
+    }
+  ],
+  "excludes": [
+    "manifest.json",
+    "agent-flywheel-kit.zip",
+    "visitor work and credentials"
+  ]
+}
