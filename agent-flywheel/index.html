@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#19252e">
+  <meta name="description" content="Bring an agent task, traces and evaluation cases. Choose your research model, run a controlled experiment, or hand the work to your existing agent.">
+  <title>Agent Flywheel · AXM Tools</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to work</a>
+  <div class="mobile-backdrop" id="nav-backdrop"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+    <a class="brand" href="../" aria-label="AXM Tools home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3 29 10 16 17 3 10Z M3 16 16 23 29 16 M3 22 16 29 29 22"/></svg></span><span>AXM<span class="brand-tools">TOOLS</span></span></a>
+    <div class="product-lockup"><span class="product-icon" aria-hidden="true">F</span><div><strong>Agent Flywheel</strong><small>Research, on demand</small></div></div>
+    <div class="nav-label">YOUR WORKSPACE</div>
+    <nav class="nav-items" id="navigation">
+      <a class="nav-item active" href="#work" data-view="work"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Work</span></a>
+      <a class="nav-item" href="#results" data-view="results"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V4m0 16h16M9 16v-5m5 5V7m5 9v-8"/></svg><span>Results</span><span class="nav-dot" id="result-dot" hidden></span></a>
+      <a class="nav-item" href="#workflow" data-view="workflow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 22"/></svg><span>Use in your workflow</span></a>
+    </nav>
+    <div class="sidebar-note"><span class="nav-label">YOUR EVIDENCE. YOUR MODEL.</span><p>Run here, hand work to your agent, or use the same engine locally.</p><a href="https://github.com/BigBirdReturns/axm-tools/tree/main/agent-flywheel" target="_blank" rel="noopener noreferrer">Inspect the source <span aria-hidden="true">↗</span></a></div>
+    <div class="sidebar-bottom"><span class="local-dot"></span><span>No account required</span><small>Independent AXM Tools project</small></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><div class="breadcrumb"><button class="icon-button mobile-menu" id="menu-button" aria-label="Open navigation" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><span class="breadcrumb-root">AXM Tools</span><span class="breadcrumb-slash">/</span><strong>Agent Flywheel</strong></div><div class="topbar-meta"><span class="browser-symbol" aria-hidden="true"></span>Runs in your browser<a href="README.md" target="_blank" rel="noopener">Guide <span aria-hidden="true">↗</span></a></div></header>
+    <main id="main" tabindex="-1"><noscript><section class="card empty-state"><h1>Agent Flywheel</h1><p>Enable JavaScript to prepare work and run research in your browser. The <a href="README.md">local runner guide</a> describes the same engine for use from a terminal.</p></section></noscript><div class="initial-loader"><span class="spinner"></span>Opening your workspace…</div></main>
+    <footer class="page-footer"><span>AXM Tools <span class="dot-separator">·</span> Agent Flywheel</span><span>Traceable inputs. Explicit acceptance.</span></footer>
+  </div>
+  <input id="report-file" type="file" accept=".json,application/json" hidden>
+  <div id="dialog-root"></div><div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="app.mjs"></script>
+</body>
+</html>

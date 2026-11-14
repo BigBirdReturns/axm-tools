@@ -14,6 +14,7 @@ Old HTML addresses under the seven migrated directories redirect to the matching
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
+| [`agent-flywheel/`](agent-flywheel/) | On-demand agent research using visitor evidence and a chosen model: diagnosis, prompt experiments, held-out evaluation, verifiable receipts and a portable local/CI runner | [Run Agent Flywheel](https://bigbirdreturns.github.io/axm-tools/agent-flywheel/) |
 | [`cesmii-proof/`](cesmii-proof/) | Independent i3X application proof: public demo capture, source-bound three-team calculation, correction and fresh-client replay; sourced opportunity map and reusable synthetic recipes | [Run the proof](https://bigbirdreturns.github.io/axm-tools/cesmii-proof/) |
 | [`bosc-delivery-lab/`](bosc-delivery-lab/) | BOSC-branded independent AXM receptionist reconstruction: recorded transaction acceptance, retained model failure, explicit confirmation, restoration and configuration reuse, with a runnable source kit | [Open the delivery review](https://bigbirdreturns.github.io/axm-tools/bosc-delivery-lab/) |
 | [`team-commons/`](team-commons/) | Runnable collective-intelligence lab: complementary team evidence, linked corrections, reviewed method transfer, verified workspace recovery and offline browser kits | [MARY Team Commons](https://bigbirdreturns.github.io/axm-tools/team-commons/) |

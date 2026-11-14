@@ -1,0 +1,11 @@
+Use Agent Flywheel on the work I provide.
+
+Public tool: https://bigbirdreturns.github.io/axm-tools/agent-flywheel/
+Source: https://github.com/BigBirdReturns/axm-tools/tree/main/agent-flywheel
+Portable runner: https://bigbirdreturns.github.io/axm-tools/agent-flywheel/agent-flywheel-kit.zip
+
+Read the tool README and MODEL_GUIDE, then use my supplied work packet or construct one from my task, traces, current agent prompt and evaluation cases. Keep original evidence and expected answers. The default research-model recommendation is Claude Sonnet 5.5 with high reasoning effort, maximum output 16384 and provider-default sampling; use my selected model or existing compatible endpoint when I specify one. Keep credentials in my environment.
+
+Run the included Node standard-library engine with scripts/run.mjs. Analyze development evidence, identify failure mechanisms with source record IDs, propose measurable hypotheses and candidate prompt changes, and test them within my declared budget. Freeze the candidate before held-out evaluation. Keep generated test ideas separate from supplied reference answers. For tools or environments beyond the included prompt evaluator, implement and qualify the required adapter in my workspace, retaining the original task contract; report its executed scope.
+
+If I supply unlabeled prose or traces, complete the research analysis and an actionable evaluation plan. If I supply labeled cases, return the actual baseline/candidate measurements, regressions and terminal decision. Preserve incomplete and failed attempts. Export the full result and run the included independent report verifier. Present the findings, candidate changes and next executable experiment, with observed measurements distinguished from proposed work.

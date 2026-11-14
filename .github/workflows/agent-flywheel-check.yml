@@ -1,0 +1,41 @@
+name: Agent Flywheel public tool
+on:
+  push:
+    paths: ['agent-flywheel/**', '.github/workflows/agent-flywheel-check.yml']
+  pull_request:
+    paths: ['agent-flywheel/**', '.github/workflows/agent-flywheel-check.yml']
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify the published source package
+        run: python agent-flywheel/scripts/build_release.py --check
+      - name: Exercise research, provider and portable-runner boundaries
+        run: node --test agent-flywheel/tests/*.test.mjs
+      - name: Execute and independently verify the synthetic example
+        run: |
+          node agent-flywheel/scripts/run.mjs --demo --output "$RUNNER_TEMP/agent-flywheel-result.json"
+          node agent-flywheel/scripts/run.mjs --verify "$RUNNER_TEMP/agent-flywheel-result.json"
+      - name: Exercise the public browser workflow
+        run: node agent-flywheel/tests/browser.mjs --out "$RUNNER_TEMP/agent-flywheel-browser"
+      - name: Retain the qualification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-flywheel-qualification
+          path: |
+            ${{ runner.temp }}/agent-flywheel-result.json
+            ${{ runner.temp }}/agent-flywheel-browser/public-browser-results.json
+            ${{ runner.temp }}/agent-flywheel-browser/*.png
+          if-no-files-found: warn
