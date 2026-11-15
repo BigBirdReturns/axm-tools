@@ -1,15 +1,22 @@
 {
-  "version": "0.3.0",
+  "version": "0.4.0",
   "profile": "axm-pack-preview/0.1",
+  "collection_profile": "axm-vault-collection-archive/1",
   "source_repository": "BigBirdReturns/axm-core",
-  "source_commit": "90cd1a4d37e1914e0bdadd4955da9d8b2efbe7be",
-  "workflow_run": "43689020227",
+  "source_commit": "298aaf386cd86f45d04c740be2715bb61e6f8fbf",
+  "workflow_run": "43697595115",
   "native_conformance_cases": 26,
   "wasm_conformance_cases": 26,
   "browser_checks": 16,
+  "workbench_browser_checks": 20,
   "offline_verification_exercised": true,
-  "source_archive": "34c715baf9b8c6f8d8578b72f9d28ab638da3825e98e67db592ba91e5cca39a9",
-  "source_archive_path": "downloads/axm-knowledge-pack-source-0.3.0.zip",
-  "runtime": "Static browser files; all package verification runs locally in a WebAssembly worker. No file-upload endpoint. The source kit also contains the local reviewed Obsidian vault round-trip CLI.",
-  "trust": "Demo public key is distributed with the example. Independent publisher authentication is not claimed."
+  "extracted_source_kit_qualified": true,
+  "packaged_owner_files_checked": 16,
+  "source_archive": "8da89cb1927e523dc2854059a593ab93b0dc537f32ac0366dc8a75dfa4c14d89",
+  "source_archive_path": "downloads/axm-knowledge-pack-source-0.4.0.zip",
+  "retained_source_archives": {
+    "downloads/axm-knowledge-pack-source-0.3.0.zip": "34c715baf9b8c6f8d8578b72f9d28ab638da3825e98e67db592ba91e5cca39a9"
+  },
+  "runtime": "Static browser verifier and downloadable local multi-vault workbench. The workbench runs on loopback on the vault host; this public website receives no source notes.",
+  "trust": "Demo keys authenticate test data only. Real collections require independently supplied publisher anchors. Semantic correctness is not established by signatures."
 }
