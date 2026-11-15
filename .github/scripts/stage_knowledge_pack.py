@@ -1,6 +1,6 @@
 """Publish one qualified, pinned public reference without changing other tool owners."""
 from __future__ import annotations
-import argparse,hashlib,json,os,shutil,subprocess
+import argparse,hashlib,json,os,re,shutil,subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -11,6 +11,11 @@ def main():
     source=a.source.resolve();actual=subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip()
     if actual!=a.source_commit:raise SystemExit('Source commit mismatch')
     ref=source/'examples/knowledge-pack';web=ref/'web';release=json.loads((web/'release.json').read_text())
+    config=json.loads((ROOT/'.github/knowledge-pack-release.json').read_text())
+    version=release.get('version','')
+    if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+',version) or version!=config['version'] or actual!=config['source_commit']:raise SystemExit('Pinned source/version differs from the built release')
+    source_archive='downloads/axm-knowledge-pack-source-'+version+'.zip'
+    if source_archive not in release['artifacts']:raise SystemExit('Versioned source archive is absent')
     native=json.loads((ref/'build/native-conformance.json').read_text());browser=json.loads((ref/'build/browser/browser-acceptance.json').read_text());wasm=json.loads((ref/'build/browser/wasm-conformance.json').read_text())
     if native.get('status')!='PASS' or native.get('cases')!=26:raise SystemExit('Native conformance not accepted')
     if wasm.get('status')!='PASS' or len(wasm.get('results',[]))!=26 or not all(x.get('pass') for x in wasm['results']):raise SystemExit('WebAssembly conformance not accepted')
@@ -26,15 +31,15 @@ def main():
         if not marker.is_file():raise SystemExit('An existing tool owns the destination; refusing replacement')
         shutil.rmtree(dest)
     shutil.copytree(web,dest)
-    receipt={'version':'0.2.0','profile':'axm-pack-preview/0.1','source_repository':'BigBirdReturns/axm-core','source_commit':actual,'workflow_run':os.environ.get('GITHUB_RUN_ID'),'native_conformance_cases':26,'wasm_conformance_cases':26,'browser_checks':len(browser['results']),'offline_verification_exercised':any('network offline' in x['name'] for x in browser['results']),'source_archive':release['artifacts']['downloads/axm-knowledge-pack-source-0.2.0.zip'],'runtime':'Static browser files; all package verification runs locally in a WebAssembly worker. No file-upload endpoint.','trust':'Demo public key is distributed with the example. Independent publisher authentication is not claimed.'}
+    receipt={'version':version,'profile':'axm-pack-preview/0.1','source_repository':'BigBirdReturns/axm-core','source_commit':actual,'workflow_run':os.environ.get('GITHUB_RUN_ID'),'native_conformance_cases':26,'wasm_conformance_cases':26,'browser_checks':len(browser['results']),'offline_verification_exercised':any('network offline' in x['name'] for x in browser['results']),'source_archive':release['artifacts'][source_archive],'source_archive_path':source_archive,'runtime':'Static browser files; all package verification runs locally in a WebAssembly worker. No file-upload endpoint. The source kit also contains the local reviewed Obsidian vault round-trip CLI.','trust':'Demo public key is distributed with the example. Independent publisher authentication is not claimed.'}
     if not receipt['offline_verification_exercised']:raise SystemExit('Offline browser control absent')
     (dest/'PUBLICATION.json').write_text(json.dumps(receipt,indent=2)+'\n')
-    (dest/'README.md').write_text('# AXM Knowledge Pack\n\nPublic, local-browser reference for opening and verifying portable Genesis knowledge packages. Read exact evidence, inspect signed predecessor history, run actual tamper checks, and obtain the package, source kit, native readers, transport profile, and conformance cases.\n\nSource owner: https://github.com/BigBirdReturns/axm-core/tree/'+actual+'/examples/knowledge-pack\n\nPublication receipt: PUBLICATION.json. Build instructions: REPRODUCE.md. This directory contains generated static public artifacts only. No account, live backend, private signing key, or recurring data fetch belongs here.\n')
+    (dest/'README.md').write_text('# AXM Knowledge Pack\n\nPublic, local-browser reference for opening and verifying portable Genesis knowledge packages. Read exact evidence, inspect signed predecessor history, run actual tamper checks, and obtain the package, source kit, native readers, transport profile, and conformance cases. For existing Obsidian vaults, see VAULT.md for reviewed snapshots, signed successors, and edit-preserving native views.\n\nSource owner: https://github.com/BigBirdReturns/axm-core/tree/'+actual+'/examples/knowledge-pack\n\nPublication receipt: PUBLICATION.json. Build instructions: REPRODUCE.md. This directory contains generated static public artifacts only. No account, live backend, private signing key, or recurring data fetch belongs here.\n')
     index=ROOT/'index.html';text=index.read_text();marker='<!-- knowledge-pack-card:start -->'
     card='''<!-- knowledge-pack-card:start -->
 <div class="tool">
   <div class="title"><a href="knowledge-pack/">AXM Knowledge Pack · Keep what you learned</a></div>
-  <div class="desc">Open a real portable knowledge package, follow its evidence, inspect signed history and run actual tamper checks entirely in your browser. Public source, native readers, format description and reproducible conformance tests. No account, installation or file upload.</div>
+  <div class="desc">Open a real portable knowledge package, follow its evidence, inspect signed history and run actual tamper checks entirely in your browser. Public source, native readers, and reviewed Obsidian vault snapshots with edit-preserving successor views. No account or file upload.</div>
   <a class="open" href="knowledge-pack/">Open the pack and build on the reference →</a>
 </div>
 <!-- knowledge-pack-card:end -->'''
