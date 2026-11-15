@@ -50,16 +50,18 @@ jobs:
           with open(os.environ['GITHUB_ENV'],'a') as f:
               f.write('KP_SOURCE='+str(dest)+'\nKP_COMMIT='+actual+'\n')
           PY
-      - name: Reproduce native, vault round-trip, and browser qualification
+      - name: Reproduce native, workbench, extracted-kit and browser qualification
         run: |
           cd "$KP_SOURCE/examples/knowledge-pack"
           python scripts/build.py --test --web --native
-          python -m pip install -r requirements-test.txt
+          python -m pip install -r requirements-test.txt -r requirements-workbench.txt
           python -m pip install --no-deps ./vendor/axm-genesis
           python -m pip install --require-hashes --only-binary=:all: -r requirements-obsidian.txt
-          PYTHONPATH=. python -m pytest -q tests/test_obsidian_export.py tests/test_obsidian_bridge.py tests/test_obsidian_vault.py
+          PYTHONPATH=. python -m pytest -q tests/test_obsidian_export.py tests/test_obsidian_bridge.py tests/test_obsidian_vault.py tests/test_workbench.py
           python scripts/test_creator.py
           python scripts/browser_test.py
+          python scripts/workbench_browser_test.py
+          python scripts/workbench_package_test.py
       - name: Stage only the qualified public tool and directory links
         run: python .github/scripts/stage_knowledge_pack.py --source "$KP_SOURCE" --source-commit "$KP_COMMIT"
       - name: Commit scoped output without replacing concurrent work
@@ -71,7 +73,7 @@ jobs:
             echo 'Unexpected staged path'; exit 1
           fi
           if ! git diff --cached --quiet; then
-            git commit -m 'Publish Knowledge Pack browser verifier, reproducible source and public fixtures'
+            git commit -m 'Publish qualified Knowledge Pack and local multi-vault workbench source'
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main
