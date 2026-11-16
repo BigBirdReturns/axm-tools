@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-16T00:28:02.963142Z",
+  "generated": "2026-11-16T22:24:10.345756Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -10,8 +10,8 @@
     {
       "source": "Google News",
       "scope": "district",
-      "ok": true,
-      "kept": 0
+      "ok": false,
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "source": "Holly Avenue News",
@@ -34,8 +34,8 @@
     {
       "source": "Google News",
       "scope": "state",
-      "ok": true,
-      "kept": 3
+      "ok": false,
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "source": "AUSD board schedule",
