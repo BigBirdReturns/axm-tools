@@ -1,0 +1,44 @@
+{
+  "schema": "axm/sovereign-gpu-hubs@1",
+  "artifact_root": "/srv/sovereign/artifacts",
+  "pools": {
+    "us-west": {
+      "admin_url": "http://127.0.0.1:18406",
+      "base_model": "Qwen/Qwen3-0.6B",
+      "base_revision": "REPLACE_WITH_IMMUTABLE_UPSTREAM_COMMIT",
+      "served_model": "demo-base",
+      "base_path": "/srv/sovereign/artifacts/base",
+      "base_files": {
+        "model.safetensors": "REPLACE_WITH_64_HEX_SHA256"
+      },
+      "tokenizer_path": "/srv/sovereign/artifacts/tokenizer",
+      "tokenizer_files": {
+        "tokenizer.json": "REPLACE_WITH_64_HEX_SHA256"
+      },
+      "tokenizer_primary": "tokenizer.json",
+      "tokenizer_sha256": "REPLACE_WITH_SAME_TOKENIZER_SHA256",
+      "max_lora_rank": 64
+    }
+  },
+  "tenants": {
+    "plant-a": {
+      "regions": ["us-west"],
+      "adapters": ["quality"],
+      "max_active": 16
+    }
+  },
+  "adapters": {
+    "quality": {
+      "path": "/srv/sovereign/artifacts/adapters/quality",
+      "base_model": "Qwen/Qwen3-0.6B",
+      "base_revision": "REPLACE_WITH_SAME_UPSTREAM_COMMIT",
+      "tokenizer_sha256": "REPLACE_WITH_SAME_TOKENIZER_SHA256",
+      "rank": 8,
+      "files": {
+        "adapter_config.json": "REPLACE_WITH_64_HEX_SHA256",
+        "adapter_model.safetensors": "REPLACE_WITH_64_HEX_SHA256"
+      },
+      "genesis_shard": "/srv/sovereign/artifacts/sealed/quality-v1"
+    }
+  }
+}

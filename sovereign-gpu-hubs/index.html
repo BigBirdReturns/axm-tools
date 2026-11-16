@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b101a">
+<title>Sovereign GPU Hubs | Open Enterprise Inference</title>
+<meta name="description" content="Free, self-hosted regional GPU hubs and multi-adapter inference with independent provenance, pinned model artifacts, admission controls and verifiable outcomes.">
+<style>
+:root{color-scheme:dark;--ink:#f0f5fa;--muted:#a6b4c5;--blue:#77c4ff;--line:#34485d;--bg:#0b101a;--panel:#141e2d;--green:#89d0ae}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 75% -20%,#193f5c 0,transparent 45%),var(--bg);color:var(--ink);font:16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--blue)}a:hover{color:#bce7ff}header,main,footer{max-width:1100px;margin:auto;padding:0 26px}
+header{padding-top:20px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:13px}.brand span{color:var(--blue)}nav{display:flex;gap:22px;flex-wrap:wrap}nav a{text-decoration:none;color:var(--muted);font-size:13px}nav a:hover{color:white}
+.hero{padding:94px 0 64px;max-width:890px}.eyebrow{color:var(--green);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.2em}
+h1{font-size:clamp(44px,7vw,88px);line-height:1.02;letter-spacing:-.058em;margin:16px 0 22px}
+h1 em{font-style:normal;color:var(--blue)}.lead{font-size:clamp(19px,2.2vw,26px);line-height:1.45;max-width:770px;color:#d5e0ed}
+p{color:var(--muted)}.cta{display:flex;gap:14px;flex-wrap:wrap;margin:28px 0}.cta a{padding:12px 18px;border:1px solid #52708d;border-radius:9px;text-decoration:none;font-weight:700;color:#e8f4ff}.cta a:first-child{background:#dceeff;color:#0b101a;border-color:#dceeff}.small{font-size:13px;color:var(--muted)}
+section{padding:34px 0 42px;border-top:1px solid var(--line)}h2{font-size:clamp(26px,4vw,39px);letter-spacing:-.035em;line-height:1.2;margin:0 0 15px}h3{margin:0 0 9px;font-size:17px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:20px}.panel strong{color:var(--ink)}.panel p{margin:0}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:24px 0}.step{border:1px solid var(--line);border-radius:9px;padding:15px 13px;background:#111a27;font-size:13px;line-height:1.45}.step .num{color:var(--blue);font-weight:800;font-size:11px;display:block;margin-bottom:7px}
+.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}.table th{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}.table td{font-size:14px}.table td:first-child{font-weight:700}
+pre{overflow:auto;background:#070c14;border:1px solid var(--line);border-radius:12px;padding:20px;font-size:13px;line-height:1.6;color:#d8edff}
+.notice{border-left:3px solid var(--blue);padding:11px 19px;background:#132338;border-radius:0 8px 8px 0}
+footer{padding-top:38px;padding-bottom:40px;color:var(--muted);font-size:13px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.hero{padding:60px 0 45px}header{align-items:flex-start;flex-direction:column}nav{gap:12px}}
+@media(max-width:440px){.flow{grid-template-columns:1fr}.table th,.table td{font-size:12px;padding:8px 5px}}
+</style>
+</head>
+<body>
+<header><div class="brand">AXM <span>/</span> Free Enterprise</div><nav aria-label="Sections"><a href="#stack">Stack</a><a href="#parity">Feature parity</a><a href="#run">Deploy</a><a href="#evidence">Evidence</a><a href="README.md">Source README</a></nav></header>
+<main>
+<div class="hero">
+<div class="eyebrow">Sovereign GPU Hubs · Open source · Apache 2.0</div>
+<h1>One warm model.<br><em>Everyone owns the rails.</em></h1>
+<div class="lead">Regional GPU pools, pinned LoRA adapters, independent cryptographic provenance, durable admission, and audited execution. Your organization keeps the hardware, source, keys, policy and upgrade path. No proprietary control-plane fee.</div>
+<div class="cta"><a href="README.md">Get the free deployment kit</a><a href="docs/DEPLOY.md">Read the operator contract</a><a href="docs/FEATURE_PARITY.md">Compare capabilities</a></div>
+<div class="small">This integrates existing AXM and vLLM components. Tests are evidence of what was exercised, never a substitute for production qualification.</div>
+</div>
+<section id="stack">
+<h2>The stack already exists</h2>
+<p>A sovereign enterprise system needs hardware admission, a model runtime, verifiable knowledge artifacts, organizational authority and meaningful acceptance evidence. These are distinct interfaces, with existing open implementations.</p>
+<div class="grid">
+<div class="panel"><h3>01 · Cryptographic truth</h3><p><a href="https://github.com/BigBirdReturns/axm-genesis">AXM Genesis</a>, Forge, Spectra and Clarion preserve source identity, verified records, queryability and transport. Every accepted release has an independently verifiable origin.</p></div>
+<div class="panel"><h3>02 · Placement and workload</h3><p><a href="https://github.com/BigBirdReturns/axm-zombie-adapter">AXM Zombie Adapter</a> plans physical GPU placement; existing Estate/TierDesk semantics maintain bounded work and recovery. GPUs are individually accountable, never magically pooled.</p></div>
+<div class="panel"><h3>03 · Shared inference</h3><p><a href="https://docs.vllm.ai/en/v0.33.0/features/lora/">vLLM</a> keeps the base resident and supports many pinned LoRA adapters. The host-local controller admits only authorized exact files and measures real activation.</p></div>
+<div class="panel"><h3>04 · Residency and authority</h3><p>Every region runs under the enterprise's own physical, storage and network jurisdiction. CAIRN/APERTURE policy concepts guide the admission model; IAM and egress control must be real.</p></div>
+<div class="panel"><h3>05 · Evidence and measurement</h3><p><a href="https://github.com/BigBirdReturns/cantos">Cantos</a> records cost, workload qualification and observed outcomes. Signed source evidence is kept distinct from projections or benchmark advertising.</p></div>
+<div class="panel"><h3>06 · Durable evolution</h3><p>Every release has a pinned identity, an acceptance gate and a revocation path. The enterprise keeps its artifacts and may replace the execution engine without surrendering records.</p></div>
+</div>
+<div class="flow" role="list" aria-label="Adapter promotion and serving stages">
+<div class="step" role="listitem"><span class="num">1 · SOURCE</span>Train or import an adapter under authorization</div>
+<div class="step" role="listitem"><span class="num">2 · PROVE</span>Pin bytes and independently seal exact release binding</div>
+<div class="step" role="listitem"><span class="num">3 · ADMIT</span>Enforce tenant, region, capacity, version and authority</div>
+<div class="step" role="listitem"><span class="num">4 · SERVE</span>Load onto warm private vLLM base, then verify visibility</div>
+<div class="step" role="listitem"><span class="num">5 · ACCOUNT</span>Measure activation, outcomes, revoke or recover explicitly</div>
+</div>
+</section>
+<section id="parity">
+<h2>Feature parity, without mythology</h2>
+<table class="table"><thead><tr><th>Enterprise requirement</th><th>Free implementation</th><th>What still requires proof</th></tr></thead><tbody>
+<tr><td>Sovereign regions</td><td>Separate pools; customer-owned keys and routing</td><td>Network egress and physical jurisdiction</td></tr>
+<tr><td>One warm base, many adapters</td><td>vLLM dynamic LoRA with local controller</td><td>Measured GPU concurrency and cache limits</td></tr>
+<tr><td>Verified dependencies</td><td>Exact model/tokenizer/adapter hashes, Genesis binding</td><td>Correct runtime launch and trusted key ceremony</td></tr>
+<tr><td>Fast activation</td><td>Measured milliseconds, engine model-list confirmation</td><td>30–45s only if measured on target hardware</td></tr>
+<tr><td>Operational continuity</td><td>Explicit revocation, rollback eligibility, hash-chained results</td><td>Cold recovery and long-running SLO drills</td></tr>
+<tr><td>Enterprise economics</td><td>Zero control-plane license fee, inspectable source</td><td>Actual total cost per accepted task</td></tr>
+</tbody></table>
+</section>
+<section id="run">
+<h2>Use the real software</h2>
+<p>Run the installed independent Genesis verifier, launch a private vLLM base, stage a sealed adapter and activate it with explicit authority. The example registry is a template requiring actual hashes and files.</p>
+<pre><code># 1. Private node-local base, version-pinned
+export VLLM_ALLOW_RUNTIME_LORA_UPDATING=True
+vllm serve /srv/models/pinned-base --served-model-name demo-base \
+  --host 127.0.0.1 --port 18406 --enable-lora --max-loras 8
+
+# 2. Exact, signature-backed admission
+python3 sovereign.py --registry /etc/sovereign/registry.json \
+  --ledger /var/lib/sovereign/admissions.jsonl \
+  --trusted-key /etc/sovereign/genesis-public.key \
+  activate --tenant plant-a --adapter quality --region us-west
+
+# 3. Verify the independent outcome log
+python3 sovereign.py --ledger /var/lib/sovereign/admissions.jsonl verify-ledger
+</code></pre>
+<div class="notice"><strong>Security boundary:</strong> The administrator endpoint remains loopback-only. A customer-controlled IAM gateway owns public inference requests; this controller never exposes dynamic LoRA loading to untrusted callers.</div>
+</section>
+<section id="evidence">
+<h2>What is proved, and what is not</h2><div class="grid" aria-label="Actual independent acceptance results"><div class="panel"><h3>10/10 tests</h3><p>Deterministic admission, denial and tamper checks.</p></div><div class="panel"><h3>23.98 ms mean</h3><p>Three real warm-base adapter loads on RTX 8000. Not an end-to-end studio comparison.</p></div><div class="panel"><h3>Genesis PASS</h3><p>Independently verified hybrid signature with a throwaway test key.</p></div></div>
+<p>Offline conformance tests establish rejection of mismatched files, tenants, regions, quotas, bad endpoints, model failures and ledger tampering. Production readiness requires real hardware, signed artifacts and enterprise authentication. A 30–45 second claim is a benchmark target, not a fact inherited from Palantir's presentation.</p>
+<div class="cta"><a href="evidence/ACCEPTANCE.json">Acceptance evidence</a><a href="tests/test_sovereign.py">Inspect the conformance tests</a><a href="docs/DEPLOY.md">Read the full acceptance contract</a><a href="LICENSE">Apache-2.0 license</a></div>
+</section>
+</main>
+<footer>Open enterprise deployment kit. AXM and the linked independent projects retain their own licenses. No weights, private estate credentials or user data are included.</footer>
+</body></html>
