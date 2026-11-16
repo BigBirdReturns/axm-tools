@@ -1,0 +1,20 @@
+{
+  "schema": "axm-proof-publication/1",
+  "version": "0.1.0",
+  "state": "published_verified",
+  "source_commit": "75ec3f92a0c1032ec9e319bf788f43f5aa440dad",
+  "source_tree": "cad14d70d7b1da450ec648be23e98b24ce92cba7",
+  "url": "https://bigbirdreturns.github.io/axm-tools/proof-workbench/",
+  "download": "https://bigbirdreturns.github.io/axm-tools/proof-workbench/downloads/axm-proof-workbench-0.1.0.zip",
+  "observed_at": "2026-11-16T00:29:34Z",
+  "archive_bytes": 320300,
+  "archive_sha256": "3a5c7eb46d5a375126f9a0933e71c84ff2fe8d96a03f3237d671fc27edca2a4f",
+  "manifest_sha256": "321c078814275dd85ee3e4055dc08e28febb69062a49a00edebff5698a194c65",
+  "live_files": {"passed": 23, "total": 23, "http_status": 200, "exact_bytes": true},
+  "live_browser": {"passed": 24, "total": 24, "observed_at": "2026-11-16T00:29:35.135Z", "actual_download_hash_matched": true, "actual_engagement_download_accepted_by_native_planner": true, "desktop_mobile_offline": "PASS", "javascript_errors": 0, "third_party_requests": 0},
+  "qualification_ci": {"run_id": 43780461696, "job_id": 133016234439, "status": "completed", "conclusion": "success"},
+  "pages_deployment": {"run_id": 43780461774, "job_id": 133016341456, "status": "completed", "conclusion": "success"},
+  "prior_acceptance": ".github/receipts/proof-workbench-20261115.json",
+  "provenance": "This is a later publication observation. The earlier source acceptance receipt retains its historical prepublication state unchanged.",
+  "boundaries": ["Same-owner source and execution qualification, not independent customer acceptance.", "Three preserved reference/synthetic workflows; customer mappings and production authority remain separate.", "Private correspondence, customer data and raw host-path reports were excluded.", "No outreach messages or recurring schedules were created."]
+}
