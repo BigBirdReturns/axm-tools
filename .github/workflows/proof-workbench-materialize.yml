@@ -1,0 +1,25 @@
+name: Materialize exact qualified Proof Workbench
+on:
+  push:
+    branches: [materialize/proof-workbench-20261115]
+    paths: ['.github/proof-workbench-materialize/**', '.github/workflows/proof-workbench-materialize.yml']
+permissions:
+  contents: write
+jobs:
+  exact-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.14'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruct and verify original accepted source identity
+        run: |
+          cp .github/proof-workbench-materialize/materialize.py "$RUNNER_TEMP/proof-materialize.py"
+          python "$RUNNER_TEMP/proof-materialize.py"
