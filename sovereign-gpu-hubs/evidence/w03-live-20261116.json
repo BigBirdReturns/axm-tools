@@ -1,0 +1,49 @@
+{
+  "schema": "axm/sovereign-gpu-live-smoke@1",
+  "status": "PASS",
+  "model": "Qwen/Qwen3-0.6B",
+  "source_adapter": "phh/Qwen3-0.6B-TLDR-Lora",
+  "gpu_uuid_redacted": true,
+  "gpu_name": "Quadro RTX 8000",
+  "vllm_version": "0.33.0",
+  "base_sha256": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b",
+  "tokenizer_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+  "adapter_sha256": "05246882d23ac9824d92c773ebe7776a2e466c9f28d2cddf9c201f440004123a",
+  "source_notice": "Public Apache-2.0 adapter; weights not redistributed",
+  "admission_mode": "FIXTURE_ONLY; unsigned; not routable",
+  "base_warm_seconds": 44.081,
+  "runs": [
+    {
+      "iteration": 1,
+      "activation_ms": 23.367,
+      "generation_ms": 19678.764,
+      "prompt_tokens": 6,
+      "completion_tokens": 32,
+      "revoked_and_unloaded": true,
+      "adapter_alias": "probe-quality-05246882d23a"
+    },
+    {
+      "iteration": 2,
+      "activation_ms": 30.164,
+      "generation_ms": 1529.804,
+      "prompt_tokens": 6,
+      "completion_tokens": 32,
+      "revoked_and_unloaded": true,
+      "adapter_alias": "probe-quality-05246882d23a"
+    },
+    {
+      "iteration": 3,
+      "activation_ms": 18.409,
+      "generation_ms": 1532.765,
+      "prompt_tokens": 6,
+      "completion_tokens": 32,
+      "revoked_and_unloaded": true,
+      "adapter_alias": "probe-quality-05246882d23a"
+    }
+  ],
+  "mean_activation_ms": 23.98,
+  "max_activation_ms": 30.164,
+  "journal_events": 9,
+  "journal_head": "365868e4abff06af26e1ecd192aedd5b696a306715d4362c7c174592a65d8c6c",
+  "qualification": "real local engine mechanics; no enterprise IAM or sovereign multi-region certification"
+}

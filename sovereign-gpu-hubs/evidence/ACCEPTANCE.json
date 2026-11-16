@@ -1,0 +1,63 @@
+{
+  "conformance": {
+    "boundaries": [
+      "SHA256 file tamper",
+      "base+tokenizer match",
+      "tenant+region admission",
+      "quota",
+      "loopback admin",
+      "unverified Genesis",
+      "signed release binding mismatch",
+      "engine 503",
+      "failed activation journal",
+      "rollback pin",
+      "ledger tamper",
+      "fixture not routable"
+    ],
+    "command": "python3 -m unittest discover -s tests -v",
+    "kind": "stdlib simulated localhost engine, not real deployment",
+    "tests_failed": 0,
+    "tests_passed": 10
+  },
+  "date": "2026-11-16",
+  "genesis": {
+    "actual_axm_build": "compile",
+    "actual_axm_verify": "shard with independent trusted public key",
+    "custody": "Test private/public keys and signed test shard retained only in private scratch, excluded from publication",
+    "error_count": 0,
+    "publisher_identity": "ephemeral throwaway test key, not a production trust anchor",
+    "source_binding": "full canonical tenant, region, adapter, alias, base revision, tokenizer digest, adapter digest",
+    "status": "PASS"
+  },
+  "limits": [
+    "No production IAM or mTLS",
+    "No multi-jurisdiction field deployment",
+    "No sustained real simultaneous LoRA batching test",
+    "No cold recovery service SLO",
+    "No customer network/egress compliance certification",
+    "No public distribution of MARY unlicensed source"
+  ],
+  "real_engine": {
+    "activation_mean_ms": 23.98,
+    "activation_range_ms": [
+      18.409,
+      30.164
+    ],
+    "adapter": "phh/Qwen3-0.6B-TLDR-Lora",
+    "adapters_revoked_and_unloaded": 3,
+    "base_warm_seconds": 44.081,
+    "critical_boundary": "Fixture mode: unsigned control plane admission; tests real adapter loading/inference/unloading, not production authorization",
+    "device": "OCTO-W03 / Quadro RTX 8000 GPU0 48GiB",
+    "engine": "vLLM 0.33.0",
+    "evidence": "w03-live-20261116.json",
+    "model": "Qwen/Qwen3-0.6B",
+    "not_comparable_to": "Palantir end-to-end 30-45s claim",
+    "requests_generated": 3,
+    "source_licensing": "Weights not redistributed; verify upstream licenses independently",
+    "status": "PASS"
+  },
+  "repository": "BigBirdReturns/axm-tools/sovereign-gpu-hubs",
+  "schema": "axm/sovereign-gpu-release-acceptance@1",
+  "source_basis": "Palantir DevCon 7 Nov 16 2026 public Regional GPU Hubs and Multi-Adapter Deployment post",
+  "status": "BOUNDED_PASS"
+}

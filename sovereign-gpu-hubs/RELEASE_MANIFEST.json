@@ -1,0 +1,22 @@
+{
+  "acceptance": "evidence/ACCEPTANCE.json",
+  "boundary": "Public source and synthetic/field observations only. No private keys, model weights, non-licensed MARY internals, or production IAM.",
+  "license": "Apache-2.0",
+  "origin": "BigBirdReturns/axm-tools/sovereign-gpu-hubs",
+  "released": "2026-11-16",
+  "schema": "axm/sovereign-gpu-public-release@1",
+  "source_files": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "README.md": "bec9402c53536653946933208629543212a01d381dc8a658a5ebe8e1d5373278",
+    "docs/DEPLOY.md": "2fe0ee79ef4ed5f7c62d4d4d5ed343b1456ed6cbbc84d713f6aa3842669dc5d7",
+    "docs/FEATURE_PARITY.md": "34bd14b7638e5e6f4325912542eae455c28604b19ce67f86b973098fb454e714",
+    "evidence/ACCEPTANCE.json": "b217c6ef3584471c2ec6baa5337e0cfc9041f995e9aa6c4100ce5db77b1711ee",
+    "evidence/w03-live-20261116.json": "4554731b14015dc94e54b0d701a5d76d6fcd319373396ea468d78a7cec82e01f",
+    "examples/template-registry.json": "6d608f241d9e5d7261bed62e3ff92d850ac68ffb1ced10dcc9a7cd3b57ee6a42",
+    "index.html": "cbe4bf8d9ac54b912ce4a39509f12fde296e6d4e469a07eede05c9567c5d9a13",
+    "scripts/real_vllm_smoke.py": "15ca11b7e3338ddf59363b63346b401967165584cae67b770a2ceac37738bedd",
+    "scripts/seal_release.py": "961166830568629de34093303c635dfb64d9bb4f92fb0de208c688b482fea75d",
+    "sovereign.py": "af51afc3ab2c65ca6310ec99810cd5a8d3396aa78b9ca183ddde814aa6b227c8",
+    "tests/test_sovereign.py": "2439d7890611c3b5c7264558db7cd69f9e72e50e1f1abf86dc5a3966719aabc7"
+  }
+}

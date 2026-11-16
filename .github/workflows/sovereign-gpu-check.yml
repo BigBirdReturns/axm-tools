@@ -1,0 +1,27 @@
+name: Sovereign GPU Hubs
+on:
+  push:
+    paths:
+      - 'sovereign-gpu-hubs/**'
+      - '.github/workflows/sovereign-gpu-check.yml'
+  pull_request:
+    paths:
+      - 'sovereign-gpu-hubs/**'
+      - '.github/workflows/sovereign-gpu-check.yml'
+permissions:
+  contents: read
+jobs:
+  deterministic-acceptance:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Offline 10-test control-plane acceptance
+        run: python -m unittest discover -s sovereign-gpu-hubs/tests -v
+      - name: Source syntax validation
+        run: python -m py_compile sovereign-gpu-hubs/sovereign.py sovereign-gpu-hubs/scripts/seal_release.py sovereign-gpu-hubs/scripts/real_vllm_smoke.py
