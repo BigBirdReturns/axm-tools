@@ -1,0 +1,36 @@
+name: Incident Commons
+on:
+  push:
+    paths:
+      - 'incident-commons/**'
+      - '.github/workflows/incident-commons-check.yml'
+  pull_request:
+    paths:
+      - 'incident-commons/**'
+      - '.github/workflows/incident-commons-check.yml'
+permissions:
+  contents: read
+jobs:
+  software-contracts:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Offline incident and model-boundary acceptance
+        run: python -m unittest discover -s incident-commons/tests -p 'test_*.py' -v
+      - name: JavaScript engine and import parity
+        run: node incident-commons/tests/test_browser.cjs
+      - name: Browser-source syntax
+        run: node --check incident-commons/app.js
+      - name: Python source syntax
+        run: python -m py_compile incident-commons/incident.py incident-commons/adapters.py incident-commons/local_ai.py
+      - name: End-to-end offline synthetic case
+        run: |
+          python incident-commons/incident.py analyze incident-commons/examples/synthetic-identity-export.jsonl --case-id SYNTH-001 --out /tmp/incident-case.json
+          python incident-commons/incident.py verify /tmp/incident-case.json
+          python incident-commons/incident.py share /tmp/incident-case.json --out /tmp/incident-share.json

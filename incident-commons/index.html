@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070d12">
+<meta name="description" content="A free, local-first incident-response workbench: evidence-bound triage, source-addressed findings, human approval requests, share-safe exports, and an optional local AI hypothesis lane.">
+<title>Incident Commons · The response plane is yours</title>
+<link rel="stylesheet" href="style.css">
+<script defer src="app.js"></script>
+</head>
+<body>
+<header>
+<a class="mark" href="#top" aria-label="Incident Commons home"><span class="mark-symbol" aria-hidden="true">✳</span> AXM / INCIDENT COMMONS</a>
+<div class="header-aside"><span class="pill">FREE · LOCAL-FIRST</span><a href="README.md">Source &amp; deployment</a><a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final" rel="noreferrer noopener" target="_blank">NIST SP 800-61r3</a></div>
+</header>
+<main id="top">
+<section class="hero">
+<div>
+<div class="eyebrow">AI-native incident response · free source · no account</div>
+<h1>The response plane <em>belongs to you.</em></h1>
+<p class="deck">A fast attacker can change its tactics between alerts. Your defender needs an evidence trail, bounded hypotheses, an accountable decision, and a way to act without letting the model become the incident commander.</p>
+<div class="actionbar">
+<button id="load-demo" type="button" class="button">Investigate synthetic breach</button>
+<label class="file-button" for="file-input">Open local JSONL / JSON<input type="file" id="file-input" accept=".jsonl,.json,.ndjson,text/plain,application/json" aria-label="Choose a local JSONL or JSON event file"></label>
+<a href="examples/synthetic-identity-export.jsonl" download class="button secondary">Example evidence</a>
+</div>
+<div class="meta">All source events stay in your browser. No tracker, hosted model, telemetry upload, login, or remote containment API.</div>
+</div>
+<div class="hero-aside">
+<strong>Whose incident is it?</strong>
+<p>The affected organization owns declaration, access, evidence, legal process, containment and recovery. A model may propose a hypothesis; every claim must resolve to observed evidence. Every high-impact action must have independent authority.</p>
+<p><strong style="color:var(--accent)">No permission, no execution.</strong></p>
+</div>
+</section>
+<section class="metrics" aria-label="Current case statistics">
+<div class="metric"><b id="metric-events">0</b><span>Events examined</span></div>
+<div class="metric"><b id="metric-signals">0</b><span>Evidence-bound signals</span></div>
+<div class="metric"><b id="metric-tenants">0</b><span>Tenant boundaries</span></div>
+<div class="metric"><b id="metric-effects">0</b><span>External actions executed</span></div>
+</section>
+<section class="board" aria-label="Incident response workbench">
+<div class="panel">
+<div class="panel-heading"><h2>01 / Detect &amp; correlate</h2><small>Reproducible rules</small></div>
+<div id="findings" aria-live="polite"><p class="dim">Load a case to examine locally.</p></div>
+</div>
+<div class="panel">
+<div class="panel-heading"><h2>02 / Explain the evidence</h2><small>Exact event references</small></div>
+<div class="evidence" id="evidence" aria-live="polite"><h3>Choose a finding</h3><p class="dim">Every supported claim points to event IDs.</p></div>
+</div>
+<div class="panel review">
+<div class="panel-heading"><h2>03 / Request action</h2><small>Human-controlled</small></div>
+<p class="dim" style="font-size:12px">Produce a scoped review packet. It cannot execute anything or certify the requester's authority.</p>
+<div class="field"><label for="owner">Accountable officer</label><input id="owner" type="text" maxlength="120" placeholder="Human owner or on-call role" autocomplete="off"></div>
+<div class="field"><label for="action">Requested response</label><select id="action"><option value="PRESERVE_LOGS_REVIEW">Preserve logs and volatile evidence</option><option value="REVOKE_SESSION_REVIEW">Review session/token revocation</option><option value="ISOLATE_HOST_REVIEW">Review endpoint isolation</option><option value="ESCALATE_HUMAN_REVIEW">Escalate to incident commander</option></select></div>
+<div class="field"><label for="target">Exact requested scope</label><input id="target" maxlength="120" placeholder="Host, session, account or service" autocomplete="off"></div>
+<div class="field"><label for="reason">Rationale and consequences</label><textarea id="reason" maxlength="1200" placeholder="State observed risk, intended effect, alternatives and recovery plan"></textarea></div>
+<div class="field"><label>Evidence cited</label><div id="action-evidence" class="meta">none</div></div>
+<div class="review-note"><strong>HOLD:</strong> no credentials are present; this tool records only a request. Your organization's identity provider, incident commander and execution systems must separately authorize and observe any containment.</div>
+<div class="review-actions"><button id="prepare-action" type="button" class="button small">Export review-only request</button></div>
+</div>
+</section>
+<div class="source-strip"><span>SOURCE: <strong id="source-label">none</strong></span><span>SHA-256: <strong id="sha-label">Not imported</strong></span><span>MODE: <strong>LOCAL / READ-ONLY</strong></span></div>
+<div class="actionbar">
+<button class="button secondary small" id="export-case" type="button">Export private case with evidence</button>
+<button class="button secondary small" id="export-share" type="button">Export aggregate-only share preview</button>
+<a class="button secondary small" href="incident.py">Download audit-ready Python runner</a>
+</div>
+<div id="notice" role="status" aria-live="polite" class="notice">No evidence loaded. Start with the synthetic incident to inspect the complete process.</div>
+<section class="info">
+<div><h3>Evidence before inference</h3><p>Authenticate source ownership and preserve exact event bytes. The Python runner checks hashes and event IDs; findings remain hypotheses until corroborated. Uploads are never required.</p></div>
+<div><h3>Local AI, optional and bounded</h3><p>The local model adapter supports only loopback inference, minimizes event context, rejects fabricated citations and never gains containment credentials. Nothing depends on it.</p></div>
+<div><h3>Recovery is part of response</h3><p>Signed authority, containment effects, rollback criteria, communications and post-incident improvements belong to an organization's operational system. This desk exports review packets, not unapproved actions.</p></div>
+</section>
+</main>
+<footer><div><span>Incident Commons v0.1 · Apache-2.0 · Static browser and Python 3 standard library</span><a href="README.md">Full source &amp; qualification</a><a href="docs/THREAT_MODEL.md">Threat model</a><a href="https://github.com/BigBirdReturns/axm-genesis" rel="noreferrer">AXM Genesis</a></div>
+<p>Synthetic demonstration, not an operational detection or incident-response SLA. No affiliation with Sonya Huang, Sequoia, Mandiant, Google, or incident victims. The browser is a preview; the Python runner owns independent verification.</p>
+</footer>
+</body>
+</html>
