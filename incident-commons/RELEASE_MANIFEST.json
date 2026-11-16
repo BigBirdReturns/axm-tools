@@ -1,0 +1,82 @@
+{
+  "exclusions": [
+    "credentials",
+    "real incident evidence",
+    "private MARY/TierDesk modules",
+    "production containment capability"
+  ],
+  "license": "Apache-2.0",
+  "provenance": [
+    "NIST SP 800-61 Revision 3, April 2025",
+    "existing public AXM Genesis; no private Estate source"
+  ],
+  "release": "2026-11-16",
+  "schema": "axm/incident-commons-public-release@1",
+  "source_files": {
+    "LICENSE": {
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "README.md": {
+      "bytes": 8567,
+      "sha256": "f0f7ec9f5be2028c22ea723b48fdb1601d98561301160e8d8e0d1893ed9af6aa"
+    },
+    "adapters.py": {
+      "bytes": 7202,
+      "sha256": "208754ccb8356d8c5a25640338f1f3d593780cb5d61cf639520ba7dba6dff793"
+    },
+    "app.js": {
+      "bytes": 16351,
+      "sha256": "cc0a9a755f1026d26920dbca1020603966c154f27a0bf9188b6473a65dbb996a"
+    },
+    "docs/THREAT_MODEL.md": {
+      "bytes": 7015,
+      "sha256": "24b44534c86a0b60d1f3557e306eeaf3ef07ef029823b421722a233d3e05e8a6"
+    },
+    "evidence/ACCEPTANCE.json": {
+      "bytes": 1815,
+      "sha256": "53dd483b93dc39cd9aab047ae035ae78fd7621b0461902a1b414a6eaeca20ee5"
+    },
+    "examples/synthetic-identity-export.jsonl": {
+      "bytes": 2525,
+      "sha256": "62462f5735af29e6a135b1bba1156b5784d131907ef11ec9bcb02a5efc1be0d2"
+    },
+    "incident.py": {
+      "bytes": 14609,
+      "sha256": "8057c0631c053d5e4881305e1f66f3411f1873571bcf144f7504c24c30a7c0f2"
+    },
+    "index.html": {
+      "bytes": 7194,
+      "sha256": "723f48cdb6c68a45c6bc1e3ca5f25bded95b0c510a4bf9c9e8ad3e7cac45a6d7"
+    },
+    "local_ai.py": {
+      "bytes": 6987,
+      "sha256": "8db43b3d825a1a5da9e78cce8be99f265ffc7e55b7f2c43c3643d3abdb5eee5a"
+    },
+    "style.css": {
+      "bytes": 7119,
+      "sha256": "7de75f182cf984d173a6caedffb502ac2113969c4675f0e2eca9636a23738101"
+    },
+    "tests/test_adapters.py": {
+      "bytes": 3725,
+      "sha256": "c16111bc66f39e7655ccb9a84114e9f923bb90bb85ab4af2d39486d8c31b511c"
+    },
+    "tests/test_browser.cjs": {
+      "bytes": 2174,
+      "sha256": "c62a654234a00bb3da5839669ae2e88fdf9790215e77e0685aeec1301cf20914"
+    },
+    "tests/test_incident.py": {
+      "bytes": 5216,
+      "sha256": "a9b7af35ab7c2ac5be5a72e3c73857d67dc336645bdb4c597b064a442e9f1654"
+    },
+    "tests/test_local_ai.py": {
+      "bytes": 4341,
+      "sha256": "3ee58b63998ff092c4b897b3678161f9a42f973241abb9276a60d391108bbd51"
+    }
+  },
+  "status": "bounded software acceptance, synthetic data only",
+  "test_commands": [
+    "python -m unittest discover -s tests -v",
+    "node tests/test_browser.cjs"
+  ]
+}

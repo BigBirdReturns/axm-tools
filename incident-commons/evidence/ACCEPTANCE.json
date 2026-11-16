@@ -1,0 +1,57 @@
+{
+  "schema": "axm/incident-commons-acceptance@1",
+  "date": "2026-11-16",
+  "status": "BOUNDED_SOFTWARE_PASS",
+  "native": {
+    "python": "3.13.15",
+    "host": "OCTO-W01",
+    "tests_passed": 28,
+    "tests_failed": 0,
+    "command": "python -m unittest discover -s tests -v"
+  },
+  "browser_engine": {
+    "node": "24.19.0",
+    "status": "PASS",
+    "command": "node tests/test_browser.cjs",
+    "checks": [
+      "fixture parity",
+      "13 synthetic events",
+      "5 evidence-addressed findings",
+      "tenant isolation",
+      "aggregate-only sharing",
+      "hostile input refusal",
+      "benign control"
+    ],
+    "full_browser_playthrough": "NOT_PERFORMED"
+  },
+  "model_lane": {
+    "status": "SIMULATED_LOCAL_API_PASS",
+    "scope": "fake localhost OpenAI-compatible endpoint, invented citation rejection, prompt context minimization; no production model qualified"
+  },
+  "vendor_mapping": {
+    "status": "SYNTHETIC_PASS",
+    "providers": [
+      "AWS CloudTrail",
+      "Microsoft Entra sign-in"
+    ],
+    "original_source_hash": "recorded",
+    "mapped_hash": "recorded",
+    "unsupported_events": "explicit count"
+  },
+  "runtime": {
+    "real_remote_actions": 0,
+    "real_incidents": 0,
+    "real_edr_connections": 0,
+    "actual_containment": "NONE"
+  },
+  "unproved": [
+    "live cloud telemetry and endpoint integrations",
+    "24/7 staffed DFIR response",
+    "production IAM and signed incident commander authority",
+    "detection/false-positive rates against real attacks",
+    "legal chain-of-custody and independent signed capture",
+    "full browser UI and accessibility qualification",
+    "real incident declaration, containment, recovery, closure"
+  ],
+  "public_custody": "synthetic data, free source, documentation, tests only. No internal TierDesk/MARY code or secrets."
+}
