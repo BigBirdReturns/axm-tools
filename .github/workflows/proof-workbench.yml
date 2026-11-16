@@ -1,0 +1,42 @@
+name: Proof Workbench qualification
+on:
+  push:
+    branches: [main, work/proof-workbench-20261115]
+    paths: ['proof-workbench/**', '.github/workflows/proof-workbench.yml']
+  pull_request:
+    paths: ['proof-workbench/**', '.github/workflows/proof-workbench.yml']
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify exact source and wrapper boundaries
+        run: |
+          python -B proof-workbench/proof.py verify
+          python -B -m unittest discover -s proof-workbench/tests -v
+      - name: Reproduce all three unchanged native implementations
+        run: python -B proof-workbench/proof.py qualify --output "$RUNNER_TEMP/proof-native"
+      - name: Rebuild byte-identical distribution
+        run: |
+          python -B proof-workbench/scripts/build.py
+          git diff --exit-code -- proof-workbench/MANIFEST.json proof-workbench/downloads
+      - name: Install isolated browser test tooling
+        run: |
+          npm install --prefix "$RUNNER_TEMP/proof-browser-tooling" --no-save playwright@1
+          "$RUNNER_TEMP/proof-browser-tooling/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Actual delivery, offline and browser-to-CLI handoff
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/proof-browser-tooling/node_modules/playwright
+          PROOF_TEST_OUTPUT: ${{ runner.temp }}/proof-browser
+          PYTHON: python
+        run: node proof-workbench/tests/browser.cjs

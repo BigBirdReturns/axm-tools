@@ -1,0 +1,50 @@
+{
+  "schema": "axm-proof-donors/1",
+  "source_repository": "BigBirdReturns/axm-tools",
+  "source_commit": "a6ceeea75c6ae1d20c7fae0acab27f7ab53663e6",
+  "policy": "Byte-exact frozen distributions. Native formats, owners, failures and acceptance criteria remain authoritative. No shared runtime import or new sealing protocol.",
+  "donors": [
+    {
+      "id": "i3x",
+      "title": "i3X decision replay",
+      "path": "sources/i3x.zip",
+      "root": "cesmii-proof",
+      "source_path": "cesmii-proof/source.zip",
+      "source_commit": "a6ceeea75c6ae1d20c7fae0acab27f7ab53663e6",
+      "sha256": "19b13c0de4b62b9736fe869ae20c2f32ad6e48717ac03b6de031d5d4ad1ab0dd",
+      "archive_bytes": 78753,
+      "payload_files": 22,
+      "payload_bytes": 249433,
+      "evidence_class": "synthetic-execution-with-preserved-source",
+      "limits": "Historical public API capture plus synthetic business records. No second endpoint or plant acceptance."
+    },
+    {
+      "id": "decision-floor",
+      "title": "Decision Floor reconciliation",
+      "path": "sources/decision-floor.zip",
+      "root": "Decision_Floor_Evaluation_0.3.0",
+      "source_path": "decision-floor/downloads/AXM_Decision_Floor_Evaluation_v0.3.0.zip",
+      "source_commit": "a6ceeea75c6ae1d20c7fae0acab27f7ab53663e6",
+      "sha256": "e84bf6f8a76cd42f42b5c50d87ee5ec6fc122e4b01a5ba1ba8b706c1a5fcfe68",
+      "archive_bytes": 132517,
+      "payload_files": 62,
+      "payload_bytes": 358159,
+      "evidence_class": "synthetic-execution-with-preserved-source",
+      "limits": "Synthetic fiChains-aligned reconciliation, not a proprietary fiChains or ERP integration."
+    },
+    {
+      "id": "receptionist",
+      "title": "Receptionist transaction and approval",
+      "path": "sources/receptionist.zip",
+      "root": "AXM-BOSC-Replay",
+      "source_path": "bosc-delivery-lab/downloads/AXM-BOSC-Replay.zip",
+      "source_commit": "a6ceeea75c6ae1d20c7fae0acab27f7ab53663e6",
+      "sha256": "3aa4706163524942b74896c96b1b9fccd16af9db110ca5d9bdb296fe4e209f2d",
+      "archive_bytes": 89736,
+      "payload_files": 36,
+      "payload_bytes": 280379,
+      "evidence_class": "synthetic-execution-with-preserved-source",
+      "limits": "Independent synthetic scheduler; no BOSC private software, real callers, notifications or clinical decisions."
+    }
+  ]
+}

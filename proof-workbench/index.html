@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none';script-src 'self' 'unsafe-inline';style-src 'unsafe-inline';img-src 'self' data:;connect-src 'none';base-uri 'none';form-action 'none'">
+<title>AXM Proof Workbench</title>
+<style>
+:root{--navy:#102a43;--teal:#087f8c;--ink:#243b53;--muted:#627d98;--line:#d9e2ec;--wash:#f4f8fa;--good:#176b4d;--bad:#a23b27}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:#f8fbfc;color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:1120px;margin:auto;padding:28px 20px 56px}header{display:flex;justify-content:space-between;gap:20px;align-items:start;border-bottom:1px solid var(--line);padding-bottom:22px}h1,h2,h3{color:var(--navy);line-height:1.15}h1{font-size:clamp(2rem,5vw,4rem);margin:16px 0 8px}h2{font-size:1.45rem;margin:0 0 10px}h3{font-size:1.05rem;margin:0 0 8px}.eyebrow{color:var(--teal);font-weight:800;letter-spacing:.12em;font-size:.78rem}.version{color:var(--muted);font:700 .9rem ui-monospace,SFMono-Regular,Consolas,monospace}.lead{max-width:720px;font-size:1.2rem}.muted{color:var(--muted)}section{margin-top:32px}.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;box-shadow:0 3px 12px #102a4309}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.two{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}button,.button{border:0;border-radius:7px;padding:11px 15px;background:var(--teal);color:white;font-weight:750;cursor:pointer;text-decoration:none;display:inline-block}button.secondary,.button.secondary{background:#e6f3f4;color:#075b65}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #f2b134;outline-offset:2px}label{display:block;font-weight:700;margin:12px 0 5px}input,select,textarea{width:100%;padding:10px;border:1px solid #9fb3c8;border-radius:6px;background:#fff;color:var(--ink);font:inherit}textarea{min-height:90px;resize:vertical}.check{display:flex;gap:8px;align-items:center;font-weight:500}.check input{width:auto}.status{margin-top:12px;padding:10px;border-radius:6px;background:var(--wash);min-height:24px}.ok{color:var(--good)}.error{color:var(--bad)}code,pre{font:14px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace}pre{white-space:pre-wrap;background:#102a43;color:#eef7f8;border-radius:8px;padding:14px;overflow:auto;overflow-wrap:anywhere}.meta{display:grid;grid-template-columns:1fr;gap:8px}.meta div{overflow-wrap:anywhere;min-width:0;padding:9px;background:var(--wash);border-radius:6px}.meta b{display:block;color:var(--muted);font-size:.75rem;text-transform:uppercase}.price{font-size:1.8rem;font-weight:800;color:var(--navy)}ul{padding-left:20px}footer{border-top:1px solid var(--line);margin-top:38px;padding-top:18px;font-size:.9rem}.links{display:flex;flex-wrap:wrap;gap:14px}a{color:var(--teal);font-weight:650}@media(max-width:760px){header,.two{display:block}.grid{grid-template-columns:1fr}.card{margin-top:14px}.version{margin-top:8px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div><div class="eyebrow">AXM / PROOF WORKBENCH</div><h1>Run the test.<br>Keep the evidence.</h1><p class="lead">One portable runner for three preserved implementations. Replay locally with no account, model, or API key.</p></div>
+<div class="version">v0.1.0<br><span id="release-status">Release data unavailable</span></div>
+</header>
+
+<section aria-labelledby="kit-title">
+<h2 id="kit-title">1. Three existing engines, one replay command</h2>
+<div class="grid" id="suite-cards"></div>
+<div class="card" style="margin-top:14px">
+<p>Use the preserved native capsules and inspect the resulting receipt on your device.</p>
+<pre>python proof.py qualify --output /private/new-run
+python proof.py plan engagement.json --output /private/new-plan</pre>
+<p class="muted">Python 3.10+ and Node 18+ are required for combined synthetic replay. No pip/npm runtime packages. Optional OpenSSL is used only for Decision Floor peer signatures.</p>
+<div class="actions"><a id="download-kit" class="button" href="downloads/axm-proof-workbench-0.1.0.zip" download>Download workbench</a><span id="download-meta" class="muted"></span></div>
+</div>
+</section>
+
+<section aria-labelledby="engagement-title">
+<h2 id="engagement-title">2. Local engagement builder</h2>
+<div class="two">
+<form class="card" id="engagement-form">
+<label for="case-id">Case ID</label><input id="case-id" pattern="[A-Za-z0-9_-]{3,80}" required>
+<label for="adapter">Adapter</label><select id="adapter"><option value="">Select an adapter</option><option value="i3x">I3X</option><option value="decision-floor">Decision Floor</option><option value="receptionist">Receptionist</option></select>
+<label for="target-decision">Target decision</label><textarea id="target-decision"></textarea>
+<label for="receiving-owner">Receiving owner</label><input id="receiving-owner">
+<label for="data-custodian">Data custodian</label><input id="data-custodian">
+<label class="check"><input id="data-authorized" type="checkbox"> Data is authorized for this engagement</label>
+<label for="acceptance">Acceptance criteria <span class="muted">(one per line)</span></label><textarea id="acceptance"></textarea>
+<h3>Economics</h3>
+<div class="grid">
+<div><label for="price">Price (USD)</label><input id="price" type="number" min="0" step="0.01" value="0"></div>
+<div><label for="hours">Engineering hours</label><input id="hours" type="number" min="0" step="0.1" value="0"></div>
+<div><label for="rate">Hourly cost (USD)</label><input id="rate" type="number" min="0" step="0.01" value="0"></div>
+</div>
+<div class="grid">
+<div><label for="compute">Compute cost (USD)</label><input id="compute" type="number" min="0" step="0.01" value="0"></div>
+<div><label for="reserve">Support reserve (USD)</label><input id="reserve" type="number" min="0" step="0.01" value="0"></div>
+</div>
+<div class="actions"><button id="export-engagement" type="button">Export local engagement</button></div>
+<div id="plan-status" class="status" role="status">Missing owner, custodian, permission, and acceptance criteria.</div>
+</form>
+<div class="card">
+<h3>Private by design</h3>
+<p>No uploads and no automatic execution. The export is a local JSON planning artifact.</p>
+<p class="muted">Privacy is fixed to <code>private</code>. Status can be READY_FOR_SCOPING, never accepted or operationally authorized.</p>
+<div id="economics-result" class="status">Enter non-negative economics to calculate.</div>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="receipt-title">
+<h2 id="receipt-title">3. Import a local JSON run receipt</h2>
+<div class="card">
+<label for="receipt-input">Receipt file, max 4 MiB</label><input id="receipt-input" type="file" accept=".json,application/json">
+<div id="receipt-status" class="status" role="status">No receipt imported.</div>
+<div id="receipt-view" hidden></div>
+</div>
+</section>
+
+<section aria-labelledby="scope-title">
+<h2 id="scope-title">4. Scope and reuse</h2>
+<div class="two">
+<div class="card"><h3>Evidence boundaries</h3><ul><li>Synthetic replay only.</li><li>Customer-run acceptance remains outstanding.</li><li>No production integration, writeback, or ROI claims.</li><li>Private files stay on device.</li><li>No default persistence.</li></ul><p class="muted">Native capsules retain original formats. Hashes check bytes, not truth or authenticated customer identity.</p></div>
+<div class="card"><h3>Repository links</h3><div class="links"><a href="../cesmii-proof/">CESMII proof</a><a href="../decision-floor/">Decision Floor</a><a href="../bosc-delivery-lab/">BOSC delivery lab</a><a href="donor-map.json">donor-map.json</a><a href="README.md">Operator guide</a><a href="OFFER.md">Buyer-owned evaluation</a><a href="data/release.json">Exact recorded counters</a></div></div>
+</div>
+</section>
+<footer>Suite receipts represent observed runs, not live executions or customer acceptance. Imported PASS never promotes trust.</footer>
+</main>
+<script src="release.js"></script>
+<script>
+(function(){
+"use strict";
+var fallback={version:"0.1.0",observed_at:"",source_commit:"",status:"NOT_RUN",suites:[],qualification:{passed:0,total:0},download:{href:"downloads/axm-proof-workbench-0.1.0.zip",sha256:"",bytes:0},reuse:{files:0,bytes:0},limits:[]};
+var release=window.PROOF_RELEASE&&typeof window.PROOF_RELEASE==="object"?window.PROOF_RELEASE:fallback;
+var $=function(id){return document.getElementById(id)}, text=function(el,v){el.textContent=v==null?"":String(v)};
+function safe(v){return v==null||v===""?"—":(typeof v==="object"?JSON.stringify(v):String(v))}
+function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(n)}
+function checkSummary(s){
+ var c=s.checks||{};
+ if(s.id==="i3x")return safe(c.algorithm_assertions)+" assertions; fresh-process capsule replay "+safe(c.native_capsule_cold_replay);
+ if(s.id==="decision-floor"){var match=(c.native_unit_summary||[]).join(" ").match(/Ran (\d+) tests/),g=c.generated_case_result||{};return (match?match[1]:"Unknown")+" regression tests; "+Number(g.cases||0).toLocaleString()+" generated cases; "+Number(g.assertions||0).toLocaleString()+" assertions";}
+ if(s.id==="receptionist")return safe(c.transaction_cases)+" transaction cases; "+safe(c.transaction_assertions)+" assertions; "+safe(c.confirmation_cases)+" approval cases";
+ return safe(c);
+}
+function renderRelease(){
+ text($("release-status"),window.PROOF_RELEASE?"Observed "+safe(release.status)+" · "+(release.observed_at?new Date(release.observed_at).toLocaleString("en-US",{timeZone:"America/Los_Angeles",month:"short",day:"numeric",year:"numeric",hour:"numeric",minute:"2-digit"})+" Pacific":"time unavailable"):"Release data unavailable");
+ var d=release.download||fallback.download;
+ $("download-kit").href="downloads/axm-proof-workbench-0.1.0.zip"; if(location.protocol==="file:"){ $("download-kit").hidden=true; }
+ text($("download-meta"),"Deterministic source distribution · "); var sum=document.createElement("a");sum.href="downloads/SHA256SUMS";sum.textContent="SHA-256 checksum";$("download-meta").appendChild(sum);if(location.protocol==="file:")text($("download-meta"),"Extracted kit: run python proof.py verify to check its source inventory.");
+ var box=$("suite-cards");box.textContent="";
+ var suites=Array.isArray(release.suites)?release.suites:[];
+ if(!suites.length){var empty=document.createElement("div");empty.className="card";text(empty,"No observed suite receipts. Status: NOT_RUN.");box.appendChild(empty);return}
+ suites.forEach(function(s){var c=document.createElement("article");c.className="card";var h=document.createElement("h3");text(h,safe(s.title||s.id));c.appendChild(h);var p=document.createElement("p");text(p,"Recorded result: "+safe(s.status));c.appendChild(p);var m=document.createElement("div");m.className="meta";[["Checks",checkSummary(s)],["Elapsed",Number.isFinite(s.elapsed_seconds)?s.elapsed_seconds.toFixed(2)+" seconds":"Not measured"],["Limits",Array.isArray(s.limits)?s.limits.join("; "):s.limits]].forEach(function(x){var q=document.createElement("div"),b=document.createElement("b");text(b,x[0]);q.appendChild(b);var span=document.createElement("span");text(span,safe(x[1]));q.appendChild(span);m.appendChild(q)});c.appendChild(m);box.appendChild(c)})
+}
+function num(id){if(!$(id).value.trim())return null;var v=Number($(id).value);return Number.isFinite(v)&&v>=0&&v<=1e12?v:null}
+function economics(){
+ var p=num("price"),h=num("hours"),r=num("rate"),c=num("compute"),s=num("reserve"),out=$("economics-result");
+ if([p,h,r,c,s].some(function(x){return x===null})){text(out,"Reject: economics must be non-negative, non-blank, finite numbers.");out.className="status error";return null}
+ var cost=h*r+c+s,con=p-cost,margin=p>0?con/p*100:null;if(!Number.isFinite(cost)||(margin!==null&&!Number.isFinite(margin))){text(out,"Reject: derived economics overflow.");out.className="status error";return null;}
+ text(out,"Cost "+money(cost)+" · Contribution "+money(con)+" · Margin "+(margin===null?"—":margin.toFixed(1)+"%")+" (operator hypotheses, not market rates).");out.className="status";return {currency:"USD",price:p,engineering_hours:h,hourly_cost:r,compute_cost:c,support_reserve:s}
+}
+function planStatus(){
+ var missing=[];if(!/^[A-Za-z0-9_-]{3,80}$/.test($("case-id").value.trim()))missing.push("valid case ID");if(!$("adapter").value)missing.push("adapter");if(!$("target-decision").value.trim())missing.push("target decision");if(!$("receiving-owner").value.trim())missing.push("owner");if(!$("data-custodian").value.trim())missing.push("custodian");if(!$("data-authorized").checked)missing.push("permission");if(!$("acceptance").value.trim())missing.push("acceptance");
+ text($("plan-status"),missing.length?"Missing "+missing.join(", ")+".":"READY_FOR_SCOPING — never accepted or operationally authorized.");$("plan-status").className="status "+(missing.length?"":"ok")
+}
+["price","hours","rate","compute","reserve"].forEach(function(id){$(id).addEventListener("input",economics)});["case-id","adapter","target-decision","receiving-owner","data-custodian","data-authorized","acceptance"].forEach(function(id){$(id).addEventListener("input",planStatus)});
+$("export-engagement").addEventListener("click",function(){
+ var id=$("case-id").value.trim(),econ=economics(),criteria=$("acceptance").value.split(/\r?\n/).map(function(x){return x.trim()}).filter(Boolean);
+ if(!/^[A-Za-z0-9_-]{3,80}$/.test(id)||!$("adapter").value||!$("target-decision").value.trim()||!econ||!criteria.length){text($("plan-status"),"Complete valid case ID, adapter, target decision, economics, and acceptance criteria.");$("plan-status").className="status error";return}
+ var obj={schema:"axm-proof-engagement/1",case_id:id,adapter:$("adapter").value,evidence_class:"customer-owned",target_decision:$("target-decision").value.trim(),receiving_owner:$("receiving-owner").value.trim(),data_custodian:$("data-custodian").value.trim(),data_authorized:$("data-authorized").checked,acceptance_criteria:criteria,disclosure:"private",economics:econ};
+ var blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=id+"-engagement.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},0);planStatus();$("plan-status").appendChild(document.createTextNode(" Local engagement exported; no execution or publication authorized."))
+});
+$("receipt-input").addEventListener("change",function(e){
+ var f=e.target.files[0],out=$("receipt-status"),view=$("receipt-view");view.hidden=true;if(!f)return;if(f.size>4194304){text(out,"Error: receipt exceeds 4 MiB.");out.className="status error";return}
+ var reader=new FileReader();reader.onload=function(){try{var o=JSON.parse(reader.result);if(!o||o.schema!=="axm-proof-run/1"||!Array.isArray(o.suites)||o.suites.some(function(x){return !["PASS","FAIL","NOT_RUN"].includes(x.status)}))throw Error("Unsupported receipt schema or suite status.");text(out,"Imported report, not independently verified in this browser. Import PASS never promotes trust.");out.className="status";var p=document.createElement("p");text(p,"Observed at: "+safe(o.observed_at)+" · Source commit: "+safe(o.source_commit));view.textContent="";view.appendChild(p);view.hidden=false}catch(err){text(out,"Error: "+err.message);out.className="status error"}};reader.onerror=function(){text(out,"Error reading receipt.");out.className="status error"};reader.readAsText(f)
+});
+renderRelease();economics();planStatus();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+{
+  "version": "0.1.0",
+  "observed_at": "2026-11-15T23:53:44.985841+00:00",
+  "source_commit": "a6ceeea75c6ae1d20c7fae0acab27f7ab53663e6",
+  "status": "PASS",
+  "elapsed_seconds": 21.715169,
+  "model_calls": 0,
+  "suites": [
+    {
+      "id": "i3x",
+      "title": "i3X decision replay",
+      "status": "PASS",
+      "checks": {
+        "algorithm_assertions": 67,
+        "native_capsule_cold_replay": "PASS"
+      },
+      "elapsed_seconds": 0.642077,
+      "evidence_class": "synthetic-execution-with-preserved-source",
+      "limits": "Historical public API capture plus synthetic business records. No second endpoint or plant acceptance."
+    },
+    {
+      "id": "decision-floor",
+      "title": "Decision Floor reconciliation",
+      "status": "PASS",
+      "checks": {
+        "native_unit_summary": [
+          "----------------------------------------------------------------------",
+          "Ran 31 tests in 5.257s",
+          "",
+          "OK"
+        ],
+        "generated_case_result": {
+          "version": "0.2",
+          "qualification": "synthetic property checks, not real customer evidence",
+          "seed": 931527,
+          "cases": 1000,
+          "assertions": 9005,
+          "outcome": "PASS",
+          "source_versions": 10,
+          "event_count": 13500,
+          "vault_integrity": "PASS",
+          "network_attempts": 0,
+          "failures": []
+        }
+      },
+      "elapsed_seconds": 7.125672,
+      "evidence_class": "synthetic-execution-with-preserved-source",
+      "limits": "Synthetic fiChains-aligned reconciliation, not a proprietary fiChains or ERP integration."
+    },
+    {
+      "id": "receptionist",
+      "title": "Receptionist transaction and approval",
+      "status": "PASS",
+      "checks": {
+        "transaction_cases": 19,
+        "transaction_assertions": 132,
+        "confirmation_cases": 12,
+        "confirmation_failures": 0,
+        "new_model_calls": 0
+      },
+      "elapsed_seconds": 13.93579,
+      "evidence_class": "synthetic-execution-with-preserved-source",
+      "limits": "Independent synthetic scheduler; no BOSC private software, real callers, notifications or clinical decisions."
+    }
+  ],
+  "reuse": {
+    "files": 120,
+    "bytes": 887971,
+    "unchanged_archives": 3
+  },
+  "qualification": {
+    "passed": 48,
+    "total": 48,
+    "meaning": "Observed orchestration and opportunity-state regressions; native donor counts are separate."
+  },
+  "download": {
+    "href": "downloads/axm-proof-workbench-0.1.0.zip"
+  },
+  "limits": [
+    "Finite synthetic tests and historical public reference capture.",
+    "Same-owner software execution; customer acceptance is unestablished.",
+    "Time is observed on this machine, not a baseline speedup or service guarantee.",
+    "Native source schema, signing and custody owners remain unchanged."
+  ],
+  "browser": {
+    "passed": 24,
+    "total": 24,
+    "observed_at": "2026-11-15T23:58:24.645Z",
+    "meaning": "Actual download, browser-to-CLI intake, offline, mobile, local import and no-external-request checks."
+  },
+  "implementation_sha256": {
+    "proof.py": "9f6ac84ba846cd0e7198a058cde96335aa99f906c555c47cfbeeaaffe2182d33",
+    "opportunity.py": "4e6842766975b3660e675e1bdb9e8663b24fc6f4306aa3a1249de7a6dd84f8ef",
+    "adapters/i3x-replay.cjs": "798ae513da54ebc12c504524d70597babf58001dafabbfd85bfc6b7c1286761c"
+  }
+}

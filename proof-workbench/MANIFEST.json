@@ -1,0 +1,83 @@
+{
+  "files": {
+    "ADAPTERS.md": {
+      "bytes": 2749,
+      "sha256": "befca9d381291d0ab5ff0e035dc185ceec3ef77d35457ed2066ff7536fae7429"
+    },
+    "BUILDING.md": {
+      "bytes": 937,
+      "sha256": "dd684b09182183cd0a26730ff7e81e5d4a1380d35a0a913e3f177e26dd8044ba"
+    },
+    "OFFER.md": {
+      "bytes": 2327,
+      "sha256": "03952e73abe2ede2c017fa72f707ddcf094c2cd44a1ed7ec40a77c6837814aa0"
+    },
+    "README.md": {
+      "bytes": 4719,
+      "sha256": "0ba59b0ee27c2ecfa0de77805147a6e6c8214757a0b5f4d83cc5909c38de1369"
+    },
+    "adapters/i3x-replay.cjs": {
+      "bytes": 1502,
+      "sha256": "798ae513da54ebc12c504524d70597babf58001dafabbfd85bfc6b7c1286761c"
+    },
+    "data/release.json": {
+      "bytes": 3365,
+      "sha256": "1334c4448c4dab537585d10a8f3102f60bf49c8c3c8ed2f411ec92378d780bb5"
+    },
+    "donor-map.json": {
+      "bytes": 2327,
+      "sha256": "4f9bd10be224414aa34a5acd20e927cf1fcf223c68a3c2d9a138f6c341406f4a"
+    },
+    "engagement.example.json": {
+      "bytes": 444,
+      "sha256": "f7cf978c2e7d9423addb3f2c92c891ea8870e00da16586d83ccd2ffa288e852c"
+    },
+    "index.html": {
+      "bytes": 15776,
+      "sha256": "fbe01b28635660b253394bebace02c31d0a8e683741bc2fa2447be48633050cd"
+    },
+    "opportunity.py": {
+      "bytes": 3545,
+      "sha256": "4e6842766975b3660e675e1bdb9e8663b24fc6f4306aa3a1249de7a6dd84f8ef"
+    },
+    "proof.py": {
+      "bytes": 15782,
+      "sha256": "9f6ac84ba846cd0e7198a058cde96335aa99f906c555c47cfbeeaaffe2182d33"
+    },
+    "release.js": {
+      "bytes": 2839,
+      "sha256": "a8f87c8261659f000ace2966a3259f2b64ec53220a8cd4cde126cf3725354a65"
+    },
+    "scripts/build.py": {
+      "bytes": 1849,
+      "sha256": "fe681715bdbdeeb7c054e7fe1d4279d62f7d295cf13e698b7b52f76030f230c9"
+    },
+    "sources/decision-floor.zip": {
+      "bytes": 132517,
+      "sha256": "e84bf6f8a76cd42f42b5c50d87ee5ec6fc122e4b01a5ba1ba8b706c1a5fcfe68"
+    },
+    "sources/i3x.zip": {
+      "bytes": 78753,
+      "sha256": "19b13c0de4b62b9736fe869ae20c2f32ad6e48717ac03b6de031d5d4ad1ab0dd"
+    },
+    "sources/receptionist.zip": {
+      "bytes": 89736,
+      "sha256": "3aa4706163524942b74896c96b1b9fccd16af9db110ca5d9bdb296fe4e209f2d"
+    },
+    "tests/browser.cjs": {
+      "bytes": 7861,
+      "sha256": "4008486f51cf583705407c1670ed0a03a9170da4748c5acb17a1ed55828b86df"
+    },
+    "tests/test_opportunity.py": {
+      "bytes": 2463,
+      "sha256": "818a88eb6c58f1a7574974bef09115d13373635e50ffe3d73467d4b17ee87c71"
+    },
+    "tests/test_workbench.py": {
+      "bytes": 8196,
+      "sha256": "f5f514821f1747745d4b062437032dcf23cf5ac6040dfaa9181c33fda27324a0"
+    }
+  },
+  "meaning": "Exact source inventory; authenticate an external digest separately.",
+  "schema": "axm-proof-package/1",
+  "version": "0.1.0"
+}

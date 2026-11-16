@@ -1,0 +1,273 @@
+{
+  "schema": "axm-proof-release-acceptance/1",
+  "version": "0.1.0",
+  "observed_at": "2026-11-16T00:05:31.456947+00:00",
+  "state": "qualified_local_and_second_host",
+  "publication": "pending",
+  "source_base_commit": "a6ceeea75c6ae1d20c7fae0acab27f7ab53663e6",
+  "package": {
+    "schema": "axm-proof-download/1",
+    "filename": "axm-proof-workbench-0.1.0.zip",
+    "sha256": "3a5c7eb46d5a375126f9a0933e71c84ff2fe8d96a03f3237d671fc27edca2a4f",
+    "bytes": 320300,
+    "manifest_sha256": "321c078814275dd85ee3e4055dc08e28febb69062a49a00edebff5698a194c65",
+    "files": 20
+  },
+  "scope": "Existing native synthetic/reference workflows, wrapper qualification, browser delivery and same-owner second-host source-package replay. No customer acceptance or production integration.",
+  "unit": {
+    "status": "PASS",
+    "tests": 48,
+    "log_sha256": "034bacae5fc1b43d69f915229ab24cb3e6760bd18d04937ad189e4c8d6946868"
+  },
+  "browser": {
+    "status": "PASS",
+    "passed": 24,
+    "total": 24,
+    "checks": [
+      {
+        "name": "Workbench opens",
+        "pass": true
+      },
+      {
+        "name": "Three observed adapters render",
+        "pass": true
+      },
+      {
+        "name": "Desktop has no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "Blank intake stays held",
+        "pass": true
+      },
+      {
+        "name": "Cost and contribution recompute",
+        "pass": true
+      },
+      {
+        "name": "Empty number refused",
+        "pass": true
+      },
+      {
+        "name": "Negative economics refused",
+        "pass": true
+      },
+      {
+        "name": "Export does not invent permission",
+        "pass": true
+      },
+      {
+        "name": "Export does not label missing owners ready",
+        "pass": true
+      },
+      {
+        "name": "Complete intake is only ready for scoping",
+        "pass": true
+      },
+      {
+        "name": "Browser export includes native economics currency",
+        "pass": true
+      },
+      {
+        "name": "Actual browser download accepted by native planner",
+        "pass": true
+      },
+      {
+        "name": "Native plan authorizes neither execution nor publication",
+        "pass": true
+      },
+      {
+        "name": "Imported PASS remains explicitly unverified",
+        "pass": true
+      },
+      {
+        "name": "Untrusted receipt content never becomes markup",
+        "pass": true
+      },
+      {
+        "name": "Malformed JSON fails visibly",
+        "pass": true
+      },
+      {
+        "name": "Oversized import refused",
+        "pass": true
+      },
+      {
+        "name": "Actual source kit downloads",
+        "pass": true
+      },
+      {
+        "name": "Browser download hash matches published archive",
+        "pass": true
+      },
+      {
+        "name": "Mobile has no horizontal overflow",
+        "pass": true
+      },
+      {
+        "name": "Offline page initializes",
+        "pass": true
+      },
+      {
+        "name": "Offline data renders",
+        "pass": true
+      },
+      {
+        "name": "No third-party requests",
+        "pass": true
+      },
+      {
+        "name": "No JavaScript exceptions",
+        "pass": true
+      }
+    ],
+    "errors": [],
+    "external_requests": [],
+    "report_sha256": "63a2631c7f416c5b8a8a07a969a2fcf4fb30750bf729be08c0c552810b9646f3"
+  },
+  "native": {
+    "host": "OCTO-W03",
+    "elapsed_seconds": 22.193064,
+    "status": "PASS",
+    "model_calls": 0,
+    "report_sha256": "a8cae8f82455d68619381dc15c22816d1bb1028f5f57ecaaf7b503997ba85ff2",
+    "suites": [
+      {
+        "id": "i3x",
+        "status": "PASS",
+        "checks": {
+          "algorithm_assertions": 67,
+          "native_capsule_cold_replay": "PASS"
+        },
+        "limits": "Historical public API capture plus synthetic business records. No second endpoint or plant acceptance."
+      },
+      {
+        "id": "decision-floor",
+        "status": "PASS",
+        "checks": {
+          "native_unit_summary": [
+            "----------------------------------------------------------------------",
+            "Ran 31 tests in 5.158s",
+            "",
+            "OK"
+          ],
+          "generated_case_result": {
+            "version": "0.2",
+            "qualification": "synthetic property checks, not real customer evidence",
+            "seed": 931527,
+            "cases": 1000,
+            "assertions": 9005,
+            "outcome": "PASS",
+            "source_versions": 10,
+            "event_count": 13500,
+            "vault_integrity": "PASS",
+            "network_attempts": 0,
+            "failures": []
+          }
+        },
+        "limits": "Synthetic fiChains-aligned reconciliation, not a proprietary fiChains or ERP integration."
+      },
+      {
+        "id": "receptionist",
+        "status": "PASS",
+        "checks": {
+          "transaction_cases": 19,
+          "transaction_assertions": 132,
+          "confirmation_cases": 12,
+          "confirmation_failures": 0,
+          "new_model_calls": 0
+        },
+        "limits": "Independent synthetic scheduler; no BOSC private software, real callers, notifications or clinical decisions."
+      }
+    ]
+  },
+  "second_host": {
+    "schema": "axm-proof-second-host/1",
+    "host": "OCTO-N01",
+    "same_owner": true,
+    "third_party_acceptance": false,
+    "archive_sha256": "3a5c7eb46d5a375126f9a0933e71c84ff2fe8d96a03f3237d671fc27edca2a4f",
+    "manifest_sha256": "321c078814275dd85ee3e4055dc08e28febb69062a49a00edebff5698a194c65",
+    "status": "PASS",
+    "elapsed_seconds": 14.927246,
+    "runtime": {
+      "python": "3.14.4",
+      "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.43",
+      "node": "v22.22.1"
+    },
+    "model_calls": 0,
+    "suites": [
+      {
+        "id": "i3x",
+        "status": "PASS",
+        "checks": {
+          "algorithm_assertions": 67,
+          "native_capsule_cold_replay": "PASS"
+        },
+        "elapsed_seconds": 0.483711,
+        "limits": "Historical public API capture plus synthetic business records. No second endpoint or plant acceptance."
+      },
+      {
+        "id": "decision-floor",
+        "status": "PASS",
+        "checks": {
+          "native_unit_summary": [
+            "----------------------------------------------------------------------",
+            "Ran 31 tests in 3.850s",
+            "",
+            "OK"
+          ],
+          "generated_case_result": {
+            "version": "0.2",
+            "qualification": "synthetic property checks, not real customer evidence",
+            "seed": 931527,
+            "cases": 1000,
+            "assertions": 9005,
+            "outcome": "PASS",
+            "source_versions": 10,
+            "event_count": 13500,
+            "vault_integrity": "PASS",
+            "network_attempts": 0,
+            "failures": []
+          }
+        },
+        "elapsed_seconds": 5.940911,
+        "limits": "Synthetic fiChains-aligned reconciliation, not a proprietary fiChains or ERP integration."
+      },
+      {
+        "id": "receptionist",
+        "status": "PASS",
+        "checks": {
+          "transaction_cases": 19,
+          "transaction_assertions": 132,
+          "confirmation_cases": 12,
+          "confirmation_failures": 0,
+          "new_model_calls": 0
+        },
+        "elapsed_seconds": 8.48965,
+        "limits": "Independent synthetic scheduler; no BOSC private software, real callers, notifications or clinical decisions."
+      }
+    ]
+  },
+  "deterministic_build": {
+    "status": "PASS",
+    "consecutive_builds": 2,
+    "identical_zip": true
+  },
+  "preserved_failure": {
+    "kind": "browser test awaited FileReader too early",
+    "failed_checks": 1,
+    "passed_before_failure": 13,
+    "scope": "test harness race; corrected async wait; original failure retained privately",
+    "report_sha256": "197417e615e78e3593920d6f50d4d6843fbc8e7447211b4902443c4a8b1204df"
+  },
+  "privacy": {
+    "private_correspondence_published": false,
+    "customer_data_uploaded": false,
+    "production_writes": false,
+    "messages_sent": false,
+    "schedules_created": false
+  },
+  "native_formats_preserved": true,
+  "new_general_sealing_protocol": false
+}

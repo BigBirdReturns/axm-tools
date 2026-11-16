@@ -1,0 +1,20 @@
+{
+  "schema": "axm-proof-engagement/1",
+  "case_id": "EXAMPLE-001",
+  "adapter": "i3x",
+  "evidence_class": "customer-owned",
+  "target_decision": "",
+  "receiving_owner": "",
+  "data_custodian": "",
+  "data_authorized": false,
+  "acceptance_criteria": [],
+  "disclosure": "private",
+  "economics": {
+    "currency": "USD",
+    "price": 0,
+    "engineering_hours": 0,
+    "hourly_cost": 0,
+    "compute_cost": 0,
+    "support_reserve": 0
+  }
+}
