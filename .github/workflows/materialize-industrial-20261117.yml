@@ -1,0 +1,73 @@
+name: Materialize qualified Industrial Continuity publication
+on:
+  push:
+    branches: [materialize/industrial-continuity-20261117]
+permissions:
+  contents: write
+concurrency:
+  group: materialize-industrial-continuity-20261117
+  cancel-in-progress: false
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify exact retained sources and prepare isolated release
+        run: python .github/industrial-publication/materialize.py
+      - name: Requalify source-bound calculations and offline build
+        working-directory: ${{ runner.temp }}/industrial-release
+        run: |
+          node industrial-continuity/tests/verify.cjs
+          node industrial-continuity/verify-handoff.cjs industrial-continuity/data/example-handoff.json
+          python industrial-continuity/build.py
+      - name: Install isolated browser verification
+        run: |
+          npm install --prefix "$RUNNER_TEMP/industrial-tooling" --no-save playwright@1
+          "$RUNNER_TEMP/industrial-tooling/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Requalify actual intake, downloaded handoff and offline recipient
+        working-directory: ${{ runner.temp }}/industrial-release
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/industrial-tooling/node_modules/playwright
+          BROWSER_OUTPUT: ${{ runner.temp }}/industrial-browser
+        run: |
+          node industrial-continuity/tests/browser.cjs
+          cp "$RUNNER_TEMP/industrial-browser/report.json" industrial-continuity/data/browser-qualification.json
+          cp "$RUNNER_TEMP/industrial-browser/desktop-initial.png" industrial-continuity/preview.png
+          python industrial-continuity/build.py
+          sha256sum industrial-continuity/industrial-continuity-source.zip > "$RUNNER_TEMP/industrial-package.sha256"
+          python industrial-continuity/build.py
+          sha256sum -c "$RUNNER_TEMP/industrial-package.sha256"
+          python - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('industrial-continuity')
+          for filename,count in [('qualification.json',48),('browser-qualification.json',33)]:
+              r=json.loads((root/'data'/filename).read_text())
+              assert r['status']=='PASS' and r['passed']==count and r['total']==count
+          assert json.loads((root/'build-meta.json').read_text())['engine_sha256']=='f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d'
+          PY
+          git diff --check
+      - name: Retain browser evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: industrial-continuity-publication-browser
+          path: ${{ runner.temp }}/industrial-browser
+          if-no-files-found: error
+      - name: Publish qualified source branch only
+        working-directory: ${{ runner.temp }}/industrial-release
+        run: |
+          git config user.name "AXM publication"
+          git config user.email "actions@users.noreply.github.com"
+          git add industrial-continuity index.html README.md CONTINUITY.md
+          git diff --cached --name-only
+          git commit -m "Publish qualified Industrial Continuity workbench and portable verification kit"
+          git push origin HEAD:refs/heads/release/industrial-continuity-20261117
+          git rev-parse HEAD
