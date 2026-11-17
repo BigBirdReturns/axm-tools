@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-17T02:49:46.168980Z",
+  "generated": "2026-11-17T21:09:51.062862Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -34,8 +34,8 @@
     {
       "source": "Google News",
       "scope": "state",
-      "ok": false,
-      "error": "HTTP Error 429: Too Many Requests"
+      "ok": true,
+      "kept": 3
     },
     {
       "source": "AUSD board schedule",
@@ -54,6 +54,18 @@
       "published": "2026-12-08",
       "priority": "hot",
       "scope": "district",
+      "first_seen": "2026-11-17",
+      "bills": []
+    },
+    {
+      "id": "acb0d3f61ce2",
+      "source": "LAist Education",
+      "title": "Does locking up a student's cell phone improve test scores? A new study suggests so",
+      "summary": "A new study of school cellphone bans finds they may help students make up for some of the learning they've lost since 2013 \u2013 a divergence from earlier study results.",
+      "link": "https://laist.com/news/education/does-locking-up-a-students-cell-phone-improve-test-scores-a-new-study-suggests-so",
+      "published": "Tue, 17 Nov 2026 19:33:27 GMT",
+      "priority": "hot",
+      "scope": "state",
       "first_seen": "2026-11-17",
       "bills": []
     },
@@ -95,7 +107,7 @@
     },
     {
       "id": "0110a46024ef",
-      "source": "California State Portal | CA.gov",
+      "source": "Legislative Analyst\u2019s Office (.gov)",
       "title": "The 2026-27 California Spending Plan: Proposition 98 and K-12 Education",
       "summary": "",
       "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9Mdk9ad3p2ZlY2M2tod3NkM2pEZXl1T1JsVzFzd2RjYUtZZmtxM0FJMWVuX3FmSWlRSlNnLWEtcnlTVVZLRHJXVzZ3cVdRVHFraVBBa1Bn?oc=5",
