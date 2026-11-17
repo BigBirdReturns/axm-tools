@@ -1,0 +1,73 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const E=require('../engine.js'),root=path.resolve(__dirname,'..');
+const engine=crypto.createHash('sha256').update('axm-industrial-engine/1\0').update(fs.readFileSync(path.join(root,'engine.js'))).update('\0').update(fs.readFileSync(path.join(root,'commons-core.js'))).digest('hex');
+const report={schema:'axm-industrial-tests/1',engine_sha256:engine,observed_at:new Date().toISOString(),checks:[],scope:'Same-author software qualification; synthetic operations, no customer or plant acceptance.'};
+function check(name,pass){report.checks.push({name,pass:!!pass});if(!pass)throw Error(name);}
+async function reject(name,fn){let rejected=false;try{await fn();}catch(e){rejected=true;}check(name,rejected);}
+const wrap=async obj=>{const {sha256,...b}=obj;return {...b,sha256:await E.digest(b)}};
+(async()=>{
+ let s=await E.evaluate(await E.start(engine));let r=s.decisions[0].result;
+ check('Initial economic optimum is A80 B35',r.plan.a===80&&r.plan.b===35&&r.chosen==='planned-recovery');
+ check('Initial planned net is 5650 USD after 150 cost',r.plan.net_cents===565000&&r.plan.cost_cents===15000);
+ check('Counterfactual baseline is 4975 USD',r.baseline_net_cents===497500);
+ check('Incremental contribution is 675 USD',r.incremental_net_cents===67500);
+ check('Downstream packaging constraint is visible',r.limiting==='pack'&&r.plan.slack.mix===45);
+ check('Late supplier option is held',r.candidates[2].eligible===false&&r.candidates[2].plan===null);
+ check('No result grants operational authority',r.operational_authority===false&&r.external_effects===false);
+ check('Initial decision current on its own record',E.current(s));
+ await reject('Wrong review role refused',()=>E.review(s,'Analyst label','analyst'));
+ await reject('Anonymous review refused',()=>E.review(s,'','shift-planner'));
+ s=await E.review(s,'Synthetic planner','shift-planner');check('Review remains explicitly unauthenticated',s.reviews[0].identity_status==='unverified-label'&&s.reviews[0].operational_authority===false);
+ const original=E.clone(s);s=await E.scenario(s,'customer-mix');
+ check('Correction makes retained decision stale before evaluation',!E.current(s)&&s.decisions.length===1);
+ check('Correction makes prior review stale',E.reviewStatus(s)==='STALE');
+ check('Correction preserves original economic result',s.decisions[0].result.plan.net_cents===565000);
+ await reject('Stale decision cannot receive a new review',()=>E.review(s,'Synthetic planner','shift-planner'));
+ s=await E.evaluate(s);r=s.decisions.at(-1).result;
+ check('Customer mix changes selected intervention',r.chosen==='existing-capacity');
+ check('Corrected optimum is A30 B60 at 8850 USD',r.plan.a===30&&r.plan.b===60&&r.plan.net_cents===885000);
+ check('Economic change eliminates incremental repair value',r.incremental_net_cents===0&&r.candidates[1].plan.net_cents===870000);
+ check('Prior review does not transfer to successor',E.reviewStatus(s)==='STALE');
+ s=await E.review(s,'Successor planner','shift-planner');check('Successor records a separate review',s.reviews.length===2&&E.reviewStatus(s)==='RECORDED_LABEL_ONLY');
+ const packet=await E.seal(s),restored=await E.restore(JSON.parse(JSON.stringify(packet)),engine);
+ check('Fresh record replay preserves both conclusions',restored.decisions.length===2&&restored.decisions[0].result.plan.net_cents===565000&&restored.decisions[1].result.plan.net_cents===885000);
+ check('Fresh replay reconstructs current review status',E.reviewStatus(restored)==='RECORDED_LABEL_ONLY');
+ let b=E.clone(packet);b.sources[0].raw+=' ';await reject('Changed raw source rejected',()=>E.restore(b,engine));
+ b=E.clone(packet);b.decisions[1].result.plan.net_cents+=1000000;b.decisions[1]=await wrap(b.decisions[1]);b=await wrap(b);await reject('Rehashed false economics rejected by recomputation',()=>E.restore(b,engine));
+ b=E.clone(packet);b.sources.splice(0,1);b=await wrap(b);await reject('Missing retained evidence rejected',()=>E.restore(b,engine));
+ await reject('Different engine rejected',()=>E.restore(packet,'0'.repeat(64)));
+ b=E.clone(packet);b.sources.push(b.sources[0]);b=await wrap(b);await reject('Duplicate receipt rejected',()=>E.restore(b,engine));
+ b=E.clone(packet);b.sources.at(-1).previous='0'.repeat(64);b.sources[b.sources.length-1]=await wrap(b.sources.at(-1));b=await wrap(b);await reject('Forked correction rejected',()=>E.restore(b,engine));
+ b=E.clone(packet);b.reviews[0].operational_authority=true;b.reviews[0]=await wrap(b.reviews[0]);b=await wrap(b);await reject('Rehashed invented operational authority rejected',()=>E.restore(b,engine));
+ b=E.clone(packet);b.decisions[1].frontier=[...b.decisions[1].frontier].reverse();b.decisions[1]=await wrap(b.decisions[1]);b=await wrap(b);await reject('Impossible source frontier rejected',()=>E.restore(b,engine));
+ let t=await E.evaluate(await E.scenario(original,'parts-allocation'));r=t.decisions.at(-1).result;check('Reserved spare holds repair and changes choice',r.chosen==='existing-capacity'&&!r.candidates[1].eligible&&r.plan.net_cents===497500);
+ t=await E.evaluate(await E.scenario(original,'quality-hold'));r=t.decisions.at(-1).result;check('Quality hold removes A from all candidate plans',r.plan.a===0&&r.plan.b===60&&r.plan.net_cents===240000&&r.candidates.filter(c=>c.plan).every(c=>c.plan.a===0));
+ t=await E.evaluate(await E.scenario(original,'missing-evidence'));r=t.decisions.at(-1).result;check('Missing capacity remains inconclusive, never zero-filled',r.status==='INCONCLUSIVE'&&!r.plan&&r.issues.some(i=>i.includes('missing')));
+ await reject('Inconclusive evidence cannot receive a review',()=>E.review(t,'Synthetic planner','shift-planner'));
+ t=await E.change(original,'orders',E.FIXTURES.orders.replace('55.00','-55.00'));t=await E.evaluate(t);check('Negative economic input is inconclusive',t.decisions.at(-1).result.status==='INCONCLUSIVE');
+ t=await E.change(original,'routing',E.FIXTURES.routing.replace('A,2,1','A,0,1'));t=await E.evaluate(t);check('Zero cycle time cannot create infinite capacity',t.decisions.at(-1).result.status==='INCONCLUSIVE');
+ t=await E.change(original,'orders',E.FIXTURES.orders.replace('A,80','A,501'));t=await E.evaluate(t);check('Out-of-envelope demand is explicitly refused',t.decisions.at(-1).result.status==='INCONCLUSIVE');
+ await reject('Unknown CSV header rejected',()=>E.change(original,'orders',E.FIXTURES.orders.replace('sku','product')));
+ await reject('Duplicate product identity rejected',()=>E.change(original,'orders',E.FIXTURES.orders.replace('B,60','A,60')));
+ await reject('Oversized CSV rejected',()=>E.change(original,'orders','x'.repeat(32769)));
+ await reject('Regressing observation time rejected',()=>E.change(original,'orders',E.FIXTURES.orders,{observed:'2020-01-01'}));
+ const before=E.clone(original);await reject('Malformed JSON fails before replacement',async()=>E.restore(JSON.parse('{broken'),engine));check('Failed imports leave caller state untouched',JSON.stringify(before)===JSON.stringify(original));
+ const unchanged=await E.change(original,'orders',E.FIXTURES.orders);check('Identical evidence does not create a spurious correction',unchanged.sources.length===original.sources.length&&E.current(unchanged));
+ t=await E.change(original,'procedure',E.FIXTURES.procedure.replace('Planning-review,3,1,shift-planner','Planning-review,4,1,quality-planner'));check('Procedure change invalidates review even when economics may match',E.reviewStatus(t)==='STALE');t=await E.evaluate(t);await reject('Old role cannot review new procedure',()=>E.review(t,'Label','shift-planner'));t=await E.review(t,'Label','quality-planner');check('New declared role remains non-authoritative',E.reviewStatus(t)==='RECORDED_LABEL_ONLY'&&!t.reviews.at(-1).operational_authority);
+ // Independent finite property checks enumerate a tiny envelope, using a separate oracle.
+ let seed=41,cases=0;const rand=n=>{seed=(1664525*seed+1013904223)>>>0;return seed%n;};
+ for(let k=0;k<40;k++){
+  const da=rand(9),db=rand(9),ma=rand(80),mb=rand(80),mix=rand(24),pack=rand(24);
+  const raw={...E.FIXTURES,orders:`sku,demand_units,contribution_usd_per_unit\nA,${da},${ma}\nB,${db},${mb}\n`,capacity:`stage,available_min\nmix,${mix}\npack,${pack}\n`,procedure:E.FIXTURES.procedure.replace(',3,1,',',3,0,')};
+  const records=E.IDS.map(id=>({source:id,raw:raw[id]})),actual=E.calculate(records);let best=-1;
+  for(let a=0;a<=da;a++)for(let bb=0;bb<=db;bb++)if(2*a+bb<=mix&&a+2*bb<=pack)best=Math.max(best,(a*ma+bb*mb)*100);
+  if(actual.plan.net_cents!==best||actual.plan.used.mix>mix||actual.plan.used.pack>pack)throw Error('Independent enumeration case '+k);cases++;
+ }
+ check('40 independent finite product-mix oracle cases',cases===40);
+ report.property_cases=cases;report.status='PASS';
+ const out=process.env.TEST_OUTPUT||path.join(root,'data','qualification.json');fs.mkdirSync(path.dirname(out),{recursive:true});
+ fs.writeFileSync(out,JSON.stringify({...report,passed:report.checks.length,total:report.checks.length},null,2)+'\n');
+ fs.writeFileSync(path.join(path.dirname(out),'example-handoff.json'),JSON.stringify(packet,null,2)+'\n');
+ console.log(JSON.stringify({...report,passed:report.checks.length,total:report.checks.length}));
+})().catch(e=>{report.status='FAIL';report.failure=e.stack;console.error(JSON.stringify(report));process.exitCode=1});

@@ -1,0 +1,24 @@
+{
+  "schema": "axm-industrial-publication-source/1",
+  "source_commit": "8a5369e55f755ca409b3a859043cde0b3747724f",
+  "public_base_commit": "cd12f46a621b2986d8670342ddb8ca866f7d8cd1",
+  "seed_sha256": "51d3c37d3bbe2dd960ac3bfb1f124d51559a77dba6e79f13459a003d92a135f6",
+  "seed_files": {
+    "industrial-continuity/README.md": "d337e2bb14c451f554accdd04396b07178e5af5b6929d96c8e1d63ddb57a15e3",
+    "industrial-continuity/app.js": "70758280fe5a74dd8e1e6763caf25432909f169fb892ab981ec0d89aa82137ef",
+    "industrial-continuity/build.py": "88301888ec3f51515e85dbac34c0ad2ca9d018a0d413c9307758c62a1b7aa088",
+    "industrial-continuity/engine.js": "130471df834984b42a51719653d754a8ce28e3f24aa45da1dd58adbfb4e1e794",
+    "industrial-continuity/index.html": "a56b2fab11b2929c89e1bad8b0a82eb9217cc7451234337bf7a1def621a595a8",
+    "industrial-continuity/research/ASSESSMENT.md": "d781666c48aff3d3b5becc2c4e6aecdf86fa02f98260a5b8a4d4648c7340881a",
+    "industrial-continuity/style.css": "d8f190625ebc2ff4ed1d2a47821f8db0bbae0e800b0625029ae6fb4dae418c85",
+    "industrial-continuity/tests/browser.cjs": "53a6541a4fcc3f917c9db0d4bb334e0a6923ce91a255fb79a1099498d8fddf4c",
+    "industrial-continuity/tests/verify.cjs": "5f96982ececcec12f07300ef77fa0e2b959b87e6651be7623c17b8d9f50a4ef0",
+    "industrial-continuity/verify-handoff.cjs": "866b97c49722e2182255bc1e532b3040e1e21e76d7f45dfed92b4c6b47c2e28a"
+  },
+  "publication_edits": [
+    "Share metadata and direct source/report links",
+    "AXM Tools directory and continuity registration"
+  ],
+  "engine_unchanged": true,
+  "data": "Synthetic fixtures and fresh automated qualification; no private correspondence"
+}

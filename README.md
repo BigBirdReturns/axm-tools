@@ -14,6 +14,7 @@ Old HTML addresses under the seven migrated directories redirect to the matching
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
+| [`industrial-continuity/`](industrial-continuity/) | Source-bound industrial planning, correction-induced stale decisions and reviews, actual local CSV intake, independently executable offline handoff, source and adversarial tests | [Run Industrial Continuity](https://bigbirdreturns.github.io/axm-tools/industrial-continuity/) |
 | [`proof-workbench/`](proof-workbench/) | One portable runner over three pinned native proof kits, private engagement scope and delivery economics, evidence-referenced opportunity stages and independently replayable source delivery | [Open Proof Workbench](https://bigbirdreturns.github.io/axm-tools/proof-workbench/) |
 | [`agent-flywheel/`](agent-flywheel/) | On-demand agent research using visitor evidence and a chosen model: diagnosis, prompt experiments, held-out evaluation, verifiable receipts and a portable local/CI runner | [Run Agent Flywheel](https://bigbirdreturns.github.io/axm-tools/agent-flywheel/) |
 | [`cesmii-proof/`](cesmii-proof/) | Independent i3X application proof: public demo capture, source-bound three-team calculation, correction and fresh-client replay; sourced opportunity map and reusable synthetic recipes | [Run the proof](https://bigbirdreturns.github.io/axm-tools/cesmii-proof/) |

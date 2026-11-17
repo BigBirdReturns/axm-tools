@@ -1,0 +1,204 @@
+{
+  "schema": "axm-industrial-tests/1",
+  "engine_sha256": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+  "observed_at": "2026-11-17T02:45:02.156Z",
+  "checks": [
+    {
+      "name": "Initial economic optimum is A80 B35",
+      "pass": true
+    },
+    {
+      "name": "Initial planned net is 5650 USD after 150 cost",
+      "pass": true
+    },
+    {
+      "name": "Counterfactual baseline is 4975 USD",
+      "pass": true
+    },
+    {
+      "name": "Incremental contribution is 675 USD",
+      "pass": true
+    },
+    {
+      "name": "Downstream packaging constraint is visible",
+      "pass": true
+    },
+    {
+      "name": "Late supplier option is held",
+      "pass": true
+    },
+    {
+      "name": "No result grants operational authority",
+      "pass": true
+    },
+    {
+      "name": "Initial decision current on its own record",
+      "pass": true
+    },
+    {
+      "name": "Wrong review role refused",
+      "pass": true
+    },
+    {
+      "name": "Anonymous review refused",
+      "pass": true
+    },
+    {
+      "name": "Review remains explicitly unauthenticated",
+      "pass": true
+    },
+    {
+      "name": "Correction makes retained decision stale before evaluation",
+      "pass": true
+    },
+    {
+      "name": "Correction makes prior review stale",
+      "pass": true
+    },
+    {
+      "name": "Correction preserves original economic result",
+      "pass": true
+    },
+    {
+      "name": "Stale decision cannot receive a new review",
+      "pass": true
+    },
+    {
+      "name": "Customer mix changes selected intervention",
+      "pass": true
+    },
+    {
+      "name": "Corrected optimum is A30 B60 at 8850 USD",
+      "pass": true
+    },
+    {
+      "name": "Economic change eliminates incremental repair value",
+      "pass": true
+    },
+    {
+      "name": "Prior review does not transfer to successor",
+      "pass": true
+    },
+    {
+      "name": "Successor records a separate review",
+      "pass": true
+    },
+    {
+      "name": "Fresh record replay preserves both conclusions",
+      "pass": true
+    },
+    {
+      "name": "Fresh replay reconstructs current review status",
+      "pass": true
+    },
+    {
+      "name": "Changed raw source rejected",
+      "pass": true
+    },
+    {
+      "name": "Rehashed false economics rejected by recomputation",
+      "pass": true
+    },
+    {
+      "name": "Missing retained evidence rejected",
+      "pass": true
+    },
+    {
+      "name": "Different engine rejected",
+      "pass": true
+    },
+    {
+      "name": "Duplicate receipt rejected",
+      "pass": true
+    },
+    {
+      "name": "Forked correction rejected",
+      "pass": true
+    },
+    {
+      "name": "Rehashed invented operational authority rejected",
+      "pass": true
+    },
+    {
+      "name": "Impossible source frontier rejected",
+      "pass": true
+    },
+    {
+      "name": "Reserved spare holds repair and changes choice",
+      "pass": true
+    },
+    {
+      "name": "Quality hold removes A from all candidate plans",
+      "pass": true
+    },
+    {
+      "name": "Missing capacity remains inconclusive, never zero-filled",
+      "pass": true
+    },
+    {
+      "name": "Inconclusive evidence cannot receive a review",
+      "pass": true
+    },
+    {
+      "name": "Negative economic input is inconclusive",
+      "pass": true
+    },
+    {
+      "name": "Zero cycle time cannot create infinite capacity",
+      "pass": true
+    },
+    {
+      "name": "Out-of-envelope demand is explicitly refused",
+      "pass": true
+    },
+    {
+      "name": "Unknown CSV header rejected",
+      "pass": true
+    },
+    {
+      "name": "Duplicate product identity rejected",
+      "pass": true
+    },
+    {
+      "name": "Oversized CSV rejected",
+      "pass": true
+    },
+    {
+      "name": "Regressing observation time rejected",
+      "pass": true
+    },
+    {
+      "name": "Malformed JSON fails before replacement",
+      "pass": true
+    },
+    {
+      "name": "Failed imports leave caller state untouched",
+      "pass": true
+    },
+    {
+      "name": "Identical evidence does not create a spurious correction",
+      "pass": true
+    },
+    {
+      "name": "Procedure change invalidates review even when economics may match",
+      "pass": true
+    },
+    {
+      "name": "Old role cannot review new procedure",
+      "pass": true
+    },
+    {
+      "name": "New declared role remains non-authoritative",
+      "pass": true
+    },
+    {
+      "name": "40 independent finite product-mix oracle cases",
+      "pass": true
+    }
+  ],
+  "scope": "Same-author software qualification; synthetic operations, no customer or plant acceptance.",
+  "property_cases": 40,
+  "status": "PASS",
+  "passed": 48,
+  "total": 48
+}
