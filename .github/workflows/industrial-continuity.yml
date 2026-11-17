@@ -1,0 +1,41 @@
+name: Industrial Continuity qualification
+on:
+  push:
+    branches: [main, release/industrial-continuity-20261117]
+    paths: ['industrial-continuity/**', '.github/workflows/industrial-continuity.yml']
+  pull_request:
+    paths: ['industrial-continuity/**', '.github/workflows/industrial-continuity.yml']
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Source-bound calculation and adversarial replay
+        env:
+          TEST_OUTPUT: ${{ runner.temp }}/industrial-tests/qualification.json
+        run: |
+          node industrial-continuity/tests/verify.cjs
+          node industrial-continuity/verify-handoff.cjs "$RUNNER_TEMP/industrial-tests/example-handoff.json"
+      - name: Deterministic source and offline distribution
+        run: |
+          python -B industrial-continuity/build.py
+          git diff --exit-code -- industrial-continuity
+      - name: Isolated browser qualification tooling
+        run: |
+          npm install --prefix "$RUNNER_TEMP/industrial-browser-tooling" --no-save playwright@1
+          "$RUNNER_TEMP/industrial-browser-tooling/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Actual file intake, correction, download and offline receiver
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/industrial-browser-tooling/node_modules/playwright
+          BROWSER_OUTPUT: ${{ runner.temp }}/industrial-browser
+        run: node industrial-continuity/tests/browser.cjs
