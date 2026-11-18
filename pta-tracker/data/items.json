@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-18T06:55:22.032183Z",
+  "generated": "2026-11-18T20:46:13.645126Z",
   "sources": [
     {
       "source": "AUSD News",
@@ -10,8 +10,8 @@
     {
       "source": "Google News",
       "scope": "district",
-      "ok": true,
-      "kept": 0
+      "ok": false,
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "source": "Holly Avenue News",
