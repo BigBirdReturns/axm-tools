@@ -8,7 +8,7 @@ a year and still be working when you come back.
 
 ## Tools
 
-The Cantos instruments moved to their [own repository](https://github.com/BigBirdReturns/cantos) on 29 September 2026. Cantos is the umbrella for continuing evidence, judgment and work; Second Run is its execution and reuse program. The tools below are particular implementations within that wider scope.
+The Cantos instruments moved to their [own repository](https://github.com/BigBirdReturns/cantos) on 29 September 2026. Cantos is the umbrella for continuing evidence, judgment and work; Second Run is its execution and reuse program. [Open Cantos](https://bigbirdreturns.github.io/cantos/) to compare compute evidence. [Open Second Run](https://bigbirdreturns.github.io/axm-tools/second-run/) to replay a request, change a price and inspect task-level execution and reuse.
 
 Old HTML addresses under the seven migrated directories redirect to the matching Cantos page. Publication stages frozen copies of the original non-HTML files for existing data and download links. These copies preserve the pre-move bytes; current sources and updates belong to Cantos. [`integration/cantos_compat.py`](integration/cantos_compat.py) verifies every destination against the Cantos Git tree before staging, after the existing release gate in each Pages publisher.
 
