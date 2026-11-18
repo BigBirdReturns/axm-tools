@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Second Run turns resolved judgments into repeatable work. Trace six real tasks across three requests, inspect the receipts, and reproduce the case on your machine.">
+<meta name="description" content="Second Run executes explicit observations, retains their evidence and reuses valid results. Compare serving changes with streamed workload evidence and a CI verdict, or replay the dated six-task example.">
 <title>Second Run | Repeatable work</title><link rel="icon" href="mark-transparent.svg">
 <style>
 :root{color-scheme:dark;--ink:#f1eadb;--muted:#bbb4a7;--amber:#e0a64b;--bg:#16171a;--rule:#45433f;--panel:#202124}
@@ -11,10 +11,20 @@ section{padding:clamp(38px,7vw,75px) 0;border-bottom:1px solid var(--rule)}.hero
 @media(max-width:620px){header{min-height:70px}header img{width:124px}nav{gap:.7rem}nav a{font-size:.86rem}.columns{grid-template-columns:1fr}th,td{padding:.7rem .35rem}table{font-size:.84rem}thead th{font-size:.77rem}.hero p,.lede{font-size:1.06rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style></head><body>
-<header><img src="wordmark-transparent.svg" alt="Second Run"><nav aria-label="Main"><a href="#case">Case study</a><a href="#replay">Replay</a></nav></header>
+<header><img src="wordmark-transparent.svg" alt="Second Run"><nav aria-label="Main"><a href="#maintainers">Maintainers</a><a href="#case">Retained example</a></nav></header>
 <main><section class="hero"><h1>Run only what changed.</h1>
 <p>Second Run turns a resolved judgment into a procedure another person can inspect and repeat. Each result carries the inputs, assumptions and procedure that produced it. On the next request, Second Run checks those dependencies, reuses the results that still hold and executes the affected work.</p>
-<div class="actions"><a class="button" href="#case">Inspect six tasks</a><a href="#replay">Run the example locally</a></div></section>
+<div class="actions"><a class="button" href="https://bigbirdreturns.github.io/cantos/public/open-compute/#maintainers">Run the maintainer workflow</a><a href="#case">Inspect the retained example</a></div></section>
+<section id="maintainers"><h2>A serving change with a checkable verdict</h2>
+<p class="lede">Compare a baseline and candidate implementation against a fixed workload. The maintainer instrument retains streamed responses, timing, exact application outcomes and declared operating conditions. Second Run connects those observations to the comparison and retains the result for the next engineer.</p>
+<div class="columns"><div><h3>Collect explicit observations</h3><p>Configure endpoints, implementation and model identity, hardware, workload and protocol. Each completed observation retains its raw evidence, original date and request count. Use <code>--fresh</code> to collect again under unchanged settings.</p></div><div><h3>Recompute affected work</h3><p>A candidate implementation or configuration change collects a new candidate observation. A price, acceptance policy or external grading change reuses the observations and recalculates the comparison.</p></div><div><h3>Gate the change in CI</h3><p>The native verdict distinguishes pass, regression, incomparable evidence and instrument error. The Second Run command preserves that verdict when it reuses a prior comparison.</p></div></div>
+<div class="reading"><p>Download the maintainer kit, configure its example for the endpoints you operate, then run the included request:</p></div>
+<pre tabindex="0"><code>python -B integration/work.py \
+  --request integration/examples/maintainer-work.json \
+  --store ./maintainer-results \
+  --require-maintainer-pass</code></pre>
+<div class="reading"><p>The command returns exit 0 for pass, 1 for regression, 2 for incomparable evidence and 3 for instrument error or held dependencies. Raw failures and earlier results remain available for inspection. A reused observation keeps its original measurement date.</p><p><a class="button" href="https://bigbirdreturns.github.io/cantos/public/open-compute/#maintainers">Get the source and runnable kit</a></p><p><a href="https://github.com/BigBirdReturns/cantos/blob/main/compute/maintainer/README.md">Instrument and workload guide</a> · <a href="https://github.com/BigBirdReturns/cantos/blob/main/integration/WORK.md">Second Run dependency and reuse contract</a></p></div>
+</section>
 <section id="case"><h2>One price changed.<br>Five results carried forward.</h2>
 <p class="lede">A six-task request brought together two provider offers, an external benchmark import, a retained evaluation, a source correction and a workload reprice. A second operator requested the same work. In the third request, the operator changed one modeled rate to $2 per GPU-hour.</p>
 <div class="table-wrap"><table><thead><tr><th scope="col">Task</th><th scope="col">First request</th><th scope="col">Same work</th><th scope="col">Changed rate</th></tr></thead><tbody>
@@ -30,7 +40,7 @@ section{padding:clamp(38px,7vw,75px) 0;border-bottom:1px solid var(--rule)}.hero
 <details><summary>What qualifies a result for reuse?</summary><p>The runner keys a task by its class, semantic parameters, runtime versions and the bytes of declared inputs and procedures. It checks dependencies and the stored result checksum on reuse. A change to a shared input file can invalidate several calculations. A reused listing keeps its original observation date and holds.</p></details>
 </section>
 <section><h2>Where the work repeats</h2><div class="columns"><div><h3>Software workflows</h3><p>Capture a validation procedure with its inputs and acceptance rule. The next operator can inspect the result and determine which checks a change affects.</p></div><div><h3>Media production</h3><p>Record which source, edit decisions and delivery settings a derivative depends on. A revision can then identify the outputs that require another production pass.</p></div><div><h3>Technical investigation</h3><p>Retain the source observations, calculation and unresolved questions behind a conclusion. A revised assumption can travel through the dependent work with its provenance intact.</p></div></div></section>
-<section id="replay"><h2>Reproduce the three requests</h2><div class="reading"><p>Download the replay script beside a clean checkout of the public Cantos source. With Git, Python 3.12 or newer and Node.js 22 or newer on your path, run these commands from the download directory.</p><p><a class="button" href="replay.py" download>Download replay.py</a></p></div>
+<section id="replay"><h2>Replay the retained six-task example</h2><div class="reading"><p>This September example retains its original source and fixtures. Download the replay script beside a clean checkout of the public Cantos source. With Git, Python 3.12 or newer and Node.js 22 or newer on your path, run these commands from the download directory.</p><p><a class="button" href="replay.py" download>Download replay.py</a></p></div>
 <pre tabindex="0"><code>git clone https://github.com/BigBirdReturns/cantos.git
 git -C cantos checkout --detach 0c9594b4d0c302e5b6da41f32fb983256c0e1391
 python replay.py cantos</code></pre>
