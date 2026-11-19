@@ -1,0 +1,10 @@
+{
+  "schema": "axm-member-build/1",
+  "version": "1.0.0",
+  "engine_sha256": "d64b6f02dfd23a2074d33c6a1b899514a6dce214257e7ba09f9fdcd502606207",
+  "source_sha256": {
+    "core.js": "ad356f7853e1123a0414d1b40c428004934c0defe3b69ccde77987703a5657dc",
+    "commons-core.js": "0158ea96c0c99a4f479e37573bacf26916348318e2811b75196ce390cab36cdd"
+  },
+  "identity": "sha256(core.js bytes + LF + commons-core.js bytes)"
+}

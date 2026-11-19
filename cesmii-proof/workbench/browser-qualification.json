@@ -1,0 +1,75 @@
+{
+  "schema": "axm-member-browser-qualification/1",
+  "status": "PASS",
+  "passed": 16,
+  "total": 16,
+  "checks": [
+    {
+      "name": "Fresh browser loads the complete application and baseline",
+      "pass": true
+    },
+    {
+      "name": "Actual source form correction retains baseline and marks it stale",
+      "pass": true
+    },
+    {
+      "name": "Explicit evaluation creates the supported successor",
+      "pass": true
+    },
+    {
+      "name": "Review binds to the current decision",
+      "pass": true
+    },
+    {
+      "name": "Reload restores sources, both decisions and declared review",
+      "pass": true
+    },
+    {
+      "name": "Downloaded browser handoff independently replays in Node",
+      "pass": true
+    },
+    {
+      "name": "Malformed handoff import preserves current workspace",
+      "pass": true
+    },
+    {
+      "name": "Rehashed invented result is refused without replacing existing work",
+      "pass": true
+    },
+    {
+      "name": "Separate offline browser replays actual handoff",
+      "pass": true
+    },
+    {
+      "name": "Recipient workflow file opens with five source families and three rules",
+      "pass": true
+    },
+    {
+      "name": "Application fetches real local official i3X server",
+      "pass": true
+    },
+    {
+      "name": "Actual local context binds to the imported member workflow",
+      "pass": true
+    },
+    {
+      "name": "Another real asset creates a separately retained mapped workspace",
+      "pass": true
+    },
+    {
+      "name": "Unavailable browser storage still permits a complete handoff export",
+      "pass": true
+    },
+    {
+      "name": "Mobile layout stays inside the viewport",
+      "pass": true
+    },
+    {
+      "name": "All observed browser paths complete without JavaScript errors",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "browser": "149.0.7827.55",
+  "engine_sha256": "d64b6f02dfd23a2074d33c6a1b899514a6dce214257e7ba09f9fdcd502606207"
+}

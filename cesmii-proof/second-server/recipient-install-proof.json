@@ -1,0 +1,49 @@
+{
+  "schema": "axm-i3x-recipient-install-proof/1",
+  "status": "PASS",
+  "observed_at": "2026-11-19T18:16:58.574813+00:00",
+  "setup_script_sha256": "1a78a136ab51398a6c3f6d6241cc014de52336de929e12d60447445d2ba4ed5b",
+  "source_commit": "9ffc352470b9807a0143cd5c43f9680cb5779550",
+  "archive_sha256": "6b4b21fd16ba6c190046e0ccff723180cf7e7908cbc729e7cdc4ca855efa9a61",
+  "source_files_verified": 66,
+  "base_url": "http://127.0.0.1:8382/v1",
+  "python": "Python 3.13.15",
+  "info": {
+    "success": true,
+    "result": {
+      "specVersion": "1.0",
+      "serverVersion": "1.0.0",
+      "serverName": "CESMII official demo server, AXM local verification",
+      "capabilities": {
+        "query": {
+          "history": true
+        },
+        "update": {
+          "current": true,
+          "history": false
+        },
+        "subscribe": {
+          "stream": true
+        }
+      }
+    }
+  },
+  "checks": [
+    {
+      "name": "Bundled upstream archive exact",
+      "pass": true
+    },
+    {
+      "name": "Installed source exactly matches bundled pin",
+      "pass": true
+    },
+    {
+      "name": "Fresh archive-installed server answers real HTTP",
+      "pass": true
+    },
+    {
+      "name": "Fresh archive-installed server discovers pump and tank",
+      "pass": true
+    }
+  ]
+}

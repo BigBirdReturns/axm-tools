@@ -1,0 +1,35 @@
+# AXM × i3X Member Workbench
+
+This application connects read-only i3X context to user-defined operational evidence and rules. A receiving browser or Node process recomputes every retained decision from its exact source frontier. It supports arbitrary equipment identifiers, configurable source families and scalar fields, three editable workflow examples, declared reviews, correction chains, local persistence, imports, exports and a self-contained offline edition.
+
+Open `index.html` through a local static server, or open `offline.html` directly for retained-data work. Run `python -m http.server 8765 --bind 127.0.0.1` in this directory and visit `http://127.0.0.1:8765/` to capture a local i3X server. The hosted site can connect to HTTPS endpoints that permit browser CORS. Browser policy may restrict hosted-to-local connections; the local application or imported capture follows the same verification path.
+
+## Working with evidence
+
+Choose a workflow example, change team evidence and save a source revision. An initial maintenance example has two serviceable parts and two allocations against one required part. Correcting allocation to one makes the previous decision stale. Evaluate to retain a successor with the new source frontier. A review attaches to one exact decision and never transfers to a changed one.
+
+Import a workflow JSON to supply your own equipment binding, sources and decision rules. The schema is `axm-member-workflow/1`. `sources` declare unique IDs, owners, observation times, values and notes. Values accept finite numbers, strings, booleans or null for unknown. An expression is a literal value, a reference `{ "source": "inventory", "field": "serviceable" }`, or an arithmetic object `{ "op": "subtract", "args": [expression, expression] }`. Supported arithmetic is add, subtract, multiply, divide, min and max. A rule compares left and right expressions with gte, lte, gt, lt, eq or neq. The app does not execute imported code.
+
+Set `evidence_class` to `synthetic`, `member-deidentified`, or `operator-provided` according to the evidence you actually supply. `require_context` declares whether an i3X capture is mandatory. `max_age_hours` is a positive freshness limit or null for retained snapshots without a freshness assertion. Observation times belong to the source; evaluation time is retained with each decision.
+
+## Source context and acceptance
+
+The API connection executes discovery GET requests and read-only POST queries for related objects and values. It retains exact JSON response text, request details, status, observation time and SHA-256. Context validation checks i3X 1.0 declaration, equipment discovery, the mapped relationship query and good, dated values. Equipment values remain source context; operational rules use the explicitly declared team evidence. The app has no device command or control endpoint.
+
+`SUPPORTED_ON_RECORD` means every rule returned true. `NOT_SUPPORTED_ON_RECORD` means at least one rule returned false with no unknown rule. Unknown operands produce `INCONCLUSIVE_ON_RECORD`. Missing required context produces `INCONCLUSIVE_CONTEXT`. A violated declared freshness policy produces `INCONCLUSIVE_FRESHNESS`. A displayed result always carries `REVIEW_ONLY` and `production_authority: false`.
+
+## Replay and source identity
+
+Export a handoff to move source histories, original API response bytes, decisions, review declarations and the workflow definition. Import verifies the outer digest, individual source hashes, predecessor continuity, captured bytes and every recorded decision. Rehashing an invented conclusion does not make it valid. A receiving Node process runs:
+
+```
+node verify-capsule.cjs received-handoff.json
+```
+
+The verifier computes its actual installed application identity from `core.js`, a newline and `commons-core.js`, then rejects capsules from a different source identity. The copied Team Commons donor supplies canonical JSON and SHA-256; the new rule evaluator and generic history contract live in `core.js`. `build-meta.json` records both source hashes. `python build.py` emits the exact offline edition and metadata using UTF-8 LF on every host.
+
+Local storage retains separate workspaces and does not upload data. Export before clearing browser storage or changing devices. A quota failure is visible; export preserves the in-memory state. Metadata and review names are declarations, hashes establish retained integrity, and reproducible arithmetic establishes what those records support. Institutional identity, factual source truth, vendor interoperability and production authority require their own acceptance.
+
+## File ownership
+
+`core.js`, `app.js`, `index.html`, `style.css`, `build.py`, `verify-capsule.cjs`, tests and this README are steward-owned source. `commons-core.js` is an exact copied donor. `capture-example.json` retains the original public demonstration response snapshot. `meta.js`, `build-meta.json`, `fixture.js` and `offline.html` are generated by `build.py`. No scheduled writer or shared runtime import exists.

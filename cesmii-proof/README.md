@@ -1,4 +1,30 @@
-# AXM × i3X decision continuity lab 0.1
+# AXM × i3X application and technical review package
+
+Release: 19 November 2026. Producer: Jonathan Sandhu, AXM, jvssandhu@gmail.com.
+
+[Open the member workbench](workbench/) · [Read the complete review](review/) · [Download the complete kit](cesmii-member-kit.zip) · [Watch the demonstration](review/demo.mp4).
+
+The member workbench connects a selected i3X asset to operator-defined evidence and rules. It retains source revisions, marks dependent conclusions stale after corrections, records reviews against exact decisions, saves workspaces locally and exports a handoff that a separate browser or Node process independently recomputes. The standalone application includes its calculation source and retained example context. Its three editable examples cover maintenance readiness, batch review and energy intensity; the import contract supports additional named source families and arithmetic/comparison rules without executing imported code.
+
+The complete kit includes the member application, the retained reference lab, the six-source Industrial Continuity application, editable member workflow JSON, technical architecture guide, captioned demonstration, exact official second-server source and runnable setup, observed HTTP captures, conformance results, independent receiving checks and source manifests. Open `cesmii-proof/review/index.html` after extracting the two application directories, or open either application's `offline.html` directly.
+
+## Reproduce the member release
+
+From the repository or extracted kit root:
+
+```text
+python cesmii-proof/workbench/build.py
+node cesmii-proof/workbench/qualification.cjs
+node cesmii-proof/workbench/verify-capsule.cjs cesmii-proof/workbench/sample-handoff.json
+```
+
+The optional browser campaign is documented in [workbench/README.md](workbench/README.md). The actual second-server setup and verifier are documented in [second-server/README.md](second-server/README.md). Its server uses the official CESMII implementation with simulated equipment data. The preserved reference API capture remains a historical observation. Team records in the included examples are synthetic; imported member records remain local and keep their declared evidence class.
+
+The application carries source and calculation integrity. Source authenticity, responsible identities, real plant observations and authority to operate remain with the contributing organization. Hosted and downloaded applications are available for use, with source included for inspection and reproduction; the repository carries no blanket software license. Contact the producer for distribution or integration terms.
+
+`build-member-kit.py` creates a deterministic combined archive and `--check` verifies each archived file against its manifest and current source bytes. `build.py` maintains the original reference lab's offline and source distribution, excludes recursive delivery archives and media, and writes exact UTF-8 bytes across native and CI hosts. `MEMBER_MANIFEST.json` describes the complete member kit.
+
+# Retained reference lab, 9 November 2026
 
 Independent application-level proof using CESMII's published i3X customer journey and visual vocabulary. CESMII has not commissioned, accepted, certified or endorsed this work. Private introductions, correspondence and allegations are excluded.
 

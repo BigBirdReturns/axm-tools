@@ -1,0 +1,137 @@
+{
+  "schema": "axm-member-qualification/1",
+  "status": "PASS",
+  "engine_sha256": "d64b6f02dfd23a2074d33c6a1b899514a6dce214257e7ba09f9fdcd502606207",
+  "passed": 32,
+  "total": 32,
+  "checks": [
+    {
+      "name": "Actual installed sources match build metadata",
+      "pass": true
+    },
+    {
+      "name": "Retained public i3X context validates",
+      "pass": true
+    },
+    {
+      "name": "A good value on the same endpoint cannot impersonate an asset dependency",
+      "pass": true
+    },
+    {
+      "name": "Joined baseline has zero available against one required",
+      "pass": true
+    },
+    {
+      "name": "Correction retains original source and decision and makes standing stale",
+      "pass": true
+    },
+    {
+      "name": "A stale decision cannot acquire a new review",
+      "pass": true
+    },
+    {
+      "name": "Successor uses corrected evidence without transferring original review",
+      "pass": true
+    },
+    {
+      "name": "Cold restore recomputes both original and corrected decisions",
+      "pass": true
+    },
+    {
+      "name": "Raw conclusion modification rejected",
+      "pass": true
+    },
+    {
+      "name": "Rehashed invented conclusion rejected by recomputation",
+      "pass": true
+    },
+    {
+      "name": "Source bytes cannot change behind a retained source hash",
+      "pass": true
+    },
+    {
+      "name": "Rehashed fork in correction lineage rejected",
+      "pass": true
+    },
+    {
+      "name": "Missing predecessor history rejected",
+      "pass": true
+    },
+    {
+      "name": "Duplicate frontier cannot substitute for missing source families",
+      "pass": true
+    },
+    {
+      "name": "Changed retained API response bytes rejected",
+      "pass": true
+    },
+    {
+      "name": "Different actual application source identity rejected",
+      "pass": true
+    },
+    {
+      "name": "Unknown inventory remains inconclusive",
+      "pass": true
+    },
+    {
+      "name": "Missing required context is visible",
+      "pass": true
+    },
+    {
+      "name": "Declared freshness limit changes the decision state",
+      "pass": true
+    },
+    {
+      "name": "A new capture cannot refresh an old value timestamp",
+      "pass": true
+    },
+    {
+      "name": "Batch recipe evaluates three independent conditions",
+      "pass": true
+    },
+    {
+      "name": "Batch source correction changes result",
+      "pass": true
+    },
+    {
+      "name": "Energy ratio recipe evaluates actual arithmetic",
+      "pass": true
+    },
+    {
+      "name": "Division by zero stays unknown",
+      "pass": true
+    },
+    {
+      "name": "Delivered five-source member template imports and evaluates three rules",
+      "pass": true
+    },
+    {
+      "name": "Member template uses all rules after correction",
+      "pass": true
+    },
+    {
+      "name": "Member evidence classification survives the source contract",
+      "pass": true
+    },
+    {
+      "name": "Executable or unknown AST operator rejected",
+      "pass": true
+    },
+    {
+      "name": "Duplicate source identity rejected",
+      "pass": true
+    },
+    {
+      "name": "Unknown source reference rejected",
+      "pass": true
+    },
+    {
+      "name": "Corrections cannot silently change source schema",
+      "pass": true
+    },
+    {
+      "name": "Independent Node process replays actual exported handoff",
+      "pass": true
+    }
+  ]
+}

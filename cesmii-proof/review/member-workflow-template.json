@@ -1,0 +1,112 @@
+{
+  "schema": "axm-member-workflow/1",
+  "id": "maintenance-planning-example-01",
+  "title": "Maintenance planning and parts availability",
+  "asset": {
+    "element_id": "pump-101",
+    "label": "Equipment-A"
+  },
+  "evidence_class": "synthetic",
+  "require_context": true,
+  "max_age_hours": null,
+  "sources": [
+    {
+      "id": "inventory",
+      "label": "Serviceable part stock",
+      "owner": "Inventory team",
+      "observed_at": "2026-11-19T18:00:00Z",
+      "values": {
+        "serviceable": 2
+      },
+      "note": "Synthetic example. Serviceable means recorded usable stock for Part-A; it excludes unusable stock."
+    },
+    {
+      "id": "allocation",
+      "label": "Existing part allocations",
+      "owner": "Planning team",
+      "observed_at": "2026-11-19T18:00:00Z",
+      "values": {
+        "allocated": 2
+      },
+      "note": "Synthetic example. Correct allocated from 2 to 1 in the workbench to retain a successor and change the parts conclusion."
+    },
+    {
+      "id": "maintenance",
+      "label": "Maintenance task requirement",
+      "owner": "Maintenance team",
+      "observed_at": "2026-11-19T18:00:00Z",
+      "values": {
+        "required": 1,
+        "duration_hours": 2
+      },
+      "note": "Synthetic example for WorkOrder-A on Equipment-A using Part-A. Duration is a planning assumption in hours."
+    },
+    {
+      "id": "capacity",
+      "label": "Declared maintenance window",
+      "owner": "Scheduling team",
+      "observed_at": "2026-11-19T18:00:00Z",
+      "values": {
+        "planning_window_hours": 4
+      },
+      "note": "Synthetic available planning window in hours. It is independent of the physical availability of equipment."
+    },
+    {
+      "id": "procedure",
+      "label": "Applicable planning procedure",
+      "owner": "Procedure steward",
+      "observed_at": "2026-11-19T18:00:00Z",
+      "values": {
+        "planning_allowed": 1
+      },
+      "note": "Synthetic declared planning condition: 1 permits calculation under this procedure; it grants no maintenance or production authority."
+    }
+  ],
+  "rules": [
+    {
+      "id": "parts",
+      "label": "Unallocated serviceable stock meets task requirement",
+      "op": "gte",
+      "left": {
+        "op": "subtract",
+        "args": [
+          {
+            "source": "inventory",
+            "field": "serviceable"
+          },
+          {
+            "source": "allocation",
+            "field": "allocated"
+          }
+        ]
+      },
+      "right": {
+        "source": "maintenance",
+        "field": "required"
+      }
+    },
+    {
+      "id": "window",
+      "label": "Planned maintenance fits the declared window",
+      "op": "lte",
+      "left": {
+        "source": "maintenance",
+        "field": "duration_hours"
+      },
+      "right": {
+        "source": "capacity",
+        "field": "planning_window_hours"
+      }
+    },
+    {
+      "id": "procedure",
+      "label": "Procedure permits this planning review",
+      "op": "eq",
+      "left": {
+        "source": "procedure",
+        "field": "planning_allowed"
+      },
+      "right": 1
+    }
+  ]
+}

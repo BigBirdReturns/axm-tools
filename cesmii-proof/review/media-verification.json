@@ -1,0 +1,104 @@
+{
+  "schema": "axm-i3x-demonstration/1",
+  "observed_at": "2026-11-19T18:19:23.286Z",
+  "status": "PASS",
+  "width": 1600,
+  "height": 1000,
+  "fps": 25,
+  "duration_seconds": 243.52,
+  "video_codec": "H.264",
+  "audio_codec": "AAC",
+  "synthetic_narration": true,
+  "narrator": "Windows SAPI, Microsoft Zira Desktop",
+  "browser": "149.0.7827.55",
+  "engine_sha256": "d64b6f02dfd23a2074d33c6a1b899514a6dce214257e7ba09f9fdcd502606207",
+  "capsule_sha256": "91a5e9624e07898d7f7759665d4b36b0892230fef7267cb769c887ff4393da1b",
+  "checks": [
+    {
+      "name": "Second-server capture resolved in the application",
+      "pass": true
+    },
+    {
+      "name": "Baseline is unsupported by the recorded rules",
+      "pass": true
+    },
+    {
+      "name": "Correction immediately marked prior decision stale",
+      "pass": true
+    },
+    {
+      "name": "Successor supports the corrected evidence",
+      "pass": true
+    },
+    {
+      "name": "Separate offline browser replayed the actual exported handoff",
+      "pass": true
+    },
+    {
+      "name": "Industrial baseline computes A80 B35",
+      "pass": true
+    },
+    {
+      "name": "Industrial corrected record computes A30 B60",
+      "pass": true
+    }
+  ],
+  "page_errors": [],
+  "chapters": [
+    {
+      "id": "intro",
+      "duration_seconds": 21.28
+    },
+    {
+      "id": "architecture",
+      "duration_seconds": 27.88
+    },
+    {
+      "id": "connect",
+      "duration_seconds": 28.0
+    },
+    {
+      "id": "baseline",
+      "duration_seconds": 28.24
+    },
+    {
+      "id": "correction",
+      "duration_seconds": 24.48
+    },
+    {
+      "id": "export",
+      "duration_seconds": 26.28
+    },
+    {
+      "id": "offline",
+      "duration_seconds": 25.52
+    },
+    {
+      "id": "industrial",
+      "duration_seconds": 30.84
+    },
+    {
+      "id": "close",
+      "duration_seconds": 31.0
+    }
+  ],
+  "files": {
+    "demo.mp4": {
+      "bytes": 7395441,
+      "sha256": "b38c5a67a5b11cf4914f7b993a9cb48e3710f25f6f372e56b3c4f8dcf28dba15"
+    },
+    "demo.vtt": {
+      "bytes": 3577,
+      "sha256": "de41c023a788993cf529f6b801ef619261d843aa9c0db16c583f8e52e46b2ec9"
+    },
+    "transcript.html": {
+      "bytes": 4786,
+      "sha256": "5648ce6809c75d95b24926b8fb750a15a0814d3fba0e77b4f4ca4835a090d9af"
+    },
+    "demo-poster.png": {
+      "bytes": 593513,
+      "sha256": "85ee31df7524fb264a49bf56ac7fe7cb6c2eeb3be768f95bd628c52b1a7251aa"
+    }
+  },
+  "decode": "Complete output decoded without ffmpeg errors"
+}

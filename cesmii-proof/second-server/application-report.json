@@ -1,0 +1,123 @@
+{
+  "schema": "axm-i3x-second-server-application/1",
+  "observed_at": "2026-11-19T18:19:27.111Z",
+  "engine_sha256": "d64b6f02dfd23a2074d33c6a1b899514a6dce214257e7ba09f9fdcd502606207",
+  "source_sha256": {
+    "workbench/core.js": "ad356f7853e1123a0414d1b40c428004934c0defe3b69ccde77987703a5657dc",
+    "workbench/commons-core.js": "0158ea96c0c99a4f479e37573bacf26916348318e2811b75196ce390cab36cdd",
+    "capture.py": "1810a8ca38d2d263550b5bf1f1f1ee9e9acb9e05b0784b478faad0535fcd07a1"
+  },
+  "checks": [
+    {
+      "name": "Published build digest equals actual application bytes",
+      "pass": true
+    },
+    {
+      "name": "Original retained public context still imports",
+      "pass": true
+    },
+    {
+      "name": "Real missing object responses remain inconclusive",
+      "pass": true
+    },
+    {
+      "name": "pump: actual source bytes and context validate",
+      "pass": true
+    },
+    {
+      "name": "pump: expected mapped asset",
+      "pass": true
+    },
+    {
+      "name": "pump: real independent loopback endpoint",
+      "pass": true
+    },
+    {
+      "name": "pump: baseline shortage is calculated",
+      "pass": true
+    },
+    {
+      "name": "pump: correction makes old decision stale",
+      "pass": true
+    },
+    {
+      "name": "pump: corrected decision is calculated",
+      "pass": true
+    },
+    {
+      "name": "pump: earlier conclusion is preserved",
+      "pass": true
+    },
+    {
+      "name": "pump: fresh Node process independently replays both decisions",
+      "pass": true
+    },
+    {
+      "name": "pump: rehashed false conclusion rejected",
+      "pass": true
+    },
+    {
+      "name": "pump: decision grants review only",
+      "pass": true
+    },
+    {
+      "name": "tank: actual source bytes and context validate",
+      "pass": true
+    },
+    {
+      "name": "tank: expected mapped asset",
+      "pass": true
+    },
+    {
+      "name": "tank: real independent loopback endpoint",
+      "pass": true
+    },
+    {
+      "name": "tank: baseline shortage is calculated",
+      "pass": true
+    },
+    {
+      "name": "tank: correction makes old decision stale",
+      "pass": true
+    },
+    {
+      "name": "tank: corrected decision is calculated",
+      "pass": true
+    },
+    {
+      "name": "tank: earlier conclusion is preserved",
+      "pass": true
+    },
+    {
+      "name": "tank: fresh Node process independently replays both decisions",
+      "pass": true
+    },
+    {
+      "name": "tank: rehashed false conclusion rejected",
+      "pass": true
+    },
+    {
+      "name": "tank: decision grants review only",
+      "pass": true
+    },
+    {
+      "name": "Asset mismatch stays inconclusive",
+      "pass": true
+    },
+    {
+      "name": "Changed response bytes rejected",
+      "pass": true
+    },
+    {
+      "name": "Uncertain source quality remains inconclusive",
+      "pass": true
+    },
+    {
+      "name": "Real structural object with GoodNoData remains inconclusive",
+      "pass": true
+    }
+  ],
+  "status": "PASS",
+  "passed": 27,
+  "total": 27
+}

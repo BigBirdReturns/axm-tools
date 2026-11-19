@@ -47,6 +47,67 @@ jobs:
           cp "$PROOF_TEST_OUTPUT/report.json" cesmii-proof/data/browser-qualification.json
           python cesmii-proof/build.py
           git diff --check
+      - name: Rebuild member application and independently replay retained handoffs
+        run: |
+          node cesmii-proof/workbench/verify-capsule.cjs cesmii-proof/workbench/sample-handoff.json
+          node cesmii-proof/workbench/verify-capsule.cjs cesmii-proof/second-server/capsule-local-pump.json
+          node cesmii-proof/workbench/verify-capsule.cjs cesmii-proof/second-server/capsule-local-tank.json
+          cp -a cesmii-proof "$RUNNER_TEMP/cesmii-member-source"
+          python "$RUNNER_TEMP/cesmii-member-source/workbench/build.py"
+          for file in build-meta.json meta.js fixture.js offline.html; do
+            cmp "cesmii-proof/workbench/$file" "$RUNNER_TEMP/cesmii-member-source/workbench/$file"
+          done
+          node "$RUNNER_TEMP/cesmii-member-source/workbench/qualification.cjs"
+      - name: Start the bundled official i3X server for live member checks
+        run: |
+          python cesmii-proof/second-server/setup.py --work-dir "$RUNNER_TEMP/axm-i3x-server" --port 8381
+          (
+            cd "$RUNNER_TEMP/axm-i3x-server/i3X/demo/server"
+            exec "$RUNNER_TEMP/axm-i3x-server/venv/bin/python" -m uvicorn app:app --host 127.0.0.1 --port 8381
+          ) > "$RUNNER_TEMP/cesmii-official-server.log" 2>&1 &
+          printf '%s\n' "$!" > "$RUNNER_TEMP/cesmii-official-server.pid"
+          python - <<'PY'
+          import json, time, urllib.error, urllib.request
+          deadline = time.monotonic() + 45
+          while time.monotonic() < deadline:
+              try:
+                  with urllib.request.urlopen("http://127.0.0.1:8381/v1/info", timeout=1) as response:
+                      payload = json.load(response)
+                  if payload.get("success") and payload.get("result", {}).get("specVersion") == "1.0":
+                      break
+              except (OSError, ValueError, urllib.error.URLError):
+                  pass
+              time.sleep(0.5)
+          else:
+              raise SystemExit("Bundled official i3X server did not become ready within 45 seconds")
+          PY
+      - name: Exercise the member application against a real second server
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/cesmii-test/node_modules/playwright
+          I3X_LOCAL_BASE: http://127.0.0.1:8381/v1
+        run: |
+          node "$RUNNER_TEMP/cesmii-member-source/workbench/browser-test.cjs" "$RUNNER_TEMP/cesmii-member-browser"
+          git diff --check
+      - name: Stop the job-owned official server
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/cesmii-official-server.pid" ]; then
+            kill "$(cat "$RUNNER_TEMP/cesmii-official-server.pid")" 2>/dev/null || true
+          fi
+      - name: Retain original and member browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cesmii-proof-and-member-evidence
+          if-no-files-found: ignore
+          path: |
+            ${{ runner.temp }}/cesmii-browser
+            ${{ runner.temp }}/cesmii-member-browser
+            ${{ runner.temp }}/cesmii-member-source/workbench/qualification.json
+            ${{ runner.temp }}/cesmii-member-source/workbench/sample-handoff.json
+            ${{ runner.temp }}/axm-i3x-server/server-provenance.json
+            ${{ runner.temp }}/axm-i3x-server/requirements-resolved.txt
+            ${{ runner.temp }}/cesmii-official-server.log
       - name: Retain qualified generated assets on the publication branch
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/publish/cesmii-proof-20261109'
         run: |

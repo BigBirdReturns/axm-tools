@@ -17,3 +17,7 @@ hot-aisle/campaign/**/fixtures/** -text
 # Signed shelf bundles and hashed blind-handoff packets are byte identities.
 hot-aisle/campaign/shelf/join/run3-*/** -text
 hot-aisle/campaign/shelf/stranger-2-2026-09-24/** -text whitespace=cr-at-eol
+
+# Replay identities bind exact source bytes across native and CI checkouts.
+cesmii-proof/** -text
+team-commons/core.js -text

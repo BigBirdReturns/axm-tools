@@ -1,0 +1,107 @@
+
+i3X 1.0 Conformance Test Suite
+v1.0 · build 6
+Target: http://127.0.0.1:8381/v1
+
+
+Transport & Server Info
+  ✓ [ 1/60] CORE-01 GET /info responds with HTTP 200 and a JSON body
+  ✓ [ 2/60] CORE-02 GET /info does not require authentication
+  ✓ [ 3/60] CORE-03 ServerInfo declares specVersion and a complete capabilities matrix
+  ✓ [ 4/60] CORE-04 Server compresses responses with gzip when the client sends Accept-Encoding: gzip
+  ⚠ [ 5/60] CORE-05 Endpoint is served over HTTPS
+        Endpoint is plain HTTP. Implementations MUST support encrypted transport (HTTPS) in production;
+        HTTP is acceptable only for development/internal testing.
+  ⚠ [ 6/60] CORE-06 Server requires authentication on data endpoints
+        The server accepted an unauthenticated request to GET /namespaces. This is acceptable for
+        development and testing, but in production implementations MUST require authentication.
+
+Exploratory Methods
+  ✓ [ 7/60] EXP-01 GET /namespaces returns a success envelope with valid Namespace records
+  ✓ [ 8/60] EXP-02 Server exposes at least one Namespace
+  ✓ [ 9/60] EXP-03 Namespace URIs are unique
+  ✓ [10/60] EXP-04 GET /objecttypes returns valid ObjectTypeResponse records with JSON Schema definitions
+  ✓ [11/60] EXP-05 Every Object Type belongs to a declared Namespace
+  ✓ [12/60] EXP-06 GET /objecttypes?namespaceUri= filters by namespace
+  ✓ [13/60] EXP-07 POST /objecttypes/query returns a bulk response in request order
+  ✓ [14/60] EXP-08 POST /objecttypes/query reports unknown elementIds as per-item 404 failures
+  ✓ [15/60] EXP-09 GET /relationshiptypes returns valid RelationshipType records
+  ✓ [16/60] EXP-10 Every Relationship Type has a registered, symmetric reverseOf
+  ✓ [17/60] EXP-11 POST /relationshiptypes/query returns a bulk response and per-item 404s for unknown ids
+  ✓ [18/60] EXP-12 GET /objects returns valid ObjectInstanceResponse records
+  ✓ [19/60] EXP-13 Every Object's typeElementId resolves to a registered Object Type
+  ✓ [20/60] EXP-14 ElementIds are well-formed and unique across the address space
+  ✓ [21/60] EXP-15 GET /objects?root=true returns at least one root Object
+  ✓ [22/60] EXP-16 GET /objects?typeElementId= filters by type
+  ✓ [23/60] EXP-17 GET /objects?includeMetadata=true returns metadata with type provenance
+  ✓ [24/60] EXP-18 POST /objects/list returns a bulk response in request order with per-item 404s
+  ✓ [25/60] EXP-19 POST /objects/related returns RelatedObjectResult entries with registered relationship types
+  ✓ [26/60] EXP-20 Relationships are traversable in both directions (bidirectional storage)
+  ✓ [27/60] EXP-21 Hierarchy is reachable through /objects/related (parentId matches a HasParent-style edge)
+  ✓ [28/60] EXP-22 POST /objects/related honors the relationshipType filter
+
+Query Methods
+  ✓ [29/60] QRY-01 POST /objects/value returns CurrentValueResult records (value, quality, timestamp)
+  ✓ [30/60] QRY-02 Null values follow the quality pairing rules
+  ✓ [31/60] QRY-03 Object values conform to their Object Type's JSON Schema
+  ✓ [32/60] QRY-04 POST /objects/value preserves request order and reports unknown ids per-item
+  ✓ [33/60] QRY-05 Composition values: maxDepth > 1 returns child values under "components"
+  ✓ [34/60] QRY-06 maxDepth = 1 (default) returns no components
+  ✓ [35/60] QRY-07 POST /objects/history returns HistoricalValueResult records
+  ✓ [36/60] QRY-08 Historical values are well-formed VQTs within the requested time range
+  ✓ [37/60] QRY-09 POST /objects/history reports unknown elementIds as per-item 404 failures
+  ✓ [38/60] QRY-10 POST /objects/history requires startTime and endTime in RFC 3339 format
+  ✓ [39/60] QRY-11 POST /objects/history with maxDepth > 1 returns child history under "components"
+
+Update Methods (optional)
+  – [40/60] UPD-01 PUT /objects/value accepts a write and returns a bulk result per elementId
+        Write tests disabled by user
+  – [41/60] UPD-02 A written value is readable via POST /objects/value
+        Write tests disabled by user
+  – [42/60] UPD-03 PUT /objects/value supports partial failure for unknown elementIds
+        Write tests disabled by user
+  – [43/60] UPD-04 PUT /objects/history accepts a historical write
+        Optional feature not declared by the server (capabilities.update.history = false) — omission is allowed
+  ✓ [44/60] UPD-05 Update endpoints honestly advertise unsupported features (501 when capability is false)
+
+Subscribe Methods
+  ✓ [45/60] SUB-01 POST /subscriptions creates a subscription and returns a subscriptionId
+  ✓ [46/60] SUB-02 POST /subscriptions/list returns the subscription keyed by subscriptionId
+  ✓ [47/60] SUB-15 Subscription requests without a clientId are rejected with 400
+  ✓ [48/60] SUB-16 A subscription accessed with another clientId behaves as nonexistent (404)
+  ✓ [49/60] SUB-03 POST /subscriptions/register registers objects and returns per-item results
+  ✓ [50/60] SUB-04 Re-registering an already-registered object succeeds (idempotent)
+  ✓ [51/60] SUB-05 Registration supports partial failure for unknown elementIds
+  ✓ [52/60] SUB-06 POST /subscriptions/sync returns batches of well-formed updates
+  – [53/60] SUB-07 Sync acknowledgement: lastSequenceNumber removes acknowledged batches
+        No updates were observed on the subscription (server may capture values only on change); acknowledgement semantics could not be exercised
+  ✓ [54/60] SUB-13 Sync acknowledgement: lastSequenceNumber = -1 clears all pending updates
+  ✓ [55/60] SUB-08 POST /subscriptions/unregister removes objects with per-item results
+  ✓ [56/60] SUB-09 POST /subscriptions/stream opens a Server-Sent Events stream
+  ✓ [57/60] SUB-14 Opening a second stream closes the existing stream (single stream per subscription)
+  ✓ [58/60] SUB-10 POST /subscriptions/delete deletes the subscription
+  ✓ [59/60] SUB-11 Sync against a deleted or unknown subscription returns 404
+  – [60/60] SUB-12 Stream endpoint honestly advertises lack of support (501 when capability is false)
+        Streaming is declared supported — covered by SUB-09
+
+════════════════════════════════════════════════════════════════
+  Result: 1.0 Compatible
+════════════════════════════════════════════════════════════════
+All required (MUST) behavior passed. Optional features were omitted: Update
+  historical values (PUT /objects/history). Implement and declare them to
+  reach Full 1.0 Compliance.
+
+  52 passed  0 failed  2 warnings  6 skipped  (60 total)
+
+  Warnings (advisory — do not affect the verdict):
+  ⚠ CORE-05 Endpoint is served over HTTPS
+      Endpoint is plain HTTP. Implementations MUST support encrypted transport (HTTPS) in
+      production; HTTP is acceptable only for development/internal testing.
+      Spec: https://github.com/cesmii/i3X/blob/1.0/spec/IMPLEMENTATION_GUIDE.md#security--authentication
+  ⚠ CORE-06 Server requires authentication on data endpoints
+      The server accepted an unauthenticated request to GET /namespaces. This is acceptable for
+      development and testing, but in production implementations MUST require authentication.
+      Spec: https://github.com/cesmii/i3X/blob/1.0/spec/IMPLEMENTATION_GUIDE.md#security--authentication
+
+Report written to .\conformance-report.json
+

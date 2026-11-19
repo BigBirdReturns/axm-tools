@@ -1,0 +1,389 @@
+{
+  "schema": "axm-member-workspace/1",
+  "version": "1.0.0",
+  "engine_sha256": "d64b6f02dfd23a2074d33c6a1b899514a6dce214257e7ba09f9fdcd502606207",
+  "workflow": {
+    "schema": "axm-member-workflow/1",
+    "id": "maintenance-review",
+    "title": "Maintenance release review",
+    "asset": {
+      "element_id": "pump-101",
+      "label": "Pump 101"
+    },
+    "evidence_class": "synthetic",
+    "require_context": true,
+    "max_age_hours": null,
+    "sources": [
+      {
+        "id": "inventory",
+        "label": "Serviceable inventory",
+        "owner": "Serviceable inventory team",
+        "observed_at": "2026-11-19T18:19:27.119Z",
+        "values": {
+          "serviceable": 2
+        },
+        "note": "Synthetic example. Replace with your declared operational evidence."
+      },
+      {
+        "id": "allocation",
+        "label": "Existing allocations",
+        "owner": "Existing allocations team",
+        "observed_at": "2026-11-19T18:19:27.119Z",
+        "values": {
+          "allocated": 2
+        },
+        "note": "Synthetic example. Replace with your declared operational evidence."
+      },
+      {
+        "id": "maintenance",
+        "label": "Work order",
+        "owner": "Work order team",
+        "observed_at": "2026-11-19T18:19:27.119Z",
+        "values": {
+          "required": 1
+        },
+        "note": "Synthetic example. Replace with your declared operational evidence."
+      }
+    ],
+    "rules": [
+      {
+        "id": "parts",
+        "label": "Unallocated serviceable stock meets the work order",
+        "op": "gte",
+        "left": {
+          "op": "subtract",
+          "args": [
+            {
+              "source": "inventory",
+              "field": "serviceable"
+            },
+            {
+              "source": "allocation",
+              "field": "allocated"
+            }
+          ]
+        },
+        "right": {
+          "source": "maintenance",
+          "field": "required"
+        }
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "inventory",
+      "label": "Serviceable inventory",
+      "owner": "Serviceable inventory team",
+      "observed_at": "2026-11-19T18:19:27.119Z",
+      "recorded_at": "2026-11-19T18:19:27.119Z",
+      "values": {
+        "serviceable": 2
+      },
+      "note": "Synthetic example. Replace with your declared operational evidence.",
+      "evidence_class": "synthetic",
+      "predecessor": null,
+      "sha256": "f6cb93ea86af8c8a8ef53ab2eacb6d19bd2bd30df8e18ff3e32099ca08eb6514"
+    },
+    {
+      "id": "allocation",
+      "label": "Existing allocations",
+      "owner": "Existing allocations team",
+      "observed_at": "2026-11-19T18:19:27.119Z",
+      "recorded_at": "2026-11-19T18:19:27.120Z",
+      "values": {
+        "allocated": 2
+      },
+      "note": "Synthetic example. Replace with your declared operational evidence.",
+      "evidence_class": "synthetic",
+      "predecessor": null,
+      "sha256": "c2ebaafb3fe77acd6dd02b3e7227ebf0217e974ebb8f190ce2283e47102a003c"
+    },
+    {
+      "id": "maintenance",
+      "label": "Work order",
+      "owner": "Work order team",
+      "observed_at": "2026-11-19T18:19:27.119Z",
+      "recorded_at": "2026-11-19T18:19:27.120Z",
+      "values": {
+        "required": 1
+      },
+      "note": "Synthetic example. Replace with your declared operational evidence.",
+      "evidence_class": "synthetic",
+      "predecessor": null,
+      "sha256": "b3565e62cad21502ee104f9dfa67af2c1e436b042c4d44c08ddf83de02deb795"
+    },
+    {
+      "id": "allocation",
+      "label": "Existing allocations",
+      "owner": "Synthetic allocation reviewer",
+      "observed_at": "2026-11-19T18:19:27.122Z",
+      "recorded_at": "2026-11-19T18:19:27.122Z",
+      "values": {
+        "allocated": 1
+      },
+      "note": "Corrected the separately declared local allocation",
+      "evidence_class": "synthetic",
+      "predecessor": "c2ebaafb3fe77acd6dd02b3e7227ebf0217e974ebb8f190ce2283e47102a003c",
+      "sha256": "5a9eedd13e9830957bf093b42c7f1e260f832fa99c0c7b61d3d5e608eb5532d7"
+    }
+  ],
+  "captures": [
+    {
+      "sha256": "a4b939a559b9b82765163c651df5bf2021b56b598270188b86464a6a53a7cf53",
+      "data": {
+        "schema": "axm-i3x-capture/1",
+        "evidence_class": "operator-provided-read-only-capture",
+        "base_url": "http://127.0.0.1:8381/v1",
+        "captured_at": "2026-11-19T18:15:18.692082+00:00",
+        "production_data": false,
+        "evidence_label": "CESMII official simulated data on a separate local server instance",
+        "remote_writes": false,
+        "mapping": {
+          "asset_id": "pump-101",
+          "value_ids": [
+            "pump-101-state"
+          ],
+          "history_id": "pump-101-measurements-bearing-temperature-value"
+        },
+        "records": [
+          {
+            "id": "info",
+            "url": "http://127.0.0.1:8381/v1/info",
+            "method": "GET",
+            "request": null,
+            "status": 200,
+            "captured_at": "2026-11-19T18:15:18.735368+00:00",
+            "body": "{\"success\":true,\"result\":{\"specVersion\":\"1.0\",\"serverVersion\":\"1.0.0\",\"serverName\":\"CESMII official demo server, AXM local verification\",\"capabilities\":{\"query\":{\"history\":true},\"update\":{\"current\":true,\"history\":false},\"subscribe\":{\"stream\":true}}}}",
+            "sha256": "c013aa6e035eefb8bc1b82dcfe38d49eb03e63e2d8443fdc1dedba76f799dc92"
+          },
+          {
+            "id": "namespaces",
+            "url": "http://127.0.0.1:8381/v1/namespaces",
+            "method": "GET",
+            "request": null,
+            "status": 200,
+            "captured_at": "2026-11-19T18:15:18.751357+00:00",
+            "body": "{\"success\":true,\"result\":[{\"uri\":\"https://cesmii.org/i3x\",\"displayName\":\"I3X\"},{\"uri\":\"https://isa.org/isa95\",\"displayName\":\"ISA95\"},{\"uri\":\"https://abelara.com/equipment\",\"displayName\":\"Abelara Equipment\"},{\"uri\":\"https://thinkiq.com/equipment\",\"displayName\":\"ThinkIQ Equipment\"}]}",
+            "sha256": "0415d29316db2c6bacb6aa62e0e9932bc29aa725fcdb4b52752a2b6f143e6c02"
+          },
+          {
+            "id": "objecttypes",
+            "url": "http://127.0.0.1:8381/v1/objecttypes",
+            "method": "GET",
+            "request": null,
+            "status": 200,
+            "captured_at": "2026-11-19T18:15:18.766798+00:00",
+            "body": "{\"success\":true,\"result\":[{\"elementId\":\"work-center-type\",\"displayName\":\"WorkCenterType\",\"namespaceUri\":\"https://isa.org/isa95\",\"sourceTypeId\":\"WorkCenterType\",\"version\":null,\"schema\":{\"description\":\"ISA-95 Work Center - organizational container with HasChildren relationships\",\"type\":\"object\"},\"related\":{\"relationshipType\":\"HasChildren\",\"types\":[\"https://isa.org/isa95:work-unit-type\"]}},{\"elementId\":\"work-unit-type\",\"displayName\":\"WorkUnitType\",\"namespaceUri\":\"https://isa.org/isa95\",\"sourceTypeId\":\"WorkUnitType\",\"version\":null,\"schema\":{\"description\":\"ISA-95 Work Unit - can be simple or complex with HasComponent relationships to child elements\",\"type\":\"object\"},\"related\":{\"relationshipType\":\"HasComponent\"}},{\"elementId\":\"state-type\",\"displayName\":\"StateType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"StateType\",\"version\":null,\"schema\":{\"type\":\"object\",\"properties\":{\"timestamp\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"color\":{\"type\":\"string\"},\"type\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"description\"]},\"metadata\":{\"type\":\"object\",\"properties\":{\"source\":{\"type\":\"string\"},\"uri\":{\"type\":\"string\"},\"asset\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"description\"]},\"previousState\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"color\":{\"type\":\"string\"},\"type\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"description\"]}},\"required\":[\"id\",\"name\",\"description\",\"color\",\"type\"]},\"additionalInfo\":{\"type\":\"object\",\"properties\":{\"runTime\":{\"type\":\"integer\"},\"lastFillTime\":{\"type\":\"string\"},\"mode\":{\"type\":\"string\"},\"operator\":{\"type\":\"string\"}},\"required\":[\"runTime\",\"lastFillTime\",\"mode\",\"operator\"]}},\"required\":[\"source\",\"uri\",\"asset\"]}},\"required\":[\"timestamp\",\"description\",\"color\",\"type\",\"metadata\"]},\"related\":null},{\"elementId\":\"product-type\",\"displayName\":\"ProductType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"ProductType\",\"version\":null,\"schema\":{\"description\":\"Product metadata container - no records, metadata only\",\"type\":\"object\"},\"related\":null},{\"elementId\":\"production-type\",\"displayName\":\"ProductionType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"ProductionType\",\"version\":null,\"schema\":{\"description\":\"Production container - no records, organizational metadata with HasChildren relationships\",\"type\":\"object\"},\"related\":{\"relationshipType\":\"HasChildren\",\"types\":[\"https://abelara.com/equipment:product-type\"]}},{\"elementId\":\"measurements-type\",\"displayName\":\"MeasurementsType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"MeasurementsType\",\"version\":null,\"schema\":{\"description\":\"Composite measurements container - no records, composed of measurement-type children\",\"type\":\"object\"},\"related\":{\"relationshipType\":\"HasComponent\",\"types\":[\"https://abelara.com/equipment:measurement-type\"]}},{\"elementId\":\"measurement-type\",\"displayName\":\"MeasurementType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"MeasurementType\",\"version\":null,\"schema\":{\"description\":\"Composite measurement type composed of value and health subtypes, with tolerance metadata in records\",\"type\":\"object\",\"properties\":{\"tolerance\":{\"type\":\"number\",\"description\":\"Acceptable deviation from target value\"},\"inTolerance\":{\"type\":\"boolean\",\"description\":\"Whether current value is within tolerance\"},\"value\":{\"type\":\"number\",\"description\":\"Composed child: measurement value\"},\"health\":{\"type\":\"integer\",\"description\":\"Composed child: measurement health indicator\"}},\"required\":[\"tolerance\",\"inTolerance\"]},\"related\":{\"relationshipType\":\"HasComponent\",\"types\":[\"https://abelara.com/equipment:measurement-value-type\",\"https://abelara.com/equipment:measurement-health-type\"]}},{\"elementId\":\"measurement-value-type\",\"displayName\":\"MeasurementValueType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"MeasurementValueType\",\"version\":null,\"schema\":{\"type\":\"number\"},\"related\":null},{\"elementId\":\"measurement-health-type\",\"displayName\":\"MeasurementHealthType\",\"namespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"MeasurementHealthType\",\"version\":null,\"schema\":{\"type\":\"integer\"},\"related\":null},{\"elementId\":\"sensor-type\",\"displayName\":\"SensorType\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"sourceTypeId\":\"1001\",\"version\":null,\"schema\":{\"type\":\"number\"},\"related\":null},{\"elementId\":\"temperature-sensor-type\",\"displayName\":\"TemperatureSensorType\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"sourceTypeId\":\"1002\",\"version\":null,\"schema\":{\"description\":\"Base temperature sensor reporting a reading with unit\",\"type\":\"object\",\"properties\":{\"temperature\":{\"type\":\"number\"},\"unit\":{\"type\":\"string\"}},\"required\":[\"temperature\",\"unit\"]},\"related\":null},{\"elementId\":\"precision-temperature-sensor-type\",\"displayName\":\"PrecisionTemperatureSensorType\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"sourceTypeId\":\"1003\",\"version\":null,\"schema\":{\"description\":\"Temperature sensor extended with accuracy and calibration metadata, using allOf to inherit temperature-sensor-type\",\"allOf\":[{\"description\":\"Base temperature sensor reporting a reading with unit\",\"type\":\"object\",\"properties\":{\"temperature\":{\"type\":\"number\"},\"unit\":{\"type\":\"string\"}},\"required\":[\"temperature\",\"unit\"]},{\"type\":\"object\",\"properties\":{\"accuracy\":{\"type\":\"number\",\"description\":\"Measurement accuracy in +/- degrees\"},\"calibrationDate\":{\"type\":\"string\",\"description\":\"ISO 8601 date of last calibration\"}},\"required\":[\"accuracy\",\"calibrationDate\"]}]},\"related\":{\"relationshipType\":\"InheritsFrom\",\"types\":[\"https://thinkiq.com/equipment:temperature-sensor-type\"]}}]}",
+            "sha256": "75a660cf532cdd35a9cdfeee4a6cf3637e12a9b2db7bf5ca17cf163c58ab8629"
+          },
+          {
+            "id": "relationshiptypes",
+            "url": "http://127.0.0.1:8381/v1/relationshiptypes",
+            "method": "GET",
+            "request": null,
+            "status": 200,
+            "captured_at": "2026-11-19T18:15:18.768735+00:00",
+            "body": "{\"success\":true,\"result\":[{\"elementId\":\"HasParent\",\"displayName\":\"HasParent\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"HasParent\",\"reverseOf\":\"HasChildren\"},{\"elementId\":\"HasChildren\",\"displayName\":\"HasChildren\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"HasChildren\",\"reverseOf\":\"HasParent\"},{\"elementId\":\"HasComponent\",\"displayName\":\"HasComponent\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"HasComponent\",\"reverseOf\":\"ComponentOf\"},{\"elementId\":\"ComponentOf\",\"displayName\":\"ComponentOf\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"ComponentOf\",\"reverseOf\":\"HasComponent\"},{\"elementId\":\"InheritedBy\",\"displayName\":\"InheritedBy\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"InheritedBy\",\"reverseOf\":\"InheritsFrom\"},{\"elementId\":\"InheritsFrom\",\"displayName\":\"InheritsFrom\",\"namespaceUri\":\"https://cesmii.org/i3x\",\"relationshipId\":\"InheritsFrom\",\"reverseOf\":\"InheritedBy\"},{\"elementId\":\"Monitors\",\"displayName\":\"Monitors\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"relationshipId\":\"Monitors\",\"reverseOf\":\"MonitoredBy\"},{\"elementId\":\"MonitoredBy\",\"displayName\":\"MonitoredBy\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"relationshipId\":\"MonitoredBy\",\"reverseOf\":\"Monitors\"},{\"elementId\":\"SuppliesTo\",\"displayName\":\"SuppliesTo\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"relationshipId\":\"SuppliesTo\",\"reverseOf\":\"SuppliedBy\"},{\"elementId\":\"SuppliedBy\",\"displayName\":\"SuppliedBy\",\"namespaceUri\":\"https://thinkiq.com/equipment\",\"relationshipId\":\"SuppliedBy\",\"reverseOf\":\"SuppliesTo\"}]}",
+            "sha256": "2d4662400d49e34d41edc07b85cd702dd1b0d87806ab0ed1ee843028824cb7d7"
+          },
+          {
+            "id": "objects",
+            "url": "http://127.0.0.1:8381/v1/objects",
+            "method": "GET",
+            "request": null,
+            "status": 200,
+            "captured_at": "2026-11-19T18:15:18.782873+00:00",
+            "body": "{\"success\":true,\"result\":[{\"elementId\":\"pump-station\",\"displayName\":\"pump-station\",\"typeElementId\":\"work-center-type\",\"parentId\":null,\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"pump-101\",\"displayName\":\"pump-101\",\"typeElementId\":\"work-unit-type\",\"parentId\":\"pump-station\",\"isComposition\":true,\"isExtended\":false},{\"elementId\":\"pump-101-state\",\"displayName\":\"pump-101 State\",\"typeElementId\":\"state-type\",\"parentId\":\"pump-101\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"pump-101-production\",\"displayName\":\"pump-101 Production\",\"typeElementId\":\"production-type\",\"parentId\":\"pump-101\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"pump-101-production-product\",\"displayName\":\"pump-101 Product\",\"typeElementId\":\"product-type\",\"parentId\":\"pump-101-production\",\"isComposition\":false,\"isExtended\":true},{\"elementId\":\"pump-101-measurements\",\"displayName\":\"pump-101 Measurements\",\"typeElementId\":\"measurements-type\",\"parentId\":\"pump-101\",\"isComposition\":true,\"isExtended\":false},{\"elementId\":\"pump-101-bearing-temperature\",\"displayName\":\"pump-101 Bearing Temperature\",\"typeElementId\":\"measurement-type\",\"parentId\":\"pump-101-measurements\",\"isComposition\":true,\"isExtended\":false},{\"elementId\":\"pump-101-measurements-bearing-temperature-value\",\"displayName\":\"Pump 101 Bearing Temperature Value\",\"typeElementId\":\"measurement-value-type\",\"parentId\":\"pump-101-bearing-temperature\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"pump-101-measurements-bearing-temperature-health\",\"displayName\":\"Pump 101 Bearing Health\",\"typeElementId\":\"measurement-health-type\",\"parentId\":\"pump-101-bearing-temperature\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"tank-201\",\"displayName\":\"tank-201\",\"typeElementId\":\"work-unit-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"unused-tank\",\"displayName\":\"ReserveTank-Unused\",\"typeElementId\":\"work-unit-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"sensor-001\",\"displayName\":\"TempSensor-101\",\"typeElementId\":\"sensor-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"sensor-002\",\"displayName\":\"PrecisionTempSensor-301\",\"typeElementId\":\"precision-temperature-sensor-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":false},{\"elementId\":\"sensor-003\",\"displayName\":\"TempSensor-VendorX\",\"typeElementId\":\"temperature-sensor-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":true}]}",
+            "sha256": "e75e08688f83784dfeac485c06fa3a12e998a89d0678fd2ff144b1b2d2a7cb6b"
+          },
+          {
+            "id": "related",
+            "url": "http://127.0.0.1:8381/v1/objects/related",
+            "method": "POST",
+            "request": {
+              "elementIds": [
+                "pump-101"
+              ],
+              "includeMetadata": true
+            },
+            "status": 200,
+            "captured_at": "2026-11-19T18:15:18.798030+00:00",
+            "body": "{\"success\":true,\"results\":[{\"success\":true,\"elementId\":\"pump-101\",\"result\":[{\"sourceRelationship\":\"HasParent\",\"object\":{\"elementId\":\"pump-station\",\"displayName\":\"pump-station\",\"typeElementId\":\"work-center-type\",\"parentId\":null,\"isComposition\":false,\"isExtended\":false,\"metadata\":{\"typeNamespaceUri\":\"https://isa.org/isa95\",\"sourceTypeId\":\"WorkCenterType\",\"description\":\"West facility pump station supplying coolant to the primary production area\",\"relationships\":{\"HasChildren\":[\"pump-101\",\"tank-201\",\"unused-tank\",\"sensor-001\",\"sensor-002\",\"sensor-003\"]},\"system\":{\"operationStartDate\":\"July 1, 1980\",\"lastMaintainedDate\":\"August 1, 2001\",\"sourceRelationship\":\"HasParent\"}}}},{\"sourceRelationship\":\"HasComponent\",\"object\":{\"elementId\":\"pump-101-state\",\"displayName\":\"pump-101 State\",\"typeElementId\":\"state-type\",\"parentId\":\"pump-101\",\"isComposition\":false,\"isExtended\":false,\"metadata\":{\"typeNamespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"StateType\",\"relationships\":{\"ComponentOf\":\"pump-101\"},\"system\":{\"sourceRelationship\":\"HasComponent\"}}}},{\"sourceRelationship\":\"HasComponent\",\"object\":{\"elementId\":\"pump-101-production\",\"displayName\":\"pump-101 Production\",\"typeElementId\":\"production-type\",\"parentId\":\"pump-101\",\"isComposition\":false,\"isExtended\":false,\"metadata\":{\"typeNamespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"ProductionType\",\"relationships\":{\"ComponentOf\":\"pump-101\",\"HasChildren\":[\"pump-101-production-product\"]},\"system\":{\"sourceRelationship\":\"HasComponent\"}}}},{\"sourceRelationship\":\"HasComponent\",\"object\":{\"elementId\":\"pump-101-measurements\",\"displayName\":\"pump-101 Measurements\",\"typeElementId\":\"measurements-type\",\"parentId\":\"pump-101\",\"isComposition\":true,\"isExtended\":false,\"metadata\":{\"typeNamespaceUri\":\"https://abelara.com/equipment\",\"sourceTypeId\":\"MeasurementsType\",\"relationships\":{\"ComponentOf\":\"pump-101\",\"HasComponent\":[\"pump-101-bearing-temperature\"]},\"system\":{\"sourceRelationship\":\"HasComponent\"}}}},{\"sourceRelationship\":\"SuppliesTo\",\"object\":{\"elementId\":\"tank-201\",\"displayName\":\"tank-201\",\"typeElementId\":\"work-unit-type\",\"parentId\":\"pump-station\",\"isComposition\":false,\"isExtended\":false,\"metadata\":{\"typeNamespaceUri\":\"https://isa.org/isa95\",\"sourceTypeId\":\"WorkUnitType\",\"description\":\"Primary coolant storage tank on the west production line, capacity 500L\",\"relationships\":{\"HasParent\":\"pump-station\",\"SuppliedBy\":\"pump-101\",\"MonitoredBy\":\"sensor-001\"},\"system\":{\"sourceRelationship\":\"SuppliesTo\"}}}}]}]}",
+            "sha256": "23e459f3903a70e04165f1ce80a90f890349e11bf0cdd8e183a8304fef999676"
+          },
+          {
+            "id": "value",
+            "url": "http://127.0.0.1:8381/v1/objects/value",
+            "method": "POST",
+            "request": {
+              "elementIds": [
+                "pump-101-state"
+              ],
+              "maxDepth": 1
+            },
+            "status": 200,
+            "captured_at": "2026-11-19T18:15:18.813068+00:00",
+            "body": "{\"success\":true,\"results\":[{\"success\":true,\"elementId\":\"pump-101-state\",\"result\":{\"isComposition\":false,\"value\":{\"timestamp\":\"2026-11-19T18:15:18Z\",\"description\":\"Pump is in maintenance\",\"color\":\"#800080\",\"type\":{\"id\":0,\"name\":\"Maintenance\",\"description\":\"Equipment under maintenance\"},\"metadata\":{\"source\":\"plc-controller\",\"uri\":\"opc://plc1/DB1.DBW0\",\"asset\":{\"id\":0,\"name\":\"Pump-101\",\"description\":\"Centrifugal water pump for cooling system\"}}},\"quality\":\"Good\",\"timestamp\":\"2026-11-19T18:15:18Z\"}}]}",
+            "sha256": "d5e63be57f24620106fb7286933491468e83e886ae924fd9270d840a7ada332a"
+          },
+          {
+            "id": "history",
+            "url": "http://127.0.0.1:8381/v1/objects/history",
+            "method": "POST",
+            "request": {
+              "elementIds": [
+                "pump-101-measurements-bearing-temperature-value"
+              ],
+              "startTime": "2026-11-19T18:13:18.692082+00:00",
+              "endTime": "2026-11-19T18:15:18.692082+00:00",
+              "maxDepth": 1
+            },
+            "status": 200,
+            "captured_at": "2026-11-19T18:15:18.829356+00:00",
+            "body": "{\"success\":true,\"results\":[{\"success\":true,\"elementId\":\"pump-101-measurements-bearing-temperature-value\",\"result\":{\"isComposition\":false,\"values\":[{\"value\":12.720034448181648,\"quality\":\"Good\",\"timestamp\":\"2026-11-19T18:15:18Z\"},{\"value\":16.812713747289983,\"quality\":\"Good\",\"timestamp\":\"2026-11-19T18:14:57Z\"},{\"value\":14.865171711520379,\"quality\":\"Good\",\"timestamp\":\"2026-11-19T18:14:27Z\"},{\"value\":32.6991018495692,\"quality\":\"Good\",\"timestamp\":\"2026-11-19T18:13:57Z\"},{\"value\":21.42686765010917,\"quality\":\"Good\",\"timestamp\":\"2026-11-19T18:13:27Z\"}]}}]}",
+            "sha256": "c27dab8ee716ebe86fd4e449ff91b76f2249634f86495926dd976ad71b4447e5"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "workflow_sha256": "2b8ecace98826db63ab57b7a59cc251e209de624e28911d04dfce1ee2e01d184",
+      "frontier": [
+        "f6cb93ea86af8c8a8ef53ab2eacb6d19bd2bd30df8e18ff3e32099ca08eb6514",
+        "c2ebaafb3fe77acd6dd02b3e7227ebf0217e974ebb8f190ce2283e47102a003c",
+        "b3565e62cad21502ee104f9dfa67af2c1e436b042c4d44c08ddf83de02deb795"
+      ],
+      "capture_sha256": "a4b939a559b9b82765163c651df5bf2021b56b598270188b86464a6a53a7cf53",
+      "evaluated_at": "2026-11-19T18:19:27.121Z",
+      "status": "NOT_SUPPORTED_ON_RECORD",
+      "rules": [
+        {
+          "id": "parts",
+          "label": "Unallocated serviceable stock meets the work order",
+          "op": "gte",
+          "left": 0,
+          "right": 1,
+          "pass": false
+        }
+      ],
+      "context": {
+        "sha256": "a4b939a559b9b82765163c651df5bf2021b56b598270188b86464a6a53a7cf53",
+        "endpoint": "http://127.0.0.1:8381/v1",
+        "asset_id": "pump-101",
+        "captured_at": "2026-11-19T18:15:18.692082+00:00",
+        "complete": true,
+        "issues": [],
+        "values": [
+          {
+            "element_id": "pump-101-state",
+            "value": {
+              "timestamp": "2026-11-19T18:15:18Z",
+              "description": "Pump is in maintenance",
+              "color": "#800080",
+              "type": {
+                "id": 0,
+                "name": "Maintenance",
+                "description": "Equipment under maintenance"
+              },
+              "metadata": {
+                "source": "plc-controller",
+                "uri": "opc://plc1/DB1.DBW0",
+                "asset": {
+                  "id": 0,
+                  "name": "Pump-101",
+                  "description": "Centrifugal water pump for cooling system"
+                }
+              }
+            },
+            "quality": "Good",
+            "timestamp": "2026-11-19T18:15:18Z"
+          }
+        ],
+        "object_count": 14,
+        "remote_writes": false
+      },
+      "missing_sources": [],
+      "freshness_issues": [],
+      "action": "REVIEW_ONLY",
+      "production_authority": false,
+      "sha256": "1f6a5da24eed5239bab39725be18ea53b53629b3a6c566464b259f0fed6fc7cf"
+    },
+    {
+      "workflow_sha256": "2b8ecace98826db63ab57b7a59cc251e209de624e28911d04dfce1ee2e01d184",
+      "frontier": [
+        "f6cb93ea86af8c8a8ef53ab2eacb6d19bd2bd30df8e18ff3e32099ca08eb6514",
+        "5a9eedd13e9830957bf093b42c7f1e260f832fa99c0c7b61d3d5e608eb5532d7",
+        "b3565e62cad21502ee104f9dfa67af2c1e436b042c4d44c08ddf83de02deb795"
+      ],
+      "capture_sha256": "a4b939a559b9b82765163c651df5bf2021b56b598270188b86464a6a53a7cf53",
+      "evaluated_at": "2026-11-19T18:19:27.122Z",
+      "status": "SUPPORTED_ON_RECORD",
+      "rules": [
+        {
+          "id": "parts",
+          "label": "Unallocated serviceable stock meets the work order",
+          "op": "gte",
+          "left": 1,
+          "right": 1,
+          "pass": true
+        }
+      ],
+      "context": {
+        "sha256": "a4b939a559b9b82765163c651df5bf2021b56b598270188b86464a6a53a7cf53",
+        "endpoint": "http://127.0.0.1:8381/v1",
+        "asset_id": "pump-101",
+        "captured_at": "2026-11-19T18:15:18.692082+00:00",
+        "complete": true,
+        "issues": [],
+        "values": [
+          {
+            "element_id": "pump-101-state",
+            "value": {
+              "timestamp": "2026-11-19T18:15:18Z",
+              "description": "Pump is in maintenance",
+              "color": "#800080",
+              "type": {
+                "id": 0,
+                "name": "Maintenance",
+                "description": "Equipment under maintenance"
+              },
+              "metadata": {
+                "source": "plc-controller",
+                "uri": "opc://plc1/DB1.DBW0",
+                "asset": {
+                  "id": 0,
+                  "name": "Pump-101",
+                  "description": "Centrifugal water pump for cooling system"
+                }
+              }
+            },
+            "quality": "Good",
+            "timestamp": "2026-11-19T18:15:18Z"
+          }
+        ],
+        "object_count": 14,
+        "remote_writes": false
+      },
+      "missing_sources": [],
+      "freshness_issues": [],
+      "action": "REVIEW_ONLY",
+      "production_authority": false,
+      "sha256": "513445fb9868fedd118300ab508a8d461652d2044733813dc0e1469335c2460c"
+    }
+  ],
+  "reviews": [
+    {
+      "decision_sha256": "513445fb9868fedd118300ab508a8d461652d2044733813dc0e1469335c2460c",
+      "owner": "Synthetic receiving reviewer",
+      "note": "Reviewed original and corrected decisions against the retained source evidence.",
+      "at": "2026-11-19T18:19:27.123Z",
+      "identity": "declared-unverified",
+      "authority": "review-only",
+      "sha256": "0fbee8db2d46a71ef4c744bcfa746e76bcad67267aca24eeee5c4ad5040a3c20"
+    }
+  ],
+  "sha256": "3a8823e8c0ed38a3f77d073d6359e3ab02bbef2f4135deac6bd7e2f5538aaccc"
+}

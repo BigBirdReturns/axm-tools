@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>AXM × i3X | Application and technical review</title>
+<meta name="description" content="Run the AXM member workbench, inspect its architecture, reproduce a second i3X server capture, and independently replay an operational decision. Complete application, source and demonstration.">
+<link rel="stylesheet" href="review.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="topbar"><div class="brand">AXM × i3X<span>APPLICATION &amp; TECHNICAL REVIEW</span></div><div class="date">19 NOVEMBER 2026<br>Jonathan Sandhu · AXM</div></div></header>
+<main id="main">
+<section aria-labelledby="title">
+<div class="eyebrow">An executable handoff for operational decisions</div>
+<h1 id="title">Keep the decision and the evidence together.</h1>
+<p class="lead">The AXM member workbench connects retained i3X context with a team's own workflow records. Define the calculation, inspect its source dependencies, record corrections and reviews, and hand the complete history to another reviewer who can recompute it independently.</p>
+<div class="actions"><a class="button" href="../workbench/">Open member workbench</a><a class="button secondary" href="https://bigbirdreturns.github.io/axm-tools/cesmii-proof/cesmii-member-kit.zip" download>Download complete review kit</a><a class="button secondary" href="#demonstration">Watch demonstration</a></div>
+<p class="meta">Runs in the browser, with a downloadable offline client and inspectable source. Operational inputs stay on the user's machine; the supplied examples identify their public-reference and synthetic inputs.</p>
+<nav class="nav" aria-label="Review sections"><a href="#included">Applications</a><a href="#architecture">Architecture</a><a href="#workflow">Use your workflow</a><a href="#reproduce">Reproduce</a><a href="#demonstration">Video &amp; contact</a></nav>
+</section>
+
+<section class="section" id="included" aria-labelledby="included-title">
+<div class="eyebrow">Working software</div><h2 id="included-title">Three ways to inspect the complete path</h2>
+<p class="section-intro">The member workbench accepts workflow inputs and rules. Industrial Continuity adds an implemented production-planning example. The original i3X lab preserves the published reference demonstration and its historical evidence.</p>
+<div class="grid3">
+<article class="card"><div class="number">01 / MEMBER WORKBENCH</div><h3>Bring the workflow and its sources</h3><p>Import an i3X capture, map an asset, supply named evidence records, and define arithmetic checks. Included examples cover maintenance, energy intensity and batch review. Corrections preserve earlier source revisions and make dependent conclusions stale. Export the history for independent replay.</p><a href="../workbench/">Run the application →</a><p class="small" style="margin-top:14px"><a href="../workbench/offline.html" download>Offline client</a> · <a href="member-workflow-template.json" download>Workflow template</a></p></article>
+<article class="card"><div class="number">02 / INDUSTRIAL CONTINUITY</div><h3>Test the business consequence</h3><p>Use six CSV source families to compare product mix, resource capacity, maintenance recovery, parts availability, quality release and review procedure. Change the customer mix and observe the recommendation, source history and review standing change together.</p><a href="../../industrial-continuity/">Run industrial planning →</a><p class="small" style="margin-top:14px"><a href="../../industrial-continuity/offline.html" download>Offline client</a> · <a href="../../industrial-continuity/README.md">Recipe and commands</a></p></article>
+<article class="card"><div class="number">03 / RETAINED REFERENCE LAB</div><h3>Replay the original pump case</h3><p>The original lab binds public <code>pump-101</code> context to maintenance, inventory and allocation evidence. Its original and corrected conclusions remain reproducible from the exact retained capture and pinned engine.</p><a href="../">Open reference lab →</a><p class="small" style="margin-top:14px"><a href="../offline.html" download>Offline reference</a> · <a href="../data/qualification.json">Original qualification record</a></p></article>
+</div>
+</section>
+
+<section class="section" id="architecture" aria-labelledby="architecture-title">
+<div class="eyebrow">Architecture</div><h2 id="architecture-title">A receiving team recomputes the record</h2>
+<p class="section-intro">The source adapter retains endpoint, method, request, response bytes and observation time. The workflow engine uses explicit fields and rules to calculate a conclusion against exact source revisions. A correction changes the current evidence frontier while preserving previous decisions.</p>
+<div class="diagram" role="img" aria-label="i3X observations and workflow records enter the local AXM workbench. A portable capsule contains source revisions, rules and decisions. An independent receiving client verifies the bytes and recomputes the history.">
+<h3>Source-to-receiver flow</h3>
+<div class="flow">
+<div class="flow-inputs"><div class="flow-box"><strong>i3X source context</strong><p>Discovered object IDs, raw read responses, quality and timestamps</p></div><div class="flow-box"><strong>Workflow evidence</strong><p>Owner labels, observed values, explicit rules and source corrections</p></div></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>Local AXM workbench</strong><p>Validate inputs, calculate, retain each dependency frontier, mark stale decisions, export the complete capsule</p></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box receiver"><strong>Independent receiver</strong><p>Verify source and engine identity, rebuild historical conclusions, establish current or stale standing</p></div>
+</div>
+<p class="small">The complete record travels with the result. Each recipient can check the calculation without access to the originating browser or AXM-hosted service.</p>
+</div>
+<div class="table-wrap" tabindex="0" aria-label="Scrollable comparison table"><table><thead><tr><th>Layer</th><th>Retained contract</th><th>Review question</th></tr></thead><tbody>
+<tr><td>i3X capture</td><td>Endpoint, discovered IDs, raw response bytes, status, timestamp and digest</td><td>Which observation supports the asset context?</td></tr>
+<tr><td>Workflow definition</td><td>Named sources, fields, arithmetic expressions, comparison rules and freshness policy</td><td>Exactly how do the inputs determine the conclusion?</td></tr>
+<tr><td>Revision history</td><td>Predecessor-bound source corrections and historical decision dependencies</td><td>Which old conclusions changed standing after this correction?</td></tr>
+<tr><td>Portable capsule</td><td>Executable recipe, retained evidence, engine identity and historical results</td><td>Can the receiving client reproduce every result?</td></tr>
+<tr><td>Operational interpretation</td><td>Evidence classes, quality, missing values and declared reviewer identity</td><td>What still requires the organization's source and authority controls?</td></tr>
+</tbody></table></div>
+<p class="small">Implementation details, state transitions and reproducible commands are in the <a href="TECHNICAL_REVIEW.md">technical review guide</a>. The workbench source is included in the download and available in <a href="../workbench/core.js">core.js</a>.</p>
+</section>
+
+<section class="section" id="workflow" aria-labelledby="workflow-title">
+<div class="eyebrow">Member workflow</div><h2 id="workflow-title">Supply an ordinary maintenance handoff</h2>
+<p class="section-intro">A de-identified workflow is a concrete operational decision with its required inputs and one later correction. An organization can replace equipment, work-order and personnel identifiers with consistent aliases while preserving the relationships and quantities needed to reproduce the decision.</p>
+<div class="grid2">
+<article class="panel"><h3>Example provided in this package</h3><p>A maintenance task requires one serviceable seal. Inventory records two serviceable seals and planning records two already allocated. The available quantity is zero. A corrected allocation of one leaves one available seal, which changes the parts conclusion while preserving the original shortage.</p><p>The template also checks whether planned maintenance duration fits the stated window and whether the declared procedure allows planning. These are record-based checks on supplied inputs.</p><a href="member-workflow-template.json" download>Download the editable workflow JSON →</a></article>
+<article class="panel"><h3>What a member supplies</h3><ul><li>A consistent equipment alias and its selected i3X object ID.</li><li>Required part quantity, serviceable stock and existing allocations.</li><li>Source labels and observation times for the contributing teams.</li><li>The applicable procedure and planning window.</li><li>A correction with its predecessor and reason, followed by a receiving team's replay.</li></ul><p class="small">The supplied template is synthetic. Member data receives its own evidence class; the local application does not upload it.</p></article>
+</div>
+<div class="table-wrap"><table><thead><tr><th>Source family</th><th>Example fields</th><th>Meaning retained during de-identification</th></tr></thead><tbody>
+<tr><td>Inventory</td><td><code>serviceable</code></td><td>The usable quantity for the referenced part</td></tr>
+<tr><td>Allocation</td><td><code>allocated</code></td><td>Stock already committed to other uses</td></tr>
+<tr><td>Maintenance</td><td><code>required</code>, <code>duration_hours</code></td><td>The requirement for the named maintenance task</td></tr>
+<tr><td>Planning window</td><td><code>planning_window_hours</code></td><td>The available window in the same units</td></tr>
+<tr><td>Procedure</td><td><code>planning_allowed</code></td><td>The declared planning condition under review</td></tr>
+</tbody></table></div>
+<p>Customer names, staff names, site addresses, credentials and unrestricted raw exports are unnecessary for this example. Keep any private alias lookup with the contributing organization. The useful result is the preserved relationship among the records, the rule and the changed conclusion.</p>
+</section>
+
+<section class="section" id="reproduce" aria-labelledby="reproduce-title">
+<div class="eyebrow">Recipient walkthrough</div><h2 id="reproduce-title">Run, correct, export and independently replay</h2>
+<div class="grid2">
+<article class="panel"><h3>Browser review</h3><ol><li>Open the member workbench and load the included example or import the workflow template.</li><li>Select the retained public i3X observation, import a capture file, or read an explicitly configured endpoint.</li><li>Evaluate the workflow and inspect the rule results and source dependencies.</li><li>Correct the allocation from two to one. Inspect the prior conclusion's stale standing, then evaluate again.</li><li>Export the capsule. Open a clean browser or the offline client, import it and inspect the reconstructed history.</li></ol><a href="../workbench/">Begin in the member workbench →</a></article>
+<article class="panel"><h3>Local second i3X server</h3><p>The package includes a setup and evidence record for a separate local instance of CESMII's official i3X demo server. Its capture uses real HTTP responses from that instance.</p><p>A second instance establishes operation against separately running server state. Vendor portability remains a separate test because both reference instances use the CESMII implementation.</p><a href="../second-server/README.md">Read the exact server setup →</a><p class="small" style="margin-top:14px"><a href="../second-server/evidence.json">Inspect execution evidence</a></p></article>
+</div>
+<div class="callout"><p><strong>Evidence and authority.</strong> Public reference data, synthetic examples and operator-supplied records carry distinct evidence classes. “Current” means consistent with the selected retained inputs; freshness is assessed at the recorded evaluation time under the declared policy. Source authenticity, physical condition, real user identity and permission to perform maintenance remain with the contributing organization. This application prepares and verifies decisions; it sends no equipment commands.</p></div>
+<div class="evidence-grid">
+<div class="evidence-item"><strong>Source and engine identity</strong><p><a href="../workbench/build-meta.json">Workbench build metadata</a> binds the receiver to the included engine. The source archive includes the calculation and verification code.</p></div>
+<div class="evidence-item"><strong>Behavioral verification</strong><p><a href="../workbench/qualification.json">Workbench qualification</a> records the tested input, correction and replay behavior. Follow the guide to execute the checks again.</p></div>
+<div class="evidence-item"><strong>Industrial planning handoff</strong><p><a href="../../industrial-continuity/verify-handoff.cjs">Node verifier</a> recomputes all historical decisions using actual engine bytes. The <a href="../../industrial-continuity/data/example-handoff.json">example capsule</a> is included.</p></div>
+<div class="evidence-item"><strong>Complete review package</strong><p><a href="https://bigbirdreturns.github.io/axm-tools/cesmii-proof/cesmii-member-kit.zip" download>Download applications, sources, templates and evidence</a> for local use and review without a hosted runtime dependency.</p></div>
+</div>
+</section>
+
+<section class="section" id="demonstration" aria-labelledby="demo-title">
+<div class="eyebrow">Demonstration &amp; publication assets</div><h2 id="demo-title">Inspect the working application</h2>
+<p class="section-intro">The recording walks through source selection, workflow evaluation, correction, portable handoff and independent replay. The complete package supports an architecture review with the technical team and supplies the video and producer contact for a subsequent application listing.</p>
+<div class="video-frame"><video controls preload="metadata" playsinline poster="demo-poster.png" aria-label="AXM i3X application demonstration"><source src="demo.mp4" type="video/mp4"><track kind="captions" srclang="en" label="English" src="demo.vtt">Download the <a href="demo.mp4">demonstration video</a> or read its <a href="transcript.html">transcript</a>.</video></div>
+<div class="download-row"><a href="demo.mp4" download>Download MP4</a><a href="demo.vtt" download>Download captions</a><a href="transcript.html">Read transcript</a><a href="media-verification.json">Recording verification</a><a href="TECHNICAL_REVIEW.md" download>Download technical guide</a></div>
+<div class="contact" id="contact"><div><div class="eyebrow" style="color:#91e4ed">Producer contact</div><h2>Jonathan Sandhu · AXM</h2><p><a href="mailto:jvssandhu@gmail.com">jvssandhu@gmail.com</a><br><a href="https://bigbirdreturns.github.io/axm-tools/">AXM Tools</a></p></div><a class="button" href="../workbench/">Open the application</a></div>
+</section>
+<footer><p>Independent AXM application prepared for CESMII technical review and member use. The hosted and downloadable applications are available for use, with source included for inspection and reproducibility. The repository carries no blanket software license; contact the producer for distribution or integration terms. CESMII's own review and publication decisions remain separate from this package.</p><div class="footlinks"><a href="https://github.com/BigBirdReturns/axm-tools/tree/main/cesmii-proof">Application source</a><a href="https://github.com/cesmii/i3X/tree/1.0/demo/server">CESMII i3X demo server</a><a href="../README.md">Reference lab provenance</a></div></footer>
+</main></body></html>
