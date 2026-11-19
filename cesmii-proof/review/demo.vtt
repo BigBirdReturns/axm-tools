@@ -1,0 +1,37 @@
+WEBVTT
+
+intro
+00:00:00.000 --> 00:00:21.280
+This is AXM's i3X application and technical review package. The application connects equipment context to team evidence, preserves corrections and reviews, and transfers the complete decision history to an independent recipient. This recording shows the running software.
+
+architecture
+00:00:21.280 --> 00:00:49.160
+The architecture keeps source capture, declared business evidence, decision rules and receiving verification visible. Each captured response retains its original bytes and observation time. A decision names the exact source revisions it used. Later corrections preserve those revisions, so a recipient can reconstruct the original conclusion as well as its successor.
+
+connect
+00:00:49.160 --> 00:01:17.160
+Here the application connects to a separately running copy of CESMII's official i3X demo server. It discovers metadata and reads the selected equipment values over HTTP. The capture records the endpoint, equipment mapping and quality. The official server supplies simulated equipment context; the operational records in this example are explicitly synthetic.
+
+baseline
+00:01:17.160 --> 00:01:45.400
+This maintenance workflow combines inventory, maintenance and allocation records. Two serviceable seals minus two committed seals leaves zero available against a requirement of one. The application evaluates the declared rules and retains the result. Members can edit these records, import their own workflow definition, or open the batch review and energy intensity examples.
+
+correction
+00:01:45.400 --> 00:02:09.880
+A reviewer records what was checked against the current decision. The allocation team then corrects its commitment from two seals to one and records the reason. Saving the correction creates a successor source revision. The previous decision immediately becomes stale, while its inputs, result and associated review remain in the history.
+
+export
+00:02:09.880 --> 00:02:36.160
+Reevaluation computes one available seal against one required. Both the original conclusion and the corrected conclusion remain reproducible. Exporting the handoff includes the workflow rules, exact response captures, source revisions, decisions and review declarations. The file can travel independently of this browser and this server.
+
+offline
+00:02:36.160 --> 00:03:01.680
+This receiving browser has network access disabled and opens the standalone application from a local file. Importing the actual exported handoff verifies its recorded integrity and recomputes every saved decision using this application's pinned calculation source. The recipient receives a working history, including the correction and its earlier evidence.
+
+industrial
+00:03:01.680 --> 00:03:32.520
+The package also includes Industrial Continuity. Its six source families cover demand economics, capacity, maintenance, parts, quality and procedure. This example initially selects eighty units of Product A and thirty-five of Product B. Changing the recorded customer mix makes the earlier plan stale; reevaluation selects thirty units of A and sixty of B. These are calculations on the supplied scenario.
+
+close
+00:03:32.520 --> 00:04:03.520
+The complete download contains both applications, editable workflow templates, offline receivers, source code, the official second-server source and its reproducible verification record. The review guide explains the architecture and commands. Jonathan Sandhu is the producer, and the contact address is jvssandhu at gmail dot com. The materials are ready for CESMII's technical team to review.

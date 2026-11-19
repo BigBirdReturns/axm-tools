@@ -1,0 +1,253 @@
+{
+  "schema": "axm-i3x-second-server-evidence/1",
+  "observed_at": "2026-11-19T18:19:27.263188+00:00",
+  "status": "PASS",
+  "source_commit": "9ffc352470b9807a0143cd5c43f9680cb5779550",
+  "base_url": "http://127.0.0.1:8381/v1",
+  "official_suite": {
+    "exit_code": 0,
+    "summary": {
+      "verdict": "1.0 Compatible",
+      "headline": "All required (MUST) behavior passed. Optional features were omitted: Update historical values (PUT /objects/history). Implement and declare them to reach Full 1.0 Compliance.",
+      "counts": {
+        "pass": 52,
+        "fail": 0,
+        "warn": 2,
+        "skip": 6,
+        "total": 60
+      },
+      "mustFailures": [],
+      "mayFailures": [],
+      "warnings": [
+        {
+          "id": "CORE-05",
+          "name": "Endpoint is served over HTTPS",
+          "level": "SHOULD",
+          "message": "Endpoint is plain HTTP. Implementations MUST support encrypted transport (HTTPS) in production; HTTP is acceptable only for development/internal testing.",
+          "refTitle": "Implementation Guide \u00c2\u00a7 Security & Authentication",
+          "refUrl": "https://github.com/cesmii/i3X/blob/1.0/spec/IMPLEMENTATION_GUIDE.md#security--authentication"
+        },
+        {
+          "id": "CORE-06",
+          "name": "Server requires authentication on data endpoints",
+          "level": "SHOULD",
+          "message": "The server accepted an unauthenticated request to GET /namespaces. This is acceptable for development and testing, but in production implementations MUST require authentication.",
+          "refTitle": "Implementation Guide \u00c2\u00a7 Security & Authentication",
+          "refUrl": "https://github.com/cesmii/i3X/blob/1.0/spec/IMPLEMENTATION_GUIDE.md#security--authentication"
+        }
+      ],
+      "omittedFeatures": [
+        "update.history"
+      ],
+      "typeSystemRich": true,
+      "specVersion": "1.0",
+      "serverName": "CESMII official demo server, AXM local verification",
+      "notes": [],
+      "docsUrl": "https://www.i3x.dev/sdk/category/server-developers",
+      "finishedAt": "2026-11-19T18:15:19.935Z"
+    },
+    "current_value_writes_disabled": true,
+    "scope": "The pinned official suite exercised this local server; it creates/deletes test subscriptions and probes unsupported historical writes for HTTP 501."
+  },
+  "application": {
+    "schema": "axm-i3x-second-server-application/1",
+    "observed_at": "2026-11-19T18:19:27.111Z",
+    "engine_sha256": "d64b6f02dfd23a2074d33c6a1b899514a6dce214257e7ba09f9fdcd502606207",
+    "source_sha256": {
+      "workbench/core.js": "ad356f7853e1123a0414d1b40c428004934c0defe3b69ccde77987703a5657dc",
+      "workbench/commons-core.js": "0158ea96c0c99a4f479e37573bacf26916348318e2811b75196ce390cab36cdd",
+      "capture.py": "1810a8ca38d2d263550b5bf1f1f1ee9e9acb9e05b0784b478faad0535fcd07a1"
+    },
+    "checks": [
+      {
+        "name": "Published build digest equals actual application bytes",
+        "pass": true
+      },
+      {
+        "name": "Original retained public context still imports",
+        "pass": true
+      },
+      {
+        "name": "Real missing object responses remain inconclusive",
+        "pass": true
+      },
+      {
+        "name": "pump: actual source bytes and context validate",
+        "pass": true
+      },
+      {
+        "name": "pump: expected mapped asset",
+        "pass": true
+      },
+      {
+        "name": "pump: real independent loopback endpoint",
+        "pass": true
+      },
+      {
+        "name": "pump: baseline shortage is calculated",
+        "pass": true
+      },
+      {
+        "name": "pump: correction makes old decision stale",
+        "pass": true
+      },
+      {
+        "name": "pump: corrected decision is calculated",
+        "pass": true
+      },
+      {
+        "name": "pump: earlier conclusion is preserved",
+        "pass": true
+      },
+      {
+        "name": "pump: fresh Node process independently replays both decisions",
+        "pass": true
+      },
+      {
+        "name": "pump: rehashed false conclusion rejected",
+        "pass": true
+      },
+      {
+        "name": "pump: decision grants review only",
+        "pass": true
+      },
+      {
+        "name": "tank: actual source bytes and context validate",
+        "pass": true
+      },
+      {
+        "name": "tank: expected mapped asset",
+        "pass": true
+      },
+      {
+        "name": "tank: real independent loopback endpoint",
+        "pass": true
+      },
+      {
+        "name": "tank: baseline shortage is calculated",
+        "pass": true
+      },
+      {
+        "name": "tank: correction makes old decision stale",
+        "pass": true
+      },
+      {
+        "name": "tank: corrected decision is calculated",
+        "pass": true
+      },
+      {
+        "name": "tank: earlier conclusion is preserved",
+        "pass": true
+      },
+      {
+        "name": "tank: fresh Node process independently replays both decisions",
+        "pass": true
+      },
+      {
+        "name": "tank: rehashed false conclusion rejected",
+        "pass": true
+      },
+      {
+        "name": "tank: decision grants review only",
+        "pass": true
+      },
+      {
+        "name": "Asset mismatch stays inconclusive",
+        "pass": true
+      },
+      {
+        "name": "Changed response bytes rejected",
+        "pass": true
+      },
+      {
+        "name": "Uncertain source quality remains inconclusive",
+        "pass": true
+      },
+      {
+        "name": "Real structural object with GoodNoData remains inconclusive",
+        "pass": true
+      }
+    ],
+    "status": "PASS",
+    "passed": 27,
+    "total": 27
+  },
+  "files": {
+    "application-output.txt": "d041aa015dd798934356d4bcb8e39e892cc25858019c82cef516d39253f1b2b1",
+    "application-report.json": "5b2892d3c26da3d65e4b7c691e6beb68b5b3ea55f41e1135dc24a6b6978a7480",
+    "capsule-local-pump.json": "f24d0deef2f7a52b36ceda430a9767369e3761e6bf2e86ff197e20d9e8c88584",
+    "capsule-local-tank.json": "37ad3820f9cf2dba7edddccf945ebfe9917a13adbaada132e7a8201e6cdbae1c",
+    "capture-local-pump.json": "019b36d9ae4c9c86a949a34c8a2574c9caf046855e2ffe7363d3777a10f919f7",
+    "capture-local-tank.json": "f40453edd41a54aa2c42361e8ca7f94dc3999aa2b97a66a3da0ed4262a3ed07a",
+    "capture-missing-object.json": "cdc40b311a01da2338ad3e5211fd31d31e365f63fb8e705a39f8d560c4ef178b",
+    "capture-no-value.json": "1ab90e8a5e57eea5607db2a3afd12d4d43b6a895080e00ba0b0fdf1586e60c93",
+    "conformance-output.txt": "f8100f365a4a068cffa05bb1a12766267f844d466c18d2bd29ea00041b514efb",
+    "conformance-report.json": "32fa5d72431ea7278bedc87f8d0b1b02f2c88dc2a76763fa8b0b525bc1437864",
+    "server-provenance.json": "8d459756e82e45a13b1ce720d412c4dd1084b707b83430985e8eca68d580b004",
+    "recipient-install-proof.json": "7820b1814df773f54db209798f7206a581fd30c1a3636fa0f6341a81b4784084",
+    "requirements-resolved.txt": "397a36f57d99462435f8813c896bd3240a6b115c80d944f4729a95fe8dd0e1cd",
+    "upstream-source.json": "00f4fcd590f7f1ed12dc0d3691f44a3e43611bc94b4d37d7938262415102d1a2",
+    "upstream-source.zip": "6b4b21fd16ba6c190046e0ccff723180cf7e7908cbc729e7cdc4ca855efa9a61"
+  },
+  "limits": [
+    "Separate deployment of CESMII's official implementation; not an independently authored vendor server.",
+    "Official simulated manufacturing data; no member operational data or plant-control connection.",
+    "A local self-run conformance result describes this server and configuration; CESMII has not certified AXM."
+  ],
+  "requalification": "Current application replayed retained exact HTTP captures and the unchanged official conformance result; no endpoint observation was refreshed.",
+  "verification_source_sha256": {
+    "setup.py": "1a78a136ab51398a6c3f6d6241cc014de52336de929e12d60447445d2ba4ed5b",
+    "verify.py": "7c96b632502db36613f9def862d276b6676d2930716997c655351dbffbed8c01",
+    "verify.cjs": "080da6a7745f7c95ef513ded7064c32974f57ac70dbf3e0c773d5e11d313e4ac",
+    "upstream-source.json": "00f4fcd590f7f1ed12dc0d3691f44a3e43611bc94b4d37d7938262415102d1a2"
+  },
+  "recipient_install": {
+    "schema": "axm-i3x-recipient-install-proof/1",
+    "status": "PASS",
+    "observed_at": "2026-11-19T18:16:58.574813+00:00",
+    "setup_script_sha256": "1a78a136ab51398a6c3f6d6241cc014de52336de929e12d60447445d2ba4ed5b",
+    "source_commit": "9ffc352470b9807a0143cd5c43f9680cb5779550",
+    "archive_sha256": "6b4b21fd16ba6c190046e0ccff723180cf7e7908cbc729e7cdc4ca855efa9a61",
+    "source_files_verified": 66,
+    "base_url": "http://127.0.0.1:8382/v1",
+    "python": "Python 3.13.15",
+    "info": {
+      "success": true,
+      "result": {
+        "specVersion": "1.0",
+        "serverVersion": "1.0.0",
+        "serverName": "CESMII official demo server, AXM local verification",
+        "capabilities": {
+          "query": {
+            "history": true
+          },
+          "update": {
+            "current": true,
+            "history": false
+          },
+          "subscribe": {
+            "stream": true
+          }
+        }
+      }
+    },
+    "checks": [
+      {
+        "name": "Bundled upstream archive exact",
+        "pass": true
+      },
+      {
+        "name": "Installed source exactly matches bundled pin",
+        "pass": true
+      },
+      {
+        "name": "Fresh archive-installed server answers real HTTP",
+        "pass": true
+      },
+      {
+        "name": "Fresh archive-installed server discovers pump and tank",
+        "pass": true
+      }
+    ]
+  }
+}
