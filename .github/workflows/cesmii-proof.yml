@@ -23,6 +23,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify the committed member archive before rebuilding evidence
+        run: python cesmii-proof/build-member-kit.py --check
       - name: Retain a bounded public read-only capture once
         run: |
           if [ ! -f cesmii-proof/data/capture.json ]; then
