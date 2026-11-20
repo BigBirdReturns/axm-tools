@@ -1,104 +1,199 @@
 {
   "schema": "axm-i3x-demonstration/1",
-  "observed_at": "2026-11-19T18:19:23.286Z",
+  "edition": "V13 continuous film",
+  "observed_at": "2026-11-20T21:39:32.299192+00:00",
   "status": "PASS",
-  "width": 1600,
-  "height": 1000,
-  "fps": 25,
-  "duration_seconds": 243.52,
+  "duration_seconds": 138.33333333333334,
+  "video_stream_duration_seconds": 138.333333,
+  "audio_stream_duration_seconds": 138.333333,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "frames": 4150,
   "video_codec": "H.264",
   "audio_codec": "AAC",
   "synthetic_narration": true,
-  "narrator": "Windows SAPI, Microsoft Zira Desktop",
+  "narrator": "One continuous synthetic performance using the accepted narrator reference",
   "browser": "149.0.7827.55",
   "engine_sha256": "d64b6f02dfd23a2074d33c6a1b899514a6dce214257e7ba09f9fdcd502606207",
-  "capsule_sha256": "91a5e9624e07898d7f7759665d4b36b0892230fef7267cb769c887ff4393da1b",
+  "capsule_sha256": "4eda3b8a3360d1ddbef2445cc0f6630e0ef306f075ccffcfd8c7f8458246c429",
   "checks": [
     {
-      "name": "Second-server capture resolved in the application",
+      "name": "Industrial Continuity capture assets match public source",
       "pass": true
     },
     {
-      "name": "Baseline is unsupported by the recorded rules",
+      "name": "Industrial Continuity replays the exact exported handoff offline",
       "pass": true
     },
     {
-      "name": "Correction immediately marked prior decision stale",
+      "name": "Workbench replays the exact exported handoff offline",
       "pass": true
     },
     {
-      "name": "Successor supports the corrected evidence",
+      "name": "Every decoded AAC narration block matches the V13 editorial WAV",
       "pass": true
     },
     {
-      "name": "Separate offline browser replayed the actual exported handoff",
+      "name": "Full H.264 and AAC decode completed without errors",
       "pass": true
-    },
-    {
-      "name": "Industrial baseline computes A80 B35",
-      "pass": true
-    },
-    {
-      "name": "Industrial corrected record computes A30 B60",
-      "pass": true
-    }
-  ],
-  "page_errors": [],
-  "chapters": [
-    {
-      "id": "intro",
-      "duration_seconds": 21.28
-    },
-    {
-      "id": "architecture",
-      "duration_seconds": 27.88
-    },
-    {
-      "id": "connect",
-      "duration_seconds": 28.0
-    },
-    {
-      "id": "baseline",
-      "duration_seconds": 28.24
-    },
-    {
-      "id": "correction",
-      "duration_seconds": 24.48
-    },
-    {
-      "id": "export",
-      "duration_seconds": 26.28
-    },
-    {
-      "id": "offline",
-      "duration_seconds": 25.52
-    },
-    {
-      "id": "industrial",
-      "duration_seconds": 30.84
-    },
-    {
-      "id": "close",
-      "duration_seconds": 31.0
     }
   ],
   "files": {
     "demo.mp4": {
-      "bytes": 7395441,
-      "sha256": "b38c5a67a5b11cf4914f7b993a9cb48e3710f25f6f372e56b3c4f8dcf28dba15"
-    },
-    "demo.vtt": {
-      "bytes": 3577,
-      "sha256": "de41c023a788993cf529f6b801ef619261d843aa9c0db16c583f8e52e46b2ec9"
-    },
-    "transcript.html": {
-      "bytes": 4786,
-      "sha256": "5648ce6809c75d95b24926b8fb750a15a0814d3fba0e77b4f4ca4835a090d9af"
+      "bytes": 28129837,
+      "sha256": "528faa84f28bd8d3f1b39590d9b16b3e564b0d91b8e994e02450618edebbfa67"
     },
     "demo-poster.png": {
-      "bytes": 593513,
-      "sha256": "85ee31df7524fb264a49bf56ac7fe7cb6c2eeb3be768f95bd628c52b1a7251aa"
+      "bytes": 773514,
+      "sha256": "6f042671ccd1cab53aa00069cfd25d289bf2d3df15967459520b768e78f7ac97"
+    },
+    "demo.vtt": {
+      "bytes": 3596,
+      "sha256": "94d4d17be8e013372f89a6f9e73f5b4fe3bac7c6d535f20f3c03b52cbff762c3"
+    },
+    "transcript.html": {
+      "bytes": 7524,
+      "sha256": "70db0f1ff66e7cb4befdcbb2e270b1f9ad8b20d13d3baf24eec832bdc1b1c146"
+    },
+    "index.html": {
+      "bytes": 16013,
+      "sha256": "bbd6bd29f7d7b34689fe230a2a27937c374ddde16fd19a33f99ddaa6221aba02"
     }
   },
-  "decode": "Complete output decoded without ffmpeg errors"
+  "captions_timing": "Canonical words mapped to actual-waveform ASR word spans, with written amounts and identifiers; known suffix alignment differences retain canonical wording.",
+  "transcript_timing": {
+    "method": "The transcript places an estimated ASR paragraph start at its audio block boundary when the estimate slightly precedes the cut.",
+    "max_start_adjustment_seconds": 0.05,
+    "start_adjustments": [
+      {
+        "block_id": "recompute-receiver",
+        "paragraph_number": 1,
+        "estimated_start_seconds": 81.8,
+        "display_start_seconds": 81.81,
+        "adjustment_seconds": 0.01
+      }
+    ]
+  },
+  "review_page_duration": "2:18",
+  "canonical_transcript_sha256": "f420ddbc1b1db5943d3749fedf0504af51fd2e5cf003ed53fbf3bbddf28b1da5",
+  "chapters": [
+    {
+      "id": "line",
+      "name": "The line",
+      "start_frame": 0,
+      "start_seconds": 0.0,
+      "duration_seconds": 17.333333333
+    },
+    {
+      "id": "decision",
+      "name": "The decision",
+      "start_frame": 520,
+      "start_seconds": 17.333333333,
+      "duration_seconds": 18.066666667
+    },
+    {
+      "id": "change",
+      "name": "The change",
+      "start_frame": 1062,
+      "start_seconds": 35.4,
+      "duration_seconds": 31.233333333
+    },
+    {
+      "id": "record",
+      "name": "The record",
+      "start_frame": 1999,
+      "start_seconds": 66.633333333,
+      "duration_seconds": 9.266666667
+    },
+    {
+      "id": "handoff",
+      "name": "The handoff",
+      "start_frame": 2277,
+      "start_seconds": 75.9,
+      "duration_seconds": 13.333333333
+    },
+    {
+      "id": "equipment",
+      "name": "Equipment context",
+      "start_frame": 2677,
+      "start_seconds": 89.233333333,
+      "duration_seconds": 49.1
+    }
+  ],
+  "closing_start_seconds": 133.33333333333334,
+  "narration": {
+    "performance": "One complete synthetic narration take supplies every spoken word. Pacing inserts silence at measured quiet sentence boundaries, and the editorial track places the resulting speech blocks sample for sample.",
+    "generator_calls": 1,
+    "continuous_take": true,
+    "raw_wav_sha256": "90beb120cbec9225c977d03280c57efe10c646aca689cffcf61fae4c52cf4708",
+    "voice_prompt_sha256": "2499b592223b3bf43609fc187bd8f980af7366535f5dd6d330ad46281b27cd50",
+    "source_wav_sha256": "ca19bf5bd9765ed047e6d676a6d6853fbd852025cf381b8cc4fa0f416afc42c1",
+    "editorial_wav_sha256": "6a2338b48307b9258cf6faf22de81f1a932868adbb2994cfc386bf826894a883",
+    "paced_master_pcm_preserved_in_editorial_wav": true,
+    "time_stretch": false,
+    "voice_regenerated": true,
+    "delivery_audio": "48 kHz AAC inside the MP4",
+    "decoded_audio_check": {
+      "method": "Decode and compare every narration block with the V13 editorial WAV at 4 kHz mono",
+      "comparison_sample_rate": 4000,
+      "global_decoded_lag_samples": 0,
+      "reference_samples": 553334,
+      "decoded_samples": 553387,
+      "min_block_similarity": 0.999995,
+      "similarity_by_block": {
+        "primer": 0.999997,
+        "economics-change": 0.999995,
+        "save-revision": 0.999997,
+        "recalculate": 0.999997,
+        "unused-capacity": 0.999998,
+        "recovery-comparison": 0.999997,
+        "inspect-conclusions": 0.999998,
+        "export-history": 0.999996,
+        "recompute-receiver": 0.999997,
+        "result-travels": 0.999998,
+        "i3x-intro": 0.999998,
+        "i3x-read-context": 0.999995,
+        "declared-task-evidence": 0.999998,
+        "duplicate-allocation": 0.999997,
+        "reevaluation": 0.999997,
+        "distinct-evidence": 0.999997,
+        "closing": 0.999996
+      }
+    }
+  },
+  "decode": "Completed with zero errors",
+  "industrial_continuity": {
+    "application": "Unchanged Industrial Continuity browser application",
+    "capture_assets_match_public_source": true,
+    "handoff_file": "industrial-continuity-handoff.json",
+    "handoff_sha256": "2b33fa260f1f3b01d6f2074ea066ad3cdb0b72da3057426b7e155a8b2bd519a9",
+    "pinned_engine_sha256": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+    "isolated_offline_same_file_replay": true,
+    "replayed_decisions": 2,
+    "source_receipts": 7,
+    "retained_reviews": 2,
+    "review_status": "RECORDED_LABEL_ONLY",
+    "operational_authority": false,
+    "physical_truth": "unverified"
+  },
+  "i3x_member_workbench": {
+    "application": "Unchanged i3X member workbench",
+    "workbench_source_commit": "0146554c6387912cc3f7999035cb038b65e592f0",
+    "equipment_context": "Pump 101 responses captured from an instance of the CESMII demonstration server",
+    "demo_server_source_commit": "9ffc352470b9807a0143cd5c43f9680cb5779550",
+    "task_evidence": "Separately declared inventory, allocation and task requirement",
+    "handoff_file": "maintenance-review-handoff.json",
+    "handoff_sha256": "c874ccebcfaab969fd3c7481e912c453574e1466631b3537f5f693c840c5bc0d",
+    "pinned_engine_sha256": "d64b6f02dfd23a2074d33c6a1b899514a6dce214257e7ba09f9fdcd502606207",
+    "isolated_offline_same_file_replay": true,
+    "network_requests_during_replay": [],
+    "replayed_decisions": 3,
+    "replayed_source_revisions": 4,
+    "retained_context_captures": 2,
+    "retained_declared_reviews": 1,
+    "review_identity": "declared-unverified",
+    "review_authority": "review-only"
+  },
+  "evidence_scope": "Record-based planning examples for human review."
 }
