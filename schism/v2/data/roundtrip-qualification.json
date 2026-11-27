@@ -1,0 +1,74 @@
+{
+  "schema": "schism-paired-roundtrip/2",
+  "status": "PASS",
+  "contract_sha256": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+  "receiver_sha256": "344604e283948d8888bdb68fb61d90e23b98fdf580040be8c7117153ea0a6afe",
+  "recipients": {
+    "linux": {
+      "schema": "schism-roundtrip/2",
+      "status": "PASS",
+      "direction": "JavaScript \u2192 Python continuation \u2192 original JavaScript receiver",
+      "observed_at": "2026-11-27T18:13:28.062Z",
+      "contract_sha256": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+      "packet_sha256": "0e50f98690eb4632c6c4751f419af90ed2c0425e3d8303738ab99e0fdcba0f4c",
+      "source_count": 7,
+      "decision_count": 2,
+      "review_status": "STALE",
+      "plan": {
+        "a": 30,
+        "available": {
+          "mix": 160,
+          "pack": 150
+        },
+        "b": 60,
+        "cost_cents": 0,
+        "gross_cents": 885000,
+        "net_cents": 885000,
+        "slack": {
+          "mix": 40,
+          "pack": 0
+        },
+        "units": 90,
+        "used": {
+          "mix": 120,
+          "pack": 150
+        }
+      },
+      "operational_authority": false,
+      "external_effects": false
+    },
+    "windows": {
+      "schema": "schism-roundtrip/2",
+      "status": "PASS",
+      "direction": "JavaScript \u2192 Python continuation \u2192 original JavaScript receiver",
+      "observed_at": "2026-11-27T18:14:45.156Z",
+      "contract_sha256": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+      "packet_sha256": "0e50f98690eb4632c6c4751f419af90ed2c0425e3d8303738ab99e0fdcba0f4c",
+      "source_count": 7,
+      "decision_count": 2,
+      "review_status": "STALE",
+      "plan": {
+        "a": 30,
+        "available": {
+          "mix": 160,
+          "pack": 150
+        },
+        "b": 60,
+        "cost_cents": 0,
+        "gross_cents": 885000,
+        "net_cents": 885000,
+        "slack": {
+          "mix": 40,
+          "pack": 0
+        },
+        "units": 90,
+        "used": {
+          "mix": 120,
+          "pack": 150
+        }
+      },
+      "operational_authority": false,
+      "external_effects": false
+    }
+  }
+}

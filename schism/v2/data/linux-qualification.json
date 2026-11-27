@@ -1,0 +1,134 @@
+{
+  "schema": "schism-recipient-qualification/2",
+  "status": "PASS",
+  "observed_at": "2026-11-27T18:13:28.076955+00:00",
+  "environment": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "python": "3.14.4"
+  },
+  "contract_sha256": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+  "receiver_sha256": "344604e283948d8888bdb68fb61d90e23b98fdf580040be8c7117153ea0a6afe",
+  "case_register_sha256": "c8d08cd4d6824d1f70e6d96ddc1308baecfb75a12496f9fc3c47ea669e21e6fc",
+  "cases": [
+    {
+      "file": "baseline.json",
+      "expected": "ACCEPT",
+      "observed": "ACCEPT",
+      "return_code": 0,
+      "reason": null,
+      "network_attempts": 0
+    },
+    {
+      "file": "pending.json",
+      "expected": "ACCEPT",
+      "observed": "ACCEPT",
+      "return_code": 0,
+      "reason": null,
+      "network_attempts": 0
+    },
+    {
+      "file": "completed-js.json",
+      "expected": "ACCEPT",
+      "observed": "ACCEPT",
+      "return_code": 0,
+      "reason": null,
+      "network_attempts": 0
+    },
+    {
+      "file": "inconclusive.json",
+      "expected": "ACCEPT",
+      "observed": "ACCEPT",
+      "return_code": 0,
+      "reason": null,
+      "network_attempts": 0
+    },
+    {
+      "file": "reject-bytes.json",
+      "expected": "REFUSE",
+      "observed": "REFUSE",
+      "return_code": 1,
+      "reason": "Handoff digest mismatch.",
+      "network_attempts": 0
+    },
+    {
+      "file": "reject-rehash-result.json",
+      "expected": "REFUSE",
+      "observed": "REFUSE",
+      "return_code": 1,
+      "reason": "Saved conclusion differs from independent recomputation.",
+      "network_attempts": 0
+    },
+    {
+      "file": "reject-missing-source.json",
+      "expected": "REFUSE",
+      "observed": "REFUSE",
+      "return_code": 1,
+      "reason": "Orphan or forked source revision.",
+      "network_attempts": 0
+    },
+    {
+      "file": "reject-authority.json",
+      "expected": "REFUSE",
+      "observed": "REFUSE",
+      "return_code": 1,
+      "reason": "Invalid review scope or invented authority.",
+      "network_attempts": 0
+    },
+    {
+      "file": "reject-recipe.json",
+      "expected": "REFUSE",
+      "observed": "REFUSE",
+      "return_code": 1,
+      "reason": "Different engine: explicit migration and requalification required.",
+      "network_attempts": 0
+    }
+  ],
+  "case_count": 9,
+  "network_policy": "Ordinary Python socket APIs denied; Node HTTP/TLS/socket/fetch denied when selected",
+  "network_attempts": 0,
+  "origin_service_used": false,
+  "fresh_process_per_case": true,
+  "continued_packet_sha256": "0e50f98690eb4632c6c4751f419af90ed2c0425e3d8303738ab99e0fdcba0f4c",
+  "roundtrip": {
+    "schema": "schism-roundtrip/2",
+    "status": "PASS",
+    "direction": "JavaScript \u2192 Python continuation \u2192 original JavaScript receiver",
+    "observed_at": "2026-11-27T18:13:28.062Z",
+    "contract_sha256": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+    "packet_sha256": "0e50f98690eb4632c6c4751f419af90ed2c0425e3d8303738ab99e0fdcba0f4c",
+    "source_count": 7,
+    "decision_count": 2,
+    "review_status": "STALE",
+    "plan": {
+      "a": 30,
+      "available": {
+        "mix": 160,
+        "pack": 150
+      },
+      "b": 60,
+      "cost_cents": 0,
+      "gross_cents": 885000,
+      "net_cents": 885000,
+      "slack": {
+        "mix": 40,
+        "pack": 0
+      },
+      "units": 90,
+      "used": {
+        "mix": 120,
+        "pack": 150
+      }
+    },
+    "operational_authority": false,
+    "external_effects": false
+  },
+  "history": {
+    "sources": 7,
+    "decisions": 2,
+    "reviews": 1,
+    "old_net_cents": 565000,
+    "new_net_cents": 885000
+  },
+  "scope": "Synthetic industrial record continuity and independent computation; no device operation or authenticated review authority."
+}

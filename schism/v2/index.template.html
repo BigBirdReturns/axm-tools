@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Run a bounded software continuity test: correct evidence, retain a handoff, close the origin, replay the record and continue on a receiver.">
+  <title>SCHISM / The exit test</title>
+  <style>{{STYLES}}</style>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to the working test</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="#top" aria-label="SCHISM, the exit test"><span class="brand-mark" aria-hidden="true"></span>SCHISM<span class="wordmark-sub">The exit test</span></a>
+      <nav aria-label="Page navigation"><a href="#workspace">Workspace</a><a href="#evidence">Python evidence</a><a href="#study">The study</a></nav>
+      <span class="edition" id="edition">2.0 / SOFTWARE CONTINUITY</span>
+    </div>
+  </header>
+  <main id="top">
+    <section class="intro wrap" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">An executable study by Jonathan Sandhu</p>
+        <h1 id="page-title">The exit test.</h1>
+        <p class="intro-copy">Preserve a decision and its evidence, close the originating workspace, then continue the work on a receiver.</p>
+        <p class="scope-line"><span class="scope-dot" aria-hidden="true"></span>Synthetic civil planning fixture <span aria-hidden="true">·</span> Declared review only <span aria-hidden="true">·</span> Local to this tab</p>
+      </div>
+      <div class="intro-action">
+        <button class="button primary large" id="full-drill" data-action="full-drill" disabled>Run the complete exit test <span aria-hidden="true">↗</span></button>
+        <p>Starts a fresh fixture and runs the correction, handoff, closure, replay and continuation. Each step also works separately below.</p>
+      </div>
+    </section>
+
+    <section class="wrap console" id="workspace" aria-labelledby="workspace-title">
+      <div class="section-heading compact">
+        <div><p class="eyebrow">01 / Live workspace</p><h2 id="workspace-title">Run the continuity test</h2></div>
+        <div class="workspace-tools"><span class="runtime-label"><span aria-hidden="true"></span>LIVE JAVASCRIPT</span><button class="button quiet" id="reset" data-action="reset" disabled>Reset fixture</button></div>
+      </div>
+      <ol class="progress" aria-label="Exit test progress">
+        <li id="step-correct"><span class="step-number">01</span><span>Correct source</span><span class="step-state" aria-hidden="true"></span></li>
+        <li id="step-handoff"><span class="step-number">02</span><span>Seal handoff</span><span class="step-state" aria-hidden="true"></span></li>
+        <li id="step-close"><span class="step-number">03</span><span>Close origin</span><span class="step-state" aria-hidden="true"></span></li>
+        <li id="step-replay"><span class="step-number">04</span><span>Replay record</span><span class="step-state" aria-hidden="true"></span></li>
+        <li id="step-resume"><span class="step-number">05</span><span>Continue</span><span class="step-state" aria-hidden="true"></span></li>
+      </ol>
+      <div class="notice" id="notice" role="status" aria-live="polite" aria-atomic="true"><span class="notice-label" id="notice-label">Starting</span><p id="notice-detail">Opening the local fixture and its declared review.</p></div>
+
+      <div class="workspace-grid">
+        <section class="workspace-card" id="producer-panel" aria-labelledby="producer-title">
+          <div class="card-heading"><div><p class="eyebrow">Origin / working state</p><h3 id="producer-title">Source workspace</h3></div><span class="status-pill" id="producer-status">LOADING</span></div>
+          <p class="state-description" id="producer-description">The originating workspace holds the source records and accepted calculation.</p>
+          <div class="plan" id="producer-plan"></div>
+          <div class="state-counts" id="producer-counts"></div>
+          <div id="producer-editor-slot">
+            <div class="source-editor" id="source-editor">
+              <div class="field-heading"><label for="scenario" id="correction-label">Correct a source</label><span id="editor-target">ORIGIN</span></div>
+              <div class="input-action"><select id="scenario" aria-describedby="scenario-help"><option value="customer-mix">Change customer mix</option><option value="parts-allocation">Reserve the last spare</option><option value="quality-hold">Hold Product A</option><option value="missing-evidence">Remove a capacity value</option></select><button class="button secondary" id="correct" data-action="correct" disabled>Apply correction</button></div>
+              <p class="field-help" id="scenario-help">Raise Product B's recorded contribution from $40 to $120 per unit. The prior decision becomes stale before recalculation.</p>
+              <details class="csv-editor"><summary>Use a local CSV source</summary><div class="csv-fields"><label for="source-family">Source family</label><select id="source-family"><option value="orders">Orders / customer demand</option><option value="routing">Routing / product requirements</option><option value="capacity">Capacity / available minutes</option><option value="maintenance">Maintenance / parts and costs</option><option value="quality">Quality / release status</option><option value="procedure">Procedure / declared review role</option></select><label for="source-csv">Exact CSV under the selected mapping</label><textarea id="source-csv" rows="6" spellcheck="false" autocapitalize="off" aria-describedby="csv-help"></textarea><p id="csv-help" class="field-help">The fixed recipe accepts two products and two resource stages. Local edits remain unverified source data. Existing headers and units define the mapping.</p><div class="button-row"><button class="button secondary" id="apply-csv" data-action="apply-csv" disabled>Apply local CSV</button><label class="button quiet file-button" for="csv-file">Load CSV file<input type="file" id="csv-file" accept=".csv,.txt,text/csv,text/plain"></label></div></div></details>
+            </div>
+          </div>
+          <div class="card-actions"><button class="button primary" id="handoff" data-action="handoff" disabled>Seal handoff <span aria-hidden="true">→</span></button><button class="button secondary" id="close-producer" data-action="close-producer" disabled>Close origin</button></div>
+          <p class="card-footnote" id="origin-footnote">A handoff retains raw sources, every decision and its review history.</p>
+        </section>
+
+        <section class="workspace-card receiver-card" id="receiver-panel" aria-labelledby="receiver-title">
+          <div class="card-heading"><div><p class="eyebrow">Receiver / separate state</p><h3 id="receiver-title">Continue from the record</h3></div><span class="status-pill" id="receiver-status">EMPTY</span></div>
+          <p class="state-description" id="receiver-description">Replay validates the retained dependencies and recomputes every historical conclusion before accepting the handoff.</p>
+          <div class="plan" id="receiver-plan"></div>
+          <div class="state-counts" id="receiver-counts"></div>
+          <div id="receiver-editor-slot"></div>
+          <div class="receiver-explanation" id="receiver-explanation"><span class="small-label">Acceptance boundary</span><p>The receiver checks the declared recipe, source lineage, calculation and review scope. It preserves its accepted state if a later handoff fails.</p></div>
+          <div class="card-actions"><button class="button primary" id="receive" data-action="receive" disabled>Replay handoff <span aria-hidden="true">→</span></button><button class="button secondary" id="resume" data-action="resume" disabled>Continue calculation</button></div>
+          <div class="receiver-secondary"><button class="text-button" id="review" data-action="review" disabled>Record declared review</button><button class="text-button" id="export-receiver" data-action="export-receiver" disabled>Download receiver packet</button></div>
+          <p class="card-footnote">Browser replay and continuation execute JavaScript. Independent Python execution is documented in the receipts below.</p>
+        </section>
+      </div>
+
+      <section class="transfer-bar" aria-labelledby="transfer-title">
+        <div class="transfer-info"><span class="transfer-symbol" aria-hidden="true">↗</span><div><h3 id="transfer-title">Retained handoff</h3><p id="transfer-detail">Seal a handoff to retain a transferable snapshot.</p><p class="digest" id="transfer-digest"></p></div></div>
+        <div class="button-row"><button class="button secondary" id="download-packet" data-action="download-packet" disabled>Download JSON</button><label class="button secondary file-button" for="packet-file">Import handoff<input type="file" id="packet-file" accept=".json,application/json" disabled></label></div>
+      </section>
+
+      <div class="inspection-grid">
+        <section class="inspection-card challenge-card" aria-labelledby="challenge-title"><div class="mini-heading"><span class="eyebrow">Exercise the refusal boundary</span><h3 id="challenge-title">A convincing packet can still fail.</h3></div><p>Change a retained packet and submit it to the same receiver. A refusal must preserve the receiver's accepted work.</p><label for="challenge">Fault to introduce</label><div class="input-action"><select id="challenge"><option value="rehash-result">False conclusion, recomputed hashes</option><option value="bytes">Changed bytes, original hashes</option><option value="missing-source">Missing retained source</option><option value="authority">Invented operational authority</option><option value="recipe">Different engine identity</option></select><button class="button secondary" id="test-challenge" data-action="test-challenge" disabled>Test refusal</button></div><p class="field-help">Challenges operate on a copy of the sealed handoff.</p></section>
+        <section class="inspection-card" aria-labelledby="events-title"><div class="mini-heading inline"><div><span class="eyebrow">Actual controller events</span><h3 id="events-title">Observed transitions</h3></div><span class="count-label" id="event-count">0 events</span></div><ol class="event-list" id="events"><li class="empty-event">Events appear as the test runs.</li></ol></section>
+      </div>
+
+      <section class="record-card" aria-labelledby="history-title"><div class="mini-heading inline"><div><p class="eyebrow">Retained calculation history</p><h3 id="history-title">A correction adds history.</h3></div><span class="small-label" id="history-owner">ORIGIN</span></div><div class="table-scroll"><table class="history-table"><thead><tr><th scope="col">Decision</th><th scope="col">Standing</th><th scope="col">Plan A / B</th><th scope="col">Modeled net</th><th scope="col">Review</th></tr></thead><tbody id="history-body"></tbody></table></div><p class="field-help">Historical values remain attached to their exact source frontier. Changes in scenario totals are changed assumptions, not measured improvement.</p><details class="source-records"><summary>Inspect retained source versions <span id="source-record-count"></span></summary><div class="table-scroll"><table><thead><tr><th scope="col">Source</th><th scope="col">Revision</th><th scope="col">Evidence class</th><th scope="col">Receipt</th></tr></thead><tbody id="source-body"></tbody></table></div></details></section>
+      <p class="local-note">Work stays in this page's memory. Download a handoff before reloading to retain it. The fixture makes no equipment, enterprise-system or model calls.</p>
+    </section>
+
+    <section class="evidence-section wrap" id="evidence" aria-labelledby="evidence-title"><div class="section-heading"><div><p class="eyebrow">02 / Independently retained execution</p><h2 id="evidence-title">Python receiver evidence</h2></div><a class="text-link" href="data/qualification.json">Inspect qualification JSON <span aria-hidden="true">↗</span></a></div><p class="section-intro">This browser runs the retained JavaScript engine. These cards report separate executions and their exact qualification records; an absent receipt remains pending.</p><div class="proof-grid" id="proof-grid"></div><div class="identity-row"><span class="small-label">Donor contract identity</span><code id="contract-identity">Awaiting build identity</code></div><div class="download-row"><a class="download-link" href="SCHISM-v2.0-offline.html" download><span>Standalone application</span><strong>Offline HTML <span aria-hidden="true">↓</span></strong></a><a class="download-link" href="SCHISM-v2.0-source.zip" download><span>Reproduce the implementation</span><strong>Source package <span aria-hidden="true">↓</span></strong></a><a class="download-link" href="TECHNICAL_NOTE.md"><span>Contract, method and limits</span><strong>Technical note <span aria-hidden="true">↗</span></strong></a></div></section>
+
+    <article class="study wrap" id="study" aria-labelledby="study-title"><div class="study-heading"><p class="eyebrow">03 / From the June proposition to executable evidence</p><h2 id="study-title">Continuity becomes a claim<br class="desktop-break"> you can test.</h2><p class="byline">Jonathan Sandhu <span aria-hidden="true">/</span> SCHISM 2.0</p></div><div class="study-copy"><h3>The obligation survives the supplier.</h3><p>The June 26 SCHISM dossier treated software control as a lifecycle question: what can the customer retain, verify, change and recover when a supplier relationship changes? Its substantive demand was an observable continuity test. The <a href="TECHNICAL_NOTE.md#provenance">retained original and edition history</a> establish the origin of that proposition; the application above supplies a bounded software case.</p><h3>The record carries the work.</h3><p>November's <a href="https://github.com/BigBirdReturns/axm-tools/tree/c8a35814556fe00f573485fef96848480d35f8b0/industrial-continuity" target="_blank" rel="noopener noreferrer">Industrial Continuity implementation</a> separates source revisions, calculation results and declared reviews. A correction invalidates the standing of dependent work before a new calculation occurs. The handoff carries the earlier evidence as well as its successor, allowing a receiver to reconstruct how the conclusion changed. This test preserves that existing contract and exposes the origin's closure as an explicit state transition.</p><p>The independent receiver adds a different implementation language to the evidence. Its qualification must show that the delivered program reconstructs the same bounded calculations and refuses the declared failure cases on the reported hosts. The recorded executions above determine how much of that claim this edition has earned. A browser replay, a source-code listing and a native execution receipt establish different facts.</p><h3>Acceptance includes the inconvenient result.</h3><p>The related <a href="https://github.com/BigBirdReturns/cantos/blob/98655f27c62083ac2cc3c860bb5fa58d7e5f29ad/compute/maintainer/QUALIFICATION.md" target="_blank" rel="noopener noreferrer">Cantos maintainer evidence</a> preserves an <em>incomparable</em> outcome when its recorded model runs miss their acceptance floor; recipient replay and changed pricing leave that gate intact. <a href="https://github.com/BigBirdReturns/axm-tools/blob/c8a35814556fe00f573485fef96848480d35f8b0/decision-floor/offline/tools/peer_replay.py" target="_blank" rel="noopener noreferrer">Decision Floor's peer exchange</a> preserves disagreement between separately held records. The same evidentiary discipline applies here: missing dependencies, stale decisions and failed imports remain visible outcomes.</p><h3>A specific software result has a specific boundary.</h3><p>A successful run establishes continuity for this synthetic, two-product planning recipe under the tested implementations and conditions. Raw inputs remain declared or operator-supplied records; a review label establishes no authenticated identity or operational permission. Consistent hashes and replay can expose a changed or internally false conclusion while a self-consistent fabricated source history remains fabricated. Hardware portability, secure boot, physical recovery, radio behavior and any supplier's deployed system remain outside this software test.</p><p class="study-conclusion">The useful result is a retained record and a receiver that can either continue the work or state exactly why it cannot accept it.</p></div></article>
+  </main>
+  <footer class="site-footer wrap"><div><strong>SCHISM</strong><span>Independent research / Jonathan Sandhu</span></div><p id="release-line">Edition 2.0</p><a href="#top">Back to workspace <span aria-hidden="true">↑</span></a></footer>
+  <noscript><div class="noscript">The working test requires JavaScript. The <a href="TECHNICAL_NOTE.md">technical note</a> and <a href="data/qualification.json">qualification record</a> remain available as files.</div></noscript>
+  <script>window.SCHISM_BUILD = {{BUILD_DATA}};</script>
+  <script>{{VENDOR_CORE}}</script>
+  <script>{{VENDOR_ENGINE}}</script>
+  <script>{{CONTROLLER}}</script>
+  <script>{{APP}}</script>
+</body>
+</html>

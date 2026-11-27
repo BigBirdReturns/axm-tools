@@ -21,3 +21,8 @@ hot-aisle/campaign/shelf/stranger-2-2026-09-24/** -text whitespace=cr-at-eol
 # Replay identities bind exact source bytes across native and CI checkouts.
 cesmii-proof/** -text
 team-commons/core.js -text
+
+# SCHISM receiver, donor and receipt identities bind exact cross-platform bytes.
+schism/v2/** -text
+# Preserve the observed CRLF bytes of the native Windows execution receipt.
+schism/v2/data/windows-qualification.json -text whitespace=cr-at-eol

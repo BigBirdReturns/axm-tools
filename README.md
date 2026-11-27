@@ -14,6 +14,7 @@ Old HTML addresses under the seven migrated directories redirect to the matching
 
 | Tool | What it does | Interface |
 |------|--------------|-----------|
+| [`schism/v2/`](schism/v2/) | Executable continuity test: source correction, origin closure, independent Python continuation, same-contract JavaScript return, Linux/Windows receipts and complete source | [Run SCHISM: the exit test](https://bigbirdreturns.github.io/axm-tools/schism/v2/) |
 | [`industrial-continuity/`](industrial-continuity/) | Source-bound industrial planning, correction-induced stale decisions and reviews, actual local CSV intake, independently executable offline handoff, source and adversarial tests | [Run Industrial Continuity](https://bigbirdreturns.github.io/axm-tools/industrial-continuity/) |
 | [`proof-workbench/`](proof-workbench/) | One portable runner over three pinned native proof kits, private engagement scope and delivery economics, evidence-referenced opportunity stages and independently replayable source delivery | [Open Proof Workbench](https://bigbirdreturns.github.io/axm-tools/proof-workbench/) |
 | [`agent-flywheel/`](agent-flywheel/) | On-demand agent research using visitor evidence and a chosen model: diagnosis, prompt experiments, held-out evaluation, verifiable receipts and a portable local/CI runner | [Run Agent Flywheel](https://bigbirdreturns.github.io/axm-tools/agent-flywheel/) |
@@ -54,7 +55,6 @@ the tool layout, so don't try to fit them into it.
 
 | Area | What it is | Surface |
 |------|------------|---------|
-| [`schism/`](schism/) | Independent dossier on FleetForge, supplier dependence and customer authority, with dated provenance, primary sources and offline downloads | [Read SCHISM](https://bigbirdreturns.github.io/axm-tools/schism/) |
 | [`identity/`](identity/) | The AXM / SCG identity system: the pixel-dandelion mark, its four-token palette and type, frozen release bundles, and the provenance law (`SCG_MARK_CONSTITUTION.md`) that governs every rendering | [live showcase](https://bigbirdreturns.github.io/axm-tools/identity/) — self-contained page, no Action |
 
 `identity/` is deliberately **not** a tool: no `scripts/`, no `data/`, no

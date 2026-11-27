@@ -1,0 +1,114 @@
+{
+  "evidence_archives_sha256": {
+    "secondrun-empirical-20261118.zip": "085ebecf6cb97bd1520d183bbf724698f8e2aef25e46f23e9747e00dbd2591e3",
+    "thermal-envelope-20261118.zip": "c96e93d74fdcb7137c4c2c7c25be95dc30c36c5845f81e374bcad81406de69f9",
+    "vllm-humaneval-20261118.zip": "c4bcb662a5c200a81a206d70d7d41d7a8a9d9fec9930634de05ca407d5f59a3e"
+  },
+  "evidence_class": "retained empirical observations; deterministic recipient reanalysis",
+  "historical_accepted_per_arm": 21,
+  "historical_observations_per_arm": 96,
+  "kit_bytes": 11862918,
+  "kit_sha256": "3c6d030d8215ad6a15175f2cd5550820adceb11705826dab6373bb2eecfff84a",
+  "kit_url": "https://raw.githubusercontent.com/BigBirdReturns/cantos/98655f27c62083ac2cc3c860bb5fa58d7e5f29ad/public/open-compute/maintainer-kit.zip",
+  "native_analysis_new_inference_requests": 0,
+  "native_analyzer_exit_code": 2,
+  "native_analyzer_verdict": "incomparable",
+  "original_costs": {
+    "baseline": null,
+    "candidate": null
+  },
+  "original_price_status": "unpriced",
+  "packet_import_inference_requests": 0,
+  "price_scenario": {
+    "accepted_per_arm": 21,
+    "baseline_per_hour_usd": 2.0,
+    "candidate_per_hour_usd": 4.0,
+    "historical_observations_per_arm": 96,
+    "native_analyzer_verdict": "incomparable",
+    "new_inference_requests": 0,
+    "recipient_decision": "no_eligible_configuration"
+  },
+  "price_scenario_import_inference_requests": 0,
+  "recipient_decision": "no_eligible_configuration",
+  "retained_acceptance_floor": 0.8,
+  "schema": "schism.cantos-retained-recipient/1",
+  "scope": "Verifies retained captures, bound application grades, original and delivered analysis, price-only recalculation, native workbench import, selective reuse and expected refusal transitions. This run acquires no fresh model or hardware observations.",
+  "secondrun_transitions": [
+    {
+      "exit_code": 2,
+      "gpu_runs": 0,
+      "label": "01-initial",
+      "model_calls": 0,
+      "native_verdicts": [
+        "incomparable",
+        "incomparable"
+      ],
+      "new_observations": 0,
+      "summary": {
+        "executed": 2,
+        "held": 0,
+        "reused": 0
+      }
+    },
+    {
+      "exit_code": 2,
+      "gpu_runs": 0,
+      "label": "02-no-change",
+      "model_calls": 0,
+      "native_verdicts": [
+        "incomparable",
+        "incomparable"
+      ],
+      "new_observations": 0,
+      "summary": {
+        "executed": 0,
+        "held": 0,
+        "reused": 2
+      }
+    },
+    {
+      "exit_code": 2,
+      "gpu_runs": 0,
+      "label": "03-price-only",
+      "model_calls": 0,
+      "native_verdicts": [
+        "incomparable",
+        "incomparable"
+      ],
+      "new_observations": 0,
+      "summary": {
+        "executed": 1,
+        "held": 0,
+        "reused": 1
+      }
+    },
+    {
+      "exit_code": 3,
+      "gpu_runs": 0,
+      "label": "04-candidate-failure-evidence",
+      "model_calls": 0,
+      "native_verdicts": [
+        "error",
+        "incomparable"
+      ],
+      "new_observations": 0,
+      "summary": {
+        "executed": 1,
+        "held": 0,
+        "reused": 1
+      }
+    }
+  ],
+  "source_commit": "98655f27c62083ac2cc3c860bb5fa58d7e5f29ad",
+  "source_input_sha256": {
+    "grade-baseline/grades.json": "af7ab10150754df5a60d228bd00b9e4d20c434f8aab4c9e688c3a2bd4d2ffd61",
+    "grade-candidate/grades.json": "ef59626e3ad70f21c6bbcb562dbcdc2c8956d73c546e49ec447896a4fe4c95ab",
+    "policy-vllm.json": "a1993b5c9e9491a18d6285e524025c818a78b5f8a36272af1e7751134ac04b40",
+    "vllm-capture/baseline/run.json": "83b96eeb65fdf0de88fc4792e964469a2f8d0b0412d1c701c6eab268342fb2c9",
+    "vllm-capture/candidate/run.json": "6cf3694f7a95ab11834fbf0c89434c5775f629f1f65571076300e2d890e430c6"
+  },
+  "source_inputs_unchanged": true,
+  "source_repository": "https://github.com/BigBirdReturns/cantos",
+  "verification_status": "passed",
+  "verified_at": "2026-11-27T18:00:50.202066+00:00"
+}

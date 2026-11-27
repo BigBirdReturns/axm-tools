@@ -1,0 +1,54 @@
+{
+  "schema": "schism-case-register/2",
+  "contract_sha256": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+  "evidence_class": "synthetic-industrial-records",
+  "required": [
+    {
+      "file": "baseline.json",
+      "accept": true
+    },
+    {
+      "file": "pending.json",
+      "accept": true
+    },
+    {
+      "file": "completed-js.json",
+      "accept": true
+    },
+    {
+      "file": "inconclusive.json",
+      "accept": true
+    },
+    {
+      "file": "reject-bytes.json",
+      "accept": false,
+      "error": "Handoff digest mismatch."
+    },
+    {
+      "file": "reject-rehash-result.json",
+      "accept": false,
+      "error": "Saved conclusion differs from independent recomputation."
+    },
+    {
+      "file": "reject-missing-source.json",
+      "accept": false,
+      "error": "Orphan or forked source revision."
+    },
+    {
+      "file": "reject-authority.json",
+      "accept": false,
+      "error": "Invalid review scope or invented authority."
+    },
+    {
+      "file": "reject-recipe.json",
+      "accept": false,
+      "error": "Different engine: explicit migration and requalification required."
+    }
+  ],
+  "resume": {
+    "input": "pending.json",
+    "expected": "completed-js.json",
+    "expected_sha256": "0e50f98690eb4632c6c4751f419af90ed2c0425e3d8303738ab99e0fdcba0f4c"
+  },
+  "boundary": "Record consistency and bounded calculations. No physical observation, authenticated reviewer or device operation."
+}

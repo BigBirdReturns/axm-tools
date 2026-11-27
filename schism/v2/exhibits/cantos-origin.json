@@ -1,0 +1,21 @@
+{
+  "archive_root": "cantos",
+  "bytes": 11862918,
+  "commit": "98655f27c62083ac2cc3c860bb5fa58d7e5f29ad",
+  "file": "cantos-maintainer-kit.zip",
+  "manifest_files_verified": 108,
+  "recipient_checker": "cantos/app/tests/check_maintainer_evidence.py",
+  "recipient_checker_sha256": "af74842c0cae6597eb048f300b516c4493474e40c7ca62dea2c16d0e05a6756b",
+  "recipient_command": [
+    "python",
+    "-B",
+    "app/tests/check_maintainer_evidence.py"
+  ],
+  "recipient_working_directory": "cantos",
+  "repository": "https://github.com/BigBirdReturns/cantos",
+  "schema": "schism.public-exhibit-origin/1",
+  "sha256": "3c6d030d8215ad6a15175f2cd5550820adceb11705826dab6373bb2eecfff84a",
+  "source_tree_sha256": "4e4a0907184190d2c9ac6de65f9a02d70f4c45fb6d25e16cf4ec75d70194fd72",
+  "url": "https://raw.githubusercontent.com/BigBirdReturns/cantos/98655f27c62083ac2cc3c860bb5fa58d7e5f29ad/public/open-compute/maintainer-kit.zip",
+  "verification_scope": "Immutable public kit byte identity, closed kit manifest and retained-evidence recipient workflow; no fresh inference."
+}

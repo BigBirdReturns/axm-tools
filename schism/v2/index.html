@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Run a bounded software continuity test: correct evidence, retain a handoff, close the origin, replay the record and continue on a receiver.">
+  <title>SCHISM / The exit test</title>
+  <style>:root{--paper:#f5f3ed;--surface:#fffefb;--ink:#243239;--muted:#627073;--line:#d9ded9;--dark:#1f3037;--accent:#276b60;--accent-soft:#e8f0e9;--amber:#835b19;--amber-soft:#f7efd9;--red:#983b32;--red-soft:#fbebe5;--radius:8px;--mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;--sans:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button,select,input{max-width:100%}button,a,label.file-button{-webkit-tap-highlight-color:transparent}a{color:var(--accent);text-underline-offset:3px}a:hover{text-decoration-thickness:2px}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.42}button:focus-visible,a:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #73a6c5;outline-offset:3px}h1,h2,h3,p{margin:0}h1,h2,h3{font-weight:600;letter-spacing:-.035em;line-height:1.15}h1{font-size:clamp(36px,4vw,54px);margin:10px 0 13px}h2{font-size:27px}h3{font-size:21px}code,.digest{font-family:var(--mono)}[hidden]{display:none!important}.wrap{width:min(1320px,calc(100% - 80px));margin:0 auto}.skip-link{position:absolute;top:-80px;left:20px;background:var(--surface);color:var(--ink);padding:12px 18px;z-index:10}.skip-link:focus{top:10px}.site-header{background:var(--dark);color:#f4f4e9}.header-inner{width:min(1440px,calc(100% - 80px));min-height:75px;margin:auto;display:flex;align-items:center;gap:40px}.wordmark{display:flex;align-items:center;gap:12px;color:inherit;font-size:19px;font-weight:700;letter-spacing:.08em;text-decoration:none}.brand-mark{width:21px;height:24px;border-left:3px solid #a5c4ad;border-right:3px solid #a5c4ad;transform:skew(-15deg);position:relative}.brand-mark:after{content:"";position:absolute;left:6px;top:0;height:24px;border-left:2px solid #a5c4ad}.wordmark-sub{font-size:13px;font-weight:400;letter-spacing:.015em;color:#bcc8c7;padding-left:12px;border-left:1px solid #566269}.site-header nav{display:flex;gap:25px;margin-left:auto}.site-header nav a{color:#dce2df;text-decoration:none;font-size:12px}.site-header nav a:hover{color:white}.edition{font:10px var(--mono);color:#aebebd;letter-spacing:.05em;white-space:nowrap}.intro{display:grid;grid-template-columns:1fr 285px;gap:70px;align-items:center;padding:44px 0 34px}.eyebrow,.small-label{font:10px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.11em;color:var(--muted)}.intro-copy{font-size:17px;max-width:680px;color:#44555a;line-height:1.55}.scope-line{display:flex;flex-wrap:wrap;align-items:center;gap:9px;font-size:11px;color:var(--muted);margin-top:18px}.scope-dot{width:6px;height:6px;display:inline-block;background:var(--accent);border-radius:50%}.intro-action p{font-size:11px;color:var(--muted);margin-top:11px;line-height:1.5}.button{border:1px solid transparent;background:transparent;display:inline-flex;align-items:center;justify-content:center;gap:14px;border-radius:5px;min-height:39px;padding:9px 14px;font-size:12px;font-weight:600;line-height:1.35;text-align:center;text-decoration:none;transition:background .12s,border-color .12s,box-shadow .12s;white-space:normal}.button.primary{background:var(--accent);border-color:var(--accent);color:white}.button.primary:hover:enabled{background:#1c554c;border-color:#1c554c}.button.secondary{background:var(--surface);border-color:#bdc9c3;color:var(--ink)}.button.secondary:hover:enabled,.file-button:hover{background:#eef2ec;border-color:#8ea89b}.button.quiet{color:var(--muted);border-color:var(--line)}.button.quiet:hover:enabled{background:#e9ede6}.button.large{width:100%;min-height:48px;font-size:13px}.button-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.text-button{padding:5px 0;background:none;border:0;font-size:11px;font-weight:600;color:var(--accent);text-align:left;text-decoration:underline;text-underline-offset:3px}.text-button:hover:enabled{color:#173e38}.file-button{position:relative;overflow:hidden;cursor:pointer}.file-button input{position:absolute;width:1px;height:1px;opacity:0;left:0;top:0}.file-button:focus-within{outline:3px solid #73a6c5;outline-offset:3px}.file-button.is-disabled{opacity:.42;cursor:not-allowed}.console{padding:26px 0 0;border-top:1px solid #c7d0ca}.section-heading{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:20px}.section-heading .eyebrow{margin-bottom:8px}.section-heading.compact h2{font-size:22px}.workspace-tools{display:flex;align-items:center;gap:18px}.runtime-label{font:10px var(--mono);letter-spacing:.04em;color:var(--accent);display:flex;align-items:center;gap:7px;white-space:nowrap}.runtime-label>span{width:5px;height:5px;border-radius:50%;background:var(--accent)}.progress{display:grid;grid-template-columns:repeat(5,1fr);margin:0 0 16px;padding:0;list-style:none;border:1px solid #ced8d0;border-radius:6px;overflow:hidden;background:#ebefe8}.progress li{position:relative;display:flex;align-items:center;gap:10px;padding:12px 15px;border-right:1px solid #ced8d0;color:#56645e;font-size:11px;font-weight:500}.progress li:last-child{border-right:0}.step-number{font:10px var(--mono);color:#79877f}.step-state{margin-left:auto;font-size:12px}.progress li.is-done{color:#245f4b;background:#dfece0}.progress li.is-done .step-number{color:#49735e}.notice{display:flex;align-items:baseline;gap:15px;padding:12px 15px;margin-bottom:18px;background:#edf0e8;border-left:3px solid #82998a;min-height:48px;border-radius:0 4px 4px 0}.notice-label{flex:none;font:10px var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.04em}.notice p{font-size:12px;overflow-wrap:anywhere}.notice[data-tone=success]{background:var(--accent-soft);border-color:var(--accent)}.notice[data-tone=warning]{background:var(--amber-soft);border-color:var(--amber)}.notice[data-tone=error]{background:var(--red-soft);border-color:var(--red)}.workspace-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}.workspace-card{padding:24px 25px 20px;background:var(--surface);border:1px solid #cfd7d0;border-radius:var(--radius);box-shadow:0 2px 3px #26392e03;display:flex;flex-direction:column;min-width:0}.receiver-card{border-top:3px solid var(--accent);padding-top:22px}.card-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.card-heading .eyebrow{margin-bottom:7px}.status-pill{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:#edf0ea;border:1px solid #d2dcd1;border-radius:4px;padding:5px 7px;font:9px var(--mono);letter-spacing:.03em;color:#5c6c61;max-width:160px;text-align:center;overflow-wrap:anywhere}.status-pill[data-tone=success]{background:var(--accent-soft);border-color:#bed4c6;color:var(--accent)}.status-pill[data-tone=warning]{background:var(--amber-soft);border-color:#e4d4a6;color:var(--amber)}.status-pill[data-tone=error]{background:var(--red-soft);border-color:#e2b7a8;color:var(--red)}.state-description{font-size:12px;line-height:1.5;margin:14px 0 18px;color:var(--muted);min-height:36px}.plan{min-height:103px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:17px 0;display:flex;flex-direction:column;justify-content:center}.plan-grid{display:grid;grid-template-columns:1fr 1fr 1.6fr;gap:14px}.plan-cell{display:flex;flex-direction:column;gap:4px;min-width:0}.plan-cell+.plan-cell{padding-left:16px;border-left:1px solid #e3e7e0}.plan-value{font:500 31px/1.12 var(--sans);letter-spacing:-.055em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.plan-cell:last-child .plan-value{color:var(--accent)}.plan-label{font-size:10px;color:var(--muted);line-height:1.4}.plan-stale{margin:10px 0 0;font:10px var(--mono);color:var(--amber)}.empty-plan{padding:4px 0}.empty-plan h4{font-size:15px;font-weight:500;line-height:1.35;margin:0 0 6px;letter-spacing:-.02em}.empty-plan p{font-size:11px;color:var(--muted);max-width:390px;line-height:1.5}.issue-list{padding-left:16px;margin:7px 0 0;font-size:11px;color:var(--amber)}.state-counts{display:flex;gap:17px;font-size:10px;color:var(--muted);margin:10px 0 18px;flex-wrap:wrap}.state-counts strong{color:var(--ink);font-weight:600;margin-right:3px}.source-editor{padding:17px 0 0;border-top:1px solid var(--line);margin-bottom:19px}.field-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;gap:12px}.field-heading label,.csv-fields>label,.challenge-card>label{font-size:11px;font-weight:600}.field-heading>span{font:9px var(--mono);color:var(--muted)}.input-action{display:flex;gap:8px;align-items:stretch}.input-action select{flex:1;min-width:0}.input-action .button{flex:0 0 auto}select,textarea{width:100%;background:#fafbf7;border:1px solid #cbd4cb;color:var(--ink);border-radius:4px;padding:9px 11px;font-size:12px}select{min-height:39px}textarea{resize:vertical;font:11px/1.55 var(--mono);min-height:130px;tab-size:2}.field-help{font-size:10px;line-height:1.55;color:var(--muted);margin-top:8px}.csv-editor{margin-top:12px}.csv-editor summary,.source-records summary{font-size:11px;color:var(--accent);cursor:pointer;width:fit-content;padding:3px 0}.csv-fields{margin-top:12px;display:flex;flex-direction:column;gap:9px;background:#f6f8f1;padding:13px;border-radius:5px}.csv-fields .field-help{margin:0}.card-actions{display:flex;gap:9px;margin-top:auto;padding-top:15px;flex-wrap:wrap}.card-actions .button{flex:1}.card-footnote{font-size:10px;line-height:1.5;color:var(--muted);margin-top:12px}.receiver-explanation{padding:18px;background:#f1f5ee;border:1px solid #e0e7dc;border-radius:5px;margin:0 0 19px}.receiver-explanation p{font-size:12px;line-height:1.6;margin-top:8px;color:#53665a;max-width:425px}.receiver-secondary{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px}.transfer-bar{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:17px 21px;background:#e8ece5;border:1px solid #ccd7cc;border-radius:6px;margin:17px 0 20px}.transfer-info{display:flex;align-items:center;gap:16px;min-width:0}.transfer-symbol{font-size:23px;color:var(--accent)}.transfer-info h3{font-size:13px;letter-spacing:0;font-weight:600}.transfer-info p{font-size:11px;color:var(--muted);margin-top:3px}.transfer-info .digest{font-size:9px;overflow-wrap:anywhere;color:#66766a;line-height:1.5}.transfer-bar>.button-row{flex-shrink:0}.inspection-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.inspection-card{border:1px solid var(--line);padding:21px 23px;border-radius:6px;min-width:0;background:#f7f7f1}.mini-heading{margin-bottom:12px}.mini-heading h3{font-size:17px;margin-top:5px}.mini-heading.inline{display:flex;justify-content:space-between;align-items:center;gap:12px}.challenge-card>p{font-size:12px;color:var(--muted);margin:0 0 16px;max-width:470px}.challenge-card .input-action{margin-top:8px}.challenge-card>.field-help{font-size:10px;margin:8px 0 0}.count-label{font:10px var(--mono);white-space:nowrap;color:var(--muted)}.event-list{list-style:none;padding:0;margin:0;max-height:155px;overflow:auto;scrollbar-width:thin}.event-list li{padding:8px 0;border-top:1px solid #e1e5dc;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;align-items:baseline}.event-list li:first-child{border-top:0}.event-list .event-status{font:9px var(--mono);color:var(--accent);background:#e5ede3;border-radius:3px;padding:3px 5px;grid-row:1/3}.event-list .event-status[data-tone=warning]{color:var(--amber);background:var(--amber-soft)}.event-list .event-status[data-tone=error]{color:var(--red);background:var(--red-soft)}.event-action{font-size:11px;font-weight:600;text-transform:none}.event-detail{font-size:10px;color:var(--muted);line-height:1.4;overflow-wrap:anywhere}.event-list .empty-event{font-size:12px;color:var(--muted);display:block;padding-top:10px}.record-card{margin-top:20px;border:1px solid var(--line);border-radius:6px;padding:21px 23px;background:var(--surface)}.table-scroll{width:100%;overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;font-size:11px}th{font-size:9px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;color:var(--muted);padding:10px 12px;border-bottom:1px solid #cfd8cd;background:#f0f3ed;white-space:nowrap}td{padding:11px 12px;border-bottom:1px solid #e4e8df;vertical-align:top;font-variant-numeric:tabular-nums}td:first-child{font-weight:600}tbody tr:last-child td{border-bottom:0}.table-state{display:inline-block;font:9px var(--mono);text-transform:uppercase;color:var(--muted)}.table-state[data-tone=success]{color:var(--accent)}.table-state[data-tone=warning]{color:var(--amber)}.table-note{display:block;font-size:9px;color:var(--muted);font-weight:400;margin-top:2px}.source-records{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}.source-records>summary{display:list-item}.source-records table{margin-top:12px}.source-records td code{font-size:9px;white-space:nowrap}.source-records summary span{font:9px var(--mono);color:var(--muted);margin-left:6px}.local-note{font-size:10px;color:var(--muted);margin:13px 0 0;max-width:850px}.evidence-section{padding:50px 0 45px;border-bottom:1px solid #c7d0ca}.text-link{font-size:11px;font-weight:500;white-space:nowrap}.section-intro{font-size:13px;color:var(--muted);max-width:820px;margin-bottom:20px}.proof-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.proof-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px;min-width:0}.proof-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:15px}.proof-type{font:9px var(--mono);letter-spacing:.05em;color:var(--muted)}.proof-card h3{font-size:18px;margin-bottom:8px}.proof-card>p{font-size:11px;line-height:1.6;color:var(--muted);margin-bottom:12px;overflow-wrap:anywhere}.proof-card>a{font-size:10px;font-weight:600;margin-top:auto}.proof-card details{margin-top:11px;padding-top:9px;border-top:1px solid var(--line)}.proof-card summary{font-size:10px;color:var(--muted);cursor:pointer}.receipt{font:9px/1.6 var(--mono);color:#455a4c;white-space:pre-wrap;overflow-wrap:anywhere;max-height:240px;overflow:auto;margin:10px 0 0}.identity-row{display:flex;align-items:baseline;gap:18px;padding:16px 0 18px}.identity-row .small-label{flex-shrink:0}.identity-row code{font-size:10px;line-height:1.6;color:#596d5e;overflow-wrap:anywhere;min-width:0}.download-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.download-link{display:flex;flex-direction:column;gap:4px;padding:14px 17px;border:1px solid #cdd6cd;border-radius:5px;text-decoration:none;background:#edf1e9}.download-link>span{font-size:10px;color:var(--muted)}.download-link strong{font-size:12px;font-weight:600;display:flex;justify-content:space-between;gap:12px}.download-link:hover{background:#e3ebdf}.study{display:grid;grid-template-columns:.75fr 1.45fr;gap:90px;padding:54px 0 60px}.study-heading h2{font-size:32px;line-height:1.22;margin:13px 0 18px;letter-spacing:-.04em}.byline{font-size:11px;color:var(--muted)}.byline span{margin:0 8px}.study-copy{max-width:780px}.study-copy h3{font-size:17px;letter-spacing:-.015em;margin:26px 0 12px}.study-copy h3:first-child{margin-top:0}.study-copy p{font-size:14px;line-height:1.8;color:#425459;margin-bottom:14px}.study-copy a{color:#2a6759}.study-copy .study-conclusion{margin:25px 0 0;padding-top:20px;border-top:1px solid var(--line);font-weight:500;color:var(--ink)}.site-footer{border-top:1px solid #c7d0ca;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:25px 0 35px;font-size:10px;color:var(--muted)}.site-footer>div{display:flex;gap:15px;align-items:center}.site-footer strong{font-size:12px;letter-spacing:.08em;color:var(--ink)}.site-footer a{font-size:11px;text-decoration:none}.noscript{padding:20px;background:var(--amber-soft);position:fixed;left:0;right:0;bottom:0;border-top:1px solid #bfa96a;font-size:13px}.busy .console{cursor:progress}
+@media(min-width:1550px){.intro{padding-top:54px;padding-bottom:43px}.workspace-card{padding:27px 30px 23px}.receiver-card{padding-top:25px}}
+@media(max-width:1150px){.wrap,.header-inner{width:calc(100% - 48px)}.header-inner{gap:22px}.wordmark-sub{display:none}.site-header nav{gap:18px}.edition{font-size:9px}.intro{gap:40px;grid-template-columns:1fr 265px}.workspace-card{padding:20px}.receiver-card{padding-top:18px}.card-heading h3{font-size:19px}.status-pill{font-size:8px;max-width:130px}.progress li{gap:7px;padding:11px 10px;font-size:10px}.input-action{flex-wrap:wrap}.input-action select{flex-basis:170px}.plan-value{font-size:28px}.proof-grid{grid-template-columns:repeat(2,1fr)}.study{gap:45px;grid-template-columns:.75fr 1.4fr}.study-heading h2{font-size:29px}.transfer-bar{gap:17px;padding:16px}.transfer-bar .button{font-size:11px;padding:8px 11px}}
+@media(max-width:780px){.wrap,.header-inner{width:calc(100% - 36px)}.header-inner{min-height:65px;gap:15px;flex-wrap:wrap;padding:15px 0}.wordmark{font-size:17px}.brand-mark{width:18px;height:20px}.brand-mark:after{height:20px;left:5px}.edition{margin-left:auto;font-size:8px}.site-header nav{order:3;width:100%;margin-left:0;gap:23px;padding-top:1px}.site-header nav a{font-size:11px}.intro{grid-template-columns:1fr;padding:29px 0 26px;gap:22px}.intro h1{margin-top:9px}.intro-copy{font-size:15px;max-width:600px}.intro-action{max-width:480px;display:grid;grid-template-columns:1fr 1fr;gap:15px;align-items:center}.intro-action p{margin:0;font-size:10px}.button.large{font-size:12px;min-height:46px}.scope-line{font-size:10px;gap:7px;margin-top:13px}.section-heading{align-items:start;gap:15px}.section-heading.compact h2{font-size:20px}.workspace-tools{gap:9px;flex-direction:column;align-items:end}.workspace-tools .button{font-size:10px;min-height:30px;padding:5px 8px}.runtime-label{font-size:8px}.progress li{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:10px 8px;font-size:9px;line-height:1.25;min-height:58px}.progress .step-state{position:absolute;right:8px;top:9px;font-size:9px}.step-number{font-size:9px}.notice{font-size:11px;gap:10px;padding:11px 12px}.notice-label{font-size:9px}.notice p{font-size:11px}.workspace-grid{grid-template-columns:1fr;gap:17px}.workspace-card{padding:20px}.receiver-card{padding-top:18px}.card-heading h3{font-size:21px}.status-pill{font-size:9px;max-width:145px}.state-description{min-height:0}.plan-grid{grid-template-columns:1fr 1fr 1.5fr}.plan-value{font-size:32px}.plan{min-height:97px}.source-editor{margin-bottom:12px}.input-action{flex-wrap:nowrap}.input-action select{flex-basis:auto}.receiver-explanation{margin-bottom:14px}.transfer-bar{flex-direction:column;align-items:stretch;gap:12px}.transfer-bar .button-row{padding-left:31px}.transfer-info{align-items:flex-start;gap:12px}.transfer-symbol{font-size:20px;line-height:1}.inspection-grid{grid-template-columns:1fr;gap:17px}.inspection-card{padding:19px 20px}.event-list{max-height:190px}.record-card{padding:19px 17px}.history-table th,.history-table td{padding:9px 8px;font-size:10px}.history-table th{font-size:8px}.history-table td:nth-child(5){font-size:9px}.table-state{font-size:8px}.evidence-section{padding:37px 0 34px}.section-heading h2{font-size:23px}.evidence-section .section-heading{flex-direction:column;gap:10px}.proof-card{padding:17px}.identity-row{display:block}.identity-row .small-label{display:block;margin-bottom:5px}.identity-row code{font-size:9px}.download-row{gap:10px}.download-link{padding:12px}.download-link>span{font-size:9px}.download-link strong{font-size:11px}.study{grid-template-columns:1fr;gap:25px;padding:35px 0 38px}.study-heading h2{font-size:29px;max-width:450px}.desktop-break{display:none}.study-heading .byline{font-size:10px}.study-copy p{font-size:13px;line-height:1.8}.site-footer{flex-wrap:wrap;padding:21px 0 28px;gap:14px}.site-footer>div{width:100%;justify-content:space-between}.site-footer>p{max-width:70%}.site-footer>a{margin-left:auto}.local-note{font-size:9px}}
+@media(max-width:420px){.wrap,.header-inner{width:calc(100% - 28px)}.intro-action{grid-template-columns:1fr;gap:9px;max-width:none}.intro-action p{max-width:310px}.intro h1{font-size:38px}.scope-line{line-height:1.5;gap:5px}.workspace-card{padding:17px 15px}.receiver-card{padding-top:15px}.card-heading h3{font-size:19px}.card-heading .eyebrow{font-size:9px}.status-pill{font-size:8px;max-width:115px}.plan-grid{gap:7px;grid-template-columns:.85fr .85fr 1.5fr}.plan-cell+.plan-cell{padding-left:10px}.plan-value{font-size:29px}.plan-label{font-size:9px}.state-counts{gap:10px;font-size:9px}.input-action{flex-wrap:wrap}.input-action select{flex-basis:100%}.input-action .button{flex:1}.card-actions{gap:7px}.card-actions .button{font-size:11px;padding:9px}.receiver-secondary{gap:9px 14px}.text-button{font-size:10px}.notice{flex-direction:column;gap:4px}.progress li{padding:9px 6px;font-size:8px}.progress .step-state{right:5px;top:8px}.proof-grid{grid-template-columns:1fr}.proof-card>p{max-width:none}.download-row{grid-template-columns:1fr}.download-link{flex-direction:row;align-items:center;justify-content:space-between;gap:15px}.download-link>span{max-width:145px}.download-link strong{gap:14px;flex-shrink:0}.record-card{padding:17px 12px}.record-card .mini-heading h3{font-size:16px}.history-table th,.history-table td{padding:9px 5px;font-size:9px}.history-table th{font-size:7px;letter-spacing:.025em}.history-table td:nth-child(5){font-size:8px}.table-state{font-size:7px}.table-note{font-size:8px}.source-records th,.source-records td{font-size:9px;padding:8px 7px}.source-records th{font-size:8px}.mini-heading.inline .small-label{font-size:8px}.site-footer>div{gap:10px;font-size:9px}.site-footer>p{font-size:9px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to the working test</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="#top" aria-label="SCHISM, the exit test"><span class="brand-mark" aria-hidden="true"></span>SCHISM<span class="wordmark-sub">The exit test</span></a>
+      <nav aria-label="Page navigation"><a href="#workspace">Workspace</a><a href="#evidence">Python evidence</a><a href="#study">The study</a></nav>
+      <span class="edition" id="edition">2.0 / SOFTWARE CONTINUITY</span>
+    </div>
+  </header>
+  <main id="top">
+    <section class="intro wrap" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">An executable study by Jonathan Sandhu</p>
+        <h1 id="page-title">The exit test.</h1>
+        <p class="intro-copy">Preserve a decision and its evidence, close the originating workspace, then continue the work on a receiver.</p>
+        <p class="scope-line"><span class="scope-dot" aria-hidden="true"></span>Synthetic civil planning fixture <span aria-hidden="true">·</span> Declared review only <span aria-hidden="true">·</span> Local to this tab</p>
+      </div>
+      <div class="intro-action">
+        <button class="button primary large" id="full-drill" data-action="full-drill" disabled>Run the complete exit test <span aria-hidden="true">↗</span></button>
+        <p>Starts a fresh fixture and runs the correction, handoff, closure, replay and continuation. Each step also works separately below.</p>
+      </div>
+    </section>
+
+    <section class="wrap console" id="workspace" aria-labelledby="workspace-title">
+      <div class="section-heading compact">
+        <div><p class="eyebrow">01 / Live workspace</p><h2 id="workspace-title">Run the continuity test</h2></div>
+        <div class="workspace-tools"><span class="runtime-label"><span aria-hidden="true"></span>LIVE JAVASCRIPT</span><button class="button quiet" id="reset" data-action="reset" disabled>Reset fixture</button></div>
+      </div>
+      <ol class="progress" aria-label="Exit test progress">
+        <li id="step-correct"><span class="step-number">01</span><span>Correct source</span><span class="step-state" aria-hidden="true"></span></li>
+        <li id="step-handoff"><span class="step-number">02</span><span>Seal handoff</span><span class="step-state" aria-hidden="true"></span></li>
+        <li id="step-close"><span class="step-number">03</span><span>Close origin</span><span class="step-state" aria-hidden="true"></span></li>
+        <li id="step-replay"><span class="step-number">04</span><span>Replay record</span><span class="step-state" aria-hidden="true"></span></li>
+        <li id="step-resume"><span class="step-number">05</span><span>Continue</span><span class="step-state" aria-hidden="true"></span></li>
+      </ol>
+      <div class="notice" id="notice" role="status" aria-live="polite" aria-atomic="true"><span class="notice-label" id="notice-label">Starting</span><p id="notice-detail">Opening the local fixture and its declared review.</p></div>
+
+      <div class="workspace-grid">
+        <section class="workspace-card" id="producer-panel" aria-labelledby="producer-title">
+          <div class="card-heading"><div><p class="eyebrow">Origin / working state</p><h3 id="producer-title">Source workspace</h3></div><span class="status-pill" id="producer-status">LOADING</span></div>
+          <p class="state-description" id="producer-description">The originating workspace holds the source records and accepted calculation.</p>
+          <div class="plan" id="producer-plan"></div>
+          <div class="state-counts" id="producer-counts"></div>
+          <div id="producer-editor-slot">
+            <div class="source-editor" id="source-editor">
+              <div class="field-heading"><label for="scenario" id="correction-label">Correct a source</label><span id="editor-target">ORIGIN</span></div>
+              <div class="input-action"><select id="scenario" aria-describedby="scenario-help"><option value="customer-mix">Change customer mix</option><option value="parts-allocation">Reserve the last spare</option><option value="quality-hold">Hold Product A</option><option value="missing-evidence">Remove a capacity value</option></select><button class="button secondary" id="correct" data-action="correct" disabled>Apply correction</button></div>
+              <p class="field-help" id="scenario-help">Raise Product B's recorded contribution from $40 to $120 per unit. The prior decision becomes stale before recalculation.</p>
+              <details class="csv-editor"><summary>Use a local CSV source</summary><div class="csv-fields"><label for="source-family">Source family</label><select id="source-family"><option value="orders">Orders / customer demand</option><option value="routing">Routing / product requirements</option><option value="capacity">Capacity / available minutes</option><option value="maintenance">Maintenance / parts and costs</option><option value="quality">Quality / release status</option><option value="procedure">Procedure / declared review role</option></select><label for="source-csv">Exact CSV under the selected mapping</label><textarea id="source-csv" rows="6" spellcheck="false" autocapitalize="off" aria-describedby="csv-help"></textarea><p id="csv-help" class="field-help">The fixed recipe accepts two products and two resource stages. Local edits remain unverified source data. Existing headers and units define the mapping.</p><div class="button-row"><button class="button secondary" id="apply-csv" data-action="apply-csv" disabled>Apply local CSV</button><label class="button quiet file-button" for="csv-file">Load CSV file<input type="file" id="csv-file" accept=".csv,.txt,text/csv,text/plain"></label></div></div></details>
+            </div>
+          </div>
+          <div class="card-actions"><button class="button primary" id="handoff" data-action="handoff" disabled>Seal handoff <span aria-hidden="true">→</span></button><button class="button secondary" id="close-producer" data-action="close-producer" disabled>Close origin</button></div>
+          <p class="card-footnote" id="origin-footnote">A handoff retains raw sources, every decision and its review history.</p>
+        </section>
+
+        <section class="workspace-card receiver-card" id="receiver-panel" aria-labelledby="receiver-title">
+          <div class="card-heading"><div><p class="eyebrow">Receiver / separate state</p><h3 id="receiver-title">Continue from the record</h3></div><span class="status-pill" id="receiver-status">EMPTY</span></div>
+          <p class="state-description" id="receiver-description">Replay validates the retained dependencies and recomputes every historical conclusion before accepting the handoff.</p>
+          <div class="plan" id="receiver-plan"></div>
+          <div class="state-counts" id="receiver-counts"></div>
+          <div id="receiver-editor-slot"></div>
+          <div class="receiver-explanation" id="receiver-explanation"><span class="small-label">Acceptance boundary</span><p>The receiver checks the declared recipe, source lineage, calculation and review scope. It preserves its accepted state if a later handoff fails.</p></div>
+          <div class="card-actions"><button class="button primary" id="receive" data-action="receive" disabled>Replay handoff <span aria-hidden="true">→</span></button><button class="button secondary" id="resume" data-action="resume" disabled>Continue calculation</button></div>
+          <div class="receiver-secondary"><button class="text-button" id="review" data-action="review" disabled>Record declared review</button><button class="text-button" id="export-receiver" data-action="export-receiver" disabled>Download receiver packet</button></div>
+          <p class="card-footnote">Browser replay and continuation execute JavaScript. Independent Python execution is documented in the receipts below.</p>
+        </section>
+      </div>
+
+      <section class="transfer-bar" aria-labelledby="transfer-title">
+        <div class="transfer-info"><span class="transfer-symbol" aria-hidden="true">↗</span><div><h3 id="transfer-title">Retained handoff</h3><p id="transfer-detail">Seal a handoff to retain a transferable snapshot.</p><p class="digest" id="transfer-digest"></p></div></div>
+        <div class="button-row"><button class="button secondary" id="download-packet" data-action="download-packet" disabled>Download JSON</button><label class="button secondary file-button" for="packet-file">Import handoff<input type="file" id="packet-file" accept=".json,application/json" disabled></label></div>
+      </section>
+
+      <div class="inspection-grid">
+        <section class="inspection-card challenge-card" aria-labelledby="challenge-title"><div class="mini-heading"><span class="eyebrow">Exercise the refusal boundary</span><h3 id="challenge-title">A convincing packet can still fail.</h3></div><p>Change a retained packet and submit it to the same receiver. A refusal must preserve the receiver's accepted work.</p><label for="challenge">Fault to introduce</label><div class="input-action"><select id="challenge"><option value="rehash-result">False conclusion, recomputed hashes</option><option value="bytes">Changed bytes, original hashes</option><option value="missing-source">Missing retained source</option><option value="authority">Invented operational authority</option><option value="recipe">Different engine identity</option></select><button class="button secondary" id="test-challenge" data-action="test-challenge" disabled>Test refusal</button></div><p class="field-help">Challenges operate on a copy of the sealed handoff.</p></section>
+        <section class="inspection-card" aria-labelledby="events-title"><div class="mini-heading inline"><div><span class="eyebrow">Actual controller events</span><h3 id="events-title">Observed transitions</h3></div><span class="count-label" id="event-count">0 events</span></div><ol class="event-list" id="events"><li class="empty-event">Events appear as the test runs.</li></ol></section>
+      </div>
+
+      <section class="record-card" aria-labelledby="history-title"><div class="mini-heading inline"><div><p class="eyebrow">Retained calculation history</p><h3 id="history-title">A correction adds history.</h3></div><span class="small-label" id="history-owner">ORIGIN</span></div><div class="table-scroll"><table class="history-table"><thead><tr><th scope="col">Decision</th><th scope="col">Standing</th><th scope="col">Plan A / B</th><th scope="col">Modeled net</th><th scope="col">Review</th></tr></thead><tbody id="history-body"></tbody></table></div><p class="field-help">Historical values remain attached to their exact source frontier. Changes in scenario totals are changed assumptions, not measured improvement.</p><details class="source-records"><summary>Inspect retained source versions <span id="source-record-count"></span></summary><div class="table-scroll"><table><thead><tr><th scope="col">Source</th><th scope="col">Revision</th><th scope="col">Evidence class</th><th scope="col">Receipt</th></tr></thead><tbody id="source-body"></tbody></table></div></details></section>
+      <p class="local-note">Work stays in this page's memory. Download a handoff before reloading to retain it. The fixture makes no equipment, enterprise-system or model calls.</p>
+    </section>
+
+    <section class="evidence-section wrap" id="evidence" aria-labelledby="evidence-title"><div class="section-heading"><div><p class="eyebrow">02 / Independently retained execution</p><h2 id="evidence-title">Python receiver evidence</h2></div><a class="text-link" href="data/qualification.json">Inspect qualification JSON <span aria-hidden="true">↗</span></a></div><p class="section-intro">This browser runs the retained JavaScript engine. These cards report separate executions and their exact qualification records; an absent receipt remains pending.</p><div class="proof-grid" id="proof-grid"></div><div class="identity-row"><span class="small-label">Donor contract identity</span><code id="contract-identity">Awaiting build identity</code></div><div class="download-row"><a class="download-link" href="SCHISM-v2.0-offline.html" download><span>Standalone application</span><strong>Offline HTML <span aria-hidden="true">↓</span></strong></a><a class="download-link" href="SCHISM-v2.0-source.zip" download><span>Reproduce the implementation</span><strong>Source package <span aria-hidden="true">↓</span></strong></a><a class="download-link" href="TECHNICAL_NOTE.md"><span>Contract, method and limits</span><strong>Technical note <span aria-hidden="true">↗</span></strong></a></div></section>
+
+    <article class="study wrap" id="study" aria-labelledby="study-title"><div class="study-heading"><p class="eyebrow">03 / From the June proposition to executable evidence</p><h2 id="study-title">Continuity becomes a claim<br class="desktop-break"> you can test.</h2><p class="byline">Jonathan Sandhu <span aria-hidden="true">/</span> SCHISM 2.0</p></div><div class="study-copy"><h3>The obligation survives the supplier.</h3><p>The June 26 SCHISM dossier treated software control as a lifecycle question: what can the customer retain, verify, change and recover when a supplier relationship changes? Its substantive demand was an observable continuity test. The <a href="TECHNICAL_NOTE.md#provenance">retained original and edition history</a> establish the origin of that proposition; the application above supplies a bounded software case.</p><h3>The record carries the work.</h3><p>November's <a href="https://github.com/BigBirdReturns/axm-tools/tree/c8a35814556fe00f573485fef96848480d35f8b0/industrial-continuity" target="_blank" rel="noopener noreferrer">Industrial Continuity implementation</a> separates source revisions, calculation results and declared reviews. A correction invalidates the standing of dependent work before a new calculation occurs. The handoff carries the earlier evidence as well as its successor, allowing a receiver to reconstruct how the conclusion changed. This test preserves that existing contract and exposes the origin's closure as an explicit state transition.</p><p>The independent receiver adds a different implementation language to the evidence. Its qualification must show that the delivered program reconstructs the same bounded calculations and refuses the declared failure cases on the reported hosts. The recorded executions above determine how much of that claim this edition has earned. A browser replay, a source-code listing and a native execution receipt establish different facts.</p><h3>Acceptance includes the inconvenient result.</h3><p>The related <a href="https://github.com/BigBirdReturns/cantos/blob/98655f27c62083ac2cc3c860bb5fa58d7e5f29ad/compute/maintainer/QUALIFICATION.md" target="_blank" rel="noopener noreferrer">Cantos maintainer evidence</a> preserves an <em>incomparable</em> outcome when its recorded model runs miss their acceptance floor; recipient replay and changed pricing leave that gate intact. <a href="https://github.com/BigBirdReturns/axm-tools/blob/c8a35814556fe00f573485fef96848480d35f8b0/decision-floor/offline/tools/peer_replay.py" target="_blank" rel="noopener noreferrer">Decision Floor's peer exchange</a> preserves disagreement between separately held records. The same evidentiary discipline applies here: missing dependencies, stale decisions and failed imports remain visible outcomes.</p><h3>A specific software result has a specific boundary.</h3><p>A successful run establishes continuity for this synthetic, two-product planning recipe under the tested implementations and conditions. Raw inputs remain declared or operator-supplied records; a review label establishes no authenticated identity or operational permission. Consistent hashes and replay can expose a changed or internally false conclusion while a self-consistent fabricated source history remains fabricated. Hardware portability, secure boot, physical recovery, radio behavior and any supplier's deployed system remain outside this software test.</p><p class="study-conclusion">The useful result is a retained record and a receiver that can either continue the work or state exactly why it cannot accept it.</p></div></article>
+  </main>
+  <footer class="site-footer wrap"><div><strong>SCHISM</strong><span>Independent research / Jonathan Sandhu</span></div><p id="release-line">Edition 2.0</p><a href="#top">Back to workspace <span aria-hidden="true">↑</span></a></footer>
+  <noscript><div class="noscript">The working test requires JavaScript. The <a href="TECHNICAL_NOTE.md">technical note</a> and <a href="data/qualification.json">qualification record</a> remain available as files.</div></noscript>
+  <script>window.SCHISM_BUILD = {"version":"2.0","release_date":"2026-11-27","contract_sha256":"f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d","receiver_sha256":"344604e283948d8888bdb68fb61d90e23b98fdf580040be8c7117153ea0a6afe","source_commit":"c8a35814556fe00f573485fef96848480d35f8b0","evidence":{"linux":{"status":"PASS","summary":"9 acceptance/refusal cases; independent Python continuation; ordinary network APIs denied.","href":"data/linux-qualification.json","environment":{"system":"Linux","architecture":"x86_64","python":"3.14.4"}},"windows":{"status":"PASS","summary":"9 acceptance/refusal cases; independent Python continuation; ordinary network APIs denied.","href":"data/windows-qualification.json","environment":{"system":"Windows","architecture":"AMD64","python":"3.13.15"}},"roundtrip":{"status":"PASS","summary":"Both native recipients returned Python-authored work to the unmodified JavaScript receiver.","href":"data/roundtrip-qualification.json"},"cantos":{"status":"PASS","summary":"Retained result: incomparable; 21/96 accepted in each arm; 0 new inference requests.","href":"data/cantos-qualification.json"}},"artifacts":{"offline":"SCHISM-v2.0-offline.html","source":"SCHISM-v2.0-source.zip","note":"TECHNICAL_NOTE.md"},"public_url":"https://bigbirdreturns.github.io/axm-tools/schism/v2/","fixture_class":"synthetic-industrial-records"};</script>
+  <script>"use strict";
+const SCHEMA='mary-team-contribution/1';
+const CHALLENGE={id:'shared-repair-synthetic-01',version:1,snapshot:'synthetic-snapshot-A',scope:'One synthetic pump repair and one part; no operational equipment or external effects.',criterion:'Establish whether recorded serviceable, unallocated stock supports this one work order. Unknown counts remain unknown.',authority:'Synthetic exercise only. Recorded names are declarations, not authenticated identities.'};
+const canonical=v=>v===null||typeof v!=='object'?JSON.stringify(v):Array.isArray(v)?'['+v.map(canonical).join(',')+']':'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}';
+async function sha(s){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))).map(x=>x.toString(16).padStart(2,'0')).join('');}
+const cp=x=>JSON.parse(JSON.stringify(x));
+const exact=(o,ks)=>o&&typeof o==='object'&&!Array.isArray(o)&&Object.keys(o).sort().join('|')===ks.slice().sort().join('|');
+const safeID=x=>typeof x==='string'&&/^[A-Za-z0-9._-]{1,100}$/.test(x);
+const hex=x=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x);
+const qty=x=>typeof x==='number'&&Number.isSafeInteger(x)&&x>=0;
+const fragments={inventory:{team:'inventory-team',role:'inventory',records:[{part:'PUMP-SEAL-17',on_hand:7,serviceable:2}],method:{},lesson:'Administrative stock and serviceable stock answer different questions.'},maintenance:{team:'maintenance-team',role:'maintenance',records:[{asset:'PUMP-01',work_order:'WO-01',part:'PUMP-SEAL-17',required:1}],method:{},lesson:'An open work order needs a part relationship and a quantity.'},allocation:{team:'allocation-team',role:'allocation',records:[{part:'PUMP-SEAL-17',allocated:2}],method:{},lesson:'Serviceable stock can already be committed elsewhere.'}};
+async function makePacket(f,approvedBy,supersedes=null){
+ if(typeof approvedBy!=='string'||!approvedBy.trim()||approvedBy.trim().length>100)throw Error('Name the releasing operator. This local declaration is not identity authentication.');
+ const raw=canonical({snapshot:CHALLENGE.snapshot,role:f.role,records:f.records});
+ const b={schema:SCHEMA,challenge_sha256:await sha(canonical(CHALLENGE)),team:f.team,role:f.role,source:{name:f.role+'.synthetic.json',raw,sha256:await sha(raw)},release:{scope:'synthetic-exercise',approved_by:approvedBy.trim(),at:new Date().toISOString()},supersedes,method:f.method||{},lesson:f.lesson||''};
+ return {...b,packet_sha256:await sha(canonical(b))};
+}
+function checkMap(m){if(!m||typeof m!=='object'||Array.isArray(m)||Object.keys(m).length>5)throw Error('Invalid data-only mapping.');const allowed=['part','on_hand','serviceable','allocated','required'];for(const [k,v]of Object.entries(m))if(!allowed.includes(k)||typeof v!=='string'||!/^[a-zA-Z][a-zA-Z0-9_]{0,39}$/.test(v))throw Error('Mapping must be an allowed field name, never executable code.');if(new Set(Object.values(m)).size!==Object.values(m).length)throw Error('Ambiguous mapping.');}
+async function verifyPacket(p){
+ if(!exact(p,['schema','challenge_sha256','team','role','source','release','supersedes','method','lesson','packet_sha256']))throw Error('Incorrect contribution fields.');
+ if(p.schema!==SCHEMA||!safeID(p.team)||!['inventory','maintenance','allocation'].includes(p.role))throw Error('Unsupported contribution contract.');
+ if(p.challenge_sha256!==await sha(canonical(CHALLENGE)))throw Error('Different challenge or acceptance version.');
+ if(!exact(p.source,['name','raw','sha256'])||typeof p.source.raw!=='string'||p.source.raw.length>100000||!safeID(p.source.name))throw Error('Invalid source.');
+ if(!exact(p.release,['scope','approved_by','at'])||p.release.scope!=='synthetic-exercise'||typeof p.release.approved_by!=='string'||!p.release.approved_by.trim()||p.release.approved_by.length>100||!Number.isFinite(Date.parse(p.release.at)))throw Error('Explicit scoped release required.');
+ if(p.supersedes!==null&&!hex(p.supersedes))throw Error('Invalid predecessor.');
+ if(typeof p.lesson!=='string'||p.lesson.length>2000)throw Error('Invalid lesson.');checkMap(p.method);
+ if(p.source.sha256!==await sha(p.source.raw))throw Error('Source-byte mismatch.');
+ const d=JSON.parse(p.source.raw);if(canonical(d)!==p.source.raw)throw Error('Canonical source required; duplicate/noncanonical JSON rejected.');
+ if(!exact(d,['snapshot','role','records'])||d.snapshot!==CHALLENGE.snapshot||d.role!==p.role||!Array.isArray(d.records)||d.records.length!==1)throw Error('This exercise accepts one record per role and one snapshot.');
+ const r=d.records[0];if(!r||typeof r!=='object'||Array.isArray(r)||Object.keys(r).length>12)throw Error('Invalid record.');
+ const {packet_sha256,...body}=p;if(packet_sha256!==await sha(canonical(body)))throw Error('Contribution digest mismatch.');return d;
+}
+async function compose(packets,mapping={}){
+ checkMap(mapping);const current={},history=[];
+ for(const p of packets){const d=await verifyPacket(p);history.push(p.packet_sha256);if(current[p.role]){if(current[p.role].p.packet_sha256===p.packet_sha256)continue;if(p.supersedes!==current[p.role].p.packet_sha256)throw Error('Conflicting '+p.role+' contributions; resolve lineage explicitly.');}else if(p.supersedes!==null)throw Error('Missing predecessor; retain correction history.');current[p.role]={p,d};}
+ const deps=Object.values(current).map(x=>({team:x.p.team,role:x.p.role,source:x.p.source.sha256,packet:x.p.packet_sha256,row:1}));
+ const out={schema:'mary-cooperative-result/1',challenge_sha256:await sha(canonical(CHALLENGE)),scope:CHALLENGE.scope,status:'INCONCLUSIVE',detail:'',missing:[],dependencies:deps,history,calculation:null};
+ for(const role of ['maintenance','inventory','allocation'])if(!current[role])out.missing.push(role+' evidence');
+ if(out.missing.length){out.detail='One team alone lacks the evidence needed for the shared conclusion.';return out;}
+ const i=current.inventory.d.records[0],m=current.maintenance.d.records[0],a=current.allocation.d.records[0];
+ const f=(r,k)=>Object.hasOwn(r,k)?r[k]:mapping[k]?r[mapping[k]]:undefined;
+ const ip=f(i,'part'),mp=f(m,'part'),ap=f(a,'part');if(!safeID(ip)||ip!==mp||ip!==ap){out.missing.push('an unambiguous shared part identifier');out.detail='Part relationships are absent or conflicting.';return out;}
+ const on=f(i,'on_hand'),svc=f(i,'serviceable'),alloc=f(a,'allocated'),need=f(m,'required');
+ for(const [label,v]of [['serviceable quantity',svc],['allocated quantity',alloc],['required quantity',need]])if(!qty(v))out.missing.push(label);
+ if(out.missing.length){out.detail='Missing or invalid counts remain unknown; no zero default.';return out;}
+ if((on!==undefined&&!qty(on))||alloc>svc||(qty(on)&&svc>on)||need===0){out.status='CONFLICT';out.detail='Counts violate the declared one-part exercise contract.';return out;}
+ const available=svc-alloc;out.calculation={part:ip,on_hand:on??null,serviceable:svc,allocated:alloc,required:need,issuable:available};out.status=available>=need?'SUPPORTED_ON_RECORD':'SHORTAGE_ON_RECORD';out.detail=`${svc} serviceable minus ${alloc} allocated leaves ${available}; the work order needs ${need}. This is a record-based conclusion, not physical observation.`;return out;
+}
+async function learningCapsule(approvedBy){if(!approvedBy||!approvedBy.trim())throw Error('Named review required.');const b={schema:'mary-data-mapping/1',author:'inventory-team',reviewed_by:approvedBy.trim(),scope:'synthetic-exercise',mapping:{part:'sku',on_hand:'total_units',serviceable:'usable_units'},credit:'Inventory team field mapping; the recipient retains its own acceptance responsibility.',tests:['Explicit missing quantities','One fresh synthetic schema'],claim:'Field names only; no code, model weights, private prompts or supplier data.'};return {...b,sha256:await sha(canonical(b))};}
+async function verifyLesson(p){if(!exact(p,['schema','author','reviewed_by','scope','mapping','credit','tests','claim','sha256'])||p.schema!=='mary-data-mapping/1'||p.scope!=='synthetic-exercise'||!safeID(p.author)||typeof p.reviewed_by!=='string'||!p.reviewed_by.trim())throw Error('Invalid reviewed learning capsule.');checkMap(p.mapping);const {sha256,...b}=p;if(sha256!==await sha(canonical(b)))throw Error('Lesson digest mismatch.');return p.mapping;}
+async function freshPackets(){const fs=cp(fragments);fs.inventory.records=[{sku:'PUMP-SEAL-17',total_units:6,usable_units:4}];fs.allocation.records=[{part:'PUMP-SEAL-17',allocated:1}];return Promise.all(Object.values(fs).map(f=>makePacket(f,'synthetic-fixture-operator')));}
+async function exerciseTests(){const checks=[];const check=(name,ok)=>{checks.push({name,pass:!!ok});if(!ok)throw Error(name);};const ps=await Promise.all(Object.values(fragments).map(f=>makePacket(f,'synthetic-fixture-operator')));
+ check('Three individual stations remain inconclusive',(await Promise.all(ps.map(p=>compose([p])))).every(x=>x.status==='INCONCLUSIVE'));
+ const r=await compose(ps);check('Complementary evidence finds shortage',r.status==='SHORTAGE_ON_RECORD'&&r.calculation.issuable===0);
+ check('Every contributor retains source and row',r.dependencies.length===3&&r.dependencies.every(x=>hex(x.source)&&x.row===1));
+ let no=false;const bad=cp(ps[0]);bad.source.raw+=' ';try{await verifyPacket(bad);}catch(e){no=true;}check('Changed bytes rejected',no);
+ no=false;try{await makePacket(fragments.inventory,'');}catch(e){no=true;}check('Anonymous release rejected',no);
+ const u=cp(fragments.inventory);delete u.records[0].serviceable;check('Missing serviceable is unknown',(await compose([await makePacket(u,'test'),ps[1],ps[2]])).status==='INCONCLUSIVE');
+ const ua=cp(fragments.allocation);delete ua.records[0].allocated;check('Missing allocation is unknown',(await compose([ps[0],ps[1],await makePacket(ua,'test')])).status==='INCONCLUSIVE');
+ const c=cp(fragments.allocation);c.records[0].allocated=1;const next=await makePacket(c,'test',ps[2].packet_sha256);const updated=await compose([...ps,next]);check('Correction changes dependent result',updated.status==='SUPPORTED_ON_RECORD');check('Correction preserves old result and packet history',updated.history.length===4&&r.status==='SHORTAGE_ON_RECORD');
+ no=false;try{await compose([...ps,await makePacket(c,'test')]);}catch(e){no=true;}check('Unresolved replacement conflict rejected',no);
+ no=false;try{await compose([next]);}catch(e){no=true;}check('Orphan successor rejected',no);
+ const np=await freshPackets();check('Fresh schema initially unresolved',(await compose(np)).status==='INCONCLUSIVE');const lesson=await learningCapsule('fixture-reviewer');check('Reviewed lesson resolves fresh case',(await compose(np,await verifyLesson(lesson))).status==='SUPPORTED_ON_RECORD');
+ no=false;try{checkMap({serviceable:'(()=>42)()'});}catch(e){no=true;}check('Executable mapping rejected',no);
+ no=false;const wrong=cp(ps[0]);wrong.challenge_sha256='0'.repeat(64);try{await verifyPacket(wrong);}catch(e){no=true;}check('Different challenge version rejected',no);
+ check('Duplicate contribution is idempotent',(await compose([...ps,ps[0]])).dependencies.length===3);
+ const over=cp(fragments.allocation);over.records[0].allocated=3;check('Contradictory quantities remain conflict',(await compose([ps[0],ps[1],await makePacket(over,'test')])).status==='CONFLICT');
+ return {status:'PASS',checks,packets:ps,result:r,corrected_result:updated,lesson,fresh_packets:np};}
+if(typeof module!=='undefined')module.exports={canonical,sha,compose,makePacket,verifyPacket,verifyLesson,exerciseTests,fragments,CHALLENGE};
+
+async function makeWorkspace(packets,results){
+ for(const p of packets)await verifyPacket(p);
+ const body={schema:'mary-team-handoff/1',challenge_sha256:await sha(canonical(CHALLENGE)),packets:cp(packets),results:cp(results)};
+ return {...body,sha256:await sha(canonical(body))};
+}
+async function verifyWorkspace(w){
+ if(!exact(w,['schema','challenge_sha256','packets','results','sha256'])||w.schema!=='mary-team-handoff/1'||w.challenge_sha256!==await sha(canonical(CHALLENGE))||!Array.isArray(w.packets)||w.packets.length>100||!Array.isArray(w.results)||w.results.length>100)throw Error('Invalid handoff contract.');
+ const {sha256,...body}=w;if(sha256!==await sha(canonical(body)))throw Error('Handoff digest mismatch.');
+ const byHash=new Map();for(const p of w.packets){await verifyPacket(p);byHash.set(p.packet_sha256,p);}
+ for(const r of w.results){if(!Array.isArray(r.history))throw Error('Result has no source frontier.');const input=r.history.map(id=>{if(!byHash.has(id))throw Error('Missing retained contribution.');return byHash.get(id);});const rebuilt=await compose(input);if(canonical(rebuilt)!==canonical(r))throw Error('Stored result differs from recomputed source evidence.');}
+ await compose(w.packets);return {packets:cp(w.packets),results:cp(w.results)};
+}
+const earlierExerciseTests=exerciseTests;
+exerciseTests=async()=>{
+ const report=await earlierExerciseTests();const checks=report.checks;const ck=(name,ok)=>{checks.push({name,pass:!!ok});if(!ok)throw Error(name);};
+ const w=await makeWorkspace(report.packets,[report.result]);const restored=await verifyWorkspace(JSON.parse(JSON.stringify(w)));ck('Cross-seat workspace recomputes retained result',restored.results[0].status==='SHORTAGE_ON_RECORD');
+ let fail=false;const b=cp(w);b.results[0].status='SUPPORTED_ON_RECORD';try{await verifyWorkspace(b);}catch(e){fail=true;}ck('Altered workspace rejected',fail);
+ const {sha256,...body}=b;b.sha256=await sha(canonical(body));fail=false;try{await verifyWorkspace(b);}catch(e){fail=true;}ck('Rehashed but false saved conclusion rejected',fail);
+ const l=cp(report.lesson);l.mapping.serviceable='total_units';fail=false;try{await verifyLesson(l);}catch(e){fail=true;}ck('Changed lesson rejected',fail);
+ ck('Exported lesson replays on a recipient',(await compose(report.fresh_packets,await verifyLesson(JSON.parse(JSON.stringify(report.lesson))))).status==='SUPPORTED_ON_RECORD');
+ return report;
+};
+if(typeof module!=='undefined')Object.assign(module.exports,{exerciseTests,makeWorkspace,verifyWorkspace});
+</script>
+  <script>/* AXM Industrial Continuity: bounded planning, correction and independent replay.
+   No device controls, external calls, authenticated identity or production authority. */
+(function(root){
+'use strict';
+const C=typeof module!=='undefined'&&module.exports?require('./commons-core.js'):{canonical,sha};
+const clone=x=>JSON.parse(JSON.stringify(x));
+const digest=x=>C.sha(C.canonical(x));
+const VERSION='axm-industrial-continuity/0.1.0';
+const RECIPE='two-product-two-stage-integer-planning/1';
+const IDS=['orders','routing','capacity','maintenance','quality','procedure'];
+const HEADERS={orders:['sku','demand_units','contribution_usd_per_unit'],routing:['sku','mix_min_per_unit','pack_min_per_unit'],capacity:['stage','available_min'],maintenance:['job','part','serviceable','allocated','recovery_mix_min','repair_cost_usd','expedite_cost_usd','supplier_lead_hours','decision_window_hours'],quality:['sku','released'],procedure:['procedure','revision','planning_allowed','review_role']};
+const LABELS={orders:'ERP / customer demand',routing:'MES / product routing',capacity:'MES / available capacity',maintenance:'CMMS / parts and recovery',quality:'QMS / product release',procedure:'SOP / planning review'};
+const FIXTURES={
+orders:'sku,demand_units,contribution_usd_per_unit\nA,80,55.00\nB,60,40.00\n',
+routing:'sku,mix_min_per_unit,pack_min_per_unit\nA,2,1\nB,1,2\n',
+capacity:'stage,available_min\nmix,160\npack,150\n',
+maintenance:'job,part,serviceable,allocated,recovery_mix_min,repair_cost_usd,expedite_cost_usd,supplier_lead_hours,decision_window_hours\nWO-101,SEAL-17,2,1,80,150.00,200.00,7,4\n',
+quality:'sku,released\nA,1\nB,1\n',
+procedure:'procedure,revision,planning_allowed,review_role\nPlanning-review,3,1,shift-planner\n'};
+const req=(ok,msg)=>{if(!ok)throw Error(msg);};
+const hex=x=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x);
+const exact=(o,ks)=>o&&typeof o==='object'&&!Array.isArray(o)&&Object.keys(o).sort().join('|')===ks.slice().sort().join('|');
+function csv(id,raw){
+ req(IDS.includes(id)&&typeof raw==='string'&&raw.length<=32768,'Unknown source or oversized CSV.');
+ req(!/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(raw),'Control characters are not accepted.');
+ const lines=raw.replace(/\r\n/g,'\n').trimEnd().split('\n');
+ req(lines.length>=2&&lines.length<=20,'Expected a header and bounded data rows.');
+ req(lines[0].split(',').join('|')===HEADERS[id].join('|'),'CSV headers do not match the declared '+id+' mapping.');
+ const rows=lines.slice(1).map(line=>{const vals=line.split(',');req(vals.length===HEADERS[id].length,'Quoted/extra CSV fields are outside this bounded mapping.');const o={};HEADERS[id].forEach((k,i)=>o[k]=vals[i].trim());return o;});
+ req(rows.length===(['maintenance','procedure'].includes(id)?1:2),'This recipe expects two products, two stages and one maintenance/review record.');
+ if(['orders','routing','quality'].includes(id))req(rows.map(r=>r.sku).sort().join('|')==='A|B','This pinned example accepts unique products A and B.');
+ if(id==='capacity')req(rows.map(r=>r.stage).sort().join('|')==='mix|pack','Expected unique mix and pack stages.');
+ return rows;
+}
+function numeric(v,name,issues,{max=1000000,min=0,integer=true,money=false}={}){
+ if(v===''){issues.push(name+': missing');return null;}
+ const pattern=money?/^(0|[1-9]\d*)(\.\d{1,2})?$/:integer?/^(0|[1-9]\d*)$/:/^(0|[1-9]\d*)(\.\d+)?$/;
+ if(typeof v!=='string'||!pattern.test(v)){issues.push(name+': invalid');return null;}
+ let n=Number(v);if(!Number.isFinite(n)||n<min||n>max){issues.push(name+': outside declared range');return null;}
+ if(money){const [whole,frac='']=v.split('.');n=Number(whole)*100+Number((frac+'00').slice(0,2));}
+ return n;
+}
+function inputFrom(records){
+ const issues=[],by={};
+ for(const id of IDS){const rec=records.find(r=>r.source===id);if(!rec){issues.push(id+': missing source');continue;}try{by[id]=csv(id,rec.raw);}catch(e){issues.push(id+': '+e.message);}}
+ if(issues.length)return {issues};
+ const products=['A','B'].map(id=>{const o=by.orders.find(r=>r.sku===id),r=by.routing.find(r=>r.sku===id),q=by.quality.find(r=>r.sku===id);return {sku:id,demand:numeric(o.demand_units,id+' demand',issues,{max:500}),margin:numeric(o.contribution_usd_per_unit,id+' contribution',issues,{money:true,max:100000}),mix:numeric(r.mix_min_per_unit,id+' mix minutes',issues,{min:1,max:1000}),pack:numeric(r.pack_min_per_unit,id+' pack minutes',issues,{min:1,max:1000}),released:numeric(q.released,id+' quality release',issues,{max:1})};});
+ const capacity={};for(const r of by.capacity)capacity[r.stage]=numeric(r.available_min,r.stage+' capacity',issues,{max:1000000});
+ const m=by.maintenance[0],p=by.procedure[0];
+ const maintenance={job:m.job,part:m.part,serviceable:numeric(m.serviceable,'serviceable parts',issues,{max:10000}),allocated:numeric(m.allocated,'allocated parts',issues,{max:10000}),recovery:numeric(m.recovery_mix_min,'recovery minutes',issues),cost:numeric(m.repair_cost_usd,'repair cost',issues,{money:true}),expedite:numeric(m.expedite_cost_usd,'expedite cost',issues,{money:true}),lead:numeric(m.supplier_lead_hours,'supplier lead hours',issues,{max:8760}),window:numeric(m.decision_window_hours,'decision window hours',issues,{max:168})};
+ if(maintenance.allocated!==null&&maintenance.serviceable!==null&&maintenance.allocated>maintenance.serviceable)issues.push('Allocated parts exceed serviceable parts.');
+ if(!/^[A-Za-z0-9_.-]{1,64}$/.test(m.job)||!/^[A-Za-z0-9_.-]{1,64}$/.test(m.part))issues.push('Maintenance identifiers invalid.');
+ const procedure={id:p.procedure,revision:numeric(p.revision,'procedure revision',issues,{min:1,max:9999}),allowed:numeric(p.planning_allowed,'procedure planning scope',issues,{max:1}),role:p.review_role};
+ if(!/^[A-Za-z0-9_.-]{1,64}$/.test(p.procedure)||!/^[A-Za-z0-9_.-]{1,64}$/.test(p.review_role))issues.push('Procedure/role labels invalid.');
+ return {issues,products,capacity,maintenance,procedure};
+}
+function solve(products,capacity,cost){
+ let best=null;
+ for(let a=0;a<=(products[0].released?products[0].demand:0);a++)for(let b=0;b<=(products[1].released?products[1].demand:0);b++){
+  const mix=a*products[0].mix+b*products[1].mix,pack=a*products[0].pack+b*products[1].pack;if(mix>capacity.mix||pack>capacity.pack)continue;
+  const gross=a*products[0].margin+b*products[1].margin,net=gross-cost;
+  if(!best||net>best.net_cents||(net===best.net_cents&&a+b>best.units))best={a,b,units:a+b,gross_cents:gross,cost_cents:cost,net_cents:net,used:{mix,pack},available:clone(capacity),slack:{mix:capacity.mix-mix,pack:capacity.pack-pack}};
+ }
+ return best;
+}
+function calculate(records){
+ const input=inputFrom(records),base={recipe:RECIPE,scope:'Record-based planning only',operational_authority:false,external_effects:false};
+ if(input.issues.length)return {...base,status:'INCONCLUSIVE',issues:input.issues};
+ const {products,capacity,maintenance:m,procedure:p}=input;
+ const options=[{id:'existing-capacity',label:'Use existing capacity',eligible:true,cost:0,recovery:0,reason:'Plan inside the current two-stage envelope.'},
+ {id:'planned-recovery',label:'Recover mixing capacity',eligible:!!p.allowed&&m.serviceable-m.allocated>=1,cost:m.cost,recovery:m.recovery,reason:!p.allowed?'Procedure is outside planning scope.':m.serviceable-m.allocated<1?'No unallocated serviceable part on record.':'One part available; recovery remains a planning assumption.'},
+ {id:'expedited-recovery',label:'Expedite a replacement part',eligible:!!p.allowed&&m.lead<=m.window,cost:m.cost+m.expedite,recovery:m.recovery,reason:!p.allowed?'Procedure is outside planning scope.':m.lead>m.window?'Supplier arrival falls after the decision window.':'Arrival fits the declared window; supplier performance is unverified.'}];
+ const candidates=options.map(o=>({...o,plan:o.eligible?solve(products,{mix:capacity.mix+o.recovery,pack:capacity.pack},o.cost):null}));
+ const eligible=candidates.filter(o=>o.eligible);eligible.sort((a,b)=>b.plan.net_cents-a.plan.net_cents||a.cost-b.cost||a.id.localeCompare(b.id));
+ const chosen=eligible[0],baseline=candidates[0].plan;
+ const mixSlack=chosen.plan.slack.mix,packSlack=chosen.plan.slack.pack;
+ const demandMet=products.every((p,i)=>(i===0?chosen.plan.a:chosen.plan.b)>=(p.released?p.demand:0));
+ const limiting=demandMet?'released demand':mixSlack===0&&packSlack===0?'mix + pack':mixSlack===0?'mix':packSlack===0?'pack':'integer product mix';
+ return {...base,status:'COMPUTED',input,chosen:chosen.id,plan:chosen.plan,candidates,baseline_net_cents:baseline.net_cents,incremental_net_cents:chosen.plan.net_cents-baseline.net_cents,limiting,review_role:p.role,explanation:chosen.id==='existing-capacity'?'The released order mix is best served within the existing capacity envelope. Extra asset capacity does not improve this objective after cost.':'The declared recovery increases planned contribution after intervention cost. Physical recovery and customer outcomes remain unobserved.'};
+}
+async function makeSource(id,raw,previous=null,kind='synthetic-fixture',observed='2026-11-16T16:00:00-08:00'){
+ csv(id,raw);req(['synthetic-fixture','operator-supplied-unverified'].includes(kind),'Unknown evidence class.');req(Number.isFinite(Date.parse(observed)),'Observation time required.');
+ const body={schema:'axm-process-source/1',source:id,revision:previous?previous.revision+1:1,previous:previous?previous.sha256:null,evidence_class:kind,observed_at:observed,raw};return {...body,sha256:await digest(body)};
+}
+async function verifySource(s){
+ req(exact(s,['schema','source','revision','previous','evidence_class','observed_at','raw','sha256'])&&s.schema==='axm-process-source/1','Invalid source schema.');
+ req(Number.isInteger(s.revision)&&s.revision>=1&&s.revision<=200,'Invalid source revision.');req(s.previous===null||hex(s.previous),'Invalid predecessor.');
+ req(['synthetic-fixture','operator-supplied-unverified'].includes(s.evidence_class)&&Number.isFinite(Date.parse(s.observed_at)),'Invalid evidence class/time.');csv(s.source,s.raw);
+ const {sha256,...body}=s;req(sha256===await digest(body),'Changed source bytes or metadata: '+s.source);return s;
+}
+function latest(state){const by={};for(const s of state.sources)by[s.source]=s;return IDS.map(id=>by[id]).filter(Boolean);}
+function frontier(state){return latest(state).map(s=>s.sha256);}
+function current(state,d=state.decisions.at(-1)){return !!d&&C.canonical(frontier(state))===C.canonical(d.frontier);}
+async function start(engine){req(hex(engine),'Pinned engine digest required.');const sources=[];for(const id of IDS)sources.push(await makeSource(id,FIXTURES[id]));return {schema:VERSION,engine,recipe:RECIPE,sources,decisions:[],reviews:[]};}
+async function change(state,id,raw,{kind='synthetic-fixture',observed='2026-11-16T16:10:00-08:00'}={}){
+ req(state.sources.length<200,'Source history limit reached.');const previous=latest(state).find(s=>s.source===id);req(previous,'Source not present.');req(Date.parse(observed)>=Date.parse(previous.observed_at),'A successor cannot predate its predecessor.');
+ const s=await makeSource(id,raw,previous,kind,observed);if(raw===previous.raw&&kind===previous.evidence_class)return clone(state);const n=clone(state);n.sources.push(s);return n;
+}
+async function evaluate(state){
+ req(state.decisions.length<64,'Decision history limit reached.');const result=calculate(latest(state)),body={schema:'axm-process-decision/1',sequence:state.decisions.length+1,engine:state.engine,frontier:frontier(state),result};const d={...body,sha256:await digest(body)};const n=clone(state);n.decisions.push(d);return n;
+}
+async function review(state,reviewer,role){
+ const d=state.decisions.at(-1);req(current(state,d)&&d.result.status==='COMPUTED','Re-evaluate complete current evidence before recording a review.');req(typeof reviewer==='string'&&reviewer.trim().length>=2&&reviewer.length<=80,'Reviewer label required.');req(role===d.result.review_role,'Review role does not match the source procedure.');req(state.reviews.length<64,'Review history limit reached.');
+ const body={schema:'axm-process-review/1',decision:d.sha256,reviewer:reviewer.trim(),role,identity_status:'unverified-label',operational_authority:false};const n=clone(state);n.reviews.push({...body,sha256:await digest(body)});return n;
+}
+function reviewStatus(state){const r=state.reviews.at(-1),d=state.decisions.at(-1);return !r?'UNREVIEWED':current(state,d)&&r.decision===d.sha256?'RECORDED_LABEL_ONLY':'STALE';}
+async function seal(state){const body=clone(state);return {...body,sha256:await digest(body)};}
+async function restore(packet,expectedEngine){
+ req(exact(packet,['schema','engine','recipe','sources','decisions','reviews','sha256'])&&packet.schema===VERSION&&packet.recipe===RECIPE,'Unknown handoff schema/recipe.');req(packet.engine===expectedEngine&&hex(expectedEngine),'Different engine: explicit migration and requalification required.');
+ req(Array.isArray(packet.sources)&&packet.sources.length>=6&&packet.sources.length<=200&&Array.isArray(packet.decisions)&&packet.decisions.length<=64&&Array.isArray(packet.reviews)&&packet.reviews.length<=64,'Invalid or oversized handoff.');
+ const {sha256,...state}=packet;req(sha256===await digest(state),'Handoff digest mismatch.');const by={},seen=new Map(),prefixes=[];
+ for(const s of state.sources){await verifySource(s);const prev=by[s.source];req(!seen.has(s.sha256),'Duplicate source receipt.');req(prev?s.previous===prev.sha256&&s.revision===prev.revision+1:s.previous===null&&s.revision===1,'Orphan or forked source revision.');if(prev)req(Date.parse(s.observed_at)>=Date.parse(prev.observed_at),'Successor observation predates predecessor.');by[s.source]=s;seen.set(s.sha256,s);prefixes.push(IDS.map(id=>by[id]?.sha256).filter(Boolean));}
+ req(IDS.every(id=>by[id]),'Missing source family.');let lastPrefix=-1;const decisions=new Map();
+ for(let i=0;i<state.decisions.length;i++){
+  const d=state.decisions[i];req(exact(d,['schema','sequence','engine','frontier','result','sha256'])&&d.schema==='axm-process-decision/1'&&d.sequence===i+1&&d.engine===expectedEngine,'Decision contract mismatch.');
+  req(Array.isArray(d.frontier)&&d.frontier.length===6&&new Set(d.frontier).size===6,'Incomplete or duplicate decision frontier.');
+  const pi=prefixes.findIndex(f=>C.canonical(f)===C.canonical(d.frontier));req(pi>=lastPrefix&&pi>=0,'Decision uses an impossible or regressing source frontier.');lastPrefix=pi;
+  const records=d.frontier.map(h=>{req(seen.has(h),'Missing decision dependency.');return seen.get(h);});const rebuilt=calculate(records);req(C.canonical(rebuilt)===C.canonical(d.result),'Saved conclusion differs from independent recomputation.');const {sha256:dh,...db}=d;req(dh===await digest(db),'Decision digest mismatch.');decisions.set(dh,d);
+ }
+ for(const r of state.reviews){req(exact(r,['schema','decision','reviewer','role','identity_status','operational_authority','sha256'])&&r.schema==='axm-process-review/1','Invalid review contract.');const d=decisions.get(r.decision);req(d&&d.result.status==='COMPUTED'&&r.role===d.result.review_role&&r.identity_status==='unverified-label'&&r.operational_authority===false&&typeof r.reviewer==='string'&&r.reviewer.trim().length>=2&&r.reviewer.length<=80,'Invalid review scope or invented authority.');const {sha256:rh,...rb}=r;req(rh===await digest(rb),'Review digest mismatch.');}
+ return clone(state);
+}
+async function scenario(state,id){
+ const now='2026-11-16T16:20:00-08:00';
+ if(id==='customer-mix')return change(state,'orders',FIXTURES.orders.replace('B,60,40.00','B,60,120.00'),{observed:now});
+ if(id==='parts-allocation')return change(state,'maintenance',FIXTURES.maintenance.replace('SEAL-17,2,1,','SEAL-17,2,2,'),{observed:now});
+ if(id==='quality-hold')return change(state,'quality',FIXTURES.quality.replace('A,1','A,0'),{observed:now});
+ if(id==='missing-evidence')return change(state,'capacity',FIXTURES.capacity.replace('pack,150','pack,'),{observed:now});
+ throw Error('Unknown correction.');
+}
+const api={VERSION,RECIPE,IDS,HEADERS,LABELS,FIXTURES,clone,digest,csv,calculate,start,change,evaluate,review,reviewStatus,seal,restore,latest,frontier,current,scenario};
+if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.IndustrialContinuity=api;
+})(globalThis);
+</script>
+  <script>/* SCHISM 2: an actual local handoff over the pinned Industrial Continuity contract. */
+(function (root) {
+  'use strict';
+  const node = typeof module !== 'undefined' && module.exports;
+  const E = node ? require('./vendor/engine.js') : root.IndustrialContinuity;
+  const identity = 'f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d';
+  const clone = E.clone;
+  const requireState = (test, message) => { if (!test) throw new Error(message); };
+  function event(session, action, status, detail) {
+    session.events.push({sequence:session.events.length + 1, at:new Date().toISOString(), action, status, detail});
+    session.events = session.events.slice(-100);
+    session.last_result = {action, status, detail};
+    return session;
+  }
+  function summary(state) {
+    if (!state) return null;
+    const decision = state.decisions.at(-1), result = decision?.result;
+    return {status:result?.status || 'UNEVALUATED', current:E.current(state), review_status:E.reviewStatus(state),
+      sources:state.sources.length, decisions:state.decisions.length, reviews:state.reviews.length,
+      plan:result?.plan || null, chosen:result?.chosen || null, issues:result?.issues || [],
+      frontier:E.frontier(state), result:result || null, explanation:result?.explanation || '',
+      operational_authority:false, external_effects:false};
+  }
+  async function make() {
+    let producer = await E.evaluate(await E.start(identity));
+    producer = await E.review(producer, 'Origin reviewer', 'shift-planner');
+    return event({schema:'schism-session/2',producer,receiver:null,transfer:null,events:[],last_result:null},
+      'Open source workspace','READY','Six retained sources support the original calculation and a declared review.');
+  }
+  function active(session) {
+    const name = session.producer ? 'producer' : session.receiver ? 'receiver' : null;
+    requireState(name, 'Open or receive a workspace before changing its evidence.');
+    return name;
+  }
+  function editCSV(raw, rowName, column, value) {
+    const lines=raw.replace(/\r\n/g,'\n').trimEnd().split('\n');
+    const row=lines.findIndex((line,i)=>i>0&&line.split(',')[0]===rowName);
+    requireState(row>=1,'Required source row is absent.');
+    const fields=lines[row].split(',');fields[column]=value;lines[row]=fields.join(',');
+    return lines.join('\n')+'\n';
+  }
+  async function correct(session, scenario) {
+    const next=clone(session), name=active(next), state=next[name];
+    const latest=Object.fromEntries(E.latest(state).map(x=>[x.source,x]));
+    let id,raw;
+    if(scenario==='customer-mix'){id='orders';raw=editCSV(latest[id].raw,'B',2,'120.00');}
+    else if(scenario==='parts-allocation'){
+      id='maintenance';const rows=latest[id].raw.trimEnd().split('\n');const fields=rows[1].split(',');
+      fields[3]=fields[2];rows[1]=fields.join(',');raw=rows.join('\n')+'\n';
+    } else if(scenario==='quality-hold'){id='quality';raw=editCSV(latest[id].raw,'A',1,'0');}
+    else if(scenario==='missing-evidence'){id='capacity';raw=editCSV(latest[id].raw,'pack',1,'');}
+    else throw new Error('Unknown source correction.');
+    next[name]=await E.change(state,id,raw,{observed:new Date().toISOString()});
+    const changed=next[name].sources.length!==state.sources.length;
+    return event(next,'Correct '+id,changed?'STALE':'NO_OP',changed?
+      'The new source revision is retained. Earlier calculations and reviews keep their original dependencies.':
+      'This source already contains the selected value. No new source revision was added.');
+  }
+  async function applyCSV(session,id,raw) {
+    const next=clone(session),name=active(next);
+    requireState(typeof raw==='string'&&raw.length<=32768,'Source CSV must be at most 32 KiB.');
+    next[name]=await E.change(next[name],id,raw,{kind:'operator-supplied-unverified',observed:new Date().toISOString()});
+    return event(next,'Import local '+id,'STALE','Local CSV retained as operator-supplied, unverified evidence. Evaluation remains a separate action.');
+  }
+  async function handoff(session) {
+    const next=clone(session),name=active(next);
+    next.transfer=await E.seal(next[name]);
+    return event(next,'Seal handoff','SEALED','Source bytes, revision history, calculations and declared reviews are inside the exported record.');
+  }
+  async function closeProducer(session) {
+    const next=clone(session);
+    requireState(next.transfer,'Seal a handoff before closing the source workspace.');
+    requireState(next.producer,'The source workspace is already closed.');
+    next.producer=null;
+    return event(next,'Close source workspace','CLOSED','The source workspace was removed from this session. The retained handoff is the receiver input.');
+  }
+  async function challenged(packet,challenge) {
+    const p=clone(packet);
+    if(challenge==='valid')return p;
+    if(challenge==='bytes'){p.sources[0].raw+=' ';return p;}
+    if(challenge==='rehash-result') {
+      const d=[...p.decisions].reverse().find(d=>d.result?.plan);
+      requireState(d,'This challenge needs a retained computed decision.');
+      d.result.plan.net_cents+=10000;
+      const old=d.sha256,{sha256,...body}=d;d.sha256=await E.digest(body);
+      for(const r of p.reviews)if(r.decision===old){r.decision=d.sha256;const {sha256:rh,...rb}=r;r.sha256=await E.digest(rb);}
+    } else if(challenge==='missing-source')p.sources.splice(0,1);
+    else if(challenge==='authority') {
+      requireState(p.reviews.length,'This challenge needs a retained declared review.');
+      const r=p.reviews[0];r.operational_authority=true;
+      const {sha256,...body}=r;r.sha256=await E.digest(body);
+    } else if(challenge==='recipe')p.engine='0'.repeat(64);
+    else throw new Error('Unknown handoff challenge.');
+    const {sha256,...body}=p;p.sha256=await E.digest(body);return p;
+  }
+  async function receive(session,packet=null,challenge='valid') {
+    const next=clone(session),candidate=packet || next.transfer;
+    requireState(candidate,'Seal or select a handoff to receive.');
+    const before=next.receiver?await E.seal(next.receiver):null;
+    try {
+      const input=await challenged(candidate,challenge);
+      const accepted=await E.restore(input,identity);
+      next.receiver=accepted;
+      return event(next,'Receive handoff','ACCEPTED','Every retained historical decision was recomputed against its own six-source frontier.');
+    } catch(error) {
+      const after=next.receiver?await E.seal(next.receiver):null;
+      requireState((before?.sha256 || null)===(after?.sha256 || null),'A failed import changed the accepted receiver.');
+      return event(next,'Receive '+challenge,'REFUSED',String(error.message)+' The accepted receiver is unchanged.');
+    }
+  }
+  async function resume(session) {
+    const next=clone(session);
+    requireState(next.receiver,'Receive a handoff before continuing the work.');
+    if(E.current(next.receiver))return event(next,'Continue work','NO_OP','The latest source frontier already has a decision. Repeating this action adds no duplicate decision.');
+    next.receiver=await E.evaluate(next.receiver);
+    const result=next.receiver.decisions.at(-1).result;
+    return event(next,'Continue work',result.status==='COMPUTED'?'CONTINUED':'INCONCLUSIVE',
+      result.status==='COMPUTED'?'A new calculation is bound to the corrected frontier. The earlier review remains stale.':
+      'The receiver retained an inconclusive result. Missing evidence remains explicit.');
+  }
+  async function review(session) {
+    const next=clone(session),name=next.receiver?'receiver':active(next);
+    next[name]=await E.review(next[name],'Recipient reviewer',next[name].decisions.at(-1)?.result?.review_role);
+    return event(next,'Record review','DECLARED','The label and procedure role are retained against this exact decision. They grant no operational authority.');
+  }
+  async function fullDrill() {
+    let s=await make();s=await correct(s,'customer-mix');s=await handoff(s);s=await closeProducer(s);
+    s=await receive(s);return resume(s);
+  }
+  const api={identity,make,reset:make,summary,correct,applyCSV,handoff,closeProducer,receive,resume,review,
+    fullDrill,packet:E.seal,challenged,sourceIds:E.IDS,sourceLabels:E.LABELS,sourceHeaders:E.HEADERS,
+    latest:E.latest,clone};
+  if(node)module.exports=api;else root.Schism=api;
+})(globalThis);
+</script>
+  <script>(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const S=window.Schism;
+  const build=window.SCHISM_BUILD||{};
+  let session=null,busy=true,noticeOverride=null,csvDirty=false;
+  const descriptions={
+    'customer-mix':"Raise Product B's recorded contribution from $40 to $120 per unit. The prior decision becomes stale before recalculation.",
+    'parts-allocation':'Allocate the remaining serviceable spare. The next calculation must reconsider which intervention is eligible.',
+    'quality-hold':'Record a quality hold on Product A. A new calculation must respect the revised release state.',
+    'missing-evidence':'Remove the packaging capacity value. A missing quantity must remain unknown and withhold a complete calculation.'
+  };
+  const familyNames={orders:'Orders',routing:'Routing',capacity:'Capacity',maintenance:'Maintenance',quality:'Quality',procedure:'Procedure'};
+  const actionNames={make:'Open fixture',reset:'Reset fixture',correct:'Correct source',correction:'Correct source',handoff:'Seal handoff',closeProducer:'Close origin',close_producer:'Close origin',close:'Close origin',receive:'Replay handoff',replay:'Replay handoff',resume:'Continue calculation',review:'Record declared review',applyCSV:'Apply local CSV',apply_csv:'Apply local CSV'};
+  const el=(tag,text,className)=>{const n=document.createElement(tag);if(text!==undefined&&text!==null)n.textContent=String(text);if(className)n.className=className;return n;};
+  const asText=x=>typeof x==='string'?x:typeof x==='number'||typeof x==='boolean'?String(x):'';
+  const short=x=>typeof x==='string'&&x.length>22?x.slice(0,12)+'…'+x.slice(-8):asText(x);
+  const money=cents=>Number.isFinite(cents)?new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:cents%100===0?0:2,maximumFractionDigits:2}).format(cents/100):'—';
+  const safeSummary=n=>n&&S&&typeof S.summary==='function'?S.summary(n):null;
+  const tone=status=>{const v=String(status||'').toUpperCase();if(/FAIL|ERROR|INVALID/.test(v))return 'error';if(/REFUS|STALE|INCONCLUSIVE|CONFLICT|INCOMPARABLE|PENDING|UNREVIEWED|NO_OP/.test(v))return 'warning';if(/PASS|ACCEPT|CURRENT|COMPUTED|RECORDED|REPLAY|RESUM|CONTINUED|SEALED|CLOSED|SUCCESS/.test(v))return 'success';return 'neutral';};
+  const displayStatus=s=>!s?'EMPTY':!s.current&&s.decisions>0?'STALE':s.status==='INCONCLUSIVE'?'INCONCLUSIVE':s.current?'CURRENT ON RECORD':asText(s.status)||'NO DECISION';
+  const nativeWorking=()=>session&&(session.producer||session.receiver);
+  const historyWorking=()=>session&&(session.receiver||session.producer||session.transfer);
+  function setPill(node,text){node.textContent=text;node.dataset.tone=tone(text);}
+  function clear(node){while(node.firstChild)node.removeChild(node.firstChild);}
+  function setNotice(label,detail,type){noticeOverride={label,detail,tone:type||tone(label)};renderNotice();}
+  function renderNotice(){
+    const last=session&&session.last_result;
+    const events=session&&Array.isArray(session.events)?session.events:[];
+    const event=events.length?events[events.length-1]:null;
+    const notice=noticeOverride||{label:last&&asText(last.status)||event&&asText(event.status)||'Ready',detail:last&&asText(last.detail)||event&&asText(event.detail)||'Change a source to begin, or run the complete exit test.',tone:tone(last&&last.status||event&&event.status)};
+    $('notice-label').textContent=busy&&session?'Working':notice.label;
+    $('notice-detail').textContent=notice.detail;
+    $('notice').dataset.tone=notice.tone;
+  }
+  function addCounts(target,summary){
+    clear(target);if(!summary)return;
+    for(const [key,label]of [['sources','source versions'],['decisions','decisions'],['reviews','declared reviews']]){const item=el('span');item.append(el('strong',summary[key]===undefined?'—':summary[key]),document.createTextNode(' '+label));target.append(item);}
+  }
+  function renderPlan(node,summary,emptyTitle,emptyDetail){
+    clear(node);
+    if(!summary||!summary.plan){
+      const empty=el('div',null,'empty-plan');empty.append(el('h4',summary&&summary.status==='INCONCLUSIVE'?'Calculation withheld':emptyTitle),el('p',summary&&summary.status==='INCONCLUSIVE'?'The retained evidence does not support a complete calculation.':emptyDetail));
+      if(summary&&Array.isArray(summary.issues)&&summary.issues.length){const ul=el('ul',null,'issue-list');for(const issue of summary.issues.slice(0,8))ul.append(el('li',issue));empty.append(ul);}node.append(empty);return;
+    }
+    const grid=el('div',null,'plan-grid');
+    for(const [value,label]of [[summary.plan.a,'Product A / units'],[summary.plan.b,'Product B / units'],[money(summary.plan.net_cents),'Modeled net contribution']]){const cell=el('div',null,'plan-cell');cell.append(el('strong',value===undefined?'—':value,'plan-value'),el('span',label,'plan-label'));grid.append(cell);}
+    node.append(grid);
+    if(!summary.current)node.append(el('p','STALE · retained result awaits evaluation of the corrected source.','plan-stale'));
+  }
+  function renderWorkspaces(){
+    const p=safeSummary(session&&session.producer),r=safeSummary(session&&session.receiver);
+    const closed=!!session&&!session.producer;
+    setPill($('producer-status'),p?displayStatus(p):closed?'CLOSED':'LOADING');
+    $('producer-description').textContent=closed?'The originating working state has been cleared. Continuation now depends on the retained handoff and the receiver.':p&&!p.current?'A source changed. The earlier calculation and its review retain their history but have lost current standing.':'The fixture begins with a complete source record, a calculation and a declared review.';
+    renderPlan($('producer-plan'),p,closed?'Origin closed':'Opening fixture',closed?'The receiver can continue from a valid retained packet. The origin supplies no working state.':'The source workspace is being initialized.');
+    addCounts($('producer-counts'),p);
+    setPill($('receiver-status'),displayStatus(r));
+    $('receiver-description').textContent=!r?'Replay validates the retained dependencies and recomputes every historical conclusion before accepting the handoff.':!r.current?'The historical calculation replayed successfully. The corrected source still needs its own decision.':r.status==='INCONCLUSIVE'?'The receiver retained the evidence and withheld a complete calculation. Missing inputs remain explicit.':'The receiver holds a calculation consistent with its latest retained source frontier.';
+    renderPlan($('receiver-plan'),r,'A separate receiver is ready.','Seal a handoff, close the origin, then replay the retained record here.');
+    addCounts($('receiver-counts'),r);
+    $('receiver-explanation').hidden=!!r;
+    const editor=$('source-editor');
+    if(session&&session.producer){$('producer-editor-slot').append(editor);editor.hidden=false;$('editor-target').textContent='ORIGIN';$('correction-label').textContent='Correct a source';}
+    else if(session&&session.receiver){$('receiver-editor-slot').append(editor);editor.hidden=false;$('editor-target').textContent='RECEIVER';$('correction-label').textContent='Correct a receiver source';}
+    else editor.hidden=true;
+    $('origin-footnote').textContent=closed?'The sealed handoff remains available below. Reset opens a fresh fixture.':'A handoff retains raw sources, every decision and its review history.';
+    $('resume').textContent=r&&r.current?'Calculation is current':'Continue calculation';
+    $('review').textContent=r&&r.review_status==='RECORDED_LABEL_ONLY'?'Declared review recorded':'Record declared review';
+    $('scenario-help').textContent=descriptions[$('scenario').value]||'';
+    if(!csvDirty)loadCSV();
+  }
+  function markStep(id,done){const n=$(id);n.classList.toggle('is-done',!!done);n.querySelector('.step-state').textContent=done?'✓':'';n.setAttribute('aria-label',n.querySelectorAll('span')[1].textContent+(done?', completed':', not completed'));}
+  function renderProgress(){
+    const states=session?[session.producer,session.transfer,session.receiver].filter(Boolean):[];
+    const corrected=states.some(s=>Array.isArray(s.sources)&&s.sources.some(x=>x.revision>1));
+    const received=!!(session&&session.receiver),rs=safeSummary(session&&session.receiver);
+    const transferDecisions=session&&session.transfer&&Array.isArray(session.transfer.decisions)?session.transfer.decisions.length:0;
+    markStep('step-correct',corrected);markStep('step-handoff',session&&session.transfer);markStep('step-close',session&&!session.producer&&session.transfer);markStep('step-replay',received);markStep('step-resume',received&&rs&&rs.current&&rs.decisions>transferDecisions);
+  }
+  function renderTransfer(){
+    const t=session&&session.transfer;
+    if(!t){$('transfer-detail').textContent='Seal a handoff to retain a transferable snapshot.';$('transfer-digest').textContent='';return;}
+    const parts=[Array.isArray(t.sources)?t.sources.length+' source versions':null,Array.isArray(t.decisions)?t.decisions.length+' decisions':null,Array.isArray(t.reviews)?t.reviews.length+' declared reviews':null].filter(Boolean);
+    $('transfer-detail').textContent=parts.join(' · ')+' · snapshot retained locally';
+    $('transfer-digest').textContent=t.sha256?'SHA-256 '+t.sha256:'Sealed packet present';
+  }
+  function renderEvents(){
+    const events=session&&Array.isArray(session.events)?session.events:[];clear($('events'));$('event-count').textContent=events.length+' '+(events.length===1?'event':'events');
+    if(!events.length){$('events').append(el('li','Events appear as the test runs.','empty-event'));return;}
+    for(const e of events.slice(-30).reverse()){const li=el('li');const status=el('span',asText(e.status)||'RECORDED','event-status');status.dataset.tone=tone(e.status);const action=asText(e.action);li.append(status,el('span',actionNames[action]||action.replace(/[_-]/g,' ')||'Transition','event-action'),el('span',asText(e.detail),'event-detail'));$('events').append(li);}
+  }
+  function renderHistory(){
+    const state=historyWorking(),summary=safeSummary(state);clear($('history-body'));clear($('source-body'));
+    $('history-owner').textContent=session&&session.receiver?'RECEIVER':session&&session.producer?'ORIGIN':state?'SEALED HANDOFF':'NO RECORD';
+    if(!state||!Array.isArray(state.decisions)||!state.decisions.length){const row=el('tr'),cell=el('td','No calculation has been retained.');cell.colSpan=5;row.append(cell);$('history-body').append(row);}
+    else state.decisions.forEach((d,i)=>{
+      const result=d.result||{},last=i===state.decisions.length-1,current=!!(last&&summary&&summary.current),review=(state.reviews||[]).find(x=>x.decision===d.sha256),row=el('tr');
+      const identity=el('td','D'+String(d.sequence===undefined?i+1:d.sequence).padStart(2,'0'));identity.append(el('span',short(d.sha256),'table-note'));
+      const standing=el('td'),label=current?'CURRENT':last?'STALE':'HISTORICAL',pill=el('span',label,'table-state');pill.dataset.tone=current?'success':last?'warning':'neutral';standing.append(pill);
+      const plan=result.plan?String(result.plan.a)+' / '+String(result.plan.b):asText(result.status)||'—';
+      const rv=el('td',review?'Declared':'Unreviewed');if(review)rv.append(el('span',current?'Label only':'Historical label','table-note'));
+      row.append(identity,standing,el('td',plan),el('td',result.plan?money(result.plan.net_cents):'—'),rv);$('history-body').append(row);
+    });
+    const sources=state&&Array.isArray(state.sources)?state.sources:[];$('source-record-count').textContent=sources.length?'('+sources.length+')':'';
+    for(const source of sources){const row=el('tr'),hash=el('code',short(source.sha256));hash.title=asText(source.sha256);const cell=el('td');cell.append(hash);row.append(el('td',familyNames[source.source]||source.source),el('td',source.revision),el('td',source.evidence_class==='synthetic-fixture'?'Synthetic fixture':source.evidence_class==='operator-supplied-unverified'?'Local / unverified':asText(source.evidence_class)),cell);$('source-body').append(row);}
+  }
+  function enable(id,can){const n=$(id);n.disabled=busy||!can;if(n.type==='file'&&n.parentElement.classList.contains('file-button'))n.parentElement.classList.toggle('is-disabled',n.disabled);}
+  function renderControls(){
+    const p=session&&session.producer,r=session&&session.receiver,t=session&&session.transfer,rs=safeSummary(r);
+    enable('full-drill',!!S);enable('reset',!!S);enable('correct',!!(p||r));enable('handoff',!!p);enable('close-producer',!!p&&!!t);enable('receive',!!t);enable('resume',!!r&&!!rs&&!rs.current);enable('review',!!r&&!!rs&&rs.current&&rs.status==='COMPUTED'&&rs.review_status!=='RECORDED_LABEL_ONLY');enable('export-receiver',!!r);enable('download-packet',!!t);enable('packet-file',!!session);enable('test-challenge',!!t);enable('apply-csv',!!(p||r)&&!!S&&typeof S.applyCSV==='function');enable('csv-file',!!(p||r)&&!!S&&typeof S.applyCSV==='function');
+    for(const id of ['scenario','source-family','source-csv','challenge'])$(id).disabled=busy||!session;
+    document.body.classList.toggle('busy',busy);
+  }
+  function render(){renderWorkspaces();renderProgress();renderTransfer();renderEvents();renderHistory();renderNotice();renderControls();}
+  function loadCSV(){
+    const s=nativeWorking();if(!s||!Array.isArray(s.sources)){$('source-csv').value='';return;}
+    const records=s.sources.filter(x=>x.source===$('source-family').value);$('source-csv').value=records.length?asText(records[records.length-1].raw):'';
+  }
+  async function run(operation,{label,scroll=false}={}){
+    if(busy)return;busy=true;noticeOverride=null;renderControls();if(label)setNotice('Working',label,'neutral');
+    try{const next=await operation();if(!next||!Array.isArray(next.events))throw Error('The controller returned no valid session.');session=next;noticeOverride=null;csvDirty=false;}
+    catch(error){setNotice('Unable to complete',error&&error.message?error.message:String(error),'error');}
+    finally{busy=false;render();if(scroll&&window.matchMedia('(max-width:780px)').matches)$('receiver-panel').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});}
+  }
+  function downloadObject(value,name){const blob=new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json'});const url=URL.createObjectURL(blob),a=el('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);}
+  function allowedHref(value,fallback){if(typeof value!=='string'||!value.trim())return fallback;const s=value.trim();if(/^(https?:\/\/|\.\.?\/|[A-Za-z0-9_-]+(?:\/|\.|#))/.test(s)&&!/[\u0000-\u001f]/.test(s))return s;return fallback;}
+  function renderEvidence(){
+    const definitions=[['linux','Linux recipient','PYTHON / RETAINED RUN'],['windows','Windows recipient','PYTHON / RETAINED RUN'],['roundtrip','Cross-runtime continuity','QUALIFICATION / RETAINED RUN'],['cantos','Acceptance precedent','CANTOS / RELATED EVIDENCE']];
+    clear($('proof-grid'));
+    for(const [key,title,kind]of definitions){
+      const raw=build.evidence&&build.evidence[key];const item=raw&&typeof raw==='object'?raw:{};const status=asText(item.status)||asText(item.verdict)||'PENDING';
+      const card=el('section',null,'proof-card'),top=el('div',null,'proof-top'),pill=el('span',status,'status-pill');pill.dataset.tone=tone(status);top.append(el('span',kind,'proof-type'),pill);card.append(top,el('h3',title));
+      let description=asText(item.summary)||asText(item.description)||asText(item.detail);
+      if(!description)description=raw?'The retained record supplies this result. Inspect its exact scope and execution details.':'This build contains no execution receipt for this card.';
+      card.append(el('p',description));
+      const link=el('a',raw?'Inspect retained record ↗':'Inspect qualification record ↗');link.href=allowedHref(item.href||item.url||item.path,'data/qualification.json');if(/^https?:/.test(link.href)&&!link.href.startsWith(location.origin+'/')){link.target='_blank';link.rel='noopener noreferrer';}card.append(link);
+      if(raw){const details=el('details');details.append(el('summary','Receipt details'),el('pre',JSON.stringify(raw,null,2),'receipt'));card.append(details);}
+      $('proof-grid').append(card);
+    }
+    $('contract-identity').textContent=asText(build.contract_sha256)||(S&&asText(S.identity))||'No contract identity included';
+    $('edition').textContent=(asText(build.version)||'2.0')+' / SOFTWARE CONTINUITY';
+    $('release-line').textContent='Edition '+(asText(build.version)||'2.0')+(build.release_date?' · '+asText(build.release_date):'');
+  }
+  function bind(){
+    $('scenario').addEventListener('change',()=>{$('scenario-help').textContent=descriptions[$('scenario').value]||'';});
+    $('source-family').addEventListener('change',()=>{csvDirty=false;loadCSV();});$('source-csv').addEventListener('input',()=>{csvDirty=true;});
+    $('full-drill').addEventListener('click',()=>run(()=>S.fullDrill(),{label:'Running the full correction, handoff, closure and continuation path.',scroll:true}));
+    $('reset').addEventListener('click',()=>run(()=>typeof S.reset==='function'?S.reset():S.make(),{label:'Opening a fresh fixture.'}));
+    $('correct').addEventListener('click',()=>run(()=>S.correct(session,$('scenario').value),{label:'Recording a corrected source without recalculating.'}));
+    $('handoff').addEventListener('click',()=>run(()=>S.handoff(session),{label:'Sealing the current sources, calculations and reviews.'}));
+    $('close-producer').addEventListener('click',()=>run(()=>S.closeProducer(session),{label:'Closing the originating working state.'}));
+    $('receive').addEventListener('click',()=>run(()=>S.receive(session),{label:'Replaying every retained historical decision.'}));
+    $('resume').addEventListener('click',()=>run(()=>S.resume(session),{label:'Calculating from the receiver’s current source frontier.'}));
+    $('review').addEventListener('click',()=>run(()=>S.review(session),{label:'Recording a declared review against the receiver’s current decision.'}));
+    $('test-challenge').addEventListener('click',()=>run(()=>S.receive(session,null,$('challenge').value),{label:'Testing a modified copy of the handoff against the receiver.'}));
+    $('apply-csv').addEventListener('click',()=>run(()=>S.applyCSV(session,$('source-family').value,$('source-csv').value),{label:'Recording local CSV as unverified source evidence.'}));
+    $('download-packet').addEventListener('click',()=>{if(session&&session.transfer){downloadObject(session.transfer,'SCHISM-handoff.json');setNotice('Downloaded','The sealed handoff JSON has been downloaded.','success');}});
+    $('export-receiver').addEventListener('click',async()=>{if(busy||!session||!session.receiver)return;busy=true;renderControls();try{const packet=await S.packet(session.receiver);downloadObject(packet,'SCHISM-receiver-handoff.json');setNotice('Downloaded','The receiver’s current sources and retained history have been exported.','success');}catch(e){setNotice('Export failed',e.message||String(e),'error');}finally{busy=false;renderNotice();renderControls();}});
+    $('packet-file').addEventListener('change',async event=>{const file=event.target.files&&event.target.files[0];event.target.value='';if(!file)return;if(file.size>4194304){setNotice('Import refused','Handoff exceeds the 4 MiB limit. The accepted workspace is unchanged.','warning');return;}try{const packet=JSON.parse(await file.text());await run(()=>S.receive(session,packet,'valid'),{label:'Validating and replaying the imported handoff.',scroll:true});}catch(e){setNotice('Import refused',(e.message||String(e))+'. The accepted workspace is unchanged.','warning');}});
+    $('csv-file').addEventListener('change',async event=>{const file=event.target.files&&event.target.files[0];event.target.value='';if(!file)return;if(file.size>131072){setNotice('CSV not loaded','This bounded source editor accepts at most 32,768 text characters.','warning');return;}try{const raw=await file.text();if(raw.length>32768)throw Error('CSV exceeds the 32,768-character source limit.');$('source-csv').value=raw;csvDirty=true;setNotice('CSV loaded','Review the selected mapping, then apply the local CSV to record an unverified source revision.','neutral');}catch(e){setNotice('CSV not loaded',e.message||String(e),'warning');}});
+  }
+  async function start(){renderEvidence();bind();if(!S||typeof S.make!=='function'){busy=false;setNotice('Runtime unavailable','The controller is missing from this build. The published source and qualification files remain available.','error');renderControls();return;}try{session=await S.make();noticeOverride={label:'Ready',detail:'The reviewed fixture is open. Correct its source, or run the complete exit test.',tone:'neutral'};}catch(e){setNotice('Unable to open fixture',e.message||String(e),'error');}finally{busy=false;render();}}
+  start();
+})();
+</script>
+</body>
+</html>

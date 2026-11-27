@@ -1,0 +1,51 @@
+name: SCHISM continuity qualification
+
+on:
+  push:
+    branches: [main]
+    paths: ['schism/v2/**', '.github/workflows/schism-qualification.yml']
+  pull_request:
+    paths: ['schism/v2/**', '.github/workflows/schism-qualification.yml']
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  independent-recipient:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify the complete delivered source set
+        run: python -B schism/v2/scripts/verify_release.py
+      - name: Qualify the independent implementation
+        run: python -B schism/v2/runtime/test_receiver.py
+      - name: Exercise browser state and refusal semantics
+        run: node schism/v2/tests/controller.cjs
+      - name: Execute a fresh recipient and original-runtime return
+        run: python -B schism/v2/run.py --with-node --out "${{ runner.temp }}/schism-recipient"
+      - name: Reproduce the retained empirical refusal
+        if: runner.os == 'Linux'
+        run: python -B schism/v2/scripts/replay_cantos.py --out "${{ runner.temp }}/schism-cantos"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: schism-recipient-${{ runner.os }}
+          path: |
+            ${{ runner.temp }}/schism-recipient/qualification.json
+            ${{ runner.temp }}/schism-recipient/roundtrip.json
+            ${{ runner.temp }}/schism-recipient/python-execution.json
+            ${{ runner.temp }}/schism-recipient/release-check.json
+            ${{ runner.temp }}/schism-cantos/receipt.json
+          if-no-files-found: warn

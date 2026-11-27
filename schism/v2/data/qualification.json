@@ -1,0 +1,41 @@
+{
+  "schema": "schism-public-qualification/2",
+  "status": "PASS",
+  "contract_sha256": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+  "receiver_sha256": "344604e283948d8888bdb68fb61d90e23b98fdf580040be8c7117153ea0a6afe",
+  "native_source_binding": "data/native-source-binding.json",
+  "evidence": {
+    "linux": {
+      "status": "PASS",
+      "summary": "9 acceptance/refusal cases; independent Python continuation; ordinary network APIs denied.",
+      "href": "data/linux-qualification.json",
+      "environment": {
+        "system": "Linux",
+        "architecture": "x86_64",
+        "python": "3.14.4"
+      }
+    },
+    "windows": {
+      "status": "PASS",
+      "summary": "9 acceptance/refusal cases; independent Python continuation; ordinary network APIs denied.",
+      "href": "data/windows-qualification.json",
+      "environment": {
+        "system": "Windows",
+        "architecture": "AMD64",
+        "python": "3.13.15"
+      }
+    },
+    "roundtrip": {
+      "status": "PASS",
+      "summary": "Both native recipients returned Python-authored work to the unmodified JavaScript receiver.",
+      "href": "data/roundtrip-qualification.json"
+    },
+    "cantos": {
+      "status": "PASS",
+      "summary": "Retained result: incomparable; 21/96 accepted in each arm; 0 new inference requests.",
+      "href": "data/cantos-qualification.json"
+    }
+  },
+  "new_implementation": "Independent Python interpretation, calculation, history verification and continuation of the pinned industrial capsule contract.",
+  "scope": "Synthetic industrial software continuity plus reanalysis of historical empirical compute evidence. No physical system qualification."
+}

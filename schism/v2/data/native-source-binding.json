@@ -1,0 +1,32 @@
+{
+  "schema": "schism-native-source-binding/2",
+  "tested_archive_sha256": "70e74659bbb7d04864ccc2a6cf933bfa73037f000ec645b3fb06a8e03201fc5d",
+  "tested_source_tree_sha256": "7727607edce5e0855a3409c1927fd5b1e203c72c8a456487ad43ddfda3128041",
+  "runtime_files": {
+    "data/case-register.json": "c8d08cd4d6824d1f70e6d96ddc1308baecfb75a12496f9fc3c47ea669e21e6fc",
+    "data/cases/baseline.json": "a4f215a80f17c7efb7496758ba9e7ce3db4a5258e41124dd228259633a36af46",
+    "data/cases/completed-js.json": "5ba4c43d7dff8581b47160042c6963385d951819fb3ad2679928360166ec8b2d",
+    "data/cases/inconclusive.json": "ca0bcb274a759cc6d56f6391c0574923e8def2410f90b60dc11892e370b6277b",
+    "data/cases/pending.json": "8b3f2a725d22b286030a5f536913968614e40771bc0bd9d782b86daa4a2e3923",
+    "data/cases/reject-authority.json": "17b2b5abb4ed2945b84a652356785b846b2ee3464dfcb4a909e866985aa1ec02",
+    "data/cases/reject-bytes.json": "c1adda8a4b41508be37b1ee7a0b6f54b23bc9d4aa443748650e18cc231593167",
+    "data/cases/reject-missing-source.json": "ef00766f4830cba10139de7f0461565cc7119d4f32111667c6fc7ad07d779de8",
+    "data/cases/reject-recipe.json": "fa5ad9c4abcd583fe1bc46d7e4c0b2f52ab1f4639928b12620d4fdb134bd094b",
+    "data/cases/reject-rehash-result.json": "187cdc0e22d854513fd7a6dac5daa34a40ed5c7a1ce53828d8c3f2b89ad26da2",
+    "run.py": "c18c3df94beb787569b89c56eb0f15e0edd8d3f3333d0974bf270f970082de4d",
+    "runtime/receiver.py": "344604e283948d8888bdb68fb61d90e23b98fdf580040be8c7117153ea0a6afe",
+    "runtime/test_receiver.py": "930acc4b875bac8d0d76b5faaa7d93d3e5ed71c2fa8bcd4836eb4275822048d8",
+    "scripts/check-roundtrip.cjs": "33a23f7dbf8e81ef84ee140644486bdabc66cffca344dd7b3c9e44afee5156d6",
+    "scripts/network-deny.cjs": "b263c113b5b0f0d0422148360316ae14ef913a2f07245bd1bfc55baa71e22a05",
+    "scripts/verify_release.py": "4cb4f53a9a2416f432f0d68e6527f0e40accb7edc8deea079d8c46f378c9d9c0",
+    "vendor/build-meta.json": "1a6019ccd40d6ae65d9d7d6c9c0731fd8ae755ac0cc62023bcb17f91d28e8b02",
+    "vendor/commons-core.js": "0158ea96c0c99a4f479e37573bacf26916348318e2811b75196ce390cab36cdd",
+    "vendor/engine.js": "130471df834984b42a51719653d754a8ce28e3f24aa45da1dd58adbfb4e1e794",
+    "vendor/verify-handoff.cjs": "866b97c49722e2182255bc1e532b3040e1e21e76d7f45dfed92b4c6b47c2e28a"
+  },
+  "receipts": {
+    "linux": "cbb6521a51b1dfd403970924edcf3d8a9b1b1f553c45a49485b77483c16dfaaf",
+    "windows": "79434f214721e918e043284d7085e5ce3de374ed10275a7afb8a07448a0dc222"
+  },
+  "basis": "Exact runtime and fixture bytes extracted from the verified candidate used by both native recipients; execution receipts remain unchanged."
+}

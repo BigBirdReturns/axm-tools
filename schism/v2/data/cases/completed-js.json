@@ -1,0 +1,403 @@
+{
+  "schema": "axm-industrial-continuity/0.1.0",
+  "engine": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+  "recipe": "two-product-two-stage-integer-planning/1",
+  "sources": [
+    {
+      "schema": "axm-process-source/1",
+      "source": "orders",
+      "revision": 1,
+      "previous": null,
+      "evidence_class": "synthetic-fixture",
+      "observed_at": "2026-11-16T16:00:00-08:00",
+      "raw": "sku,demand_units,contribution_usd_per_unit\nA,80,55.00\nB,60,40.00\n",
+      "sha256": "219fe5fc1efe27c4f2197eef4f01cc7f3994ff428e50f0e4db336a8f94c8b89e"
+    },
+    {
+      "schema": "axm-process-source/1",
+      "source": "routing",
+      "revision": 1,
+      "previous": null,
+      "evidence_class": "synthetic-fixture",
+      "observed_at": "2026-11-16T16:00:00-08:00",
+      "raw": "sku,mix_min_per_unit,pack_min_per_unit\nA,2,1\nB,1,2\n",
+      "sha256": "42046e344295d9cf947bfea2e37db8576ee1d33d3480c1983d7015795ca068c3"
+    },
+    {
+      "schema": "axm-process-source/1",
+      "source": "capacity",
+      "revision": 1,
+      "previous": null,
+      "evidence_class": "synthetic-fixture",
+      "observed_at": "2026-11-16T16:00:00-08:00",
+      "raw": "stage,available_min\nmix,160\npack,150\n",
+      "sha256": "27ab94173a2495e721c6c91d87c5144b349d70425b6382acd04e10964fd2878f"
+    },
+    {
+      "schema": "axm-process-source/1",
+      "source": "maintenance",
+      "revision": 1,
+      "previous": null,
+      "evidence_class": "synthetic-fixture",
+      "observed_at": "2026-11-16T16:00:00-08:00",
+      "raw": "job,part,serviceable,allocated,recovery_mix_min,repair_cost_usd,expedite_cost_usd,supplier_lead_hours,decision_window_hours\nWO-101,SEAL-17,2,1,80,150.00,200.00,7,4\n",
+      "sha256": "f0b6f0188d56106c5546826c57b9a4b755e53f7e11a666d8fd118803f8215650"
+    },
+    {
+      "schema": "axm-process-source/1",
+      "source": "quality",
+      "revision": 1,
+      "previous": null,
+      "evidence_class": "synthetic-fixture",
+      "observed_at": "2026-11-16T16:00:00-08:00",
+      "raw": "sku,released\nA,1\nB,1\n",
+      "sha256": "48231a7485b274b94e2c2ea47ec305b72280b289c6367ab1a95fd24369ce43f3"
+    },
+    {
+      "schema": "axm-process-source/1",
+      "source": "procedure",
+      "revision": 1,
+      "previous": null,
+      "evidence_class": "synthetic-fixture",
+      "observed_at": "2026-11-16T16:00:00-08:00",
+      "raw": "procedure,revision,planning_allowed,review_role\nPlanning-review,3,1,shift-planner\n",
+      "sha256": "803dac93e9af7220044aedf98c24ca847d72ea46e3b12bbb472eb43595425340"
+    },
+    {
+      "schema": "axm-process-source/1",
+      "source": "orders",
+      "revision": 2,
+      "previous": "219fe5fc1efe27c4f2197eef4f01cc7f3994ff428e50f0e4db336a8f94c8b89e",
+      "evidence_class": "synthetic-fixture",
+      "observed_at": "2026-11-16T16:20:00-08:00",
+      "raw": "sku,demand_units,contribution_usd_per_unit\nA,80,55.00\nB,60,120.00\n",
+      "sha256": "5ccd9d03ac3adca79cd92fd09d522bf498e663f78962015fb8007b986552a8f7"
+    }
+  ],
+  "decisions": [
+    {
+      "schema": "axm-process-decision/1",
+      "sequence": 1,
+      "engine": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+      "frontier": [
+        "219fe5fc1efe27c4f2197eef4f01cc7f3994ff428e50f0e4db336a8f94c8b89e",
+        "42046e344295d9cf947bfea2e37db8576ee1d33d3480c1983d7015795ca068c3",
+        "27ab94173a2495e721c6c91d87c5144b349d70425b6382acd04e10964fd2878f",
+        "f0b6f0188d56106c5546826c57b9a4b755e53f7e11a666d8fd118803f8215650",
+        "48231a7485b274b94e2c2ea47ec305b72280b289c6367ab1a95fd24369ce43f3",
+        "803dac93e9af7220044aedf98c24ca847d72ea46e3b12bbb472eb43595425340"
+      ],
+      "result": {
+        "recipe": "two-product-two-stage-integer-planning/1",
+        "scope": "Record-based planning only",
+        "operational_authority": false,
+        "external_effects": false,
+        "status": "COMPUTED",
+        "input": {
+          "issues": [],
+          "products": [
+            {
+              "sku": "A",
+              "demand": 80,
+              "margin": 5500,
+              "mix": 2,
+              "pack": 1,
+              "released": 1
+            },
+            {
+              "sku": "B",
+              "demand": 60,
+              "margin": 4000,
+              "mix": 1,
+              "pack": 2,
+              "released": 1
+            }
+          ],
+          "capacity": {
+            "mix": 160,
+            "pack": 150
+          },
+          "maintenance": {
+            "job": "WO-101",
+            "part": "SEAL-17",
+            "serviceable": 2,
+            "allocated": 1,
+            "recovery": 80,
+            "cost": 15000,
+            "expedite": 20000,
+            "lead": 7,
+            "window": 4
+          },
+          "procedure": {
+            "id": "Planning-review",
+            "revision": 3,
+            "allowed": 1,
+            "role": "shift-planner"
+          }
+        },
+        "chosen": "planned-recovery",
+        "plan": {
+          "a": 80,
+          "b": 35,
+          "units": 115,
+          "gross_cents": 580000,
+          "cost_cents": 15000,
+          "net_cents": 565000,
+          "used": {
+            "mix": 195,
+            "pack": 150
+          },
+          "available": {
+            "mix": 240,
+            "pack": 150
+          },
+          "slack": {
+            "mix": 45,
+            "pack": 0
+          }
+        },
+        "candidates": [
+          {
+            "id": "existing-capacity",
+            "label": "Use existing capacity",
+            "eligible": true,
+            "cost": 0,
+            "recovery": 0,
+            "reason": "Plan inside the current two-stage envelope.",
+            "plan": {
+              "a": 57,
+              "b": 46,
+              "units": 103,
+              "gross_cents": 497500,
+              "cost_cents": 0,
+              "net_cents": 497500,
+              "used": {
+                "mix": 160,
+                "pack": 149
+              },
+              "available": {
+                "mix": 160,
+                "pack": 150
+              },
+              "slack": {
+                "mix": 0,
+                "pack": 1
+              }
+            }
+          },
+          {
+            "id": "planned-recovery",
+            "label": "Recover mixing capacity",
+            "eligible": true,
+            "cost": 15000,
+            "recovery": 80,
+            "reason": "One part available; recovery remains a planning assumption.",
+            "plan": {
+              "a": 80,
+              "b": 35,
+              "units": 115,
+              "gross_cents": 580000,
+              "cost_cents": 15000,
+              "net_cents": 565000,
+              "used": {
+                "mix": 195,
+                "pack": 150
+              },
+              "available": {
+                "mix": 240,
+                "pack": 150
+              },
+              "slack": {
+                "mix": 45,
+                "pack": 0
+              }
+            }
+          },
+          {
+            "id": "expedited-recovery",
+            "label": "Expedite a replacement part",
+            "eligible": false,
+            "cost": 35000,
+            "recovery": 80,
+            "reason": "Supplier arrival falls after the decision window.",
+            "plan": null
+          }
+        ],
+        "baseline_net_cents": 497500,
+        "incremental_net_cents": 67500,
+        "limiting": "pack",
+        "review_role": "shift-planner",
+        "explanation": "The declared recovery increases planned contribution after intervention cost. Physical recovery and customer outcomes remain unobserved."
+      },
+      "sha256": "34b70bf9b92110f61d2b268ff67b3f6eed3ff75a8efbc45ae247061211619733"
+    },
+    {
+      "schema": "axm-process-decision/1",
+      "sequence": 2,
+      "engine": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
+      "frontier": [
+        "5ccd9d03ac3adca79cd92fd09d522bf498e663f78962015fb8007b986552a8f7",
+        "42046e344295d9cf947bfea2e37db8576ee1d33d3480c1983d7015795ca068c3",
+        "27ab94173a2495e721c6c91d87c5144b349d70425b6382acd04e10964fd2878f",
+        "f0b6f0188d56106c5546826c57b9a4b755e53f7e11a666d8fd118803f8215650",
+        "48231a7485b274b94e2c2ea47ec305b72280b289c6367ab1a95fd24369ce43f3",
+        "803dac93e9af7220044aedf98c24ca847d72ea46e3b12bbb472eb43595425340"
+      ],
+      "result": {
+        "recipe": "two-product-two-stage-integer-planning/1",
+        "scope": "Record-based planning only",
+        "operational_authority": false,
+        "external_effects": false,
+        "status": "COMPUTED",
+        "input": {
+          "issues": [],
+          "products": [
+            {
+              "sku": "A",
+              "demand": 80,
+              "margin": 5500,
+              "mix": 2,
+              "pack": 1,
+              "released": 1
+            },
+            {
+              "sku": "B",
+              "demand": 60,
+              "margin": 12000,
+              "mix": 1,
+              "pack": 2,
+              "released": 1
+            }
+          ],
+          "capacity": {
+            "mix": 160,
+            "pack": 150
+          },
+          "maintenance": {
+            "job": "WO-101",
+            "part": "SEAL-17",
+            "serviceable": 2,
+            "allocated": 1,
+            "recovery": 80,
+            "cost": 15000,
+            "expedite": 20000,
+            "lead": 7,
+            "window": 4
+          },
+          "procedure": {
+            "id": "Planning-review",
+            "revision": 3,
+            "allowed": 1,
+            "role": "shift-planner"
+          }
+        },
+        "chosen": "existing-capacity",
+        "plan": {
+          "a": 30,
+          "b": 60,
+          "units": 90,
+          "gross_cents": 885000,
+          "cost_cents": 0,
+          "net_cents": 885000,
+          "used": {
+            "mix": 120,
+            "pack": 150
+          },
+          "available": {
+            "mix": 160,
+            "pack": 150
+          },
+          "slack": {
+            "mix": 40,
+            "pack": 0
+          }
+        },
+        "candidates": [
+          {
+            "id": "existing-capacity",
+            "label": "Use existing capacity",
+            "eligible": true,
+            "cost": 0,
+            "recovery": 0,
+            "reason": "Plan inside the current two-stage envelope.",
+            "plan": {
+              "a": 30,
+              "b": 60,
+              "units": 90,
+              "gross_cents": 885000,
+              "cost_cents": 0,
+              "net_cents": 885000,
+              "used": {
+                "mix": 120,
+                "pack": 150
+              },
+              "available": {
+                "mix": 160,
+                "pack": 150
+              },
+              "slack": {
+                "mix": 40,
+                "pack": 0
+              }
+            }
+          },
+          {
+            "id": "planned-recovery",
+            "label": "Recover mixing capacity",
+            "eligible": true,
+            "cost": 15000,
+            "recovery": 80,
+            "reason": "One part available; recovery remains a planning assumption.",
+            "plan": {
+              "a": 30,
+              "b": 60,
+              "units": 90,
+              "gross_cents": 885000,
+              "cost_cents": 15000,
+              "net_cents": 870000,
+              "used": {
+                "mix": 120,
+                "pack": 150
+              },
+              "available": {
+                "mix": 240,
+                "pack": 150
+              },
+              "slack": {
+                "mix": 120,
+                "pack": 0
+              }
+            }
+          },
+          {
+            "id": "expedited-recovery",
+            "label": "Expedite a replacement part",
+            "eligible": false,
+            "cost": 35000,
+            "recovery": 80,
+            "reason": "Supplier arrival falls after the decision window.",
+            "plan": null
+          }
+        ],
+        "baseline_net_cents": 885000,
+        "incremental_net_cents": 0,
+        "limiting": "pack",
+        "review_role": "shift-planner",
+        "explanation": "The released order mix is best served within the existing capacity envelope. Extra asset capacity does not improve this objective after cost."
+      },
+      "sha256": "d832c607efa17e2f4c9ee07796e74857966eb45e0b0b1db5424b210e1ae76afc"
+    }
+  ],
+  "reviews": [
+    {
+      "schema": "axm-process-review/1",
+      "decision": "34b70bf9b92110f61d2b268ff67b3f6eed3ff75a8efbc45ae247061211619733",
+      "reviewer": "Origin reviewer",
+      "role": "shift-planner",
+      "identity_status": "unverified-label",
+      "operational_authority": false,
+      "sha256": "f510932bdfcade132d929f6fcc47b86ec679a4aa86b4f00cd6c6f09f9353d382"
+    }
+  ],
+  "sha256": "0e50f98690eb4632c6c4751f419af90ed2c0425e3d8303738ab99e0fdcba0f4c"
+}
