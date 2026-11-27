@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Fieldnotes · Your local notebook</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<header class="masthead"><a class="wordmark" href="/" aria-label="Fieldnotes home"><span class="mark" aria-hidden="true">f.</span>Fieldnotes</a><div class="ownership"><span class="dot" aria-hidden="true"></span>On this computer<span id="version"></span></div></header>
+<main>
+<section id="locked" class="locked" hidden><p class="eyebrow">PRIVATE NOTEBOOK</p><h1>Open your private link.</h1><p>Run the Fieldnotes launcher again to open this notebook. Its link carries a temporary access token and changes after each service restart.</p><p>Your notes stay on this computer.</p></section>
+<div id="notebook" class="notebook" hidden>
+<aside class="sidebar" aria-label="Your notes">
+<div class="sidebar-heading"><div><p class="eyebrow">YOUR WORK, IN YOUR HANDS</p><h1>Notebook</h1></div><button id="new" class="primary">+ New note</button></div>
+<label class="search"><span class="sr-only">Search notes</span><input id="search" type="search" placeholder="Search titles, text, tags…" autocomplete="off"></label>
+<div class="list-tools"><label><input id="show-archived" type="checkbox"> Include archived</label><span id="count"></span></div>
+<div id="notes" class="notes" aria-label="Notes"></div>
+<div class="sidebar-footer"><button id="import" class="text-button">Import text</button><input id="import-file" type="file" accept=".txt,.md,text/plain,text/markdown" hidden><button id="export" class="text-button">Export notebook</button><p>Ordinary files. No account. No subscription.</p></div>
+</aside>
+<section class="editor" aria-label="Note editor">
+<div class="editor-heading"><span id="state" class="save-state" aria-live="polite">New note</span><div class="actions"><button id="download" class="subtle" disabled>Download text</button><button id="save" class="primary">Save note</button></div></div>
+<label class="sr-only" for="title">Note title</label><input id="title" class="note-title" placeholder="Untitled note" maxlength="180" autocomplete="off">
+<label class="tag-row" for="tags"><span>Tags</span><input id="tags" placeholder="project, meeting, idea" autocomplete="off" aria-describedby="tag-help"></label><span id="tag-help" class="sr-only">Up to ten comma-separated tags, each up to 24 characters.</span>
+<label class="sr-only" for="body">Note text</label><textarea id="body" placeholder="Meeting notes, research, a repair log, the next good idea. Start here." spellcheck="true"></textarea>
+<div class="editor-footer"><span id="updated">Saved as portable UTF-8 JSON</span><div><button id="pin" class="text-button" hidden>Pin note</button><button id="archive" class="text-button" disabled>Archive note</button></div></div>
+<p id="message" class="message" role="status" aria-live="polite"></p>
+</section>
+</div>
+</main>
+<footer class="site-footer">Fieldnotes runs on <strong>SCHISM</strong>. Code can change. Your notebook comes with you.</footer>
+</body></html>

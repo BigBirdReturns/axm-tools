@@ -1,0 +1,821 @@
+{
+  "schema": "schism-frontdoor/qualification@1",
+  "status": "PASS",
+  "scope": "Observed purpose, navigation, downloads and rendering of the current public front door. This qualification does not add controller platform support, service reboot supervision, application isolation or production capacity claims.",
+  "controller_release": {
+    "version": "0.1.1",
+    "accepted_commit": "5c08afc7b2ff7ad8fe92ef5187602569c9725f3e",
+    "qualification": "stack/QUALIFICATION.json",
+    "unchanged": true
+  },
+  "changed_source_files": [
+    {
+      "path": "CONTINUITY.md",
+      "bytes": 29304,
+      "sha256": "65ae9742752ad8149fd81e2681a118cf324049802786855eca9ad593f2e7d9da"
+    },
+    {
+      "path": "schism/README.md",
+      "bytes": 4521,
+      "sha256": "d6bee4180fdcdc68f50273efae76f2c9c4d7873bb1332820833c09efd71f3786"
+    },
+    {
+      "path": "schism/assets/fieldnotes.png",
+      "bytes": 90623,
+      "sha256": "1b36c32b03539037a3ef529b5f482cbebda5cb8e75b99d3db772d048585284bb"
+    },
+    {
+      "path": "schism/evidence.html",
+      "bytes": 5637,
+      "sha256": "7d95b22dc45176f7b21f43eb3373e419d26d12fcb64ec9a2dfc5285d81a1a897"
+    },
+    {
+      "path": "schism/fieldnotes.html",
+      "bytes": 8054,
+      "sha256": "fbc9336cf237f8439848d17827bbfff64d6ca7375b7ee7931906ea9096f0316e"
+    },
+    {
+      "path": "schism/fieldnotes/ACCEPTANCE.json",
+      "bytes": 19256,
+      "sha256": "501f3c34834c6eafc91ca59b2ee7319785a4cca57346e3c66c321a0e4551b7f8"
+    },
+    {
+      "path": "schism/fieldnotes/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "schism/fieldnotes/NOTICE",
+      "bytes": 246,
+      "sha256": "83b68a69f4e85ce138ad48e7c77fe79bad7f5e67b897641a8956ab520b0c7064"
+    },
+    {
+      "path": "schism/fieldnotes/README.md",
+      "bytes": 10181,
+      "sha256": "789a349b4bc0047db1aa0e1ef6ef02e3532baa0d75939f5bafef23b1acae1dbe"
+    },
+    {
+      "path": "schism/fieldnotes/SHA256SUMS",
+      "bytes": 98,
+      "sha256": "f7e994a05fa84ce9614ab8703ecd12d57aa4ea3559cc6bfcd2856a1a9cf412e6"
+    },
+    {
+      "path": "schism/fieldnotes/SOURCE-MANIFEST.json",
+      "bytes": 2577,
+      "sha256": "edf9042708fb6bbcab2a32cfd44753670230831e983ddd30589bb58b8af2b1a7"
+    },
+    {
+      "path": "schism/fieldnotes/fieldnotes-for-schism-1.1.0.zip",
+      "bytes": 44486,
+      "sha256": "c2acbfed682eed3628fd4fa658f6c2753e4bc34b2c49b46d2616aa2873c345e3"
+    },
+    {
+      "path": "schism/fieldnotes/open-fieldnotes.py",
+      "bytes": 7433,
+      "sha256": "8d93c9e0390ba8de9c7bdc2a7cc29a9f3b5d582489d8d172f1daeefe678658ab"
+    },
+    {
+      "path": "schism/fieldnotes/tools/qualify.py",
+      "bytes": 14272,
+      "sha256": "5439e0c1942adfa64452b2e3ccada360f8a809a0277bd217824bd817404b7d14"
+    },
+    {
+      "path": "schism/fieldnotes/versions/1.0.0/app.js",
+      "bytes": 7298,
+      "sha256": "d578543ae1ae8538ce1d59486e1c1ca009912dc70ced73072ac3015f8383609b"
+    },
+    {
+      "path": "schism/fieldnotes/versions/1.0.0/index.html",
+      "bytes": 3183,
+      "sha256": "df65768962b53e636d798ade9b438438f87b2f6775f4c29756d64bcf5a0378db"
+    },
+    {
+      "path": "schism/fieldnotes/versions/1.0.0/schism.json",
+      "bytes": 395,
+      "sha256": "40f1a9b14d925a58aef5dc6e740f5d9e065cfa80cf57096e1012889c17f3ddca"
+    },
+    {
+      "path": "schism/fieldnotes/versions/1.0.0/server.py",
+      "bytes": 12364,
+      "sha256": "74907aaaa77fd0ae2a30e531c064104269be3368fcc2831f263566f31ad7d429"
+    },
+    {
+      "path": "schism/fieldnotes/versions/1.0.0/style.css",
+      "bytes": 6988,
+      "sha256": "2c17a1095aa6ab65af5a4199754164247c6690bbb411f60393fbe880d9ead0e9"
+    },
+    {
+      "path": "schism/fieldnotes/versions/1.1.0/app.js",
+      "bytes": 7305,
+      "sha256": "e532b225e9628576cdc0c3c897df356f61813bb72e994ef053f8981b8b551a16"
+    },
+    {
+      "path": "schism/fieldnotes/versions/1.1.0/index.html",
+      "bytes": 3183,
+      "sha256": "df65768962b53e636d798ade9b438438f87b2f6775f4c29756d64bcf5a0378db"
+    },
+    {
+      "path": "schism/fieldnotes/versions/1.1.0/schism.json",
+      "bytes": 395,
+      "sha256": "01bcbe9272ac477ba55a3a677a1955b42629a784e5a35a06175ab3659f851b9c"
+    },
+    {
+      "path": "schism/fieldnotes/versions/1.1.0/server.py",
+      "bytes": 12363,
+      "sha256": "fc509c0536b7b6c2aa3207bf0716cbbac545af5430ebaec7e03fa634275e1fac"
+    },
+    {
+      "path": "schism/fieldnotes/versions/1.1.0/style.css",
+      "bytes": 6988,
+      "sha256": "2c17a1095aa6ab65af5a4199754164247c6690bbb411f60393fbe880d9ead0e9"
+    },
+    {
+      "path": "schism/guide.html",
+      "bytes": 9591,
+      "sha256": "bf9098660ca33d141d2ce886638e4d6beb328dd677278074ba7247ab9fcd4a15"
+    },
+    {
+      "path": "schism/index.html",
+      "bytes": 10616,
+      "sha256": "889cc26a1b29849417f42e16f20d0625ee75d98fb29af26b73e478f941ca0cdc"
+    },
+    {
+      "path": "schism/style.css",
+      "bytes": 14327,
+      "sha256": "b21ae0e505e4e615fc650a62debeaa20b37432c19487f97266b0492a52a92220"
+    }
+  ],
+  "own_record_excluded_from_source_inventory": true,
+  "preserved": {
+    "files_checked": 106,
+    "all_exact_bytes": true,
+    "scope": [
+      "SCHISM0.1.1 controller source and existing archives",
+      "Existing SCHISMv2 exhibit",
+      "Existing public dossier edition1.2 and provenance",
+      "Existing controller qualification workflow"
+    ]
+  },
+  "browser": {
+    "product": "Chrome/155.0.8059.84",
+    "protocol": "1.3",
+    "v8": "15.5.35.25",
+    "viewport_widths": [
+      1440,
+      375,
+      320
+    ],
+    "driver_result": "passed",
+    "checks_passed": 75,
+    "checks": [
+      {
+        "name": "Landing states supplier-change purpose",
+        "passed": true
+      },
+      {
+        "name": "Landing has no test-count sales headline",
+        "passed": true
+      },
+      {
+        "name": "Actual application image loaded",
+        "passed": true
+      },
+      {
+        "name": "Landing desktop width",
+        "passed": true,
+        "detail": {
+          "viewport": 1440,
+          "document": 1425,
+          "body": 1425,
+          "overflow": []
+        }
+      },
+      {
+        "name": "Landing anchor #main",
+        "passed": true
+      },
+      {
+        "name": "Landing link ../",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing anchor #use",
+        "passed": true
+      },
+      {
+        "name": "Landing anchor #origin",
+        "passed": true
+      },
+      {
+        "name": "Landing anchor #start",
+        "passed": true
+      },
+      {
+        "name": "Landing link fieldnotes.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing anchor #start",
+        "passed": true
+      },
+      {
+        "name": "Landing anchor #origin",
+        "passed": true
+      },
+      {
+        "name": "Landing link fieldnotes.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link fieldnotes.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link guide.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link SCHISM-v1.2-offline.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link SCHISM.md",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link downloads/schism-stack-0.1.1-windows-amd64.zip",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link downloads/schism-stack-0.1.1-source.zip",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link downloads/schism-stack-0.1.1-linux-x86_64-glibc243.zip",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link downloads/SCHISM-Stack-runtime-wheels-windows-amd64-cp313.zip",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link downloads/SCHISM-Stack-runtime-wheels-linux-x86_64-cp314.zip",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link guide.html#platforms",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link evidence.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link ../",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Landing link stack/LICENSE",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Notebook CTA opens walkthrough",
+        "passed": true
+      },
+      {
+        "name": "Fieldnotes desktop width",
+        "passed": true,
+        "detail": {
+          "viewport": 1440,
+          "document": 1425,
+          "body": 1425,
+          "overflow": []
+        }
+      },
+      {
+        "name": "Fieldnotes link index.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Fieldnotes link fieldnotes/fieldnotes-for-schism-1.1.0.zip",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Fieldnotes link downloads/schism-stack-0.1.1-source.zip",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Fieldnotes link fieldnotes/README.md",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Fieldnotes link fieldnotes/README.md",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Fieldnotes link fieldnotes/ACCEPTANCE.json",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Fieldnotes link fieldnotes/SHA256SUMS",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Fieldnotes link fieldnotes/LICENSE",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Fieldnotes link evidence.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Download CTA reaches installation",
+        "passed": true
+      },
+      {
+        "name": "Support disclosure opens by pointer",
+        "passed": true
+      },
+      {
+        "name": "Support disclosure includes Mac, SSH, reboot and glibc scope",
+        "passed": true
+      },
+      {
+        "name": "Dossier link renders preserved public edition",
+        "passed": true
+      },
+      {
+        "name": "Evidence link opens qualification page",
+        "passed": true
+      },
+      {
+        "name": "Evidence desktop width",
+        "passed": true,
+        "detail": {
+          "viewport": 1440,
+          "document": 1425,
+          "body": 1425,
+          "overflow": []
+        }
+      },
+      {
+        "name": "Evidence link index.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link stack/QUALIFICATION.md",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link stack/QUALIFICATION.json",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link downloads/SHA256SUMS",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link downloads/schism-stack-0.1.1-build-source.zip",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link fieldnotes.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link fieldnotes/ACCEPTANCE.json",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link fieldnotes/SHA256SUMS",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link frontdoor-qualification.json",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link guide.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link stack/CONTRACT.md",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link stack/PROVENANCE.md",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link SCHISM-v1.2-offline.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link SCHISM-v1.2-public.zip",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link provenance.json",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Evidence link v2/",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Guide desktop width",
+        "passed": true,
+        "detail": {
+          "viewport": 1440,
+          "document": 1425,
+          "body": 1425,
+          "overflow": []
+        }
+      },
+      {
+        "name": "Guide link index.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Guide link fieldnotes.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "Guide link evidence.html",
+        "passed": true,
+        "detail": {
+          "status": 200
+        }
+      },
+      {
+        "name": "index.html width 375",
+        "passed": true,
+        "detail": {
+          "viewport": 375,
+          "document": 360,
+          "body": 360,
+          "overflow": []
+        }
+      },
+      {
+        "name": "fieldnotes.html width 375",
+        "passed": true,
+        "detail": {
+          "viewport": 375,
+          "document": 360,
+          "body": 360,
+          "overflow": []
+        }
+      },
+      {
+        "name": "guide.html width 375",
+        "passed": true,
+        "detail": {
+          "viewport": 375,
+          "document": 360,
+          "body": 360,
+          "overflow": []
+        }
+      },
+      {
+        "name": "evidence.html width 375",
+        "passed": true,
+        "detail": {
+          "viewport": 375,
+          "document": 360,
+          "body": 360,
+          "overflow": []
+        }
+      },
+      {
+        "name": "Open support disclosure width 375",
+        "passed": true,
+        "detail": {
+          "viewport": 375,
+          "document": 360,
+          "body": 360,
+          "overflow": []
+        }
+      },
+      {
+        "name": "index.html width 320",
+        "passed": true,
+        "detail": {
+          "viewport": 320,
+          "document": 305,
+          "body": 305,
+          "overflow": []
+        }
+      },
+      {
+        "name": "fieldnotes.html width 320",
+        "passed": true,
+        "detail": {
+          "viewport": 320,
+          "document": 305,
+          "body": 305,
+          "overflow": []
+        }
+      },
+      {
+        "name": "guide.html width 320",
+        "passed": true,
+        "detail": {
+          "viewport": 320,
+          "document": 305,
+          "body": 305,
+          "overflow": []
+        }
+      },
+      {
+        "name": "evidence.html width 320",
+        "passed": true,
+        "detail": {
+          "viewport": 320,
+          "document": 305,
+          "body": 305,
+          "overflow": []
+        }
+      },
+      {
+        "name": "Open support disclosure width 320",
+        "passed": true,
+        "detail": {
+          "viewport": 320,
+          "document": 305,
+          "body": 305,
+          "overflow": []
+        }
+      },
+      {
+        "name": "No runtime JavaScript exceptions",
+        "passed": true
+      },
+      {
+        "name": "No failed page resources",
+        "passed": true,
+        "detail": []
+      }
+    ],
+    "runtime_exceptions": 0,
+    "network_loading_failures": 0,
+    "original_receipt_sha256": "329c833ab804848392c1bf3c142b00465fdc0ac7aff0daf17dae826818094a60",
+    "screenshots": [
+      {
+        "name": "home-desktop.png",
+        "bytes": 145695,
+        "sha256": "e8820b605b316e24cac6102cb6d5c4c0042f465f555bcfcb2a7ff9d8b9e1aeb5"
+      },
+      {
+        "name": "home-desktop-full.png",
+        "bytes": 502330,
+        "sha256": "82fac94f6d88c3e61afb3ad6cf7883ceacf211c85fd375f205a2de621eaba013"
+      },
+      {
+        "name": "fieldnotes-desktop.png",
+        "bytes": 140965,
+        "sha256": "8ddeb132bd81645b4fdfb34853e3fa6f0d5f9de80e7e44b51e2af5de676494ef"
+      },
+      {
+        "name": "downloads-support-desktop.png",
+        "bytes": 159060,
+        "sha256": "3c894ef7ccb53cda1afb8730683f02c6638a101b16d2907cfd3238f37bfbce0a"
+      },
+      {
+        "name": "dossier-desktop.png",
+        "bytes": 510976,
+        "sha256": "d4a123c5eef9ee36669bd2a8826226a584b1cfeecd86453fe4ecfba8103e92f4"
+      },
+      {
+        "name": "evidence-desktop.png",
+        "bytes": 168431,
+        "sha256": "68688c93355796eba9dfcbe6e9e0fdb31cf2b94f03da102726d0c4653301dc60"
+      },
+      {
+        "name": "index-375.png",
+        "bytes": 64276,
+        "sha256": "3727cb3e373fedf9d1c05ecd9781e18372921adb0ca441320f2d526cb6f5da8e"
+      },
+      {
+        "name": "home-375-full.png",
+        "bytes": 416874,
+        "sha256": "b5df62c69364f768f34b4f6e783f59afdc73b5893bb22ef6071738a0afff19c9"
+      },
+      {
+        "name": "fieldnotes-375.png",
+        "bytes": 68186,
+        "sha256": "f3ff932846d72bf76a9c639ce6062dbbfd4593278c0f74de5f1beb5394b85837"
+      },
+      {
+        "name": "guide-375.png",
+        "bytes": 76589,
+        "sha256": "b3e68c846ab4aa0e9c4b17add014f68893646b38f19ad3967651160e00fe5fa3"
+      },
+      {
+        "name": "evidence-375.png",
+        "bytes": 75746,
+        "sha256": "dcb32a2a1a523ab992e0fef80df1c0b408dd2aa1c7abb014b95a464eb9fcc0de"
+      },
+      {
+        "name": "support-375.png",
+        "bytes": 71834,
+        "sha256": "cc2689f656d54dbeae481f3d1ff611b9329a8507e793c0ad8634d97fd927cb59"
+      },
+      {
+        "name": "index-320.png",
+        "bytes": 57298,
+        "sha256": "5110016438000870a412e14038589ff5b206725147c9163a89521b8dbb4418cc"
+      },
+      {
+        "name": "home-320-full.png",
+        "bytes": 420137,
+        "sha256": "f703112e4865ef420654a82104fca8c92b736bd511a9c7ec930350b771d0d1aa"
+      },
+      {
+        "name": "fieldnotes-320.png",
+        "bytes": 64916,
+        "sha256": "46022ab13286a838fea16af6899f32de0e269086f92287bb599d415ded395d7a"
+      },
+      {
+        "name": "guide-320.png",
+        "bytes": 66236,
+        "sha256": "0b444917ef3cbcc68fb5c8b71e3884a845422643c37a21d610a22b32fc4bb064"
+      },
+      {
+        "name": "evidence-320.png",
+        "bytes": 72769,
+        "sha256": "76a03b85eec5c95d46ff23cb3c8d9b2b231ceda50fea64abc4f7d12cfce1e379"
+      },
+      {
+        "name": "support-320.png",
+        "bytes": 66759,
+        "sha256": "36c5e24de1b8560867d4928f1c75d27e0baa501f8afbddbc11c9a604fdf66be1"
+      }
+    ],
+    "screenshot_scope": "Retained qualification renders; the actual application image is published at assets/fieldnotes.png."
+  },
+  "browser_resources": {
+    "observations": [
+      {
+        "pids.current": "104",
+        "pids.max": "128",
+        "pids.events": "max 0"
+      },
+      {
+        "pids.current": "106",
+        "pids.max": "128",
+        "pids.events": "max 2"
+      }
+    ],
+    "original_receipt_sha256": "33fc26092b3b59774d4f811fc160eebbb0cb64e8f95616d137633ffa145f99c1",
+    "process_exited": true,
+    "process_exit_code": 0,
+    "interpretation": "Chrome recorded2 events at the existing128-task job cap. All75 scoped user-path, link and layout observations completed successfully. These results establish those observed behaviors; no zero-cap or general capacity qualification is claimed. The host cap and Chrome sandbox were unchanged."
+  },
+  "fieldnotes": {
+    "application_versions": [
+      "1.0.0",
+      "1.1.0"
+    ],
+    "acceptance": "fieldnotes/ACCEPTANCE.json",
+    "sha256": "501f3c34834c6eafc91ca59b2ee7319785a4cca57346e3c66c321a0e4551b7f8",
+    "scope": "Separate source/native lifecycle and browser records retain their exact tested source and original harness failure scopes."
+  },
+  "dossier": {
+    "public_edition": "1.2",
+    "href": "SCHISM-v1.2-offline.html",
+    "original_circulation": "2026-06-26",
+    "public_edition_date": "2026-11-26",
+    "original_artifacts_unchanged": true
+  },
+  "recorded_at": "2026-11-27T22:58:01.422975+00:00"
+}

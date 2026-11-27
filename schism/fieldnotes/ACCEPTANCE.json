@@ -1,0 +1,507 @@
+{
+  "schema": "fieldnotes.release-acceptance/v1",
+  "version": "1.1.0",
+  "compatible_controller": "SCHISM 0.1.1",
+  "application_versions": [
+    "1.0.0",
+    "1.1.0"
+  ],
+  "status": "PASS",
+  "qualified_source": [
+    {
+      "path": "open-fieldnotes.py",
+      "bytes": 7433,
+      "sha256": "8d93c9e0390ba8de9c7bdc2a7cc29a9f3b5d582489d8d172f1daeefe678658ab"
+    },
+    {
+      "path": "tools/qualify.py",
+      "bytes": 14272,
+      "sha256": "5439e0c1942adfa64452b2e3ccada360f8a809a0277bd217824bd817404b7d14"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 246,
+      "sha256": "83b68a69f4e85ce138ad48e7c77fe79bad7f5e67b897641a8956ab520b0c7064"
+    },
+    {
+      "path": "versions/1.0.0/app.js",
+      "bytes": 7298,
+      "sha256": "d578543ae1ae8538ce1d59486e1c1ca009912dc70ced73072ac3015f8383609b"
+    },
+    {
+      "path": "versions/1.0.0/index.html",
+      "bytes": 3183,
+      "sha256": "df65768962b53e636d798ade9b438438f87b2f6775f4c29756d64bcf5a0378db"
+    },
+    {
+      "path": "versions/1.0.0/schism.json",
+      "bytes": 395,
+      "sha256": "40f1a9b14d925a58aef5dc6e740f5d9e065cfa80cf57096e1012889c17f3ddca"
+    },
+    {
+      "path": "versions/1.0.0/server.py",
+      "bytes": 12364,
+      "sha256": "74907aaaa77fd0ae2a30e531c064104269be3368fcc2831f263566f31ad7d429"
+    },
+    {
+      "path": "versions/1.0.0/style.css",
+      "bytes": 6988,
+      "sha256": "2c17a1095aa6ab65af5a4199754164247c6690bbb411f60393fbe880d9ead0e9"
+    },
+    {
+      "path": "versions/1.1.0/app.js",
+      "bytes": 7305,
+      "sha256": "e532b225e9628576cdc0c3c897df356f61813bb72e994ef053f8981b8b551a16"
+    },
+    {
+      "path": "versions/1.1.0/index.html",
+      "bytes": 3183,
+      "sha256": "df65768962b53e636d798ade9b438438f87b2f6775f4c29756d64bcf5a0378db"
+    },
+    {
+      "path": "versions/1.1.0/schism.json",
+      "bytes": 395,
+      "sha256": "01bcbe9272ac477ba55a3a677a1955b42629a784e5a35a06175ab3659f851b9c"
+    },
+    {
+      "path": "versions/1.1.0/server.py",
+      "bytes": 12363,
+      "sha256": "fc509c0536b7b6c2aa3207bf0716cbbac545af5430ebaec7e03fa634275e1fac"
+    },
+    {
+      "path": "versions/1.1.0/style.css",
+      "bytes": 6988,
+      "sha256": "2c17a1095aa6ab65af5a4199754164247c6690bbb411f60393fbe880d9ead0e9"
+    }
+  ],
+  "source_controller_archive_sha256": "f189463ca1b600401db2db831128bfa90086cc0897f6c2c67a088826a9e14cab",
+  "native_input_archive_sha256": "9b63b700e616229320250d8d5f127d24105251d0523e07f4d5aac2973b8c4e99",
+  "observations": [
+    {
+      "label": "Linux source controller",
+      "receipt_sha256": "ced74af84447c40bc16f2d950faaa0ac1520c8b75045a44311080494eadeefc9",
+      "receipt": {
+        "schema": "fieldnotes.qualification/v1",
+        "application_versions": [
+          "1.0.0",
+          "1.1.0"
+        ],
+        "controller": "0.1.1",
+        "host": {
+          "system": "Linux",
+          "release": "6.18.57",
+          "machine": "x86_64",
+          "python": "3.12.14"
+        },
+        "surface": "Public launcher and command line plus real loopback HTTP; browser interaction and reboot recovery are outside this receipt.",
+        "cases": [
+          {
+            "case": "Public launcher self-packs, imports and starts an empty notebook under the operator's own identity",
+            "status": "PASS"
+          },
+          {
+            "case": "Notebook reads refuse missing tokens, foreign origins, hostile Host and cross-site metadata",
+            "status": "PASS"
+          },
+          {
+            "case": "Create a real Unicode note; foreign-origin mutations are refused",
+            "status": "PASS"
+          },
+          {
+            "case": "Editing advances the revision; stale writes preserve the newer saved note",
+            "status": "PASS"
+          },
+          {
+            "case": "Saved notes are ordinary UTF-8 JSON with the documented fields",
+            "status": "PASS"
+          },
+          {
+            "case": "Individual text and complete notebook ZIP exports retain content and exclude browser tokens",
+            "status": "PASS"
+          },
+          {
+            "case": "Updating 1.0.0 to 1.1.0 retains the note, enables pinning and invalidates the old private link",
+            "status": "PASS"
+          },
+          {
+            "case": "The new pin feature saves a real compatible data update",
+            "status": "PASS"
+          },
+          {
+            "case": "Restoring version 1.0.0 retains the current note and its compatible new field",
+            "status": "PASS"
+          },
+          {
+            "case": "Stopped application backup carries code and notes; original signed evidence is exported separately",
+            "status": "PASS"
+          },
+          {
+            "case": "A fresh operator restores the identical notebook while remaining stopped and separately owned",
+            "status": "PASS"
+          },
+          {
+            "case": "The replacement operator refuses execution before scoped publisher authorization",
+            "status": "PASS"
+          },
+          {
+            "case": "The replacement independently verifies the old operator's separate signed record against its fingerprint",
+            "status": "PASS"
+          },
+          {
+            "case": "Explicit app-scoped trust enables continuation under the replacement's identity; the old copy remains unchanged",
+            "status": "PASS"
+          },
+          {
+            "case": "The new signed history binds the restored backup while the original evidence remains independently verifiable",
+            "status": "PASS"
+          },
+          {
+            "case": "The published controller's closed source inventory remains unchanged after the journey",
+            "status": "PASS"
+          }
+        ],
+        "status": "PASS",
+        "passed": 16,
+        "data_contract": "fieldnotes.note/v1 in UTF-8 JSON; two code releases use fieldnotes/1",
+        "continuity": "1.0.0 → 1.1.0 → 1.0.0 → stopped signed backup → independently authorized new operator"
+      }
+    },
+    {
+      "label": "Windows native qualification",
+      "receipt_sha256": "c0b43fba333dae6a1b0584c09dab939ed38e4d66f4c297fa88245c5265c71962",
+      "receipt": {
+        "schema": "fieldnotes.qualification/v1",
+        "application_versions": [
+          "1.0.0",
+          "1.1.0"
+        ],
+        "controller": "0.1.1",
+        "host": {
+          "system": "Windows",
+          "release": "11",
+          "machine": "AMD64",
+          "python": "3.13.15"
+        },
+        "surface": "Public launcher and command line plus real loopback HTTP; browser interaction and reboot recovery are outside this receipt.",
+        "cases": [
+          {
+            "case": "Public launcher self-packs, imports and starts an empty notebook under the operator's own identity",
+            "status": "PASS"
+          },
+          {
+            "case": "Notebook reads refuse missing tokens, foreign origins, hostile Host and cross-site metadata",
+            "status": "PASS"
+          },
+          {
+            "case": "Create a real Unicode note; foreign-origin mutations are refused",
+            "status": "PASS"
+          },
+          {
+            "case": "Editing advances the revision; stale writes preserve the newer saved note",
+            "status": "PASS"
+          },
+          {
+            "case": "Saved notes are ordinary UTF-8 JSON with the documented fields",
+            "status": "PASS"
+          },
+          {
+            "case": "Individual text and complete notebook ZIP exports retain content and exclude browser tokens",
+            "status": "PASS"
+          },
+          {
+            "case": "Updating 1.0.0 to 1.1.0 retains the note, enables pinning and invalidates the old private link",
+            "status": "PASS"
+          },
+          {
+            "case": "The new pin feature saves a real compatible data update",
+            "status": "PASS"
+          },
+          {
+            "case": "Restoring version 1.0.0 retains the current note and its compatible new field",
+            "status": "PASS"
+          },
+          {
+            "case": "Stopped application backup carries code and notes; original signed evidence is exported separately",
+            "status": "PASS"
+          },
+          {
+            "case": "A fresh operator restores the identical notebook while remaining stopped and separately owned",
+            "status": "PASS"
+          },
+          {
+            "case": "The replacement operator refuses execution before scoped publisher authorization",
+            "status": "PASS"
+          },
+          {
+            "case": "The replacement independently verifies the old operator's separate signed record against its fingerprint",
+            "status": "PASS"
+          },
+          {
+            "case": "Explicit app-scoped trust enables continuation under the replacement's identity; the old copy remains unchanged",
+            "status": "PASS"
+          },
+          {
+            "case": "The new signed history binds the restored backup while the original evidence remains independently verifiable",
+            "status": "PASS"
+          }
+        ],
+        "status": "PASS",
+        "passed": 15,
+        "data_contract": "fieldnotes.note/v1 in UTF-8 JSON; two code releases use fieldnotes/1",
+        "continuity": "1.0.0 → 1.1.0 → 1.0.0 → stopped signed backup → independently authorized new operator"
+      }
+    },
+    {
+      "label": "Actual browser interaction",
+      "receipt_sha256": "4b4f4bafae477b15b0f8f9cd06394adcbab7cf6c459bd5b3efc0d695543014f4",
+      "receipt": {
+        "schema": "fieldnotes/browser-acceptance-final@1",
+        "status": "PASS",
+        "source_application_version": "1.1.0",
+        "controller_sha256": "19bb3f18a59d28b1047a537e80430ab97f3d1f46457dd0399fcbf2a099897f72",
+        "original_input_sha256": "fa5ac63a4020053c12ab623eaf3e0b565ec9678faa3167fa946ea4132596dde1",
+        "application_source": {
+          "versions/1.0.0/server.py": {
+            "bytes": 12364,
+            "sha256": "74907aaaa77fd0ae2a30e531c064104269be3368fcc2831f263566f31ad7d429"
+          },
+          "versions/1.0.0/app.js": {
+            "bytes": 7298,
+            "sha256": "d578543ae1ae8538ce1d59486e1c1ca009912dc70ced73072ac3015f8383609b"
+          },
+          "versions/1.0.0/index.html": {
+            "bytes": 3183,
+            "sha256": "df65768962b53e636d798ade9b438438f87b2f6775f4c29756d64bcf5a0378db"
+          },
+          "versions/1.0.0/style.css": {
+            "bytes": 6988,
+            "sha256": "2c17a1095aa6ab65af5a4199754164247c6690bbb411f60393fbe880d9ead0e9"
+          },
+          "versions/1.0.0/schism.json": {
+            "bytes": 395,
+            "sha256": "40f1a9b14d925a58aef5dc6e740f5d9e065cfa80cf57096e1012889c17f3ddca"
+          },
+          "versions/1.1.0/server.py": {
+            "bytes": 12363,
+            "sha256": "fc509c0536b7b6c2aa3207bf0716cbbac545af5430ebaec7e03fa634275e1fac"
+          },
+          "versions/1.1.0/app.js": {
+            "bytes": 7305,
+            "sha256": "e532b225e9628576cdc0c3c897df356f61813bb72e994ef053f8981b8b551a16"
+          },
+          "versions/1.1.0/index.html": {
+            "bytes": 3183,
+            "sha256": "df65768962b53e636d798ade9b438438f87b2f6775f4c29756d64bcf5a0378db"
+          },
+          "versions/1.1.0/style.css": {
+            "bytes": 6988,
+            "sha256": "2c17a1095aa6ab65af5a4199754164247c6690bbb411f60393fbe880d9ead0e9"
+          },
+          "versions/1.1.0/schism.json": {
+            "bytes": 395,
+            "sha256": "01bcbe9272ac477ba55a3a677a1955b42629a784e5a35a06175ab3659f851b9c"
+          },
+          "open-fieldnotes.py": {
+            "bytes": 7433,
+            "sha256": "8d93c9e0390ba8de9c7bdc2a7cc29a9f3b5d582489d8d172f1daeefe678658ab"
+          }
+        },
+        "browser": {
+          "product": "Chrome/155.0.8059.84",
+          "protocol": "1.3",
+          "v8": "15.5.35.25"
+        },
+        "checks": [
+          {
+            "name": "A fresh browser without token presents locked notebook",
+            "passed": true
+          },
+          {
+            "name": "Private launch token is consumed and removed from location",
+            "passed": true
+          },
+          {
+            "name": "Fresh user notebook starts empty",
+            "passed": true
+          },
+          {
+            "name": "Saved Workshop repair log",
+            "passed": true
+          },
+          {
+            "name": "Real edit advances saved revision",
+            "passed": true
+          },
+          {
+            "name": "Pin action persists and appears in note list",
+            "passed": true
+          },
+          {
+            "name": "Pointer text export preserves exact Unicode title and body",
+            "passed": true
+          },
+          {
+            "name": "Saved Research notes",
+            "passed": true
+          },
+          {
+            "name": "Saved Friday handover",
+            "passed": true
+          },
+          {
+            "name": "Search finds title, text and tag content",
+            "passed": true
+          },
+          {
+            "name": "Archive removes note from ordinary list",
+            "passed": true
+          },
+          {
+            "name": "Archived notes remain accessible",
+            "passed": true
+          },
+          {
+            "name": "Delayed save disables editor and destructive navigation",
+            "passed": true
+          },
+          {
+            "name": "Typing, New and navigation cannot replace pending draft",
+            "passed": true
+          },
+          {
+            "name": "Ctrl+S during delayed save creates exactly one write",
+            "passed": true,
+            "details": {
+              "writes": 1
+            }
+          },
+          {
+            "name": "Completed delayed save retains original draft",
+            "passed": true
+          },
+          {
+            "name": "Import control opens real browser file input",
+            "passed": true
+          },
+          {
+            "name": "Delayed import disables draft edits and save",
+            "passed": true
+          },
+          {
+            "name": "Import remains an unsaved intact UTF-8 draft",
+            "passed": true
+          },
+          {
+            "name": "Ctrl+S during import issues no background save",
+            "passed": true,
+            "details": {
+              "writes": 0
+            }
+          },
+          {
+            "name": "Imported draft saves only after explicit save",
+            "passed": true
+          },
+          {
+            "name": "Pointer notebook export produces a ZIP",
+            "passed": true
+          },
+          {
+            "name": "App horizontal bounds 375",
+            "passed": true,
+            "details": {
+              "viewport": 375,
+              "document": 360,
+              "body": 360,
+              "client": 360
+            }
+          },
+          {
+            "name": "App horizontal bounds 320",
+            "passed": true,
+            "details": {
+              "viewport": 320,
+              "document": 305,
+              "body": 305,
+              "client": 305
+            }
+          },
+          {
+            "name": "No JavaScript exceptions during responsive follow-up",
+            "passed": true
+          }
+        ],
+        "functional_checks": 22,
+        "responsive_checks": 2,
+        "responsive_exception_check": 1,
+        "original_attempt": {
+          "status": "failed",
+          "sha256": "0ea7665f91394a5f1d581cb849848672848c156a2a73ea2e6fe75d5364367294",
+          "functional_checks_passed": 22,
+          "failed_assertion": {
+            "name": "App horizontal bounds 375",
+            "passed": false,
+            "details": {
+              "w": 375,
+              "d": 360,
+              "b": 360
+            }
+          },
+          "correction": "The original predicate required document width to equal innerWidth. The observed360px document fits the375px viewport; the difference is the vertical scrollbar. The corrected no-overflow predicate accepts document/body widths at or below viewport. App bytes were unchanged.",
+          "original_record_retained": true,
+          "browser_followup_attempt": "The first responsive follow-up timed out after its previously used browser reached the unchanged128-task job cap. That process and record were retained; the corrected responsive observations use a fresh browser."
+        },
+        "screenshots": [
+          {
+            "name": "fieldnotes.png",
+            "bytes": 90623,
+            "sha256": "1b36c32b03539037a3ef529b5f482cbebda5cb8e75b99d3db772d048585284bb"
+          },
+          {
+            "name": "fieldnotes-375.png",
+            "bytes": 58850,
+            "sha256": "211c6f9973ecede3217578767fcdf7f7e9689b09fff3f5ab375998a5d1212b25"
+          },
+          {
+            "name": "fieldnotes-320.png",
+            "bytes": 56430,
+            "sha256": "abbaf636aece9a1416260b570b5fc5ea2ec05dc10e2060b2194cee9e037229ba"
+          }
+        ],
+        "fault_injection": [
+          "CDP loopback network latency1200ms during one real note save",
+          "File.arrayBuffer delayed1200ms in browser memory for one real local text-file import; restored immediately afterward"
+        ],
+        "scope": "Real Chrome pointer, keyboard and local file-input behavior against Fieldnotes launched by unmodified SCHISM0.1.1; synthetic notes only. No reboot or OS boot-supervision qualification.",
+        "finished_at": "2026-11-27T22:52:14.586Z"
+      }
+    }
+  ],
+  "windows_native_binding": {
+    "sha256": "4b69e66a0923f5e602c743a48d23a6dc1485278a7034ec416eb0f59c860b722a",
+    "receipt": {
+      "status": "PASS",
+      "input_sha256": "9b63b700e616229320250d8d5f127d24105251d0523e07f4d5aac2973b8c4e99",
+      "controller_sha256": "9258037b8318c26130c51875e26d33f1d27f6d1f471bb957d7dbd4d1956c45ab",
+      "returncode": 0,
+      "native_installation_files": 62,
+      "native_installation_unchanged": true,
+      "prior_failure_sha256": "d357f4bec15121d5d23c2600633b71c2af979dfa8ba03f99974f3b2be194369e",
+      "prior_failure_scope": "All15 application cases passed; test classifier mistook retained compilation provenance SOURCE-MANIFEST.json for source installation and attempted absent scripts/verify_source.py.",
+      "app_and_launcher_bytes_unchanged_from_input2": true
+    }
+  },
+  "scope": "A local plaintext notebook uses the unchanged SCHISM public lifecycle. The listed observations establish their specific operations and platforms; the old and replacement operator records remain separately signed.",
+  "limits": [
+    "Python 3.11+ is an application prerequisite, including with a native controller.",
+    "The service occupies numeric-loopback port 8787; use one Fieldnotes instance per host at a time.",
+    "Operator-managed plaintext files; no application encryption at rest or multi-user service.",
+    "Current notes survive compatible code rollback; content itself is not rolled back.",
+    "No macOS or unattended reboot qualification is claimed."
+  ]
+}

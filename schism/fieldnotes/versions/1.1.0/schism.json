@@ -1,0 +1,21 @@
+{
+  "schema": "schism.application/v1",
+  "id": "fieldnotes",
+  "name": "Fieldnotes",
+  "version": "1.1.0",
+  "kind": "service",
+  "command": [
+    "{python}",
+    "server.py"
+  ],
+  "environment": {},
+  "secret_env": [],
+  "data_schema": "fieldnotes/1",
+  "health": {
+    "type": "http",
+    "url": "http://127.0.0.1:8787/health",
+    "status": 200,
+    "timeout": 15
+  },
+  "stop_timeout": 5
+}
