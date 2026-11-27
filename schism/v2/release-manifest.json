@@ -1,7 +1,7 @@
 {
   "schema": "schism-release-manifest/2",
   "version": "2.0",
-  "source_tree_sha256": "3364dd86ccf9ccc1d93c842c6a77a28fb1b565545cefc8b02ed3b8379a4f2055",
+  "source_tree_sha256": "069a7ce0fc53a5e6c6d00d5879cee39cd90cb307ea340c37ce6d1653b464067c",
   "files": [
     {
       "path": "README.md",
@@ -91,12 +91,12 @@
     {
       "path": "data/linux-qualification.json",
       "bytes": 3815,
-      "sha256": "cbb6521a51b1dfd403970924edcf3d8a9b1b1f553c45a49485b77483c16dfaaf"
+      "sha256": "4b1ee88f47ae032c18a1d6569d3a83ebcac1df56b8b9e883b501de0b4cd4a747"
     },
     {
       "path": "data/native-source-binding.json",
-      "bytes": 2623,
-      "sha256": "a36c0ea7dac74f5df145e2bc8aab0239ed32d89236d7441246209e3d9ec791a4"
+      "bytes": 2641,
+      "sha256": "c25ebb9ad7ac16d847c58e2da8d1921720bbddf543506148d4454abe1f4a9c13"
     },
     {
       "path": "data/original-handoff.json",
@@ -111,12 +111,12 @@
     {
       "path": "data/roundtrip-qualification.json",
       "bytes": 2172,
-      "sha256": "f4c1faf8c37486fc8324bfb810d84ddb5cb41ac8274eddd9620b0e88233a8e12"
+      "sha256": "d5cc885e4536cb5c9bcdc4a3cd2beea52036e8a2618dc5cb759c2ac7f371ba43"
     },
     {
       "path": "data/windows-qualification.json",
       "bytes": 3951,
-      "sha256": "79434f214721e918e043284d7085e5ce3de374ed10275a7afb8a07448a0dc222"
+      "sha256": "2bf881b06bc3c86d3d6df0288b0bc017374aaa78ac2df31a1d2682b36ab2d83a"
     },
     {
       "path": "exhibits/cantos-maintainer-kit.zip",
@@ -150,8 +150,8 @@
     },
     {
       "path": "runtime/test_receiver.py",
-      "bytes": 32530,
-      "sha256": "930acc4b875bac8d0d76b5faaa7d93d3e5ed71c2fa8bcd4836eb4275822048d8"
+      "bytes": 32548,
+      "sha256": "8b582a53c761f41e36b1cd68bcbde479848ec9b683f4261cdc7379cdb913fa71"
     },
     {
       "path": "scripts/check-roundtrip.cjs",

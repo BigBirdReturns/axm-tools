@@ -1,7 +1,7 @@
 {
   "schema": "schism-recipient-qualification/2",
   "status": "PASS",
-  "observed_at": "2026-11-27T18:13:28.076955+00:00",
+  "observed_at": "2026-11-27T18:30:38.339195+00:00",
   "environment": {
     "system": "Linux",
     "architecture": "x86_64",
@@ -94,7 +94,7 @@
     "schema": "schism-roundtrip/2",
     "status": "PASS",
     "direction": "JavaScript \u2192 Python continuation \u2192 original JavaScript receiver",
-    "observed_at": "2026-11-27T18:13:28.062Z",
+    "observed_at": "2026-11-27T18:30:38.325Z",
     "contract_sha256": "f7cb1a8810a4a0c9af406c241fed7bfada2704c6f68ab9053f13af86cafc0e5d",
     "packet_sha256": "0e50f98690eb4632c6c4751f419af90ed2c0425e3d8303738ab99e0fdcba0f4c",
     "source_count": 7,

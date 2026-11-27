@@ -80,7 +80,7 @@ def node(mode: str, **arguments):
     completed = subprocess.run(
         ["node", "-e", BRIDGE, str(ENGINE), str(CORE)],
         input=json.dumps({"mode": mode, "engine": EXPECTED_ENGINE, **arguments}, ensure_ascii=True),
-        text=True, capture_output=True, timeout=40, check=False)
+        text=True, encoding="utf-8", capture_output=True, timeout=40, check=False)
     if completed.returncode:
         raise AssertionError("Native donor oracle failed: " + completed.stderr)
     return json.loads(completed.stdout)
