@@ -54,6 +54,7 @@ the tool layout, so don't try to fit them into it.
 
 | Area | What it is | Surface |
 |------|------------|---------|
+| [`schism/`](schism/) | Independent dossier on FleetForge, supplier dependence and customer authority, with dated provenance, primary sources and offline downloads | [Read SCHISM](https://bigbirdreturns.github.io/axm-tools/schism/) |
 | [`identity/`](identity/) | The AXM / SCG identity system: the pixel-dandelion mark, its four-token palette and type, frozen release bundles, and the provenance law (`SCG_MARK_CONSTITUTION.md`) that governs every rendering | [live showcase](https://bigbirdreturns.github.io/axm-tools/identity/) — self-contained page, no Action |
 
 `identity/` is deliberately **not** a tool: no `scripts/`, no `data/`, no
