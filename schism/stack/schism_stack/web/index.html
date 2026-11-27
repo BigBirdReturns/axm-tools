@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>SCHISM · Operator-owned applications</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to workspace</a>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Workspace navigation">
+      <a class="brand" href="/" aria-label="SCHISM home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span><strong>SCHISM</strong><small>Operator-owned applications</small></span>
+      </a>
+      <div class="sidebar-section-label">This workspace</div>
+      <nav class="navigation" aria-label="Sections">
+        <button type="button" class="nav-item active" data-view="applications" aria-current="page"><span class="nav-glyph" aria-hidden="true">▦</span>Applications<span id="nav-app-count" class="nav-count">0</span></button>
+        <button type="button" class="nav-item" data-view="packages"><span class="nav-glyph" aria-hidden="true">◇</span>Packages<span id="nav-package-count" class="nav-count">0</span></button>
+        <button type="button" class="nav-item" data-view="activity"><span class="nav-glyph" aria-hidden="true">≋</span>Activity<span id="nav-job-count" class="nav-count">0</span></button>
+        <button type="button" class="nav-item" data-view="trust"><span class="nav-glyph" aria-hidden="true">⌑</span>Publisher trust</button>
+      </nav>
+      <div class="sidebar-note">
+        <span class="sidebar-dot" aria-hidden="true"></span>
+        <p>The local service owns the state. Packages, work and evidence stay on this computer.</p>
+      </div>
+      <div class="sidebar-footer">
+        <a href="/guide" target="_blank" rel="noopener">Create your first package <span aria-hidden="true">↗</span></a>
+        <div class="operator-label">LOCAL OPERATOR</div>
+        <strong id="operator-name">Connecting…</strong>
+        <div class="sidebar-version" id="stack-version">SCHISM</div>
+      </div>
+    </aside>
+
+    <main id="main" class="main" tabindex="-1">
+      <header class="topbar">
+        <div class="page-heading">
+          <div class="eyebrow">LOCAL APPLICATION CONSOLE</div>
+          <h1 id="view-title">Applications</h1>
+          <p id="view-description">Manage the software you run, its releases and its history.</p>
+        </div>
+        <div class="topbar-right">
+          <div class="connection" id="connection" role="status"><span class="status-dot"></span><span id="connection-text">Connecting to local service</span></div>
+          <div class="header-actions">
+            <button type="button" class="button secondary" id="export-evidence" disabled>Export evidence</button>
+            <button type="button" class="button primary" data-action="import" disabled><span aria-hidden="true">+</span> Import package</button>
+          </div>
+        </div>
+      </header>
+
+      <div id="notice" class="notice hidden" role="status" aria-live="polite"></div>
+      <section id="locked-workspace" class="panel locked-workspace hidden" aria-labelledby="locked-heading"><div class="empty-emblem" aria-hidden="true">⌑</div><div class="eyebrow">PRIVATE LOCAL SESSION</div><h2 id="locked-heading">Open your authorized console link</h2><p>Start SCHISM with its launcher and open the complete console URL it prints, including the private token after <code>#token=</code>. The console removes that token from the address bar after opening.</p><p>A new server session requires its new launch URL. This tab cannot read or manage the workspace until it has that session token.</p><a class="button secondary" href="/guide" target="_blank" rel="noopener">Read the launch instructions <span aria-hidden="true">↗</span></a></section>
+      <div class="metrics" aria-label="Workspace summary">
+        <div class="metric"><span>Applications</span><strong id="metric-apps">…</strong><small>Installed in this workspace</small></div>
+        <div class="metric"><span>Running services</span><strong id="metric-running">…</strong><small>Observed process state</small></div>
+        <div class="metric"><span>Active jobs</span><strong id="metric-jobs">…</strong><small>Queued or running</small></div>
+        <div class="metric"><span>Verified packages</span><strong id="metric-packages">…</strong><small>Available local releases</small></div>
+      </div>
+
+      <section id="view-applications" class="view" aria-labelledby="applications-heading">
+        <div class="section-bar">
+          <div><h2 id="applications-heading">Application inventory</h2><p>Current code, persistent data and actual runtime state.</p></div>
+          <label class="search"><span class="sr-only">Find an application</span><input id="app-search" type="search" placeholder="Find an application" autocomplete="off"></label>
+        </div>
+        <div id="app-empty" class="empty-state panel">
+          <div class="empty-emblem" aria-hidden="true">+</div>
+          <div class="eyebrow">A CLEAN WORKSPACE</div>
+          <h2>Register your first application</h2>
+          <p>Import a signed <code>.schism</code> package, inspect its publisher and declared behavior, then choose when to deploy it.</p>
+          <div class="empty-actions"><button type="button" class="button primary" data-action="import" disabled>Choose a package</button><a class="button secondary" href="/guide" target="_blank" rel="noopener">Package your own app <span aria-hidden="true">↗</span></a></div>
+          <div class="empty-steps"><span><b>1</b> Inspect the package</span><span><b>2</b> Scope publisher trust</span><span><b>3</b> Deploy and observe</span></div>
+          <p class="footnote">Services start when deployed. Task applications run only when you select Run task.</p>
+        </div>
+        <div id="app-workspace" class="workspace-grid hidden">
+          <div class="panel inventory-panel"><div id="app-list" class="inventory-list" aria-label="Applications"></div></div>
+          <div id="app-detail" class="panel detail-panel" aria-live="off"></div>
+        </div>
+        <div class="panel nodes-panel"><div class="panel-heading"><div><h3>Registered nodes</h3><p class="muted small-text">Pinned SSH peers. The application controls above operate on this computer.</p></div><a class="button secondary small" href="/guide#nodes" target="_blank" rel="noopener">Node management guide <span aria-hidden="true">↗</span></a></div><div id="peer-list"></div><div id="peer-snapshot" class="peer-snapshot hidden"></div></div>
+      </section>
+
+      <section id="view-packages" class="view hidden" aria-labelledby="packages-heading">
+        <div class="section-bar"><div><h2 id="packages-heading">Packages and releases</h2><p>Inspect signed bytes before granting execution authority.</p></div><button type="button" class="button secondary small hidden" id="clear-package-filter" data-action="clear-package-filter">Show all applications</button></div>
+        <button type="button" id="drop-zone" class="drop-zone" data-action="import" disabled>
+          <span class="upload-symbol" aria-hidden="true">↑</span>
+          <span><strong id="upload-label">Drop a .schism package here</strong><small id="upload-detail">or choose a file from this computer. Import verifies its signature and inventory without executing it.</small></span>
+          <span class="button secondary small drop-choose" aria-hidden="true">Choose file</span>
+        </button>
+        <div class="workspace-grid package-workspace">
+          <div class="panel inventory-panel"><div class="panel-heading"><h3>Available releases</h3><span id="package-filter-label" class="muted small-text">All applications</span></div><div id="package-list" class="inventory-list"></div></div>
+          <div id="package-detail" class="panel detail-panel"><div class="panel-placeholder"><span class="empty-emblem small-emblem" aria-hidden="true">◇</span><h3>Inspect a package</h3><p>Choose an available release or import a package to see its application, publisher and execution contract.</p></div></div>
+        </div>
+      </section>
+
+      <section id="view-activity" class="view hidden" aria-labelledby="activity-heading">
+        <div class="section-bar"><div><h2 id="activity-heading">Jobs and lifecycle history</h2><p>Completed work, failures and interrupted operations remain visible.</p></div><button type="button" class="button secondary small" data-action="refresh">Refresh</button></div>
+        <div class="activity-grid">
+          <div class="panel jobs-panel"><div class="panel-heading"><h3>Jobs</h3><label class="sr-only" for="job-filter">Filter jobs</label><select id="job-filter"><option value="all">All jobs</option><option value="active">Active</option><option value="attention">Needs attention</option></select></div><div id="job-list" class="job-list"></div></div>
+          <div class="panel log-panel">
+            <div class="panel-heading"><div><h3 id="job-title">Select a job</h3><p id="job-subtitle" class="muted small-text">Execution output appears here.</p></div><div class="button-row"><button type="button" class="button secondary small" id="refresh-log" data-action="refresh-log" disabled>Refresh log</button><button type="button" class="button danger-outline small hidden" id="cancel-job" data-action="cancel-job">Cancel job</button></div></div>
+            <div id="job-metadata" class="job-metadata hidden"></div>
+            <div id="job-error" class="inline-error hidden"></div>
+            <div class="log-toolbar"><span id="log-label">COMBINED OUTPUT</span><label><input id="follow-log" type="checkbox" checked> Follow output</label></div>
+            <pre id="job-log" class="terminal" tabindex="0" aria-label="Job output">Select a job to inspect its retained output.</pre>
+            <details id="job-result-section" class="result-section hidden"><summary>Inspect the operation result</summary><pre id="job-result" class="json-block"></pre></details>
+          </div>
+        </div>
+        <div class="panel history-panel"><div class="panel-heading"><h3>Recorded lifecycle events</h3><span class="muted small-text">Most recent first</span></div><div id="event-list" class="event-list"></div></div>
+      </section>
+
+      <section id="view-trust" class="view hidden" aria-labelledby="trust-heading">
+        <div class="section-bar"><div><h2 id="trust-heading">Publisher authority</h2><p>A valid signature identifies signed bytes. Your trust scope determines which application IDs that publisher may deploy.</p></div></div>
+        <div id="local-identity" class="panel identity-panel"></div>
+        <div class="panel"><div class="panel-heading"><h3>Trusted publishers</h3><span class="muted small-text">Explicit application scope</span></div><div id="trust-list" class="trust-list"></div></div>
+      </section>
+
+      <footer class="workspace-footer"><span id="platform-label">Local service</span><span id="last-observed">Waiting for workspace state</span><a href="/guide" target="_blank" rel="noopener">Operator guide <span aria-hidden="true">↗</span></a></footer>
+    </main>
+  </div>
+  <input id="package-file" class="sr-only" type="file" accept=".schism,application/octet-stream,application/zip" tabindex="-1" aria-label="Choose a SCHISM application package">
+  <div id="announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Source and authority boundaries
+
+SCHISM Stack 0.1.0 introduces a general application lifecycle controller under the AXM SCHISM project. The implementation is new integration source. It uses Python's standard library with cryptography for Ed25519 and psutil for process identity and controlled termination. Public reference architectures informed its custody and recovery conventions; their domain-specific products retain their own names, contracts and owners.
+
+| Source | Relationship |
+|---|---|
+| [AXM Knowledge Pack 0.4.0](https://bigbirdreturns.github.io/axm-tools/knowledge-pack/) | The independently installed loopback console, isolated runtime, SQLite state, immutable object admission and expected-predecessor publication informed the recipient boundary. Its source release pins Core `298aaf386cd86f45d04c740be2715bb61e6f8fbf`. SCHISM does not copy its vault-specific application, claim its qualification or require its model/retrieval dependencies. |
+| [Cantos at 98655f27c62083ac2cc3c860bb5fa58d7e5f29ad](https://github.com/BigBirdReturns/cantos/tree/98655f27c62083ac2cc3c860bb5fa58d7e5f29ad) | Retained request identity, source-bound work, explicit acceptance and refusal to replay unknown effects informed lifecycle records. Cantos remains the owner of its existing evaluation and economic decision contracts. SCHISM does not present imported Cantos evidence as application deployment authority. |
+| [AXM Genesis at 5fcd472d6119afc0e9bb80ffc91f9ccc8adde705](https://github.com/BigBirdReturns/axm-genesis/tree/5fcd472d6119afc0e9bb80ffc91f9ccc8adde705) | Content identity, signing and independent verification provide the existing AXM custody model. SCHISM's application format explicitly uses Ed25519 release envelopes; it does not claim Genesis shard compatibility, hybrid signatures or its optional encryption features. |
+| [SCHISM 2.0 technical exhibit](https://bigbirdreturns.github.io/axm-tools/schism/v2/) | Preserved earlier cross-implementation evidence experiment. It remains a narrower supporting exhibit and does not establish this stack's lifecycle qualification. |
+| [cryptography Ed25519 API](https://cryptography.io/en/latest/hazmat/primitives/asymmetric/ed25519/) | Standard-library-facing key generation, signing and signature verification through the pinned maintained cryptographic dependency. |
+| [psutil 7.2.2 documentation](https://psutil.readthedocs.io/stable/) | Process creation time, descendant observation and termination support the recorded PID-plus-creation-time ownership checks. |
+
+Estate/TierDesk supplied the execution environment used to build and qualify the product. Its private host registry, credentials, installation layout, account identities and unlicensed source are absent from the public runtime. The recipient package has no Estate service dependency. The universal runtime lock includes official PyPI wheel hashes for exact package versions; platform-specific kits retain upstream license texts and per-file inventories.
+
+The product name describes AXM's own software. It does not identify a Darkhive product, claim affiliation or assert feature equivalence. The original strategic dossier supplied the operator-ownership objective; application lifecycle behavior and actual recipient evidence determine this implementation's supported claims.

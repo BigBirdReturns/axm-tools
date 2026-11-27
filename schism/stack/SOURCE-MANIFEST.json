@@ -1,0 +1,216 @@
+{
+  "files": [
+    {
+      "bytes": 8581,
+      "path": "CONTRACT.md",
+      "sha256": "1334e7fd740da1ffc707865508a0927ca3ed16211dd578adcc3834f5888150aa"
+    },
+    {
+      "bytes": 11358,
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "bytes": 406,
+      "path": "NOTICE",
+      "sha256": "e913c1c9fb3d040dfda485114b37644e23eb8de79e1e10d5660e98b4acbe6155"
+    },
+    {
+      "bytes": 3305,
+      "path": "PROVENANCE.md",
+      "sha256": "2357eb99a93b124bcaee9ac4ae7ff93aefde16774fe131b43355c0f4cebeeba1"
+    },
+    {
+      "bytes": 44894,
+      "path": "QUALIFICATION.json",
+      "sha256": "8143a61ca3c3b1fbc618fb377acf8b38cfee1b801961d2f54ab26585e9df09a9"
+    },
+    {
+      "bytes": 10051,
+      "path": "QUALIFICATION.md",
+      "sha256": "1bdf89bed6fbda241eaf48e2fb568de43bb78e2491b3d7a8c0a5ec5969133b02"
+    },
+    {
+      "bytes": 17597,
+      "path": "README.md",
+      "sha256": "ebe50664cbbdebe61c129fb0948b61cf8aa4a72b61c0bc518a2fceaf0d70362d"
+    },
+    {
+      "bytes": 402,
+      "path": "examples/counter-service/schism.json",
+      "sha256": "8a84db9c87885bcb5a7d66bbc29e98caead4de5789edfa795730989a5af8996e"
+    },
+    {
+      "bytes": 1376,
+      "path": "examples/counter-service/server.py",
+      "sha256": "21e492874211165421607ca5b757aebf47c5eb18904047efb07f24b5dfb5df33"
+    },
+    {
+      "bytes": 402,
+      "path": "examples/counter-service-v2/schism.json",
+      "sha256": "6d55f8052604d019b068d35eaa82ed4de6d6c77cf27cfe2b6e937baf6307ade2"
+    },
+    {
+      "bytes": 1376,
+      "path": "examples/counter-service-v2/server.py",
+      "sha256": "21e492874211165421607ca5b757aebf47c5eb18904047efb07f24b5dfb5df33"
+    },
+    {
+      "bytes": 320,
+      "path": "examples/csv-summary/schism.json",
+      "sha256": "409a99392306a337f18c357df15188cc4d62d7c24c73bd70aef590fba3616143"
+    },
+    {
+      "bytes": 1281,
+      "path": "examples/csv-summary/summarize.py",
+      "sha256": "d75e61f73f1a97e3611d73e84fc3b399060d175c5eecab393faa8fa3b86f6410"
+    },
+    {
+      "bytes": 169,
+      "path": "launch-schism.cmd",
+      "sha256": "afb37fcc8d90221a406ceaf39627fb5312f350fac2f0633a30d4473ec0e56428"
+    },
+    {
+      "bytes": 130,
+      "path": "launch-schism.sh",
+      "sha256": "ddb843001d93d8278c02c5a63c1c4e6e0caf1e1722dfab8bd9be8a7a50ce2f1c"
+    },
+    {
+      "bytes": 561,
+      "path": "pyproject.toml",
+      "sha256": "4460621347155c946439c464907d1bd83d8e53fc192020161dd2e4e79227f80a"
+    },
+    {
+      "bytes": 14478,
+      "path": "requirements.lock",
+      "sha256": "2696b04bce171bcbd43b08133ce813a0cbf8c0e084ee5f4a6fad63e9ffd2ef3c"
+    },
+    {
+      "bytes": 63,
+      "path": "requirements.txt",
+      "sha256": "d1db96cbdaaef0db8202cb0707229b6c44d6bf8eceaeda347c8627df58b623a5"
+    },
+    {
+      "bytes": 114,
+      "path": "schism.py",
+      "sha256": "e721e5c71f15eada555d0c1216e6d956ed71cb94d03ae467a02b3ccaf6a73a7b"
+    },
+    {
+      "bytes": 88,
+      "path": "schism_stack/__init__.py",
+      "sha256": "0c84c058edff6682c79fce0d06c9aed1d60ceef2cdce3ebbd57db4418d9547cc"
+    },
+    {
+      "bytes": 48,
+      "path": "schism_stack/__main__.py",
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+    },
+    {
+      "bytes": 24608,
+      "path": "schism_stack/bundle.py",
+      "sha256": "376f485508d2e7d78e6d485dd7183ba51242b03cb33f11bf94dd27d677df9e75"
+    },
+    {
+      "bytes": 11425,
+      "path": "schism_stack/cli.py",
+      "sha256": "ac6648f25d1b8bcde14f3dbf053bea48e60fc75f4a6f252e119d4625704484de"
+    },
+    {
+      "bytes": 5811,
+      "path": "schism_stack/common.py",
+      "sha256": "6d76256869f49037a719fd42578b984d8d26da50c9f26bb59fd1e0e8bd3f567e"
+    },
+    {
+      "bytes": 31841,
+      "path": "schism_stack/engine.py",
+      "sha256": "987acf39cfee032c9672febba7ad9faba29284398edfe14af5dbb061b904ff19"
+    },
+    {
+      "bytes": 14755,
+      "path": "schism_stack/evidence.py",
+      "sha256": "7f54185ad950523bd5b1c5e8adc3c7ee7564a4ca7bd6a129a7d5d6a3ce6f26e9"
+    },
+    {
+      "bytes": 12780,
+      "path": "schism_stack/identity.py",
+      "sha256": "9e34bd9718ad526b17a1c3ef3b91873ab8165caa300cf870f9d0e5129a058374"
+    },
+    {
+      "bytes": 4674,
+      "path": "schism_stack/runner.py",
+      "sha256": "80c1657039e19dd0a9f70087ad6caba203c60d73209503efd0f723062f5fc909"
+    },
+    {
+      "bytes": 7495,
+      "path": "schism_stack/server.py",
+      "sha256": "40fd77c489c89efb319b308c5f3d040e1c91c5f970f624de8b57cd24df8d7b44"
+    },
+    {
+      "bytes": 6598,
+      "path": "schism_stack/store.py",
+      "sha256": "636b03658cbe37d4c98e41472a52cfc5efbe9467bc4ab2f37cf6861f11a5f1e4"
+    },
+    {
+      "bytes": 6678,
+      "path": "schism_stack/transport.py",
+      "sha256": "f6d982a317d55feb0975dbabb6fe65f35930553fcd768dd404fa3a8278bce9a9"
+    },
+    {
+      "bytes": 60004,
+      "path": "schism_stack/web/app.js",
+      "sha256": "3125a543934571e0c30d06809d39091a0e67fff770cea005f0cc9d121c3ce5fe"
+    },
+    {
+      "bytes": 7205,
+      "path": "schism_stack/web/guide.html",
+      "sha256": "9ff4f8f6f577aa25dd361ce42c1b9af6fd895ae3e197861dc7607157b1587023"
+    },
+    {
+      "bytes": 11486,
+      "path": "schism_stack/web/index.html",
+      "sha256": "52d73ec4cf655f474feb5795c66e45eb1d7551f6a9631ce15591167ab5fbae44"
+    },
+    {
+      "bytes": 30384,
+      "path": "schism_stack/web/style.css",
+      "sha256": "4098140f05db542fb30cee5abf4dd77697c443652d456024460327e251368b77"
+    },
+    {
+      "bytes": 2812,
+      "path": "scripts/build_release.py",
+      "sha256": "4e6a318a80ddfb4c8d6be998366a92a1626a8f4db71d2341c9e0d51e7b2d2586"
+    },
+    {
+      "bytes": 3189,
+      "path": "scripts/launch.py",
+      "sha256": "d042065041689dabf9c76ce6c717eb20416b6df2dbf64f55d4495ecfeb552eed"
+    },
+    {
+      "bytes": 1776,
+      "path": "scripts/verify_source.py",
+      "sha256": "b30bb114b9e7bda40528f2fd91ed9e7e976953ee67e8d54a529eb951add94954"
+    },
+    {
+      "bytes": 17268,
+      "path": "tests/test_bundle.py",
+      "sha256": "5196b6b40356aa09cb55e773d7cbac9c96840cc5974892031e753d98bad67b0f"
+    },
+    {
+      "bytes": 13425,
+      "path": "tests/test_lifecycle.py",
+      "sha256": "f1907bbb808a851b2e80dc49c3f0b2f85d0a1a1f971d3e1ed5f9f3945e19b422"
+    },
+    {
+      "bytes": 14658,
+      "path": "tests/test_review.py",
+      "sha256": "570d052c38a1b2449b7f590a138841dc865d128bd41872b7310c96708788616b"
+    },
+    {
+      "bytes": 4786,
+      "path": "tests/test_transport.py",
+      "sha256": "2995f1760ff234a71af1565024372d2b4ffe6cf93dd5bac0ac400fb9f59a24f4"
+    }
+  ],
+  "schema": "schism.source-release/v1",
+  "version": "0.1.0"
+}

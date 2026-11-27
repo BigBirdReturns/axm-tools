@@ -1,0 +1,13 @@
+{
+  "schema": "schism.application/v1",
+  "id": "csv-summary",
+  "name": "CSV summary",
+  "version": "1.0.0",
+  "kind": "task",
+  "command": ["{python}", "summarize.py", "{data}/input.csv", "{data}/summary.json"],
+  "environment": {},
+  "secret_env": [],
+  "data_schema": "1",
+  "task_timeout": 60,
+  "stop_timeout": 3
+}

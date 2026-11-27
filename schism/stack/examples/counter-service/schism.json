@@ -1,0 +1,13 @@
+{
+  "schema": "schism.application/v1",
+  "id": "counter-service",
+  "name": "Persistent counter",
+  "version": "1.0.0",
+  "kind": "service",
+  "command": ["{python}", "server.py"],
+  "environment": {"PORT": "8765", "RELEASE_LABEL": "Version 1"},
+  "secret_env": [],
+  "data_schema": "counter/1",
+  "health": {"type": "http", "url": "http://127.0.0.1:8765/health", "timeout": 10},
+  "stop_timeout": 3
+}

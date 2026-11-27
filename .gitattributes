@@ -26,3 +26,7 @@ team-commons/core.js -text
 schism/v2/** -text
 # Preserve the observed CRLF bytes of the native Windows execution receipt.
 schism/v2/data/windows-qualification.json -text whitespace=cr-at-eol
+
+# SCHISM source and release downloads retain exact published byte identities.
+schism/stack/** -text
+schism/downloads/** -text

@@ -1,0 +1,41 @@
+name: SCHISM application stack qualification
+
+on:
+  push:
+    branches: [main]
+    paths: ['schism/stack/**', '.github/workflows/schism-stack-qualification.yml']
+  pull_request:
+    paths: ['schism/stack/**', '.github/workflows/schism-stack-qualification.yml']
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  recipient-lifecycle:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: '3.12'
+          - os: windows-latest
+            python: '3.13'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: schism/stack
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Verify the complete delivered source inventory
+        run: python -B scripts/verify_source.py
+      - name: Install the exact locked binary dependency set
+        run: python -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r requirements.lock
+      - name: Qualify application lifecycle, authority and recovery boundaries
+        run: python -B -m unittest discover -s tests -v
+      - name: Verify source remained intact after application qualification
+        run: python -B scripts/verify_source.py
