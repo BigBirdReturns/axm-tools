@@ -26,7 +26,7 @@ def main():
     args = parser.parse_args()
     if sys.version_info < (3, 11):
         raise SystemExit("SCHISM requires Python 3.11 or newer")
-    cache = Path(os.environ.get("LOCALAPPDATA", str(Path.home() / ".cache"))) / "axm-schism" / "0.1.0"
+    cache = Path(os.environ.get("LOCALAPPDATA", str(Path.home() / ".cache"))) / "axm-schism" / "0.1.1"
     environment = (args.environment or cache / "venv").expanduser().absolute()
     if environment.is_symlink():
         raise SystemExit("Refusing a symbolic-link runtime")
@@ -48,7 +48,7 @@ def main():
         if args.wheelhouse:
             command += ["--no-index", "--find-links", str(args.wheelhouse.expanduser().absolute())]
         subprocess.run(command, check=True)
-        marker.write_text(json.dumps({"version": "0.1.0", "lock_sha256": fingerprint}) + "\n", encoding="utf-8")
+        marker.write_text(json.dumps({"version": "0.1.1", "lock_sha256": fingerprint}) + "\n", encoding="utf-8")
     print("Runtime ready: " + str(python), flush=True)
     state = args.state.expanduser().absolute()
     prefix = [str(python), str(ROOT / "schism.py"), "--state", str(state)]

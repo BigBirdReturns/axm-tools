@@ -406,26 +406,28 @@
   },
   "documented_source_release": {
     "integrity_record": "../downloads/SHA256SUMS",
-    "public_file": "../downloads/schism-stack-0.1.0-source.zip",
+    "public_file": "../downloads/schism-stack-0.1.1-source.zip",
     "relationship": "The documented source adds QUALIFICATION.md and QUALIFICATION.json to the accepted compilation input. Every existing build-input file remains byte-identical; SOURCE-MANIFEST.json records the complete resulting inventory."
   },
   "evidence_policy": "Public projections retain original status, observed results and original receipt hashes. Private host paths, accounts, runtime credentials and raw application logs are excluded. Source tests and complete release inventories ship publicly.",
   "local_source_suite": {
-    "duration_seconds": 12.744,
-    "passed": 35,
+    "duration_seconds": 13.344,
+    "passed": 38,
     "python": "3.12.14",
-    "record_type": "observed command outcome",
+    "raw_log_sha256": "d437d6b53f08e8b67ae56bfabda5a3b4ea8488c1d53940b0e1a424f50be3ffa4",
     "schema": "schism.local-qualification/v1",
-    "source_archive_sha256": "6e07d2109bbbe669733c72d6984cd2143fd6c4b7029bfce7c37c59f7bedef11c",
+    "skipped": 0,
+    "source_archive_sha256": "8233fc7a65ae724a4f34c30a3c3b220d5a86f35d46c70253eb79607d94ce60d6",
     "status": "passed",
-    "tests": 35
+    "tests": 38,
+    "version": "0.1.1"
   },
   "native_archive_qualification": {
     "linux": {
-      "artifact_manifest_sha256": "85deb2d7c314061159f6ed7109c228fe7b144a7235db2e679e49172d7193b262",
-      "bytes": 15976458,
+      "artifact_manifest_sha256": "1c660e88dc1140679d72ef91f87c356a5dc2efa93f59c916535b5fdc7c5abe97",
+      "bytes": 15977866,
       "dereferenced_symlinks": 0,
-      "executable_sha256": "6fc5fcac0e1509bcd790376e64b42072771208690db6c629de3bf484ff713057",
+      "executable_sha256": "19bb3f18a59d28b1047a537e80430ab97f3d1f46457dd0399fcbf2a099897f72",
       "extracted_recipient": {
         "commands_passed": [
           "version",
@@ -434,14 +436,14 @@
         ],
         "fresh_external_state": true,
         "installation_unchanged": true,
-        "private_receipt_sha256": "36159881dae921f592334e0bd751265355b1206f73811bdfd5df770bcc36bc54",
+        "private_receipt_sha256": "c39d491d7f810536ffb15b2ff3db786634af6ae592a70c52c7a2a251ea66d32c",
         "retained_identity": true,
         "status": "passed",
-        "version": "0.1.0"
+        "version": "0.1.1"
       },
-      "file": "schism-stack-0.1.0-linux-x86_64-glibc243.zip",
+      "file": "schism-stack-0.1.1-linux-x86_64-glibc243.zip",
       "files": 75,
-      "native_payload_sha256": "2c1ce5f7e1157b5850c554f8983670e4f8a2cee6cbd65d35a227ccd730360508",
+      "native_payload_sha256": "a40cdb9aa75d4f0a84876866d4ee64ccb3e96daf998205d2a3ad2aeb722134ee",
       "platform": {
         "architecture": "x86_64",
         "compatibility_scope": "Qualified on the recorded native build host; older glibc is unsupported",
@@ -451,18 +453,18 @@
         "libc": "glibc",
         "os": "Linux"
       },
-      "public_qualification_sha256": "a2a58dcad303c7dda162f4faab3316f4b8343cb4fb2cb0d802982729aef6f131",
+      "public_qualification_sha256": "7c2d7d223b02e6f785656d5702b33b218f097e142323aedb7cb49e259efbe0cf",
       "schema": "schism-stack/native-package-receipt@1",
-      "sha256": "e83f001340582754948afc15a8671fa0219066fde37b797dca1690cacc1a9048",
-      "source_archive_sha256": "6e07d2109bbbe669733c72d6984cd2143fd6c4b7029bfce7c37c59f7bedef11c",
-      "source_manifest_sha256": "ce76417189247378bf712ffcd812d49de0ee82158beb1e85d23660f58d91ede3",
+      "sha256": "17ec0052532b17831df2e69557cc0c8a9e73b1c5d50a5f47d131d3e709ca02b4",
+      "source_archive_sha256": "8233fc7a65ae724a4f34c30a3c3b220d5a86f35d46c70253eb79607d94ce60d6",
+      "source_manifest_sha256": "ead0299da27bd7665faab1c59bc37b2dd9129a8ece6ce14fd1ba8faf3a257ef4",
       "status": "passed"
     },
     "windows": {
-      "artifact_manifest_sha256": "57d9a3ce44cbc9df9f74444e6ea02fd5cf3de9f37d3aad572433582cd44da60c",
-      "bytes": 13029466,
+      "artifact_manifest_sha256": "1c21745a94a008cb07fe27317cc6fc9a27cb12adb8d52ed4b54108bfb6ce19ee",
+      "bytes": 13030674,
       "dereferenced_symlinks": 0,
-      "executable_sha256": "142aceeda9ac23bd9865afd05605dc5eeb0901219aba57ad1d17e528c29148a8",
+      "executable_sha256": "9258037b8318c26130c51875e26d33f1d27f6d1f471bb957d7dbd4d1956c45ab",
       "extracted_recipient": {
         "commands_passed": [
           "version",
@@ -471,34 +473,34 @@
         ],
         "fresh_external_state": true,
         "installation_unchanged": true,
-        "private_receipt_sha256": "6580650c4a3329a3b171529c1cea5794841be91fddbbc9f97e6d9426debad5b1",
+        "private_receipt_sha256": "071d657bf45576ab1dcc09ceac09231dae4ecf37ca7dbe51da4a439bc9636f92",
         "retained_identity": true,
         "status": "passed",
-        "version": "0.1.0"
+        "version": "0.1.1"
       },
-      "file": "schism-stack-0.1.0-windows-amd64.zip",
+      "file": "schism-stack-0.1.1-windows-amd64.zip",
       "files": 62,
-      "native_payload_sha256": "07b1e7ed38d60fcc298a694b19df12aa96eb691cf19e053efc6f228b5995e813",
+      "native_payload_sha256": "8404ccb54b24704dcd56d96d8f0da0233940fac35d1d982417130fa12532e33e",
       "platform": {
         "architecture": "amd64",
         "id": "windows-amd64",
         "os": "Windows"
       },
-      "public_qualification_sha256": "5bf275cfd4a33f076d33f72b20a363c82f6c6e5542a95f8a623c790e022c08f0",
+      "public_qualification_sha256": "240b256b2397fc2ece0b92523fe097f31794426f5e8dcb11fed559601b499200",
       "schema": "schism-stack/native-package-receipt@1",
-      "sha256": "d5e63d05237d1cfe4d4f2b2819414da38c85cd61accf7f5bf243e7c4b84b884e",
-      "source_archive_sha256": "6e07d2109bbbe669733c72d6984cd2143fd6c4b7029bfce7c37c59f7bedef11c",
-      "source_manifest_sha256": "ce76417189247378bf712ffcd812d49de0ee82158beb1e85d23660f58d91ede3",
+      "sha256": "4e76ae760493457a99d95d0580c7f5f8893e9aae3e968518d179a77e4c584873",
+      "source_archive_sha256": "8233fc7a65ae724a4f34c30a3c3b220d5a86f35d46c70253eb79607d94ce60d6",
+      "source_manifest_sha256": "ead0299da27bd7665faab1c59bc37b2dd9129a8ece6ce14fd1ba8faf3a257ef4",
       "status": "passed"
     }
   },
   "native_build_input": {
-    "bytes": 119302,
-    "file": "schism-stack-0.1.0-source.zip",
-    "files": 40,
-    "public_file": "../downloads/schism-stack-0.1.0-build-source.zip",
-    "sha256": "6e07d2109bbbe669733c72d6984cd2143fd6c4b7029bfce7c37c59f7bedef11c",
-    "source_manifest_sha256": "ce76417189247378bf712ffcd812d49de0ee82158beb1e85d23660f58d91ede3"
+    "bytes": 121565,
+    "file": "schism-stack-0.1.1-source.zip",
+    "files": 41,
+    "public_file": "../downloads/schism-stack-0.1.1-build-source.zip",
+    "sha256": "8233fc7a65ae724a4f34c30a3c3b220d5a86f35d46c70253eb79607d94ce60d6",
+    "source_manifest_sha256": "ead0299da27bd7665faab1c59bc37b2dd9129a8ece6ce14fd1ba8faf3a257ef4"
   },
   "native_qualification": {
     "linux": {
@@ -512,16 +514,16 @@
         "setuptools": "84.2.1",
         "wheel": "0.48.0"
       },
-      "executable_sha256": "6fc5fcac0e1509bcd790376e64b42072771208690db6c629de3bf484ff713057",
+      "executable_sha256": "19bb3f18a59d28b1047a537e80430ab97f3d1f46457dd0399fcbf2a099897f72",
       "fresh_offline_installer": {
         "custom_state_path_with_spaces": true,
         "launcher_and_dependency_lock_unchanged": true,
         "new_venv": true,
         "passed": true,
-        "receipt_sha256": "d193173e3abb0fa1b9dc081824c12914fd0920249a4f1ff319b695ad7ef70661",
-        "tested_source_archive_sha256": "f8648be2bbd4cf5b3a8d60d54af2d3802e94297f6d7ee0522a9f78283517d22b"
+        "receipt_sha256": "b87a9a239d21fb215bfa3bcc3534313d45a84225b52ef0f45958048a0aa106c8",
+        "tested_source_archive_sha256": "8233fc7a65ae724a4f34c30a3c3b220d5a86f35d46c70253eb79607d94ce60d6"
       },
-      "native_build_receipt_sha256": "29d2fea4af4c8e525d9c5a8ff8b42380cb4f9e731f6a331aae35026db85f9aa3",
+      "native_build_receipt_sha256": "a40f347efd89572988f05d7812a7cc6598a68d6bbb56b9daa13c3658dc5b5011",
       "native_journey": {
         "caller_scope": "Separate native CLI callers and separate phase processes; outer host job retains its existing containment",
         "cases": [
@@ -638,16 +640,16 @@
           {
             "name": "signed_evidence_verifies_without_private_key_or_configuration",
             "observed": {
-              "evidence_sha256": "56886c0c1864789cde44e37ad8beeef1d9b245f6d17587f11f6e7011467c9cc6"
+              "evidence_sha256": "54aff09a3a8c588bd722a4b140e3dec39a4db1a65e3a2124b6f9b44e6ff1a02e"
             },
             "passed": true
           }
         ],
-        "ended_at": "2026-11-27T20:46:18.049111+00:00",
+        "ended_at": "2026-11-27T21:20:38.191852+00:00",
         "passed": 15,
-        "receipt_sha256": "3d721873a29730bc38e6423262ea4c2d86d73c3c9e103833409da347a3c037ed",
+        "receipt_sha256": "0aceec349e0bf3ac6d0eecf93fc05ad614b73eccec9370f4e66836f2042c9bc8",
         "skipped": 0,
-        "started_at": "2026-11-27T20:45:35.670223+00:00",
+        "started_at": "2026-11-27T21:19:48.980724+00:00",
         "tests": 15
       },
       "python_runtime": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
@@ -658,19 +660,19 @@
         "Trusted application execution uses the operator's OS authority; this is not a hostile-code sandbox."
       ],
       "qualified_platform": "Linux-7.0.0-44-generic-x86_64-with-glibc2.43",
-      "runtime_sha256": "a371a3d0a6366237c1376d4109cdc0a3d756b4dab3134323fd6ebab5f9149d71",
+      "runtime_sha256": "72378e3abac7bf2532fb4f065a8967c87b00dbf9fcb7de07aec9324119fe515a",
       "schema": "schism.native-qualification/v1",
-      "source_archive_sha256": "6e07d2109bbbe669733c72d6984cd2143fd6c4b7029bfce7c37c59f7bedef11c",
-      "source_manifest_sha256": "ce76417189247378bf712ffcd812d49de0ee82158beb1e85d23660f58d91ede3",
+      "source_archive_sha256": "8233fc7a65ae724a4f34c30a3c3b220d5a86f35d46c70253eb79607d94ce60d6",
+      "source_manifest_sha256": "ead0299da27bd7665faab1c59bc37b2dd9129a8ece6ce14fd1ba8faf3a257ef4",
       "source_suite": {
         "legacy_windows_locale": false,
-        "passed": 35,
-        "receipt_sha256": "b583b19b55ce7268ce2dfb36c112b3fba7e2c826d0839d3f383cd9e57d72e566",
+        "passed": 38,
+        "receipt_sha256": "a4e19fa8f0dc329a1913af136b1a9c4821ee69f257b82f06f5414cb98d89d17d",
         "skipped": 0,
-        "tests": 35
+        "tests": 38
       },
       "status": "passed",
-      "version": "0.1.0"
+      "version": "0.1.1"
     },
     "windows": {
       "build_versions": {
@@ -683,16 +685,16 @@
         "setuptools": "84.2.1",
         "wheel": "0.48.0"
       },
-      "executable_sha256": "142aceeda9ac23bd9865afd05605dc5eeb0901219aba57ad1d17e528c29148a8",
+      "executable_sha256": "9258037b8318c26130c51875e26d33f1d27f6d1f471bb957d7dbd4d1956c45ab",
       "fresh_offline_installer": {
         "custom_state_path_with_spaces": true,
         "launcher_and_dependency_lock_unchanged": true,
         "new_venv": true,
         "passed": true,
-        "receipt_sha256": "b6ca9b36a54a81e2cfcf81fe67304685cc941b0b03b8c64439ba07f34635436f",
-        "tested_source_archive_sha256": "f8648be2bbd4cf5b3a8d60d54af2d3802e94297f6d7ee0522a9f78283517d22b"
+        "receipt_sha256": "ea527c03f6281f93bed5a795c8d8f3603bf02652f985e271cbea35887fd4f1f9",
+        "tested_source_archive_sha256": "8233fc7a65ae724a4f34c30a3c3b220d5a86f35d46c70253eb79607d94ce60d6"
       },
-      "native_build_receipt_sha256": "c7e576ce520e81844b8e8d690ffecc244323cd433e1b02be4ec0156b0d3ac1c2",
+      "native_build_receipt_sha256": "5c2f97edfe0613c09c3828aaad81b35743f1717da3644d65efd705fbae1235fb",
       "native_journey": {
         "caller_scope": "Separate native CLI callers and separate phase processes; outer host job retains its existing containment",
         "cases": [
@@ -809,16 +811,16 @@
           {
             "name": "signed_evidence_verifies_without_private_key_or_configuration",
             "observed": {
-              "evidence_sha256": "4a4a7bbdbaa5335529273ae2118fa36189621bec90583fb87c53abbe7a32938d"
+              "evidence_sha256": "c49df27f7cd502180321f78ee5bb1242fffe5884623f3bb332f0fa9de5f70c5a"
             },
             "passed": true
           }
         ],
-        "ended_at": "2026-11-27T20:46:24.153730+00:00",
+        "ended_at": "2026-11-27T21:21:13.317771+00:00",
         "passed": 15,
-        "receipt_sha256": "179e642f18a08ed23228ae45f55aca64f1c491ec53825c5073ec7d5244a61a3f",
+        "receipt_sha256": "0ad37e75bfe45009dd86f0406542f9bb9f8031e038a0ee337a312e193482a6b2",
         "skipped": 0,
-        "started_at": "2026-11-27T20:45:46.889018+00:00",
+        "started_at": "2026-11-27T21:20:35.454880+00:00",
         "tests": 15
       },
       "python_runtime": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
@@ -829,34 +831,62 @@
         "Trusted application execution uses the operator's OS authority; this is not a hostile-code sandbox."
       ],
       "qualified_platform": "Windows-11-10.0.26200-SP0",
-      "runtime_sha256": "a371a3d0a6366237c1376d4109cdc0a3d756b4dab3134323fd6ebab5f9149d71",
+      "runtime_sha256": "72378e3abac7bf2532fb4f065a8967c87b00dbf9fcb7de07aec9324119fe515a",
       "schema": "schism.native-qualification/v1",
-      "source_archive_sha256": "6e07d2109bbbe669733c72d6984cd2143fd6c4b7029bfce7c37c59f7bedef11c",
-      "source_manifest_sha256": "ce76417189247378bf712ffcd812d49de0ee82158beb1e85d23660f58d91ede3",
+      "source_archive_sha256": "8233fc7a65ae724a4f34c30a3c3b220d5a86f35d46c70253eb79607d94ce60d6",
+      "source_manifest_sha256": "ead0299da27bd7665faab1c59bc37b2dd9129a8ece6ce14fd1ba8faf3a257ef4",
       "source_suite": {
         "legacy_windows_locale": true,
-        "passed": 35,
-        "receipt_sha256": "a8997cda401876ef883b929984ba8cc0067a02555664d7e0e6cfcf6a2f9f1fe8",
+        "passed": 38,
+        "receipt_sha256": "b3fb5f14db6acae3f2d2318e7e9da0686c52420248ad418d7319302ea0be54c8",
         "skipped": 0,
-        "tests": 35
+        "tests": 38
       },
       "status": "passed",
-      "version": "0.1.0"
+      "version": "0.1.1"
     }
   },
+  "patch_record": {
+    "changes": [
+      "Close database connections on initialization failures.",
+      "Preserve the initiating transaction exception when rollback fails; never replay the caller.",
+      "Allow a known application observer one second to retain exit and close its database before forced termination; preserve the bounded fallback.",
+      "Retain SQLite version and extended error attributes in exception notes."
+    ],
+    "database_retries_added": false,
+    "prior_hosted_failure": {
+      "causal_boundary": "The setup-handle leak was established directly from the control flow and regression test. The initiating I/O error subtype was absent from the original trace; its cause remains unconfirmed.",
+      "commit": "18d3335b4d4eaab5005c37030b2db907d1be8802",
+      "errors": 2,
+      "extended_sqlite_error_code": null,
+      "observed_failure": "SQLite disk I/O error during normal cancellation; subsequent cleanup encountered an open database handle.",
+      "os": "Windows Server2025",
+      "python": "3.13.17",
+      "raw_job_log_sha256": "66bf57f20421c458a5c55107fec5dccce833ba9528dc2f9d988f0e4ca14b4f9a",
+      "tests": 35,
+      "unmodified_native_repetition": {
+        "attempts": 5,
+        "passed": 5,
+        "receipt_sha256": "ec6cc2e33182e73ce52c3408f3061f4496ff50d78189d71a0e4179adb87c1eb1",
+        "reproduced": false,
+        "sqlite_version": "3.50.4"
+      },
+      "version": "0.1.0",
+      "workflow_run_url": "https://github.com/BigBirdReturns/axm-tools/actions/runs/46067747613"
+    },
+    "prior_release": "0.1.0",
+    "state_format": "schism.state/v1"
+  },
   "prior_qualification_continuity": {
-    "candidate_e_source_sha256": "f8648be2bbd4cf5b3a8d60d54af2d3802e94297f6d7ee0522a9f78283517d22b",
-    "candidate_h_source_sha256": "6e07d2109bbbe669733c72d6984cd2143fd6c4b7029bfce7c37c59f7bedef11c",
     "schema": "schism.candidate-continuity/v1",
+    "tested_console_source_sha256": "f8648be2bbd4cf5b3a8d60d54af2d3802e94297f6d7ee0522a9f78283517d22b",
     "unchanged": {
-      "launch-schism.cmd": true,
-      "launch-schism.sh": true,
       "requirements.lock": true,
       "schism_stack/web/app.js": true,
       "schism_stack/web/index.html": true,
-      "schism_stack/web/style.css": true,
-      "scripts/launch.py": true
-    }
+      "schism_stack/web/style.css": true
+    },
+    "version": "0.1.1"
   },
   "public_site_qualification": {
     "case_count": 12,
@@ -1119,6 +1149,294 @@
     },
     "version": "0.1.0"
   },
+  "public_site_release_reference_update": {
+    "assessment_scope": "Literal version replacement and static relative-link verification",
+    "changes": {
+      "all_other_bytes_unchanged": true,
+      "changed_byte_count": 6,
+      "changed_byte_offsets_zero_based": [
+        1480,
+        5966,
+        6536,
+        6945,
+        7384,
+        9589
+      ],
+      "changed_files": [
+        "index.html"
+      ],
+      "css_unchanged": true,
+      "download_href_replacements": [
+        {
+          "after": "downloads/schism-stack-0.1.1-source.zip",
+          "before": "downloads/schism-stack-0.1.0-source.zip"
+        },
+        {
+          "after": "downloads/schism-stack-0.1.1-windows-amd64.zip",
+          "before": "downloads/schism-stack-0.1.0-windows-amd64.zip"
+        },
+        {
+          "after": "downloads/schism-stack-0.1.1-linux-x86_64-glibc243.zip",
+          "before": "downloads/schism-stack-0.1.0-linux-x86_64-glibc243.zip"
+        }
+      ],
+      "file_lengths_unchanged": true,
+      "guide_unchanged": true,
+      "literal_after": "0.1.1",
+      "literal_before": "0.1.0",
+      "occurrences_replaced": 6,
+      "unchanged_files": [
+        "style.css",
+        "guide.html"
+      ],
+      "visible_label_replacements": [
+        {
+          "after": "Version 0.1.1",
+          "before": "Version 0.1.0",
+          "location": "release-line"
+        },
+        {
+          "after": "GET SCHISM / 0.1.1",
+          "before": "GET SCHISM / 0.1.0",
+          "location": "download-section eyebrow"
+        },
+        {
+          "after": "Operator-owned application infrastructure · Version 0.1.1",
+          "before": "Operator-owned application infrastructure · Version 0.1.0",
+          "location": "footer"
+        }
+      ],
+      "wheel_kit_names_unchanged": true
+    },
+    "current_site_files": {
+      "guide.html": {
+        "bytes": 7269,
+        "sha256": "dba2e84cfe96d718a8aeaf9545ef70da4acdfa14affeb6279a068ea9d1786cca"
+      },
+      "index.html": {
+        "bytes": 9721,
+        "sha256": "e7f435e773a6fa08a1a0b70e812ec31bfe22ac6423f038276c9c7d0ddfaf34d5"
+      },
+      "style.css": {
+        "bytes": 9002,
+        "sha256": "991a1bbcf982b5c3e31d7a7124a62d4e1594705379097556dfff952db1307e5d"
+      }
+    },
+    "current_site_sha256": {
+      "guide.html": "dba2e84cfe96d718a8aeaf9545ef70da4acdfa14affeb6279a068ea9d1786cca",
+      "index.html": "e7f435e773a6fa08a1a0b70e812ec31bfe22ac6423f038276c9c7d0ddfaf34d5",
+      "style.css": "991a1bbcf982b5c3e31d7a7124a62d4e1594705379097556dfff952db1307e5d"
+    },
+    "kind": "public-frontdoor-version-update",
+    "new_browser_case_count": 0,
+    "new_browser_run_performed": false,
+    "original_visual_qualification": {
+      "case_count": 12,
+      "cases": [
+        {
+          "body": 1440,
+          "client": 1440,
+          "diagnostic": [],
+          "document": 1440,
+          "name": "Home horizontal bounds 1440",
+          "passed": true,
+          "viewport": 1440
+        },
+        {
+          "name": "index.html relative links and anchors",
+          "passed": true
+        },
+        {
+          "name": "Get SCHISM pointer control reaches download section",
+          "passed": true
+        },
+        {
+          "name": "Operator guide pointer navigation",
+          "passed": true
+        },
+        {
+          "body": 1440,
+          "client": 1440,
+          "diagnostic": [],
+          "document": 1440,
+          "name": "Guide horizontal bounds 1440",
+          "passed": true,
+          "viewport": 1440
+        },
+        {
+          "name": "guide.html relative links and anchors",
+          "passed": true
+        },
+        {
+          "name": "Guide return pointer navigation",
+          "passed": true
+        },
+        {
+          "body": 375,
+          "client": 375,
+          "diagnostic": [],
+          "document": 375,
+          "name": "Home horizontal bounds 375",
+          "passed": true,
+          "viewport": 375
+        },
+        {
+          "body": 375,
+          "client": 375,
+          "diagnostic": [],
+          "document": 375,
+          "name": "Guide horizontal bounds 375",
+          "passed": true,
+          "viewport": 375
+        },
+        {
+          "body": 320,
+          "client": 320,
+          "diagnostic": [],
+          "document": 320,
+          "name": "Home horizontal bounds 320",
+          "passed": true,
+          "viewport": 320
+        },
+        {
+          "body": 320,
+          "client": 320,
+          "diagnostic": [],
+          "document": 320,
+          "name": "Guide horizontal bounds 320",
+          "passed": true,
+          "viewport": 320
+        },
+        {
+          "name": "No runtime JavaScript exceptions",
+          "passed": true
+        }
+      ],
+      "failed": 0,
+      "original_overall_status": "PASS",
+      "passed": 12,
+      "platform": {
+        "architecture": "x86_64",
+        "browser": {
+          "jsVersion": "15.5.35.25",
+          "product": "Chrome/155.0.8059.84",
+          "protocolVersion": "1.3",
+          "revision": "@5869fe313571d75152b77813cf0a4ee26a4e6df0",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36"
+        },
+        "orchestration": "Static preview server, Chrome and Node driver in three separately bounded ordinary jobs",
+        "os": "Linux",
+        "viewport_mode": "Desktop 1440px plus emulated 375px and 320px CSS viewports"
+      },
+      "public_projection": {
+        "bytes": 7410,
+        "name": "frontdoor.json",
+        "sha256": "5d7d8221887423aa999ee481680b289d9dbcec0417d52c82f6ac2c6cab6c246e"
+      },
+      "recorded_at": "2026-11-27T20:37:09.038Z",
+      "release_version": "0.1.0",
+      "result_scope": "The original 12 checks and screenshots qualify the recorded 0.1.0 bytes. They remain historical observations and are not relabeled as a new 0.1.1 browser run.",
+      "retained_screenshot_digests": [
+        {
+          "bytes": 132935,
+          "name": "home-desktop.png",
+          "sha256": "75ddfe6e6181785d953d7c1435701e294d4808c260416a32fa8eb5b49256d793"
+        },
+        {
+          "bytes": 83869,
+          "name": "downloads-desktop.png",
+          "sha256": "6f7dabc56b1bce0ff7a45ace66846692953df59393239a5ad5ce359787b39650"
+        },
+        {
+          "bytes": 112618,
+          "name": "guide-desktop.png",
+          "sha256": "ca9f741ad411fd6b204d34100af07a499727670b5729e7cb34f9d532a8293aa4"
+        },
+        {
+          "bytes": 67014,
+          "name": "home-mobile375.png",
+          "sha256": "bababb3c3707cca5c1793b05428a84c68991012529e5a9caac067bfdc11e3ce1"
+        },
+        {
+          "bytes": 86063,
+          "name": "guide-mobile375.png",
+          "sha256": "6cf7a808aead9bf918ee94252a5c6a0b675dabd1dedab74ce2fe7f6767777135"
+        },
+        {
+          "bytes": 63301,
+          "name": "home-mobile320.png",
+          "sha256": "21756c4daaf82d47eea3f61ed68b1af7182a5202a3b1bd04b9d189e0aa4f827b"
+        },
+        {
+          "bytes": 82865,
+          "name": "downloads-mobile320.png",
+          "sha256": "bf2f6e90500f82bf3c1d8d767b247a1fcd53801efde318f08f9c291ee32b257a"
+        },
+        {
+          "bytes": 77366,
+          "name": "guide-mobile320.png",
+          "sha256": "bdea0dccfc96c2ba7ea2cba9a2fdaf4ccd65b55dd99ff14abafc8ec1f596beba"
+        },
+        {
+          "bytes": 71313,
+          "name": "guide-nodes-mobile320.png",
+          "sha256": "999996e77162475e5c98c4598e203c309ec35b67ee8299d73fad0fabca61b309"
+        }
+      ],
+      "source_receipt": {
+        "bytes": 9485,
+        "schema": "schism-public-frontdoor-visual-qa/v1",
+        "sha256": "fb1fdea1214ce1efc6285260169672f89e8c9726ad0d5fdad143ce8426b92963"
+      },
+      "status": "PASS",
+      "tested_site_sha256": {
+        "guide.html": "dba2e84cfe96d718a8aeaf9545ef70da4acdfa14affeb6279a068ea9d1786cca",
+        "index.html": "d46eb51407887b7450c757d4953ec78cb44a9516d64ffdef15a1046797dc1815",
+        "style.css": "991a1bbcf982b5c3e31d7a7124a62d4e1594705379097556dfff952db1307e5d"
+      }
+    },
+    "projection_policy": {
+      "bootstrap_credentials_included": false,
+      "machine_account_and_absolute_path_details_included": false,
+      "original_visual_projection_modified": false,
+      "runtime_source_modified": false
+    },
+    "recorded_at": "2026-11-27T21:17:18.611Z",
+    "release_version": "0.1.1",
+    "schema": "schism.frontdoor-artifact-identity-update/v1",
+    "static_link_verification": {
+      "availability_scope": "This record verifies intended relative target names; release staging and live byte readback are separate checks.",
+      "destination_bytes_or_live_availability_checked": false,
+      "in_page_anchor_targets_preserved": true,
+      "method": "HTML parsing, exact relative-name comparison, and ordered before/after href comparison",
+      "only_three_download_hrefs_changed": true,
+      "other_hrefs_unchanged": true,
+      "planned_release_targets": [
+        "downloads/schism-stack-0.1.1-source.zip",
+        "downloads/schism-stack-0.1.1-windows-amd64.zip",
+        "downloads/schism-stack-0.1.1-linux-x86_64-glibc243.zip",
+        "downloads/SCHISM-Stack-runtime-wheels-windows-amd64-cp313.zip",
+        "downloads/SCHISM-Stack-runtime-wheels-linux-x86_64-cp314.zip",
+        "downloads/SHA256SUMS",
+        "stack/LICENSE",
+        "stack/QUALIFICATION.md",
+        "stack/QUALIFICATION.json",
+        "v2/",
+        "stack/PROVENANCE.md"
+      ],
+      "status": "PASS",
+      "unchanged_wheel_kit_targets": [
+        "downloads/SCHISM-Stack-runtime-wheels-windows-amd64-cp313.zip",
+        "downloads/SCHISM-Stack-runtime-wheels-linux-x86_64-cp314.zip"
+      ],
+      "versioned_download_targets": [
+        "downloads/schism-stack-0.1.1-source.zip",
+        "downloads/schism-stack-0.1.1-windows-amd64.zip",
+        "downloads/schism-stack-0.1.1-linux-x86_64-glibc243.zip"
+      ]
+    },
+    "status": "LITERAL_UPDATE_VERIFIED"
+  },
   "qualification_limits": [
     "The console's 20 functional observations passed; the original overall harness status remains FAIL because the Chrome job reached its 128-task cap 11 times. The SCHISM server and driver had zero task-cap events. This resource exception remains recorded.",
     "Native artifacts are qualified on Windows 11 AMD64 and Linux x86_64/glibc 2.43. Other operating systems, architectures and older Linux C libraries require their own validation.",
@@ -1136,7 +1454,7 @@
       {
         "bytes": 88,
         "path": "schism_stack/__init__.py",
-        "sha256": "0c84c058edff6682c79fce0d06c9aed1d60ceef2cdce3ebbd57db4418d9547cc"
+        "sha256": "c6fecb14ef7e537555d1e4149c9f8e19f744ebc4629a29ea5f7b0e0bf86d8bf0"
       },
       {
         "bytes": 48,
@@ -1159,9 +1477,9 @@
         "sha256": "6d76256869f49037a719fd42578b984d8d26da50c9f26bb59fd1e0e8bd3f567e"
       },
       {
-        "bytes": 31841,
+        "bytes": 32534,
         "path": "schism_stack/engine.py",
-        "sha256": "987acf39cfee032c9672febba7ad9faba29284398edfe14af5dbb061b904ff19"
+        "sha256": "1cd9f0e4ab50423166245957bbe10d2ca947e416fcb6e94fbe851ed0566f7356"
       },
       {
         "bytes": 14755,
@@ -1184,9 +1502,9 @@
         "sha256": "40fd77c489c89efb319b308c5f3d040e1c91c5f970f624de8b57cd24df8d7b44"
       },
       {
-        "bytes": 6598,
+        "bytes": 7178,
         "path": "schism_stack/store.py",
-        "sha256": "636b03658cbe37d4c98e41472a52cfc5efbe9467bc4ab2f37cf6861f11a5f1e4"
+        "sha256": "bb1e2151d92378680fe787b47ce96bf4737a451019483b85a863676b1727223f"
       },
       {
         "bytes": 6678,
@@ -1214,9 +1532,9 @@
         "sha256": "4098140f05db542fb30cee5abf4dd77697c443652d456024460327e251368b77"
       }
     ],
-    "runtime_sha256": "a371a3d0a6366237c1376d4109cdc0a3d756b4dab3134323fd6ebab5f9149d71",
+    "runtime_sha256": "72378e3abac7bf2532fb4f065a8967c87b00dbf9fcb7de07aec9324119fe515a",
     "schema": "schism.runtime-binding/v1",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "schema": "schism.release-qualification/v1",
   "ssh_qualification": {
@@ -1282,25 +1600,25 @@
       }
     ],
     "controller": "Windows11 AMD64 standalone executable",
-    "controller_executable_sha256": "142aceeda9ac23bd9865afd05605dc5eeb0901219aba57ad1d17e528c29148a8",
-    "ended_at": "2026-11-27T20:46:02.359882+00:00",
+    "controller_executable_sha256": "9258037b8318c26130c51875e26d33f1d27f6d1f471bb957d7dbd4d1956c45ab",
+    "ended_at": "2026-11-27T21:20:49.756122+00:00",
     "limits": [
       "The qualified remote recipient uses a POSIX SSH shell.",
       "Qualification used existing SSH authority; no credentials or access policies were created or changed."
     ],
-    "native_receipt_sha256": "d97a306c47e6142aa5dc9003c115779fad2d3ff7afad2063c2d2907bb666d16f",
+    "native_receipt_sha256": "6bdd3003c8598e4318e0d0e1a12e7beb6f23fd5ffd6ad5bcfa44ec723151ffef",
     "passed": 9,
     "recipient": "Linux x86_64 CPython3.14.4 source runtime with separate state and identity",
-    "runtime_sha256": "a371a3d0a6366237c1376d4109cdc0a3d756b4dab3134323fd6ebab5f9149d71",
+    "runtime_sha256": "72378e3abac7bf2532fb4f065a8967c87b00dbf9fcb7de07aec9324119fe515a",
     "schema": "schism.ssh-qualification/v1",
     "skipped": 0,
-    "source_archive_sha256": "6e07d2109bbbe669733c72d6984cd2143fd6c4b7029bfce7c37c59f7bedef11c",
-    "source_manifest_sha256": "ce76417189247378bf712ffcd812d49de0ee82158beb1e85d23660f58d91ede3",
-    "started_at": "2026-11-27T20:45:48.101260+00:00",
+    "source_archive_sha256": "8233fc7a65ae724a4f34c30a3c3b220d5a86f35d46c70253eb79607d94ce60d6",
+    "source_manifest_sha256": "ead0299da27bd7665faab1c59bc37b2dd9129a8ece6ce14fd1ba8faf3a257ef4",
+    "started_at": "2026-11-27T21:20:34.096278+00:00",
     "status": "passed",
     "tests": 9,
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "status": "qualified_with_recorded_limitations",
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

@@ -1,9 +1,9 @@
 {
   "files": [
     {
-      "bytes": 8581,
+      "bytes": 8941,
       "path": "CONTRACT.md",
-      "sha256": "1334e7fd740da1ffc707865508a0927ca3ed16211dd578adcc3834f5888150aa"
+      "sha256": "a124af73325683392c9767751f6dde438c5f03ad0ffec9efa69238aeecc88fe0"
     },
     {
       "bytes": 11358,
@@ -16,24 +16,24 @@
       "sha256": "e913c1c9fb3d040dfda485114b37644e23eb8de79e1e10d5660e98b4acbe6155"
     },
     {
-      "bytes": 3305,
+      "bytes": 3299,
       "path": "PROVENANCE.md",
-      "sha256": "2357eb99a93b124bcaee9ac4ae7ff93aefde16774fe131b43355c0f4cebeeba1"
+      "sha256": "5d1c720286fc41b89d05d765e018d3f6572c597cc8f84c1a202c78c975c0450e"
     },
     {
-      "bytes": 44894,
+      "bytes": 56386,
       "path": "QUALIFICATION.json",
-      "sha256": "8143a61ca3c3b1fbc618fb377acf8b38cfee1b801961d2f54ab26585e9df09a9"
+      "sha256": "878fa7c168317c73953f6f1f4b2769c14e957deed137852d0a3f7b0584c22570"
     },
     {
-      "bytes": 10051,
+      "bytes": 11708,
       "path": "QUALIFICATION.md",
-      "sha256": "1bdf89bed6fbda241eaf48e2fb568de43bb78e2491b3d7a8c0a5ec5969133b02"
+      "sha256": "2fb4f3e41b02fcf5278a8ed6075aad839e723de620225981f35b03ea3eaefa86"
     },
     {
       "bytes": 17597,
       "path": "README.md",
-      "sha256": "ebe50664cbbdebe61c129fb0948b61cf8aa4a72b61c0bc518a2fceaf0d70362d"
+      "sha256": "85ca0aaa165c1075f416163caddd8b6dd2f610c4b1de1f9bf1e0cb3ecf42af4a"
     },
     {
       "bytes": 402,
@@ -78,7 +78,7 @@
     {
       "bytes": 561,
       "path": "pyproject.toml",
-      "sha256": "4460621347155c946439c464907d1bd83d8e53fc192020161dd2e4e79227f80a"
+      "sha256": "454cccb8ab45ab3f260e6a6116f1c6d8e8af9101f0fb730ff2bba26288bfc4c5"
     },
     {
       "bytes": 14478,
@@ -98,7 +98,7 @@
     {
       "bytes": 88,
       "path": "schism_stack/__init__.py",
-      "sha256": "0c84c058edff6682c79fce0d06c9aed1d60ceef2cdce3ebbd57db4418d9547cc"
+      "sha256": "c6fecb14ef7e537555d1e4149c9f8e19f744ebc4629a29ea5f7b0e0bf86d8bf0"
     },
     {
       "bytes": 48,
@@ -121,9 +121,9 @@
       "sha256": "6d76256869f49037a719fd42578b984d8d26da50c9f26bb59fd1e0e8bd3f567e"
     },
     {
-      "bytes": 31841,
+      "bytes": 32534,
       "path": "schism_stack/engine.py",
-      "sha256": "987acf39cfee032c9672febba7ad9faba29284398edfe14af5dbb061b904ff19"
+      "sha256": "1cd9f0e4ab50423166245957bbe10d2ca947e416fcb6e94fbe851ed0566f7356"
     },
     {
       "bytes": 14755,
@@ -146,9 +146,9 @@
       "sha256": "40fd77c489c89efb319b308c5f3d040e1c91c5f970f624de8b57cd24df8d7b44"
     },
     {
-      "bytes": 6598,
+      "bytes": 7178,
       "path": "schism_stack/store.py",
-      "sha256": "636b03658cbe37d4c98e41472a52cfc5efbe9467bc4ab2f37cf6861f11a5f1e4"
+      "sha256": "bb1e2151d92378680fe787b47ce96bf4737a451019483b85a863676b1727223f"
     },
     {
       "bytes": 6678,
@@ -178,12 +178,12 @@
     {
       "bytes": 2812,
       "path": "scripts/build_release.py",
-      "sha256": "4e6a318a80ddfb4c8d6be998366a92a1626a8f4db71d2341c9e0d51e7b2d2586"
+      "sha256": "44270944e486ae12c54a9e13344107726a4b9528cc40340988c7fc26873a91a6"
     },
     {
       "bytes": 3189,
       "path": "scripts/launch.py",
-      "sha256": "d042065041689dabf9c76ce6c717eb20416b6df2dbf64f55d4495ecfeb552eed"
+      "sha256": "5f5a30c26bfee1a74388d8294ac2bba4358440348ceed40e492c9fdc9e25ed60"
     },
     {
       "bytes": 1776,
@@ -196,14 +196,19 @@
       "sha256": "5196b6b40356aa09cb55e773d7cbac9c96840cc5974892031e753d98bad67b0f"
     },
     {
-      "bytes": 13425,
+      "bytes": 14062,
       "path": "tests/test_lifecycle.py",
-      "sha256": "f1907bbb808a851b2e80dc49c3f0b2f85d0a1a1f971d3e1ed5f9f3945e19b422"
+      "sha256": "aedd875b140fd5c9cb0bd26d926fce0da0ca5dd6756fa784fa48370c8da92133"
     },
     {
       "bytes": 14658,
       "path": "tests/test_review.py",
       "sha256": "570d052c38a1b2449b7f590a138841dc865d128bd41872b7310c96708788616b"
+    },
+    {
+      "bytes": 4383,
+      "path": "tests/test_shutdown.py",
+      "sha256": "5d29c1208a56fac612b15fb061df7d500f7ef3e5226be9bc4943585d1bd8a018"
     },
     {
       "bytes": 4786,
@@ -212,5 +217,5 @@
     }
   ],
   "schema": "schism.source-release/v1",
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

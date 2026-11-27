@@ -10,7 +10,7 @@ import stat
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 ROOT_FILES = {"README.md", "LICENSE", "PROVENANCE.md", "CONTRACT.md", "QUALIFICATION.md", "QUALIFICATION.json", "pyproject.toml", "requirements.txt", "requirements.lock", "schism.py", "launch-schism.cmd", "launch-schism.sh", "NOTICE"}
 DIRECTORIES = {"schism_stack", "tests", "examples", "scripts"}
 

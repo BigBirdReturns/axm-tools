@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "axm-schism"
-version = "0.1.0"
+version = "0.1.1"
 description = "Operator-owned general application deployment, execution and recovery"
 requires-python = ">=3.11"
 readme = "README.md"

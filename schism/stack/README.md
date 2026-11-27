@@ -2,7 +2,7 @@
 
 **Run applications under your own authority, retain the work, and change suppliers without rebuilding your operating history.** SCHISM is a general application deployment and recovery stack with a local console, command line, independently owned recipients and optional SSH transport. Its application format accepts declared native commands, so a publisher can package a data processor, web service, local model server, scientific tool or another operator-approved program through the same lifecycle.
 
-Release **0.1.0** includes signed application packages, scoped publisher authorization, detached jobs, persistent application state, health-checked activation, retained prior versions, code rollback, explicit recovery, signed evidence export and application backup/restore. It runs on the recipient's machine using that recipient's OS permissions. Apache-2.0 permits use, modification and redistribution under its terms.
+Release **0.1.1** includes signed application packages, scoped publisher authorization, detached jobs, persistent application state, health-checked activation, retained prior versions, code rollback, explicit recovery, signed evidence export and application backup/restore. It runs on the recipient's machine using that recipient's OS permissions. Apache-2.0 permits use, modification and redistribution under its terms.
 
 ## Start the console
 

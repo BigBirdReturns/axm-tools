@@ -1,6 +1,6 @@
 # Source and authority boundaries
 
-SCHISM Stack 0.1.0 introduces a general application lifecycle controller under the AXM SCHISM project. The implementation is new integration source. It uses Python's standard library with cryptography for Ed25519 and psutil for process identity and controlled termination. Public reference architectures informed its custody and recovery conventions; their domain-specific products retain their own names, contracts and owners.
+SCHISM Stack introduces a general application lifecycle controller under the AXM SCHISM project. The implementation is new integration source. It uses Python's standard library with cryptography for Ed25519 and psutil for process identity and controlled termination. Public reference architectures informed its custody and recovery conventions; their domain-specific products retain their own names, contracts and owners.
 
 | Source | Relationship |
 |---|---|

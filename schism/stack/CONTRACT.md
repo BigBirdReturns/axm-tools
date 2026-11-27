@@ -1,4 +1,4 @@
-# SCHISM Stack 0.1.0 application and runtime contract
+# SCHISM Stack 0.1.1 application and runtime contract
 
 SCHISM is an operator-owned general application lifecycle stack. The release installs under its recipient’s account, admits signed closed packages, executes declared task/service applications, retains process output and operation state, checks updates, restores retained releases and exports verifiable history. Local OS authority and explicitly configured pinned SSH define execution authority.
 
@@ -47,6 +47,8 @@ POST `/api/action` JSON `{operation,request_id?,...}` submits and returns `{job_
 POST `/api/import` raw application/octet-stream `.schism` upload, token protected, returns metadata plus trusted flag without execution. Console then presents publisher fingerprint and explicit scope trust action followed by deploy. GET `/api/export` returns signed evidence archive with public identity/releases/events/jobs (no private keys, secret config, logs, or application data). POST `/api/peer` enrolls a separately installed POSIX SSH recipient using existing host-key/account authority and pins its operator identity. GET `/api/peer-state?name=...` reads that node; POST `/api/peer-action` forwards a lifecycle request; POST `/api/peer-remove` removes its local enrollment.
 
 Jobs run in a separate detached worker process per request; state persists independently of HTTP/CLI client. An OS-owned lock serializes lifecycle transitions for each application; SQLite transactions serialize shared history and generation changes. `request_id` maps exact canonical request fingerprint; duplicate identical input returns existing job, same id/different input refuses. Process identity uses PID plus psutil creation time. Service/task process wrappers own logs and exit recording. Startup reconciles worker/process identity without retrying unknown effects. SQLite transactions keep generations atomic; retained intent/events make interrupted activation observable.
+
+Stopping a recorded application gives its observer a bounded interval to finish exit recording before forced termination. Failed database initialization closes its connection and propagates the initiating error. Transaction failures preserve the original exception even if rollback also fails; the controller never replays the transaction body automatically.
 
 ## Release acceptance
 

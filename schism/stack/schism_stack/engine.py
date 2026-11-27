@@ -361,8 +361,22 @@ class Engine:
         metadata = self.store.release(row["release_id"])
         timeout = float(metadata["application"].get("stop_timeout", 5))
         stop_owned(row["pid"], row["process_created"], timeout)
+        # A runner observing a known child gets a bounded opportunity to retain
+        # its exit and close SQLite before forced wrapper termination.
+        runner_finished = False
+        if row["pid"] and process_alive(row["runner_pid"], row["runner_created"]):
+            try:
+                observer = psutil.Process(row["runner_pid"])
+                if abs(observer.create_time() - float(row["runner_created"])) < 0.01:
+                    observer.wait(timeout=1)
+                runner_finished = True
+            except psutil.NoSuchProcess:
+                runner_finished = True
+            except psutil.TimeoutExpired:
+                pass
         # Handle cancellation while the wrapper is still preparing the child.
-        stop_owned(row["runner_pid"], row["runner_created"], 1)
+        if not runner_finished:
+            stop_owned(row["runner_pid"], row["runner_created"], 1)
         stop_owned(row.get("launcher_pid"), row.get("launcher_created"), 1)
         with self.store.db() as con:
             con.execute("UPDATE runs SET status='stopped',ended_at=COALESCE(ended_at,?) WHERE id=? AND status IN ('starting','running')", (now(), run_id))

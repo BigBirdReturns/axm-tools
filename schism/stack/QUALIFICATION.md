@@ -1,39 +1,45 @@
-# SCHISM Stack 0.1.0 qualification
+# SCHISM Stack 0.1.1 qualification
 
 Release date: 27 November 2026. The release qualifies a general application lifecycle stack with recipient-owned authority, signed package admission, detached execution, retained application data, checked activation, code recovery, independent recipients and verifiable history. The supported platform and operating boundaries below form part of that acceptance.
 
-The final runtime passed the source suite on Windows and Linux and completed all 15 native executable lifecycle cases on each platform. The actual local console completed 20 functional checks, with the browser resource exception retained in its original harness result and explained below. The public landing page and guide passed all 12 checks across desktop, 375px and 320px layouts.
+The final runtime passed the source suite on Windows and Linux and completed all 15 native executable lifecycle cases on each platform. The actual local console completed 20 functional checks, with the browser resource exception retained in its original harness result and explained below. The original public landing page and guide passed all 12 checks across desktop, 375px and 320px layouts. The 0.1.1 landing page changes only six version characters in labels and download links; its separate static comparison retains the original visual qualification without claiming a new browser run.
+
+## Patch and retained evidence
+
+Version 0.1.1 closes every opened database connection even when setup fails, preserves the initiating transaction exception if rollback also fails, and gives a recorded process observer one second to finish exit recording after its application stops before forced termination. The runtime continues to propagate database failures and never retries transaction bodies. The application/state formats remain compatible with 0.1.0.
+
+The earlier [hosted 0.1.0 Windows run](https://github.com/BigBirdReturns/axm-tools/actions/runs/46067747613) completed 35 tests with two errors in the cancellation case: a SQLite I/O error followed by a retained-handle cleanup error. Five independent repetitions of the original case passed on native Windows 11, so repetition did not establish a cause. The setup-handle leak follows directly from the old control flow. The initial SQLite error subtype was absent from the hosted trace and remains unconfirmed. The patch adds three deterministic lifetime/shutdown regressions and requires retained exit evidence and a fresh database integrity check after normal cancellation and abrupt worker loss. Previous 0.1.0 archives remain available under their original names and hashes.
 
 ## Exact release identity
 
-The [native compilation input](../downloads/schism-stack-0.1.0-build-source.zip) contains the exact source used for both executable builds:
+The [native compilation input](../downloads/schism-stack-0.1.1-build-source.zip) contains the exact source used for both executable builds:
 
 | Binding | SHA-256 |
 |---|---|
-| Compilation input ZIP | `6e07d2109bbbe669733c72d6984cd2143fd6c4b7029bfce7c37c59f7bedef11c` |
-| Compilation input source inventory | `ce76417189247378bf712ffcd812d49de0ee82158beb1e85d23660f58d91ede3` |
-| Ordered 16-file runtime inventory | `a371a3d0a6366237c1376d4109cdc0a3d756b4dab3134323fd6ebab5f9149d71` |
-| Windows controller executable | `142aceeda9ac23bd9865afd05605dc5eeb0901219aba57ad1d17e528c29148a8` |
-| Linux controller executable | `6fc5fcac0e1509bcd790376e64b42072771208690db6c629de3bf484ff713057` |
+| Compilation input ZIP | `8233fc7a65ae724a4f34c30a3c3b220d5a86f35d46c70253eb79607d94ce60d6` |
+| Compilation input source inventory | `ead0299da27bd7665faab1c59bc37b2dd9129a8ece6ce14fd1ba8faf3a257ef4` |
+| Ordered 16-file runtime inventory | `72378e3abac7bf2532fb4f065a8967c87b00dbf9fcb7de07aec9324119fe515a` |
+| Windows controller executable | `9258037b8318c26130c51875e26d33f1d27f6d1f471bb957d7dbd4d1956c45ab` |
+| Linux controller executable | `19bb3f18a59d28b1047a537e80430ab97f3d1f46457dd0399fcbf2a099897f72` |
 
-The [documented source release](../downloads/schism-stack-0.1.0-source.zip) adds this report and its [machine-readable evidence](QUALIFICATION.json). Every existing file from the accepted compilation input remains byte-identical. Its complete `SOURCE-MANIFEST.json` inventories the resulting source tree; [SHA256SUMS](../downloads/SHA256SUMS) identifies all downloadable archives. Native ZIPs also contain a closed artifact inventory, exact source/build provenance and upstream license texts. The report distinguishes the source used to compile the binaries from the later documentation package.
+The [documented source release](../downloads/schism-stack-0.1.1-source.zip) adds this report and its [machine-readable evidence](QUALIFICATION.json). Every existing file from the accepted compilation input remains byte-identical. Its complete `SOURCE-MANIFEST.json` inventories the resulting source tree; [SHA256SUMS](../downloads/SHA256SUMS) identifies all downloadable archives. Native ZIPs also contain a closed artifact inventory, exact source/build provenance and upstream license texts. The report distinguishes the source used to compile the binaries from the later documentation package.
 
 ## Observed qualification
 
 | Lane | Observed result | Scope |
 |---|---|---|
-| Source suite, local Python 3.12.14 | 35 tests passed | Package, identity, lifecycle, API, recovery, backup and transport boundaries |
-| Source suite, Windows 11 / Python 3.13.15 | 35 tests passed | Exact final source; inherited legacy Windows locale |
-| Source suite, Linux x86_64 / Python 3.14.4 | 35 tests passed | Exact final source on glibc 2.43 |
+| Source suite, local Python 3.12.14 |38 tests passed | Package, identity, lifecycle, API, recovery, backup and transport boundaries |
+| Source suite, Windows 11 / Python 3.13.15 |38 tests passed | Exact final source; inherited legacy Windows locale |
+| Source suite, Linux x86_64 / Python 3.14.4 |38 tests passed | Exact final source on glibc 2.43 |
 | Native Windows controller | 15 cases passed | Separate compiled CLI processes and retained recipient state |
 | Native Linux controller | 15 cases passed | Separate compiled CLI processes and retained recipient state |
 | Windows controller to POSIX SSH recipient | 9 cases passed | Existing pinned SSH, independently owned state and signed exact-request replies |
 | Fresh offline source installation, both native systems | Passed | New isolated runtime, selected state paths containing spaces |
 | Final native ZIP extraction, both native systems | Version/init/status passed | Fresh state outside an installation path containing spaces; complete installation unchanged |
 | Actual local console | 20 functional checks passed; raw harness **FAIL** retained | Pointer-driven operations, file selection and actual application state; Chrome task-cap exception |
-| Public landing page and guide | 12 checks passed | Desktop and 375px/320px widths, navigation, anchors and artifact names |
+| Public landing page and guide | 12 original checks passed; version-only update verified | Original desktop and 375px/320px rendering; six literal label/link changes for 0.1.1 |
 
-The final 35-test suite contains 19 package/identity cases, four complete lifecycle journeys, ten targeted acceptance/recovery regressions and two recipient-transport regressions. It exercises real subprocess execution where behavior depends on process ownership or duration. Focused failure injection checks atomic selection/receipt commitment and failed recovery. Detailed native records, suite counts and retained receipt digests appear in `QUALIFICATION.json`.
+The final 38-test suite contains 19 package/identity cases, four complete lifecycle journeys, ten targeted acceptance/recovery regressions, two recipient-transport regressions and three shutdown/connection-lifetime regressions. It exercises real subprocess execution where behavior depends on process ownership or duration. Focused failure injection checks atomic selection/receipt commitment and failed recovery. Detailed native records, suite counts and retained receipt digests appear in `QUALIFICATION.json`.
 
 The native executable journeys observed a declared OS-native command running with an empty child `PATH`, unauthorized publisher refusal, signed import without execution, a detached Unicode task surviving its caller, service survival across separate callers, a healthy update, retained-code rollback with continuing data, failed-candidate restoration, schema and stale-generation refusal, stopped recovery without replay, backup restoration under a fresh operator, task cancellation and independent signed-evidence verification. The outer execution host retained its normal process containment throughout these checks.
 
@@ -43,7 +49,7 @@ The SSH journey used the shipped Windows controller and a separately initialized
 
 The actual console admitted an outside publisher's package, granted one application scope, processed a supplied UTF-8 CSV and retained its computed output. It added a service grant while preserving the earlier task grant, activated service version 1, updated to version 2 and restored version 1 while the persisted counter advanced 1→2→3. It also exercised stop/start/recover, malformed package refusal, private-session access, signed evidence export and a fresh pinned-key verifier. No JavaScript exception or server error appeared in the functional journey. Views measured at 375px and 320px remained within their viewport.
 
-The console and fresh offline installer were exercised against the earlier frozen input identified in `prior_qualification_continuity`. Their launcher, exact dependency lock and three console files remain byte-identical in the final source. Subsequent runtime corrections received the complete native source and executable qualification. The public-site review exercised the final landing page and guide; destination names were checked against the planned release paths and are reconciled with the actual publication inventory.
+The console was exercised against the earlier frozen input identified in `prior_qualification_continuity`; its three UI files and the exact dependency lock remain byte-identical. Version 0.1.1 received fresh offline installer qualification on both native systems, including new isolated runtimes and selected state paths containing spaces. The runtime correction received the complete native source and executable qualification. The public site retains its earlier visual record and a separate exact comparison of its six version-reference changes. Current destination names are checked against the release inventory and live publication.
 
 The original console receipt's overall failure is a resource observation: the independent Chrome job reached its 128-task host limit 11 times. The SCHISM server used four to six tasks and the driver used 14, with zero task-cap events in those jobs. The report accepts the 20 directly observed product outcomes and retains the broader harness failure. The separate public-site pass recorded zero task-cap events. These observations establish the tested interactions; they do not establish an unlimited browser or host-capacity guarantee.
 

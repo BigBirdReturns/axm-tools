@@ -51,14 +51,26 @@ class Store:
     @contextlib.contextmanager
     def db(self):
         connection = sqlite3.connect(self.database, timeout=30)
-        connection.row_factory = sqlite3.Row
-        connection.execute("PRAGMA synchronous=FULL")
-        connection.execute("PRAGMA foreign_keys=ON")
+        phase = "connection setup"
         try:
-            yield connection
-            connection.commit()
-        except BaseException:
-            connection.rollback()
+            connection.row_factory = sqlite3.Row
+            connection.execute("PRAGMA synchronous=FULL")
+            connection.execute("PRAGMA foreign_keys=ON")
+            phase = "caller transaction"
+            try:
+                yield connection
+                connection.commit()
+            except BaseException:
+                try:
+                    connection.rollback()
+                except sqlite3.Error:
+                    # Preserve the initiating failure; never replay the body.
+                    pass
+                raise
+        except sqlite3.Error as error:
+            error.add_note(f"SQLite {sqlite3.sqlite_version}; {phase}; "
+                           f"code={getattr(error, 'sqlite_errorcode', None)}; "
+                           f"name={getattr(error, 'sqlite_errorname', None)}")
             raise
         finally:
             connection.close()

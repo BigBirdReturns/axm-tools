@@ -184,7 +184,14 @@ class Lifecycle(unittest.TestCase):
             time.sleep(0.05)
         self.assertTrue(effects.exists())
         self.action("cancel", job_id=started["job_id"])
-        self.assertEqual(self.job(self.recipient, started["job_id"])["status"], "cancelled")
+        cancelled = self.job(self.recipient, started["job_id"])
+        self.assertEqual(cancelled["status"], "cancelled")
+        run_id = cancelled["runs"][0]["id"]
+        exits = [json.loads(row["envelope"])["payload"]["body"]["run_id"]
+                 for row in self.recipient.store.all("SELECT envelope FROM events WHERE kind='process.exited'")]
+        self.assertIn(run_id, exits, "Ordinary cancellation must let the observer retain the child exit")
+        with self.recipient.store.db() as con:
+            self.assertEqual(con.execute("PRAGMA integrity_check").fetchone()[0], "ok")
         self.assertEqual(effects.read_text(), "effect\n")
         self.assertFalse(self.recipient._running(self.recipient.store.app("long-task")))
         second = self.recipient.submit({"operation": "run", "app_id": "long-task", "expected_generation": 1})
@@ -198,6 +205,8 @@ class Lifecycle(unittest.TestCase):
         self.action("recover", app_id="long-task")
         self.assertEqual(effects.read_text(), "effect\neffect\n")
         self.action("stop", app_id="long-task", expected_generation=1)
+        with self.recipient.store.db() as con:
+            self.assertEqual(con.execute("PRAGMA integrity_check").fetchone()[0], "ok")
 
     def test_loopback_origin_and_session_boundaries(self):
         server = make_server(self.recipient, 0)
