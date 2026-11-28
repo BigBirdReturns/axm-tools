@@ -132,6 +132,8 @@ def validate_catalog(catalog):
     for section in sections:
         if not isinstance(catalog.get(section), list):
             raise ValueError(f"{section} must be a list")
+    if "findings" in catalog and not isinstance(catalog["findings"], list):
+        raise ValueError("findings must be a list")
     sources = {}
     for source in catalog["sources"]:
         if not isinstance(source, dict):
@@ -153,9 +155,9 @@ def validate_catalog(catalog):
                 raise ValueError(f"extracted values require exact pointer bindings: {key}")
             if any(not isinstance(address, str) for address in bindings.values()):
                 raise ValueError(f"invalid extraction pointer: {key}")
-    for section in ("components", "campaigns", "gaps", "vendors", "lineage"):
+    for section in ("components", "campaigns", "gaps", "vendors", "lineage", "findings"):
         ids = set()
-        for row in catalog[section]:
+        for row in catalog.get(section, []):
             if not isinstance(row, dict):
                 raise ValueError(f"{section} row must be an object")
             key = row.get("id")
@@ -320,8 +322,8 @@ def collect(spec_path, output):
                 findings.append({"source_id": declaration["id"], "error": str(exc)})
         catalog["sources"].append(entry)
     by_id = {row["id"]: row for row in catalog["sources"]}
-    for section in ("components", "campaigns", "lineage", "gaps", "vendors"):
-        for row in catalog[section]:
+    for section in ("components", "campaigns", "lineage", "gaps", "vendors", "findings"):
+        for row in catalog.get(section, []):
             bindings = row.pop("derive", {})
             if bindings:
                 row["derived_from"] = copy.deepcopy(bindings)

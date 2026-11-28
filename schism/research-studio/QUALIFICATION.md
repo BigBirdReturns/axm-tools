@@ -1,4 +1,14 @@
-# Research Studio 0.2.0 qualification
+# Research Studio qualification
+
+## 0.2.1 source acceptance
+
+The current source adds optional findings to the existing source-binding and provenance checks, displays full-roster vendor findings above filtered rows, and exposes each row's published-demonstration class beside its recorded execution state. Existing catalogs remain valid without a findings collection. Findings retain source links while withholding values when a referenced source identity is unverified.
+
+Source acceptance passed 14 collector/reader tests and all nine unchanged supervisor regressions locally and on both native installations, plus the JavaScript syntax check. The added regression covers an older catalog without findings, exact source-derived finding values, rejection of altered counts and unresolved references, and unavailable values after a pinned source changes. Native deployment installed 0.2.1 through the existing SCHISM operators on W03 and W01. Both served catalog SHA-256 `b741f55353f5ad4e16c32c2cd80a617ab67ef2c2d0698835ae54a6b15162b60f`: 68 matching sources, nine components, 12 campaign records, 22 lineage entries, 12 dependency records, 17 vendors and one aggregate finding. Three dependency records are closed. The current roster requires seventeen named records; the earlier eighteen-stack ambition supplies no additional unnamed prerequisite.
+
+Focused Edge acceptance passed 24 checks at desktop 1440×1000 and mobile 390×844. It checked the independent roster, exact aggregate and per-row evidence classes, both new source dialogs, navigation and horizontal table reachability. Searching for Skydio selected one row while preserving the full-roster finding. Search expands linked-source metadata while keeping other rows' extracted values out of the match. No page error, failed request or relevant HTTP/console error appeared; the optional favicon request returned 404. Receipts retain the 11 screenshots and exact installed identities. The retained 0.2.0 measurements below describe that earlier installed release.
+
+## Retained 0.2.0 acceptance
 
 Observed on 27 November 2026 Pacific, with retained execution timestamps on 28 November UTC. The source reader, operating-system supervisor, and separate inert-ball task have distinct acceptance scopes.
 

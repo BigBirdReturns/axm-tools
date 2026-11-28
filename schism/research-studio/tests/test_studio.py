@@ -92,6 +92,39 @@ class StudioBoundaryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unresolved source reference"):
             studio.validate_catalog(catalog)
 
+    def test_optional_findings_keep_source_bindings_and_withhold_changed_sources(self):
+        _, legacy = self.collect()
+        self.assertNotIn("findings", legacy)
+        studio.validate_catalog(legacy)
+        document = {"title": "Synthetic documentary finding", "summary": "A bounded review.",
+                    "metrics": [{"label": "Reviewed records", "value": 2, "scope": "Fixture roster"}],
+                    "notes": ["Published reports have their own evidence scope."]}
+        self.source.write_text(json.dumps(document), encoding="utf-8")
+        self.spec["sources"][0].update(
+            expected_sha256=hashlib.sha256(self.source.read_bytes()).hexdigest(),
+            extract={key: "/" + key for key in document})
+        self.spec["catalog"]["campaigns"] = []
+        self.spec["catalog"]["findings"] = [{
+            "id": "vendor-summary", "kind": "vendor-summary", "source_refs": ["record-1"],
+            "derive": {key: {"source_ref": "record-1", "field": key} for key in document}}]
+        _, catalog = self.collect()
+        self.assertEqual(catalog["findings"][0]["metrics"], document["metrics"])
+        self.assertTrue(studio.verify(self.catalog_path, [self.root])["passed"])
+        altered = copy.deepcopy(catalog)
+        altered["findings"][0]["metrics"][0]["value"] = 99
+        with self.assertRaisesRegex(ValueError, "differs from its source"):
+            studio.validate_catalog(altered)
+        altered = copy.deepcopy(catalog)
+        altered["findings"][0]["source_refs"].append("missing-source")
+        with self.assertRaisesRegex(ValueError, "unresolved source reference"):
+            studio.validate_catalog(altered)
+        document["metrics"][0]["value"] = 3
+        self.source.write_text(json.dumps(document), encoding="utf-8")
+        _, changed = self.collect()
+        self.assertEqual(changed["findings"][0]["status"], "source-unverified")
+        for field in document:
+            self.assertIsNone(changed["findings"][0][field])
+
     def test_native_replay_preserves_source_projection_and_context_provenance(self):
         native = {"balls": [{"traj": [[1, 2, 3], [4, 5, 6]]}], "frames": 2, "fps": 30}
         self.source.write_text(json.dumps(native), encoding="utf-8")

@@ -2,7 +2,7 @@
   "schema": "schism.application/v1",
   "id": "research-studio",
   "name": "Research Studio",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "kind": "service",
   "command": ["{python}", "studio.py", "serve", "--catalog", "{data}/catalog.json", "--port", "8374"],
   "environment": {},

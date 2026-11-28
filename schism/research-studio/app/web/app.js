@@ -16,7 +16,7 @@
     sources:["Sources & history","Trace each project to retained source material and dated decisions."],
     campaigns:["Recorded campaigns","Inspect execution records with their original scope, outcomes, and source identity."],
     gaps:["Research closure","Follow the dependencies and acceptance criteria that remain with each owner."],
-    vendors:["Vendor access","Read the documented access and execution state for each named vendor."]
+    vendors:["Vendor access","Read the aggregate findings, published evidence and local execution state for each named vendor."]
   };
   const resolveSource = ref => {
     const id = typeof ref === "object" ? ref?.id || ref?.source_ref : ref;
@@ -33,7 +33,8 @@
   const matches = record => {
     const refs = refsFor(record).map(resolveSource).filter(Boolean);
     const projectMatch = !state.project || projectFor(record) === state.project || refs.some(source => source.project === state.project) || record.title === state.project || record.id === state.project;
-    return projectMatch && (!state.query || `${fields(record)} ${refs.map(fields).join(" ")}`.includes(state.query));
+    const referenceText = refs.map(source => fields({id:source.id,title:source.title,project:source.project,kind:source.kind,source_date:source.source_date,path:source.path,notes:source.notes})).join(" ");
+    return projectMatch && (!state.query || `${fields(record)} ${referenceText}`.includes(state.query));
   };
   const selected = key => (state.catalog?.[key] || []).filter(matches);
   const date = value => {
@@ -134,9 +135,24 @@
     return gaps.length ? `<section class="gap-list">${gaps.map(gap=>`<article class="gap-card" id="gap-${esc(gap.id)}"><div class="card-top"><h3>${esc(gap.title || gap.id)}</h3>${pill(gap.status)}</div>${gap.why ? `<p>${esc(text(gap.why))}</p>` : ""}<div class="acceptance"><span class="acceptance-label">Acceptance</span><p>${esc(text(gap.acceptance) || "Acceptance criteria have not been supplied.")}</p></div><div class="gap-meta"><span>Owner: ${esc(gap.owner || "Unspecified")}</span>${asArray(gap.depends_on).length ? `<span>Depends on: ${gap.depends_on.map(dep=>`<button class="dependency" data-dependency="${esc(typeof dep === "object" ? dep.id : dep)}">${esc(typeof dep === "object" ? dep.title || dep.id : (state.catalog.gaps || []).find(item=>item.id===dep)?.title || dep)}</button>`).join(", ")}</span>` : ""}</div>${sourceRefs(gap.source_refs)}</article>`).join("")}</section>` : empty();
   }
 
+  function vendorFindings() {
+    return (state.catalog.findings || []).filter(finding=>finding.kind === "vendor-summary").map(finding=>{
+      const refs=refsFor(finding);
+      const available=refs.length>0 && refs.every(ref=>resolveSource(ref)?.status === "verified") && finding.status !== "source-unverified";
+      const metrics=available ? asArray(finding.metrics).filter(metric=>metric && metric.value != null) : [];
+      return `<section class="vendor-finding" data-finding="${esc(finding.id)}"><div class="role-label">Full reviewed roster</div><h2>${esc(available ? finding.title || "Vendor finding" : "Finding source unavailable")}</h2>${available ? `${finding.summary ? `<p class="finding-summary">${esc(text(finding.summary))}</p>` : ""}${metrics.length ? `<div class="finding-metrics">${metrics.map(metric=>`<div class="finding-metric"><span>${esc(metric.label || "Recorded measure")}</span><strong>${esc(typeof metric.value === "number" ? number(metric.value) : text(metric.value))}</strong>${metric.scope ? `<small>${esc(text(metric.scope))}</small>` : ""}</div>`).join("")}</div>` : ""}${listNotes(finding.notes)}` : '<p class="finding-summary">The source identity for this finding has not been verified.</p>'}${sourceRefs(refs)}</section>`;
+    }).join("");
+  }
+
+  function publishedEvidence(vendor) {
+    const kind=vendor.documentary_evidence?.published_demonstration?.class;
+    const labels={reported_component_substitution:"Component substitution reported",reported_integration:"Integration reported",no_substitution_result_retrieved:"No substitution result retrieved"};
+    return esc(labels[kind] || pretty(kind) || "Unspecified");
+  }
+
   function vendorsView() {
     const vendors=selected("vendors");
-    return `<p class="scope-note">Each row preserves the catalog's stated access or execution evidence. A named integration and an executed vendor implementation carry distinct claims.</p>${vendors.length ? `<section class="panel"><div class="panel-heading"><h2>Vendor evidence</h2><span class="small-count">${number(vendors.length)} entries</span></div><div class="table-scroll"><table class="data-table"><thead><tr><th scope="col">Vendor</th><th scope="col">Recorded state</th><th scope="col">Evidence and limits</th></tr></thead><tbody>${vendors.map(vendor=>`<tr><td><strong>${esc(vendor.name)}</strong></td><td>${pill(vendor.state)}</td><td><div class="vendor-description">${asArray(vendor.notes).map(note=>esc(text(note))).join("<br>")}</div>${sourceRefs(refsFor(vendor))}</td></tr>`).join("")}</tbody></table></div></section>` : empty("No vendor records supplied","This catalog does not establish access to additional vendor implementations.")}`;
+    return `${vendorFindings()}<p class="scope-note">Each row preserves the catalog's published evidence and local execution state. Search and project filters apply to the vendor rows; aggregate findings retain the full reviewed roster.</p>${vendors.length ? `<section class="panel"><div class="panel-heading"><h2>Vendor evidence</h2><span class="small-count">${number(vendors.length)} entries</span></div><div class="table-scroll"><table class="data-table vendor-table"><thead><tr><th scope="col">Vendor</th><th scope="col">Published evidence</th><th scope="col">Recorded state</th><th scope="col">Evidence and limits</th></tr></thead><tbody>${vendors.map(vendor=>`<tr><td><strong>${esc(vendor.name)}</strong></td><td class="published-evidence">${publishedEvidence(vendor)}</td><td>${pill(vendor.state)}</td><td><div class="vendor-description">${asArray(vendor.notes).map(note=>esc(text(note))).join("<br>")}</div>${sourceRefs(refsFor(vendor))}</td></tr>`).join("")}</tbody></table></div></section>` : empty("No vendor records supplied","This catalog does not establish access to additional vendor implementations.")}`;
   }
 
   function render() {
@@ -226,7 +242,7 @@
       const catalog=await response.json();
       if(!catalog||typeof catalog!=="object")throw new Error("The catalog is not an object.");
       if(catalog.schema&&catalog.schema!=="research-index@1")throw new Error(`Unsupported catalog schema: ${catalog.schema}`);
-      for(const key of ["components","sources","campaigns","lineage","gaps","vendors"])if(catalog[key]&&!Array.isArray(catalog[key]))throw new Error(`Catalog field ${key} must be an array.`);
+      for(const key of ["components","sources","campaigns","lineage","gaps","vendors","findings"])if(catalog[key]&&!Array.isArray(catalog[key]))throw new Error(`Catalog field ${key} must be an array.`);
       state.catalog=catalog;
       const projects=[...new Set([...(catalog.sources||[]),...(catalog.campaigns||[])].map(item=>item.project).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
       $("#project").innerHTML='<option value="">All projects</option>'+projects.map(project=>`<option value="${esc(project)}">${esc(project)}</option>`).join("");

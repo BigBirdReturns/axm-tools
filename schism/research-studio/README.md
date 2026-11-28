@@ -6,7 +6,7 @@ The application uses Python 3.11 or newer and the standard library. Its static b
 
 ## Collect and verify
 
-Create a private collection specification with `read_roots`, explicit `sources`, and a `catalog` template. Keep private paths, conversation material, assets and generated catalogs outside this source directory. A source can declare `expected_sha256`, `expected_bytes` and JSON-pointer `extract` bindings. Component, campaign, lineage, dependency and vendor `derive` bindings reference those extracted fields. Collection hashes and extracts from the same bounded byte snapshot. Verification checks both the original bytes and the retained projections.
+Create a private collection specification with `read_roots`, explicit `sources`, and a `catalog` template. Keep private paths, conversation material, assets and generated catalogs outside this source directory. A source can declare `expected_sha256`, `expected_bytes` and JSON-pointer `extract` bindings. Component, campaign, lineage, dependency, vendor and optional finding `derive` bindings reference those extracted fields. Collection hashes and extracts from the same bounded byte snapshot. Verification checks both the original bytes and the retained projections.
 
 ```sh
 python app/studio.py collect --spec /private/collection-spec.json --output /private/catalog.json
@@ -27,6 +27,8 @@ First deploy the service into an empty application data directory so SCHISM reco
 ## Evidence and presentation
 
 Components and lineage link to exact source references. Campaigns can carry additional declared metrics and optional playback. The native retained-film shape `{balls:[{traj:[[x,y,z],...]}],frames,fps}` remains unchanged in the catalog and is normalized only for display. Coordinates retain their declared units, including undeclared units. Recorded playback and new dynamics are different evidence classes.
+
+Optional `findings` records carry source-bound conclusions alongside the underlying rows. A finding with `kind: "vendor-summary"` appears above the vendor table with `title`, `summary`, `metrics: [{label, value, scope}]`, `notes` and source references. Its counts describe the full reviewed roster while search and project filters select the rows below. The table exposes each vendor's published-demonstration class separately from its local execution state. Findings whose referenced source identity is unverified retain their source links while their values remain unavailable. Existing catalogs without findings remain valid.
 
 ## Validation and ownership
 
