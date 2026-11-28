@@ -1,0 +1,15 @@
+# Research Studio browser surface
+
+Read-only, dependency-free browser interface for the local retained-research catalog. The owning server should serve this directory at its root and return JSON from `GET /api/catalog`. The interface uses the `research-index@1` schema supplied by the integration owner. It makes no write requests, launches no workloads, and includes no demonstration records.
+
+The surface includes an overview of components, searchable source and project history, original campaign counts, closure dependencies, and vendor access evidence. Source buttons expose exact provenance in a dialog. Search includes linked source fields; project selection filters records through their direct project or source references. Campaign totals remain per-record and are never added across evidence sets. Missing dates and counts remain unspecified.
+
+Optional campaign `replay.frames` values can contain `{t, points: [{id, x, y, z}]}`. The UI presents recorded X/Y positions with sample-based playback; the frame slider preserves the supplied time and index. It does not run dynamics or use a time field as a new episode count. Source coordinate units remain the producer's responsibility.
+
+Campaign `metrics` accepts an array of `{label, value, unit, scope}` records or a label-to-value object. Null episode count fields are omitted. Replay metadata can include `caption`, `source_refs`, and `units: {x: "m", y: "m", t: "s"}`. The UI keeps scene, rest, rendering, or source-check measures out of episode totals. A source's `verified` status displays as **File identity checked**, preserving the distinction from scientific capability acceptance.
+
+The viewer also accepts the retained native film format `{balls: [{traj: [[x,y,z], ...]}], frames: 210, fps: 30, ...}`. It builds a separate display projection containing every recorded object at each frame, with time equal to frame index divided by the supplied FPS. The source replay object remains unchanged. Optional `campaign.replay_context` supplies the caption, source references and units without changing the byte-bound source extraction. Use `source units` for undeclared position units. Playback is a sample viewer, not a physical rerun.
+
+Files: `index.html`, `style.css`, `app.js`. No external scripts, stylesheets, fonts, assets, telemetry, or network destinations are used. Catalog text is escaped before insertion into HTML. The application displays an explicit failure state if the endpoint fails or supplies a conflicting schema.
+
+Verification: JavaScript syntax check is appropriate before serving; root independently owns live endpoint integration and visual/browser acceptance. This document does not claim a browser test has run.

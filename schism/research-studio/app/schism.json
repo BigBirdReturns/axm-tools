@@ -1,0 +1,13 @@
+{
+  "schema": "schism.application/v1",
+  "id": "research-studio",
+  "name": "Research Studio",
+  "version": "0.2.0",
+  "kind": "service",
+  "command": ["{python}", "studio.py", "serve", "--catalog", "{data}/catalog.json", "--port", "8374"],
+  "environment": {},
+  "secret_env": [],
+  "data_schema": "1",
+  "stop_timeout": 5,
+  "health": {"type": "http", "url": "http://127.0.0.1:8374/health", "status": 200, "timeout": 15}
+}

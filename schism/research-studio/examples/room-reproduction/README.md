@@ -1,0 +1,7 @@
+# Source-bound room reproduction adapter
+
+These source files are the unchanged adapters qualified in the private W0 inert-ball reproduction. They carry a retained geometry input through the original physics program, preserve a fresh output directory, and invoke an independent verifier. `task.py` is the SCHISM entry point; it requires explicit `WORLD_PHYSICS_PYTHON` and `WORLD_PHYSICS_DEPS` configuration. It preserves failed and successful attempts in application data.
+
+An explicit source manifest supplies source paths, SHA-256 digests, byte counts, the qualified runtime, parameters, expected output dimensions and acceptance limits. The adapter checks those identities before and after execution. `verify.py` checks exact retained trajectories and surface identity and rejects modified outputs. The original scene, frozen programs, complete manifest, historical conversations and private operator state retain their separate owners and rights. Supply those authorized inputs before running these adapters; no synthetic substitute or undocumented download is performed.
+
+The observed acceptance covers two fresh invocations of the same 165-object room case, including one SCHISM task, plus changed-output rejection. It establishes scoped repeatability on the recorded Linux runtime. Physical calibration, independent-host repeatability and public scene redistribution require their own evidence. See the private release qualification and source manifest for exact result identities.

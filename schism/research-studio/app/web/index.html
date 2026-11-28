@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Research Studio</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to research</a>
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="Research Studio overview"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Research Studio</span></a>
+    <div class="workspace-note"><span class="local-dot" aria-hidden="true"></span>Retained evidence · local workspace</div>
+    <button id="refresh" class="refresh" title="Reload the local catalog" aria-label="Reload the local catalog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6.1 7a7 7 0 0 1 11.6-1L20 9M4 15l2.3 3A7 7 0 0 0 18 17"/></svg><span>Refresh</span></button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Research navigation">
+      <div class="sidebar-label">Workspace</div>
+      <nav id="nav">
+        <button data-view="overview" class="nav-button active" aria-current="page"><span class="nav-icon" aria-hidden="true">◫</span><span>Overview</span></button>
+        <button data-view="sources" class="nav-button"><span class="nav-icon" aria-hidden="true">▤</span><span>Sources & history</span><span class="nav-count" data-count="sources">0</span></button>
+        <button data-view="campaigns" class="nav-button"><span class="nav-icon" aria-hidden="true">▥</span><span>Recorded campaigns</span><span class="nav-count" data-count="campaigns">0</span></button>
+        <button data-view="gaps" class="nav-button"><span class="nav-icon" aria-hidden="true">◇</span><span>Research closure</span><span class="nav-count" data-count="gaps">0</span></button>
+        <button data-view="vendors" class="nav-button"><span class="nav-icon" aria-hidden="true">▦</span><span>Vendor access</span><span class="nav-count" data-count="vendors">0</span></button>
+      </nav>
+      <div class="sidebar-bottom"><div class="sidebar-label">Catalog observed</div><div id="catalog-time" class="catalog-time">Loading</div><p>Source identity, recorded outcomes, and remaining dependencies in one place.</p></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <section class="page-heading"><div><div class="eyebrow" id="eyebrow">Research workspace</div><h1 id="view-title">Overview</h1><p id="view-description">Loading the retained research catalog.</p></div><span class="catalog-state" id="catalog-state">Loading</span></section>
+      <section class="filters" aria-label="Filter research records">
+        <label class="search-field" for="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="search" type="search" autocomplete="off" placeholder="Search projects, findings, sources…"><kbd aria-hidden="true">/</kbd></label>
+        <label class="select-field"><span>Project</span><select id="project"><option value="">All projects</option></select></label>
+        <button id="clear-filters" class="text-button" hidden>Clear filters</button>
+        <span id="filter-note" class="filter-note" aria-live="polite"></span>
+      </section>
+      <div id="content" aria-live="polite" aria-busy="true"><div class="loading"><span class="spinner" aria-hidden="true"></span>Reading retained evidence</div></div>
+    </main>
+  </div>
+  <dialog id="source-dialog" aria-labelledby="dialog-title"><div class="dialog-heading"><div><div class="eyebrow" id="dialog-eyebrow">Source provenance</div><h2 id="dialog-title">Source</h2></div><button class="close-button" id="close-dialog" aria-label="Close details">×</button></div><div id="dialog-content"></div></dialog>
+</body>
+</html>
