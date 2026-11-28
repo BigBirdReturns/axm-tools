@@ -1,0 +1,31 @@
+{
+  "id": "dunedain",
+  "name": "Dunedain",
+  "claim_class": "open-claim",
+  "claim_scope": "Operator owns integration; extensible API connects Warmind to any C2 platform",
+  "public_evidence_class": "reported_integration",
+  "public_evidence_summary": "The same account reports Warmind/Lattice integration, without replacement of either vendor's software.",
+  "local_execution_status": "not_established",
+  "public_citations": [
+    {
+      "dimension": "claim",
+      "url": "https://www.linkedin.com/in/matthew-k-kane/"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://www.linkedin.com/in/matthew-k-kane/"
+    }
+  ],
+  "documentary_evidence": {
+    "published_demonstration": {
+      "class": "reported_integration",
+      "summary": "The same account reports Warmind/Lattice integration, without replacement of either vendor's software."
+    }
+  },
+  "notes": [
+    "Claim: Operator owns integration; extensible API connects Warmind to any C2 platform",
+    "The same account reports Warmind/Lattice integration, without replacement of either vendor's software.",
+    "Local vendor execution: not established by this record.",
+    "Public citations: https://www.linkedin.com/in/matthew-k-kane/ ; https://www.linkedin.com/in/matthew-k-kane/"
+  ]
+}

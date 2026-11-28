@@ -1,0 +1,31 @@
+{
+  "id": "quantum-systems",
+  "name": "Quantum Systems",
+  "claim_class": "open-claim",
+  "claim_scope": "No vendor lock-in; open SDK/API; third-party hardware and software integration",
+  "public_evidence_class": "reported_integration",
+  "public_evidence_summary": "The retained account describes a multi-partner exercise connected through MOSAIC UXS, without replacing that software.",
+  "local_execution_status": "not_established",
+  "public_citations": [
+    {
+      "dimension": "claim",
+      "url": "https://quantum-systems.com/blog/2025/06/03/quantum-systems-launches-mosaic-uxs/"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://www.suasnews.com/2026/10/quantum-systems-demonstrates-integrated-multi-domain-operations-at-forward-edge-2026/"
+    }
+  ],
+  "documentary_evidence": {
+    "published_demonstration": {
+      "class": "reported_integration",
+      "summary": "The retained account describes a multi-partner exercise connected through MOSAIC UXS, without replacing that software."
+    }
+  },
+  "notes": [
+    "Claim: No vendor lock-in; open SDK/API; third-party hardware and software integration",
+    "The retained account describes a multi-partner exercise connected through MOSAIC UXS, without replacing that software.",
+    "Local vendor execution: not established by this record.",
+    "Public citations: https://quantum-systems.com/blog/2025/06/03/quantum-systems-launches-mosaic-uxs/ ; https://www.suasnews.com/2026/10/quantum-systems-demonstrates-integrated-multi-domain-operations-at-forward-edge-2026/"
+  ]
+}

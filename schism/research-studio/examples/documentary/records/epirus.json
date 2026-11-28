@@ -1,0 +1,31 @@
+{
+  "id": "epirus",
+  "name": "Epirus",
+  "claim_class": "open-claim",
+  "claim_scope": "Leonidas has an open API and integrates with a range of C2 systems",
+  "public_evidence_class": "reported_integration",
+  "public_evidence_summary": "The retained press account reports network integration, with material test details and results undisclosed. It supplies no software-substitution result.",
+  "local_execution_status": "not_established",
+  "public_citations": [
+    {
+      "dimension": "claim",
+      "url": "https://www.epirusinc.com/electronic-warfare"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://defensewarroom.com/2026/10/03/epirus-leonidas-hpm-operation-jailbreak/"
+    }
+  ],
+  "documentary_evidence": {
+    "published_demonstration": {
+      "class": "reported_integration",
+      "summary": "The retained press account reports network integration, with material test details and results undisclosed. It supplies no software-substitution result."
+    }
+  },
+  "notes": [
+    "Claim: Leonidas has an open API and integrates with a range of C2 systems",
+    "The retained press account reports network integration, with material test details and results undisclosed. It supplies no software-substitution result.",
+    "Local vendor execution: not established by this record.",
+    "Public citations: https://www.epirusinc.com/electronic-warfare ; https://defensewarroom.com/2026/10/03/epirus-leonidas-hpm-operation-jailbreak/"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "shield-ai",
+  "name": "Shield AI",
+  "claim_class": "open-claim",
+  "claim_scope": "Customer owns the IP built on Hivemind for its unmanned system",
+  "public_evidence_class": "reported_component_substitution",
+  "public_evidence_summary": "GA-ASI's March 4, 2025 release reports a midflight autonomy-system change involving Shield AI at the February 19–21 Orange Flag exercise. This is the aircraft owner's published account, with no local execution.",
+  "local_execution_status": "not_established",
+  "reported_event": {
+    "event_id": "mq20-orangeflag25-1-autonomy-change-20250219-20250221",
+    "report_date": "2025-03-04",
+    "event_date": "2025-02-19/2025-02-21",
+    "participants": "Shield AI and the government reference autonomy stack on a GA-ASI-owned MQ-20 during an Air Force Test Center exercise.",
+    "boundary": "Aircraft owner reports a midflight change of autonomy systems; the source is a participant account of the government exercise."
+  },
+  "public_citations": [
+    {
+      "dimension": "claim",
+      "url": "https://shield.ai/hivemind/"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://www.overtdefense.com/2025/03/07/general-atomics-avenger-ucav-demonstrates-in-flight-autonomy-system-swap/"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://www.ga-asi.com/ga-asi-flies-government-reference-autonomy-stack-at-orange-flag-25-1",
+      "source_level": "primary_test_participant_release_read"
+    }
+  ],
+  "documentary_evidence": {
+    "published_demonstration": {
+      "class": "reported_component_substitution",
+      "summary": "GA-ASI's March 4, 2025 release reports a midflight autonomy-system change involving Shield AI at the February 19–21 Orange Flag exercise. This is the aircraft owner's published account, with no local execution."
+    }
+  },
+  "notes": [
+    "Claim: Customer owns the IP built on Hivemind for its unmanned system",
+    "GA-ASI's March 4, 2025 release reports a midflight autonomy-system change involving Shield AI at the February 19–21 Orange Flag exercise. This is the aircraft owner's published account, with no local execution.",
+    "Local vendor execution: not established by this record.",
+    "Participants: Shield AI and the government reference autonomy stack on a GA-ASI-owned MQ-20 during an Air Force Test Center exercise.",
+    "Aircraft owner reports a midflight change of autonomy systems; the source is a participant account of the government exercise.",
+    "Public citations: https://shield.ai/hivemind/ ; https://www.overtdefense.com/2025/03/07/general-atomics-avenger-ucav-demonstrates-in-flight-autonomy-system-swap/ ; https://www.ga-asi.com/ga-asi-flies-government-reference-autonomy-stack-at-orange-flag-25-1"
+  ]
+}

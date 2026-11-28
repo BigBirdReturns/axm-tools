@@ -1,0 +1,36 @@
+{
+  "id": "helsing",
+  "name": "Helsing",
+  "claim_class": "open-claim",
+  "claim_scope": "Altra has open interfaces for third-party C2 systems and hardware platforms",
+  "public_evidence_class": "reported_integration",
+  "public_evidence_summary": "The retained record describes Altra/SitaWare integration, without replacing Altra.",
+  "local_execution_status": "not_established",
+  "public_citations": [
+    {
+      "dimension": "claim",
+      "url": "https://helsing.ai/altra"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://www.janes.com/osint-insights/defence-news/security/dsei-2025-helsing-and-systematic-partner-on-swarming-recce-strike-c2-system"
+    },
+    {
+      "dimension": "claim",
+      "url": "https://helsing.ai/altra",
+      "source_level": "primary_page_read"
+    }
+  ],
+  "documentary_evidence": {
+    "published_demonstration": {
+      "class": "reported_integration",
+      "summary": "The retained record describes Altra/SitaWare integration, without replacing Altra."
+    }
+  },
+  "notes": [
+    "Claim: Altra has open interfaces for third-party C2 systems and hardware platforms",
+    "The retained record describes Altra/SitaWare integration, without replacing Altra.",
+    "Local vendor execution: not established by this record.",
+    "Public citations: https://helsing.ai/altra ; https://www.janes.com/osint-insights/defence-news/security/dsei-2025-helsing-and-systematic-partner-on-swarming-recce-strike-c2-system ; https://helsing.ai/altra"
+  ]
+}

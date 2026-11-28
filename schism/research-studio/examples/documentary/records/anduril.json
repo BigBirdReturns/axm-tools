@@ -1,0 +1,45 @@
+{
+  "id": "anduril",
+  "name": "Anduril",
+  "claim_class": "open-claim",
+  "claim_scope": "Third parties can build on Lattice Mesh without relying on Anduril.",
+  "public_evidence_class": "reported_component_substitution",
+  "public_evidence_summary": "Anduril's company post corroborates an airborne mission-autonomy switch with Shield AI. The retrieved accounts establish a reported component substitution, with no local rerun or lower-layer substitution.",
+  "local_execution_status": "not_established",
+  "reported_event": {
+    "event_id": "yfq44a-mission-autonomy-switch-reported-20260225",
+    "report_date": "2026-02-25",
+    "event_date": null,
+    "participants": "Anduril and Shield AI on the same YFQ-44A; US Air Force program official described the flight.",
+    "boundary": "Mission-autonomy software exchanged; lower-layer substitution is not demonstrated in the retained accounts."
+  },
+  "public_citations": [
+    {
+      "dimension": "claim",
+      "url": "https://breakingdefense.com/2024/12/decentralizing-battle-data-cdao-anduril-open-tactical-mesh-to-third-party-developers"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://www.airandspaceforces.com/anduril-cca-switches-ai-pilots-midflight"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://www.linkedin.com/posts/anduril_yfq-44a-flies-with-mission-autonomy-software-activity-7432801730733547520--oUi",
+      "source_level": "primary_company_post_read"
+    }
+  ],
+  "documentary_evidence": {
+    "published_demonstration": {
+      "class": "reported_component_substitution",
+      "summary": "Anduril's company post corroborates an airborne mission-autonomy switch with Shield AI. The retrieved accounts establish a reported component substitution, with no local rerun or lower-layer substitution."
+    }
+  },
+  "notes": [
+    "Claim: Third parties can build on Lattice Mesh without relying on Anduril.",
+    "Anduril's company post corroborates an airborne mission-autonomy switch with Shield AI. The retrieved accounts establish a reported component substitution, with no local rerun or lower-layer substitution.",
+    "Local vendor execution: not established by this record.",
+    "Participants: Anduril and Shield AI on the same YFQ-44A; US Air Force program official described the flight.",
+    "Mission-autonomy software exchanged; lower-layer substitution is not demonstrated in the retained accounts.",
+    "Public citations: https://breakingdefense.com/2024/12/decentralizing-battle-data-cdao-anduril-open-tactical-mesh-to-third-party-developers ; https://www.airandspaceforces.com/anduril-cca-switches-ai-pilots-midflight ; https://www.linkedin.com/posts/anduril_yfq-44a-flies-with-mission-autonomy-software-activity-7432801730733547520--oUi"
+  ]
+}

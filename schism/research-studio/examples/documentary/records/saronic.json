@@ -1,0 +1,31 @@
+{
+  "id": "saronic",
+  "name": "Saronic",
+  "claim_class": "opposite-claim",
+  "claim_scope": "Vertically integrated software and hardware; vessels compatible with third-party C2",
+  "public_evidence_class": "reported_integration",
+  "public_evidence_summary": "The retained secondary account describes integration with Lattice. It supplies no replacement of Saronic's software; a government test report was not read.",
+  "local_execution_status": "not_established",
+  "public_citations": [
+    {
+      "dimension": "claim",
+      "url": "https://www.prnewswire.com/news-releases/saronic-unveils-echelon-a-unified-platform-for-mission-planning-simulation-and-command-and-control-of-autonomous-surface-vessels-302517335.html"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://theinnovationattorney.substack.com/p/saronic-technologies-autonomous-surface"
+    }
+  ],
+  "documentary_evidence": {
+    "published_demonstration": {
+      "class": "reported_integration",
+      "summary": "The retained secondary account describes integration with Lattice. It supplies no replacement of Saronic's software; a government test report was not read."
+    }
+  },
+  "notes": [
+    "Claim: Vertically integrated software and hardware; vessels compatible with third-party C2",
+    "The retained secondary account describes integration with Lattice. It supplies no replacement of Saronic's software; a government test report was not read.",
+    "Local vendor execution: not established by this record.",
+    "Public citations: https://www.prnewswire.com/news-releases/saronic-unveils-echelon-a-unified-platform-for-mission-planning-simulation-and-command-and-control-of-autonomous-surface-vessels-302517335.html ; https://theinnovationattorney.substack.com/p/saronic-technologies-autonomous-surface"
+  ]
+}

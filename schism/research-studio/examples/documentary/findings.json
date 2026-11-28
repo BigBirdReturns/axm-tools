@@ -1,0 +1,637 @@
+{
+  "schema": "schism.vendor-findings/1",
+  "id": "vendor-findings-r01",
+  "title": "Vendor openness and substitution findings",
+  "reviewed_at": "2026-11-28T07:35:07.274852+00:00",
+  "evidence_window": {
+    "original_ledger_date": "2026-11-27",
+    "primary_addendum_date": "2026-11-28",
+    "scope": "Retained 17-vendor documentary ledger, normalized projection, primary-source addendum and original aggregate findings page."
+  },
+  "classification_unit": "vendor_record",
+  "counts": {
+    "vendor_records": 17,
+    "openness_claim_records": 15,
+    "vertical_integration_claim_records": 2,
+    "reported_component_substitution_records": 3,
+    "reported_integration_records": 9,
+    "no_substitution_result_retrieved_records": 5,
+    "local_vendor_executions": 0,
+    "lower_layer_substitution_results_in_reviewed_record": 0
+  },
+  "aggregate_conclusion": "Of 17 vendors, 15 make public openness or interoperability claims. Three have published mission-autonomy substitution evidence; nine have integration accounts; five have no retrieved substitution result. The reviewed record contains no demonstrated substitution below mission autonomy.",
+  "local_execution": {
+    "count": 0,
+    "status": "not_established_for_all_17_vendor_records",
+    "qualification": "Public reports and local execution are separate evidence dimensions. No local vendor execution is established by these retained records."
+  },
+  "qualifications": [
+    "The fifteen claims vary in scope: interfaces, payload protocols, platform independence, manufacturing, retained customer IP and wider interoperability. The count does not establish whole-stack openness.",
+    "Three counts vendor records with reported component substitution, not locally executed stacks or a count derived by adding all reports. Their lead reports concern three distinct flight events; some vendors participate in more than one event.",
+    "The lower-layer finding is bounded to the reviewed evidence. The original review allowed at most eight searches and eight page reads per vendor; an unretrieved result is not proof of global absence.",
+    "The original opposite-claim category records Castelion and Saronic vertical-integration statements. Vertical integration alone does not establish closed interfaces.",
+    "Retained quote matching establishes presence of cited wording. Claim truth, applicability and execution remain separate questions.",
+    "The original claimed-open page predates current primary-source corrections; its former readable-terms total and unqualified contract statements are not incorporated into these counts."
+  ],
+  "derivation": {
+    "openness": "Count original ledger records where claim.kind equals open-claim.",
+    "public_evidence": "Count normalized vendor records by documentary_evidence.published_demonstration.class.",
+    "local_execution": "All normalized local_execution.status values equal not_established; aggregate projection records zero locally executed implementations.",
+    "lower_layer_finding": "Compare all three substitution-row summaries and their primary addenda with the bounded original claimed-open page finding."
+  },
+  "projection": {
+    "kind": "public_documentary_excerpt",
+    "retained_findings_sha256": "ba0ce16c53c524e445fdc1b59a1fc32da8dfc24fc9f75a714a34d77d23205819",
+    "scope": "Authored summaries and public citations from the dated vendor review. Local collection checks these included bytes and their projections; it does not fetch or reverify the cited websites."
+  },
+  "review_date_local": "2026-11-27",
+  "review_timezone": "America/Los_Angeles",
+  "source_date_basis": "The retained primary_addendum_date and reviewed_at use UTC; that addendum occurred on 27 November 2026 Pacific.",
+  "metrics": [
+    {
+      "label": "Vendor records",
+      "value": 17,
+      "scope": "Reviewed roster"
+    },
+    {
+      "label": "Openness claims",
+      "value": 15,
+      "scope": "Claims have different scopes"
+    },
+    {
+      "label": "Substitution reported",
+      "value": 3,
+      "scope": "Vendor records; mission autonomy"
+    },
+    {
+      "label": "Lower-layer results",
+      "value": 0,
+      "scope": "Within the reviewed record"
+    },
+    {
+      "label": "Local vendor executions",
+      "value": 0,
+      "scope": "Established by this documentary sample"
+    }
+  ],
+  "vendors": [
+    {
+      "id": "anduril",
+      "name": "Anduril",
+      "claim_class": "open-claim",
+      "claim_scope": "Third parties can build on Lattice Mesh without relying on Anduril.",
+      "public_evidence_class": "reported_component_substitution",
+      "public_evidence_summary": "Anduril's company post corroborates an airborne mission-autonomy switch with Shield AI. The retrieved accounts establish a reported component substitution, with no local rerun or lower-layer substitution.",
+      "local_execution_status": "not_established",
+      "reported_event": {
+        "event_id": "yfq44a-mission-autonomy-switch-reported-20260225",
+        "report_date": "2026-02-25",
+        "event_date": null,
+        "participants": "Anduril and Shield AI on the same YFQ-44A; US Air Force program official described the flight.",
+        "boundary": "Mission-autonomy software exchanged; lower-layer substitution is not demonstrated in the retained accounts."
+      },
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://breakingdefense.com/2024/12/decentralizing-battle-data-cdao-anduril-open-tactical-mesh-to-third-party-developers"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.airandspaceforces.com/anduril-cca-switches-ai-pilots-midflight"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.linkedin.com/posts/anduril_yfq-44a-flies-with-mission-autonomy-software-activity-7432801730733547520--oUi",
+          "source_level": "primary_company_post_read"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_component_substitution",
+          "summary": "Anduril's company post corroborates an airborne mission-autonomy switch with Shield AI. The retrieved accounts establish a reported component substitution, with no local rerun or lower-layer substitution."
+        }
+      },
+      "notes": [
+        "Claim: Third parties can build on Lattice Mesh without relying on Anduril.",
+        "Anduril's company post corroborates an airborne mission-autonomy switch with Shield AI. The retrieved accounts establish a reported component substitution, with no local rerun or lower-layer substitution.",
+        "Local vendor execution: not established by this record.",
+        "Participants: Anduril and Shield AI on the same YFQ-44A; US Air Force program official described the flight.",
+        "Mission-autonomy software exchanged; lower-layer substitution is not demonstrated in the retained accounts.",
+        "Public citations: https://breakingdefense.com/2024/12/decentralizing-battle-data-cdao-anduril-open-tactical-mesh-to-third-party-developers ; https://www.airandspaceforces.com/anduril-cca-switches-ai-pilots-midflight ; https://www.linkedin.com/posts/anduril_yfq-44a-flies-with-mission-autonomy-software-activity-7432801730733547520--oUi"
+      ]
+    },
+    {
+      "id": "applied-intuition",
+      "name": "Applied Intuition",
+      "claim_class": "open-claim",
+      "claim_scope": "Acuity ISR/Strike is platform-agnostic autonomy software",
+      "public_evidence_class": "reported_component_substitution",
+      "public_evidence_summary": "The vendor reports a midflight transfer to another partner inside Northrop Grumman's retained Prism framework. This supports component interchange at the mission-autonomy boundary.",
+      "local_execution_status": "not_established",
+      "reported_event": {
+        "event_id": "taloniq-prism-autonomy-component-transfer-20260415",
+        "report_date": "2026-04-16",
+        "event_date": "2026-04-15",
+        "participants": "Applied Intuition and other autonomy partners inside Northrop Grumman's retained Prism framework on its Talon IQ testbed.",
+        "boundary": "Partner autonomy-component transfer within Prism; this does not establish replacement of Prism or lower layers."
+      },
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://www.appliedintuition.com/press-releases/av-applied-intuition-advance-uncrewed-teaming"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.janes.com/defence-intelligence-insights/defence-news/air/northrop-grumman-completes-eighth-mission-autonomy-test-flight-proving-mid-flight-software-swap"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.appliedintuition.com/press-releases/applied-intuition-achieves-full-partner-integration-talon-iq",
+          "source_level": "primary_test_participant_release_read"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_component_substitution",
+          "summary": "The vendor reports a midflight transfer to another partner inside Northrop Grumman's retained Prism framework. This supports component interchange at the mission-autonomy boundary."
+        }
+      },
+      "notes": [
+        "Claim: Acuity ISR/Strike is platform-agnostic autonomy software",
+        "The vendor reports a midflight transfer to another partner inside Northrop Grumman's retained Prism framework. This supports component interchange at the mission-autonomy boundary.",
+        "Local vendor execution: not established by this record.",
+        "Participants: Applied Intuition and other autonomy partners inside Northrop Grumman's retained Prism framework on its Talon IQ testbed.",
+        "Partner autonomy-component transfer within Prism; this does not establish replacement of Prism or lower layers.",
+        "Public citations: https://www.appliedintuition.com/press-releases/av-applied-intuition-advance-uncrewed-teaming ; https://www.janes.com/defence-intelligence-insights/defence-news/air/northrop-grumman-completes-eighth-mission-autonomy-test-flight-proving-mid-flight-software-swap ; https://www.appliedintuition.com/press-releases/applied-intuition-achieves-full-partner-integration-talon-iq"
+      ]
+    },
+    {
+      "id": "auterion",
+      "name": "Auterion",
+      "claim_class": "open-claim",
+      "claim_scope": "Open architecture enabling interoperability across multiple manufacturers and platforms",
+      "public_evidence_class": "reported_integration",
+      "public_evidence_summary": "The retained record describes a company-reported multi-manufacturer demonstration; it does not describe replacing Auterion software.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://auterion.com/auterion-raises-130-million-series-b-as-their-ai-enabled-software-powering-low-cost-commercial-hardware-at-scale-transforms-warfare/"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://militarnyi.com/en/news/nemyx-system-tested-in-germany-enabling-a-swarm-of-drones-to-strike-tanks/"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_integration",
+          "summary": "The retained record describes a company-reported multi-manufacturer demonstration; it does not describe replacing Auterion software."
+        }
+      },
+      "notes": [
+        "Claim: Open architecture enabling interoperability across multiple manufacturers and platforms",
+        "The retained record describes a company-reported multi-manufacturer demonstration; it does not describe replacing Auterion software.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://auterion.com/auterion-raises-130-million-series-b-as-their-ai-enabled-software-powering-low-cost-commercial-hardware-at-scale-transforms-warfare/ ; https://militarnyi.com/en/news/nemyx-system-tested-in-germany-enabling-a-swarm-of-drones-to-strike-tanks/"
+      ]
+    },
+    {
+      "id": "castelion",
+      "name": "Castelion",
+      "claim_class": "opposite-claim",
+      "claim_scope": "Builds its own motors, flight computers and components in-house, vertically integrated",
+      "public_evidence_class": "no_substitution_result_retrieved",
+      "public_evidence_summary": "The bounded retained search retrieved partnership and planned-test accounts without a completed software-substitution result.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://www.castelion.com/about-us/"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "no_substitution_result_retrieved",
+          "summary": "The bounded retained search retrieved partnership and planned-test accounts without a completed software-substitution result."
+        }
+      },
+      "notes": [
+        "Claim: Builds its own motors, flight computers and components in-house, vertically integrated",
+        "The bounded retained search retrieved partnership and planned-test accounts without a completed software-substitution result.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://www.castelion.com/about-us/"
+      ]
+    },
+    {
+      "id": "darkhive",
+      "name": "Darkhive",
+      "claim_class": "open-claim",
+      "claim_scope": "Affordable US-made drones with open hardware and software interfaces",
+      "public_evidence_class": "reported_integration",
+      "public_evidence_summary": "A partner case study reports interface compatibility. The retained search provides no software-removal or replacement result.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://www.darkhive.com/post/darkhive-inc-closes-4m-seed-round-to-scale-development-of-low-cost-autonomous-drones-for-defense-a"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://doodlelabs.com/case-studies/darkhive"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_integration",
+          "summary": "A partner case study reports interface compatibility. The retained search provides no software-removal or replacement result."
+        }
+      },
+      "notes": [
+        "Claim: Affordable US-made drones with open hardware and software interfaces",
+        "A partner case study reports interface compatibility. The retained search provides no software-removal or replacement result.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://www.darkhive.com/post/darkhive-inc-closes-4m-seed-round-to-scale-development-of-low-cost-autonomous-drones-for-defense-a ; https://doodlelabs.com/case-studies/darkhive"
+      ]
+    },
+    {
+      "id": "dunedain",
+      "name": "Dunedain",
+      "claim_class": "open-claim",
+      "claim_scope": "Operator owns integration; extensible API connects Warmind to any C2 platform",
+      "public_evidence_class": "reported_integration",
+      "public_evidence_summary": "The same account reports Warmind/Lattice integration, without replacement of either vendor's software.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://www.linkedin.com/in/matthew-k-kane/"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.linkedin.com/in/matthew-k-kane/"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_integration",
+          "summary": "The same account reports Warmind/Lattice integration, without replacement of either vendor's software."
+        }
+      },
+      "notes": [
+        "Claim: Operator owns integration; extensible API connects Warmind to any C2 platform",
+        "The same account reports Warmind/Lattice integration, without replacement of either vendor's software.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://www.linkedin.com/in/matthew-k-kane/ ; https://www.linkedin.com/in/matthew-k-kane/"
+      ]
+    },
+    {
+      "id": "epirus",
+      "name": "Epirus",
+      "claim_class": "open-claim",
+      "claim_scope": "Leonidas has an open API and integrates with a range of C2 systems",
+      "public_evidence_class": "reported_integration",
+      "public_evidence_summary": "The retained press account reports network integration, with material test details and results undisclosed. It supplies no software-substitution result.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://www.epirusinc.com/electronic-warfare"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://defensewarroom.com/2026/10/03/epirus-leonidas-hpm-operation-jailbreak/"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_integration",
+          "summary": "The retained press account reports network integration, with material test details and results undisclosed. It supplies no software-substitution result."
+        }
+      },
+      "notes": [
+        "Claim: Leonidas has an open API and integrates with a range of C2 systems",
+        "The retained press account reports network integration, with material test details and results undisclosed. It supplies no software-substitution result.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://www.epirusinc.com/electronic-warfare ; https://defensewarroom.com/2026/10/03/epirus-leonidas-hpm-operation-jailbreak/"
+      ]
+    },
+    {
+      "id": "firestorm",
+      "name": "Firestorm",
+      "claim_class": "open-claim",
+      "claim_scope": "xCell open architecture supports vendor-agnostic prototyping and production, not only Firestorm products",
+      "public_evidence_class": "no_substitution_result_retrieved",
+      "public_evidence_summary": "The retained government event report concerns manufacturing demonstrations. It supplies no software-substitution result.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://launchfirestorm.wixsite.com/firestorm-labs/post/xcell-advancing-expeditionary-defense-manufacturing"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://nps.edu/-/lasers-destroy-drones-as-additive-manufacturing-builds-them"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "no_substitution_result_retrieved",
+          "summary": "The retained government event report concerns manufacturing demonstrations. It supplies no software-substitution result."
+        }
+      },
+      "notes": [
+        "Claim: xCell open architecture supports vendor-agnostic prototyping and production, not only Firestorm products",
+        "The retained government event report concerns manufacturing demonstrations. It supplies no software-substitution result.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://launchfirestorm.wixsite.com/firestorm-labs/post/xcell-advancing-expeditionary-defense-manufacturing ; https://nps.edu/-/lasers-destroy-drones-as-additive-manufacturing-builds-them"
+      ]
+    },
+    {
+      "id": "helsing",
+      "name": "Helsing",
+      "claim_class": "open-claim",
+      "claim_scope": "Altra has open interfaces for third-party C2 systems and hardware platforms",
+      "public_evidence_class": "reported_integration",
+      "public_evidence_summary": "The retained record describes Altra/SitaWare integration, without replacing Altra.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://helsing.ai/altra"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.janes.com/osint-insights/defence-news/security/dsei-2025-helsing-and-systematic-partner-on-swarming-recce-strike-c2-system"
+        },
+        {
+          "dimension": "claim",
+          "url": "https://helsing.ai/altra",
+          "source_level": "primary_page_read"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_integration",
+          "summary": "The retained record describes Altra/SitaWare integration, without replacing Altra."
+        }
+      },
+      "notes": [
+        "Claim: Altra has open interfaces for third-party C2 systems and hardware platforms",
+        "The retained record describes Altra/SitaWare integration, without replacing Altra.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://helsing.ai/altra ; https://www.janes.com/osint-insights/defence-news/security/dsei-2025-helsing-and-systematic-partner-on-swarming-recce-strike-c2-system ; https://helsing.ai/altra"
+      ]
+    },
+    {
+      "id": "neros",
+      "name": "Neros",
+      "claim_class": "open-claim",
+      "claim_scope": "Open plug-and-play payload protocol (APEX); the company also says it vertically integrates its component stack.",
+      "public_evidence_class": "no_substitution_result_retrieved",
+      "public_evidence_summary": "The bounded search retrieved modularity and interoperability statements without an Archer software-substitution result.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://github.com/Neros-Technologies/APEX"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "no_substitution_result_retrieved",
+          "summary": "The bounded search retrieved modularity and interoperability statements without an Archer software-substitution result."
+        }
+      },
+      "notes": [
+        "Claim: Open plug-and-play payload protocol (APEX); the company also says it vertically integrates its component stack.",
+        "The bounded search retrieved modularity and interoperability statements without an Archer software-substitution result.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://github.com/Neros-Technologies/APEX"
+      ]
+    },
+    {
+      "id": "palantir",
+      "name": "Palantir",
+      "claim_class": "open-claim",
+      "claim_scope": "Foundry is open, interoperable, and built to prevent lock-in (title only; PDF unreadable)",
+      "public_evidence_class": "no_substitution_result_retrieved",
+      "public_evidence_summary": "The bounded search retrieved integration accounts without removal of Palantir software.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://www.palantir.com/assets/xrfr7uokpv1b/7BxLPkTqJU9QhLTQCjJMo6/eed1457949dc2d1cd6b6e71936c0aa9c/Enabling_Interoperability_and_Embracing_Openness_with_Foundry.pdf"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "no_substitution_result_retrieved",
+          "summary": "The bounded search retrieved integration accounts without removal of Palantir software."
+        }
+      },
+      "notes": [
+        "Claim: Foundry is open, interoperable, and built to prevent lock-in (title only; PDF unreadable)",
+        "The bounded search retrieved integration accounts without removal of Palantir software.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://www.palantir.com/assets/xrfr7uokpv1b/7BxLPkTqJU9QhLTQCjJMo6/eed1457949dc2d1cd6b6e71936c0aa9c/Enabling_Interoperability_and_Embracing_Openness_with_Foundry.pdf"
+      ]
+    },
+    {
+      "id": "quantum-systems",
+      "name": "Quantum Systems",
+      "claim_class": "open-claim",
+      "claim_scope": "No vendor lock-in; open SDK/API; third-party hardware and software integration",
+      "public_evidence_class": "reported_integration",
+      "public_evidence_summary": "The retained account describes a multi-partner exercise connected through MOSAIC UXS, without replacing that software.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://quantum-systems.com/blog/2025/06/03/quantum-systems-launches-mosaic-uxs/"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.suasnews.com/2026/10/quantum-systems-demonstrates-integrated-multi-domain-operations-at-forward-edge-2026/"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_integration",
+          "summary": "The retained account describes a multi-partner exercise connected through MOSAIC UXS, without replacing that software."
+        }
+      },
+      "notes": [
+        "Claim: No vendor lock-in; open SDK/API; third-party hardware and software integration",
+        "The retained account describes a multi-partner exercise connected through MOSAIC UXS, without replacing that software.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://quantum-systems.com/blog/2025/06/03/quantum-systems-launches-mosaic-uxs/ ; https://www.suasnews.com/2026/10/quantum-systems-demonstrates-integrated-multi-domain-operations-at-forward-edge-2026/"
+      ]
+    },
+    {
+      "id": "red-cat",
+      "name": "Red Cat",
+      "claim_class": "open-claim",
+      "claim_scope": "Open ecosystem and third-party integrations for interchangeable Black Widow payloads",
+      "public_evidence_class": "reported_integration",
+      "public_evidence_summary": "A partner release reports third-party software on two platforms. It supplies no removal or replacement of vendor software.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://ir.redcatholdings.com/news-events/press-releases/detail/191/red-cats-teal-drones-black-widow-system-approved-for-nato-nspa-catalogue"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.palladyneai.com/press-releases/palladyne-ai-and-red-cat-announce-successful-completion-of-cross-platform-collaborative-drone-flight/"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_integration",
+          "summary": "A partner release reports third-party software on two platforms. It supplies no removal or replacement of vendor software."
+        }
+      },
+      "notes": [
+        "Claim: Open ecosystem and third-party integrations for interchangeable Black Widow payloads",
+        "A partner release reports third-party software on two platforms. It supplies no removal or replacement of vendor software.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://ir.redcatholdings.com/news-events/press-releases/detail/191/red-cats-teal-drones-black-widow-system-approved-for-nato-nspa-catalogue ; https://www.palladyneai.com/press-releases/palladyne-ai-and-red-cat-announce-successful-completion-of-cross-platform-collaborative-drone-flight/"
+      ]
+    },
+    {
+      "id": "rune",
+      "name": "Rune",
+      "claim_class": "open-claim",
+      "claim_scope": "Integrates with other hardware and software; data flows freely to and from other systems",
+      "public_evidence_class": "reported_integration",
+      "public_evidence_summary": "The retained account reports partner logistics integration, without replacing Rune software.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://runetech.co/"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.militaryaerospace.com/uncrewed/article/55404561/rune-havoc-integrate-logistics-software-with-autonomous-aircraft"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_integration",
+          "summary": "The retained account reports partner logistics integration, without replacing Rune software."
+        }
+      },
+      "notes": [
+        "Claim: Integrates with other hardware and software; data flows freely to and from other systems",
+        "The retained account reports partner logistics integration, without replacing Rune software.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://runetech.co/ ; https://www.militaryaerospace.com/uncrewed/article/55404561/rune-havoc-integrate-logistics-software-with-autonomous-aircraft"
+      ]
+    },
+    {
+      "id": "saronic",
+      "name": "Saronic",
+      "claim_class": "opposite-claim",
+      "claim_scope": "Vertically integrated software and hardware; vessels compatible with third-party C2",
+      "public_evidence_class": "reported_integration",
+      "public_evidence_summary": "The retained secondary account describes integration with Lattice. It supplies no replacement of Saronic's software; a government test report was not read.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://www.prnewswire.com/news-releases/saronic-unveils-echelon-a-unified-platform-for-mission-planning-simulation-and-command-and-control-of-autonomous-surface-vessels-302517335.html"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://theinnovationattorney.substack.com/p/saronic-technologies-autonomous-surface"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_integration",
+          "summary": "The retained secondary account describes integration with Lattice. It supplies no replacement of Saronic's software; a government test report was not read."
+        }
+      },
+      "notes": [
+        "Claim: Vertically integrated software and hardware; vessels compatible with third-party C2",
+        "The retained secondary account describes integration with Lattice. It supplies no replacement of Saronic's software; a government test report was not read.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://www.prnewswire.com/news-releases/saronic-unveils-echelon-a-unified-platform-for-mission-planning-simulation-and-command-and-control-of-autonomous-surface-vessels-302517335.html ; https://theinnovationattorney.substack.com/p/saronic-technologies-autonomous-surface"
+      ]
+    },
+    {
+      "id": "shield-ai",
+      "name": "Shield AI",
+      "claim_class": "open-claim",
+      "claim_scope": "Customer owns the IP built on Hivemind for its unmanned system",
+      "public_evidence_class": "reported_component_substitution",
+      "public_evidence_summary": "GA-ASI's March 4, 2025 release reports a midflight autonomy-system change involving Shield AI at the February 19–21 Orange Flag exercise. This is the aircraft owner's published account, with no local execution.",
+      "local_execution_status": "not_established",
+      "reported_event": {
+        "event_id": "mq20-orangeflag25-1-autonomy-change-20250219-20250221",
+        "report_date": "2025-03-04",
+        "event_date": "2025-02-19/2025-02-21",
+        "participants": "Shield AI and the government reference autonomy stack on a GA-ASI-owned MQ-20 during an Air Force Test Center exercise.",
+        "boundary": "Aircraft owner reports a midflight change of autonomy systems; the source is a participant account of the government exercise."
+      },
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://shield.ai/hivemind/"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.overtdefense.com/2025/03/07/general-atomics-avenger-ucav-demonstrates-in-flight-autonomy-system-swap/"
+        },
+        {
+          "dimension": "published_demonstration",
+          "url": "https://www.ga-asi.com/ga-asi-flies-government-reference-autonomy-stack-at-orange-flag-25-1",
+          "source_level": "primary_test_participant_release_read"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "reported_component_substitution",
+          "summary": "GA-ASI's March 4, 2025 release reports a midflight autonomy-system change involving Shield AI at the February 19–21 Orange Flag exercise. This is the aircraft owner's published account, with no local execution."
+        }
+      },
+      "notes": [
+        "Claim: Customer owns the IP built on Hivemind for its unmanned system",
+        "GA-ASI's March 4, 2025 release reports a midflight autonomy-system change involving Shield AI at the February 19–21 Orange Flag exercise. This is the aircraft owner's published account, with no local execution.",
+        "Local vendor execution: not established by this record.",
+        "Participants: Shield AI and the government reference autonomy stack on a GA-ASI-owned MQ-20 during an Air Force Test Center exercise.",
+        "Aircraft owner reports a midflight change of autonomy systems; the source is a participant account of the government exercise.",
+        "Public citations: https://shield.ai/hivemind/ ; https://www.overtdefense.com/2025/03/07/general-atomics-avenger-ucav-demonstrates-in-flight-autonomy-system-swap/ ; https://www.ga-asi.com/ga-asi-flies-government-reference-autonomy-stack-at-orange-flag-25-1"
+      ]
+    },
+    {
+      "id": "skydio",
+      "name": "Skydio",
+      "claim_class": "open-claim",
+      "claim_scope": "Open platform; third-party integration through its APIs and ICDs",
+      "public_evidence_class": "no_substitution_result_retrieved",
+      "public_evidence_summary": "The bounded retained search retrieved no software-substitution result.",
+      "local_execution_status": "not_established",
+      "public_citations": [
+        {
+          "dimension": "claim",
+          "url": "https://www.skydio.com/developer-tools"
+        }
+      ],
+      "documentary_evidence": {
+        "published_demonstration": {
+          "class": "no_substitution_result_retrieved",
+          "summary": "The bounded retained search retrieved no software-substitution result."
+        }
+      },
+      "notes": [
+        "Claim: Open platform; third-party integration through its APIs and ICDs",
+        "The bounded retained search retrieved no software-substitution result.",
+        "Local vendor execution: not established by this record.",
+        "Public citations: https://www.skydio.com/developer-tools"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "applied-intuition",
+  "name": "Applied Intuition",
+  "claim_class": "open-claim",
+  "claim_scope": "Acuity ISR/Strike is platform-agnostic autonomy software",
+  "public_evidence_class": "reported_component_substitution",
+  "public_evidence_summary": "The vendor reports a midflight transfer to another partner inside Northrop Grumman's retained Prism framework. This supports component interchange at the mission-autonomy boundary.",
+  "local_execution_status": "not_established",
+  "reported_event": {
+    "event_id": "taloniq-prism-autonomy-component-transfer-20260415",
+    "report_date": "2026-04-16",
+    "event_date": "2026-04-15",
+    "participants": "Applied Intuition and other autonomy partners inside Northrop Grumman's retained Prism framework on its Talon IQ testbed.",
+    "boundary": "Partner autonomy-component transfer within Prism; this does not establish replacement of Prism or lower layers."
+  },
+  "public_citations": [
+    {
+      "dimension": "claim",
+      "url": "https://www.appliedintuition.com/press-releases/av-applied-intuition-advance-uncrewed-teaming"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://www.janes.com/defence-intelligence-insights/defence-news/air/northrop-grumman-completes-eighth-mission-autonomy-test-flight-proving-mid-flight-software-swap"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://www.appliedintuition.com/press-releases/applied-intuition-achieves-full-partner-integration-talon-iq",
+      "source_level": "primary_test_participant_release_read"
+    }
+  ],
+  "documentary_evidence": {
+    "published_demonstration": {
+      "class": "reported_component_substitution",
+      "summary": "The vendor reports a midflight transfer to another partner inside Northrop Grumman's retained Prism framework. This supports component interchange at the mission-autonomy boundary."
+    }
+  },
+  "notes": [
+    "Claim: Acuity ISR/Strike is platform-agnostic autonomy software",
+    "The vendor reports a midflight transfer to another partner inside Northrop Grumman's retained Prism framework. This supports component interchange at the mission-autonomy boundary.",
+    "Local vendor execution: not established by this record.",
+    "Participants: Applied Intuition and other autonomy partners inside Northrop Grumman's retained Prism framework on its Talon IQ testbed.",
+    "Partner autonomy-component transfer within Prism; this does not establish replacement of Prism or lower layers.",
+    "Public citations: https://www.appliedintuition.com/press-releases/av-applied-intuition-advance-uncrewed-teaming ; https://www.janes.com/defence-intelligence-insights/defence-news/air/northrop-grumman-completes-eighth-mission-autonomy-test-flight-proving-mid-flight-software-swap ; https://www.appliedintuition.com/press-releases/applied-intuition-achieves-full-partner-integration-talon-iq"
+  ]
+}

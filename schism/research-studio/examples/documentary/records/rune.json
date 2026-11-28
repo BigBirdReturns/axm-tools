@@ -1,0 +1,31 @@
+{
+  "id": "rune",
+  "name": "Rune",
+  "claim_class": "open-claim",
+  "claim_scope": "Integrates with other hardware and software; data flows freely to and from other systems",
+  "public_evidence_class": "reported_integration",
+  "public_evidence_summary": "The retained account reports partner logistics integration, without replacing Rune software.",
+  "local_execution_status": "not_established",
+  "public_citations": [
+    {
+      "dimension": "claim",
+      "url": "https://runetech.co/"
+    },
+    {
+      "dimension": "published_demonstration",
+      "url": "https://www.militaryaerospace.com/uncrewed/article/55404561/rune-havoc-integrate-logistics-software-with-autonomous-aircraft"
+    }
+  ],
+  "documentary_evidence": {
+    "published_demonstration": {
+      "class": "reported_integration",
+      "summary": "The retained account reports partner logistics integration, without replacing Rune software."
+    }
+  },
+  "notes": [
+    "Claim: Integrates with other hardware and software; data flows freely to and from other systems",
+    "The retained account reports partner logistics integration, without replacing Rune software.",
+    "Local vendor execution: not established by this record.",
+    "Public citations: https://runetech.co/ ; https://www.militaryaerospace.com/uncrewed/article/55404561/rune-havoc-integrate-logistics-software-with-autonomous-aircraft"
+  ]
+}
